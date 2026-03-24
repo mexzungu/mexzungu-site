@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulting — Mexzungu Group</title>
+    <meta name="description" content="Structural and strategic architecture for ventures with real ambition.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo.png" alt="Mexzungu">Mexzungu<span>.</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/consulting" class="active">Consulting</a></li>
+        <li><a href="/growth">Growth</a></li>
+        <li><a href="/investments">Investments</a></li>
+        <li><a href="/book">Book a Call</a></li>
+        <li><a href="/#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+    <div class="section-label">Consulting</div>
+    <h1>Structure is the <span class="highlight">operating system</span> of your business.</h1>
+    <p>Not legal advice. Not compliance paperwork. I design the structural foundation that lets ambitious ventures scale without breaking apart.</p>
+</div>
+
+<!-- WHAT I DO -->
+<section>
+    <div class="section-label">What I Actually Do</div>
+    <div class="section-title">Venture architecture at the intersection of law, strategy, and capital.</div>
+    <p class="section-text">This is structural architecture for ventures operating at the edge of innovation.</p>
+
+    <ul class="styled-list">
+        <li>Ownership &amp; control design</li>
+        <li>Capital &amp; financing architecture</li>
+        <li>Governance frameworks</li>
+        <li>Regulatory positioning</li>
+        <li>Strategic transaction structuring</li>
+    </ul>
+</section>
+
+<!-- WHY IT MATTERS -->
+<section>
+    <div class="section-label">Why Structure Matters</div>
+    <div class="section-title">At this stage, structural choices determine everything.</div>
+
+    <div class="detail-grid">
+        <div class="detail-card">
+            <h4>Capital attracts scrutiny</h4>
+            <p>Investors expect governance, clarity, and discipline. Show up without it and the deal dies.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Control disappears easily</h4>
+            <p>Poor ownership structures create dilution and disputes. By the time you notice, it's too late.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Regulation affects speed</h4>
+            <p>In emerging industries, structural positioning matters more than legal opinions.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Complexity compounds</h4>
+            <p>Partners, investors, and regulators multiply structural risk. Every new stakeholder is a new vector.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ENGAGEMENT LEVELS -->
+<section>
+    <div class="section-label">Engagement</div>
+    <div class="section-title">Choose your level of involvement.</div>
+    <p class="section-text">From tactical support to institutional leadership. Capabilities expand with complexity.</p>
+
+    <div class="tiers">
+        <div class="tier">
+            <h4>Advisor</h4>
+            <div class="tier-focus">Issue resolution</div>
+            <p>Sharp answers fast. Targeted support and tactical execution when you need it.</p>
+        </div>
+        <div class="tier recommended">
+            <h4>Architect</h4>
+            <div class="tier-focus">Structural foundation</div>
+            <p>Ownership design, financing prep, governance frameworks, transaction structuring. The full blueprint.</p>
+        </div>
+        <div class="tier">
+            <h4>Executive</h4>
+            <div class="tier-focus">Institutional leadership</div>
+            <p>Enterprise oversight, in-room advisory, cap table control, executive decision participation.</p>
+        </div>
+    </div>
+</section>
+
+<!-- HOW I WORK -->
+<section>
+    <div class="section-label">How I Work</div>
+    <div class="section-title">Direct. Fast. No layers.</div>
+
+    <div class="detail-grid">
+        <div class="detail-card">
+            <h4>Direct founder access</h4>
+            <p>You work with me directly. No juniors, no handoffs, no waiting for the partner to show up.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Clear decision frameworks</h4>
+            <p>Complex issues get translated into structured options with clear trade-offs. You decide, I build.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Structured documentation</h4>
+            <p>Key decisions are documented so the structure holds as the venture evolves and teams change.</p>
+        </div>
+        <div class="detail-card">
+            <h4>External counsel coordination</h4>
+            <p>Specialist counsel gets coordinated when needed. Execution stays aligned with the architecture.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<div class="contact-section" id="contact">
+    <div class="section-label">Start Here</div>
+    <div class="section-title">Let's figure out what you need.</div>
+    <p class="section-text">Confirm the level of involvement, agree on the structure, and start building.</p>
+    <div class="contact-links">
+        <a href="mailto:info@mexzungu.com" class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            info@mexzungu.com
+        </a>
+    </div>
+</div>
+
+<footer>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+</script>
+</body>
+</html>

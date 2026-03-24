@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Call — Mexzungu Group</title>
+    <meta name="description" content="Pick your timezone, pick your poison, pick your time.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .steps { display:flex; gap:1rem; margin-bottom:2rem; align-items:center; }
+        .step-dot { width:32px; height:32px; border-radius:50%; border:2px solid var(--card-border); display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:600; color:var(--gray); transition:all .3s; }
+        .step-dot.active { border-color:var(--pink); color:var(--pink); }
+        .step-dot.done { border-color:var(--pink); background:var(--pink); color:var(--black); }
+        .step-line { flex:1; height:1px; background:var(--card-border); }
+
+        .zone-cards { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:2rem; }
+        .zone-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:2.5rem 2rem; cursor:pointer; transition:all .3s; text-align:center; }
+        .zone-card:hover, .zone-card.selected { border-color:var(--pink); transform:translateY(-2px); }
+        .zone-card .zone-emoji { font-size:3rem; margin-bottom:0.8rem; }
+        .zone-card h3 { font-family:var(--heading); font-size:1.8rem; text-transform:uppercase; margin-bottom:0.3rem; }
+        .zone-card p { font-size:0.85rem; color:var(--gray-light); }
+
+        .type-options { margin-top:2rem; }
+        .type-option { background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:1.5rem 2rem; margin-bottom:1rem; cursor:pointer; transition:all .2s; display:flex; align-items:flex-start; gap:1.2rem; }
+        .type-option:hover, .type-option.selected { border-color:var(--pink); }
+        .type-option.selected { background:rgba(255,45,123,0.05); }
+        .type-radio { width:20px; height:20px; border-radius:50%; border:2px solid var(--card-border); flex-shrink:0; margin-top:3px; transition:all .2s; display:flex; align-items:center; justify-content:center; }
+        .type-option.selected .type-radio { border-color:var(--pink); }
+        .type-option.selected .type-radio::after { content:''; width:10px; height:10px; border-radius:50%; background:var(--pink); }
+        .type-content h4 { font-size:1.05rem; font-weight:700; margin-bottom:0.2rem; }
+        .type-content .type-dur { font-size:0.75rem; color:var(--pink); font-weight:600; letter-spacing:0.08em; text-transform:uppercase; }
+        .type-content p { font-size:0.88rem; color:var(--gray-light); line-height:1.7; margin-top:0.5rem; }
+
+        .slots-container { margin-top:2rem; }
+        .slots-date { font-family:var(--heading); font-size:1.3rem; text-transform:uppercase; margin:1.5rem 0 0.8rem; }
+        .slots-date:first-child { margin-top:0; }
+        .slots-row { display:flex; flex-wrap:wrap; gap:0.5rem; }
+        .slot-btn { padding:0.5rem 1rem; border:1px solid var(--card-border); border-radius:6px; background:var(--card-bg); color:var(--white); font-family:var(--sans); font-size:0.85rem; font-weight:500; cursor:pointer; transition:all .2s; }
+        .slot-btn:hover, .slot-btn.selected { border-color:var(--pink); background:rgba(255,45,123,0.1); color:var(--pink); }
+        .slots-remaining { font-size:0.82rem; color:var(--pink); font-weight:600; margin-top:0.5rem; }
+
+        .booking-form { margin-top:2rem; }
+        .form-group { margin-bottom:1.2rem; }
+        .form-group label { display:block; font-size:0.8rem; font-weight:600; color:var(--gray-light); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.08em; }
+        .form-group input, .form-group textarea { width:100%; padding:0.8rem 1rem; border:1px solid var(--card-border); border-radius:6px; background:var(--card-bg); color:var(--white); font-family:var(--sans); font-size:0.9rem; transition:border-color .2s; }
+        .form-group input:focus, .form-group textarea:focus { outline:none; border-color:var(--pink); }
+        .form-group textarea { resize:vertical; min-height:80px; }
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+
+        .submit-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2.5rem; background:var(--pink); color:var(--black); font-family:var(--sans); font-weight:700; font-size:1rem; border:none; border-radius:6px; cursor:pointer; transition:all .2s; margin-top:0.5rem; }
+        .submit-btn:hover { background:var(--pink-light); }
+        .submit-btn:disabled { opacity:0.5; cursor:not-allowed; }
+
+        .next-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.8rem 2rem; background:var(--pink); color:var(--black); font-family:var(--sans); font-weight:700; font-size:0.9rem; border:none; border-radius:6px; cursor:pointer; transition:all .2s; margin-top:1.5rem; }
+        .next-btn:hover { background:var(--pink-light); }
+        .next-btn:disabled { opacity:0.3; cursor:not-allowed; }
+
+        .back-btn { display:inline-flex; align-items:center; gap:0.3rem; background:none; border:1px solid var(--card-border); color:var(--gray-light); padding:0.6rem 1.2rem; border-radius:6px; font-family:var(--sans); font-size:0.85rem; cursor:pointer; margin-bottom:2rem; transition:all .2s; }
+        .back-btn:hover { border-color:var(--pink); color:var(--pink); }
+
+        .confirmation { text-align:center; padding:3rem 0; }
+        .confirmation .big-check { font-size:4rem; margin-bottom:1rem; }
+        .what-next { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:2.5rem; text-align:center; }
+        .what-next-step { padding:1.5rem; }
+        .what-next-step .wn-num { font-family:var(--heading); font-size:2.5rem; color:var(--pink); opacity:0.4; }
+        .what-next-step h4 { font-size:0.9rem; font-weight:600; margin:0.3rem 0; }
+        .what-next-step p { font-size:0.82rem; color:var(--gray-light); }
+
+        .loading { text-align:center; padding:3rem 0; color:var(--gray); }
+        .spinner { display:inline-block; width:30px; height:30px; border:3px solid var(--card-border); border-top-color:var(--pink); border-radius:50%; animation:spin .8s linear infinite; margin-bottom:1rem; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        .hidden { display:none; }
+        .tz-note { font-size:0.78rem; color:var(--gray); margin-top:0.5rem; }
+        .notice-note { font-size:0.82rem; color:var(--gray); margin-top:1rem; font-style:italic; }
+
+        .social-proof { display:flex; flex-wrap:wrap; gap:2rem; justify-content:center; align-items:center; padding:2rem 0; margin-top:1rem; opacity:0.4; }
+        .social-proof span { font-size:0.85rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--gray-light); }
+
+        @media (max-width:768px) { .zone-cards,.what-next { grid-template-columns:1fr; } .form-row { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo.png" alt="Mexzungu">Mexzungu<span>.</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/consulting">Consulting</a></li>
+        <li><a href="/growth">Growth</a></li>
+        <li><a href="/investments">Investments</a></li>
+        <li><a href="/book" class="active">Book</a></li>
+    </ul>
+</nav>
+
+<div class="page-hero leopard-accent">
+    <div class="section-label">Book a Call</div>
+    <h1>Pick your <span class="highlight">poison.</span></h1>
+    <p>No gatekeepers. No forms that go nowhere. Every call is prepped individually — that's why we ask for 24 hours notice.</p>
+    <div class="social-proof">
+        <span>Goldman Sachs</span>
+        <span>ENGIE</span>
+        <span>Nissan</span>
+        <span>Sand Technologies</span>
+        <span>ALU / ALX</span>
+    </div>
+</div>
+
+<section>
+    <!-- STEP 1: Timezone -->
+    <div id="step-1">
+        <div class="steps">
+            <div class="step-dot active">1</div><div class="step-line"></div>
+            <div class="step-dot">2</div><div class="step-line"></div>
+            <div class="step-dot">3</div><div class="step-line"></div>
+            <div class="step-dot">4</div>
+        </div>
+        <div class="section-title">Where are you?</div>
+        <div class="zone-cards">
+            <div class="zone-card" data-zone="cet">
+                <div class="zone-emoji">🌍</div>
+                <h3>Europe / Africa / Middle East</h3>
+                <p>Monday — Friday, 9am — 5pm CET</p>
+            </div>
+            <div class="zone-card" data-zone="us">
+                <div class="zone-emoji">🌎</div>
+                <h3>Americas</h3>
+                <p>Monday — Thursday, evenings CET / your afternoon</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 2: Call type -->
+    <div id="step-2" class="hidden">
+        <div class="steps">
+            <div class="step-dot done">&#10003;</div><div class="step-line"></div>
+            <div class="step-dot active">2</div><div class="step-line"></div>
+            <div class="step-dot">3</div><div class="step-line"></div>
+            <div class="step-dot">4</div>
+        </div>
+        <button class="back-btn" onclick="goTo(1)">&larr; Back</button>
+        <div class="section-title">What's this about?</div>
+
+        <div class="type-options">
+            <div class="type-option" data-type="pitch-me">
+                <div class="type-radio"></div>
+                <div class="type-content">
+                    <h4>🔥 Pitch Me</h4>
+                    <div class="type-dur">45 minutes</div>
+                    <p>Can't sleep because the idea won't shut up? Quit your job or about to? Everyone thinks you're crazy except the one person who matters — you? Good. That's exactly who I back.</p>
+                </div>
+            </div>
+            <div class="type-option" data-type="build-with-me">
+                <div class="type-radio"></div>
+                <div class="type-content">
+                    <h4>🏗 Build With Me</h4>
+                    <div class="type-dur">60 minutes</div>
+                    <p>Three founders, no shareholders' agreement, and a term sheet landing next week? Raised a round but don't know what you actually signed? Built something incredible on a structure made of duct tape and prayers? Stop patching. Let's architect.</p>
+                </div>
+            </div>
+            <div class="type-option" data-type="grow-with-me">
+                <div class="type-radio"></div>
+                <div class="type-content">
+                    <h4>🎸 Grow With Me</h4>
+                    <div class="type-dur">60 minutes</div>
+                    <p>Billing 2,000 hours a year and still feel like you're standing still? Know you could run the deal but they won't let you near the room? Smarter than your boss and tired of pretending you're not? This isn't a mentorship application. It's a collision test.</p>
+                </div>
+            </div>
+            <div class="type-option" data-type="pick-my-brain">
+                <div class="type-radio"></div>
+                <div class="type-content">
+                    <h4>🧠 Pick My Brain</h4>
+                    <div class="type-dur">30 minutes</div>
+                    <p>Need a guest who won't give you rehearsed answers? Building something strange and beautiful that doesn't fit in a category? If it's boring, don't book. If it's bold, I'm already in.</p>
+                </div>
+            </div>
+        </div>
+        <button class="next-btn" id="type-next-btn" disabled onclick="loadSlots()">Pick a time &rarr;</button>
+    </div>
+
+    <!-- STEP 3: Pick time -->
+    <div id="step-3" class="hidden">
+        <div class="steps">
+            <div class="step-dot done">&#10003;</div><div class="step-line"></div>
+            <div class="step-dot done">&#10003;</div><div class="step-line"></div>
+            <div class="step-dot active">3</div><div class="step-line"></div>
+            <div class="step-dot">4</div>
+        </div>
+        <button class="back-btn" onclick="goTo(2)">&larr; Back</button>
+        <div class="section-title" id="slots-title">Pick a time</div>
+        <p class="tz-note">Times shown in your local timezone (<span id="user-tz"></span>)</p>
+        <p id="slots-remaining" class="slots-remaining hidden"></p>
+        <div id="slots-loading" class="loading"><div class="spinner"></div><p>Loading available times...</p></div>
+        <div id="slots-container" class="slots-container hidden"></div>
+        <div id="slots-empty" class="loading hidden"><p>No available slots in the next 2 weeks. Try another type or reach out at info@mexzungu.com.</p></div>
+        <p class="notice-note">All bookings require 24h notice so Pepe can prepare individually for your call.</p>
+    </div>
+
+    <!-- STEP 4: Details -->
+    <div id="step-4" class="hidden">
+        <div class="steps">
+            <div class="step-dot done">&#10003;</div><div class="step-line"></div>
+            <div class="step-dot done">&#10003;</div><div class="step-line"></div>
+            <div class="step-dot done">&#10003;</div><div class="step-line"></div>
+            <div class="step-dot active">4</div>
+        </div>
+        <button class="back-btn" onclick="goTo(3)">&larr; Back</button>
+        <div class="section-title">Almost there.</div>
+        <p class="section-text" style="margin-bottom:2rem;">Selected: <strong id="selected-summary"></strong></p>
+
+        <form class="booking-form" onsubmit="submitBooking(event)">
+            <div class="form-row">
+                <div class="form-group"><label>First Name</label><input type="text" id="f-first" required></div>
+                <div class="form-group"><label>Last Name</label><input type="text" id="f-last" required></div>
+            </div>
+            <div class="form-group"><label>Email</label><input type="email" id="f-email" required placeholder="you@company.com"></div>
+            <div class="form-group"><label id="msg-label">Your message</label><textarea id="f-message"></textarea></div>
+            <button type="submit" class="submit-btn" id="submit-btn">Book it &rarr;</button>
+        </form>
+    </div>
+
+    <!-- DONE -->
+    <div id="step-done" class="hidden">
+        <div class="confirmation">
+            <div class="big-check">🔥</div>
+            <div class="section-title">You're in.</div>
+            <p class="section-text" style="margin:0 auto;">Here's what happens next:</p>
+            <div class="what-next">
+                <div class="what-next-step">
+                    <div class="wn-num">01</div>
+                    <h4>Check your email</h4>
+                    <p>You'll get a calendar invite with a Google Meet link.</p>
+                </div>
+                <div class="what-next-step">
+                    <div class="wn-num">02</div>
+                    <h4>Pepe preps</h4>
+                    <p>Every call is reviewed and prepared individually. That's why we ask for 24h.</p>
+                </div>
+                <div class="what-next-step">
+                    <div class="wn-num">03</div>
+                    <h4>We talk</h4>
+                    <p>Show up ready. Bring the chaos — we'll build the structure.</p>
+                </div>
+            </div>
+            <p id="meet-link-msg" class="hidden" style="margin-top:2rem;"><a id="meet-link" href="#" target="_blank" class="submit-btn">Join Google Meet</a></p>
+            <p style="margin-top:2rem; font-size:0.85rem; color:var(--gray);">Need to reschedule? Reply to the calendar invite or email info@mexzungu.com.</p>
+        </div>
+    </div>
+</section>
+
+<footer>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</footer>
+
+<script>
+const API = window.location.hostname === 'localhost' ? 'http://localhost:8741' : 'https://api.mexzungu.com';
+let selectedZone = null, selectedType = null, selectedSlot = null;
+
+const TYPE_LABELS = { 'pitch-me':'🔥 Pitch Me', 'build-with-me':'🏗 Build With Me', 'grow-with-me':'🎸 Grow With Me', 'pick-my-brain':'🧠 Pick My Brain' };
+const MSG_LABELS = { 'pitch-me':'What are you building?', 'build-with-me':"What's the mess?", 'grow-with-me':'What do you want to build?', 'pick-my-brain':"What's this about?" };
+
+document.getElementById('user-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+function goTo(n) {
+    document.querySelectorAll('[id^="step-"]').forEach(el => el.classList.add('hidden'));
+    document.getElementById('step-' + n).classList.remove('hidden');
+    window.scrollTo({ top: 200, behavior: 'smooth' });
+}
+
+// Step 1: Zone
+document.querySelectorAll('.zone-card').forEach(el => {
+    el.addEventListener('click', () => {
+        selectedZone = el.dataset.zone;
+        document.querySelectorAll('.zone-card').forEach(e => e.classList.remove('selected'));
+        el.classList.add('selected');
+        goTo(2);
+    });
+});
+
+// Step 2: Type
+document.querySelectorAll('.type-option').forEach(el => {
+    el.addEventListener('click', () => {
+        selectedType = el.dataset.type;
+        document.querySelectorAll('.type-option').forEach(e => e.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('type-next-btn').disabled = false;
+    });
+});
+
+// Step 3: Slots
+async function loadSlots() {
+    goTo(3);
+    document.getElementById('slots-loading').classList.remove('hidden');
+    document.getElementById('slots-container').classList.add('hidden');
+    document.getElementById('slots-empty').classList.add('hidden');
+    document.getElementById('slots-remaining').classList.add('hidden');
+    document.getElementById('slots-title').textContent = `Pick a time — ${TYPE_LABELS[selectedType]}`;
+
+    try {
+        const res = await fetch(`${API}/booking/slots/${selectedZone}/${selectedType}`);
+        const data = await res.json();
+        renderSlots(data.slots || [], data.slots_remaining_this_week || 0);
+    } catch (e) {
+        document.getElementById('slots-loading').classList.add('hidden');
+        document.getElementById('slots-empty').classList.remove('hidden');
+    }
+}
+
+function renderSlots(slots, remaining) {
+    document.getElementById('slots-loading').classList.add('hidden');
+    const container = document.getElementById('slots-container');
+    if (!slots.length) { document.getElementById('slots-empty').classList.remove('hidden'); return; }
+
+    if (remaining > 0 && remaining <= 8) {
+        const rem = document.getElementById('slots-remaining');
+        rem.textContent = `${remaining} slot${remaining === 1 ? '' : 's'} remaining this week`;
+        rem.classList.remove('hidden');
+    }
+
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+    const byDate = {};
+    slots.forEach(s => {
+        const dt = new Date(s.start);
+        const key = dt.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+        if (!byDate[key]) byDate[key] = [];
+        byDate[key].push(s);
+    });
+
+    for (const [label, daySlots] of Object.entries(byDate)) {
+        const d = document.createElement('div'); d.className = 'slots-date'; d.textContent = label;
+        container.appendChild(d);
+        const row = document.createElement('div'); row.className = 'slots-row';
+        daySlots.forEach(slot => {
+            const btn = document.createElement('button'); btn.className = 'slot-btn';
+            btn.textContent = new Date(slot.start).toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedSlot = slot;
+                setTimeout(() => goToStep4(), 300);
+            });
+            row.appendChild(btn);
+        });
+        container.appendChild(row);
+    }
+}
+
+function goToStep4() {
+    goTo(4);
+    const dt = new Date(selectedSlot.start);
+    document.getElementById('selected-summary').textContent = `${TYPE_LABELS[selectedType]} — ${dt.toLocaleString('en-US', { weekday:'long', month:'long', day:'numeric', hour:'numeric', minute:'2-digit', hour12:true })}`;
+    document.getElementById('msg-label').textContent = MSG_LABELS[selectedType] || 'Your message';
+}
+
+async function submitBooking(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true; btn.textContent = 'Booking...';
+    try {
+        const res = await fetch(`${API}/booking/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                call_type: selectedType, zone: selectedZone,
+                start: selectedSlot.start, end: selectedSlot.end,
+                name: `${document.getElementById('f-first').value} ${document.getElementById('f-last').value}`,
+                email: document.getElementById('f-email').value,
+                message: document.getElementById('f-message').value,
+            }),
+        });
+        if (!res.ok) { const err = await res.json(); alert(err.detail || 'Booking failed.'); btn.disabled = false; btn.textContent = 'Book it →'; return; }
+        const data = await res.json();
+        goTo('done');
+        if (data.meet_link) { document.getElementById('meet-link').href = data.meet_link; document.getElementById('meet-link-msg').classList.remove('hidden'); }
+    } catch (err) { alert('Something went wrong. Email info@mexzungu.com.'); btn.disabled = false; btn.textContent = 'Book it →'; }
+}
+
+document.querySelectorAll('.nav-links a').forEach(l => l.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open')));
+</script>
+</body>
+</html>

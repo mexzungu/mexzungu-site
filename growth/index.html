@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth — Mexzungu Group</title>
+    <meta name="description" content="Building the next generation of lawyers who think like founders.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo.png" alt="Mexzungu">Mexzungu<span>.</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/consulting">Consulting</a></li>
+        <li><a href="/growth" class="active">Growth</a></li>
+        <li><a href="/investments">Investments</a></li>
+        <li><a href="/book">Book a Call</a></li>
+        <li><a href="/#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+    <div class="section-label">Growth</div>
+    <h1>Building lawyers who <span class="highlight">build companies.</span></h1>
+    <p>The legal profession doesn't need more technicians. It needs architects, strategists, and operators who happen to have a law degree.</p>
+</div>
+
+<!-- TWO TRACKS -->
+<section>
+    <div class="section-label">Two Tracks</div>
+    <div class="section-title">For the young and the ambitious.</div>
+    <p class="section-text">Whether you're a wild creative who just passed the bar or a junior associate ready to break through to partner — there's a track for you.</p>
+
+    <div class="tracks">
+        <div class="track">
+            <div class="track-tag">Mentorship</div>
+            <h3>Lawyer of the Future</h3>
+            <p>A mentorship programme for young, wild, and creative lawyers who want to operate at the intersection of law, strategy, and business building. Not for everyone. For the ones who don't fit the mould and don't want to.</p>
+            <ul class="styled-list">
+                <li>Hands-on mentorship from a practising venture architect</li>
+                <li>Exposure to live cross-border deal work</li>
+                <li>Strategic thinking over technical lawyering</li>
+                <li>Real client problems, not hypotheticals</li>
+                <li>A network that actually matters</li>
+            </ul>
+        </div>
+
+        <div class="track">
+            <div class="track-tag">Leadership Development</div>
+            <h3>Junior to Partner Track</h3>
+            <p>A structured programme to turn junior associates into partner-track candidates. The skills law school didn't teach you: business development, client management, leadership, and how to actually build a practice.</p>
+            <ul class="styled-list">
+                <li>Business development and client origination</li>
+                <li>Client relationship management</li>
+                <li>Practice building and positioning</li>
+                <li>Commercial awareness and deal instinct</li>
+                <li>Leadership under pressure</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section>
+    <div class="section-label">Philosophy</div>
+    <div class="section-title">The future of law isn't more law.</div>
+    <p class="section-text">The best lawyers in the next decade won't be the ones who memorised the most case law. They'll be the ones who understood business, moved fast, and built things. That's who we're looking for.</p>
+
+    <div class="detail-grid" style="margin-top: 2.5rem;">
+        <div class="detail-card">
+            <h4>Think like a founder</h4>
+            <p>Understand the business first. The legal analysis follows. If you can't explain why it matters commercially, you haven't done the work.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Move like an operator</h4>
+            <p>Speed matters. Precision matters more. But neither matters if you can't ship. We build lawyers who deliver.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Lead, don't just advise</h4>
+            <p>The partner track isn't about billing hours. It's about owning outcomes, building trust, and earning a seat at the table.</p>
+        </div>
+        <div class="detail-card">
+            <h4>Stay hungry</h4>
+            <p>Complacency kills careers. The best lawyers are restless, curious, and always building their edge.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<div class="contact-section" id="contact">
+    <div class="section-label">Interested?</div>
+    <div class="section-title">If this sounds like you, reach out.</div>
+    <p class="section-text">No formal applications. No committees. Just a conversation.</p>
+    <div class="contact-links">
+        <a href="mailto:info@mexzungu.com" class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            info@mexzungu.com
+        </a>
+    </div>
+</div>
+
+<footer>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+</script>
+</body>
+</html>
