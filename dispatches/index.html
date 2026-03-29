@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispatches — Mexzungu Group</title>
+    <meta name="description" content="Sharp takes on venture architecture, startup structuring, and the stuff nobody tells founders until it's too late.">
+    <meta property="og:title" content="Dispatches | Mexzungu Group">
+    <meta property="og:description" content="Sharp takes on venture architecture, startup structuring, and the stuff nobody tells founders until it's too late.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mexzungu.com/dispatches">
+    <meta property="og:image" content="https://mexzungu.com/logo.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&family=RocknRoll+One&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo.jpeg" alt="Mexzungu">Mexzungu<span>.</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/consulting">Consulting</a></li>
+        <li><a href="/growth">Growth</a></li>
+        <li><a href="/investments">Investments</a></li>
+        <li><a href="/dispatches" class="active">Dispatches</a></li>
+        <li><a href="/talk_to_pepe">Book a Call</a></li>
+        <li><a href="/#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+    <div class="section-label">Dispatches</div>
+    <h1>Notes from the <span class="highlight">frontline</span>.</h1>
+    <p>Sharp takes on venture architecture, startup structuring, and the stuff nobody tells founders until it's too late. No jargon. No fluff. Just the real.</p>
+</div>
+
+<!-- POSTS -->
+<section>
+    <div class="posts-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <a href="/dispatches/cap-table-time-bomb" class="post-card" style="text-decoration: none; color: var(--black);">
+            <div class="post-tag">Venture Architecture &middot; March 2026</div>
+            <h3>Why Your Cap Table Is a Ticking Time Bomb</h3>
+            <p>Your cap table isn't just a spreadsheet. It's the power map of your company. And most founders don't realise it's broken until the bomb goes off.</p>
+        </a>
+    </div>
+</section>
+
+<!-- CTA -->
+<div class="contact-section" id="contact">
+    <div class="section-label">Stay Sharp</div>
+    <div class="section-title">Want structural advice before things break?</div>
+    <p class="section-text">These essays come from real work with real founders. If something hits close to home, let's talk.</p>
+    <div class="contact-links">
+        <a href="/talk_to_pepe" class="hero-cta">Book a Call &rarr;</a>
+        <a href="mailto:info@mexzungu.com" class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            info@mexzungu.com
+        </a>
+    </div>
+</div>
+
+<footer>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+</script>
+</body>
+</html>
