@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talk to Pepe — Mexzungu Group</title>
     <meta name="description" content="Pick your timezone, pick your poison, pick your time.">
@@ -44,14 +46,14 @@
         .slots-date { font-family:var(--heading); font-size:1.3rem; text-transform:uppercase; margin:1.5rem 0 0.8rem; }
         .slots-date:first-child { margin-top:0; }
         .slots-row { display:flex; flex-wrap:wrap; gap:0.5rem; }
-        .slot-btn { padding:0.5rem 1rem; border:1px solid var(--card-border); border-radius:6px; background:var(--card-bg); color:var(--white); font-family:var(--sans); font-size:0.85rem; font-weight:500; cursor:pointer; transition:all .2s; }
+        .slot-btn { padding:0.5rem 1rem; border:1px solid var(--card-border); border-radius:6px; background:var(--card-bg); color:var(--black); font-family:var(--sans); font-size:0.85rem; font-weight:500; cursor:pointer; transition:all .2s; }
         .slot-btn:hover, .slot-btn.selected { border-color:var(--pink); background:rgba(255,45,123,0.1); color:var(--pink); }
         .slots-remaining { font-size:0.82rem; color:var(--pink); font-weight:600; margin-top:0.5rem; }
 
         .booking-form { margin-top:2rem; }
         .form-group { margin-bottom:1.2rem; }
         .form-group label { display:block; font-size:0.8rem; font-weight:600; color:var(--gray-light); margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.08em; }
-        .form-group input, .form-group textarea { width:100%; padding:0.8rem 1rem; border:1px solid var(--card-border); border-radius:6px; background:var(--card-bg); color:var(--white); font-family:var(--sans); font-size:0.9rem; transition:border-color .2s; }
+        .form-group input, .form-group textarea { width:100%; padding:0.8rem 1rem; border:1px solid var(--card-border); border-radius:6px; background:var(--card-bg); color:var(--black); font-family:var(--sans); font-size:0.9rem; transition:border-color .2s; }
         .form-group input:focus, .form-group textarea:focus { outline:none; border-color:var(--pink); }
         .form-group textarea { resize:vertical; min-height:80px; }
         .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
@@ -90,8 +92,9 @@
             animation: scroll-logos 25s linear infinite;
             width: max-content;
         }
-        .logo-track img { height:36px; opacity:0.45; filter:grayscale(1) brightness(1.8); transition:all .3s; flex-shrink:0; }
-        .logo-track img:hover { opacity:1; filter:none; }
+        .logo-track img { height:36px; opacity:0.85; transition:all .3s; flex-shrink:0; }
+        .logo-track a { display:inline-flex; flex-shrink:0; }
+        .logo-track img:hover { opacity:1; transform:translateY(-2px); }
         @keyframes scroll-logos { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
 
         @media (max-width:768px) { .zone-cards,.what-next { grid-template-columns:1fr; } .form-row { grid-template-columns:1fr; } }
@@ -106,8 +109,8 @@
     </button>
     <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/consulting">Consulting</a></li>
-        <li><a href="/growth">Growth</a></li>
+        <li><a href="/consulting">Architect</a></li>
+        <li><a href="/growth">Amplify</a></li>
         <li><a href="/investments">Investments</a></li>
         <li><a href="/dispatches">Stories</a></li>
         <li><a href="/talk_to_pepe">Talk to Pepe</a></li>
@@ -115,7 +118,7 @@
     </ul>
 </nav>
 
-<div class="page-hero leopard-accent">
+<div class="page-hero leopard-accent leopard-spots">
     <div class="section-label">Talk to Pepe</div>
     <h1>Pick your <span class="highlight">poison.</span></h1>
     <p>No gatekeepers. No forms that go nowhere. Every call is prepped individually — that's why we ask for 24 hours notice.</p>
@@ -207,7 +210,7 @@
         <p id="slots-remaining" class="slots-remaining hidden"></p>
         <div id="slots-loading" class="loading"><div class="spinner"></div><p>Loading available times...</p></div>
         <div id="slots-container" class="slots-container hidden"></div>
-        <div id="slots-empty" class="loading hidden"><p>No available slots in the next 2 weeks. Try another type or reach out at info@mexzungu.com.</p></div>
+        <div id="slots-empty" class="loading hidden"><p>No available slots in the next 2 weeks. Try another type or reach out at janis@mexzungu.com.</p></div>
         <p class="notice-note">All bookings require 24h notice so Pepe can prepare individually for your call.</p>
     </div>
 
@@ -258,7 +261,10 @@
                 </div>
             </div>
             <p id="meet-link-msg" class="hidden" style="margin-top:2rem;"><a id="meet-link" href="#" target="_blank" class="submit-btn">Join Google Meet</a></p>
-            <p style="margin-top:2rem; font-size:0.85rem; color:var(--gray);">Need to reschedule? Reply to the calendar invite or email info@mexzungu.com.</p>
+            <p style="margin-top:2rem; font-size:0.85rem; color:var(--gray);">
+                Changed your mind? <a href="mailto:janis@mexzungu.com?subject=Cancel my call" style="color:var(--pink);">Cancel this call</a> &middot;
+                <a href="/talk_to_pepe/" style="color:var(--pink);">Reschedule</a>
+            </p>
         </div>
     </div>
 </section>
@@ -269,30 +275,38 @@
     <div class="section-label">Recommended by folks at</div>
     <div class="logo-carousel">
         <div class="logo-track">
-            <img src="/logos/goldman-sachs.png" alt="Goldman Sachs">
-            <img src="/logos/engie.png" alt="ENGIE">
-            <img src="/logos/nissan.png" alt="Nissan">
-            <img src="/logos/sand-technologies.png" alt="Sand Technologies">
-            <img src="/logos/alu.png" alt="ALU">
-            <img src="/logos/alx.png" alt="ALX">
-            <img src="/logos/duara-education.png" alt="Duara Education">
-            <img src="/logos/nca.png" alt="NCA">
-            <img src="/logos/ladx.png" alt="LADX">
+            <a href="https://www.goldmansachs.com" target="_blank" rel="noopener"><img src="/logos/goldman-sachs.png" alt="Goldman Sachs"></a>
+            <a href="https://www.engie.com" target="_blank" rel="noopener"><img src="/logos/engie.png" alt="ENGIE"></a>
+            <a href="https://www.nissan.com" target="_blank" rel="noopener"><img src="/logos/nissan.png" alt="Nissan"></a>
+            <a href="https://www.sandtech.com" target="_blank" rel="noopener"><img src="/logos/sand-technologies.png" alt="Sand Technologies"></a>
+            <a href="https://www.alueducation.com" target="_blank" rel="noopener"><img src="/logos/alu.png" alt="ALU"></a>
+            <a href="https://www.alxafrica.com" target="_blank" rel="noopener"><img src="/logos/alx.png" alt="ALX"></a>
+            <a href="https://www.duara.education" target="_blank" rel="noopener"><img src="/logos/duara-education.png" alt="Duara Education"></a>
+            <a href="https://nobodies.team" target="_blank" rel="noopener"><img src="/logos/nca.png" alt="NCA"></a>
+            <a href="https://www.ladx.co" target="_blank" rel="noopener"><img src="/logos/ladx.png" alt="LADX"></a>
             <!-- duplicate set for seamless loop -->
-            <img src="/logos/goldman-sachs.png" alt="Goldman Sachs">
-            <img src="/logos/engie.png" alt="ENGIE">
-            <img src="/logos/nissan.png" alt="Nissan">
-            <img src="/logos/sand-technologies.png" alt="Sand Technologies">
-            <img src="/logos/alu.png" alt="ALU">
-            <img src="/logos/alx.png" alt="ALX">
-            <img src="/logos/duara-education.png" alt="Duara Education">
-            <img src="/logos/nca.png" alt="NCA">
-            <img src="/logos/ladx.png" alt="LADX">
+            <a href="https://www.goldmansachs.com" target="_blank" rel="noopener"><img src="/logos/goldman-sachs.png" alt="Goldman Sachs"></a>
+            <a href="https://www.engie.com" target="_blank" rel="noopener"><img src="/logos/engie.png" alt="ENGIE"></a>
+            <a href="https://www.nissan.com" target="_blank" rel="noopener"><img src="/logos/nissan.png" alt="Nissan"></a>
+            <a href="https://www.sandtech.com" target="_blank" rel="noopener"><img src="/logos/sand-technologies.png" alt="Sand Technologies"></a>
+            <a href="https://www.alueducation.com" target="_blank" rel="noopener"><img src="/logos/alu.png" alt="ALU"></a>
+            <a href="https://www.alxafrica.com" target="_blank" rel="noopener"><img src="/logos/alx.png" alt="ALX"></a>
+            <a href="https://www.duara.education" target="_blank" rel="noopener"><img src="/logos/duara-education.png" alt="Duara Education"></a>
+            <a href="https://nobodies.team" target="_blank" rel="noopener"><img src="/logos/nca.png" alt="NCA"></a>
+            <a href="https://www.ladx.co" target="_blank" rel="noopener"><img src="/logos/ladx.png" alt="LADX"></a>
         </div>
     </div>
 </section>
 
-<footer>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</footer>
+<footer>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size: 0.85rem;">
+            <a href="/privacy/" style="color: var(--gray-light);">Privacy Policy</a> &middot;
+            <a href="/terms/" style="color: var(--gray-light);">Terms of Service</a>
+        </span>
+    </div>
+</footer>
 
 <script>
 const API = window.location.hostname === 'localhost' ? 'http://localhost:8741' : 'https://api.mexzungu.com';
@@ -415,7 +429,7 @@ async function submitBooking(e) {
         const data = await res.json();
         goTo('done');
         if (data.meet_link) { document.getElementById('meet-link').href = data.meet_link; document.getElementById('meet-link-msg').classList.remove('hidden'); }
-    } catch (err) { alert('Something went wrong. Email info@mexzungu.com.'); btn.disabled = false; btn.textContent = 'Book it →'; }
+    } catch (err) { alert('Something went wrong. Email janis@mexzungu.com.'); btn.disabled = false; btn.textContent = 'Book it →'; }
 }
 
 document.querySelectorAll('.nav-links a').forEach(l => l.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open')));

@@ -109,7 +109,23 @@ nav {
     letter-spacing: 0.03em;
     transition: color 0.2s;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--pink); }
+.nav-links a:hover { color: var(--pink); }
+.nav-links a.active {
+    color: var(--pink);
+    font-size: 0.95rem;
+    font-weight: 700;
+    position: relative;
+}
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--pink);
+    border-radius: 2px;
+}
 
 /* HERO */
 .hero {
@@ -675,14 +691,22 @@ section {
     align-items: center;
     margin-top: 0.5rem;
 }
+.logo-strip a {
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s;
+}
+.logo-strip a:hover {
+    transform: translateY(-2px);
+}
 .logo-strip img {
     height: 32px;
     width: auto;
-    filter: grayscale(100%) opacity(0.5);
+    opacity: 0.85;
     transition: all 0.3s;
 }
 .logo-strip img:hover {
-    filter: grayscale(0%) opacity(1);
+    opacity: 1;
 }
 
 /* NEWSLETTER */
@@ -749,6 +773,46 @@ section {
     background: var(--card-border);
     margin: 2rem 0;
 }
+
+/* LIGHTNING BOLT ACCENTS */
+.lightning {
+    position: absolute;
+    font-size: 3rem;
+    color: var(--pink);
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+}
+.lightning-1 { top: 15%; right: 5%; transform: rotate(15deg); font-size: 4rem; }
+.lightning-2 { bottom: 20%; left: 3%; transform: rotate(-20deg); font-size: 3.5rem; }
+.lightning-3 { top: 40%; right: 15%; transform: rotate(8deg); font-size: 2.5rem; opacity: 0.05; }
+
+/* LEOPARD SPOTS (stronger) */
+.leopard-spots {
+    position: relative;
+    overflow: hidden;
+}
+.leopard-spots::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image:
+        radial-gradient(ellipse 24px 18px at 15% 25%, var(--pink) 0%, transparent 70%),
+        radial-gradient(ellipse 18px 24px at 45% 15%, var(--pink-dark) 0%, transparent 70%),
+        radial-gradient(ellipse 28px 20px at 75% 55%, var(--pink) 0%, transparent 70%),
+        radial-gradient(ellipse 16px 22px at 30% 65%, var(--pink-dark) 0%, transparent 70%),
+        radial-gradient(ellipse 22px 16px at 65% 80%, var(--pink) 0%, transparent 70%),
+        radial-gradient(ellipse 20px 18px at 85% 20%, var(--pink-dark) 0%, transparent 70%),
+        radial-gradient(ellipse 18px 22px at 10% 75%, var(--pink) 0%, transparent 70%),
+        radial-gradient(ellipse 24px 16px at 50% 40%, var(--pink-dark) 0%, transparent 70%),
+        radial-gradient(ellipse 14px 20px at 90% 70%, var(--pink) 0%, transparent 70%),
+        radial-gradient(ellipse 20px 14px at 25% 90%, var(--pink-dark) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+.leopard-spots > * { position: relative; z-index: 1; }
 
 /* FOOTER */
 footer {
