@@ -5,7 +5,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talk to Pepe — Mexzungu Group</title>
+    <title>Let's Jam — Mexzungu Group</title>
     <meta name="description" content="Pick your timezone, pick your poison, pick your time.">
     <meta property="og:title" content="Talk to Pepe | Mexzungu Group">
     <meta property="og:description" content="Pick your poison. Pitch Me, Build With Me, Grow With Me, or Pick My Brain.">
@@ -58,12 +58,14 @@
         .form-group textarea { resize:vertical; min-height:80px; }
         .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 
-        .submit-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2.5rem; background:var(--pink); color:var(--black); font-family:var(--sans); font-weight:700; font-size:1rem; border:none; border-radius:6px; cursor:pointer; transition:all .2s; margin-top:0.5rem; }
-        .submit-btn:hover { background:var(--pink-light); }
+        .submit-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2.5rem; background:var(--pink); color:var(--black); font-family:var(--sans); font-weight:700; font-size:1rem; border:none; border-radius:6px; cursor:pointer; transition:all .2s; margin-top:0.5rem; box-shadow:0 4px 12px rgba(255,45,123,0.3); }
+        .submit-btn:hover { background:var(--pink-light); box-shadow:0 6px 20px rgba(255,45,123,0.4); transform:translateY(-1px); }
+        .submit-btn:active { box-shadow:0 2px 6px rgba(255,45,123,0.3); transform:translateY(1px); }
         .submit-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
-        .next-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.8rem 2rem; background:var(--pink); color:var(--black); font-family:var(--sans); font-weight:700; font-size:0.9rem; border:none; border-radius:6px; cursor:pointer; transition:all .2s; margin-top:1.5rem; }
-        .next-btn:hover { background:var(--pink-light); }
+        .next-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.8rem 2rem; background:var(--pink); color:var(--black); font-family:var(--sans); font-weight:700; font-size:0.9rem; border:none; border-radius:6px; cursor:pointer; transition:all .2s; margin-top:1.5rem; box-shadow:0 4px 12px rgba(255,45,123,0.3); }
+        .next-btn:hover { background:var(--pink-light); box-shadow:0 6px 20px rgba(255,45,123,0.4); transform:translateY(-1px); }
+        .next-btn:active { box-shadow:0 2px 6px rgba(255,45,123,0.3); transform:translateY(1px); }
         .next-btn:disabled { opacity:0.3; cursor:not-allowed; }
 
         .back-btn { display:inline-flex; align-items:center; gap:0.3rem; background:none; border:1px solid var(--card-border); color:var(--gray-light); padding:0.6rem 1.2rem; border-radius:6px; font-family:var(--sans); font-size:0.85rem; cursor:pointer; margin-bottom:2rem; transition:all .2s; }
@@ -113,18 +115,18 @@
             <a href="#">What We Do</a>
             <ul class="nav-dropdown-menu">
                 <li><a href="/consulting">Venture Architecture</a></li>
-                <li><a href="/growth">The Arena</a></li>
-                <li><a href="/investments">Investments</a></li>
+                <li><a href="/growth">Rockstar</a></li>
+                <li><a href="/investments">Rebel Capital</a></li>
             </ul>
         </li>
-        <li><a href="/dispatches">Stories</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/talk_to_pepe" class="nav-cta">Let's Talk</a></li>
+        <li><a href="/dispatches">Outlaw Chronicles</a></li>
+        <li><a href="/about">Meet the Band</a></li>
+        <li><a href="/talk_to_pepe" class="nav-cta">Let's Jam</a></li>
     </ul>
 </nav>
 
 <div class="page-hero leopard-accent leopard-spots">
-    <div class="section-label">Talk to Pepe</div>
+    <div class="section-label">Let's Jam</div>
     <h1>Pick your <span class="highlight">poison.</span></h1>
     <p>No gatekeepers. No forms that go nowhere. Every call is prepped individually — that's why we ask for 24 hours notice.</p>
 </div>
