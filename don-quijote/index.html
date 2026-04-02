@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don Quijote de la Mancha</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: #1a0a00;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .slide {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+  }
+
+  .slide.active { display: flex; }
+
+  /* Slide backgrounds */
+  .slide-1 { background: linear-gradient(135deg, #2c1810 0%, #5c3a28 40%, #8b6914 100%); }
+  .slide-2 { background: linear-gradient(135deg, #1a2744 0%, #2d4a7a 50%, #4a7fb5 100%); }
+  .slide-3 { background: linear-gradient(135deg, #3d1f0a 0%, #6b3a1f 40%, #c4762b 100%); }
+  .slide-4 { background: linear-gradient(135deg, #0d3320 0%, #1a5c3a 40%, #2e8b57 100%); }
+  .slide-5 { background: linear-gradient(135deg, #3b1054 0%, #6a2c91 40%, #9b59b6 100%); }
+  .slide-6 { background: linear-gradient(135deg, #7a2e00 0%, #c0543a 40%, #e88a5a 100%); }
+  .slide-7 { background: linear-gradient(135deg, #1a3a5c 0%, #2980b9 40%, #5dade2 100%); }
+  .slide-8 { background: linear-gradient(135deg, #2c1810 0%, #8b4513 40%, #d4a03c 100%); }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #f5e6c8;
+    font-size: 3.8rem;
+    font-weight: 900;
+    text-align: center;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #f5e6c8;
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 30px;
+  }
+
+  .subtitle {
+    font-family: 'Lora', serif;
+    color: #e8d5b0;
+    font-size: 1.6rem;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .text-block {
+    color: #f0e4d0;
+    font-size: 1.55rem;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 800px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  }
+
+  .text-block p { margin-bottom: 18px; }
+
+  .quote {
+    font-style: italic;
+    color: #ffe4a0;
+    font-size: 1.8rem;
+    text-align: center;
+    max-width: 750px;
+    line-height: 1.6;
+    padding: 30px 40px;
+    border-left: 4px solid #d4a03c;
+    border-right: 4px solid #d4a03c;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+  }
+
+  .slide-number {
+    position: absolute;
+    bottom: 25px;
+    right: 40px;
+    color: rgba(255,255,255,0.3);
+    font-size: 1rem;
+  }
+
+  .nav-hint {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.25);
+    font-size: 0.85rem;
+    z-index: 100;
+  }
+
+  /* SVG illustrations */
+  .illustration {
+    margin: 20px 0;
+    filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.4));
+  }
+
+  .two-column {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    max-width: 1100px;
+  }
+
+  .two-column .text-block { text-align: left; }
+
+  .decorative-line {
+    width: 120px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #d4a03c, transparent);
+    margin: 15px auto;
+  }
+
+  /* Star decorations */
+  .stars {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    opacity: 0.15;
+  }
+
+  .bullet-list {
+    color: #f0e4d0;
+    font-size: 1.45rem;
+    line-height: 2.2;
+    text-align: left;
+    list-style: none;
+    max-width: 700px;
+  }
+
+  .bullet-list li::before {
+    content: "◆ ";
+    color: #d4a03c;
+    font-size: 1rem;
+    margin-right: 8px;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide.active h1, .slide.active h2 { animation: fadeIn 0.8s ease-out; }
+  .slide.active .text-block,
+  .slide.active .quote,
+  .slide.active .bullet-list,
+  .slide.active .illustration { animation: fadeIn 0.8s ease-out 0.2s both; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide slide-1 active">
+  <svg class="illustration" width="220" height="220" viewBox="0 0 220 220">
+    <!-- Open book -->
+    <path d="M110 180 Q60 170 30 150 L30 50 Q60 65 110 60 Q160 65 190 50 L190 150 Q160 170 110 180Z" fill="#f5e6c8" stroke="#8b6914" stroke-width="2"/>
+    <line x1="110" y1="60" x2="110" y2="180" stroke="#8b6914" stroke-width="1.5"/>
+    <!-- Text lines left -->
+    <line x1="50" y1="80" x2="100" y2="78" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="48" y1="95" x2="100" y2="93" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="46" y1="110" x2="100" y2="108" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="44" y1="125" x2="100" y2="123" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="42" y1="140" x2="100" y2="138" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <!-- Text lines right -->
+    <line x1="120" y1="78" x2="170" y2="80" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="120" y1="93" x2="172" y2="95" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="120" y1="108" x2="174" y2="110" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="120" y1="123" x2="176" y2="125" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <line x1="120" y1="138" x2="178" y2="140" stroke="#5c3a28" stroke-width="1.5" opacity="0.4"/>
+    <!-- Quill pen -->
+    <path d="M155 30 Q170 35 175 55 L168 58 Q165 40 155 30Z" fill="#d4a03c"/>
+    <line x1="168" y1="58" x2="145" y2="165" stroke="#5c3a28" stroke-width="2"/>
+    <path d="M155 25 Q162 18 170 22 Q175 30 170 35 L155 30Z" fill="#c0392b"/>
+  </svg>
+  <h1>Don Quijote<br>de la Mancha</h1>
+  <div class="decorative-line"></div>
+  <p class="subtitle">Miguel de Cervantes Saavedra</p>
+  <p class="subtitle" style="font-size:1.2rem; color:#c8b898;">Publicado en 1605 (Primera Parte) y 1615 (Segunda Parte)</p>
+  <p class="subtitle" style="font-size:1.1rem; color:#a89878; margin-top:15px;">La primera novela moderna de la historia</p>
+  <span class="slide-number">1 / 8</span>
+</div>
+
+<!-- SLIDE 2: The Author -->
+<div class="slide slide-2">
+  <h2>El autor: Miguel de Cervantes</h2>
+  <div class="two-column">
+    <svg class="illustration" width="200" height="260" viewBox="0 0 200 260">
+      <!-- Cervantes portrait silhouette -->
+      <!-- Face -->
+      <ellipse cx="100" cy="100" rx="55" ry="65" fill="#e8c9a0"/>
+      <!-- Ruff collar -->
+      <ellipse cx="100" cy="168" rx="70" ry="25" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/>
+      <ellipse cx="100" cy="165" rx="65" ry="20" fill="#fff" stroke="#ddd" stroke-width="1"/>
+      <!-- Hair -->
+      <path d="M50 85 Q45 50 70 40 Q100 30 130 40 Q155 50 150 85 Q148 70 130 60 Q100 50 70 60 Q52 70 50 85Z" fill="#4a3728"/>
+      <!-- Eyes -->
+      <ellipse cx="78" cy="92" rx="8" ry="5" fill="#fff"/>
+      <circle cx="80" cy="92" r="3.5" fill="#3a2718"/>
+      <ellipse cx="122" cy="92" rx="8" ry="5" fill="#fff"/>
+      <circle cx="124" cy="92" r="3.5" fill="#3a2718"/>
+      <!-- Eyebrows -->
+      <path d="M66 83 Q78 78 90 82" stroke="#4a3728" stroke-width="2" fill="none"/>
+      <path d="M110 82 Q122 78 134 83" stroke="#4a3728" stroke-width="2" fill="none"/>
+      <!-- Nose -->
+      <path d="M100 92 Q103 105 97 112" stroke="#c4a882" stroke-width="2" fill="none"/>
+      <!-- Mustache -->
+      <path d="M80 120 Q90 115 100 118 Q110 115 120 120" stroke="#4a3728" stroke-width="3" fill="none"/>
+      <!-- Beard -->
+      <path d="M75 125 Q80 145 100 150 Q120 145 125 125" stroke="#4a3728" stroke-width="2" fill="none"/>
+      <path d="M80 130 Q90 148 100 152 Q110 148 120 130" fill="#4a3728" opacity="0.4"/>
+      <!-- Mouth -->
+      <path d="M90 126 Q100 130 110 126" stroke="#b5745a" stroke-width="1.5" fill="none"/>
+      <!-- Body -->
+      <path d="M30 170 Q30 250 100 255 Q170 250 170 170Z" fill="#2c3e50"/>
+      <!-- Quill in hand hint -->
+      <line x1="155" y1="200" x2="175" y2="170" stroke="#d4a03c" stroke-width="2"/>
+      <path d="M175 165 Q180 158 178 170Z" fill="#d4a03c"/>
+    </svg>
+    <div class="text-block">
+      <p>Soldado, poeta, dramaturgo y novelista espanol.</p>
+      <p>Perdio el uso de la mano izquierda en la Batalla de Lepanto (1571).</p>
+      <p>Estuvo preso en Argel durante 5 anos y tambien en Sevilla.</p>
+      <p>Escribio el Quijote ya mayor, con mas de 55 anos, lleno de experiencia y sabiduria.</p>
+    </div>
+  </div>
+  <span class="slide-number">2 / 8</span>
+</div>
+
+<!-- SLIDE 3: The Story -->
+<div class="slide slide-3">
+  <h2>La historia en pocas palabras</h2>
+  <svg class="illustration" width="500" height="160" viewBox="0 0 500 160">
+    <!-- Don Quijote on Rocinante -->
+    <!-- Horse body -->
+    <ellipse cx="140" cy="100" rx="50" ry="25" fill="#c4a060" stroke="#8b7340" stroke-width="1.5"/>
+    <!-- Horse legs -->
+    <line x1="105" y1="120" x2="100" y2="155" stroke="#8b7340" stroke-width="4"/>
+    <line x1="120" y1="120" x2="118" y2="155" stroke="#8b7340" stroke-width="4"/>
+    <line x1="160" y1="120" x2="165" y2="155" stroke="#8b7340" stroke-width="4"/>
+    <line x1="175" y1="120" x2="178" y2="155" stroke="#8b7340" stroke-width="4"/>
+    <!-- Horse head -->
+    <path d="M85 95 Q70 70 75 55 Q80 45 90 48 Q88 55 90 65 L95 90Z" fill="#c4a060" stroke="#8b7340" stroke-width="1.5"/>
+    <circle cx="80" cy="58" r="2" fill="#3a2718"/>
+    <!-- Horse tail -->
+    <path d="M190 90 Q210 80 205 100 Q215 95 210 110" stroke="#8b7340" stroke-width="2" fill="none"/>
+    <!-- Don Quijote body -->
+    <rect x="125" y="45" width="25" height="40" rx="5" fill="#6b6b6b"/>
+    <!-- DQ head -->
+    <circle cx="138" cy="32" r="14" fill="#e8c9a0"/>
+    <!-- DQ helmet/basin -->
+    <path d="M124 28 Q125 15 138 12 Q151 15 152 28" fill="#b0b0b0" stroke="#888" stroke-width="1"/>
+    <ellipse cx="138" cy="28" rx="16" ry="4" fill="#c0c0c0"/>
+    <!-- DQ beard -->
+    <path d="M130 38 Q138 48 146 38" stroke="#888" stroke-width="1.5" fill="none"/>
+    <!-- Lance -->
+    <line x1="155" y1="20" x2="155" y2="100" stroke="#8b6914" stroke-width="2.5"/>
+    <polygon points="155,15 151,25 159,25" fill="#b0b0b0"/>
+
+    <!-- Sancho on donkey -->
+    <!-- Donkey body -->
+    <ellipse cx="340" cy="110" rx="35" ry="20" fill="#8b8b8b" stroke="#666" stroke-width="1.5"/>
+    <!-- Donkey legs -->
+    <line x1="315" y1="126" x2="312" y2="155" stroke="#666" stroke-width="3.5"/>
+    <line x1="325" y1="126" x2="323" y2="155" stroke="#666" stroke-width="3.5"/>
+    <line x1="355" y1="126" x2="358" y2="155" stroke="#666" stroke-width="3.5"/>
+    <line x1="365" y1="126" x2="367" y2="155" stroke="#666" stroke-width="3.5"/>
+    <!-- Donkey head -->
+    <path d="M300 105 Q285 90 290 75 Q295 68 302 72 Q300 78 302 85 L305 100Z" fill="#8b8b8b" stroke="#666" stroke-width="1.5"/>
+    <!-- Donkey ears -->
+    <path d="M292 75 Q288 60 293 58" stroke="#666" stroke-width="2" fill="#999"/>
+    <path d="M297 73 Q296 58 300 57" stroke="#666" stroke-width="2" fill="#999"/>
+    <circle cx="290" cy="78" r="1.5" fill="#333"/>
+    <!-- Sancho body (round) -->
+    <ellipse cx="340" cy="72" rx="18" ry="22" fill="#8B4513"/>
+    <!-- Sancho head -->
+    <circle cx="340" cy="42" r="15" fill="#e8c9a0"/>
+    <!-- Sancho hat -->
+    <ellipse cx="340" cy="32" rx="18" ry="5" fill="#5c3a28"/>
+    <path d="M328 32 Q330 20 340 18 Q350 20 352 32" fill="#5c3a28"/>
+    <!-- Sancho face -->
+    <circle cx="335" cy="40" r="2" fill="#3a2718"/>
+    <circle cx="345" cy="40" r="2" fill="#3a2718"/>
+    <path d="M333 48 Q340 52 347 48" stroke="#b5745a" stroke-width="1.5" fill="none"/>
+
+    <!-- Path/ground -->
+    <path d="M0 158 Q100 150 250 155 Q400 150 500 158" stroke="#d4a03c" stroke-width="2" fill="none" opacity="0.5"/>
+
+    <!-- Windmill in distance -->
+    <rect x="440" y="80" width="12" height="60" fill="#e8d5b0" stroke="#c4a882" stroke-width="1"/>
+    <line x1="446" y1="85" x2="470" y2="60" stroke="#c4a882" stroke-width="2"/>
+    <line x1="446" y1="85" x2="422" y2="60" stroke="#c4a882" stroke-width="2"/>
+    <line x1="446" y1="85" x2="465" y2="110" stroke="#c4a882" stroke-width="2"/>
+    <line x1="446" y1="85" x2="427" y2="110" stroke="#c4a882" stroke-width="2"/>
+  </svg>
+  <div class="text-block">
+    <p>Un senor mayor llamado <strong>Alonso Quijano</strong> vive en un pueblo de La Mancha, Espana.</p>
+    <p>De tanto leer novelas de caballeros andantes, pierde la razon y decide convertirse en uno: <strong>Don Quijote de la Mancha</strong>.</p>
+    <p>Junto a su fiel escudero <strong>Sancho Panza</strong>, sale a recorrer los caminos buscando aventuras, corregir injusticias y ganar fama.</p>
+  </div>
+  <span class="slide-number">3 / 8</span>
+</div>
+
+<!-- SLIDE 4: Characters -->
+<div class="slide slide-4">
+  <h2>Los personajes principales</h2>
+  <div style="display:flex; gap:60px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+    <!-- Don Quijote -->
+    <div style="text-align:center; max-width:280px;">
+      <svg width="120" height="150" viewBox="0 0 120 150">
+        <rect x="40" y="60" width="35" height="50" rx="5" fill="#555"/>
+        <circle cx="58" cy="42" r="18" fill="#e8c9a0"/>
+        <path d="M40 36 Q42 18 58 14 Q74 18 76 36" fill="#b0b0b0" stroke="#888" stroke-width="1"/>
+        <ellipse cx="58" cy="36" rx="20" ry="5" fill="#c0c0c0"/>
+        <circle cx="52" cy="40" r="2.5" fill="#3a2718"/>
+        <circle cx="64" cy="40" r="2.5" fill="#3a2718"/>
+        <path d="M48 52 Q58 60 68 52" stroke="#888" stroke-width="1.5" fill="none"/>
+        <line x1="40" y1="70" x2="15" y2="55" stroke="#e8c9a0" stroke-width="4"/>
+        <line x1="75" y1="70" x2="100" y2="55" stroke="#e8c9a0" stroke-width="4"/>
+        <line x1="100" y1="55" x2="105" y2="15" stroke="#8b6914" stroke-width="2.5"/>
+        <polygon points="105,10 102,20 108,20" fill="#b0b0b0"/>
+        <line x1="48" y1="110" x2="42" y2="148" stroke="#555" stroke-width="5"/>
+        <line x1="68" y1="110" x2="74" y2="148" stroke="#555" stroke-width="5"/>
+      </svg>
+      <h2 style="font-size:1.3rem; margin-bottom:8px;">Don Quijote</h2>
+      <p class="text-block" style="font-size:1.15rem;">Idealista, valiente y loco. Ve gigantes donde hay molinos. Busca el amor de <em>Dulcinea</em>, una campesina a quien imagina como princesa.</p>
+    </div>
+    <!-- Sancho -->
+    <div style="text-align:center; max-width:280px;">
+      <svg width="120" height="150" viewBox="0 0 120 150">
+        <ellipse cx="60" cy="82" rx="25" ry="30" fill="#8B4513"/>
+        <circle cx="60" cy="42" r="20" fill="#e8c9a0"/>
+        <ellipse cx="60" cy="28" rx="22" ry="6" fill="#5c3a28"/>
+        <path d="M44 28 Q46 14 60 10 Q74 14 76 28" fill="#5c3a28"/>
+        <circle cx="53" cy="40" r="2.5" fill="#3a2718"/>
+        <circle cx="67" cy="40" r="2.5" fill="#3a2718"/>
+        <path d="M50 50 Q60 56 70 50" stroke="#b5745a" stroke-width="2" fill="none"/>
+        <ellipse cx="48" cy="46" rx="5" ry="3" fill="#d4837a" opacity="0.4"/>
+        <ellipse cx="72" cy="46" rx="5" ry="3" fill="#d4837a" opacity="0.4"/>
+        <line x1="48" y1="112" x2="44" y2="148" stroke="#5c3a28" stroke-width="6"/>
+        <line x1="72" y1="112" x2="76" y2="148" stroke="#5c3a28" stroke-width="6"/>
+      </svg>
+      <h2 style="font-size:1.3rem; margin-bottom:8px;">Sancho Panza</h2>
+      <p class="text-block" style="font-size:1.15rem;">Campesino sencillo y practico. Sigue a Don Quijote con la esperanza de gobernar una isla. Es la voz de la razon.</p>
+    </div>
+    <!-- Dulcinea -->
+    <div style="text-align:center; max-width:280px;">
+      <svg width="120" height="150" viewBox="0 0 120 150">
+        <path d="M35 65 Q40 55 60 50 Q80 55 85 65 L80 130 Q60 140 40 130Z" fill="#c0392b"/>
+        <circle cx="60" cy="38" r="18" fill="#e8c9a0"/>
+        <path d="M42 30 Q40 18 50 15 Q60 12 70 15 Q80 18 78 30 Q75 22 60 20 Q45 22 42 30Z" fill="#5c2a0a"/>
+        <path d="M38 32 Q36 45 42 50" stroke="#5c2a0a" stroke-width="3" fill="none"/>
+        <path d="M82 32 Q84 45 78 50" stroke="#5c2a0a" stroke-width="3" fill="none"/>
+        <circle cx="53" cy="36" r="2" fill="#3a2718"/>
+        <circle cx="67" cy="36" r="2" fill="#3a2718"/>
+        <path d="M55 44 Q60 47 65 44" stroke="#c0392b" stroke-width="1.5" fill="none"/>
+        <!-- Crown/flower -->
+        <circle cx="52" cy="18" r="3" fill="#f1c40f"/>
+        <circle cx="60" cy="15" r="3" fill="#e74c3c"/>
+        <circle cx="68" cy="18" r="3" fill="#f1c40f"/>
+        <line x1="48" y1="130" x2="44" y2="148" stroke="#c0392b" stroke-width="5"/>
+        <line x1="72" y1="130" x2="76" y2="148" stroke="#c0392b" stroke-width="5"/>
+      </svg>
+      <h2 style="font-size:1.3rem; margin-bottom:8px;">Dulcinea del Toboso</h2>
+      <p class="text-block" style="font-size:1.15rem;">En realidad es Aldonza Lorenzo, una campesina. Don Quijote la imagina como la dama mas bella del mundo.</p>
+    </div>
+  </div>
+  <span class="slide-number">4 / 8</span>
+</div>
+
+<!-- SLIDE 5: Windmills -->
+<div class="slide slide-5">
+  <h2>La aventura mas famosa: Los molinos de viento</h2>
+  <svg class="illustration" width="420" height="220" viewBox="0 0 420 220">
+    <!-- Sky background -->
+    <rect x="0" y="0" width="420" height="160" fill="none"/>
+    <!-- Ground -->
+    <path d="M0 180 Q100 165 210 175 Q320 165 420 180 L420 220 L0 220Z" fill="#8B7355" opacity="0.3"/>
+
+    <!-- Windmill 1 -->
+    <rect x="80" y="90" width="30" height="90" fill="#f5e6c8" stroke="#c4a882" stroke-width="1.5"/>
+    <polygon points="95,90 80,95 110,95" fill="#c4a882"/>
+    <!-- Blades -->
+    <g transform="rotate(20, 95, 95)">
+      <rect x="93" y="40" width="4" height="55" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="93" y="95" width="4" height="55" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="40" y="93" width="55" height="4" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="95" y="93" width="55" height="4" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+    </g>
+    <circle cx="95" cy="95" r="4" fill="#8b6914"/>
+
+    <!-- Windmill 2 -->
+    <rect x="200" y="70" width="35" height="110" fill="#f5e6c8" stroke="#c4a882" stroke-width="1.5"/>
+    <polygon points="218,70 200,76 235,76" fill="#c4a882"/>
+    <g transform="rotate(-15, 218, 76)">
+      <rect x="216" y="16" width="4" height="60" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="216" y="76" width="4" height="60" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="158" y="74" width="60" height="4" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="218" y="74" width="60" height="4" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+    </g>
+    <circle cx="218" cy="76" r="5" fill="#8b6914"/>
+
+    <!-- Windmill 3 -->
+    <rect x="320" y="85" width="28" height="95" fill="#f5e6c8" stroke="#c4a882" stroke-width="1.5"/>
+    <polygon points="334,85 320,90 348,90" fill="#c4a882"/>
+    <g transform="rotate(40, 334, 90)">
+      <rect x="332" y="38" width="4" height="52" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="332" y="90" width="4" height="52" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="282" y="88" width="52" height="4" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+      <rect x="334" y="88" width="52" height="4" rx="2" fill="#e8d5b0" stroke="#a89070" stroke-width="1"/>
+    </g>
+    <circle cx="334" cy="90" r="4" fill="#8b6914"/>
+
+    <!-- Don Quijote charging! -->
+    <!-- Horse running -->
+    <ellipse cx="30" cy="165" rx="22" ry="12" fill="#c4a060"/>
+    <path d="M8 160 Q0 145 5 138 Q10 140 12 148 L14 158Z" fill="#c4a060"/>
+    <line x1="15" y1="174" x2="8" y2="195" stroke="#8b7340" stroke-width="3"/>
+    <line x1="25" y1="174" x2="30" y2="195" stroke="#8b7340" stroke-width="3"/>
+    <line x1="35" y1="174" x2="42" y2="190" stroke="#8b7340" stroke-width="3"/>
+    <line x1="45" y1="174" x2="50" y2="188" stroke="#8b7340" stroke-width="3"/>
+    <!-- DQ on horse -->
+    <rect x="22" y="125" width="15" height="30" rx="3" fill="#555"/>
+    <circle cx="30" cy="114" r="10" fill="#e8c9a0"/>
+    <path d="M20 110 Q22 100 30 97 Q38 100 40 110" fill="#b0b0b0"/>
+    <!-- Lance pointing at windmill -->
+    <line x1="40" y1="130" x2="190" y2="100" stroke="#8b6914" stroke-width="2.5"/>
+    <polygon points="192,99 184,96 185,103" fill="#b0b0b0"/>
+  </svg>
+  <div class="quote">
+    "Mire vuestra merced que aquellos que alli se parecen no son gigantes, sino molinos de viento."<br>
+    <span style="font-size:1.1rem; color:#c8b070;">— Sancho Panza</span>
+  </div>
+  <div class="text-block">
+    <p>Don Quijote confunde los molinos con gigantes malvados y carga contra ellos con su lanza. Es la imagen mas iconica de toda la literatura espanola.</p>
+  </div>
+  <span class="slide-number">5 / 8</span>
+</div>
+
+<!-- SLIDE 6: Other adventures -->
+<div class="slide slide-6">
+  <h2>Otras aventuras memorables</h2>
+  <svg class="illustration" width="350" height="120" viewBox="0 0 350 120">
+    <!-- Sheep/flock -->
+    <ellipse cx="40" cy="90" rx="18" ry="14" fill="#f5f5f0"/>
+    <circle cx="28" cy="80" r="8" fill="#f5f5f0"/>
+    <circle cx="25" cy="79" r="2" fill="#333"/>
+    <ellipse cx="80" cy="92" rx="16" ry="12" fill="#ede8dc"/>
+    <circle cx="70" cy="84" r="7" fill="#ede8dc"/>
+    <circle cx="67" cy="83" r="2" fill="#333"/>
+    <ellipse cx="55" cy="95" rx="14" ry="10" fill="#f0ece0"/>
+
+    <!-- Barber's basin/helmet -->
+    <ellipse cx="180" cy="50" rx="35" ry="12" fill="#d4a03c" stroke="#b8860b" stroke-width="1.5"/>
+    <path d="M145 50 Q145 30 180 25 Q215 30 215 50" fill="#d4a03c" stroke="#b8860b" stroke-width="1.5"/>
+    <ellipse cx="180" cy="50" rx="25" ry="8" fill="#e8c252" opacity="0.5"/>
+    <!-- Sparkle -->
+    <text x="195" y="35" font-size="16" fill="#fff">✦</text>
+
+    <!-- Inn -->
+    <rect x="265" y="40" width="70" height="60" fill="#c4762b" stroke="#8b4513" stroke-width="1.5"/>
+    <rect x="275" y="50" width="15" height="18" fill="#ffe4a0"/>
+    <rect x="305" y="50" width="15" height="18" fill="#ffe4a0"/>
+    <rect x="288" y="75" width="18" height="25" fill="#5c3a28"/>
+    <polygon points="260,42 300,15 340,42" fill="#8b3a0f" stroke="#6b2a00" stroke-width="1"/>
+    <!-- Sign -->
+    <rect x="340" y="30" width="3" height="35" fill="#5c3a28"/>
+    <rect x="330" y="28" width="22" height="14" rx="2" fill="#d4a03c"/>
+  </svg>
+  <ul class="bullet-list">
+    <li>Confunde un rebano de ovejas con un ejercito enemigo</li>
+    <li>Cree que una bacia de barbero es el yelmo magico de Mambrino</li>
+    <li>Piensa que las posadas del camino son castillos encantados</li>
+    <li>Libera a unos presos que iban camino a galeras</li>
+    <li>Sancho "gobierna" la isla de Barataria (una broma de unos duques)</li>
+  </ul>
+  <span class="slide-number">6 / 8</span>
+</div>
+
+<!-- SLIDE 7: Themes -->
+<div class="slide slide-7">
+  <h2>Por que sigue importando hoy</h2>
+  <svg class="illustration" width="200" height="140" viewBox="0 0 200 140">
+    <!-- Heart with star -->
+    <path d="M100 120 Q30 80 30 50 Q30 20 60 20 Q80 20 100 45 Q120 20 140 20 Q170 20 170 50 Q170 80 100 120Z" fill="#e74c3c" opacity="0.8"/>
+    <polygon points="100,45 105,65 125,65 110,78 115,98 100,85 85,98 90,78 75,65 95,65" fill="#f1c40f"/>
+  </svg>
+  <ul class="bullet-list">
+    <li><strong>Los suenos importan</strong> — aunque el mundo diga que estamos locos</li>
+    <li><strong>La amistad verdadera</strong> — Sancho sigue a Don Quijote por lealtad</li>
+    <li><strong>Realidad vs. imaginacion</strong> — cada uno ve el mundo a su manera</li>
+    <li><strong>La justicia</strong> — luchar por lo que creemos correcto</li>
+    <li><strong>El humor</strong> — reirse de uno mismo es una forma de sabiduria</li>
+  </ul>
+  <span class="slide-number">7 / 8</span>
+</div>
+
+<!-- SLIDE 8: Closing -->
+<div class="slide slide-8">
+  <svg class="illustration" width="160" height="160" viewBox="0 0 160 160">
+    <!-- Sunset scene silhouette -->
+    <circle cx="80" cy="100" r="60" fill="#d4a03c" opacity="0.4"/>
+    <circle cx="80" cy="100" r="40" fill="#e8c252" opacity="0.4"/>
+    <!-- DQ silhouette on horse -->
+    <path d="M50 95 Q40 80 45 70 Q50 65 55 68 L55 78 Q55 88 50 95Z" fill="#2c1810"/>
+    <ellipse cx="65" cy="98" rx="20" ry="10" fill="#2c1810"/>
+    <line x1="52" y1="105" x2="48" y2="125" stroke="#2c1810" stroke-width="3"/>
+    <line x1="60" y1="105" x2="58" y2="125" stroke="#2c1810" stroke-width="3"/>
+    <line x1="72" y1="105" x2="76" y2="125" stroke="#2c1810" stroke-width="3"/>
+    <line x1="80" y1="105" x2="84" y2="125" stroke="#2c1810" stroke-width="3"/>
+    <rect x="55" y="62" width="15" height="25" rx="3" fill="#2c1810"/>
+    <circle cx="63" cy="52" r="10" fill="#2c1810"/>
+    <line x1="70" y1="55" x2="70" y2="30" stroke="#2c1810" stroke-width="2"/>
+    <!-- Sancho silhouette -->
+    <ellipse cx="110" cy="102" rx="14" ry="8" fill="#2c1810"/>
+    <path d="M98 100 Q92 90 95 82 Q98 78 102 80 L102 95Z" fill="#2c1810"/>
+    <ellipse cx="107" cy="78" rx="10" ry="14" fill="#2c1810"/>
+    <circle cx="107" cy="60" r="9" fill="#2c1810"/>
+    <line x1="100" y1="108" x2="97" y2="125" stroke="#2c1810" stroke-width="2.5"/>
+    <line x1="106" y1="108" x2="105" y2="125" stroke="#2c1810" stroke-width="2.5"/>
+    <line x1="115" y1="108" x2="118" y2="125" stroke="#2c1810" stroke-width="2.5"/>
+    <line x1="120" y1="108" x2="123" y2="125" stroke="#2c1810" stroke-width="2.5"/>
+    <!-- Ground line -->
+    <line x1="20" y1="128" x2="140" y2="128" stroke="#2c1810" stroke-width="1.5"/>
+  </svg>
+  <div class="quote" style="border-color:#f5e6c8;">
+    "Cambiar el mundo, amigo Sancho, no es locura ni utopia, sino justicia."
+  </div>
+  <h1 style="font-size:2.8rem; margin-top:20px;">Gracias</h1>
+  <div class="decorative-line"></div>
+  <p class="subtitle">Don Quijote nos ensena que nunca es tarde<br>para sonar y salir a buscar aventuras.</p>
+  <span class="slide-number">8 / 8</span>
+</div>
+
+<div class="nav-hint">← → o clic para navegar</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); showSlide(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); showSlide(current - 1); }
+    if (e.key === 'Home') showSlide(0);
+    if (e.key === 'End') showSlide(total - 1);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.clientX > window.innerWidth / 2) showSlide(current + 1);
+    else showSlide(current - 1);
+  });
+
+  // Touch support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff < 0) showSlide(current + 1);
+      else showSlide(current - 1);
+    }
+  });
+</script>
+</body>
+</html>
