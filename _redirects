@@ -1,8 +1,10 @@
 # Redirect old URLs to new branded paths
 /consulting /venture-architecture 301
 /consulting/ /venture-architecture/ 301
-/growth /rockstar-accelerator 301
-/growth/ /rockstar-accelerator/ 301
+/growth https://pepecarrillo.co/coaching 301
+/growth/ https://pepecarrillo.co/coaching 301
+/rockstar-accelerator https://pepecarrillo.co/coaching 301
+/rockstar-accelerator/ https://pepecarrillo.co/coaching 301
 /investments /rebel-capital 301
 /investments/ /rebel-capital/ 301
 /dispatches /outlaw-chronicles 301
@@ -16,8 +18,10 @@
 # Spanish redirects
 /es/consulting /es/venture-architecture 301
 /es/consulting/ /es/venture-architecture/ 301
-/es/growth /es/rockstar-accelerator 301
-/es/growth/ /es/rockstar-accelerator/ 301
+/es/growth https://pepecarrillo.co/coaching 301
+/es/growth/ https://pepecarrillo.co/coaching 301
+/es/rockstar-accelerator https://pepecarrillo.co/coaching 301
+/es/rockstar-accelerator/ https://pepecarrillo.co/coaching 301
 /es/investments /es/rebel-capital 301
 /es/investments/ /es/rebel-capital/ 301
 /es/dispatches /es/outlaw-chronicles 301
