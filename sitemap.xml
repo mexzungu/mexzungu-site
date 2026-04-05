@@ -109,4 +109,16 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://mexzungu.com/es/janis"/>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://mexzungu.com/ai-policy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mexzungu.com/ai-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mexzungu.com/es/ai-policy/"/>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mexzungu.com/es/ai-policy/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mexzungu.com/ai-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mexzungu.com/es/ai-policy/"/>
+    <priority>0.5</priority>
+  </url>
 </urlset>
