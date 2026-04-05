@@ -89,21 +89,21 @@
    on coloured backgrounds use hardcoded #fafafa / #0d0d0d. */
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-primary:     #1a1a2e;
-        --bg-card:        #252540;
+        --bg-primary:     #2A1F1A;           /* obsidian — warm dark, not cold navy */
+        --bg-card:        #362E28;           /* warm card surface */
         --bg-dark:        #0d0d0d;
         --text-primary:   #fafafa;
         --text-secondary: var(--mist);
         --text-muted:     var(--stone);
         --text-accent:    var(--pink-light);  /* Lighter pink for dark bg contrast */
-        --border:         #3a3a55;
+        --border:         #4A403A;           /* warm border */
         --border-hover:   var(--pink);
-        --card-bg:        #252540;
-        --card-border:    #3a3a55;
+        --card-bg:        #362E28;
+        --card-border:    #4A403A;
         --gray:           var(--mist);
         --gray-light:     var(--mist);
-        --nav-bg:         rgba(26, 26, 46, 0.9);
-        --dropdown-bg:    rgba(37, 37, 64, 0.97);
+        --nav-bg:         rgba(42, 31, 26, 0.92);   /* obsidian glass */
+        --dropdown-bg:    rgba(54, 46, 40, 0.97);   /* warm dropdown glass */
     }
 }
 
