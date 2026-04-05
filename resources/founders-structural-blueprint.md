@@ -13,7 +13,7 @@ Cool. Here's the problem with that. There are roughly 47,000 articles on the int
 
 This isn't that.
 
-I've spent the last 15 years on both sides of this. Goldman Sachs in London, where a misplaced comma in a $2B facility agreement could end your career. Then African startups, where I once closed a deal structure on a napkin in a Nairobi bar because the power went out and nobody could open their laptops. I've structured ventures across 10+ countries, helped raise over $500M, and — this is the part they leave out of the bios — watched perfectly good companies die because their structure was held together with duct tape and optimism.
+I've spent the last 15 years on both sides of this. Chadbourne & Parke in Mexico City, where a misplaced comma in a $2B facility agreement could end your career. Then African startups, where I once closed a deal structure on a napkin in a Nairobi bar because the power went out and nobody could open their laptops. I've structured ventures across 10+ countries, helped raise over $500M, and — this is the part they leave out of the bios — watched perfectly good companies die because their structure was held together with duct tape and optimism.
 
 So this guide is the conversation I have with every founder I meet, usually about six months too late. The one where they sit across from me and say "why didn't anyone tell me this before I incorporated?" and I resist the urge to say "someone probably did, but you were too busy building to listen."
 
@@ -329,7 +329,7 @@ When those SAFEs convert at your Series A, the cap table reshuffles entirely. Th
 
 ## Track 4: Governance (Extended Mix)
 
-When I was at Goldman Sachs, governance was oxygen. You didn't think about it. It was just there. Board meetings happened. Minutes were taken. Authority lines were clear. Nobody had to ask "who makes this decision?" because the answer was always obvious and always documented.
+When I was in big law, governance was oxygen. You didn't think about it. It was just there. Board meetings happened. Minutes were taken. Authority lines were clear. Nobody had to ask "who makes this decision?" because the answer was always obvious and always documented.
 
 Then I moved to startups.
 
@@ -529,7 +529,7 @@ I know the startup mythology says otherwise. Move fast and break things. Iterate
 
 But for the foundation of your company? The ownership, the governance, the legal architecture? "Move fast and break things" is the rallying cry of people who've never had to explain to an investor why their cap table has a ghost shareholder and their corporate documents haven't been updated since 2023.
 
-The fastest-scaling companies I've worked with — across Goldman, across Africa, across everything I've done since — are the best-structured ones. Not because structure makes you fast. But because structure removes the friction that makes you slow. Clean cap tables close faster. Clear governance decides faster. Proper documentation exits smoother.
+The fastest-scaling companies I've worked with — across Chadbourne, across Africa, across everything I've done since — are the best-structured ones. Not because structure makes you fast. But because structure removes the friction that makes you slow. Clean cap tables close faster. Clear governance decides faster. Proper documentation exits smoother.
 
 > Chaos starts companies. Structure builds them.
 
