@@ -8,6 +8,7 @@
     <meta name="theme-color" content="#0d0d0d">
     <title>Chérie Class Programme — Terms &amp; Conditions | Martian Embassy</title>
     <meta name="description" content="Terms and Conditions of the Chérie Class Programme, operated by the Martian Embassy, Barcelona Sector, Third Orbit. A division of Mexzungu Group.">
+    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
     <link rel="canonical" href="https://mexzungu.com/cherie-class">
     <link rel="stylesheet" href="/fonts.css">
     <link rel="stylesheet" href="/style.css?v=8">
@@ -205,21 +206,50 @@
             letter-spacing: 0.3em;
             opacity: 0.4;
         }
+        .cc-header::after {
+            content: '';
+            position: absolute;
+            width: 420px;
+            height: 150px;
+            border: 1px solid rgba(225, 75, 135, 0.12);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-6deg);
+            pointer-events: none;
+        }
+        .cc-stars {
+            color: #e14b87;
+            opacity: 0.45;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        .cc-orbit-line {
+            margin: 0.65rem auto 0;
+            letter-spacing: 0.35em;
+            font-size: 0.7rem;
+            color: #e14b87;
+            opacity: 0.3;
+            font-family: var(--sans);
+        }
     </style>
 </head>
 <body>
     <header style="padding: 2rem; text-align: center; border-bottom: 1px solid var(--card-border);">
         <a href="/" style="text-decoration: none; color: var(--text-primary);">
-            <h2 style="font-family: var(--heading);">Mexzungu Group</h2>
+            <h2 style="font-family: var(--heading);">Intergalactic Pepe</h2>
         </a>
     </header>
 
     <div class="cc-header">
-        <p class="cc-programme-label">Official Programme Documentation</p>
+        <p class="cc-programme-label"><span class="cc-stars">✦ &nbsp;</span>Official Programme Documentation<span class="cc-stars">&nbsp; ✦</span></p>
         <h1 class="cc-title"><span>Chérie</span> Class</h1>
         <p class="cc-subtitle">Terms and Conditions of Enrolment</p>
-        <p class="cc-subtitle" style="margin-top: 0.35rem;">Operated by the Martian Embassy · Barcelona Sector, Third Orbit</p>
+        <p class="cc-subtitle" style="margin-top: 0.35rem;">Operated by the Martian Embassy · Barcelona Sector, Third Orbit &nbsp;🚀</p>
         <span class="cc-docref">Document Ref: ME/CC/2026/001 &nbsp;|&nbsp; Issued: April 2026 &nbsp;|&nbsp; Restricted Circulation</span>
+        <p class="cc-orbit-line">· ✧ · ★ · ✧ ·</p>
     </div>
 
     <main class="cc-body">
@@ -366,6 +396,7 @@
 
     <footer style="text-align: center; padding: 2rem; color: var(--gray); font-size: 0.85rem; border-top: 1px solid var(--card-border);">
         &copy; 2026 Mexzungu Group Limited. All rights reserved. &nbsp;·&nbsp; <a href="/" style="color: var(--gray);">mexzungu.com</a>
-    </footer>
+        <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice.</div>
+</footer>
 </body>
 </html>
