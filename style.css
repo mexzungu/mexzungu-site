@@ -1195,8 +1195,56 @@ footer a:hover { color: var(--pink-light); }
     letter-spacing: 0.02em;
 }
 
+/* WHAT HAPPENS NEXT */
+.next-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+.next-step {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 1.5rem;
+}
+.next-step-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.next-step-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-full);
+    background: var(--pink);
+    color: #fafafa;
+    font-family: var(--heading);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.next-step-emoji {
+    font-size: 1.4rem;
+}
+.next-step h4 {
+    font-size: var(--text-md);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+.next-step p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
 @media (max-width: 1024px) {
     .pillars { grid-template-columns: repeat(2, 1fr); }
+    .next-steps-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* RESPONSIVE */
@@ -1207,6 +1255,7 @@ footer a:hover { color: var(--pink-light); }
     .pillars, .tiers, .posts-grid { grid-template-columns: 1fr; }
     .detail-grid, .tracks, .stories { grid-template-columns: 1fr; }
     .journey-contrast { grid-template-columns: 1fr; }
+    .next-steps-grid { grid-template-columns: 1fr; }
     .stats-bar { gap: var(--space-md); }
     section { padding: 4rem 1.5rem; }
 }
