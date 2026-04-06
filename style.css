@@ -1363,6 +1363,7 @@ footer a:hover { color: var(--pink-light); }
 .duration-label { font-size: var(--text-sm); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
 .duration-option p { font-size: var(--text-xs); color: var(--gray); line-height: 1.5; margin: 0; }
 .type-content p { font-size: var(--text-sm); color: var(--gray-light); line-height: 1.7; margin-top: 0.5rem; }
+.type-langs { display: inline-block; font-size: 11px; letter-spacing: 1px; color: var(--gold); margin-top: 0.5rem; font-weight: 600; }
 
 .slots-container { margin-top: var(--space-md); }
 .slots-date { font-family: var(--heading); font-size: 1.3rem; text-transform: uppercase; margin: 1.5rem 0 0.8rem; }
