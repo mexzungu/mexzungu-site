@@ -1120,6 +1120,81 @@ footer a:hover { color: var(--pink-light); }
     margin-top: 1rem;
 }
 
+/* STARTUP JOURNEY */
+.journey-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+}
+.journey-stage {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+}
+.journey-stage-label {
+    font-family: var(--heading);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+}
+.journey-question {
+    font-family: var(--heading);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+.journey-contrast {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    margin-bottom: 1.5rem;
+}
+.journey-without, .journey-with {
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+}
+.journey-without {
+    background: rgba(201, 53, 69, 0.06);
+    border-left: 3px solid var(--error);
+}
+.journey-with {
+    background: rgba(45, 143, 94, 0.06);
+    border-left: 3px solid var(--success);
+}
+.journey-without h5, .journey-with h5 {
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+.journey-without h5 { color: var(--error); }
+.journey-with h5 { color: var(--success); }
+.journey-without p, .journey-with p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+.journey-deliverables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.journey-deliverables span {
+    font-size: var(--text-xs);
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.35rem 0.85rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+}
+
 @media (max-width: 1024px) {
     .pillars { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1131,6 +1206,7 @@ footer a:hover { color: var(--pink-light); }
     .nav-links a { font-size: var(--text-xs); }
     .pillars, .tiers, .posts-grid { grid-template-columns: 1fr; }
     .detail-grid, .tracks, .stories { grid-template-columns: 1fr; }
+    .journey-contrast { grid-template-columns: 1fr; }
     .stats-bar { gap: var(--space-md); }
     section { padding: 4rem 1.5rem; }
 }
