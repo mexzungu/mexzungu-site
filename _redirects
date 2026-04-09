@@ -1,10 +1,10 @@
 # Redirect old URLs to new branded paths
 /consulting /venture-architecture 301
 /consulting/ /venture-architecture/ 301
-/growth https://pepecarrillo.co/coaching 301
-/growth/ https://pepecarrillo.co/coaching 301
-/rockstar-accelerator https://pepecarrillo.co/coaching 301
-/rockstar-accelerator/ https://pepecarrillo.co/coaching 301
+/growth https://pepecarrillo.co/misfit-lab 301
+/growth/ https://pepecarrillo.co/misfit-lab 301
+/rockstar-accelerator https://pepecarrillo.co/misfit-lab 301
+/rockstar-accelerator/ https://pepecarrillo.co/misfit-lab 301
 /investments /rebel-capital 301
 /investments/ /rebel-capital/ 301
 /dispatches /outlaw-chronicles 301
@@ -22,10 +22,10 @@
 # Spanish redirects
 /es/consulting /es/venture-architecture 301
 /es/consulting/ /es/venture-architecture/ 301
-/es/growth https://pepecarrillo.co/coaching 301
-/es/growth/ https://pepecarrillo.co/coaching 301
-/es/rockstar-accelerator https://pepecarrillo.co/coaching 301
-/es/rockstar-accelerator/ https://pepecarrillo.co/coaching 301
+/es/growth https://pepecarrillo.co/misfit-lab 301
+/es/growth/ https://pepecarrillo.co/misfit-lab 301
+/es/rockstar-accelerator https://pepecarrillo.co/misfit-lab 301
+/es/rockstar-accelerator/ https://pepecarrillo.co/misfit-lab 301
 /es/investments /es/rebel-capital 301
 /es/investments/ /es/rebel-capital/ 301
 /es/dispatches /es/outlaw-chronicles 301
@@ -35,3 +35,7 @@
 /es/about/ /es/meet-the-band/ 301
 /es/talk_to_pepe /es/lets-jam 301
 /es/talk_to_pepe/ /es/lets-jam/ 301
+
+# ES Data Privacy — redirect to EN until translation is ready
+/es/data-privacy /data-privacy 302
+/es/data-privacy/ /data-privacy/ 302
