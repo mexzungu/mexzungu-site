@@ -1,1177 +1,2051 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0d0d0d">
-    <title>Duara — Contract Transition Plan</title>
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/style.css?v=10">
-    <style>
-        :root {
-            --bg-primary:     #0d0d0d;
-            --bg-card:        #1a1a1a;
-            --bg-dark:        #0d0d0d;
-            --text-primary:   #fafafa;
-            --text-secondary: #9a8f88;
-            --text-muted:     #6b5e57;
-            --text-accent:    #e86fa0;
-            --border:         #2a2a2a;
-            --border-hover:   #e14b87;
-            --card-bg:        #1a1a1a;
-            --card-border:    #2a2a2a;
-            --gray:           #9a8f88;
-            --gray-light:     #9a8f88;
-            --nav-bg:         rgba(13, 13, 13, 0.92);
-        }
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Duara — Contract Transition Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* PASSWORD GATE */
-        #pw-gate {
-            position: fixed;
-            inset: 0;
-            background: #0d0d0d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 2rem;
-        }
-        #pw-gate.hidden { display: none; }
+    :root {
+      --bg:          #0d0d0d;
+      --bg-card:     #111111;
+      --bg-mid:      #1a1a1a;
+      --bg-hover:    #222222;
+      --text:        #fafafa;
+      --text-mid:    #c8c0bb;
+      --text-soft:   #9a8f88;
+      --text-ghost:  #5a5550;
+      --pink:        #e14b87;
+      --pink-dark:   #2d1f28;
+      --pink-glow:   rgba(225,75,135,0.12);
+      --border:      #2a2a2a;
+      --border-mid:  #333333;
+      --green:       #2db55d;
+      --green-bg:    #0d2016;
+      --green-text:  #6dd89a;
+      --amber:       #d4900a;
+      --amber-bg:    #1e1500;
+      --amber-text:  #f0c050;
+      --red:         #e14b4b;
+      --red-bg:      #1e0d0d;
+    }
 
-        .pw-card {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            padding: 3rem 2.5rem;
-            max-width: 420px;
-            width: 100%;
-            text-align: center;
-        }
-        .pw-logo { height: 52px; margin-bottom: 2rem; }
-        .pw-label {
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #e14b87;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        .pw-heading {
-            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 400;
-            color: #fafafa;
-            margin-bottom: 0.6rem;
-            line-height: 1.2;
-        }
-        .pw-sub { color: #6b5e57; font-size: 0.9rem; margin-bottom: 1.5rem; }
-        .pw-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: #0d0d0d;
-            border: 1px solid #2a2a2a;
-            border-radius: 8px;
-            color: #fafafa;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            box-sizing: border-box;
-        }
-        .pw-input:focus { outline: none; border-color: #e14b87; }
-        .pw-btn {
-            width: 100%;
-            padding: 0.85rem;
-            background: #e14b87;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: 0.05em;
-        }
-        .pw-btn:hover { background: #c73d75; }
-        .pw-error { color: #e14b87; font-size: 0.85rem; margin-top: 0.75rem; min-height: 1.2em; }
-        .pw-footer-note { color: #6b5e57; font-size: 0.78rem; margin-top: 1.5rem; margin-bottom: 0; }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        /* CONTENT */
-        #plan-content { display: none; }
-        #plan-content.visible { display: block; }
+    /* ===================== PASSWORD GATE ===================== */
+    #pw-gate {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 2rem;
+    }
+    #pw-gate.hidden { display: none; }
 
-        body { background: #0d0d0d; color: #fafafa; }
+    .pw-wrap {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3rem 2.5rem;
+    }
 
-        .plan-hero {
-            padding: 5rem 0 3rem;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        .plan-hero .container { max-width: 800px; }
-        .plan-tag {
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #e14b87;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-        }
-        .plan-hero h1 {
-            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 400;
-            line-height: 1.15;
-            margin-bottom: 1rem;
-            color: #fafafa;
-        }
-        .plan-meta {
-            color: #6b5e57;
-            font-size: 0.85rem;
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-        .plan-meta span { display: flex; align-items: center; gap: 0.4rem; }
+    .pw-logo {
+      height: 36px;
+      margin-bottom: 2rem;
+      filter: brightness(0) invert(1);
+    }
+    .pw-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .pw-title {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .pw-sub { color: var(--text-soft); font-size: 0.84rem; margin-bottom: 2rem; line-height: 1.6; }
+    .pw-rule { width: 36px; height: 2px; background: var(--pink); margin: 0 auto 2rem; }
+    .pw-input {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      background: var(--bg);
+      border: 1px solid var(--border-mid);
+      border-radius: 3px;
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.75rem;
+      transition: border-color 0.2s;
+    }
+    .pw-input:focus { outline: none; border-color: var(--pink); }
+    .pw-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .pw-btn:hover { opacity: 0.85; }
+    .pw-error { color: var(--pink); font-size: 0.8rem; margin-top: 0.6rem; min-height: 1.2em; }
+    .pw-footer { color: var(--text-ghost); font-size: 0.7rem; margin-top: 2rem; letter-spacing: 0.04em; }
 
-        /* ALERT BOX */
-        .alert-box {
-            background: #1a0a10;
-            border: 1px solid #6b1a30;
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            margin: 2rem 0;
-        }
-        .alert-box .alert-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #e14b87;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .alert-box p { color: #d4a0b0; margin: 0; font-size: 0.95rem; line-height: 1.6; }
+    /* ===================== PORTAL SHELL ===================== */
+    #portal {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #portal.visible { display: flex; }
 
-        /* INFO BOX */
-        .info-box {
-            background: #0d1a0d;
-            border: 1px solid #1a4a1a;
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            margin: 2rem 0;
-        }
-        .info-box .info-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #4caf50;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .info-box p { color: #a0c4a0; margin: 0; font-size: 0.95rem; line-height: 1.6; }
+    /* ---- TOPBAR ---- */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      height: 52px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .topbar-logo {
+      height: 24px;
+      filter: brightness(0) invert(1);
+    }
+    .topbar-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border-mid);
+    }
+    .topbar-client {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .topbar-meta {
+      font-size: 0.7rem;
+      color: var(--text-ghost);
+    }
+    .topbar-badge {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--amber-bg);
+      color: var(--amber-text);
+      border: 1px solid rgba(212,144,10,0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      font-weight: 500;
+    }
 
-        /* WARNING BOX */
-        .warn-box {
-            background: #1a1500;
-            border: 1px solid #4a3d00;
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            margin: 2rem 0;
-        }
-        .warn-box .warn-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #f0c040;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .warn-box p { color: #c4b060; margin: 0; font-size: 0.95rem; line-height: 1.6; }
+    /* ---- TABBAR ---- */
+    .tabbar {
+      display: flex;
+      align-items: stretch;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      flex-shrink: 0;
+      padding: 0 1.5rem;
+    }
+    .tab-btn {
+      padding: 0.85rem 1.25rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text-mid); }
+    .tab-btn.active { color: var(--pink); border-bottom-color: var(--pink); font-weight: 600; }
 
-        /* PLAN BODY */
-        .plan-body {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 3rem 1.5rem 5rem;
-        }
+    /* ---- PANELS ---- */
+    .panels {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .panel {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      display: none;
+    }
+    .panel.active { display: block; }
 
-        .plan-section { margin-bottom: 3.5rem; }
-        .plan-section-label {
-            font-size: 0.68rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: #e14b87;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-        .plan-section h2 {
-            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: #fafafa;
-            margin-bottom: 1rem;
-            line-height: 1.25;
-        }
-        .plan-section p {
-            color: #9a8f88;
-            line-height: 1.75;
-            margin-bottom: 1rem;
-        }
-        .plan-section ul, .plan-section ol {
-            color: #9a8f88;
-            line-height: 1.75;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .plan-section li { margin-bottom: 0.4rem; }
-        .plan-section strong { color: #fafafa; }
+    /* ===================== PLAN TAB — two-column layout ===================== */
+    .plan-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: 100%;
+    }
 
-        /* PHASE CARDS */
-        .phase-card {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            padding: 1.75rem;
-            margin-bottom: 1.25rem;
-        }
-        .phase-number {
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #6b5e57;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .phase-title {
-            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
-            color: #fafafa;
-            margin-bottom: 1rem;
-        }
-        .phase-card p { color: #9a8f88; line-height: 1.7; margin-bottom: 0.75rem; }
-        .phase-card ul { color: #9a8f88; line-height: 1.7; padding-left: 1.4rem; margin-bottom: 0.75rem; }
-        .phase-card li { margin-bottom: 0.35rem; }
-        .phase-card strong { color: #e0d8d5; }
+    /* LEFT SIDEBAR — scrollable nav */
+    .plan-sidebar {
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1.5rem 0;
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-logo-wrap {
+      padding: 0 1.25rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .sidebar-logo-img {
+      height: 28px;
+      filter: brightness(0) invert(1);
+    }
+    .sidebar-client-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+    .nav-section-label {
+      font-size: 0.56rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      font-weight: 600;
+      padding: 0.9rem 1.25rem 0.3rem;
+    }
+    .nav-link {
+      display: block;
+      padding: 0.45rem 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .nav-link:hover { color: var(--text); background: var(--bg-hover); }
+    .nav-link.active { color: var(--pink); border-left-color: var(--pink); background: var(--pink-glow); }
 
-        /* STEP SEQUENCE */
-        .step-row {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            align-items: flex-start;
-        }
-        .step-num {
-            width: 26px;
-            height: 26px;
-            min-width: 26px;
-            background: #e14b87;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #fff;
-            margin-top: 0.1rem;
-        }
-        .step-text { color: #9a8f88; line-height: 1.65; flex: 1; }
-        .step-text strong { color: #e0d8d5; }
+    /* RIGHT MAIN — scrollable content */
+    .plan-main {
+      overflow-y: auto;
+      padding: 2.5rem 3rem;
+    }
 
-        /* ACTION TABLE */
-        .action-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.88rem;
-            margin-top: 1rem;
-        }
-        .action-table th {
-            text-align: left;
-            padding: 0.75rem 1rem;
-            background: #1a1a1a;
-            color: #6b5e57;
-            font-size: 0.7rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        .action-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #1e1e1e;
-            color: #9a8f88;
-            vertical-align: top;
-        }
-        .action-table tr:last-child td { border-bottom: none; }
-        .action-table tr:hover td { background: #141414; }
-        .action-table .owner-pepe { color: #e14b87; }
-        .action-table .owner-fatima { color: #7ab8d4; }
-        .action-table .owner-daphne { color: #a0c47a; }
-        .action-table .owner-victoria { color: #d4a07a; }
-        .action-table .owner-all { color: #b4a0d4; }
-        .action-table strong { color: #e0d8d5; }
+    .section-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+    .section-rule { width: 32px; height: 2px; background: var(--pink); margin-bottom: 1.75rem; }
 
-        /* COMMS TEMPLATES */
-        .template-box {
-            background: #111;
-            border: 1px solid #2a2a2a;
-            border-left: 3px solid #e14b87;
-            border-radius: 0 10px 10px 0;
-            padding: 1.5rem 1.75rem;
-            margin: 1.25rem 0;
-        }
-        .template-label {
-            font-size: 0.68rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #e14b87;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-        .template-box p {
-            color: #9a8f88;
-            line-height: 1.75;
-            margin-bottom: 0.6rem;
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-        .template-box .t-subject { color: #e0d8d5; margin-bottom: 1rem; }
+    .plan-intro {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: var(--text-mid);
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+      padding: 1.2rem 1.5rem;
+      border-left: 3px solid var(--amber);
+      background: var(--amber-bg);
+      border-radius: 0 3px 3px 0;
+    }
+    .plan-intro strong { font-weight: 600; color: var(--text); }
 
-        /* DIVIDER */
-        .plan-divider {
-            border: none;
-            border-top: 1px solid #2a2a2a;
-            margin: 3rem 0;
-        }
+    /* Content section wrapper */
+    .content-section {
+      margin-bottom: 3.5rem;
+      scroll-margin-top: 2rem;
+    }
 
-        /* CONTRACT SECTION */
-        .contract-header {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            padding: 1.5rem 1.75rem;
-            margin-bottom: 2rem;
-        }
-        .contract-type-tag {
-            font-size: 0.65rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: #e14b87;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .contract-header h3 {
-            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
-            color: #fafafa;
-            margin-bottom: 0.35rem;
-            font-weight: 400;
-        }
-        .contract-header .contract-parties {
-            color: #6b5e57;
-            font-size: 0.82rem;
-        }
+    /* Phase cards */
+    .phases { display: flex; flex-direction: column; gap: 1rem; }
+    .phase-card {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.2rem 1.5rem;
+      cursor: pointer;
+      background: var(--bg-mid);
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .phase-header:hover { background: var(--bg-hover); }
+    .phase-num {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--text-ghost);
+      line-height: 1;
+      min-width: 2.5rem;
+    }
+    .phase-info { flex: 1; }
+    .phase-period {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .phase-name {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+    .phase-chevron {
+      font-size: 0.7rem;
+      color: var(--text-ghost);
+      transition: transform 0.2s;
+    }
+    .phase-header.open .phase-chevron { transform: rotate(90deg); }
+    .phase-body {
+      display: none;
+      padding: 0 1.5rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .phase-body.open { display: block; }
 
-        .contract-body { padding: 0 0.25rem; }
-        .contract-body h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #fafafa;
-            margin: 2rem 0 0.75rem;
-        }
-        .contract-body p, .contract-body li {
-            color: #9a8f88;
-            line-height: 1.75;
-            font-size: 0.92rem;
-        }
-        .contract-body ul, .contract-body ol {
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .contract-body li { margin-bottom: 0.35rem; }
+    .step-list { list-style: none; padding: 0.75rem 0 0; }
+    .step-item {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      font-size: 0.86rem;
+      line-height: 1.6;
+      color: var(--text-mid);
+      border-bottom: 1px solid var(--border);
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-marker {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--pink);
+      min-width: 1.5rem;
+      margin-top: 0.15rem;
+      font-weight: 500;
+    }
 
-        /* INFO TABLES */
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0 1.5rem;
-            font-size: 0.88rem;
-        }
-        .info-table td {
-            padding: 0.6rem 1rem;
-            border-bottom: 1px solid #1e1e1e;
-            vertical-align: top;
-        }
-        .info-table td:first-child {
-            color: #6b5e57;
-            width: 38%;
-            font-size: 0.82rem;
-        }
-        .info-table td:last-child { color: #9a8f88; }
-        .info-table tr:last-child td { border-bottom: none; }
+    /* Open legal items */
+    .open-items { display: flex; flex-direction: column; gap: 0.75rem; }
+    .open-item {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      background: var(--bg-mid);
+    }
+    .open-item-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--pink);
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    .open-item-text { font-size: 0.86rem; line-height: 1.6; color: var(--text-mid); }
+    .open-item-text strong { font-weight: 600; color: var(--text); }
 
-        /* STRUCTURAL NOTE */
-        .structural-note {
-            background: #1a1500;
-            border: 1px solid #4a3d00;
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            margin: 2rem 0;
-        }
-        .structural-note .sn-label {
-            font-size: 0.68rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #f0c040;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .structural-note p { color: #c4b060; margin-bottom: 0.5rem; font-size: 0.9rem; line-height: 1.65; }
-        .structural-note p:last-child { margin-bottom: 0; }
+    /* Comms templates */
+    .template-card {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+    .template-header {
+      padding: 0.85rem 1.25rem;
+      background: var(--bg-mid);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+    }
+    .template-body {
+      padding: 1.25rem;
+      font-size: 0.84rem;
+      line-height: 1.75;
+      color: var(--text-mid);
+      white-space: pre-line;
+      background: var(--bg-card);
+    }
 
-        /* SIGNATURE BLOCK */
-        .sig-block {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .sig-party {
-            border-top: 1px solid #3a3a3a;
-            padding-top: 1rem;
-        }
-        .sig-party .sig-name {
-            font-size: 0.78rem;
-            color: #6b5e57;
-            margin-bottom: 0.4rem;
-        }
-        .sig-party .sig-line {
-            color: #3a3a3a;
-            font-size: 0.82rem;
-            line-height: 2.5;
-        }
+    /* ===================== STAFF PROFILE CARDS ===================== */
+    .staff-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+    .staff-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .staff-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.5rem;
+      background: var(--bg-mid);
+      border-bottom: 1px solid var(--border);
+    }
+    .staff-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .icon-se { background: var(--pink-dark); }
+    .icon-at { background: #1a2028; }
+    .icon-ec { background: #0d2016; }
+    .staff-card-title {
+      flex: 1;
+    }
+    .staff-type-tag {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .tag-se { color: var(--pink); }
+    .tag-at { color: #60a5fa; }
+    .tag-ec { color: var(--green-text); }
+    .staff-card-name {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+    .staff-card-body {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .staff-section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .staff-section-text {
+      font-size: 0.84rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+    }
+    .staff-section-text strong { font-weight: 600; color: var(--text); }
+    .staff-contract-box {
+      grid-column: 1 / -1;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .scb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1.2rem;
+      background: var(--bg-mid);
+      border-bottom: 1px solid var(--border);
+    }
+    .scb-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 600;
+    }
+    .scb-status {
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.55rem;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+    .scb-status.final { background: var(--green-bg); color: var(--green-text); }
+    .scb-status.draft { background: var(--amber-bg); color: var(--amber-text); }
+    .scb-body {
+      padding: 1rem 1.2rem;
+      font-size: 0.84rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+    }
+    .scb-body strong { font-weight: 600; color: var(--text); }
+    .scb-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: var(--pink);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    .scb-link:hover { opacity: 0.85; }
+    .scb-link.outline {
+      background: transparent;
+      color: var(--text-soft);
+      border: 1px solid var(--border-mid);
+    }
+    .scb-link.outline:hover { color: var(--text); border-color: var(--text-soft); }
 
-        /* OPEN ITEMS LIST */
-        .open-items { list-style: none; padding: 0; margin: 0; }
-        .open-item {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-            padding: 0.85rem 0;
-            border-bottom: 1px solid #1e1e1e;
-        }
-        .open-item:last-child { border-bottom: none; }
-        .open-item-num {
-            min-width: 24px;
-            height: 24px;
-            background: #2a2a2a;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            color: #6b5e57;
-            font-weight: 700;
-        }
-        .open-item-text { color: #9a8f88; line-height: 1.6; font-size: 0.9rem; }
-        .open-item-text strong { color: #e0d8d5; }
+    /* struct note */
+    .struct-note {
+      border-radius: 4px;
+      padding: 0.9rem 1.2rem;
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      line-height: 1.65;
+    }
+    .struct-note.confirmed {
+      background: var(--green-bg);
+      border: 1px solid rgba(45,181,93,0.25);
+      color: var(--green-text);
+    }
+    .struct-note.pending {
+      background: var(--amber-bg);
+      border: 1px solid rgba(212,144,10,0.25);
+      color: var(--amber-text);
+    }
+    .sn-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
 
-        /* TOC */
-        .toc {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        .toc-label {
-            font-size: 0.68rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #6b5e57;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        .toc a {
-            display: block;
-            color: #9a8f88;
-            text-decoration: none;
-            padding: 0.3rem 0;
-            font-size: 0.88rem;
-        }
-        .toc a:hover { color: #e14b87; }
-        .toc .toc-sub {
-            padding-left: 1rem;
-            color: #6b5e57;
-            font-size: 0.82rem;
-        }
+    /* ===================== DOC LIBRARY ===================== */
+    .doc-library {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .doc-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1.2rem;
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      cursor: pointer;
+    }
+    .doc-row:hover { background: var(--bg-hover); border-color: var(--border-mid); }
+    .doc-type-tag {
+      font-size: 0.56rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 0.18rem 0.55rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .dtag-contract { background: var(--pink-dark); color: var(--pink); }
+    .dtag-plan     { background: var(--amber-bg); color: var(--amber-text); }
+    .dtag-memo     { background: #1a2028; color: #60a5fa; }
+    .dtag-template { background: var(--green-bg); color: var(--green-text); }
+    .doc-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      flex: 1;
+    }
+    .doc-meta {
+      font-size: 0.75rem;
+      color: var(--text-ghost);
+      white-space: nowrap;
+    }
+    .doc-arrow {
+      color: var(--text-ghost);
+      font-size: 0.7rem;
+    }
 
-        @media (max-width: 600px) {
-            .sig-block { grid-template-columns: 1fr; }
-            .action-table { font-size: 0.78rem; }
-            .action-table th, .action-table td { padding: 0.6rem 0.6rem; }
-        }
-    </style>
+    /* ===================== RIGHT-SIDE INFO PANEL (Plan tab) ===================== */
+    .plan-info {
+      padding: 2.5rem 2rem;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    .sidebar-block { margin-bottom: 2.5rem; }
+    .sidebar-title {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      font-weight: 600;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .action-row {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .action-row:last-child { border-bottom: none; }
+    .action-who {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      background: var(--bg-hover);
+      color: var(--text-soft);
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      margin-top: 0.1rem;
+    }
+    .action-who.fatima { background: var(--green-bg); color: var(--green-text); }
+    .action-who.pepe   { background: var(--pink-dark); color: var(--pink); }
+    .action-who.daphne { background: var(--amber-bg); color: var(--amber-text); }
+    .action-who.victoria { background: #1a1528; color: #a78bfa; }
+    .action-task { font-size: 0.82rem; line-height: 1.5; color: var(--text-mid); flex: 1; }
+    .action-due  { font-size: 0.66rem; color: var(--text-ghost); white-space: nowrap; margin-top: 0.15rem; }
+    .due-urgent  { color: var(--pink); }
+
+    .guideline-list { list-style: none; padding: 0; }
+    .guideline-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--text-mid);
+      display: flex;
+      gap: 0.6rem;
+    }
+    .guideline-item:last-child { border-bottom: none; }
+    .guideline-mark { color: var(--green); font-size: 0.78rem; margin-top: 0.1rem; }
+
+    /* ===================== CONTRACTS TAB ===================== */
+    .contracts-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: 100%;
+    }
+    .contracts-list {
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1.5rem 0;
+      background: var(--bg-card);
+    }
+    .contracts-list-header {
+      padding: 0 1.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.5rem;
+    }
+    .contracts-list-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      font-weight: 600;
+    }
+    .contract-item {
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+      border-bottom: 1px solid var(--border);
+    }
+    .contract-item:last-child { border-bottom: none; }
+    .contract-item:hover { background: var(--bg-hover); }
+    .contract-item.active {
+      border-left-color: var(--pink);
+      background: var(--pink-glow);
+    }
+    .contract-item-eyebrow {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      margin-bottom: 0.25rem;
+    }
+    .contract-item.active .contract-item-eyebrow { color: var(--pink); }
+    .contract-item-name {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+    .contract-item-meta { font-size: 0.74rem; color: var(--text-soft); }
+    .contract-status {
+      display: inline-block;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+      font-weight: 600;
+      margin-top: 0.4rem;
+    }
+    .status-final { background: var(--green-bg); color: var(--green-text); }
+    .status-draft { background: var(--amber-bg); color: var(--amber-text); }
+
+    .contract-detail {
+      overflow-y: auto;
+      padding: 2.5rem 3rem;
+    }
+    .contract-detail-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .contract-detail-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .contract-detail-title {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .contract-detail-meta {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+    .contract-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 2rem;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.2rem;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.2rem;
+      background: transparent;
+      color: var(--text-soft);
+      border: 1px solid var(--border-mid);
+      border-radius: 3px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--text-soft); color: var(--text); }
+
+    .contract-note {
+      padding: 1rem 1.25rem;
+      border-left: 3px solid var(--amber);
+      background: var(--amber-bg);
+      font-size: 0.83rem;
+      line-height: 1.65;
+      color: var(--amber-text);
+      margin-bottom: 2rem;
+      border-radius: 0 3px 3px 0;
+    }
+    .contract-note strong { font-weight: 600; color: var(--text); }
+    .contract-note.confirmed {
+      border-left-color: var(--green);
+      background: var(--green-bg);
+      color: var(--green-text);
+    }
+    .contract-note.urgent {
+      border-left-color: var(--pink);
+      background: var(--pink-dark);
+      color: var(--text-mid);
+    }
+
+    .contract-content {
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+      max-width: 680px;
+    }
+    .contract-content h2 {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--text);
+      margin: 2rem 0 0.75rem;
+    }
+    .contract-content h2:first-child { margin-top: 0; }
+    .contract-content p { margin-bottom: 0.75rem; }
+    .contract-content ul {
+      padding-left: 1.2rem;
+      margin-bottom: 0.75rem;
+    }
+    .contract-content li {
+      margin-bottom: 0.35rem;
+      color: var(--text-mid);
+    }
+    .contract-content strong { font-weight: 600; color: var(--text); }
+
+    .clause-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .clause-item {
+      padding: 0.85rem 1rem;
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+    .clause-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .clause-value {
+      font-size: 0.86rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .clause-sub {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+      margin-top: 0.15rem;
+      line-height: 1.4;
+    }
+
+    /* ===================== AUDIT TAB ===================== */
+    .audit-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+    .audit-form-card {
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border-mid);
+      border-radius: 3px;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.86rem;
+      margin-bottom: 1.25rem;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--pink);
+    }
+    .form-select option { background: var(--bg-mid); }
+    .form-textarea { min-height: 80px; resize: vertical; }
+
+    .entry-block {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      background: var(--bg-card);
+      position: relative;
+    }
+    .entry-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--pink);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+    .entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+    .entry-remove {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--text-ghost);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 2px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .entry-remove:hover { color: var(--pink); background: var(--pink-dark); }
+
+    .add-entry-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: transparent;
+      border: 1px dashed var(--border-mid);
+      border-radius: 3px;
+      color: var(--text-soft);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 1.5rem;
+    }
+    .add-entry-btn:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-glow); }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .submit-btn:hover { opacity: 0.85; }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .audit-result {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      background: var(--green-bg);
+      border: 1px solid rgba(45,181,93,0.25);
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .audit-result.visible { display: block; }
+    .audit-result-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .audit-result-title {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 1.2rem;
+      color: var(--green-text);
+      margin-bottom: 0.5rem;
+    }
+    .audit-result-sub { font-size: 0.84rem; color: var(--green-text); opacity: 0.8; }
+
+    /* ===================== HOWLEFT toggle ===================== */
+    .how-left-wrap { display: none; }
+    .how-left-wrap.visible { display: block; }
+
+    /* ===================== SCROLLBAR ===================== */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-ghost); }
+  </style>
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
+<!-- ======================== PASSWORD GATE ======================== -->
 <div id="pw-gate">
-    <div class="pw-card">
-        <img src="/logo-v3.png" alt="Mexzungu Group" class="pw-logo">
-        <div class="pw-label">Confidential — Duara Education</div>
-        <div class="pw-heading">Contract Transition Plan</div>
-        <p class="pw-sub">Enter the access code to open this document.</p>
-        <input
-            type="password"
-            id="pw-input"
-            class="pw-input"
-            placeholder="access code"
-            autocomplete="off"
-            autofocus
-        >
-        <button class="pw-btn" onclick="checkPassword()">Open document</button>
-        <div class="pw-error" id="pw-error"></div>
-        <p class="pw-footer-note">This document is confidential and prepared for Duara Education's internal use.</p>
-    </div>
+  <div class="pw-wrap">
+    <img src="/logo-v3.png" alt="Mexzungu" class="pw-logo">
+    <div class="pw-eyebrow">Restricted Access</div>
+    <h1 class="pw-title">Contract Transition Portal</h1>
+    <p class="pw-sub">Duara Education · May 2026 · Internal use only</p>
+    <div class="pw-rule"></div>
+    <input type="password" id="pw-input" class="pw-input" placeholder="Enter access code" autocomplete="off">
+    <button class="pw-btn" id="pw-btn">Access Portal</button>
+    <div class="pw-error" id="pw-error"></div>
+    <p class="pw-footer">mexzungu.com — confidential</p>
+  </div>
 </div>
 
-<!-- PLAN CONTENT -->
-<div id="plan-content">
+<!-- ======================== PORTAL SHELL ======================== -->
+<div id="portal">
 
-<nav>
-    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
-</nav>
-
-<!-- HERO -->
-<div class="plan-hero">
-    <div class="container">
-        <div class="plan-tag">Duara Education — Legal Ops</div>
-        <h1>AT &amp; Educador Contract Transition Plan</h1>
-        <div class="plan-meta">
-            <span>Prepared by Pepe Carrillo, Mexzungu Consulting</span>
-            <span>11 May 2026</span>
-            <span>For review: 12 May 2026, 11am CEST</span>
-        </div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <img src="/logo-v3.png" alt="Mexzungu" class="topbar-logo">
+      <div class="topbar-divider"></div>
+      <span class="topbar-client">Duara Education</span>
     </div>
-</div>
-
-<!-- BODY -->
-<div class="plan-body">
-
-    <!-- TOC -->
-    <div class="toc">
-        <div class="toc-label">Contents</div>
-        <a href="#situation">The Situation</a>
-        <a href="#phase1">Phase 1 — Audit</a>
-        <a href="#phase2">Phase 2 — Withdrawal and Replacement</a>
-        <a href="#phase3">Phase 3 — Departed ATs</a>
-        <a href="#phase4">Phase 4 — New Onboarding and Offboarding</a>
-        <a href="#phase5">Phase 5 — Withholding Tax</a>
-        <a href="#comms">Comms Templates</a>
-        <a href="#actions">Action Matrix</a>
-        <a href="#open-items">Open Legal Items</a>
-        <a href="#contracts">Contract Templates</a>
-        <div class="toc-sub"><a href="#contract-se" class="toc-sub">Contract 1 — SE Independent Contractor Agreement</a></div>
-        <div class="toc-sub"><a href="#contract-at" class="toc-sub">Contract 2 — AT Consulting Agreement</a></div>
-        <div class="toc-sub"><a href="#contract-educare" class="toc-sub">Contract 3 — Educare Fellowship Agreement</a></div>
+    <div class="topbar-right">
+      <span class="topbar-meta">Contract Transition — May 2026</span>
+      <span class="topbar-badge">In Progress</span>
     </div>
+  </div>
 
-    <!-- SITUATION -->
-    <div class="plan-section" id="situation">
-        <div class="plan-section-label">The situation</div>
-        <h2>The problem is fixable — because Duara never signed the wrong contracts.</h2>
-        <p>Around 12 Assistant Teachers and educadores have employment contracts that were signed by the School Entrepreneur only — not by any Duara hub representative — and were never registered with Kenyan tax authorities.</p>
-        <p>Those contracts are structurally wrong in two ways: they use an employment format when a consulting agreement is the correct structure, and the signing authority is wrong (the SE, not Duara). Because Duara never signed, there is no executed employment relationship to unwind. The gap in the documentation is the problem — and it is also what makes a clean correction possible.</p>
-        <p>The objective is to withdraw the incorrect documents as an administrative error and replace them with correctly structured consulting agreements before any of the following creates a problem: a tax authority inquiry, a departing AT raising a claim, or a future audit.</p>
+  <!-- TABBAR -->
+  <div class="tabbar">
+    <button class="tab-btn active" data-tab="plan">Transition Plan</button>
+    <button class="tab-btn" data-tab="contracts">Contract Templates</button>
+    <button class="tab-btn" data-tab="audit">Staff Audit</button>
+  </div>
 
-        <div class="info-box">
-            <div class="info-label">Why this is correctable</div>
-            <p>An employment contract signed only by the SE — not by Duara — has not been executed as between the AT and Duara. The legal exposure from the unsigned contracts is limited. This is an administrative gap, not a binding employment relationship. The window to correct it cleanly is now.</p>
-        </div>
-    </div>
+  <!-- PANELS -->
+  <div class="panels">
 
-    <hr class="plan-divider">
+    <!-- ======================== PLAN TAB ======================== -->
+    <div class="panel active" id="tab-plan">
+      <div class="plan-layout">
 
-    <!-- PHASES -->
-    <div class="plan-section" id="phases">
-        <div class="plan-section-label">Five phases</div>
-        <h2>How we fix it.</h2>
+        <!-- LEFT NAV SIDEBAR -->
+        <div class="plan-sidebar">
+          <div class="sidebar-logo-wrap">
+            <img src="/logo-v3.png" alt="Mexzungu" class="sidebar-logo-img">
+            <span class="sidebar-client-tag">× Duara</span>
+          </div>
 
-        <div class="phase-card" id="phase1">
-            <div class="phase-number">Phase 1 — This Week</div>
-            <div class="phase-title">Audit: build the full picture before anything is sent.</div>
-            <p>Fatima to compile a complete list of current and departed ATs and educadores. For each person:</p>
-            <ul>
-                <li>Full name, school, and current status (active / departed)</li>
-                <li>Confirm whether the employment contract was signed by the SE only, or by anyone from the hub team</li>
-                <li>For departed ATs: how they left — verbal resignation, WhatsApp message, email, or formal notice</li>
-            </ul>
-            <p><strong>Share the list with Pepe by Wednesday 13 May.</strong> The transition needs to be sequenced — active and departed ATs are handled differently, and the audit tells us who goes in which batch.</p>
-        </div>
+          <div class="nav-section-label">Overview</div>
+          <a href="#situation" class="nav-link">Situation</a>
+          <a href="#phases" class="nav-link">5-Phase Plan</a>
+          <a href="#open-items" class="nav-link">Open Items</a>
 
-        <div class="phase-card" id="phase2">
-            <div class="phase-number">Phase 2 — Week of 13 May</div>
-            <div class="phase-title">Withdrawal and replacement: send the correction in two steps, same day.</div>
-            <p>For each person on the active list:</p>
-            <div class="step-row">
-                <div class="step-num">1</div>
-                <div class="step-text">Send the <strong>withdrawal notice</strong> (Template A below) explaining the administrative correction. Neutral tone, plain language, no legal jargon.</div>
-            </div>
-            <div class="step-row">
-                <div class="step-num">2</div>
-                <div class="step-text">Send the <strong>consulting agreement for signature the same day or the next day.</strong> Do not leave a gap — no contract is worse than the wrong one.</div>
-            </div>
-            <div class="step-row">
-                <div class="step-num">3</div>
-                <div class="step-text">Use an <strong>electronic signature tool</strong> (DocuSign, Adobe Sign, or SignWell — free tier). Do not use a copy-pasted signature image; that creates audit risk.</div>
-            </div>
-            <p style="margin-top: 1rem;"><strong>Signing authority:</strong> Victoria signs on behalf of Duara for now. She can authorize Daphne to sign going forward once the process is stable.</p>
+          <div class="nav-section-label">Staff Profiles</div>
+          <a href="#sp-se" class="nav-link">School Entrepreneurs (SE)</a>
+          <a href="#sp-at" class="nav-link">Assistant Teachers (AT)</a>
+          <a href="#sp-ec" class="nav-link">Educare Fellows (EC)</a>
+
+          <div class="nav-section-label">Comms</div>
+          <a href="#comms" class="nav-link">Message Templates</a>
+          <a href="#guide" class="nav-link">Comms Guide</a>
+
+          <div class="nav-section-label">Doc Library</div>
+          <a href="#docs" class="nav-link">All Documents</a>
+
+          <div class="nav-section-label">Live Actions</div>
+          <a href="#actions" class="nav-link">Action Matrix</a>
         </div>
 
-        <div class="phase-card" id="phase3">
-            <div class="phase-number">Phase 3 — Week of 13 May (parallel)</div>
-            <div class="phase-title">Departed ATs: create one document per person showing the engagement is closed.</div>
-            <ul>
-                <li>If they left by email or WhatsApp: screenshot and file that as the termination record.</li>
-                <li>If they left verbally with no record: send Template B (confirmation of end of engagement) to their last known contact.</li>
-                <li>If a departed AT has no reachable contact: note it in the audit file with a reason. That note is the paper trail.</li>
-            </ul>
-            <p>The objective is one document per departed person showing: (1) they are no longer engaged, and (2) the engagement was as a consultant — not an employee.</p>
-        </div>
+        <!-- MAIN CONTENT -->
+        <div class="plan-main">
 
-        <div class="phase-card" id="phase4">
-            <div class="phase-number">Phase 4 — From 18 May onward</div>
-            <div class="phase-title">New onboarding and offboarding: no verbal-only exits, ever.</div>
-            <p><strong>Day 1 (Onboarding)</strong></p>
-            <div class="step-row">
-                <div class="step-num">1</div>
-                <div class="step-text">SE introduces new AT or educador to Daphne or Fatima</div>
+          <!-- SITUATION -->
+          <div class="content-section" id="situation">
+            <div class="section-label">Background</div>
+            <h2 class="section-title">The Situation</h2>
+            <div class="section-rule"></div>
+            <div class="plan-intro">
+              <strong>The problem:</strong> Approximately 30 Assistant Teachers and Educare Fellows are currently working under employment contracts that treat them as Duara employees. This creates employment law liability under Kenyan law and misrepresents the actual operating model. The School Entrepreneur model requires independent contractor relationships — not employer-employee relationships — to function legally and sustainably.
+              <br><br>
+              <strong>The fix:</strong> A structured 5-phase transition to correct contract types for all three staff tiers, with proper documentation, a comms strategy that preserves relationships, and a withholding tax regime that is compliant from day one.
             </div>
-            <div class="step-row">
-                <div class="step-num">2</div>
-                <div class="step-text">Consulting agreement sent via DocuSign before the person starts any work</div>
-            </div>
-            <div class="step-row">
-                <div class="step-num">3</div>
-                <div class="step-text">No work begins until the agreement is countersigned by Victoria (or authorized signatory)</div>
-            </div>
-            <div class="step-row">
-                <div class="step-num">4</div>
-                <div class="step-text">Agreement stored in Duara Drive under the relevant school folder</div>
-            </div>
-            <p style="margin-top: 1rem;"><strong>Last Day (Offboarding)</strong></p>
-            <div class="step-row">
-                <div class="step-num">1</div>
-                <div class="step-text">SE confirms departure to Fatima by email or WhatsApp</div>
-            </div>
-            <div class="step-row">
-                <div class="step-num">2</div>
-                <div class="step-text">Fatima sends a written termination notice (Template B adapted) within 48 hours</div>
-            </div>
-            <div class="step-row">
-                <div class="step-num">3</div>
-                <div class="step-text">Termination notice stored alongside the consulting agreement in Drive</div>
-            </div>
-        </div>
+          </div>
 
-        <div class="phase-card" id="phase5">
-            <div class="phase-number">Phase 5 — Open item</div>
-            <div class="phase-title">Withholding tax: the position from the call needs to be revisited.</div>
+          <!-- PHASES -->
+          <div class="content-section" id="phases">
+            <div class="section-label">Transition</div>
+            <h2 class="section-title">5-Phase Plan</h2>
+            <div class="section-rule"></div>
+            <div class="phases">
 
-            <div class="warn-box" style="margin: 0 0 1rem;">
-                <div class="warn-label">Correction to May 7 position</div>
-                <p>The call assumed withholding tax would not apply to local Kenyan contractors. That is not correct. Under the Income Tax Act Cap. 470, Duara as the payer is required to deduct 5% withholding tax at source on payments to resident consultants and remit it directly to KRA. This is not PAYE — it is a payer obligation on Duara.</p>
-            </div>
-
-            <p>Open items on withholding tax:</p>
-            <ul>
-                <li>Daphne to confirm with the Duara accountant whether 5% has been applied to any existing consultant payments and what the gap might be.</li>
-                <li>Victoria's contact (free legal review offer) to validate the withholding position before the new consulting agreements are executed at scale.</li>
-                <li>If 5% has not been applied historically, a voluntary disclosure or prospective compliance approach may be the cleanest path — local lawyer to advise.</li>
-            </ul>
-            <p>The new consulting agreement templates (below) already incorporate the 5% withholding deduction clause. No change needed there — just confirmation that it will be applied from the first new payment.</p>
-        </div>
-    </div>
-
-    <hr class="plan-divider">
-
-    <!-- COMMS -->
-    <div class="plan-section" id="comms">
-        <div class="plan-section-label">Comms strategy</div>
-        <h2>Neutral tone. No jargon. Not their problem.</h2>
-        <p>The message to ATs and educadores needs to be simple and neutral. This is an administrative correction — not a reclassification, not a cost-cutting exercise, not a signal that their relationship with Duara is changing. The framing should make clear that their day-to-day work is unaffected and that Duara is just fixing the paperwork.</p>
-
-        <div class="template-box">
-            <div class="template-label">Template A — Active ATs and Educadores</div>
-            <p class="t-subject"><strong>Subject:</strong> Update to Your Agreement with Duara</p>
-            <p>Hi [Name],</p>
-            <p>Thank you for your work with Duara. We want to make sure we have the right paperwork in place for everyone working with our schools.</p>
-            <p>We recently reviewed the agreements we have on file and found that the document you signed contained an error — it was set up as an employment contract rather than a consulting agreement, which is the correct format for how we work together.</p>
-            <p>We are fixing this. You will receive a consulting agreement from us in the next few days via [DocuSign / email]. It reflects what our working relationship has always been: you work independently with your school, and Duara supports you as a consultant.</p>
-            <p>Nothing about your day-to-day work changes. This is purely a paperwork correction.</p>
-            <p>If you have any questions, please reach out to [Daphne / Fatima] at [email].</p>
-            <p>Thank you,<br>[Victoria / Daphne]<br>Duara Education</p>
-        </div>
-
-        <div class="template-box">
-            <div class="template-label">Template B — Departed ATs and Educadores</div>
-            <p class="t-subject"><strong>Subject:</strong> Confirmation of End of Engagement — Duara Education</p>
-            <p>Hi [Name],</p>
-            <p>This is a short note to confirm that your consulting engagement with Duara Education came to an end on [date / approximate date].</p>
-            <p>We wish you well in what comes next, and thank you for your contribution to [school name].</p>
-            <p>Please keep this message for your records.</p>
-            <p>With thanks,<br>[Victoria / Daphne]<br>Duara Education</p>
-        </div>
-    </div>
-
-    <hr class="plan-divider">
-
-    <!-- ACTION MATRIX -->
-    <div class="plan-section" id="actions">
-        <div class="plan-section-label">Action matrix</div>
-        <h2>Who does what, by when.</h2>
-
-        <table class="action-table">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th>Owner</th>
-                    <th>By When</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Compile audit list:</strong> all ATs and educadores, status, who signed their contract</td>
-                    <td class="owner-fatima">Fatima</td>
-                    <td>Wed 13 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Departed ATs:</strong> how they left, any records</td>
-                    <td class="owner-fatima">Fatima</td>
-                    <td>Wed 13 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Set up DocuSign / SignWell account</strong></td>
-                    <td class="owner-daphne">Daphne</td>
-                    <td>Wed 13 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Review audit list, confirm batch sequence</strong></td>
-                    <td class="owner-pepe">Pepe</td>
-                    <td>Thu 14 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Prepare individual consulting agreements</strong> for each active AT</td>
-                    <td class="owner-pepe">Pepe</td>
-                    <td>Fri 15 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Confirm withholding tax position</strong> with Duara accountant</td>
-                    <td class="owner-daphne">Daphne</td>
-                    <td>Fri 15 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Send withdrawal notices + new agreements (batch 1)</strong></td>
-                    <td class="owner-victoria">Daphne + Victoria</td>
-                    <td>Mon 18 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Contact departed ATs</strong> with termination confirmation</td>
-                    <td class="owner-fatima">Fatima</td>
-                    <td>Mon 18 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Lawyer review</strong> of consulting agreements (Victoria's contact)</td>
-                    <td class="owner-victoria">Victoria</td>
-                    <td>Week of 18 May</td>
-                </tr>
-                <tr>
-                    <td><strong>Full transition complete</strong> — all active ATs on signed consulting agreements</td>
-                    <td class="owner-all">All</td>
-                    <td>Fri 29 May</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <hr class="plan-divider">
-
-    <!-- OPEN LEGAL ITEMS -->
-    <div class="plan-section" id="open-items">
-        <div class="plan-section-label">Open legal items</div>
-        <h2>Four things that need a decision before execution at scale.</h2>
-
-        <ul class="open-items">
-            <li class="open-item">
-                <div class="open-item-num">1</div>
-                <div class="open-item-text"><strong>Withholding tax (5%)</strong> — likely applies to all consultant payments. Daphne to confirm with accountant; Victoria's contact to validate. If not applied historically, voluntary disclosure or prospective compliance is the path.</div>
-            </li>
-            <li class="open-item">
-                <div class="open-item-num">2</div>
-                <div class="open-item-text"><strong>AT contract structure</strong> — Duara direct (Duara Community Ltd signs) vs. SE subcontract (SE signs as the contracting party, Duara is not directly in the picture). The April legal review recommended SE subcontract to reduce employment reclassification risk. The May 7 call assumed Duara direct. This needs a decision before batch signing. See structural note in the AT contract below.</div>
-            </li>
-            <li class="open-item">
-                <div class="open-item-num">3</div>
-                <div class="open-item-text"><strong>SE signing authority</strong> — SEs should not be signing labor agreements on Duara's behalf going forward. The new onboarding process removes this (Victoria or Daphne countersigns). Confirm this is communicated to all SEs clearly.</div>
-            </li>
-            <li class="open-item">
-                <div class="open-item-num">4</div>
-                <div class="open-item-text"><strong>Electronic signature tool</strong> — Victoria to confirm tool selection (DocuSign, Adobe Sign, or SignWell free tier). Needed before batch 1 can go out on 18 May.</div>
-            </li>
-        </ul>
-    </div>
-
-    <hr class="plan-divider">
-
-    <!-- CONTRACT TEMPLATES -->
-    <div class="plan-section" id="contracts">
-        <div class="plan-section-label">Contract templates</div>
-        <h2>Three agreements. All adapted from the SE ICA format.</h2>
-        <p>These are the templates for all three groups. The SE ICA is in final form. The AT Consulting Agreement and Educare Fellowship Agreement are drafts ready for the May 12 call review and Victoria's legal contact to sign off on before execution at scale.</p>
-    </div>
-
-    <!-- CONTRACT 1: SE ICA -->
-    <div id="contract-se">
-        <div class="contract-header">
-            <div class="contract-type-tag">Contract 1 of 3 — Final Draft v1.1</div>
-            <h3>Independent Contractor Agreement (ICA)</h3>
-            <div class="contract-parties">Duara Community Ltd &harr; School Entrepreneur</div>
-        </div>
-
-        <div class="contract-body">
-            <h4>1. Your Information</h4>
-            <table class="info-table">
-                <tr><td>Full Legal Name</td><td>[Name]</td></tr>
-                <tr><td>ID / Passport Number</td><td>[Number]</td></tr>
-                <tr><td>Address</td><td>[Address]</td></tr>
-                <tr><td>Email</td><td>[Email]</td></tr>
-                <tr><td>Phone</td><td>[Phone]</td></tr>
-            </table>
-            <p>You enter into this agreement in your personal capacity as an independent contractor.</p>
-
-            <h4>2. Our Information</h4>
-            <table class="info-table">
-                <tr><td>Legal Entity</td><td>Duara Community Ltd</td></tr>
-                <tr><td>Registered Address</td><td>[Address]</td></tr>
-                <tr><td>Authorized Signatory</td><td>[Name / Title]</td></tr>
-                <tr><td>Email</td><td>[Email]</td></tr>
-            </table>
-            <p>Duara Community Ltd manages the Duara education model, systems, brand, and capital.</p>
-
-            <h4>3. Specific Terms</h4>
-            <table class="info-table">
-                <tr><td>Role</td><td>School Entrepreneur (Independent Contractor)</td></tr>
-                <tr><td>School Name</td><td>[Proposed / Working Name of the School]</td></tr>
-                <tr><td>School Location</td><td>[City / Area / Address, if known]</td></tr>
-                <tr><td>Start Date</td><td>[Date]</td></tr>
-                <tr><td>Term</td><td>Ongoing unless ended under Section 13</td></tr>
-                <tr><td>Monthly Fee (Stipend)</td><td>KES [amount] per month</td></tr>
-                <tr><td>Payment Frequency</td><td>Monthly, against invoice or payment record</td></tr>
-                <tr><td>Notice Period</td><td>60 days</td></tr>
-                <tr><td>Governing Law</td><td>Laws of Kenya</td></tr>
-            </table>
-
-            <h4>4. What is this agreement?</h4>
-            <p>This agreement sets the base relationship between you and Duara. It allows you to work within the Duara system, build your capacity as a School Entrepreneur, and take real responsibility from day one. This is a foundational contract. Later agreements may add rights, but they do not replace this agreement unless stated clearly.</p>
-
-            <h4>5. What is this agreement NOT?</h4>
-            <p>This agreement is not an employment contract, a partnership or joint venture, a loan or credit arrangement, a grant or promise of equity, or a guarantee of future operating rights. You never owe money personally to Duara under this agreement.</p>
-
-            <h4>6. What are you responsible for?</h4>
-            <ul>
-                <li>Taking ownership of your work, decisions, and conduct</li>
-                <li>Engaging fully with training, planning, and execution activities</li>
-                <li>Following Duara's safeguarding, conduct, and quality standards</li>
-                <li>Managing time, commitments, and communication responsibly</li>
-                <li>Reporting progress, risks, and challenges honestly and on time</li>
-            </ul>
-
-            <h4>7. What does Duara provide?</h4>
-            <p>Duara may provide training, coaching, and mentorship; access to tools, systems, and templates; guidance on school development; and logistical or financial support at its discretion. Any support provided is not a loan and creates no repayment obligations.</p>
-
-            <h4>8. How does money work (no debt)?</h4>
-            <p>Any money deployed by Duara is at the school or system level, not given to you personally, and does not create personal repayment obligations. If no recovery occurs at the school level, Duara bears that loss.</p>
-
-            <h4>9. How are fees invoiced and paid?</h4>
-            <p>Fees will be paid based on an invoice or payment record generated by Duara. Invoices must include your full legal name, invoice date, reference period, and agreed monthly fee. Duara will pay valid invoices within 14 days. You are responsible for your own taxes, statutory contributions, and filings.</p>
-
-            <h4>10. What is my status as an independent contractor?</h4>
-            <p>You act as an independent contractor, not an employee. Nothing in this agreement creates employment rights, paid leave, severance, or statutory employee protections. You control how you perform your work, subject to Duara's standards.</p>
-
-            <h4>11. Child safety and health &amp; safety</h4>
-            <p>You agree to comply fully with Duara's child safeguarding and protection policies, complete required safeguarding training, report any safeguarding concerns immediately, and act at all times to protect learners' safety. Any breach of safeguarding obligations may result in immediate termination.</p>
-
-            <h4>12. Confidentiality and data protection</h4>
-            <p>You must keep confidential all learner and family data, internal information, and financial and operational information. These obligations continue after this agreement ends. On exit, all Duara data and materials must be returned or deleted.</p>
-
-            <h4>13. What happens if this agreement ends?</h4>
-            <p>Either party may end this agreement with 60 days' written notice. During the notice period, you must support handover and continuity. All Duara-owned assets, data, and materials remain with Duara. Duara may terminate immediately for breach of safeguarding, dishonesty, fraud, or serious violation of the code of conduct.</p>
-
-            <h4>14. Who owns the work and materials?</h4>
-            <p>All curriculum, systems, processes, branding, tools, and materials are and remain Duara's intellectual property, licensed to you only for Duara-related work. Any work created in the course of this role belongs to Duara.</p>
-
-            <h4>15. Final provisions</h4>
-            <p>Changes must be agreed in writing. If any clause is invalid, the rest still applies. This agreement sits beneath later agreements that grant additional rights.</p>
-
-            <div class="sig-block">
-                <div class="sig-party">
-                    <div class="sig-name">School Entrepreneur</div>
-                    <div class="sig-line">Name: _______________________</div>
-                    <div class="sig-line">Signature: ___________________</div>
-                    <div class="sig-line">Date: _______________________</div>
+              <div class="phase-card">
+                <div class="phase-header" onclick="togglePhase(this)">
+                  <div class="phase-num">1</div>
+                  <div class="phase-info">
+                    <div class="phase-period">Week 1 — May 12–16</div>
+                    <div class="phase-name">Audit & Categorisation</div>
+                  </div>
+                  <div class="phase-chevron">▶</div>
                 </div>
-                <div class="sig-party">
-                    <div class="sig-name">Duara Community Ltd</div>
-                    <div class="sig-line">Name: _______________________</div>
-                    <div class="sig-line">Signature: ___________________</div>
-                    <div class="sig-line">Date: _______________________</div>
+                <div class="phase-body">
+                  <ul class="step-list">
+                    <li class="step-item"><span class="step-marker">1.1</span>Fatima + Daphne complete AT audit using the portal form (tab: Staff Audit) — name, school, current contract status, how they left if departed</li>
+                    <li class="step-item"><span class="step-marker">1.2</span>Victoria reviews audit output and flags any edge cases (e.g. staff who may have employment law claims)</li>
+                    <li class="step-item"><span class="step-marker">1.3</span>Pepe/Janis cross-checks against signed vs unsigned contract register</li>
+                    <li class="step-item"><span class="step-marker">1.4</span>Categorise each AT: (a) active, needs new contract; (b) departed, no risk; (c) departed, potential claim — needs monitoring</li>
+                  </ul>
                 </div>
+              </div>
+
+              <div class="phase-card">
+                <div class="phase-header" onclick="togglePhase(this)">
+                  <div class="phase-num">2</div>
+                  <div class="phase-info">
+                    <div class="phase-period">Week 2 — May 19–23</div>
+                    <div class="phase-name">Template Finalisation</div>
+                  </div>
+                  <div class="phase-chevron">▶</div>
+                </div>
+                <div class="phase-body">
+                  <ul class="step-list">
+                    <li class="step-item"><span class="step-marker">2.1</span>Finalise AT Consulting Agreement (current v1.0 draft under review)</li>
+                    <li class="step-item"><span class="step-marker">2.2</span>Finalise Educare Fellowship Agreement for EC tier</li>
+                    <li class="step-item"><span class="step-marker">2.3</span>Confirm SE ICA remains current — no changes required unless audit flags issues</li>
+                    <li class="step-item"><span class="step-marker">2.4</span>Pepe signs off all three templates. Templates go live in the portal (Contracts tab)</li>
+                    <li class="step-item"><span class="step-marker">2.5</span>Confirm withholding tax mechanics with SE — 5% deducted at source on AT/EC payments</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="phase-card">
+                <div class="phase-header" onclick="togglePhase(this)">
+                  <div class="phase-num">3</div>
+                  <div class="phase-info">
+                    <div class="phase-period">Week 3 — May 26–30</div>
+                    <div class="phase-name">Outreach & Signing</div>
+                  </div>
+                  <div class="phase-chevron">▶</div>
+                </div>
+                <div class="phase-body">
+                  <ul class="step-list">
+                    <li class="step-item"><span class="step-marker">3.1</span>Fatima and Daphne send personalised intro messages to each AT using approved template (see Comms section)</li>
+                    <li class="step-item"><span class="step-marker">3.2</span>Attach AT Consulting Agreement (signed by SE first, then sent to AT)</li>
+                    <li class="step-item"><span class="step-marker">3.3</span>Track responses — signed / pending / queried / refused</li>
+                    <li class="step-item"><span class="step-marker">3.4</span>Pepe available for escalations — any AT who asks for a call or raises legal concerns</li>
+                    <li class="step-item"><span class="step-marker">3.5</span>Target: 80% signed by end of week 3</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="phase-card">
+                <div class="phase-header" onclick="togglePhase(this)">
+                  <div class="phase-num">4</div>
+                  <div class="phase-info">
+                    <div class="phase-period">Week 4 — June 2–6</div>
+                    <div class="phase-name">Chase & Edge Cases</div>
+                  </div>
+                  <div class="phase-chevron">▶</div>
+                </div>
+                <div class="phase-body">
+                  <ul class="step-list">
+                    <li class="step-item"><span class="step-marker">4.1</span>Follow up with all unsigned ATs — second outreach using chase template</li>
+                    <li class="step-item"><span class="step-marker">4.2</span>ATs who refuse or go silent: flag to Pepe — decision on whether to escalate or treat as departed</li>
+                    <li class="step-item"><span class="step-marker">4.3</span>Any AT raising employment law concerns: document in writing, flag to Pepe immediately. Do not negotiate individually</li>
+                    <li class="step-item"><span class="step-marker">4.4</span>Educare Fellows: same process in parallel (EC agreement, Duara signs direct)</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="phase-card">
+                <div class="phase-header" onclick="togglePhase(this)">
+                  <div class="phase-num">5</div>
+                  <div class="phase-info">
+                    <div class="phase-period">Week 5 — June 9+</div>
+                    <div class="phase-name">Close & Register</div>
+                  </div>
+                  <div class="phase-chevron">▶</div>
+                </div>
+                <div class="phase-body">
+                  <ul class="step-list">
+                    <li class="step-item"><span class="step-marker">5.1</span>All signed contracts filed in Duara Drive — standardised naming: YYYY-MM-DD_DUARA_CONTRACT_AT-[NAME].pdf</li>
+                    <li class="step-item"><span class="step-marker">5.2</span>Register in Duara contracts tracker (Google Sheet)</li>
+                    <li class="step-item"><span class="step-marker">5.3</span>Withholding tax: confirm SE is set up to deduct at source and remit to KRA quarterly</li>
+                    <li class="step-item"><span class="step-marker">5.4</span>Victoria board update: transition complete, current exposure level, any unresolved edge cases</li>
+                    <li class="step-item"><span class="step-marker">5.5</span>Pepe signs off: transition closed</li>
+                  </ul>
+                </div>
+              </div>
+
             </div>
-        </div>
-    </div>
+          </div>
 
-    <hr class="plan-divider">
+          <!-- OPEN ITEMS -->
+          <div class="content-section" id="open-items">
+            <div class="section-label">Legal</div>
+            <h2 class="section-title">Open Items</h2>
+            <div class="section-rule"></div>
+            <div class="open-items">
+              <div class="open-item">
+                <div class="open-item-num">OI-01</div>
+                <div class="open-item-text"><strong>Withholding tax mechanics:</strong> 5% WHT applies to payments to Kenyan-resident consultants under the Income Tax Act Cap. 470. Confirm SE is registered as a withholding agent and will deduct and remit. AT and EC fees should be quoted gross.</div>
+              </div>
+              <div class="open-item">
+                <div class="open-item-num">OI-02</div>
+                <div class="open-item-text"><strong>Unsigned prior contracts:</strong> Approximately 14 ATs may have unsigned employment contracts in circulation. These do not create binding obligations but should be formally cancelled in writing before the new agreements are issued.</div>
+              </div>
+              <div class="open-item">
+                <div class="open-item-num">OI-03</div>
+                <div class="open-item-text"><strong>Dagoretti situation:</strong> The Dagoretti SE abandonment involved a safeguarding incident. Any AT at that school needs careful handling — flag to Pepe before contact. Decision memo prepared separately.</div>
+              </div>
+              <div class="open-item">
+                <div class="open-item-num">OI-04</div>
+                <div class="open-item-text"><strong>Departed ATs with potential claims:</strong> Any AT who departed without a signed contract and received payment may have a quasi-employment argument. These must be identified in Phase 1 audit and handled with a release letter before the transition is marked closed.</div>
+              </div>
+            </div>
+          </div>
 
-    <!-- CONTRACT 2: AT CONSULTING -->
-    <div id="contract-at">
-        <div class="contract-header">
-            <div class="contract-type-tag">Contract 2 of 3 — Draft v1.0 — For Review</div>
-            <h3>Consulting Agreement (Assistant Teacher)</h3>
-            <div class="contract-parties">Duara Community Ltd &harr; Assistant Teacher</div>
-        </div>
+          <!-- ===================== STAFF PROFILES ===================== -->
+          <div class="content-section" id="sp-se">
+            <div class="section-label">Staff Profiles</div>
+            <h2 class="section-title">School Entrepreneurs</h2>
+            <div class="section-rule"></div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="staff-card-header">
+                  <div class="staff-icon icon-se">🚀</div>
+                  <div class="staff-card-title">
+                    <div class="staff-type-tag tag-se">SE · School Entrepreneur</div>
+                    <div class="staff-card-name">The Network Owner</div>
+                  </div>
+                </div>
+                <div class="staff-card-body">
+                  <div>
+                    <div class="staff-section-label">Who they are</div>
+                    <div class="staff-section-text">The SE is the core operator in the Duara model. They identify, open, and run a local school — typically in a community they are embedded in. They are <strong>not employees</strong> of Duara. They are independent entrepreneurs who license the Duara brand, curriculum, and support infrastructure under a formal agreement.</div>
+                  </div>
+                  <div>
+                    <div class="staff-section-label">What they do</div>
+                    <div class="staff-section-text">Recruit students and families. Hire and manage Assistant Teachers. Run day-to-day school operations. Pay AT fees from school revenue. Report to Duara on enrolment, quality, and finance. Uphold Duara standards and child safeguarding protocols.</div>
+                  </div>
+                  <div class="staff-contract-box">
+                    <div class="scb-header">
+                      <span class="scb-label">Contract Type</span>
+                      <span class="scb-status final">Signed / In use</span>
+                    </div>
+                    <div class="scb-body">
+                      <strong>Independent Contractor Agreement (ICA)</strong><br>
+                      Duara → SE direct. The SE is a franchisee / operator, not an employee. The ICA covers brand licence, operating standards, revenue sharing, reporting obligations, and termination. Governing law: Kenya.
+                      <br><br>
+                      <strong>Why this structure:</strong> The SE takes entrepreneurial risk. They are not controlled at a level that creates employment. They can work for multiple principals. The ICA protects both parties — Duara avoids employment liability; the SE gets a clear commercial relationship with defined IP rights.
+                      <div style="display:flex;gap:0.6rem;margin-top:0.75rem;flex-wrap:wrap;">
+                        <a href="#se-ica" class="scb-link" onclick="switchToContracts('se')">View SE ICA Template →</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div class="structural-note">
-            <div class="sn-label">Structural question — Needs decision at May 12 call</div>
-            <p>The April legal review recommended SE subcontract (SE signs as contracting party, not Duara) to reduce employment reclassification risk under the Kenya Employment Act. The May 7 call assumed Duara signs directly. These are not the same structure.</p>
-            <p>If the decision is Duara direct (as assumed on the call): this template is ready to use. If the decision is SE subcontract: the header changes to name the SE as the contracting party, and the SE takes on the statutory withholding obligation. Victoria to confirm at the call.</p>
-        </div>
+          <div class="content-section" id="sp-at">
+            <div class="section-label">Staff Profiles</div>
+            <h2 class="section-title">Assistant Teachers</h2>
+            <div class="section-rule"></div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="staff-card-header">
+                  <div class="staff-icon icon-at">📚</div>
+                  <div class="staff-card-title">
+                    <div class="staff-type-tag tag-at">AT · Assistant Teacher</div>
+                    <div class="staff-card-name">The Classroom Operator</div>
+                  </div>
+                </div>
+                <div class="staff-card-body">
+                  <div>
+                    <div class="staff-section-label">Who they are</div>
+                    <div class="staff-section-text">ATs are the front-line teachers working in Duara partner schools. They are <strong>community members</strong> — often young graduates or experienced local educators — recruited by the SE. They are not Duara employees. They are independent consultants contracted by Duara directly under the new model.</div>
+                  </div>
+                  <div>
+                    <div class="staff-section-label">What they do</div>
+                    <div class="staff-section-text">Deliver the Duara curriculum to students. Track attendance and progress. Report to the SE on a daily/weekly basis. Attend training sessions organised by Duara. Provide invoices or fee notes as required for payment processing.</div>
+                  </div>
+                  <div class="staff-contract-box">
+                    <div class="scb-header">
+                      <span class="scb-label">Contract Type</span>
+                      <span class="scb-status draft">v1.0 — Under review</span>
+                    </div>
+                    <div class="scb-body">
+                      <strong>Consulting Agreement (AT)</strong><br>
+                      Duara → AT direct. The AT is engaged as an independent consultant by Duara Education. The SE is the day-to-day operational supervisor but is not the contractual party — this keeps Duara in control of the legal relationship and compliance obligations.
+                      <br><br>
+                      <strong>Why this structure:</strong> Previous employment contracts created statutory obligations (notice periods, redundancy, maternity rights, NSSF/NHIF contributions) that Duara cannot sustainably manage across 30+ schools. The consulting model is appropriate because ATs typically work part-time, serve specific engagements, and retain the right to work elsewhere.
+                      <div class="struct-note confirmed">
+                        <div class="sn-label">Structure confirmed — 11 May 2026</div>
+                        <p>Confirmed: Duara contracts the AT directly (Duara→AT, not SE→AT subcontract). Employment contracts previously in circulation were an administrative error — these are being systematically replaced.</p>
+                      </div>
+                      <div style="display:flex;gap:0.6rem;margin-top:0.75rem;flex-wrap:wrap;">
+                        <a href="#at-contract" class="scb-link" onclick="switchToContracts('at')">View AT Agreement Template →</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div class="contract-body">
-            <h4>1. Your Information</h4>
-            <table class="info-table">
-                <tr><td>Full Legal Name</td><td>[Name]</td></tr>
-                <tr><td>ID / Passport Number</td><td>[Number]</td></tr>
-                <tr><td>Address</td><td>[Address]</td></tr>
-                <tr><td>Email</td><td>[Email]</td></tr>
-                <tr><td>Phone</td><td>[Phone]</td></tr>
-            </table>
-            <p>You enter into this agreement in your personal capacity as an independent consultant.</p>
+          <div class="content-section" id="sp-ec">
+            <div class="section-label">Staff Profiles</div>
+            <h2 class="section-title">Educare Fellows</h2>
+            <div class="section-rule"></div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="staff-card-header">
+                  <div class="staff-icon icon-ec">🌱</div>
+                  <div class="staff-card-title">
+                    <div class="staff-type-tag tag-ec">EC · Educare Fellow</div>
+                    <div class="staff-card-name">The Fellowship Participant</div>
+                  </div>
+                </div>
+                <div class="staff-card-body">
+                  <div>
+                    <div class="staff-section-label">Who they are</div>
+                    <div class="staff-section-text">Educare Fellows are participants in the Duara Educare programme — a structured fellowship designed to develop early-childhood education practitioners in the communities Duara serves. They are <strong>not employees</strong>. They receive a fellowship stipend, training, and certification in exchange for their participation and contributions.</div>
+                  </div>
+                  <div>
+                    <div class="staff-section-label">What they do</div>
+                    <div class="staff-section-text">Complete structured training modules in early childhood education. Work alongside SEs and ATs in partner schools as part of their practical placement. Contribute to curriculum delivery at the early childhood level. Receive certification upon programme completion.</div>
+                  </div>
+                  <div class="staff-contract-box">
+                    <div class="scb-header">
+                      <span class="scb-label">Contract Type</span>
+                      <span class="scb-status draft">v1.0 — Under review</span>
+                    </div>
+                    <div class="scb-body">
+                      <strong>Fellowship Agreement (Educare)</strong><br>
+                      Duara → EC direct. The agreement is structured as a fellowship grant — not an employment contract and not a consulting agreement. The EC receives a stipend (not a wage), is enrolled in a defined programme, and has learning obligations alongside any operational contributions.
+                      <br><br>
+                      <strong>Why this structure:</strong> Fellowship status correctly describes the relationship — Duara is investing in the EC's development, not purchasing labour. This avoids employment law entirely and creates a positive, development-oriented framing that reflects the actual purpose of the Educare programme.
+                      <div style="display:flex;gap:0.6rem;margin-top:0.75rem;flex-wrap:wrap;">
+                        <a href="#ec-agreement" class="scb-link" onclick="switchToContracts('ec')">View Fellowship Agreement →</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-            <h4>2. Our Information</h4>
-            <table class="info-table">
-                <tr><td>Legal Entity</td><td>Duara Community Ltd</td></tr>
-                <tr><td>Registered Address</td><td>[Address]</td></tr>
-                <tr><td>Authorized Signatory</td><td>[Name / Title]</td></tr>
-                <tr><td>Email</td><td>[Email]</td></tr>
-            </table>
+          <!-- COMMS TEMPLATES -->
+          <div class="content-section" id="comms">
+            <div class="section-label">Communications</div>
+            <h2 class="section-title">Message Templates</h2>
+            <div class="section-rule"></div>
 
-            <h4>3. Specific Terms</h4>
-            <table class="info-table">
-                <tr><td>Role</td><td>Assistant Teacher (Consultant)</td></tr>
-                <tr><td>School Name</td><td>[School Name]</td></tr>
-                <tr><td>School Location</td><td>[City / Area / Address]</td></tr>
-                <tr><td>Start Date</td><td>[Date]</td></tr>
-                <tr><td>Term</td><td>Ongoing unless ended under Section 11</td></tr>
-                <tr><td>Monthly Consulting Fee</td><td>KES [amount] per month</td></tr>
-                <tr><td>Payment Frequency</td><td>Monthly, on or before 5th of following month</td></tr>
-                <tr><td>Expected Schedule</td><td>[Days and hours, e.g. Mon–Fri, 7:30am–2:30pm]</td></tr>
-                <tr><td>Notice Period</td><td>30 days</td></tr>
-                <tr><td>Withholding Tax</td><td>5% deducted at source by Duara, remitted to KRA</td></tr>
-                <tr><td>Governing Law</td><td>Laws of Kenya</td></tr>
-            </table>
+            <div class="template-card">
+              <div class="template-header">AT Outreach — Initial (WhatsApp / SMS)</div>
+              <div class="template-body">Hi [Name], hope you're doing well.
 
-            <h4>4. What is this agreement?</h4>
-            <p>This agreement sets out the consulting relationship between you and Duara. You will support learning and school operations at the school named above, as an independent consultant. You are not an employee of Duara.</p>
+As Duara continues to grow, we're updating how we formalise our relationships with teaching partners. We'd like to send you a consulting agreement that properly reflects the work you do with us — it's straightforward and makes sure you're properly recognised and protected.
 
-            <h4>5. What are you responsible for?</h4>
-            <ul>
-                <li>Delivering teaching and learning support in line with Duara's curriculum and model</li>
-                <li>Supporting the School Entrepreneur in day-to-day classroom operations</li>
-                <li>Engaging with learners, parents, and the school community in line with Duara's standards</li>
-                <li>Completing attendance, progress, and incident records as required</li>
-                <li>Participating in training and sessions provided by Duara</li>
-                <li>Following Duara's safeguarding, conduct, and quality standards at all times</li>
+Can I send it over to you on WhatsApp? [SE Name] will also have a copy if you'd prefer to discuss in person first.</div>
+            </div>
+
+            <div class="template-card">
+              <div class="template-header">AT Outreach — Follow-up (if no response after 5 days)</div>
+              <div class="template-body">Hi [Name], just following up on the consulting agreement I mentioned. It's a short document and shouldn't take long to review. If you have any questions about it, I'm happy to walk you through it — just let me know what works for you.</div>
+            </div>
+
+            <div class="template-card">
+              <div class="template-header">SE Briefing (before AT outreach begins)</div>
+              <div class="template-body">Hi [SE Name],
+
+We're formalising the agreements with all teaching partners across the network. For your school, this means [Name] and [Name] will be receiving consulting agreements directly from Duara — this is the correct structure and it protects everyone involved.
+
+Could you let each of them know we'll be in touch? A friendly heads-up from you will help. The agreement is simple, and if they have questions, they can come to you first or contact Fatima directly.</div>
+            </div>
+
+            <div class="template-card">
+              <div class="template-header">EC Outreach — Fellowship Agreement (WhatsApp)</div>
+              <div class="template-body">Hi [Name], congratulations on being part of the Educare fellowship this year.
+
+As part of formalising the programme, we'd like to send you a fellowship agreement — it sets out what you're enrolled in, what you'll receive (stipend + certification), and what we're asking from you in return.
+
+It's a positive document — designed to recognise your participation properly. Can I send it over now?</div>
+            </div>
+
+          </div>
+
+          <!-- COMMS GUIDE -->
+          <div class="content-section" id="guide">
+            <div class="section-label">Communications</div>
+            <h2 class="section-title">Comms Guide</h2>
+            <div class="section-rule"></div>
+            <ul class="guideline-list">
+              <li class="guideline-item"><span class="guideline-mark">✓</span>Frame all outreach as "formalising" the existing relationship — not changing it. The work is the same. The paper is just catching up.</li>
+              <li class="guideline-item"><span class="guideline-mark">✓</span>Always let the SE brief the AT first before formal contact. The SE is the trusted local relationship.</li>
+              <li class="guideline-item"><span class="guideline-mark">✓</span>Never use the word "employment" or "employee" in any outreach. Use "partner," "teaching partner," "consulting relationship."</li>
+              <li class="guideline-item"><span class="guideline-mark">✓</span>If an AT asks "am I an employee?" — the answer is: "No, this is a consulting arrangement, which is standard for the type of work you do with us." Do not elaborate. Flag to Pepe if they push.</li>
+              <li class="guideline-item"><span class="guideline-mark">✓</span>Keep all correspondence in writing (WhatsApp is fine). It creates a record without being intimidating.</li>
+              <li class="guideline-item"><span class="guideline-mark">✓</span>Any AT who refuses to sign should be flagged to Pepe immediately — do not negotiate individually or offer modifications to the agreement.</li>
+              <li class="guideline-item"><span class="guideline-mark">✓</span>Departed ATs: do not contact unless specifically instructed by Pepe. The audit identifies them — the decision on whether to reach out sits with Pepe.</li>
             </ul>
-            <p>You report to the School Entrepreneur at your school, and to Duara's operations team where required.</p>
+          </div>
 
-            <h4>6. What does Duara provide?</h4>
-            <p>Duara may provide access to Duara's curriculum and learning materials, training and coaching sessions, and guidance from Duara's operations team. Any support provided is not a loan and creates no repayment obligations.</p>
+          <!-- DOC LIBRARY -->
+          <div class="content-section" id="docs">
+            <div class="section-label">Resources</div>
+            <h2 class="section-title">Document Library</h2>
+            <div class="section-rule"></div>
+            <div class="doc-library">
 
-            <h4>7. What is my status as a consultant?</h4>
-            <p>You are an independent consultant, not an employee. Nothing in this agreement creates employment rights, paid leave, severance, or statutory employee protections under the Employment Act. You are free to provide consulting services to other clients during this engagement, as long as this does not conflict with your obligations here.</p>
+              <div class="doc-row" onclick="switchToContracts('se')">
+                <span class="doc-type-tag dtag-contract">Contract</span>
+                <span class="doc-name">School Entrepreneur — Independent Contractor Agreement (ICA)</span>
+                <span class="doc-meta">SE-ICA-final · v1.0</span>
+                <span class="doc-arrow">→</span>
+              </div>
 
-            <h4>8. How is my consulting fee paid?</h4>
-            <p>Payment will be made on or before the 5th day of the following month by M-Pesa or bank transfer. Duara will deduct withholding tax at 5% at source, as required under the Income Tax Act Cap. 470 for resident consultants, and remit this directly to KRA. The net amount you receive will reflect this deduction. You are responsible for any other personal tax obligations. You are not entitled to pension contributions, medical cover, leave pay, or any other employment benefit from Duara.</p>
+              <div class="doc-row" onclick="switchToContracts('at')">
+                <span class="doc-type-tag dtag-contract">Contract</span>
+                <span class="doc-name">Assistant Teacher — Consulting Agreement</span>
+                <span class="doc-meta">AT-CA · v1.0 draft</span>
+                <span class="doc-arrow">→</span>
+              </div>
 
-            <h4>9. Who owns the work and materials?</h4>
-            <p>All materials, lesson records, and content created in the course of this engagement belong to Duara. You may not copy, reproduce, or use Duara's curriculum or materials for any purpose outside this engagement.</p>
+              <div class="doc-row" onclick="switchToContracts('ec')">
+                <span class="doc-type-tag dtag-contract">Contract</span>
+                <span class="doc-name">Educare Fellow — Fellowship Agreement</span>
+                <span class="doc-meta">EC-FA · v1.0 draft</span>
+                <span class="doc-arrow">→</span>
+              </div>
 
-            <h4>10. Child safety</h4>
-            <p>You agree to comply fully with Duara's Safeguarding and Child Protection Policy at all times, complete any required safeguarding training, and report immediately any safeguarding concern, incident, or allegation to the School Entrepreneur and to Duara's operations team. Any breach of safeguarding obligations is considered serious misconduct and may result in immediate termination.</p>
+              <div class="doc-row" onclick="document.querySelector('[data-tab=plan]').click(); setTimeout(()=>document.getElementById('situation').scrollIntoView({behavior:'smooth'}),100)">
+                <span class="doc-type-tag dtag-plan">Plan</span>
+                <span class="doc-name">AT Contract Transition Plan — 5-Phase Correction</span>
+                <span class="doc-meta">May 2026</span>
+                <span class="doc-arrow">→</span>
+              </div>
 
-            <h4>11. What happens if this agreement ends?</h4>
-            <p>Either party may end this agreement with 30 days' written notice by email, SMS, or written letter. Duara may end this agreement immediately, without notice, for breach of safeguarding, dishonesty, fraud, conduct that puts learners at risk, or serious violation of Duara's standards. When this agreement ends, you must stop using Duara's name, materials, and systems; all Duara materials must be returned; fees owed up to the end date will be paid within 14 days. This agreement supersedes any prior arrangement, letter, or contract between us, including any prior employment contract.</p>
+              <div class="doc-row" onclick="document.querySelector('[data-tab=plan]').click(); setTimeout(()=>document.getElementById('comms').scrollIntoView({behavior:'smooth'}),100)">
+                <span class="doc-type-tag dtag-memo">Memo</span>
+                <span class="doc-name">AT Comms Strategy & Message Templates</span>
+                <span class="doc-meta">May 2026</span>
+                <span class="doc-arrow">→</span>
+              </div>
 
-            <h4>12. Confidentiality</h4>
-            <p>You must keep confidential all information about Duara's operations, learners, families, and school community that comes to you through this engagement. This obligation continues for 12 months after this agreement ends.</p>
+              <div class="doc-row" onclick="document.querySelector('[data-tab=plan]').click(); setTimeout(()=>document.getElementById('open-items').scrollIntoView({behavior:'smooth'}),100)">
+                <span class="doc-type-tag dtag-memo">Memo</span>
+                <span class="doc-name">Open Legal Items — WHT, Unsigned Contracts, Dagoretti</span>
+                <span class="doc-meta">May 2026</span>
+                <span class="doc-arrow">→</span>
+              </div>
 
-            <div class="sig-block">
-                <div class="sig-party">
-                    <div class="sig-name">Assistant Teacher (Consultant)</div>
-                    <div class="sig-line">Name: _______________________</div>
-                    <div class="sig-line">Signature: ___________________</div>
-                    <div class="sig-line">Date: _______________________</div>
-                </div>
-                <div class="sig-party">
-                    <div class="sig-name">Duara Community Ltd</div>
-                    <div class="sig-line">Name: _______________________</div>
-                    <div class="sig-line">Signature: ___________________</div>
-                    <div class="sig-line">Date: _______________________</div>
-                </div>
             </div>
-        </div>
-    </div>
+          </div>
 
-    <hr class="plan-divider">
+          <!-- ACTION MATRIX -->
+          <div class="content-section" id="actions">
+            <div class="section-label">Live Tracking</div>
+            <h2 class="section-title">Action Matrix</h2>
+            <div class="section-rule"></div>
 
-    <!-- CONTRACT 3: EDUCARE FELLOWSHIP -->
-    <div id="contract-educare">
-        <div class="contract-header">
-            <div class="contract-type-tag">Contract 3 of 3 — Draft v1.0 — For Review</div>
-            <h3>Fellowship Agreement (Educare)</h3>
-            <div class="contract-parties">Duara Community Ltd &harr; Educare Fellow</div>
-        </div>
-
-        <div class="info-box">
-            <div class="info-label">Why fellowship, not consulting</div>
-            <p>The May 7 call confirmed educadores should be Fellows, not consultants. The fellowship model allows more day-to-day direction (appropriate for people working daily in schools), does not require invoicing, uses a fixed term aligned to the school term, and is a cleaner legal category than consultant where the work is structured learning participation rather than professional services.</p>
-        </div>
-
-        <div class="contract-body">
-            <h4>1. Your Information</h4>
-            <table class="info-table">
-                <tr><td>Full Legal Name</td><td>[Name]</td></tr>
-                <tr><td>ID / Passport Number</td><td>[Number]</td></tr>
-                <tr><td>Address</td><td>[Address]</td></tr>
-                <tr><td>Email</td><td>[Email]</td></tr>
-                <tr><td>Phone</td><td>[Phone]</td></tr>
-            </table>
-            <p>You enter into this agreement as a Fellow in Duara's Educare programme.</p>
-
-            <h4>2. Our Information</h4>
-            <table class="info-table">
-                <tr><td>Legal Entity</td><td>Duara Community Ltd</td></tr>
-                <tr><td>Registered Address</td><td>[Address]</td></tr>
-                <tr><td>Authorized Signatory</td><td>[Name / Title]</td></tr>
-                <tr><td>Email</td><td>[Email]</td></tr>
-            </table>
-
-            <h4>3. Specific Terms</h4>
-            <table class="info-table">
-                <tr><td>Role</td><td>Educare Fellow</td></tr>
-                <tr><td>School Name</td><td>[School Name]</td></tr>
-                <tr><td>School Location</td><td>[City / Area / Address]</td></tr>
-                <tr><td>Start Date</td><td>[Date]</td></tr>
-                <tr><td>End Date</td><td>[Date — end of school term]</td></tr>
-                <tr><td>Monthly Stipend</td><td>KES [amount] per month</td></tr>
-                <tr><td>Payment Frequency</td><td>Monthly, on or before 5th of following month</td></tr>
-                <tr><td>Expected Schedule</td><td>[Days and hours, e.g. Mon–Fri, 7:30am–2:30pm]</td></tr>
-                <tr><td>Notice Period</td><td>14 days</td></tr>
-                <tr><td>Invoicing required?</td><td>No — Duara processes payment from participation record</td></tr>
-                <tr><td>Governing Law</td><td>Laws of Kenya</td></tr>
-            </table>
-
-            <h4>4. What is this agreement?</h4>
-            <p>This agreement establishes your fellowship with Duara at the school named above. The Educare Fellowship is a structured learning and contribution programme. You will support school operations and gain hands-on experience in community education delivery. This is not an employment contract. You are a Fellow, not an employee or independent contractor.</p>
-
-            <h4>5. What are you expected to do?</h4>
-            <ul>
-                <li>Support the School Entrepreneur and learners with educational activities in line with Duara's model</li>
-                <li>Follow the direction and schedule set by the School Entrepreneur and Duara's operations team</li>
-                <li>Participate in Duara training and learning sessions as required</li>
-                <li>Keep records and reports as directed</li>
-                <li>Contribute to a positive and safe learning environment</li>
-                <li>Follow Duara's standards, policies, and safeguarding requirements at all times</li>
-            </ul>
-
-            <h4>6. What does Duara provide?</h4>
-            <p>Duara will provide a structured fellowship experience at a Duara school, supervision and coaching from the School Entrepreneur and Duara's team, and access to Duara's training materials and learning sessions.</p>
-
-            <h4>7. How is my stipend paid?</h4>
-            <p>Payment will be made on or before the 5th day of the following month by M-Pesa or bank transfer. You do not need to submit an invoice — Duara will process the payment based on your participation record. The stipend is not a salary and does not carry employment benefits. Duara will deduct any withholding tax required by Kenyan law at source and remit it to KRA.</p>
-
-            <h4>8. What is my status as a Fellow?</h4>
-            <p>You are a Fellow, not an employee of Duara. Nothing in this agreement creates employment rights, paid leave, severance, medical cover, or any other employment benefit. Duara and the School Entrepreneur will give you day-to-day direction. This is a normal part of a structured fellowship and does not create an employment relationship.</p>
-
-            <h4>9. Child safety</h4>
-            <p>You agree to comply fully with Duara's Safeguarding and Child Protection Policy, complete required safeguarding training before working with learners, and report immediately any safeguarding concern, incident, or allegation. Any breach will result in immediate termination of the Fellowship.</p>
-
-            <h4>10. What happens if this Fellowship ends?</h4>
-            <p>The Fellowship ends on the end date in Section 3, or earlier if either party gives 14 days' written notice by email, SMS, or written letter. Duara may end the Fellowship immediately for breach of safeguarding, conduct that puts learners at risk, fraud, or serious misconduct. When the Fellowship ends, all Duara materials must be returned and any unpaid stipend owed up to the end date will be paid within 14 days.</p>
-
-            <h4>11. Materials and confidentiality</h4>
-            <p>All content, records, and materials created during the Fellowship belong to Duara. You must keep confidential all information about Duara's operations, learners, and school community. This obligation continues for 6 months after the Fellowship ends.</p>
-
-            <h4>12. Final provisions</h4>
-            <p>Changes must be agreed in writing. If any clause is invalid, the rest still applies. This agreement supersedes any prior arrangement or contract between us. Governing law: Kenya.</p>
-
-            <div class="sig-block">
-                <div class="sig-party">
-                    <div class="sig-name">Educare Fellow</div>
-                    <div class="sig-line">Name: _______________________</div>
-                    <div class="sig-line">Signature: ___________________</div>
-                    <div class="sig-line">Date: _______________________</div>
+            <div class="sidebar-block">
+              <div class="sidebar-title">Immediate actions</div>
+              <div class="action-row">
+                <div class="action-who fatima">Fatima</div>
+                <div class="action-task flex-col" style="flex:1">
+                  <div>Complete AT audit — use Staff Audit tab</div>
+                  <div class="action-due due-urgent">Due May 12</div>
                 </div>
-                <div class="sig-party">
-                    <div class="sig-name">Duara Community Ltd</div>
-                    <div class="sig-line">Name: _______________________</div>
-                    <div class="sig-line">Signature: ___________________</div>
-                    <div class="sig-line">Date: _______________________</div>
+              </div>
+              <div class="action-row">
+                <div class="action-who daphne">Daphne</div>
+                <div class="action-task flex-col" style="flex:1">
+                  <div>Cross-check audit with school rosters</div>
+                  <div class="action-due due-urgent">Due May 12</div>
                 </div>
+              </div>
+              <div class="action-row">
+                <div class="action-who victoria">Victoria</div>
+                <div class="action-task flex-col" style="flex:1">
+                  <div>Review AT Consulting Agreement draft</div>
+                  <div class="action-due">Due May 14</div>
+                </div>
+              </div>
+              <div class="action-row">
+                <div class="action-who pepe">Pepe</div>
+                <div class="action-task flex-col" style="flex:1">
+                  <div>Confirm SE withholding agent status + KRA registration</div>
+                  <div class="action-due">Due May 16</div>
+                </div>
+              </div>
+              <div class="action-row">
+                <div class="action-who pepe">Pepe</div>
+                <div class="action-task flex-col" style="flex:1">
+                  <div>Sign off all three contract templates</div>
+                  <div class="action-due">Due May 19</div>
+                </div>
+              </div>
             </div>
+
+            <div class="sidebar-block">
+              <div class="sidebar-title">Next wave (May 26+)</div>
+              <div class="action-row">
+                <div class="action-who fatima">Fatima</div>
+                <div class="action-task">Send AT agreements — personalised outreach per template</div>
+              </div>
+              <div class="action-row">
+                <div class="action-who daphne">Daphne</div>
+                <div class="action-task">Track signing status — update shared tracker daily</div>
+              </div>
+              <div class="action-row">
+                <div class="action-who victoria">Victoria</div>
+                <div class="action-task">Board update memo — transition progress</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end plan-main -->
+      </div><!-- end plan-layout -->
+    </div><!-- end tab-plan -->
+
+    <!-- ======================== CONTRACTS TAB ======================== -->
+    <div class="panel" id="tab-contracts">
+      <div class="contracts-layout">
+
+        <div class="contracts-list">
+          <div class="contracts-list-header">
+            <div class="contracts-list-label">Contract Templates</div>
+          </div>
+
+          <div class="contract-item active" id="ci-se" onclick="showContract('se')">
+            <div class="contract-item-eyebrow">SE · School Entrepreneur</div>
+            <div class="contract-item-name">Independent Contractor Agreement</div>
+            <div class="contract-item-meta">Duara → SE · Governing law: Kenya</div>
+            <div class="contract-status status-final">In use</div>
+          </div>
+
+          <div class="contract-item" id="ci-at" onclick="showContract('at')">
+            <div class="contract-item-eyebrow">AT · Assistant Teacher</div>
+            <div class="contract-item-name">Consulting Agreement</div>
+            <div class="contract-item-meta">Duara → AT · Replacing employment contracts</div>
+            <div class="contract-status status-draft">v1.0 draft</div>
+          </div>
+
+          <div class="contract-item" id="ci-ec" onclick="showContract('ec')">
+            <div class="contract-item-eyebrow">EC · Educare Fellow</div>
+            <div class="contract-item-name">Fellowship Agreement</div>
+            <div class="contract-item-meta">Duara → EC · Fellowship structure</div>
+            <div class="contract-status status-draft">v1.0 draft</div>
+          </div>
         </div>
-    </div>
 
-    <hr class="plan-divider">
+        <!-- CONTRACT DETAIL PANE -->
+        <div class="contract-detail" id="contract-detail-pane">
 
-    <div class="plan-section">
-        <div class="plan-section-label">Prepared by</div>
-        <p style="color: #6b5e57; font-size: 0.85rem;">Pepe Carrillo, Mexzungu Consulting — 11 May 2026<br>
-        For Duara Education Inc. / Duara Community Ltd internal use only.<br>
-        Questions: <a href="mailto:pepe@mexzungu.com" style="color: #e14b87;">pepe@mexzungu.com</a></p>
-    </div>
+          <!-- SE CONTRACT -->
+          <div id="ct-se">
+            <div class="contract-detail-header">
+              <div class="contract-detail-eyebrow">SE · School Entrepreneur</div>
+              <h1 class="contract-detail-title">Independent Contractor Agreement</h1>
+              <div class="contract-detail-meta">Duara Education Ltd · May 2026 · Governing law: Kenya · Based on SE-ICA-final</div>
+            </div>
+            <div class="contract-actions">
+              <a href="https://docs.google.com/document/d/1_SE_ICA_PLACEHOLDER" target="_blank" class="btn-primary">Open in Google Docs ↗</a>
+              <button class="btn-secondary">Request PDF</button>
+            </div>
+            <div class="contract-note">
+              <strong>Status:</strong> This template is the current in-use ICA for all active School Entrepreneurs. No changes are required as part of the transition — the SE relationship is correctly structured. Review at each annual renewal.
+            </div>
+            <div class="clause-grid">
+              <div class="clause-item">
+                <div class="clause-label">Parties</div>
+                <div class="clause-value">Duara Education Ltd + SE (individual)</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Structure</div>
+                <div class="clause-value">Independent contractor</div>
+                <div class="clause-sub">Not an employment relationship</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Term</div>
+                <div class="clause-value">12 months, renewable</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Revenue model</div>
+                <div class="clause-value">Revenue share / fee per model</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Governing law</div>
+                <div class="clause-value">Kenya</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Withholding tax</div>
+                <div class="clause-value">N/A at SE level</div>
+                <div class="clause-sub">SE deducts WHT on AT/EC payments</div>
+              </div>
+            </div>
+            <div class="contract-content">
+              <h2>Key Provisions</h2>
+              <ul>
+                <li>SE granted a non-exclusive licence to operate a Duara school in a designated territory</li>
+                <li>SE responsible for all operational costs including AT fees, facilities, and materials</li>
+                <li>Duara provides: curriculum, brand, training, and support infrastructure</li>
+                <li>SE must comply with Duara's Child Safeguarding Policy at all times</li>
+                <li>Revenue sharing / fee structure defined in Schedule A (school-specific)</li>
+                <li>30-day notice period for termination by either party</li>
+                <li>IP: all Duara IP remains with Duara; SE has no right to sublicense</li>
+              </ul>
+              <h2>Withholding Tax (SE obligation)</h2>
+              <p>Where the SE engages ATs or ECs as consultants, the SE (as the paying party at point of instruction) must deduct 5% withholding tax on all payments to Kenyan-resident individual consultants and remit quarterly to KRA. Duara to confirm SE's withholding agent registration status.</p>
+            </div>
+          </div>
 
-</div>
-</div>
+          <!-- AT CONTRACT -->
+          <div id="ct-at" style="display:none">
+            <div class="contract-detail-header">
+              <div class="contract-detail-eyebrow">AT · Assistant Teacher</div>
+              <h1 class="contract-detail-title">Consulting Agreement</h1>
+              <div class="contract-detail-meta">Duara Education Ltd · May 2026 · v1.0 draft · Governing law: Kenya</div>
+            </div>
+            <div class="contract-actions">
+              <a href="https://docs.google.com/document/d/1_AT_CA_PLACEHOLDER" target="_blank" class="btn-primary">Open in Google Docs ↗</a>
+              <button class="btn-secondary">Request PDF</button>
+            </div>
+            <div class="contract-note confirmed">
+              <strong>Structure confirmed (11 May 2026):</strong> Duara contracts the AT directly (Duara→AT). This is not an SE subcontract. The SE is the day-to-day operational supervisor but is not a party to the AT's contract with Duara. Employment contracts previously in circulation are superseded by this agreement.
+            </div>
+            <div class="clause-grid">
+              <div class="clause-item">
+                <div class="clause-label">Parties</div>
+                <div class="clause-value">Duara Education Ltd + AT (individual)</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Structure</div>
+                <div class="clause-value">Independent consultant</div>
+                <div class="clause-sub">Not an employment relationship</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Term</div>
+                <div class="clause-value">Per academic term, renewable</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Fee</div>
+                <div class="clause-value">Quoted gross (WHT deducted)</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Withholding tax</div>
+                <div class="clause-value">5% WHT at source</div>
+                <div class="clause-sub">Income Tax Act Cap. 470</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Governing law</div>
+                <div class="clause-value">Kenya</div>
+              </div>
+            </div>
+            <div class="contract-content">
+              <h2>Key Provisions</h2>
+              <ul>
+                <li>AT engaged to deliver teaching services at a specified Duara partner school</li>
+                <li>AT works under the day-to-day direction of the SE but is contracted by and accountable to Duara</li>
+                <li>AT is not an employee — no statutory entitlements (NSSF/NHIF contributions, annual leave, notice periods) unless separately agreed</li>
+                <li>AT must comply with Duara's Child Safeguarding Policy — breach is grounds for immediate termination</li>
+                <li>Fee is gross — Duara (or SE as paying agent) deducts 5% WHT before payment and remits to KRA</li>
+                <li>AT retains right to work for other clients outside Duara hours</li>
+                <li>Either party may terminate on 14 days' written notice</li>
+              </ul>
+              <h2>Transition Note</h2>
+              <p>This agreement replaces any employment contract, offer letter, or prior engagement letter previously in circulation for Assistant Teachers. Upon signature, the prior document is superseded. ATs should be informed of this clearly during the outreach process.</p>
+            </div>
+          </div>
+
+          <!-- EC CONTRACT -->
+          <div id="ct-ec" style="display:none">
+            <div class="contract-detail-header">
+              <div class="contract-detail-eyebrow">EC · Educare Fellow</div>
+              <h1 class="contract-detail-title">Fellowship Agreement</h1>
+              <div class="contract-detail-meta">Duara Education Ltd · May 2026 · v1.0 draft · Governing law: Kenya</div>
+            </div>
+            <div class="contract-actions">
+              <a href="https://docs.google.com/document/d/1_EC_FA_PLACEHOLDER" target="_blank" class="btn-primary">Open in Google Docs ↗</a>
+              <button class="btn-secondary">Request PDF</button>
+            </div>
+            <div class="contract-note">
+              <strong>Fellowship structure:</strong> The Educare Fellow is a programme participant — not an employee and not a consultant. The agreement is structured as a fellowship grant, which reflects the development purpose of the Educare programme. The stipend is a grant, not a wage.
+            </div>
+            <div class="clause-grid">
+              <div class="clause-item">
+                <div class="clause-label">Parties</div>
+                <div class="clause-value">Duara Education Ltd + EC (individual)</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Structure</div>
+                <div class="clause-value">Fellowship participant</div>
+                <div class="clause-sub">Not employment, not consulting</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Duration</div>
+                <div class="clause-value">Programme length (defined per cohort)</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Stipend</div>
+                <div class="clause-value">Grant (not wage) — per schedule</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Deliverables</div>
+                <div class="clause-value">Training completion + practical hours</div>
+              </div>
+              <div class="clause-item">
+                <div class="clause-label">Governing law</div>
+                <div class="clause-value">Kenya</div>
+              </div>
+            </div>
+            <div class="contract-content">
+              <h2>Key Provisions</h2>
+              <ul>
+                <li>EC is enrolled in the Duara Educare Programme for the defined cohort period</li>
+                <li>Duara commits to: structured training, mentorship, practical placement support, and certification upon completion</li>
+                <li>EC commits to: attending all training sessions, completing practical placement hours, and complying with Duara's standards and safeguarding policy</li>
+                <li>Stipend is paid as a programme grant — not subject to PAYE; WHT position to be confirmed with Duara's tax advisor</li>
+                <li>Certification is conditional on satisfactory completion of programme requirements</li>
+                <li>Programme may be terminated by Duara for serious breach (including safeguarding violations)</li>
+              </ul>
+              <h2>Positioning Note</h2>
+              <p>When communicating with ECs, frame the fellowship positively — they are being invested in, not just engaged. The agreement should feel like an opportunity, not a compliance exercise. Fatima and Daphne should use the EC outreach template (Comms section) which strikes this tone.</p>
+            </div>
+          </div>
+
+        </div><!-- end contract-detail-pane -->
+      </div><!-- end contracts-layout -->
+    </div><!-- end tab-contracts -->
+
+    <!-- ======================== AUDIT TAB ======================== -->
+    <div class="panel" id="tab-audit">
+      <div class="audit-wrap">
+        <div class="section-label">Staff Audit</div>
+        <h2 class="section-title">AT Audit Form</h2>
+        <div class="section-rule"></div>
+
+        <div class="plan-intro">
+          Complete one entry per Assistant Teacher. Include anyone who worked under a Duara contract in the last 24 months — active or departed. This feeds directly to Pepe via Telegram. Be thorough: names, schools, and departure details matter for the legal risk assessment.
+        </div>
+
+        <div id="audit-result" class="audit-result">
+          <div class="audit-result-icon">✅</div>
+          <div class="audit-result-title">Audit submitted</div>
+          <div class="audit-result-sub">Pepe has been notified. You can close this window.</div>
+        </div>
+
+        <div id="audit-form-wrap">
+          <div class="audit-form-card">
+            <label class="form-label">Your name (submitted by)</label>
+            <input type="text" id="submittedBy" class="form-input" placeholder="Fatima / Daphne / other">
+          </div>
+
+          <div id="entries-container">
+            <!-- Entry blocks injected by JS -->
+          </div>
+
+          <button class="add-entry-btn" onclick="addEntry()">+ Add another staff member</button>
+          <button class="submit-btn" id="submit-btn" onclick="submitAudit()">Submit Audit to Pepe</button>
+        </div>
+
+      </div>
+    </div><!-- end tab-audit -->
+
+  </div><!-- end panels -->
+</div><!-- end portal -->
 
 <script>
-(function() {
-    var CORRECT = 'duara-2026';
-    var SESSION_KEY = 'duara_transition_auth';
+  // ======================== PASSWORD GATE ========================
+  const PW = 'duara-2026';
 
-    function unlock() {
-        document.getElementById('pw-gate').classList.add('hidden');
-        document.getElementById('plan-content').classList.add('visible');
+  function checkPw() {
+    const val = document.getElementById('pw-input').value.trim();
+    if (val === PW) {
+      sessionStorage.setItem('duara-auth', '1');
+      document.getElementById('pw-gate').classList.add('hidden');
+      document.getElementById('portal').classList.add('visible');
+      initAudit();
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect code. Try again.';
     }
+  }
 
-    if (sessionStorage.getItem(SESSION_KEY) === '1') {
-        unlock();
-        return;
-    }
+  document.getElementById('pw-btn').addEventListener('click', checkPw);
+  document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
 
-    window.checkPassword = function() {
-        var val = document.getElementById('pw-input').value.trim().toLowerCase();
-        if (val === CORRECT) {
-            sessionStorage.setItem(SESSION_KEY, '1');
-            unlock();
-        } else {
-            document.getElementById('pw-error').textContent = 'Incorrect code. Try again.';
-            document.getElementById('pw-input').value = '';
-            document.getElementById('pw-input').focus();
-        }
-    };
+  if (sessionStorage.getItem('duara-auth') === '1') {
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('portal').classList.add('visible');
+    initAudit();
+  }
 
-    document.getElementById('pw-input').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') window.checkPassword();
+  // ======================== TABS ========================
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
     });
-})();
+  });
+
+  function switchToContracts(type) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('[data-tab="contracts"]').classList.add('active');
+    document.getElementById('tab-contracts').classList.add('active');
+    showContract(type);
+  }
+
+  // ======================== PHASE ACCORDION ========================
+  function togglePhase(header) {
+    header.classList.toggle('open');
+    header.nextElementSibling.classList.toggle('open');
+  }
+
+  // ======================== CONTRACTS ========================
+  function showContract(type) {
+    ['se','at','ec'].forEach(t => {
+      document.getElementById('ct-' + t).style.display = (t === type) ? 'block' : 'none';
+      document.getElementById('ci-' + t).classList.toggle('active', t === type);
+    });
+  }
+
+  // ======================== SCROLL SPY ========================
+  const planMain = document.querySelector('.plan-main');
+  const navLinks = document.querySelectorAll('.plan-sidebar .nav-link');
+  const sections = [];
+  navLinks.forEach(link => {
+    const id = link.getAttribute('href').replace('#','');
+    const el = document.getElementById(id);
+    if (el) sections.push({ id, el, link });
+  });
+
+  if (planMain) {
+    planMain.addEventListener('scroll', () => {
+      const scrollTop = planMain.scrollTop;
+      let active = null;
+      sections.forEach(s => {
+        if (s.el.offsetTop - 80 <= scrollTop) active = s;
+      });
+      navLinks.forEach(l => l.classList.remove('active'));
+      if (active) active.link.classList.add('active');
+    });
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const id = link.getAttribute('href').replace('#','');
+      const el = document.getElementById(id);
+      if (el && planMain) {
+        planMain.scrollTo({ top: el.offsetTop - 40, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ======================== AUDIT FORM ========================
+  let entryCount = 0;
+
+  function initAudit() {
+    addEntry();
+  }
+
+  function addEntry() {
+    entryCount++;
+    const container = document.getElementById('entries-container');
+    const div = document.createElement('div');
+    div.className = 'entry-block';
+    div.id = 'entry-' + entryCount;
+    div.innerHTML = `
+      <div class="entry-num">Entry ${entryCount}</div>
+      ${entryCount > 1 ? `<button class="entry-remove" onclick="removeEntry(${entryCount})">✕ Remove</button>` : ''}
+      <div class="entry-grid">
+        <div>
+          <label class="form-label">Full name</label>
+          <input type="text" class="form-input e-name" placeholder="Teacher name">
+        </div>
+        <div>
+          <label class="form-label">School / Location</label>
+          <input type="text" class="form-input e-school" placeholder="School name or area">
+        </div>
+        <div>
+          <label class="form-label">Current status</label>
+          <select class="form-select e-status" onchange="toggleHowLeft(this, ${entryCount})">
+            <option value="">Select status...</option>
+            <option value="active">Active</option>
+            <option value="departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Contract signed by</label>
+          <select class="form-select e-signed">
+            <option value="">Select...</option>
+            <option value="se_only">SE only (no Duara signature)</option>
+            <option value="se_hub">SE + hub representative</option>
+            <option value="no_contract">No written contract</option>
+          </select>
+        </div>
+      </div>
+      <div class="how-left-wrap" id="hl-${entryCount}">
+        <label class="form-label">How did they leave?</label>
+        <select class="form-select e-how-left">
+          <option value="">Select...</option>
+          <option value="email">Email notification</option>
+          <option value="whatsapp">WhatsApp message</option>
+          <option value="verbal">Verbal only</option>
+          <option value="formal">Formal written notice</option>
+          <option value="unknown">Unknown / just stopped showing up</option>
+        </select>
+      </div>
+      <label class="form-label">Notes (optional)</label>
+      <textarea class="form-textarea e-notes" placeholder="Anything worth flagging — disputes, safeguarding concerns, payment issues, etc."></textarea>
+    `;
+    container.appendChild(div);
+  }
+
+  function removeEntry(id) {
+    const el = document.getElementById('entry-' + id);
+    if (el) el.remove();
+  }
+
+  function toggleHowLeft(select, id) {
+    const wrap = document.getElementById('hl-' + id);
+    if (wrap) wrap.classList.toggle('visible', select.value === 'departed');
+  }
+
+  async function submitAudit() {
+    const submittedBy = document.getElementById('submittedBy').value.trim();
+    if (!submittedBy) { alert('Please enter your name before submitting.'); return; }
+
+    const blocks = document.querySelectorAll('.entry-block');
+    const entries = [];
+    blocks.forEach(block => {
+      const name     = block.querySelector('.e-name')?.value.trim();
+      const school   = block.querySelector('.e-school')?.value.trim();
+      const status   = block.querySelector('.e-status')?.value;
+      const signedBy = block.querySelector('.e-signed')?.value;
+      const howLeft  = block.querySelector('.e-how-left')?.value;
+      const notes    = block.querySelector('.e-notes')?.value.trim();
+      if (name || school) entries.push({ name, school, status, signedBy, howLeft, notes });
+    });
+
+    if (!entries.length) { alert('Please add at least one staff member.'); return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    try {
+      const res = await fetch('/api/duara-audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ submittedBy, entries })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        document.getElementById('audit-form-wrap').style.display = 'none';
+        document.getElementById('audit-result').classList.add('visible');
+      } else {
+        throw new Error(data.error || 'Submission failed');
+      }
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = 'Submit Audit to Pepe';
+      alert('Error: ' + e.message);
+    }
+  }
 </script>
 </body>
 </html>
