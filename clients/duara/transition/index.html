@@ -1317,6 +1317,44 @@
     .hf-subsection-title { font-family: 'RocknRoll One', sans-serif; font-size: 1.1rem; color: var(--text); margin-bottom: 1rem; }
     .hf-intro-text { font-size: 0.84rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 1.5rem; }
     .hf-divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+    /* ===================== ROSTER TAB ===================== */
+    .roster-wrap { padding: 2rem 2.5rem; max-width: 920px; }
+    .roster-stats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .roster-stat { padding: 1rem 1.5rem; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-mid); min-width: 140px; }
+    .roster-stat-value { font-family: 'RocknRoll One', sans-serif; font-size: 2rem; font-weight: 400; line-height: 1; margin-bottom: 0.3rem; }
+    .roster-stat-value.green { color: var(--green-text); }
+    .roster-stat-value.red { color: #f87171; }
+    .roster-stat-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-ghost); font-weight: 600; }
+    .roster-schools { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+    .roster-school { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .roster-school-header { display: flex; align-items: center; justify-content: space-between; padding: 0.55rem 1.1rem; background: var(--bg-mid); border-bottom: 1px solid var(--border); }
+    .roster-school-name { font-size: 0.76rem; font-weight: 600; color: var(--text); letter-spacing: 0.07em; text-transform: uppercase; }
+    .roster-school-count { font-size: 0.6rem; color: var(--text-ghost); letter-spacing: 0.12em; }
+    .roster-staff-list { padding: 0; }
+    .roster-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.48rem 1.1rem; border-bottom: 1px solid var(--border); }
+    .roster-row:last-child { border-bottom: none; }
+    .roster-name { flex: 1; font-size: 0.83rem; color: var(--text-mid); }
+    .roster-type-badge { font-size: 0.54rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0.14rem 0.4rem; border-radius: 2px; white-space: nowrap; min-width: 26px; text-align: center; }
+    .rbadge-se { background: var(--pink-dark); color: var(--pink); }
+    .rbadge-at { background: #1a2028; color: #60a5fa; }
+    .rbadge-ec { background: var(--green-bg); color: var(--green-text); }
+    .rbadge-other { background: var(--bg-hover); color: var(--text-soft); }
+    .roster-contract { font-size: 0.56rem; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 600; padding: 0.13rem 0.46rem; border-radius: 2px; white-space: nowrap; }
+    .rc-clean { background: var(--green-bg); color: var(--green-text); border: 1px solid rgba(45,181,93,0.2); }
+    .rc-review { background: var(--amber-bg); color: var(--amber-text); border: 1px solid rgba(212,144,10,0.2); }
+    .rc-defective { background: var(--red-bg); color: #f87171; border: 1px solid rgba(225,75,75,0.2); }
+    .rc-inactive { background: var(--bg-hover); color: var(--text-ghost); border: 1px solid var(--border); }
+    .roster-school-note { font-size: 0.7rem; color: var(--text-ghost); flex-shrink: 0; min-width: 68px; }
+    .roster-inactive { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .roster-inactive-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.1rem; background: var(--bg-mid); cursor: pointer; user-select: none; transition: background 0.15s; }
+    .roster-inactive-toggle:hover { background: var(--bg-hover); }
+    .roster-inactive-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--text-soft); }
+    .roster-inactive-chevron { font-size: 0.68rem; color: var(--text-ghost); transition: transform 0.2s; }
+    .roster-inactive-toggle.open .roster-inactive-chevron { transform: rotate(90deg); }
+    .roster-inactive-body { display: none; border-top: 1px solid var(--border); }
+    .roster-inactive-body.open { display: block; }
+    .roster-row.inactive .roster-name { color: var(--text-ghost); }
   </style>
 </head>
 <body>
@@ -1357,6 +1395,7 @@
     <button class="tab-btn active" data-tab="plan">Transition Plan</button>
     <button class="tab-btn" data-tab="contracts">Contract Templates</button>
     <button class="tab-btn" data-tab="tracker">Staff Tracker</button>
+    <button class="tab-btn" data-tab="roster">Roster</button>
     <button class="tab-btn" data-tab="hireFire">Hire &amp; Fire</button>
     <button class="tab-btn" data-tab="audit">Audit Form</button>
   </div>
@@ -2010,11 +2049,11 @@ Thanks — and best of luck with whatever you're working on now.</div>
                 <div class="action-who fatima">Fatima</div>
                 <div class="action-body">
                   <div class="action-task">Upload staff list to portal (AT + SE) — name, school, status, prior contract type, notes</div>
-                  <div class="action-due due-urgent">Due May 13</div>
-                  <div class="action-output"><span>Portal → Staff Audit tab. Upload spreadsheet or paste Google Sheets link. Include: employment/consulting/no contract in Notes column.</span></div>
+                  <div class="action-due due-done">Done — May 12</div>
+                  <div class="action-output"><span>Loaded via Google Sheets link during May 12 call.</span></div>
                 </div>
                 <div class="action-right">
-                  <span class="task-status st-pending">Not Started</span>
+                  <span class="task-status st-done">Done</span>
                 </div>
               </div>
 
@@ -2319,6 +2358,322 @@ Thanks — and best of luck with whatever you're working on now.</div>
         </div>
       </div>
     </div>
+
+    <!-- ======================== ROSTER TAB ======================== -->
+    <div class="panel" id="tab-roster">
+      <div class="roster-wrap">
+        <div class="section-label">Contract Audit</div>
+        <h2 class="section-title">Staff Roster</h2>
+        <div class="section-rule"></div>
+
+        <!-- Summary stats -->
+        <div class="roster-stats">
+          <div class="roster-stat">
+            <div class="roster-stat-value green">23</div>
+            <div class="roster-stat-label">Active Staff</div>
+          </div>
+          <div class="roster-stat">
+            <div class="roster-stat-value red">12</div>
+            <div class="roster-stat-label">Need New Contract</div>
+          </div>
+        </div>
+
+        <!-- Active school blocks -->
+        <div class="roster-schools">
+
+          <!-- Gathiga: 4 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Gathiga</span>
+              <span class="roster-school-count">4 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Flora Karimi</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-at">AT</span>
+                <span class="roster-name">Juliet Odera</span>
+                <span class="roster-contract rc-review">Review type</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-at">AT</span>
+                <span class="roster-name">Esther Kiriani</span>
+                <span class="roster-contract rc-review">Review type</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-at">AT</span>
+                <span class="roster-name">Lydiah Wangari Kamau</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ruaka: 5 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Ruaka</span>
+              <span class="roster-school-count">5 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Yvonne Didi Randiki</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-ec">EC</span>
+                <span class="roster-name">Janice Owino</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-at">AT</span>
+                <span class="roster-name">Michelle Chacha</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-at">AT</span>
+                <span class="roster-name">Natasha Ayuma</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-ec">EC</span>
+                <span class="roster-name">Virginia Kanini</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Utawala: 2 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Utawala</span>
+              <span class="roster-school-count">2 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Amina Omar</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-ec">EC</span>
+                <span class="roster-name">Angeline Odongo Mutsoli</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Otiende: 2 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Otiende</span>
+              <span class="roster-school-count">2 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Josephine Alube</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-ec">EC</span>
+                <span class="roster-name">Abigael Anyoso</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kamirithu: 2 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Kamirithu</span>
+              <span class="roster-school-count">2 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Gladys Njeri Mwaniki</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-ec">EC</span>
+                <span class="roster-name">Mercy Lumadi Miliza</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kitengela: 2 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Kitengela</span>
+              <span class="roster-school-count">2 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Winfred Munyao</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-ec">EC</span>
+                <span class="roster-name">Tracy Nderi</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ruiru: 2 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Ruiru</span>
+              <span class="roster-school-count">2 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Alice Nyambura</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-ec">EC</span>
+                <span class="roster-name">Phelistus Injete</span>
+                <span class="roster-contract rc-defective">Needs new contract</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ondiri: 1 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Ondiri</span>
+              <span class="roster-school-count">1 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Joy Shanju</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tassia: 1 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Tassia</span>
+              <span class="roster-school-count">1 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Ayitso Mercy</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ngatataek: 1 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Ngatataek</span>
+              <span class="roster-school-count">1 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Mary Muthama</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Umoja 1: 1 staff -->
+          <div class="roster-school">
+            <div class="roster-school-header">
+              <span class="roster-school-name">Umoja 1</span>
+              <span class="roster-school-count">1 staff</span>
+            </div>
+            <div class="roster-staff-list">
+              <div class="roster-row">
+                <span class="roster-type-badge rbadge-se">SE</span>
+                <span class="roster-name">Mwanaisha Gichohi</span>
+                <span class="roster-contract rc-clean">Victoria ICA</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end roster-schools -->
+
+        <!-- Inactive / Departed (collapsed) -->
+        <div class="roster-inactive">
+          <div class="roster-inactive-toggle" onclick="toggleRosterInactive(this)">
+            <span class="roster-inactive-label">Inactive / Departed — 9 people</span>
+            <span class="roster-inactive-chevron">▶</span>
+          </div>
+          <div class="roster-inactive-body">
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-se">SE</span>
+              <span class="roster-name">Shirley Mwikali</span>
+              <span class="roster-school-note">Riruta</span>
+              <span class="roster-contract rc-inactive">Terminated</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-se">SE</span>
+              <span class="roster-name">Vanessa Namwenye Daido</span>
+              <span class="roster-school-note">Dagoretti</span>
+              <span class="roster-contract rc-inactive">Terminated</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-at">AT</span>
+              <span class="roster-name">Stellah Adhiambo</span>
+              <span class="roster-school-note">Ruaka</span>
+              <span class="roster-contract rc-inactive">Terminated</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-ec">EC</span>
+              <span class="roster-name">Sylvia Lumonya Adasa</span>
+              <span class="roster-school-note">Riruta</span>
+              <span class="roster-contract rc-inactive">Terminated</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-ec">EC</span>
+              <span class="roster-name">Nancy Ndichu</span>
+              <span class="roster-school-note">Gathiga</span>
+              <span class="roster-contract rc-inactive">Vol. left</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-ec">EC</span>
+              <span class="roster-name">Carolyne Kawira</span>
+              <span class="roster-school-note">Dagoretti</span>
+              <span class="roster-contract rc-inactive">School closure</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-at">AT</span>
+              <span class="roster-name">Garnett Nyakinyua Adhiambo</span>
+              <span class="roster-school-note">Utawala</span>
+              <span class="roster-contract rc-inactive">Vol. left</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-other">—</span>
+              <span class="roster-name">Helen Kinuthia</span>
+              <span class="roster-school-note">Ruaka</span>
+              <span class="roster-contract rc-inactive">Vol. left</span>
+            </div>
+            <div class="roster-row inactive">
+              <span class="roster-type-badge rbadge-other">—</span>
+              <span class="roster-name">Margaret Wanjiku</span>
+              <span class="roster-school-note">Ruaka</span>
+              <span class="roster-contract rc-inactive">Vol. left</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end tab-roster -->
 
     <!-- ======================== HIRE & FIRE TAB ======================== -->
     <div class="panel" id="tab-hireFire">
@@ -2940,6 +3295,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
       document.getElementById('pw-gate').classList.add('hidden');
       document.getElementById('portal').classList.add('visible');
       initAudit();
+      initPortalData();
     } else {
       document.getElementById('pw-error').textContent = 'Incorrect code. Try again.';
     }
@@ -2952,6 +3308,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
     document.getElementById('pw-gate').classList.add('hidden');
     document.getElementById('portal').classList.add('visible');
     initAudit();
+    initPortalData();
   }
 
   // ======================== TABS ========================
@@ -3034,12 +3391,25 @@ Thanks — and best of luck with whatever you're working on now.</div>
   const STATUS_LABEL = { not_started: 'Not Started', prepared: 'Agreement Prepared', sent: 'Sent to Staff', signed: 'Signed', filed: 'Signed + Filed' };
   const STATUS_CLASS = { not_started: 'st-pending', prepared: 'st-waiting', sent: 'st-progress', signed: 'st-done', filed: 'st-done' };
 
+  // In-memory cache so sync callers always get latest data.
+  // VPS is primary; localStorage is a belt-and-suspenders fallback.
+  let _trackerCache = null;
+
   function loadTrackerData() {
-    return JSON.parse(localStorage.getItem(TRACKER_KEY) || '[]');
+    if (_trackerCache !== null) return _trackerCache;
+    try { _trackerCache = JSON.parse(localStorage.getItem(TRACKER_KEY) || '[]'); } catch(_) { _trackerCache = []; }
+    return _trackerCache;
   }
 
   function saveTrackerData(data) {
-    localStorage.setItem(TRACKER_KEY, JSON.stringify(data));
+    _trackerCache = data;
+    try { localStorage.setItem(TRACKER_KEY, JSON.stringify(data)); } catch(_) {}
+    // Fire-and-forget VPS save
+    fetch('/api/duara-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'tracker', rows: data })
+    }).catch(() => {});
   }
 
   function renderTracker() {
@@ -3154,6 +3524,45 @@ Thanks — and best of luck with whatever you're working on now.</div>
 
   renderTracker();
 
+  // ======================== VPS DATA RESTORE ========================
+
+  function showSaveConfirm(msg) {
+    const el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;background:#1e1e1e;color:#4ade80;' +
+      'border:1px solid rgba(74,222,128,0.3);padding:0.6rem 1.1rem;border-radius:4px;font-size:0.78rem;' +
+      'font-family:"Space Grotesk",sans-serif;z-index:9999;opacity:1;transition:opacity 0.8s;pointer-events:none;';
+    el.textContent = '✓ ' + msg;
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 900); }, 2500);
+  }
+
+  async function initPortalData() {
+    // 1. Restore tracker from VPS (prefer over localStorage if VPS has data)
+    try {
+      const r = await fetch('/api/duara-save?type=tracker');
+      if (r.ok) {
+        const d = await r.json();
+        if (Array.isArray(d.rows) && d.rows.length > 0) {
+          _trackerCache = d.rows;
+          try { localStorage.setItem(TRACKER_KEY, JSON.stringify(d.rows)); } catch(_) {}
+          renderTracker();
+        }
+      }
+    } catch(_) {}
+
+    // 2. Restore saved sheets URL if available
+    try {
+      const r = await fetch('/api/duara-save?type=staff');
+      if (r.ok) {
+        const d = await r.json();
+        if (d.url) {
+          const inp = document.getElementById('sheets-url');
+          if (inp && !inp.value) inp.value = d.url;
+        }
+      }
+    } catch(_) {}
+  }
+
   // ======================== AUDIT FORM ========================
   let entryCount = 0;
   let parsedEntries = []; // populated by file/sheets parse; empty = use manual entries
@@ -3250,6 +3659,13 @@ Thanks — and best of luck with whatever you're working on now.</div>
       if (!entries.length) throw new Error('No valid rows found. Check the sheet has the right column headers.');
       parsedEntries = entries;
       renderPreview(entries);
+      // Persist to VPS so data survives session close
+      const sheetsUrlVal = document.getElementById('sheets-url').value.trim();
+      fetch('/api/duara-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'staff', url: sheetsUrlVal, rows: entries })
+      }).then(r => { if (r.ok) showSaveConfirm('Staff list saved to server'); }).catch(() => {});
     } catch(err) {
       errEl.textContent = err.message;
     } finally {
@@ -3483,6 +3899,12 @@ Thanks — and best of luck with whatever you're working on now.</div>
       btn.textContent = 'Submit Audit to Pepe';
       alert('Error: ' + e.message);
     }
+  }
+
+  // ======================== ROSTER INACTIVE TOGGLE ========================
+  function toggleRosterInactive(toggle) {
+    toggle.classList.toggle('open');
+    toggle.nextElementSibling.classList.toggle('open');
   }
 </script>
 </body>
