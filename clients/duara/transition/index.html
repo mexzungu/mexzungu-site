@@ -1929,7 +1929,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
                 <div class="action-body">
                   <div class="action-task">Complete AT audit for all schools</div>
                   <div class="action-due due-urgent">Due May 12</div>
-                  <div class="action-output"><span>Portal → Staff Audit tab (submissions go to Pepe via Telegram)</span></div>
+                  <div class="action-output"><span>Portal → Staff Audit tab (submission by WhatsApp, Telegram, email or client portal)</span></div>
                 </div>
                 <div class="action-right">
                   <span class="task-status st-progress">In Progress</span>
@@ -2758,7 +2758,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
         <div class="section-rule"></div>
 
         <div class="plan-intro">
-          Complete the audit using whichever method is easiest — upload your spreadsheet, paste a Google Sheets link, or add entries manually. Include anyone who worked under a Duara contract in the last 24 months, active or departed. This sends directly to Pepe via Telegram.
+          Complete the audit using whichever method is easiest — upload your spreadsheet, paste a Google Sheets link, or add entries manually. Include anyone who worked under a Duara contract in the last 24 months, active or departed. Submission by WhatsApp, Telegram, email or client portal.
         </div>
 
         <div id="audit-result" class="audit-result">
@@ -3140,8 +3140,17 @@ Thanks — and best of luck with whatever you're working on now.</div>
 
     try {
       const csvUrl = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv`;
-      const res = await fetch(csvUrl);
-      if (!res.ok) throw new Error('Could not load the sheet. Make sure it is shared with "Anyone with the link can view."');
+      // Route through server-side proxy to avoid CORS block on direct browser fetch
+      const res = await fetch('/api/sheets-proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: csvUrl })
+      });
+      if (!res.ok) {
+        let msg = 'Could not load the sheet. Make sure it is shared with "Anyone with the link can view."';
+        try { const d = await res.json(); if (d.error) msg = d.error; } catch(_) {}
+        throw new Error(msg);
+      }
       const text = await res.text();
       const entries = parseCSV(text);
       if (!entries.length) throw new Error('No valid rows found. Check the sheet has the right column headers.');
