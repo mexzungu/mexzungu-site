@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing — Duara Education</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --pink: #ec4899;
+      --pink-dim: rgba(236,72,153,0.12);
+      --text: #e8e8e8;
+      --muted: #888;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --green: #22c55e;
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* AUTH GATE */
+    #auth-gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .auth-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .auth-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--pink);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .auth-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .auth-box input {
+      width: 100%;
+      background: #111;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.7rem 1rem;
+      border-radius: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      text-align: center;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    .auth-box input:focus { outline: none; border-color: var(--pink); }
+    .auth-btn {
+      width: 100%;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+    }
+    .auth-btn:hover { background: #d43f8a; }
+    .auth-error { color: var(--red); font-size: 0.8rem; margin-top: 0.75rem; display: none; }
+
+    /* MAIN */
+    #main { display: none; }
+
+    /* TOPBAR */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--text); }
+    .topbar-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--pink);
+    }
+    .topbar-sep { color: var(--border); }
+    .topbar-section { font-size: 0.85rem; color: var(--muted); }
+    .lock-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.35rem 0.9rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      transition: all 0.2s;
+    }
+    .lock-btn:hover { border-color: var(--pink); color: var(--text); }
+
+    /* CONTENT */
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+
+    /* SUMMARY STRIP */
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+    .summary-cell {
+      background: var(--surface);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+    }
+    .summary-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .summary-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .summary-value.red { color: var(--red); }
+    .summary-value.amber { color: var(--amber); }
+    .summary-value.green { color: var(--green); }
+
+    /* SECTION HEADER */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .note-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* INVOICE TABLE */
+    .invoice-table-wrap {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .invoice-table thead {
+      background: #111;
+    }
+    .invoice-table th {
+      padding: 0.8rem 1.25rem;
+      text-align: left;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+    .invoice-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .invoice-table tbody tr:last-child td { border-bottom: none; }
+    .invoice-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .inv-number {
+      font-family: 'Jost', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .inv-desc { color: var(--text); }
+    .inv-amount {
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-overdue { background: rgba(239,68,68,0.15); color: var(--red); }
+    .pill-paid { background: rgba(34,197,94,0.12); color: var(--green); }
+    .pill-pending { background: rgba(245,158,11,0.15); color: var(--amber); }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .dl-btn:hover { border-color: var(--pink); color: var(--text); }
+
+    /* AGING SECTION */
+    .aging-wrap {
+      margin-top: 2.5rem;
+    }
+    .aging-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .aging-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .aging-range {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .aging-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .aging-amount.zero { color: var(--muted); }
+    .aging-amount.amber { color: var(--amber); }
+    .aging-amount.red { color: var(--red); }
+
+    /* HISTORY */
+    .history-wrap {
+      margin-top: 2.5rem;
+    }
+    .history-table-wrap {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .history-table th {
+      padding: 0.8rem 1.25rem;
+      text-align: left;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 500;
+      background: #111;
+      border-bottom: 1px solid var(--border);
+    }
+    .history-table td {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .history-table tr:last-child td { border-bottom: none; }
+    .cr { color: var(--green); font-weight: 600; }
+    .db { color: var(--red); font-weight: 600; }
+
+    /* FOOTER */
+    .billing-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .billing-footer p {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .billing-footer a {
+      color: var(--pink);
+      text-decoration: none;
+    }
+
+    @media (max-width: 680px) {
+      .summary-strip { grid-template-columns: repeat(2, 1fr); }
+      .aging-grid { grid-template-columns: repeat(2, 1fr); }
+      .invoice-table th:nth-child(3),
+      .invoice-table td:nth-child(3) { display: none; }
+      .topbar { padding: 1rem; }
+      .content { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div id="auth-gate">
+  <div class="auth-box">
+    <div class="auth-logo">Duara Education</div>
+    <div class="auth-sub">Client Portal · Billing</div>
+    <input type="password" id="pw-input" placeholder="Enter access code" onkeydown="if(event.key==='Enter') checkAuth()">
+    <button class="auth-btn" onclick="checkAuth()">Access Billing</button>
+    <div class="auth-error" id="auth-error">Incorrect access code.</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="/clients/duara/" class="back-link">← Hub</a>
+      <span class="topbar-sep">|</span>
+      <span class="topbar-title">Duara Education</span>
+      <span class="topbar-sep">·</span>
+      <span class="topbar-section">Billing</span>
+    </div>
+    <button class="lock-btn" onclick="lockOut()">Lock</button>
+  </div>
+
+  <div class="content">
+
+    <!-- SUMMARY -->
+    <div class="summary-strip">
+      <div class="summary-cell">
+        <div class="summary-label">Total Billed</div>
+        <div class="summary-value">$20,000</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-label">Total Paid</div>
+        <div class="summary-value green">$7,742</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-label">Outstanding</div>
+        <div class="summary-value red">$12,258</div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-label">Oldest Overdue</div>
+        <div class="summary-value amber">135 days</div>
+      </div>
+    </div>
+
+    <!-- INVOICES -->
+    <div class="section-header">
+      <div class="section-title">Invoices</div>
+      <div class="note-text">All amounts in USD</div>
+    </div>
+    <div class="invoice-table-wrap">
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Description</th>
+            <th>Issued</th>
+            <th>Due</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="inv-number">DUR-001-25</span></td>
+            <td class="inv-desc">Advisory &amp; Board Support — Q4 2024</td>
+            <td>28 Nov 2024</td>
+            <td>28 Dec 2024</td>
+            <td><span class="inv-amount db">$4,500</span></td>
+            <td><span class="status-pill pill-overdue">Overdue</span></td>
+            <td><a class="dl-btn" href="#" onclick="dlInvoice('DUR-001-25');return false;">↓ PDF</a></td>
+          </tr>
+          <tr>
+            <td><span class="inv-number">DUR-002-25</span></td>
+            <td class="inv-desc">Advisory &amp; Board Support — Q1 2025</td>
+            <td>31 Jan 2025</td>
+            <td>28 Feb 2025</td>
+            <td><span class="inv-amount db">$4,500</span></td>
+            <td><span class="status-pill pill-overdue">Overdue</span></td>
+            <td><a class="dl-btn" href="#" onclick="dlInvoice('DUR-002-25');return false;">↓ PDF</a></td>
+          </tr>
+          <tr>
+            <td><span class="inv-number">DUR-003-25</span></td>
+            <td class="inv-desc">Advisory &amp; Legal — Contract Transition Project</td>
+            <td>30 Mar 2025</td>
+            <td>29 Apr 2025</td>
+            <td><span class="inv-amount db">$3,258</span></td>
+            <td><span class="status-pill pill-overdue">Overdue</span></td>
+            <td><a class="dl-btn" href="#" onclick="dlInvoice('DUR-003-25');return false;">↓ PDF</a></td>
+          </tr>
+          <tr>
+            <td><span class="inv-number">DUR-004-24</span></td>
+            <td class="inv-desc">Advisory &amp; Board Support — Q3 2024</td>
+            <td>30 Sep 2024</td>
+            <td>30 Oct 2024</td>
+            <td><span class="inv-amount" style="color:var(--text)">$3,871</span></td>
+            <td><span class="status-pill pill-paid">Paid</span></td>
+            <td><a class="dl-btn" href="#" onclick="dlInvoice('DUR-004-24');return false;">↓ PDF</a></td>
+          </tr>
+          <tr>
+            <td><span class="inv-number">DUR-005-24</span></td>
+            <td class="inv-desc">Advisory &amp; Legal — Treebeard Structuring</td>
+            <td>30 Jun 2024</td>
+            <td>30 Jul 2024</td>
+            <td><span class="inv-amount" style="color:var(--text)">$3,871</span></td>
+            <td><span class="status-pill pill-paid">Paid</span></td>
+            <td><a class="dl-btn" href="#" onclick="dlInvoice('DUR-005-24');return false;">↓ PDF</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- AGING -->
+    <div class="aging-wrap">
+      <div class="section-header">
+        <div class="section-title">Accounts Receivable Aging</div>
+      </div>
+      <div class="aging-grid">
+        <div class="aging-card">
+          <div class="aging-range">Current (0–30 days)</div>
+          <div class="aging-amount zero">$0</div>
+        </div>
+        <div class="aging-card">
+          <div class="aging-range">31–60 days</div>
+          <div class="aging-amount zero">$0</div>
+        </div>
+        <div class="aging-card">
+          <div class="aging-range">61–90 days</div>
+          <div class="aging-amount amber">$3,258</div>
+        </div>
+        <div class="aging-card">
+          <div class="aging-range">90+ days</div>
+          <div class="aging-amount red">$9,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT HISTORY -->
+    <div class="history-wrap">
+      <div class="section-header">
+        <div class="section-title">Payment History</div>
+      </div>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Reference</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Running Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>30 Nov 2024</td>
+              <td>DUR-001-25</td>
+              <td>Invoice issued — Q4 2024 Advisory</td>
+              <td class="db">$4,500</td>
+              <td class="db">$4,500</td>
+            </tr>
+            <tr>
+              <td>31 Jan 2025</td>
+              <td>DUR-002-25</td>
+              <td>Invoice issued — Q1 2025 Advisory</td>
+              <td class="db">$4,500</td>
+              <td class="db">$9,000</td>
+            </tr>
+            <tr>
+              <td>30 Mar 2025</td>
+              <td>DUR-003-25</td>
+              <td>Invoice issued — Contract Transition Project</td>
+              <td class="db">$3,258</td>
+              <td class="db">$12,258</td>
+            </tr>
+            <tr>
+              <td>15 Nov 2024</td>
+              <td>DUR-005-24 / Wire</td>
+              <td>Payment received — Treebeard Structuring</td>
+              <td class="cr">$3,871</td>
+              <td class="cr">Settled</td>
+            </tr>
+            <tr>
+              <td>18 Nov 2024</td>
+              <td>DUR-004-24 / Wire</td>
+              <td>Payment received — Q3 2024 Advisory</td>
+              <td class="cr">$3,871</td>
+              <td class="cr">Settled</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="billing-footer">
+      <p>To discuss outstanding invoices or payment arrangements, contact <a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a></p>
+      <p style="margin-top:0.4rem">Mexzungu Consulting · Billing data as of May 2026</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const PASS = 'duara-2026';
+const SESSION_KEY = 'duara_hub_v1';
+
+function checkAuth() {
+  const val = document.getElementById('pw-input').value;
+  if (val === PASS) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    sessionStorage.setItem('duara-auth', '1');
+    sessionStorage.setItem('duara_tx2', '1');
+    showMain();
+  } else {
+    const err = document.getElementById('auth-error');
+    err.style.display = 'block';
+    setTimeout(() => { err.style.display = 'none'; }, 2500);
+  }
+}
+
+function showMain() {
+  document.getElementById('auth-gate').style.display = 'none';
+  document.getElementById('main').style.display = 'block';
+}
+
+function lockOut() {
+  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem('duara-auth');
+  sessionStorage.removeItem('duara_tx2');
+  window.location.href = '/clients/duara/';
+}
+
+function dlInvoice(num) {
+  alert('PDF generation for ' + num + ' is coming soon. Contact pepe@mexzungu.com to request a copy.');
+}
+
+// Auto-unlock if already authenticated
+if (sessionStorage.getItem(SESSION_KEY) === '1' || sessionStorage.getItem('duara-auth') === '1') {
+  showMain();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Duara — Client Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d0d0d;
+      --bg-mid:     #161616;
+      --bg-card:    #111111;
+      --border:     #2a2a2a;
+      --border-mid: #333333;
+      --text:       #e8e4de;
+      --text-mid:   #b5ae a4;
+      --text-soft:  #857d74;
+      --text-ghost: #3d3832;
+      --pink:       #ec4899;
+      --pink-dim:   rgba(236,72,153,0.12);
+      --green:      #4ade80;
+      --green-dim:  rgba(74,222,128,0.1);
+      --amber:      #f59e0b;
+      --amber-dim:  rgba(245,158,11,0.1);
+      --red:        #f87171;
+      --red-dim:    rgba(248,113,113,0.1);
+      --blue:       #60a5fa;
+      --blue-dim:   rgba(96,165,250,0.1);
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===================== PASSWORD GATE ===================== */
+    #pw-gate {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 2rem;
+    }
+    #pw-gate.hidden { display: none; }
+
+    .pw-wrap { max-width: 420px; width: 100%; text-align: center; }
+    .pw-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+    .pw-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .pw-sub {
+      font-size: 0.84rem;
+      color: var(--text-soft);
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+    .pw-rule { width: 32px; height: 1px; background: var(--pink); margin: 0 auto 2.5rem; }
+    .pw-input {
+      width: 100%;
+      padding: 0.95rem 1.25rem;
+      background: var(--bg-mid);
+      border: 1px solid var(--border-mid);
+      border-radius: 2px;
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.8rem;
+      transition: border-color 0.2s;
+    }
+    .pw-input:focus { outline: none; border-color: var(--pink); }
+    .pw-btn {
+      width: 100%;
+      padding: 0.95rem;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .pw-btn:hover { opacity: 0.85; }
+    .pw-error { color: var(--red); font-size: 0.8rem; margin-top: 0.6rem; min-height: 1.2em; }
+    .pw-footer { color: var(--text-ghost); font-size: 0.7rem; margin-top: 2.5rem; letter-spacing: 0.04em; }
+
+    /* ===================== PORTAL ===================== */
+    #portal { display: none; min-height: 100vh; }
+    #portal.visible { display: block; }
+
+    /* ---- TOPBAR ---- */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 56px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .topbar-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+    .topbar-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .topbar-meta { font-size: 0.7rem; color: var(--text-soft); }
+    .topbar-right { display: flex; align-items: center; gap: 1.25rem; }
+    .topbar-badge {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--pink-dim);
+      color: var(--pink);
+      border: 1px solid rgba(236,72,153,0.25);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 4rem 2.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .hero-sub {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    /* ---- MAIN CONTENT ---- */
+    .main { max-width: 1200px; margin: 0 auto; padding: 3rem 2.5rem 4rem; }
+
+    /* ---- SECTION HEADERS ---- */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+    .section-rule { flex: 1; height: 1px; background: var(--border); }
+
+    /* ---- CARD GRID ---- */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { border-color: var(--border-mid); background: var(--bg-mid); }
+    .card.card-active:hover { border-color: var(--pink); }
+    .card.card-placeholder { opacity: 0.5; cursor: default; }
+    .card.card-billing:hover { border-color: var(--amber); }
+
+    .card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: transparent;
+      transition: background 0.2s;
+    }
+    .card-active:hover .card-accent { background: var(--pink); }
+    .card-billing:hover .card-accent { background: var(--amber); }
+
+    .card-icon { font-size: 1.5rem; margin-bottom: 1.25rem; }
+    .card-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .card-desc {
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: var(--text-soft);
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+    .status-live { background: var(--green-dim); color: var(--green); }
+    .status-coming { background: var(--border); color: var(--text-soft); }
+    .status-attention { background: var(--red-dim); color: var(--red); }
+    .status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .card-arrow {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .card-active:hover .card-arrow { color: var(--pink); transform: translateX(3px); }
+    .card-billing:hover .card-arrow { color: var(--amber); transform: translateX(3px); }
+
+    /* Billing card highlight */
+    .billing-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--red);
+      margin-bottom: 0.35rem;
+    }
+    .billing-label { font-size: 0.72rem; color: var(--text-soft); margin-bottom: 1rem; }
+
+    /* ---- QUICK STATUS STRIP ---- */
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 3.5rem;
+    }
+    .strip-item {
+      background: var(--bg-card);
+      padding: 1.25rem 1.5rem;
+    }
+    .strip-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+    .strip-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--text);
+    }
+    .strip-value.red { color: var(--red); }
+    .strip-value.amber { color: var(--amber); }
+    .strip-value.green { color: var(--green); }
+    .strip-sub { font-size: 0.72rem; color: var(--text-soft); margin-top: 0.25rem; }
+
+    /* ---- FOOTER ---- */
+    .portal-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+    }
+    .footer-text { font-size: 0.72rem; color: var(--text-ghost); letter-spacing: 0.04em; }
+    .footer-lock { font-size: 0.72rem; color: var(--text-ghost); cursor: pointer; }
+    .footer-lock:hover { color: var(--text-soft); }
+  </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+  <div class="pw-wrap">
+    <div class="pw-eyebrow">Mexzungu Consulting · Client Portal</div>
+    <div class="pw-logo">Duara<br>Education</div>
+    <p class="pw-sub">Your project workspace. Contracts, billing, and legal workstreams — all in one place.</p>
+    <div class="pw-rule"></div>
+    <input id="pw-input" class="pw-input" type="password" placeholder="Access code" autocomplete="off">
+    <button class="pw-btn" onclick="checkPw()">Enter Portal</button>
+    <p class="pw-error" id="pw-error"></p>
+    <p class="pw-footer">Mexzungu Consulting · Confidential · Do not share</p>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div id="portal">
+
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-dot"></div>
+      <span class="topbar-name">Duara Education</span>
+      <span class="topbar-meta">Client Portal</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge">Confidential</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Mexzungu Consulting · Active Client</div>
+    <h1 class="hero-title">Good morning,<br>Victoria.</h1>
+    <p class="hero-sub">Your active workstreams, billing, and documents. Everything Mexzungu is working on for Duara — one place, always current.</p>
+  </div>
+
+  <div class="main">
+
+    <!-- Quick status -->
+    <div class="section-header">
+      <span class="section-label">At a glance</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="status-strip">
+      <div class="strip-item">
+        <div class="strip-label">Outstanding balance</div>
+        <div class="strip-value red" id="strip-outstanding">$12,258</div>
+        <div class="strip-sub">3 invoices · oldest 135+ days</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-label">Active workstreams</div>
+        <div class="strip-value">2</div>
+        <div class="strip-sub">Contract Transition · Treebeard Loan</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-label">Next deadline</div>
+        <div class="strip-value amber">13 May</div>
+        <div class="strip-sub">AT audit list — Fatima</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-label">Relationship since</div>
+        <div class="strip-value">2024</div>
+        <div class="strip-sub">Counsel + Investor + Board</div>
+      </div>
+    </div>
+
+    <!-- Project cards -->
+    <div class="section-header">
+      <span class="section-label">Active projects</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="card-grid">
+
+      <div class="card card-active" onclick="window.location.href='/clients/duara/transition/'">
+        <div class="card-accent"></div>
+        <div class="card-icon">📋</div>
+        <div class="card-eyebrow">Legal · HR</div>
+        <div class="card-title">Contract Transition</div>
+        <div class="card-desc">Five-phase plan to correct and replace unsigned AT employment contracts with consulting agreements. Includes templates, tracker, audit form, and comms templates.</div>
+        <div class="card-footer">
+          <span class="card-status status-live"><span class="status-dot"></span>In progress</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="card card-billing" onclick="window.location.href='/clients/duara/billing/'">
+        <div class="card-accent"></div>
+        <div class="card-icon">💳</div>
+        <div class="card-eyebrow">Finance</div>
+        <div class="card-title">Billing</div>
+        <div class="billing-amount" id="card-outstanding">$12,258</div>
+        <div class="billing-label">outstanding · 3 invoices overdue</div>
+        <div class="card-footer">
+          <span class="card-status status-attention"><span class="status-dot"></span>Action needed</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="card card-active" onclick="window.location.href='/clients/duara/treebeard/'">
+        <div class="card-accent"></div>
+        <div class="card-icon">🌳</div>
+        <div class="card-eyebrow">Finance · Legal</div>
+        <div class="card-title">Treebeard Loan</div>
+        <div class="card-desc">$50k loan from Mexzungu Group to Duara via Delaware entity. Near execution — pending final sign-off on terms and board resolution.</div>
+        <div class="card-footer">
+          <span class="card-status status-attention"><span class="status-dot"></span>Pending signature</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="card card-placeholder">
+        <div class="card-accent"></div>
+        <div class="card-icon">🔒</div>
+        <div class="card-eyebrow">Strategy</div>
+        <div class="card-title">Mission Lock</div>
+        <div class="card-desc">Governance and legal architecture to protect Duara's mission as the company scales. Board structure, investor protections, and founder safeguards.</div>
+        <div class="card-footer">
+          <span class="card-status status-coming">Coming soon</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Standard resources -->
+    <div class="section-header">
+      <span class="section-label">Resources</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="card-grid">
+
+      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/12K9-mkBWdFWwbGXZ5XNtWrxvDI5d3slyluYLJ63dy64/edit','_blank')">
+        <div class="card-accent"></div>
+        <div class="card-eyebrow">Contract Template</div>
+        <div class="card-title">SE Independent Contractor Agreement</div>
+        <div class="card-desc">v1.2 · Final · Governing law Kenya · WHT carve-out included</div>
+        <div class="card-footer">
+          <span class="card-status status-live"><span class="status-dot"></span>Final</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+
+      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1QD2XlUCMmZcDdbsgYK7CbeK9dLSbKnInMTIavdHrs-s/edit','_blank')">
+        <div class="card-accent"></div>
+        <div class="card-eyebrow">Contract Template</div>
+        <div class="card-title">AT Consulting Agreement</div>
+        <div class="card-desc">v1.0 · Draft · 5% WHT at source · 30-day notice · Pending structure confirmation</div>
+        <div class="card-footer">
+          <span class="card-status status-attention"><span class="status-dot"></span>Draft — review needed</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+
+      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1MwpRo3gK57ERSbiKOnxRrkfZzjTHkB7i8lhSUIdMXRU/edit','_blank')">
+        <div class="card-accent"></div>
+        <div class="card-eyebrow">Contract Template</div>
+        <div class="card-title">Educare Fellowship Agreement</div>
+        <div class="card-desc">v1.0 · Draft · Fellows, not consultants · No invoicing required · 14-day notice</div>
+        <div class="card-footer">
+          <span class="card-status status-attention"><span class="status-dot"></span>Draft — review needed</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /main -->
+
+  <div class="portal-footer">
+    <span class="footer-text">Mexzungu Consulting · Duara Education · Confidential</span>
+    <span class="footer-lock" onclick="lockPortal()">🔒 Lock</span>
+  </div>
+
+</div><!-- /portal -->
+
+<script>
+  const PW = 'duara-2026';
+  const SK = 'duara_hub_v1';
+
+  function checkPw() {
+    const v = document.getElementById('pw-input').value.trim();
+    if (v === PW) {
+      sessionStorage.setItem(SK, '1');
+      // Also set keys for sub-portals so they don't re-prompt
+      sessionStorage.setItem('duara-auth', '1');
+      sessionStorage.setItem('duara_tx2', '1');
+      document.getElementById('pw-gate').classList.add('hidden');
+      document.getElementById('portal').classList.add('visible');
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect code. Try again.';
+      document.getElementById('pw-input').value = '';
+    }
+  }
+
+  document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+
+  function lockPortal() {
+    [SK, 'duara-auth', 'duara_tx2'].forEach(k => sessionStorage.removeItem(k));
+    location.reload();
+  }
+
+  if (sessionStorage.getItem(SK) === '1') {
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('portal').classList.add('visible');
+  }
+</script>
+</body>
+</html>
