@@ -1271,6 +1271,29 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+    /* ── TRAINING ── */
+    #training { background: var(--charcoal); }
+    #training h2 { font-size: clamp(2rem,4vw,3rem); color: var(--ivory); margin-bottom: 1rem; }
+    #training h2 em { color: var(--jute); font-style: italic; }
+    .training-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+    .training-card { background: var(--ash); border: 1px solid rgba(77,158,77,0.12); border-radius: 2px; padding: 2rem; }
+    .training-card-header { display: flex; align-items: flex-start; gap: 1.2rem; margin-bottom: 1.8rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(77,158,77,0.1); }
+    .training-card-icon { font-family: var(--serif); font-size: 2rem; color: var(--jute); opacity: 0.5; min-width: 2.5rem; line-height: 1; }
+    .training-card-header h3 { font-family: var(--serif); font-size: 1.5rem; color: var(--ivory); margin-bottom: 0.3rem; }
+    .training-card-header p { font-size: 0.82rem; color: var(--linen); opacity: 0.6; }
+    .accordion { border-bottom: 1px solid rgba(77,158,77,0.1); }
+    .acc-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 0; background: none; border: none; cursor: pointer; color: var(--ivory); font-family: var(--sans); font-size: 0.82rem; font-weight: 400; letter-spacing: 0.06em; text-align: left; transition: color 0.2s; }
+    .acc-toggle:hover, .acc-toggle[aria-expanded="true"] { color: var(--jute); }
+    .acc-arrow { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; transition: transform 0.3s var(--ease); }
+    .acc-toggle[aria-expanded="true"] .acc-arrow { transform: rotate(180deg); }
+    .acc-panel { overflow: hidden; max-height: 0; transition: max-height 0.45s var(--ease); }
+    .acc-panel.open { max-height: 3000px; }
+    .acc-content { padding: 0 0 1.2rem 0; color: var(--linen); font-size: 0.86rem; line-height: 1.85; opacity: 0.85; }
+    .acc-content ul { margin: 0.6rem 0 0.6rem 1.2rem; }
+    .acc-content li { margin-bottom: 0.35rem; }
+    .acc-subtitle { font-family: var(--sans); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--jute); opacity: 1 !important; display: block; margin-bottom: 0.5rem; }
+    .acc-content strong { color: var(--ivory); font-weight: 400; }
+    @media (max-width: 800px) { .training-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -1285,6 +1308,7 @@
     <li><a href="#photo">Sessions</a></li>
     <li><a href="#shop">Botiga</a></li>
     <li><a href="#events">Esdeveniments</a></li>
+    <li><a href="#training">Formació</a></li>
     <li><a href="#contact" class="nav-cta" style="border:none;padding:0;color:var(--jute);opacity:0.7">Contacte</a></li>
   </ul>
   <div class="lang-switcher">
@@ -1841,6 +1865,122 @@
   </div>
 </section>
 
+<!-- FORMACIO -->
+<section id="training">
+  <div class="container">
+    <span class="section-label reveal">Coneixement</span>
+    <h2 class="reveal">Entenent la <em>Practica.</em></h2>
+    <p class="reveal" style="max-width:620px;margin-bottom:0.5rem;color:var(--linen);opacity:0.8;">El shibari exigeix tant coneixement com sensibilitat. Material fonamental sobre anatomia i psicologia, per a atadors, models i qualsevol persona que aprofundeixi en la seva practica.</p>
+    <div class="training-grid">
+
+      <div class="training-card reveal">
+        <div class="training-card-header">
+          <span class="training-card-icon">解剖</span>
+          <div>
+            <h3>Anatomia</h3>
+            <p>Entendre el cos abans de lligar-lo.</p>
+          </div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Possibles lesions</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <span class="acc-subtitle">Trivials / Lleus</span>
+            <p>Hematomes, petequies, cremades de corda, pessics, ampolles, marques de cordes. Totes es manifesten a la pell. Mes o menys temporals, sense suposar un risc per a la salut a mitja o llarg termini.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Greus / Perilloses</span>
+            <p>Dany nerviós, marejos/desvaneixements, lesions musculars, traumatismes per caiguda, luxacions d'extremitats, asfixia, fractures ossis. El coll mereix atencio especial: risc d'asfixia, desvaneixements i danys neurologics per manca d'oxigen al cervell.</p>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Dany nervios</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>La pressio sostinguda de les cordes pot danyar la mielina (la beina del nervi), causant perdua de sensibilitat, perdua de moviment, o ambdues. L'obstruccio del reg sanguini provoca formigueig i adormiment que hauria de desapareixer en segons en alliberar tensio. Atencio: l'adormiment per manca de reg tambe impedeix detectar dany nervios mes profund.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Nervis principals del brac (plex braquial)</span>
+            <ul>
+              <li><strong>Nervi radial:</strong> Envolta el brac per l'exterior fins al polze. Controla el moviment d'aixecar el canell i el polze. Dany mes comu: caiguda del canell.</li>
+              <li><strong>Nervi median:</strong> Part interior del brac fins als dits anular i cor. Sensibilitat fina i moviment. Dany mes comu: perdua de sensibilitat a la ma.</li>
+              <li><strong>Nervi ulnar:</strong> Part inferior del brac fins al dit menut. Dany mes comu: perdua de sensibilitat a la zona del menut.</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Nervis de les cames</span>
+            <ul>
+              <li><strong>Nervi femorocutani:</strong> Purament sensitiu. Vulnerable a l'abdomen i l'engonal.</li>
+              <li><strong>Nervi femoral:</strong> Sensibilitat de la part anterior de la cuixa i extensio de la cama.</li>
+              <li><strong>Nervi pero:</strong> Branca del nervi ciatic. Moviment i sensibilitat de la part inferior de la cama, peu i dits. Dany mes comu: caiguda del peu.</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Prevencio</span>
+            <ul>
+              <li>Mantenir tensions equilibrades</li>
+              <li>Evitar que les cordes se superposin o els nusos quedin sobre zones sensibles</li>
+              <li>Permetre al model fer ajustos pel seu compte</li>
+              <li>Atencio especial en suspensions i transicions</li>
+              <li>Revisions regulars per part del model, l'atador, o ambdos</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Pla d'actuacio</span>
+            <p><strong>Immediatament:</strong> Desfermar la zona afectada lentament. Aplicar gla. Prendre antiinflamatoris no esteroideus.</p>
+            <p style="margin-top:0.4rem;"><strong>L'endema:</strong> Reposar. Prendre vitamines del grup B (ajuden la mielina a regenerar-se). Anar al metge si la sensacio persisteix.</p>
+            <p style="margin-top:0.4rem;"><strong>Evitar:</strong> Comprimir la zona, forcar-la ni practicar cordes abans de recuperar-se del tot.</p>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Desvaneixements</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Causes comunes durant una sessio:</p>
+            <ul>
+              <li>Baixada de sucre o de pressio</li>
+              <li>Excés de calor o estar dret durant molt de temps</li>
+              <li>Aixecar-se de forma brusca</li>
+              <li>Respiracio inadequada o deshidratacio</li>
+              <li>Exces d'estimulacio dolorosa</li>
+              <li>Pressio excessiva al plex solar (entre l'estomac i l'estern)</li>
+              <li>Pressio al si carotidi (base del coll)</li>
+            </ul>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Flexibilitat</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>La flexibilitat en shibari no tracta d'assolir un estandard. Tracta de coneixer el propi rang i treballar-hi de forma conscient.</p>
+            <p style="margin-top:0.8rem;"><strong>Flexibilitat activa:</strong> la que aconsegueixes pel teu propi moviment sense ajuda. <strong>Flexibilitat passiva:</strong> la que aconsegueixes amb ajuda externa (mans o una superficie).</p>
+            <p style="margin-top:0.8rem;">Tant l'atador com el model han de coneixer el seu rang abans de comenar. Els estiraments regulars redueixen el risc. Concentrar-se i respirar durant els exercicis marca una diferencia notable en els resultats.</p>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="training-card reveal reveal-delay-1">
+        <div class="training-card-header">
+          <span class="training-card-icon">心理</span>
+          <div>
+            <h3>Psicologia</h3>
+            <p>La conversa abans de la corda.</p>
+          </div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Perfil de risc personal</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Abans de qualsevol sessio (primera o desena), ambdues parts han d'alinear-se sobre el que passara, el que busca cadascuna, i els limits que s'establiran. El shibari requereix tanta preparacio etica i emocional com tecnica.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Checklist previa a la sessio</span>
+            <ul>
+              <li>Han menjat i descansat prou totes les parts?</li>
+              <li>Lesions o condicions mediques, fisiques o psicologiques, a tenir en compte?</li>
+              <li>Experiencia prèvia amb cordes? Referències?</li>
+              <li>S'ha consumit alcohol o drogues recentment?</li>
+              <li>Lligams acordats? Lligams no permesos?</li>
+              <li>S'accepten suspensions? S'accepten transicions?</li>
+              <li>Qui fara les revisions de nervis i circulacio? Amb quina frequencia?</li>
+              <li>Necessita alguna de les parts aftercare despres de la sessio?</li>
+              <li>Necessitats especials a tenir en compte?</li>
+              <li>Estat d'anim de totes les parts?</li>
+              <li>Es el subespa un objectiu desitjat, o no?</li>
+            </ul>
+          </div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="band"></div>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -1960,6 +2100,16 @@
   function addToCart(product, price) {
     showToast(product + ' — ' + price + ' · Afegit al carret');
   }
+
+  // Accordion
+  document.querySelectorAll('.acc-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = btn.nextElementSibling;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      panel.classList.toggle('open', !isOpen);
+    });
+  });
 
   // Form submission (demo)
   function handleSubmit(e) {

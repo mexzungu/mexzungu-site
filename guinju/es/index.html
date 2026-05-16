@@ -1271,6 +1271,29 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+    /* ── TRAINING ── */
+    #training { background: var(--charcoal); }
+    #training h2 { font-size: clamp(2rem,4vw,3rem); color: var(--ivory); margin-bottom: 1rem; }
+    #training h2 em { color: var(--jute); font-style: italic; }
+    .training-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+    .training-card { background: var(--ash); border: 1px solid rgba(77,158,77,0.12); border-radius: 2px; padding: 2rem; }
+    .training-card-header { display: flex; align-items: flex-start; gap: 1.2rem; margin-bottom: 1.8rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(77,158,77,0.1); }
+    .training-card-icon { font-family: var(--serif); font-size: 2rem; color: var(--jute); opacity: 0.5; min-width: 2.5rem; line-height: 1; }
+    .training-card-header h3 { font-family: var(--serif); font-size: 1.5rem; color: var(--ivory); margin-bottom: 0.3rem; }
+    .training-card-header p { font-size: 0.82rem; color: var(--linen); opacity: 0.6; }
+    .accordion { border-bottom: 1px solid rgba(77,158,77,0.1); }
+    .acc-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 0; background: none; border: none; cursor: pointer; color: var(--ivory); font-family: var(--sans); font-size: 0.82rem; font-weight: 400; letter-spacing: 0.06em; text-align: left; transition: color 0.2s; }
+    .acc-toggle:hover, .acc-toggle[aria-expanded="true"] { color: var(--jute); }
+    .acc-arrow { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; transition: transform 0.3s var(--ease); }
+    .acc-toggle[aria-expanded="true"] .acc-arrow { transform: rotate(180deg); }
+    .acc-panel { overflow: hidden; max-height: 0; transition: max-height 0.45s var(--ease); }
+    .acc-panel.open { max-height: 3000px; }
+    .acc-content { padding: 0 0 1.2rem 0; color: var(--linen); font-size: 0.86rem; line-height: 1.85; opacity: 0.85; }
+    .acc-content ul { margin: 0.6rem 0 0.6rem 1.2rem; }
+    .acc-content li { margin-bottom: 0.35rem; }
+    .acc-subtitle { font-family: var(--sans); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--jute); opacity: 1 !important; display: block; margin-bottom: 0.5rem; }
+    .acc-content strong { color: var(--ivory); font-weight: 400; }
+    @media (max-width: 800px) { .training-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -1285,6 +1308,7 @@
     <li><a href="#photo">Sesiones</a></li>
     <li><a href="#shop">Tienda</a></li>
     <li><a href="#events">Eventos</a></li>
+    <li><a href="#training">Formación</a></li>
     <li><a href="#contact" class="nav-cta" style="border:none;padding:0;color:var(--jute);opacity:0.7">Contacto</a></li>
   </ul>
   <div class="lang-switcher">
@@ -1841,6 +1865,122 @@
   </div>
 </section>
 
+<!-- FORMACION -->
+<section id="training">
+  <div class="container">
+    <span class="section-label reveal">Conocimiento</span>
+    <h2 class="reveal">Entendiendo la <em>Practica.</em></h2>
+    <p class="reveal" style="max-width:620px;margin-bottom:0.5rem;color:var(--linen);opacity:0.8;">El shibari exige tanto conocimiento como sensibilidad. Material fundamental sobre anatomia y psicologia, para atadores, modelos y cualquier persona que profundice en su practica.</p>
+    <div class="training-grid">
+
+      <div class="training-card reveal">
+        <div class="training-card-header">
+          <span class="training-card-icon">解剖</span>
+          <div>
+            <h3>Anatomia</h3>
+            <p>Entender el cuerpo antes de atarlo.</p>
+          </div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Posibles lesiones</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <span class="acc-subtitle">Triviales / Leves</span>
+            <p>Hematomas, petequias, quemaduras de cuerda, pellizcos, ampollas, marcas de cuerdas. Todas se manifiestan en la piel. Mas o menos permanentes, sin suponer un peligro a la salud a medio o largo plazo.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Serias / Peligrosas</span>
+            <p>Dano nervioso, mareos/desfallecimientos, lesiones musculares, traumatismos por caida, dislocamientos de extremidades, asfixia, rotura de huesos. El cuello merece atencion especial: riesgo de asfixia, desmayos y danos neurologicos por falta de oxigeno al cerebro.</p>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Dano nervioso</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>La presion sostenida de las cuerdas puede danar la mielina (la vaina del nervio), causando perdida de sensibilidad, perdida de movimiento, o ambas. La obstruccion del riego sanguineo provoca cosquilleo y adormecimiento que deberia desaparecer en segundos al aflojar tension. Atencion: el adormecimiento por falta de riego tambien impide detectar dano nervioso subyacente.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Nervios principales del brazo (plexo braquial)</span>
+            <ul>
+              <li><strong>Nervio radial:</strong> Rodea el brazo por el exterior hasta el pulgar. Controla el movimiento de levantar la muneca y el pulgar. Dano mas comun: drop de muneca. Chequeo: intentar levantar muneca o pulgar.</li>
+              <li><strong>Nervio mediano:</strong> Parte interior del brazo hasta dedos anular y corazon. Sensibilidad fina y movimiento. Dano mas comun: perdida de sensibilidad en la mano.</li>
+              <li><strong>Nervio ulnar:</strong> Parte inferior del brazo hasta el menique. Dano mas comun: perdida de sensibilidad en la zona del menique.</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Nervios de las piernas</span>
+            <ul>
+              <li><strong>Nervio femorocutaneo:</strong> Puramente sensitivo. Vulnerable en abdomen e ingle.</li>
+              <li><strong>Nervio femoral:</strong> Sensibilidad de la parte anterior del muslo y extension de la pierna.</li>
+              <li><strong>Nervio peroneo:</strong> Rama del nervio ciatico. Movimiento y sensibilidad de la parte inferior de la pierna, pie y dedos. Dano mas comun: drop del pie.</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Prevencion</span>
+            <ul>
+              <li>Mantener tensiones equilibradas</li>
+              <li>Evitar que las cuerdas se monten o los nudos queden sobre zonas sensibles</li>
+              <li>Permitir al modelo realizar ajustes por su cuenta</li>
+              <li>Especial cuidado en suspensiones y transiciones</li>
+              <li>Realizar chequeos regulares por parte del modelo, el atador, o ambos</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Plan de actuacion</span>
+            <p><strong>Al instante:</strong> Desatar de manera pausada la zona afectada. Aplicar hielo. Tomar antiinflamatorios no esteroideos.</p>
+            <p style="margin-top:0.4rem;"><strong>Dia siguiente:</strong> Reposar. Tomar vitaminas del grupo B (ayudan a la mielina a regenerarse). Acudir al medico si persiste la sensacion.</p>
+            <p style="margin-top:0.4rem;"><strong>Evitar:</strong> Comprimir la zona, esforzarla ni practicar cuerdas antes de recuperarse.</p>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Desfallecimientos</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Causas comunes durante una sesion:</p>
+            <ul>
+              <li>Bajon de azucar o de presion</li>
+              <li>Exceso de calor o estar de pie por tiempo prolongado</li>
+              <li>Levantarse de manera abrupta</li>
+              <li>Respiracion inadecuada o deshidratacion</li>
+              <li>Exceso de estimulacion dolorosa</li>
+              <li>Presion excesiva en el plexo solar (entre el estomago y el esternon)</li>
+              <li>Presion en el seno carotideo (base del cuello)</li>
+            </ul>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Flexibilidad</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>La flexibilidad en shibari no trata de alcanzar un estandar. Trata de conocer el propio rango y trabajar dentro de el de forma consciente.</p>
+            <p style="margin-top:0.8rem;"><strong>Flexibilidad activa:</strong> la que consigues por tu propio movimiento sin ayuda. <strong>Flexibilidad pasiva:</strong> la que consigues con ayuda externa (manos o una superficie).</p>
+            <p style="margin-top:0.8rem;">Tanto el atador como el modelo deben conocer su rango antes de empezar. Los estiramientos regulares reducen el riesgo. Concentrarse y respirar durante los ejercicios marca una diferencia notable en los resultados.</p>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="training-card reveal reveal-delay-1">
+        <div class="training-card-header">
+          <span class="training-card-icon">心理</span>
+          <div>
+            <h3>Psicologia</h3>
+            <p>La conversacion antes de la cuerda.</p>
+          </div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Perfil de riesgo personal</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Antes de cualquier sesion (primera o decima), ambas partes deben alinearse sobre lo que va a ocurrir, lo que buscan, y los limites que se establecen. El shibari requiere tanta preparacion etica y emocional como tecnica.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Checklist previa a la sesion</span>
+            <ul>
+              <li>¿Han comido y descansado suficiente todas las partes?</li>
+              <li>¿Lesiones o condiciones medicas, fisicas o psicologicas, a considerar?</li>
+              <li>¿Experiencia previa con cuerdas? ¿Referencias?</li>
+              <li>¿Se han consumido alcohol o drogas recientemente?</li>
+              <li>¿Ataduras acordadas? ¿Ataduras que no se permiten?</li>
+              <li>¿Se aceptan suspensiones? ¿Se aceptan transiciones?</li>
+              <li>¿Quien realizara los chequeos de nervios y circulacion? ¿Con que frecuencia?</li>
+              <li>¿Necesita alguna de las partes aftercare tras la sesion?</li>
+              <li>¿Necesidades especiales a tener en cuenta?</li>
+              <li>¿Estado de animo de todas las partes?</li>
+              <li>¿Es el subespacio un objetivo deseado, o no?</li>
+            </ul>
+          </div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="band"></div>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -1960,6 +2100,16 @@
   function addToCart(product, price) {
     showToast(product + ' — ' + price + ' · Agregado al carrito');
   }
+
+  // Accordion
+  document.querySelectorAll('.acc-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = btn.nextElementSibling;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      panel.classList.toggle('open', !isOpen);
+    });
+  });
 
   // Form submission (demo)
   function handleSubmit(e) {

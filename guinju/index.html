@@ -1273,6 +1273,30 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    /* ── TRAINING ── */
+    #training { background: var(--charcoal); }
+    #training h2 { font-size: clamp(2rem,4vw,3rem); color: var(--ivory); margin-bottom: 1rem; }
+    #training h2 em { color: var(--jute); font-style: italic; }
+    .training-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+    .training-card { background: var(--ash); border: 1px solid rgba(77,158,77,0.12); border-radius: 2px; padding: 2rem; }
+    .training-card-header { display: flex; align-items: flex-start; gap: 1.2rem; margin-bottom: 1.8rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(77,158,77,0.1); }
+    .training-card-icon { font-family: var(--serif); font-size: 2rem; color: var(--jute); opacity: 0.5; min-width: 2.5rem; line-height: 1; }
+    .training-card-header h3 { font-family: var(--serif); font-size: 1.5rem; color: var(--ivory); margin-bottom: 0.3rem; }
+    .training-card-header p { font-size: 0.82rem; color: var(--linen); opacity: 0.6; }
+    .accordion { border-bottom: 1px solid rgba(77,158,77,0.1); }
+    .acc-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 0; background: none; border: none; cursor: pointer; color: var(--ivory); font-family: var(--sans); font-size: 0.82rem; font-weight: 400; letter-spacing: 0.06em; text-align: left; transition: color 0.2s; }
+    .acc-toggle:hover, .acc-toggle[aria-expanded="true"] { color: var(--jute); }
+    .acc-arrow { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; transition: transform 0.3s var(--ease); }
+    .acc-toggle[aria-expanded="true"] .acc-arrow { transform: rotate(180deg); }
+    .acc-panel { overflow: hidden; max-height: 0; transition: max-height 0.45s var(--ease); }
+    .acc-panel.open { max-height: 3000px; }
+    .acc-content { padding: 0 0 1.2rem 0; color: var(--linen); font-size: 0.86rem; line-height: 1.85; opacity: 0.85; }
+    .acc-content ul { margin: 0.6rem 0 0.6rem 1.2rem; }
+    .acc-content li { margin-bottom: 0.35rem; }
+    .acc-subtitle { font-family: var(--sans); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--jute); opacity: 1 !important; display: block; margin-bottom: 0.5rem; }
+    .acc-content strong { color: var(--ivory); font-weight: 400; }
+    @media (max-width: 800px) { .training-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -1287,6 +1311,7 @@
     <li><a href="#photo">Sessions</a></li>
     <li><a href="#shop">Shop</a></li>
     <li><a href="#events">Events</a></li>
+    <li><a href="#training">Training</a></li>
     <li><a href="#contact" class="nav-cta" style="border:none;padding:0;color:var(--jute);opacity:0.7">Contact</a></li>
   </ul>
   <div class="lang-switcher">
@@ -1843,6 +1868,122 @@
   </div>
 </section>
 
+<!-- TRAINING -->
+<section id="training">
+  <div class="container">
+    <span class="section-label reveal">Knowledge</span>
+    <h2 class="reveal">Understanding the <em>Practice.</em></h2>
+    <p class="reveal" style="max-width:620px;margin-bottom:0.5rem;color:var(--linen);opacity:0.8;">Shibari demands as much knowledge as it does feeling. Foundational material on anatomy and psychology, for riggers, models, and anyone deepening their practice.</p>
+    <div class="training-grid">
+
+      <div class="training-card reveal">
+        <div class="training-card-header">
+          <span class="training-card-icon">解剖</span>
+          <div>
+            <h3>Anatomy</h3>
+            <p>Understanding the body before you bind it.</p>
+          </div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Possible Injuries</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <span class="acc-subtitle">Trivial / Minor</span>
+            <p>Bruises, petechiae, rope burns, pinches, blisters, rope marks. All manifest on the skin. More or less temporary, no long-term health risk.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Serious / Dangerous</span>
+            <p>Nerve damage, fainting, muscle injuries, fall trauma, dislocation, asphyxia, bone fractures. The neck carries specific risk: asphyxia, fainting, neurological damage from oxygen deprivation.</p>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Nerve Damage</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Sustained rope pressure can damage myelin (the nerve sheath), causing loss of sensation, movement, or both. Blood flow restriction causes tingling and numbness that should resolve in seconds once tension is released. Caution: numbness from poor circulation also masks nerve checks, making it impossible to detect deeper damage.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Key Arm Nerves (brachial plexus)</span>
+            <ul>
+              <li><strong>Radial:</strong> Outer arm to thumb. Controls wrist and thumb lift. Common damage: wrist drop. Check: try lifting wrist or thumb.</li>
+              <li><strong>Median:</strong> Inner arm to ring and middle fingers. Fine sensation and movement. Common damage: hand numbness.</li>
+              <li><strong>Ulnar:</strong> Lower arm to pinky. Common damage: sensation loss around pinky and ring finger.</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Leg Nerves</span>
+            <ul>
+              <li><strong>Lateral femoral cutaneous:</strong> Pure sensory. Vulnerable at abdomen and groin.</li>
+              <li><strong>Femoral:</strong> Front thigh sensation and knee extension.</li>
+              <li><strong>Peroneal:</strong> Branch of sciatic nerve. Foot, lower leg, toes. Common damage: foot drop.</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Prevention</span>
+            <ul>
+              <li>Balanced rope tension</li>
+              <li>No overlapping ropes or knots over sensitive zones</li>
+              <li>Let the model self-adjust</li>
+              <li>Extra care during suspensions and transitions</li>
+              <li>Regular checks by model, rigger, or both</li>
+            </ul>
+            <span class="acc-subtitle" style="margin-top:1rem;">Action Plan</span>
+            <p><strong>Immediately:</strong> Untie the affected area slowly. Apply ice. Take NSAIDs.</p>
+            <p style="margin-top:0.4rem;"><strong>Next day:</strong> Rest. B-group vitamins help myelin regenerate. See a doctor if sensation persists.</p>
+            <p style="margin-top:0.4rem;"><strong>Avoid:</strong> Compressing the area, straining it, or practicing rope before full recovery.</p>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Fainting</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Common causes during a session:</p>
+            <ul>
+              <li>Blood sugar or blood pressure drop</li>
+              <li>Overheating or prolonged standing</li>
+              <li>Sudden positional change</li>
+              <li>Inadequate breathing or dehydration</li>
+              <li>Excess pain stimulation</li>
+              <li>Pressure on the solar plexus (between stomach and sternum)</li>
+              <li>Pressure on the carotid sinus (base of neck)</li>
+            </ul>
+          </div></div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Flexibility</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Flexibility in shibari is not about reaching a standard. It is about understanding your own range and working within it consciously.</p>
+            <p style="margin-top:0.8rem;"><strong>Active flexibility:</strong> achieved through your own movement alone. <strong>Passive flexibility:</strong> achieved with assistance from hands or a surface.</p>
+            <p style="margin-top:0.8rem;">Both rigger and model should know their range before a session begins. Regular stretching reduces risk. Breathe consciously through all exercises.</p>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="training-card reveal reveal-delay-1">
+        <div class="training-card-header">
+          <span class="training-card-icon">心理</span>
+          <div>
+            <h3>Psychology</h3>
+            <p>The conversation before the rope.</p>
+          </div>
+        </div>
+        <div class="accordion">
+          <button class="acc-toggle" aria-expanded="false"><span>Personal Risk Profile</span><svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="acc-panel"><div class="acc-content">
+            <p>Before any session (first or tenth), both parties must align on what will happen, what each is seeking, and what limits apply. Shibari requires as much ethical and emotional preparation as technical skill.</p>
+            <span class="acc-subtitle" style="margin-top:1rem;">Pre-session alignment</span>
+            <ul>
+              <li>Has everyone eaten and rested enough?</li>
+              <li>Any medical conditions, physical or psychological, to consider?</li>
+              <li>Previous rope experience and references?</li>
+              <li>Recent alcohol or drug use?</li>
+              <li>Which ties are agreed? Which are not permitted?</li>
+              <li>Are suspensions and transitions accepted?</li>
+              <li>Who checks nerves and circulation, and how often?</li>
+              <li>Is aftercare needed following the session?</li>
+              <li>Any special needs or considerations?</li>
+              <li>Current mood of all parties?</li>
+              <li>Is subspace a desired outcome, or not?</li>
+            </ul>
+          </div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="band"></div>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -1962,6 +2103,16 @@
   function addToCart(product, price) {
     showToast(product + ' — ' + price + ' · Added to cart');
   }
+
+  // Accordion
+  document.querySelectorAll('.acc-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = btn.nextElementSibling;
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      panel.classList.toggle('open', !isOpen);
+    });
+  });
 
   // Form submission (demo)
   function handleSubmit(e) {
