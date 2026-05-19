@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico de Negocio · Alan Kugelmass</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --amber:        #D4A853;
+      --amber-dark:   #B8902F;
+      --amber-soft:   #E8C97A;
+      --green:        #2D4A2D;
+      --green-soft:   #4A6B4A;
+      --ivory:        #F5F0E8;
+      --ivory-soft:   #FBF8F2;
+      --brown:        #3D2B1F;
+      --brown-soft:   #5D453A;
+      --cream:        #EDE3D0;
+      --shadow:       rgba(61,43,31,0.12);
+      --error:        #A03020;
+      --serif:        'Fraunces', Georgia, serif;
+      --sans:         'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html, body {
+      font-family: var(--sans);
+      background: var(--ivory);
+      color: var(--brown);
+      min-height: 100vh;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(212,168,83,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(45,74,45,0.06) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--green);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .site-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--ivory);
+    }
+
+    .site-header .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-weight: 800;
+      color: var(--brown);
+      font-size: 1.2rem;
+    }
+
+    .site-header .brand-name {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+    }
+
+    .site-header .header-meta {
+      font-size: 0.78rem;
+      color: var(--amber-soft);
+      text-align: right;
+      font-style: italic;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber-dark);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding: 0.3rem 1rem;
+      border: 1px solid var(--amber);
+      border-radius: 100px;
+      background: rgba(212,168,83,0.08);
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.1;
+      color: var(--brown);
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    .hero .lede {
+      font-size: 1.05rem;
+      color: var(--brown-soft);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── PROGRESS ── */
+    .progress-wrap {
+      max-width: 780px;
+      margin: 1.5rem auto 0;
+      padding: 0 1.5rem;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--brown-soft);
+      font-weight: 500;
+    }
+
+    .progress-meta .current-section {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--cream);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--amber) 0%, var(--amber-dark) 100%);
+      border-radius: 100px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 10%;
+    }
+
+    /* ── FORM CARD ── */
+    .form-shell {
+      max-width: 780px;
+      margin: 2rem auto 4rem;
+      padding: 0 1.5rem;
+    }
+
+    .form-card {
+      background: var(--ivory-soft);
+      border-radius: 18px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px var(--shadow), 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid rgba(212,168,83,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green) 0%, var(--amber) 50%, var(--green) 100%);
+    }
+
+    .step {
+      display: none;
+      animation: fadeSlide 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step .section-num {
+      display: inline-block;
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--amber-dark);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .step h2 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 1.7rem;
+      color: var(--green);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .step .section-intro {
+      color: var(--brown-soft);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+
+    /* ── FIELDS ── */
+    .field {
+      margin-bottom: 1.75rem;
+    }
+
+    .field label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .field label .required {
+      color: var(--error);
+      margin-left: 2px;
+    }
+
+    .field .hint {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--brown-soft);
+      margin-top: 0.35rem;
+      font-style: italic;
+    }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="number"],
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-family: var(--sans);
+      font-size: 1rem;
+      color: var(--brown);
+      background: var(--ivory);
+      border: 1.5px solid var(--cream);
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--amber);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(212,168,83,0.15);
+    }
+
+    .field textarea {
+      min-height: 100px;
+      line-height: 1.5;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #B5A89C;
+      font-style: italic;
+    }
+
+    /* Checkbox groups */
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.3rem;
+    }
+
+    .checkbox-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1rem;
+      background: var(--ivory);
+      border: 1.5px solid var(--cream);
+      border-radius: 100px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.92rem;
+      transition: all 0.2s ease;
+      margin: 0;
+    }
+
+    .checkbox-group label:hover {
+      border-color: var(--amber);
+      background: rgba(212,168,83,0.05);
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      accent-color: var(--green);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label.checked {
+      background: rgba(45,74,45,0.08);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    /* ── NAV ── */
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--cream);
+    }
+
+    .btn {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--ivory);
+    }
+
+    .btn-primary:hover {
+      background: #1f3a1f;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(45,74,45,0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--brown-soft);
+      border: 1.5px solid var(--cream);
+    }
+
+    .btn-secondary:hover {
+      background: var(--cream);
+      color: var(--brown);
+    }
+
+    .btn-submit {
+      background: var(--amber);
+      color: var(--brown);
+      font-weight: 700;
+    }
+
+    .btn-submit:hover {
+      background: var(--amber-dark);
+      color: var(--ivory);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(212,168,83,0.4);
+    }
+
+    /* ── THANK YOU ── */
+    .thanks-screen {
+      display: none;
+      max-width: 600px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      text-align: center;
+      animation: fadeSlide 0.6s ease;
+    }
+
+    .thanks-screen.active {
+      display: block;
+    }
+
+    .thanks-icon {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 1.5rem;
+      background: var(--amber);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(212,168,83,0.4);
+    }
+
+    .thanks-icon svg {
+      width: 44px;
+      height: 44px;
+      color: var(--brown);
+    }
+
+    .thanks-screen h2 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: var(--green);
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .thanks-screen p {
+      font-size: 1.05rem;
+      color: var(--brown-soft);
+      margin-bottom: 0.75rem;
+      line-height: 1.7;
+    }
+
+    .thanks-screen p strong {
+      color: var(--brown);
+    }
+
+    .thanks-screen .signoff {
+      margin-top: 2.5rem;
+      font-family: var(--serif);
+      font-style: italic;
+      color: var(--amber-dark);
+      font-size: 0.95rem;
+    }
+
+    /* ── ERROR MSG ── */
+    .err-msg {
+      display: none;
+      background: rgba(160,48,32,0.08);
+      color: var(--error);
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-left: 3px solid var(--error);
+    }
+
+    .err-msg.show { display: block; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .site-header {
+        padding: 1rem 1.25rem;
+      }
+      .site-header .header-meta {
+        display: none;
+      }
+      .hero {
+        padding: 2rem 1.25rem 1.25rem;
+      }
+      .hero h1 { font-size: 1.85rem; }
+      .hero .lede { font-size: 0.98rem; }
+      .progress-wrap {
+        padding: 0 1.25rem;
+      }
+      .form-shell {
+        padding: 0 1rem;
+        margin: 1.5rem auto 3rem;
+      }
+      .form-card {
+        padding: 1.75rem 1.35rem;
+        border-radius: 14px;
+      }
+      .step h2 { font-size: 1.4rem; }
+      .nav-row {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+      }
+      .nav-row .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .field input,
+      .field textarea,
+      .field select {
+        font-size: 16px; /* prevents iOS zoom */
+      }
+      .thanks-screen h2 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div class="brand-name">Mexzungu Group</div>
+    </div>
+    <div class="header-meta">Diagnóstico estratégico · Confidencial</div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <span class="eyebrow">East Africa Travel</span>
+    <h1>Diagnóstico de <em>Negocio</em></h1>
+    <p class="lede">Hola Alan. Pepe me pidió que te ayude a poner pies y cabeza a tu negocio de viajes en África del este. Antes de armar la estrategia, necesito entender qué tienes hoy, dónde quieres ir, y qué te frena. Son 10 secciones, alrededor de 40 preguntas. Tómate el tiempo que necesites. No hay respuestas correctas, solo las tuyas.</p>
+  </section>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span class="current-section" id="currentLabel">Sección 1 de 10</span>
+      <span id="currentCount">10%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <main class="form-shell" id="formShell">
+    <div class="form-card">
+      <form id="diagForm" autocomplete="off" novalidate>
+
+        <!-- SECCIÓN 1 -->
+        <div class="step active" data-step="1">
+          <span class="section-num">Sección 1 · 10</span>
+          <h2>Tu negocio hoy</h2>
+          <p class="section-intro">Empecemos por el punto de partida.</p>
+
+          <div class="field">
+            <label for="q_email">¿Cuál es tu correo electrónico? <span class="required">*</span></label>
+            <input type="email" id="q_email" name="q_email" placeholder="tu@correo.com" required>
+            <span class="hint">Te enviaré un resumen de tus respuestas a este correo.</span>
+          </div>
+
+          <div class="field">
+            <label for="q_one_line">¿Cómo describirías tu negocio en una sola frase?</label>
+            <textarea id="q_one_line" name="q_one_line" placeholder="Organizo viajes a medida en África del este para..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_time">¿Cuánto tiempo llevas organizando viajes en África del este?</label>
+            <input type="text" id="q_time" name="q_time" placeholder="Ej: 3 años, desde 2022, etc.">
+          </div>
+
+          <div class="field">
+            <label for="q_trips">¿Cuántos viajes has organizado hasta ahora?</label>
+            <input type="text" id="q_trips" name="q_trips" placeholder="Número aproximado">
+          </div>
+
+          <div class="field">
+            <label for="q_revenue">¿Cuánto generaste el año pasado con esta actividad?</label>
+            <input type="text" id="q_revenue" name="q_revenue" placeholder="Cifra aproximada en dólares (USD)">
+            <span class="hint">Está bien si es estimado. Solo necesito el orden de magnitud.</span>
+          </div>
+
+          <div class="nav-row">
+            <span></span>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 2 -->
+        <div class="step" data-step="2">
+          <span class="section-num">Sección 2 · 10</span>
+          <h2>Lo que ofreces</h2>
+          <p class="section-intro">El producto, la experiencia, lo que el cliente recibe.</p>
+
+          <div class="field">
+            <label>¿Qué tipo de experiencias organizas?</label>
+            <div class="checkbox-group" data-name="q_exp_types">
+              <label><input type="checkbox" name="q_exp_types" value="Safari"> Safari</label>
+              <label><input type="checkbox" name="q_exp_types" value="Cultural"> Cultural</label>
+              <label><input type="checkbox" name="q_exp_types" value="Aventura"> Aventura</label>
+              <label><input type="checkbox" name="q_exp_types" value="Fotografía"> Fotografía</label>
+              <label><input type="checkbox" name="q_exp_types" value="Playa/Costa"> Playa / Costa</label>
+              <label><input type="checkbox" name="q_exp_types" value="Combinaciones"> Combinaciones</label>
+              <label><input type="checkbox" name="q_exp_types" value="Otro"> Otro</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="q_exp_other">Si elegiste "Otro" o quieres detallar, cuéntame más:</label>
+            <textarea id="q_exp_other" name="q_exp_other" placeholder="Describe el tipo de experiencias que armas..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_duration">¿Cuánto dura un viaje típico?</label>
+            <input type="text" id="q_duration" name="q_duration" placeholder="Ej: 7 a 10 días, 2 semanas, etc.">
+          </div>
+
+          <div class="field">
+            <label for="q_included">¿Qué incluye normalmente un viaje contigo?</label>
+            <textarea id="q_included" name="q_included" placeholder="Alojamiento, transporte, guía, actividades, comidas, traslados..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_unique">¿Hay algo que hagas que ninguna agencia convencional hace?</label>
+            <textarea id="q_unique" name="q_unique" placeholder="El detalle, el acceso, la conexión, la flexibilidad..."></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 3 -->
+        <div class="step" data-step="3">
+          <span class="section-num">Sección 3 · 10</span>
+          <h2>Tus destinos</h2>
+          <p class="section-intro">El terreno que conoces y donde quieres jugar.</p>
+
+          <div class="field">
+            <label for="q_countries">¿En qué países operas actualmente?</label>
+            <textarea id="q_countries" name="q_countries" placeholder="Kenia, Tanzania, Uganda, Ruanda..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_regions">¿Qué parques o regiones conoces mejor?</label>
+            <textarea id="q_regions" name="q_regions" placeholder="Maasai Mara, Serengeti, Ngorongoro, Amboseli, Lamu, Diani..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_network">¿Tienes red de contactos locales? Guías, lodges, conductores, hoteles.</label>
+            <textarea id="q_network" name="q_network" placeholder="Describe tu red. ¿Con quién trabajas?"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_grow_dest">¿Qué destino quieres desarrollar más en los próximos 12 meses?</label>
+            <textarea id="q_grow_dest" name="q_grow_dest" placeholder="El que más oportunidad ves..."></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 4 -->
+        <div class="step" data-step="4">
+          <span class="section-num">Sección 4 · 10</span>
+          <h2>Tus clientes</h2>
+          <p class="section-intro">A quién le has vendido y a quién quieres venderle.</p>
+
+          <div class="field">
+            <label for="q_client_profile">¿Cómo describirías a tus clientes típicos? Origen, perfil, edad.</label>
+            <textarea id="q_client_profile" name="q_client_profile" placeholder="Argentinos 40+, parejas, familias, latinoamericanos, gringos, expats..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_client_found">¿Cómo te han encontrado hasta ahora?</label>
+            <textarea id="q_client_found" name="q_client_found" placeholder="Boca a boca, redes sociales, amigos de amigos, contactos..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_client_want">¿Qué buscan cuando te contactan?</label>
+            <textarea id="q_client_want" name="q_client_want" placeholder="Lo auténtico, lo exclusivo, lo a medida, escapar de lo turístico..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_client_repeat">¿Algún cliente ha repetido o te ha recomendado con otros?</label>
+            <textarea id="q_client_repeat" name="q_client_repeat" placeholder="Cuéntame de tu pipeline orgánico..."></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 5 -->
+        <div class="step" data-step="5">
+          <span class="section-num">Sección 5 · 10</span>
+          <h2>Cómo cobras</h2>
+          <p class="section-intro">La parte fea pero importante. El dinero.</p>
+
+          <div class="field">
+            <label for="q_pricing">¿Cómo estructuras tu precio actualmente?</label>
+            <textarea id="q_pricing" name="q_pricing" placeholder="Por persona, por grupo, comisión de lodges, paquete cerrado..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_price_pp">¿Cuánto cuesta aproximadamente un viaje típico por persona?</label>
+            <input type="text" id="q_price_pp" name="q_price_pp" placeholder="Ej: USD 3,500 por persona, 7 días">
+          </div>
+
+          <div class="field">
+            <label for="q_deposit">¿Cobras algo por adelantado?</label>
+            <textarea id="q_deposit" name="q_deposit" placeholder="¿Anticipo? ¿Porcentaje? ¿Cuándo recibes el resto?"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_margin">¿Sabes cuánto margen te queda después de pagar a proveedores?</label>
+            <textarea id="q_margin" name="q_margin" placeholder="Porcentaje, monto, o si no lo has medido todavía está bien decirlo..."></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 6 -->
+        <div class="step" data-step="6">
+          <span class="section-num">Sección 6 · 10</span>
+          <h2>Cómo te encuentran</h2>
+          <p class="section-intro">Tu presencia, tus canales, tu visibilidad.</p>
+
+          <div class="field">
+            <label for="q_channels">¿Tienes página web, Instagram u otro canal activo?</label>
+            <textarea id="q_channels" name="q_channels" placeholder="Pásame links si los tienes (web, IG, FB, TikTok, LinkedIn...)"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_acquisition">¿Cómo llegan tus clientes hoy?</label>
+            <textarea id="q_acquisition" name="q_acquisition" placeholder="100% referidos, redes, contactos directos, mix..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_list">¿Tienes alguna lista de contactos interesados?</label>
+            <textarea id="q_list" name="q_list" placeholder="Newsletter, base de datos, WhatsApp groups, clientes pasados..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_channel_potential">¿Qué canal crees que tiene más potencial para crecer?</label>
+            <textarea id="q_channel_potential" name="q_channel_potential" placeholder="¿Dónde sientes que está la oportunidad?"></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 7 -->
+        <div class="step" data-step="7">
+          <span class="section-num">Sección 7 · 10</span>
+          <h2>Cómo operas</h2>
+          <p class="section-intro">El behind-the-scenes. La operación real.</p>
+
+          <div class="field">
+            <label for="q_process">Descríbeme el proceso completo cuando alguien te contrata, desde el primer mensaje hasta que termina el viaje.</label>
+            <textarea id="q_process" name="q_process" placeholder="Paso a paso, lo más detallado que puedas..." style="min-height:140px"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_time_drain">¿Qué parte del proceso te consume más tiempo?</label>
+            <textarea id="q_time_drain" name="q_time_drain" placeholder="Cotizar, planificar, coordinar proveedores, atender al cliente durante el viaje..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_suppliers">¿Trabajas con proveedores fijos o buscas cada vez?</label>
+            <textarea id="q_suppliers" name="q_suppliers" placeholder="Lodges, transporte, guías. ¿Tienes preferidos o caso por caso?"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_hardest">¿Qué es lo más difícil de operar hoy?</label>
+            <textarea id="q_hardest" name="q_hardest" placeholder="El cuello de botella real. Sé honesto."></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 8 -->
+        <div class="step" data-step="8">
+          <span class="section-num">Sección 8 · 10</span>
+          <h2>Por qué tú</h2>
+          <p class="section-intro">Tu diferenciador. La razón por la que alguien te elige a ti y no a otro.</p>
+
+          <div class="field">
+            <label for="q_why_you">¿Por qué un viajero debería elegirte a ti sobre una agencia como Abercrombie &amp; Kent?</label>
+            <textarea id="q_why_you" name="q_why_you" placeholder="Sin falsa modestia. ¿Cuál es tu ventaja real?"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_insider">¿Qué sabes tú sobre África del este que la mayoría de operadores no saben?</label>
+            <textarea id="q_insider" name="q_insider" placeholder="Acceso, secretos, lugares, gente, cultura, momentos del año..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_specialty">¿Tienes alguna especialidad o tipo de viaje que haces especialmente bien?</label>
+            <textarea id="q_specialty" name="q_specialty" placeholder="Honeymoons, familias, grupos pequeños, fotógrafos, lujo, mid-range..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_different">¿Qué te hace diferente como organizador?</label>
+            <textarea id="q_different" name="q_different" placeholder="Tu estilo, tu enfoque, tu energía, tu forma de armar el viaje..."></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 9 -->
+        <div class="step" data-step="9">
+          <span class="section-num">Sección 9 · 10</span>
+          <h2>A dónde vas</h2>
+          <p class="section-intro">La visión. Dónde quieres estar en 12 meses.</p>
+
+          <div class="field">
+            <label for="q_vision">¿Cómo se ve tu negocio idealmente en 12 meses?</label>
+            <textarea id="q_vision" name="q_vision" placeholder="Tu visión clara. Soñalo en grande..." style="min-height:120px"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_target_trips">¿Cuántos viajes quieres organizar al año?</label>
+            <input type="text" id="q_target_trips" name="q_target_trips" placeholder="Número objetivo">
+          </div>
+
+          <div class="field">
+            <label for="q_target_revenue">¿Qué ingresos quieres generar?</label>
+            <input type="text" id="q_target_revenue" name="q_target_revenue" placeholder="Cifra anual en USD">
+          </div>
+
+          <div class="field">
+            <label for="q_team">¿Quieres trabajar solo o construir un equipo?</label>
+            <textarea id="q_team" name="q_team" placeholder="¿Te ves con socios, empleados, freelancers, solo tú...?"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_company">¿Tienes pensado registrar una empresa? ¿En qué país?</label>
+            <textarea id="q_company" name="q_company" placeholder="Kenia, Argentina, USA, Mauricio, ya tengo, no lo he pensado..."></textarea>
+          </div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="button" class="btn btn-primary" data-next>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 10 -->
+        <div class="step" data-step="10">
+          <span class="section-num">Sección 10 · 10</span>
+          <h2>Qué te frena</h2>
+          <p class="section-intro">Lo último. Los obstáculos reales.</p>
+
+          <div class="field">
+            <label for="q_block">¿Qué es lo que más te detiene hoy para crecer?</label>
+            <textarea id="q_block" name="q_block" placeholder="Tiempo, dinero, miedo, falta de claridad, conocimiento, red..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_missing">¿Qué te falta para avanzar más rápido?</label>
+            <textarea id="q_missing" name="q_missing" placeholder="Una web, un socio, capital, un proceso, herramientas..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_tried">¿Hay algo que hayas intentado que no funcionó?</label>
+            <textarea id="q_tried" name="q_tried" placeholder="Lecciones aprendidas. Lo que no salió y por qué crees que no salió."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="q_magic">Si tuvieras una varita mágica, ¿qué problema resolverías primero?</label>
+            <textarea id="q_magic" name="q_magic" placeholder="El dolor número uno. El que si desapareciera te cambiaría la vida."></textarea>
+          </div>
+
+          <div class="err-msg" id="errMsg">Por favor llena al menos tu correo y la frase que describe tu negocio antes de enviar.</div>
+
+          <div class="nav-row">
+            <button type="button" class="btn btn-secondary" data-prev>← Atrás</button>
+            <button type="submit" class="btn btn-submit" id="submitBtn">Enviar diagnóstico ✓</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- THANK YOU SCREEN -->
+  <section class="thanks-screen" id="thanksScreen">
+    <div class="thanks-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Gracias, Alan</h2>
+    <p>Tu diagnóstico está <strong>completo</strong>.</p>
+    <p>Pepe y su equipo lo van a revisar y te contactaremos pronto con un plan para armar tu negocio.</p>
+    <p style="margin-top:1.25rem">Te mandamos también una copia de tus respuestas al correo que dejaste.</p>
+    <p class="signoff">Janis, Chief of Staff · Mexzungu Group</p>
+  </section>
+
+  <script>
+    (function() {
+      'use strict';
+
+      const TOTAL_STEPS = 10;
+      const SUBMIT_URL = 'https://panda.mexzungu.com/diagnostico/alan/submit';
+
+      const form = document.getElementById('diagForm');
+      const steps = form.querySelectorAll('.step');
+      const progressFill = document.getElementById('progressFill');
+      const currentLabel = document.getElementById('currentLabel');
+      const currentCount = document.getElementById('currentCount');
+      const thanksScreen = document.getElementById('thanksScreen');
+      const formShell = document.getElementById('formShell');
+      const heroEl = document.getElementById('hero');
+      const progressWrap = document.getElementById('progressWrap');
+      const errMsg = document.getElementById('errMsg');
+      const submitBtn = document.getElementById('submitBtn');
+
+      let current = 1;
+
+      function showStep(n) {
+        steps.forEach(s => s.classList.remove('active'));
+        const target = form.querySelector(`.step[data-step="${n}"]`);
+        if (target) target.classList.add('active');
+        current = n;
+        const pct = Math.round((n / TOTAL_STEPS) * 100);
+        progressFill.style.width = pct + '%';
+        currentLabel.textContent = `Sección ${n} de ${TOTAL_STEPS}`;
+        currentCount.textContent = pct + '%';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function validateStep(n) {
+        if (n === 1) {
+          const email = form.querySelector('#q_email').value.trim();
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            errMsg.textContent = 'Por favor ingresa un correo válido para continuar.';
+            errMsg.classList.add('show');
+            form.querySelector('#q_email').focus();
+            setTimeout(() => errMsg.classList.remove('show'), 4000);
+            return false;
+          }
+        }
+        return true;
+      }
+
+      // Wire next buttons
+      form.querySelectorAll('[data-next]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!validateStep(current)) return;
+          if (current < TOTAL_STEPS) showStep(current + 1);
+        });
+      });
+
+      // Wire prev buttons
+      form.querySelectorAll('[data-prev]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (current > 1) showStep(current - 1);
+        });
+      });
+
+      // Checkbox group visual feedback
+      form.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+          cb.parentElement.classList.toggle('checked', cb.checked);
+        });
+      });
+
+      // Collect form data including checkbox arrays
+      function collectData() {
+        const data = {};
+        // Text/textarea/email inputs
+        form.querySelectorAll('input[type="text"], input[type="email"], input[type="number"], textarea').forEach(el => {
+          data[el.name] = el.value.trim();
+        });
+        // Checkbox groups
+        const groups = {};
+        form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+          if (!groups[cb.name]) groups[cb.name] = [];
+          if (cb.checked) groups[cb.name].push(cb.value);
+        });
+        Object.assign(data, groups);
+        return data;
+      }
+
+      // Submit
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = form.querySelector('#q_email').value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showStep(1);
+          errMsg.textContent = 'Necesito tu correo electrónico antes de enviar.';
+          errMsg.classList.add('show');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        errMsg.classList.remove('show');
+
+        const payload = collectData();
+        payload._submitted_at = new Date().toISOString();
+        payload._user_agent = navigator.userAgent;
+
+        try {
+          const res = await fetch(SUBMIT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) throw new Error('Submission failed: ' + res.status);
+          // Show thank you screen
+          heroEl.style.display = 'none';
+          progressWrap.style.display = 'none';
+          formShell.style.display = 'none';
+          thanksScreen.classList.add('active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enviar diagnóstico ✓';
+          errMsg.textContent = 'Hubo un problema al enviar. Por favor inténtalo de nuevo en un momento.';
+          errMsg.classList.add('show');
+          console.error('Submit error:', err);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
