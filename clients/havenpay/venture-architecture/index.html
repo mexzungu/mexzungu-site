@@ -156,10 +156,11 @@
 
 <script>
   const PW = 'Outlaw-Master-2026';
+  const CLIENT_PW = 'Outlaw-Havenpay-2026';
   const PW_SK = 'havenpay_hub_v1';
   function checkPw() {
     const v = document.getElementById('pw-input').value.trim();
-    if (v === PW) {
+    if (v === PW || v === CLIENT_PW) {
       sessionStorage.setItem(PW_SK, '1');
       document.getElementById('pw-gate').classList.add('hidden');
       initPage();

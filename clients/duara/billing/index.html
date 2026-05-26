@@ -566,11 +566,12 @@
 
 <script>
 const PASS = 'Outlaw-Master-2026';
+const CLIENT_PW = 'Outlaw-Duara-2026';
 const SESSION_KEY = 'duara_hub_v1';
 
 function checkAuth() {
   const val = document.getElementById('pw-input').value;
-  if (val === PASS) {
+  if (val === PASS || val === CLIENT_PW) {
     sessionStorage.setItem(SESSION_KEY, '1');
     sessionStorage.setItem('duara-auth', '1');
     sessionStorage.setItem('duara_tx2', '1');

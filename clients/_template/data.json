@@ -1,0 +1,86 @@
+{
+  "_note": "Copy this folder to clients/[slug]/. Edit only this file. Deploy with: cd /home/mexzungu/mexzungu-site && bash deploy.sh. Share: mexzungu.com/clients/[slug]/?token=[token]",
+
+  "meta": {
+    "token":          "CHANGE-ME-xxxx-xxxx",
+    "client":         "Client Name",
+    "tagline":        "One sentence on what they do or the engagement purpose",
+    "engagement":     "Venture Architecture, Phase 1",
+    "status_summary": "Phase 1 in progress",
+    "accent_color":   "#e14b87",
+    "pm":             "Pepe Carrillo",
+    "pm_email":       "pepe@mexzungu.com",
+    "updated":        "YYYY-MM-DD"
+  },
+
+  "_accent_palette": {
+    "pink":   "#e14b87",
+    "gold":   "#c98f1a",
+    "blue":   "#4a8fd4",
+    "green":  "#28a856",
+    "purple": "#8b5cf6",
+    "teal":   "#0d9488"
+  },
+
+  "awaiting": [
+    {
+      "label":  "Action title shown to client",
+      "detail": "One or two sentences explaining what you need from them and why it unblocks the next step.",
+      "cta":    "Button label",
+      "link":   "https://mexzungu.com/talk_to_pepe"
+    }
+  ],
+
+  "workstreams": [
+    {
+      "code":        "WS1",
+      "title":       "Workstream Name",
+      "description": "What Pepe is doing. What the client can expect. Written for the client, not internally.",
+      "deliverable": "The tangible output",
+      "status":      "not-started",
+      "eta":         null,
+      "updated":     null
+    }
+  ],
+
+  "_workstream_statuses": ["not-started", "in-progress", "under-review", "delivered", "blocked"],
+
+  "tasks": [
+    {
+      "title":  "Task description",
+      "note":   "Optional one-line context",
+      "owner":  "Pepe or Client Name",
+      "eta":    "YYYY-MM-DD or ASAP",
+      "status": "pending"
+    }
+  ],
+
+  "_task_statuses": ["pending", "in-progress", "blocked", "delivered"],
+
+  "documents": {
+    "engagement": [
+      {
+        "title": "Engagement Letter",
+        "date":  "YYYY-MM-DD",
+        "type":  "PDF",
+        "link":  "https://drive.google.com/file/d/FILEID/view"
+      }
+    ],
+    "deliverables": [],
+    "reference": []
+  },
+
+  "_document_types": ["PDF", "Doc", "Sheet", "Deck", "Link"],
+
+  "billing": [
+    {
+      "description": "Item name shown to client",
+      "amount":      "$0,000",
+      "status":      "upcoming",
+      "due":         "YYYY-MM-DD",
+      "note":        "Optional one-line note on terms"
+    }
+  ],
+
+  "_billing_statuses": ["upcoming", "invoiced", "paid", "overdue"]
+}

@@ -660,11 +660,12 @@ Thank you,
 
 <script>
   const PW = 'Outlaw-Master-2026';
+  const CLIENT_PW = 'Outlaw-Duara-2026';
   const SK = 'duara_hub_v1';
 
   function checkPw() {
     const v = document.getElementById('pw-input').value.trim();
-    if (v === PW) {
+    if (v === PW || v === CLIENT_PW) {
       sessionStorage.setItem(SK, '1');
       // Also set keys for sub-portals so they don't re-prompt
       sessionStorage.setItem('duara-auth', '1');
