@@ -478,6 +478,7 @@
     .icon-se { background: var(--pink-dark); }
     .icon-at { background: #1a2028; }
     .icon-ec { background: #0d2016; }
+    .icon-tit { background: #1c1a08; }
     .staff-card-title {
       flex: 1;
     }
@@ -491,6 +492,7 @@
     .tag-se { color: var(--pink); }
     .tag-at { color: #60a5fa; }
     .tag-ec { color: var(--green-text); }
+    .tag-tit { color: #fbbf24; }
     .staff-card-name {
       font-family: 'RocknRoll One', sans-serif;
       font-size: 1.25rem;
@@ -1344,6 +1346,8 @@
     .rc-clean { background: var(--green-bg); color: var(--green-text); border: 1px solid rgba(45,181,93,0.2); }
     .rc-review { background: var(--amber-bg); color: var(--amber-text); border: 1px solid rgba(212,144,10,0.2); }
     .rc-defective { background: var(--red-bg); color: #f87171; border: 1px solid rgba(225,75,75,0.2); }
+    .roster-doc-link { font-size: 0.68rem; color: #6b7280; text-decoration: none; white-space: nowrap; padding: 0.1rem 0.3rem; border-radius: 2px; transition: color 0.15s; }
+    .roster-doc-link:hover { color: #e14b87; text-decoration: underline; }
     .rc-inactive { background: var(--bg-hover); color: var(--text-ghost); border: 1px solid var(--border); }
     .roster-school-note { font-size: 0.7rem; color: var(--text-ghost); flex-shrink: 0; min-width: 68px; }
     .roster-inactive { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
@@ -1355,6 +1359,24 @@
     .roster-inactive-body { display: none; border-top: 1px solid var(--border); }
     .roster-inactive-body.open { display: block; }
     .roster-row.inactive .roster-name { color: var(--text-ghost); }
+    /* Feedback section */
+    .roster-feedback { margin-top: 2rem; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .roster-feedback-hd { padding: 0.9rem 1.25rem; background: var(--bg-mid); border-bottom: 1px solid var(--border); }
+    .roster-feedback-hd-title { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-soft); }
+    .roster-feedback-hd-sub { font-size: 0.78rem; color: var(--text-ghost); margin-top: 0.2rem; line-height: 1.5; }
+    .roster-feedback-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .roster-feedback-thread { display: flex; flex-direction: column; gap: 0.5rem; }
+    .fb-msg { padding: 0.6rem 0.85rem; border-radius: 3px; font-size: 0.81rem; line-height: 1.6; }
+    .fb-msg.inbound { background: var(--bg-mid); border: 1px solid var(--border); color: var(--text-mid); }
+    .fb-msg.outbound { background: var(--pink-dim); border: 1px solid rgba(236,72,153,0.2); color: var(--text); }
+    .fb-msg-meta { font-size: 0.62rem; color: var(--text-ghost); margin-bottom: 0.25rem; letter-spacing: 0.05em; }
+    .roster-feedback-inputs { display: flex; gap: 0.5rem; align-items: flex-start; flex-wrap: wrap; }
+    .fb-name { width: 160px; flex-shrink: 0; }
+    .fb-textarea { flex: 1; min-width: 200px; min-height: 60px; resize: vertical; }
+    .fb-send { padding: 0.55rem 1.1rem; background: var(--pink); color: #fff; border: none; border-radius: 3px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; align-self: flex-end; }
+    .fb-send:hover { opacity: 0.85; }
+    .fb-send:disabled { opacity: 0.4; cursor: default; }
+    .fb-status { font-size: 0.78rem; color: var(--text-soft); min-height: 1.2em; }
   </style>
 </head>
 <body>
@@ -1421,8 +1443,9 @@
 
           <div class="nav-section-label">Staff Profiles</div>
           <a href="#sp-se" class="nav-link">School Entrepreneurs (SE)</a>
-          <a href="#sp-at" class="nav-link">Assistant Teachers (AT)</a>
-          <a href="#sp-ec" class="nav-link">Educare Fellows (EC)</a>
+          <a href="#sp-at" class="nav-link">Teachers (T)</a>
+          <a href="#sp-tit" class="nav-link">Teachers in Training (TiT)</a>
+          <a href="#sp-ec" class="nav-link">Educare (EC)</a>
 
           <div class="nav-section-label">Comms</div>
           <a href="#comms" class="nav-link">Message Templates</a>
@@ -1632,43 +1655,86 @@
 
           <div class="content-section" id="sp-at">
             <div class="section-label">Staff Profiles</div>
-            <h2 class="section-title">Assistant Teachers</h2>
+            <h2 class="section-title">Teachers</h2>
             <div class="section-rule"></div>
             <div class="staff-grid">
               <div class="staff-card">
                 <div class="staff-card-header">
                   <div class="staff-icon icon-at">📚</div>
                   <div class="staff-card-title">
-                    <div class="staff-type-tag tag-at">AT · Assistant Teacher</div>
+                    <div class="staff-type-tag tag-at">T · Teacher</div>
                     <div class="staff-card-name">The Classroom Operator</div>
                   </div>
                 </div>
                 <div class="staff-card-body">
                   <div>
                     <div class="staff-section-label">Who they are</div>
-                    <div class="staff-section-text">ATs are the front-line teachers working in Duara partner schools. They are <strong>community members</strong> — often young graduates or experienced local educators — recruited by the SE. They are not Duara employees. They are independent consultants contracted by Duara directly under the new model.</div>
+                    <div class="staff-section-text">Teachers are qualified practitioners working in Duara partner schools. They hold TSC registration or an equivalent recognised teaching qualification. They are contracted by Duara directly as independent consultants. Not employees of Duara or the School Entrepreneur.</div>
                   </div>
                   <div>
                     <div class="staff-section-label">What they do</div>
-                    <div class="staff-section-text">Deliver the Duara curriculum to students. Track attendance and progress. Report to the SE on a daily/weekly basis. Attend training sessions organised by Duara. Provide invoices or fee notes as required for payment processing.</div>
+                    <div class="staff-section-text">Deliver the Duara curriculum to learners. Track attendance and progress. Report to the SE on a daily/weekly basis. Attend training and professional development sessions organised by Duara. Submit monthly invoices for payment.</div>
                   </div>
                   <div class="staff-contract-box">
                     <div class="scb-header">
                       <span class="scb-label">Contract Type</span>
-                      <span class="scb-status draft">v1.0 — Under review</span>
+                      <span class="scb-status draft">v1.0, Under review</span>
                     </div>
                     <div class="scb-body">
-                      <strong>Consulting Agreement (AT)</strong><br>
-                      Duara → AT direct. The AT is engaged as an independent consultant by Duara Education. The SE is the day-to-day operational supervisor but is not the contractual party — this keeps Duara in control of the legal relationship and compliance obligations.
+                      <strong>Consulting Agreement (Teacher)</strong><br>
+                      Duara to Teacher direct. The Teacher is engaged as an independent consultant by Duara Education. The SE is the day-to-day operational supervisor but is not the contractual party. This keeps Duara in control of the legal relationship and compliance obligations.
                       <br><br>
-                      <strong>Why this structure:</strong> Previous employment contracts created statutory obligations (notice periods, redundancy, maternity rights, NSSF/NHIF contributions) that Duara cannot sustainably manage across 30+ schools. The consulting model is appropriate because ATs typically work part-time, serve specific engagements, and retain the right to work elsewhere.
+                      <strong>Why this structure:</strong> Previous employment contracts created statutory obligations (notice periods, redundancy, maternity rights, NSSF/NHIF contributions) that Duara cannot sustainably manage across 30+ schools. The consulting model is appropriate because Teachers typically work part-time, serve specific engagements, and retain the right to work elsewhere.
                       <div class="struct-note confirmed">
-                        <div class="sn-label">Structure confirmed — 11 May 2026</div>
-                        <p>Confirmed: Duara contracts the AT directly (Duara→AT, not SE→AT subcontract). Employment contracts previously in circulation were an administrative error — these are being systematically replaced.</p>
+                        <div class="sn-label">Structure confirmed, 11 May 2026</div>
+                        <p>Confirmed: Duara contracts the Teacher directly (Duara direct, not SE subcontract). Employment contracts previously in circulation were an administrative error. These are being systematically replaced.</p>
                       </div>
                       <div style="display:flex;gap:0.6rem;margin-top:0.75rem;flex-wrap:wrap;">
-                        <a href="#at-contract" class="scb-link" onclick="switchToContracts('at')">View AT Agreement →</a>
+                        <a href="#at-contract" class="scb-link" onclick="switchToContracts('at')">View Teacher Agreement →</a>
                         <a href="https://docs.google.com/document/d/1w-tIOakjlVX0n-qWbE0cFPASt5d73aEo7Hb6dCdBv4c/edit" target="_blank" class="scb-link outline">Open in Google Docs ↗</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-section" id="sp-tit">
+            <div class="section-label">Staff Profiles</div>
+            <h2 class="section-title">Teachers in Training</h2>
+            <div class="section-rule"></div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="staff-card-header">
+                  <div class="staff-icon icon-tit">🎓</div>
+                  <div class="staff-card-title">
+                    <div class="staff-type-tag tag-tit">TiT · Teacher in Training</div>
+                    <div class="staff-card-name">The Developing Practitioner</div>
+                  </div>
+                </div>
+                <div class="staff-card-body">
+                  <div>
+                    <div class="staff-section-label">Who they are</div>
+                    <div class="staff-section-text">Teachers in Training are practitioners working toward a teaching qualification while contributing to Duara schools. Three accepted tracks: <strong>TSC Registered</strong> (full TSC holder progressing their practice), <strong>TSC Candidate</strong> (e.g. a teaching student expecting TSC certification by year-end, currently transitioning from Educare), or <strong>Alternative Qualification</strong> (e.g. Montessori, ECE certification. Relevant training without a TSC pathway). They are <strong>not employees</strong>. They receive a fellowship stipend and structured coaching through the Duara Teacher Growth Framework.</div>
+                  </div>
+                  <div>
+                    <div class="staff-section-label">What they do</div>
+                    <div class="staff-section-text">Deliver teaching and learning support under the Duara curriculum. Progress through Stages 1 and 2 of the Duara Teacher Growth Framework over a 2-year fellowship period. Receive coaching from the SE and quality review from Duara. Contribute to school operations as directed. Receive a Duara Teacher Training Certificate on successful completion. TSC-track fellows may progress to a Teacher role (not automatic. SE decision and position availability).</div>
+                  </div>
+                  <div class="staff-contract-box">
+                    <div class="scb-header">
+                      <span class="scb-label">Contract Type</span>
+                      <span class="scb-status draft">v1.1, Draft</span>
+                    </div>
+                    <div class="scb-body">
+                      <strong>Teacher Training Fellowship Agreement</strong><br>
+                      Duara to TiT direct. Structured as a fellowship grant. Not an employment contract and not a consulting agreement. The TiT receives a stipend (not a wage), is enrolled in a defined 2-year programme against the Duara Teacher Growth Framework, and has learning and placement obligations.
+                      <br><br>
+                      <strong>Why this structure:</strong> The Teacher in Training is genuinely in development. They do not yet hold full teaching credentials, or are actively working toward them. The fellowship structure accurately reflects this learning relationship, avoids employment classification, and creates a clear, positive progression path.
+                      <div class="struct-note">
+                        <div class="sn-label">Three qualification tracks</div>
+                        <p>Track A: TSC Registered. Track B: TSC Candidate (expected date documented). Track C: Alternative qualification (Montessori, ECE, etc.). Track C fellows may not qualify for the Teacher role in contexts requiring TSC. Duara confirms the applicable path at fellowship start.</p>
                       </div>
                     </div>
                   </div>
@@ -1679,38 +1745,38 @@
 
           <div class="content-section" id="sp-ec">
             <div class="section-label">Staff Profiles</div>
-            <h2 class="section-title">Educare Fellows</h2>
+            <h2 class="section-title">Educare</h2>
             <div class="section-rule"></div>
             <div class="staff-grid">
               <div class="staff-card">
                 <div class="staff-card-header">
                   <div class="staff-icon icon-ec">🌱</div>
                   <div class="staff-card-title">
-                    <div class="staff-type-tag tag-ec">EC · Educare Fellow</div>
-                    <div class="staff-card-name">The Fellowship Participant</div>
+                    <div class="staff-type-tag tag-ec">EC · Educare</div>
+                    <div class="staff-card-name">The Educare Practitioner</div>
                   </div>
                 </div>
                 <div class="staff-card-body">
                   <div>
                     <div class="staff-section-label">Who they are</div>
-                    <div class="staff-section-text">Educare Fellows are participants in the Duara Educare programme — a structured fellowship designed to develop early-childhood education practitioners in the communities Duara serves. They are <strong>not employees</strong>. They receive a fellowship stipend, training, and certification in exchange for their participation and contributions.</div>
+                    <div class="staff-section-text">Educare practitioners work in the early childhood education layer of Duara partner schools. They are participants in the Duara Educare programme, a structured training and placement programme focused on early childhood development. They are <strong>not employees</strong>. They receive a programme stipend, structured training, and certification in exchange for their participation and contributions to learners.</div>
                   </div>
                   <div>
                     <div class="staff-section-label">What they do</div>
-                    <div class="staff-section-text">Complete structured training modules in early childhood education. Work alongside SEs and ATs in partner schools as part of their practical placement. Contribute to curriculum delivery at the early childhood level. Receive certification upon programme completion.</div>
+                    <div class="staff-section-text">Complete structured training in early childhood education and development. Work in Duara partner schools as part of their practical placement. Contribute to curriculum delivery at the early childhood level. Work toward certification on programme completion.</div>
                   </div>
                   <div class="staff-contract-box">
                     <div class="scb-header">
                       <span class="scb-label">Contract Type</span>
-                      <span class="scb-status draft">v1.0 — Under review</span>
+                      <span class="scb-status draft">v1.0, Under review</span>
                     </div>
                     <div class="scb-body">
-                      <strong>Fellowship Agreement (Educare)</strong><br>
-                      Duara → EC direct. The agreement is structured as a fellowship grant — not an employment contract and not a consulting agreement. The EC receives a stipend (not a wage), is enrolled in a defined programme, and has learning obligations alongside any operational contributions.
+                      <strong>Educare Programme Agreement</strong><br>
+                      Duara to EC direct. The agreement is structured as a programme participation agreement. Not an employment contract and not a consulting agreement. The EC receives a stipend (not a wage), is enrolled in a defined programme, and has learning obligations alongside any operational contributions.
                       <br><br>
-                      <strong>Why this structure:</strong> Fellowship status correctly describes the relationship — Duara is investing in the EC's development, not purchasing labour. This avoids employment law entirely and creates a positive, development-oriented framing that reflects the actual purpose of the Educare programme.
+                      <strong>Why this structure:</strong> The Educare programme is an investment in the practitioner's development, not a purchase of labour. The programme agreement structure reflects this. Stipend not wage, training obligations, certification outcome. This correctly avoids employment classification.
                       <div style="display:flex;gap:0.6rem;margin-top:0.75rem;flex-wrap:wrap;">
-                        <a href="#ec-agreement" class="scb-link" onclick="switchToContracts('ec')">View Fellowship Agreement →</a>
+                        <a href="#ec-agreement" class="scb-link" onclick="switchToContracts('ec')">View Educare Agreement →</a>
                         <a href="https://docs.google.com/document/d/1nCjA3bawV6rNSLysXXdnkicRmUiexEvRsqGxgLKp3Sk/edit" target="_blank" class="scb-link outline">Open in Google Docs ↗</a>
                       </div>
                     </div>
@@ -1868,12 +1934,12 @@ Just reply to this email to confirm and we'll get it sorted quickly.</div>
             </div>
 
             <div class="template-card">
-              <div class="template-header">EC Outreach — Fellowship Agreement (WhatsApp)</div>
-              <div class="template-body">Hi [Name], congratulations on being part of the Educare fellowship this year.
+              <div class="template-header">EC Outreach: Educare Programme Agreement (WhatsApp)</div>
+              <div class="template-body">Hi [Name], congratulations on joining the Duara Educare programme this year.
 
-As part of formalising the programme, we'd like to send you a fellowship agreement — it sets out what you're enrolled in, what you'll receive (stipend + certification), and what we're asking from you in return.
+As part of formalising the programme, we'd like to send you a programme agreement. It sets out what you're enrolled in, what you'll receive (stipend + certification), and what we're asking from you in return.
 
-It's a positive document — designed to recognise your participation properly. Can I send it over now?</div>
+It's a positive document, designed to recognise your participation properly. Can I send it over now?</div>
             </div>
 
           </div>
@@ -1939,17 +2005,24 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="doc-row" onclick="switchToContracts('at')">
                 <span class="doc-type-tag dtag-contract">Contract</span>
                 <div class="doc-row-body">
-                  <span class="doc-name">Assistant Teacher — Consulting Agreement</span>
+                  <span class="doc-name">Teacher. Consulting Agreement</span>
                   <span class="doc-sub">Duara → AT direct · Replaces prior employment contracts</span>
                 </div>
                 <span class="doc-meta-link"><a href="https://docs.google.com/document/d/1w-tIOakjlVX0n-qWbE0cFPASt5d73aEo7Hb6dCdBv4c/edit" target="_blank" onclick="event.stopPropagation()">Google Doc ↗</a></span>
                 <span class="doc-arrow">→</span>
               </div>
+              <div class="doc-row" onclick="switchToContracts('tit')">
+                <div class="doc-row-icon">🎓</div>
+                <div class="doc-row-body">
+                  <span class="doc-name">Teacher in Training. Fellowship Agreement</span>
+                  <span class="doc-sub">Duara → TiT · 2-year programme · Fellowship grant · Three qualification tracks</span>
+                </div>
+              </div>
               <div class="doc-row" onclick="switchToContracts('ec')">
                 <span class="doc-type-tag dtag-contract">Contract</span>
                 <div class="doc-row-body">
-                  <span class="doc-name">Educare Fellow — Fellowship Agreement</span>
-                  <span class="doc-sub">Duara → EC · Fellowship grant structure · Not employment</span>
+                  <span class="doc-name">Educare. Programme Agreement</span>
+                  <span class="doc-sub">Duara → EC · Programme stipend · Early childhood focus · Not employment</span>
                 </div>
                 <span class="doc-meta-link"><a href="https://docs.google.com/document/d/1nCjA3bawV6rNSLysXXdnkicRmUiexEvRsqGxgLKp3Sk/edit" target="_blank" onclick="event.stopPropagation()">Google Doc ↗</a></span>
                 <span class="doc-arrow">→</span>
@@ -2374,7 +2447,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
           </div>
           <div class="roster-stat">
             <div class="roster-stat-value red">12</div>
-            <div class="roster-stat-label">Need New Contract</div>
+            <div class="roster-stat-label">Incorrect Contracts</div>
           </div>
         </div>
 
@@ -2391,22 +2464,25 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Flora Karimi</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-at">AT</span>
                 <span class="roster-name">Juliet Odera</span>
-                <span class="roster-contract rc-review">Review type</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/14FVp3LgHDN5ChL9CrUqzsT7ze-w0taRST97Xdz5RtuM/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-at">AT</span>
                 <span class="roster-name">Esther Kiriani</span>
-                <span class="roster-contract rc-review">Review type</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/13A7RzJ59IGnW7s0dnWv1PS8iX8kZZB2G5c5F4cVraT4/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-at">AT</span>
                 <span class="roster-name">Lydiah Wangari Kamau</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1curE2VwQRPsRLYbxJkrl4wo7Xs-tZFwVRxkrwp_Txeo/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
             </div>
           </div>
@@ -2421,27 +2497,31 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Yvonne Didi Randiki</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-ec">EC</span>
                 <span class="roster-name">Janice Owino</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1kr7G5SXnEe-voz4c9Te-rCz-QjemWCMZAnYFB8H7NEI/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-at">AT</span>
                 <span class="roster-name">Michelle Chacha</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/11JJmMimrL2zN_9ePRQO3aJBYYWK4nJwdtepyeopuv-E/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-at">AT</span>
                 <span class="roster-name">Natasha Ayuma</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1wJ8hWYZSWueYbODkQHF_DBElZ3BU1_inc6L-vmJF7Vc/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-ec">EC</span>
                 <span class="roster-name">Virginia Kanini</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1GjLt1R-3hM9TMNjNeG_lezppNDPx7ustS0TG8HcZwR0/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
             </div>
           </div>
@@ -2456,12 +2536,13 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Amina Omar</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-ec">EC</span>
                 <span class="roster-name">Angeline Odongo Mutsoli</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1cEdMKaEU74NUufcHQ1Vmse9R717eWClkw_DKCYJywT4/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
             </div>
           </div>
@@ -2476,12 +2557,13 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Josephine Alube</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-ec">EC</span>
                 <span class="roster-name">Abigael Anyoso</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1FAEUUospZDlKQtr-9XzBMq1LevI19N5J68vxfW26eWw/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
             </div>
           </div>
@@ -2496,12 +2578,13 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Gladys Njeri Mwaniki</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-ec">EC</span>
                 <span class="roster-name">Mercy Lumadi Miliza</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1WdiXJl5TMbqwN5diYUlQ1GwJG0ePVm5Mkt8hraWBeP4/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
             </div>
           </div>
@@ -2516,12 +2599,13 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Winfred Munyao</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-ec">EC</span>
                 <span class="roster-name">Tracy Nderi</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1ZcWJ4GX63xi9xQn4puzPv_pwvE-nn-KPnZ7CM3qaxuU/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
             </div>
           </div>
@@ -2536,12 +2620,13 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Alice Nyambura</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-ec">EC</span>
                 <span class="roster-name">Phelistus Injete</span>
-                <span class="roster-contract rc-defective">Needs new contract</span>
+                <span class="roster-contract rc-defective">Incorrect</span>
+                <a href="https://docs.google.com/document/d/1kv9j3Z4FYLN44XK-rqY47t0NzjsbWV78yzC3hAFJmy8/edit" target="_blank" class="roster-doc-link">&#8599; Doc</a>
               </div>
             </div>
           </div>
@@ -2556,7 +2641,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Joy Shanju</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
             </div>
           </div>
@@ -2571,7 +2656,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Ayitso Mercy</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
             </div>
           </div>
@@ -2586,7 +2671,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Mary Muthama</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
             </div>
           </div>
@@ -2601,12 +2686,29 @@ Thanks — and best of luck with whatever you're working on now.</div>
               <div class="roster-row">
                 <span class="roster-type-badge rbadge-se">SE</span>
                 <span class="roster-name">Mwanaisha Gichohi</span>
-                <span class="roster-contract rc-clean">Victoria ICA</span>
+                <span class="roster-contract rc-clean">Correct</span>
               </div>
             </div>
           </div>
 
         </div><!-- end roster-schools -->
+
+        <!-- Feedback / Chat -->
+        <div class="roster-feedback">
+          <div class="roster-feedback-hd">
+            <div class="roster-feedback-hd-title">Questions or corrections?</div>
+            <div class="roster-feedback-hd-sub">If anything looks wrong (a contract status, a name, a school), send a note below. Janis will review and update the list.</div>
+          </div>
+          <div class="roster-feedback-body">
+            <div class="roster-feedback-thread" id="feedback-thread"></div>
+            <div class="roster-feedback-inputs">
+              <input type="text" id="fb-name" class="form-input fb-name" placeholder="Your name">
+              <textarea id="fb-msg" class="form-textarea fb-textarea" placeholder="e.g. Juliet's contract was already updated to the consulting agreement in March..."></textarea>
+              <button class="fb-send" id="fb-send-btn" onclick="sendFeedback()">Send to Janis</button>
+            </div>
+            <div class="fb-status" id="fb-status"></div>
+          </div>
+        </div>
 
         <!-- Inactive / Departed (collapsed) -->
         <div class="roster-inactive">
@@ -3286,7 +3388,7 @@ Thanks — and best of luck with whatever you're working on now.</div>
 
 <script>
   // ======================== PASSWORD GATE ========================
-  const PW = 'duara-2026';
+  const PW = 'Outlaw-Master-2026';
 
   function checkPw() {
     const val = document.getElementById('pw-input').value.trim();
@@ -3905,6 +4007,38 @@ Thanks — and best of luck with whatever you're working on now.</div>
   function toggleRosterInactive(toggle) {
     toggle.classList.toggle('open');
     toggle.nextElementSibling.classList.toggle('open');
+  }
+
+  async function sendFeedback() {
+    const name = document.getElementById('fb-name').value.trim();
+    const msg = document.getElementById('fb-msg').value.trim();
+    const statusEl = document.getElementById('fb-status');
+    const btn = document.getElementById('fb-send-btn');
+    if (!name || !msg) { statusEl.textContent = 'Please enter your name and message.'; return; }
+    btn.disabled = true;
+    statusEl.textContent = 'Sending...';
+    try {
+      const res = await fetch('/api/duara-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, message: msg, source: 'roster' })
+      });
+      if (res.ok) {
+        const thread = document.getElementById('feedback-thread');
+        const el = document.createElement('div');
+        el.className = 'fb-msg inbound';
+        el.innerHTML = '<div class="fb-msg-meta">' + name + ' just now</div>' + msg;
+        thread.appendChild(el);
+        document.getElementById('fb-msg').value = '';
+        statusEl.textContent = 'Sent. Janis will review and follow up with Pepe.';
+      } else {
+        statusEl.textContent = 'Could not send. Please try again or email pepe@mexzungu.com.';
+        btn.disabled = false;
+      }
+    } catch(e) {
+      statusEl.textContent = 'Could not send. Please try again or email pepe@mexzungu.com.';
+      btn.disabled = false;
+    }
   }
 </script>
 </body>
