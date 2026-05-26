@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Fundraising · HavenPay Hub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:#0d0d0d; --bg-card:#131313; --bg-mid:#1a1a1a; --bg-hover:#1e1e1e;
+      --border:#1f1f1f; --border-mid:#2a2a2a;
+      --text:#f0ebe7; --text-mid:#b8b0aa; --text-soft:#7a7068; --text-ghost:#484038;
+      --pink:#e14b87; --pink-dim:rgba(225,75,135,0.10); --pink-border:rgba(225,75,135,0.22);
+      --amber:#c98f1a; --amber-dim:rgba(201,143,26,0.10);
+      --green:#28a856; --green-dim:rgba(40,168,86,0.10);
+      --blue:#4a8fd4; --blue-dim:rgba(74,143,212,0.10);
+      --red:#d94444; --red-dim:rgba(217,68,68,0.10);
+      --sans:'Space Grotesk',-apple-system,sans-serif;
+      --mono:'IBM Plex Mono',monospace;
+      --head:'RocknRoll One','Space Grotesk',sans-serif;
+    }
+    html { background: var(--bg); }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    .hidden { display: none !important; }
+
+    /* TOP BAR */
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:1.4rem 2rem 1.2rem; border-bottom:1px solid var(--border-mid); max-width:1000px; margin:0 auto; }
+    .topbar-left { display:flex; align-items:center; gap:0.9rem; }
+    .back-link { display:flex; align-items:center; gap:0.4rem; font-family:var(--mono); font-size:0.65rem; letter-spacing:0.08em; color:var(--text-ghost); text-decoration:none; transition:color 0.15s; }
+    .back-link:hover { color:var(--pink); }
+    .topbar-sep { width:1px; height:16px; background:var(--border-mid); }
+    .topbar-crumb { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--pink); }
+    .topbar-right { font-family:var(--mono); font-size:0.62rem; color:var(--text-ghost); }
+
+    /* PAGE */
+    .page { max-width:1000px; margin:0 auto; padding:0 2rem 6rem; }
+
+    /* WS HEADER */
+    .ws-header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--border); }
+    .ws-code { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-ghost); margin-bottom:0.6rem; }
+    .ws-title { font-family:var(--head); font-size:clamp(1.6rem,4vw,2.2rem); color:var(--text); line-height:1.15; margin-bottom:0.4rem; }
+    .ws-sub { font-size:0.88rem; color:var(--text-soft); margin-bottom:1.25rem; }
+    .ws-meta { display:flex; align-items:center; gap:1.25rem; flex-wrap:wrap; }
+    .ws-badge { display:inline-flex; align-items:center; gap:0.3rem; padding:0.22rem 0.6rem; border-radius:20px; font-family:var(--mono); font-size:0.62rem; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; }
+    .badge-active { background:var(--green-dim); color:var(--green); border:1px solid rgba(40,168,86,0.2); }
+    .badge-dot { width:5px; height:5px; border-radius:50%; background:var(--green); }
+    .ws-since { font-family:var(--mono); font-size:0.65rem; color:var(--text-ghost); }
+
+    /* SECTION */
+    .section { padding:2rem 0; border-bottom:1px solid var(--border); }
+    .section:last-of-type { border-bottom:none; }
+    .section-label { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--pink); margin-bottom:1.25rem; }
+
+    /* ROUND SUMMARY */
+    .round-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.875rem; }
+    @media(max-width:580px){ .round-grid { grid-template-columns:1fr; } }
+    .round-card { background:var(--bg-card); border:1px solid var(--border-mid); border-radius:10px; padding:1.25rem 1.4rem; }
+    .round-card-label { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-ghost); margin-bottom:0.5rem; }
+    .round-card-value { font-family:var(--head); font-size:1.1rem; color:var(--text); }
+    .round-card-value.empty { color:var(--text-ghost); font-family:var(--mono); font-size:0.78rem; }
+
+    /* INVESTOR TABLE */
+    .pipeline-empty { padding:3rem 0; text-align:center; font-family:var(--mono); font-size:0.75rem; color:var(--text-ghost); }
+    .pipeline-empty span { display:block; font-size:1.5rem; margin-bottom:0.75rem; opacity:0.4; }
+    .inv-table { width:100%; border-collapse:collapse; }
+    .inv-table th { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-ghost); text-align:left; padding:0 0.75rem 0.75rem 0; border-bottom:1px solid var(--border-mid); }
+    .inv-table td { padding:0.9rem 0.75rem 0.9rem 0; border-bottom:1px solid var(--border); font-size:0.83rem; vertical-align:top; }
+    .inv-table tr:last-child td { border-bottom:none; }
+    .inv-name { color:var(--text); font-weight:500; }
+    .inv-fund { font-size:0.75rem; color:var(--text-ghost); margin-top:0.15rem; }
+    .inv-mono { font-family:var(--mono); font-size:0.75rem; color:var(--text-soft); }
+    .inv-note { font-size:0.75rem; color:var(--text-ghost); }
+
+    .status-badge { display:inline-flex; align-items:center; gap:0.25rem; padding:0.18rem 0.5rem; border-radius:12px; font-family:var(--mono); font-size:0.58rem; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
+    .s-identified  { background:rgba(72,64,56,0.35); color:var(--text-soft); }
+    .s-introduced  { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(74,143,212,0.2); }
+    .s-meeting     { background:var(--amber-dim); color:var(--amber); border:1px solid rgba(201,143,26,0.2); }
+    .s-term-sheet  { background:var(--pink-dim); color:var(--pink); border:1px solid var(--pink-border); }
+    .s-closing     { background:var(--green-dim); color:var(--green); border:1px solid rgba(40,168,86,0.2); }
+    .s-passed      { background:var(--red-dim); color:var(--red); border:1px solid rgba(217,68,68,0.2); }
+
+    /* TASKS */
+    .task-list { display:flex; flex-direction:column; gap:0.5rem; }
+    .task-row { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; padding:0.9rem 1.1rem; background:var(--bg-card); border:1px solid var(--border-mid); border-radius:8px; }
+    .task-left { flex:1; min-width:0; }
+    .task-title { font-size:0.87rem; font-weight:500; color:var(--text); }
+    .task-note { font-size:0.75rem; color:var(--text-ghost); margin-top:0.2rem; line-height:1.5; }
+    .task-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem; flex-shrink:0; }
+    .task-owner { font-family:var(--mono); font-size:0.62rem; color:var(--text-ghost); }
+    .task-eta { font-family:var(--mono); font-size:0.62rem; color:var(--text-soft); }
+
+    /* DEAL LOG */
+    .dl-timeline { position:relative; padding-left:1.75rem; }
+    .dl-timeline::before { content:''; position:absolute; left:5px; top:8px; bottom:0; width:1px; background:var(--border-mid); }
+    .dl-entry { position:relative; margin-bottom:2rem; }
+    .dl-entry:last-child { margin-bottom:0; }
+    .dl-dot { position:absolute; left:-1.75rem; top:4px; width:11px; height:11px; border-radius:50%; border:2px solid var(--bg); }
+    .dl-dot.type-call      { background:var(--blue); box-shadow:0 0 0 3px var(--blue-dim); }
+    .dl-dot.type-milestone { background:var(--green); box-shadow:0 0 0 3px var(--green-dim); }
+    .dl-dot.type-current   { background:var(--pink); box-shadow:0 0 0 3px var(--pink-dim); animation:pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 3px var(--pink-dim);}50%{box-shadow:0 0 0 6px rgba(225,75,135,0.04);} }
+    .dl-header { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.4rem; flex-wrap:wrap; }
+    .dl-date { font-family:var(--mono); font-size:0.63rem; color:var(--text-ghost); }
+    .dl-type { font-family:var(--mono); font-size:0.58rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; padding:0.15rem 0.5rem; border-radius:4px; }
+    .dl-type.type-call      { background:var(--blue-dim); color:var(--blue); }
+    .dl-type.type-milestone { background:var(--green-dim); color:var(--green); }
+    .dl-type.type-current   { background:var(--pink-dim); color:var(--pink); }
+    .dl-title { font-size:0.9rem; font-weight:600; color:var(--text); margin-bottom:0.35rem; }
+    .dl-summary { font-size:0.81rem; color:var(--text-mid); line-height:1.7; margin-bottom:0.4rem; }
+    .dl-decisions { margin:0.4rem 0; padding:0; list-style:none; }
+    .dl-decisions li { font-size:0.77rem; color:var(--text-soft); padding:0.18rem 0 0.18rem 1rem; position:relative; line-height:1.55; }
+    .dl-decisions li::before { content:'✓'; position:absolute; left:0; color:var(--green); font-size:0.68rem; }
+    .dl-next { font-size:0.74rem; color:var(--text-ghost); font-family:var(--mono); margin-top:0.35rem; }
+    .dl-next::before { content:'next: '; color:var(--amber); }
+
+    /* DOCUMENTS */
+    .doc-nav { display:flex; gap:0; border-bottom:1px solid var(--border-mid); margin-bottom:1.25rem; }
+    .doc-tab { padding:0.5rem 1.1rem; font-size:0.78rem; font-weight:500; color:var(--text-ghost); cursor:pointer; border:none; background:none; font-family:var(--sans); border-bottom:2px solid transparent; margin-bottom:-1px; transition:color 0.15s, border-color 0.15s; }
+    .doc-tab:first-child { padding-left:0; }
+    .doc-tab.active { color:var(--pink); border-bottom-color:var(--pink); }
+    .doc-panel { display:none; }
+    .doc-panel.active { display:block; }
+    .doc-list { display:flex; flex-direction:column; gap:0.4rem; }
+    .doc-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:0.8rem 1.1rem; background:var(--bg-card); border:1px solid var(--border-mid); border-radius:8px; text-decoration:none; transition:border-color 0.15s, background 0.15s; }
+    .doc-row:hover { background:var(--bg-hover); }
+    .doc-left { display:flex; align-items:center; gap:0.8rem; min-width:0; }
+    .doc-icon { font-size:0.95rem; opacity:0.6; flex-shrink:0; }
+    .doc-name { font-size:0.83rem; font-weight:500; color:var(--text); }
+    .doc-date { font-family:var(--mono); font-size:0.63rem; color:var(--text-ghost); margin-top:0.1rem; }
+    .doc-chip { font-family:var(--mono); font-size:0.58rem; color:var(--text-ghost); background:var(--bg-mid); border:1px solid var(--border-mid); border-radius:4px; padding:0.15rem 0.45rem; flex-shrink:0; }
+    .doc-empty { padding:2rem 1rem; text-align:center; font-family:var(--mono); font-size:0.72rem; color:var(--text-ghost); }
+
+    #pw-gate { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:9999; padding:2rem; }
+    #pw-gate.hidden { display:none; }
+    .pw-wrap { max-width:420px; width:100%; text-align:center; }
+    .pw-eyebrow { font-size:0.62rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--pink); font-weight:500; margin-bottom:2rem; }
+    .pw-logo { font-family:var(--head); font-size:2.4rem; color:var(--text); margin-bottom:0.4rem; }
+    .pw-sub { font-size:0.84rem; color:var(--text-soft); margin-bottom:2.5rem; line-height:1.6; }
+    .pw-rule { width:32px; height:1px; background:var(--pink); margin:0 auto 2.5rem; }
+    .pw-input { width:100%; padding:0.95rem 1.25rem; background:var(--bg-mid); border:1px solid var(--border-mid); border-radius:2px; color:var(--text); font-family:var(--mono); font-size:0.9rem; letter-spacing:0.12em; margin-bottom:0.8rem; transition:border-color 0.2s; }
+    .pw-input:focus { outline:none; border-color:var(--pink); }
+    .pw-btn { width:100%; padding:0.95rem; background:var(--pink); color:#fff; border:none; border-radius:2px; font-family:var(--sans); font-size:0.75rem; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; cursor:pointer; transition:opacity 0.2s; }
+    .pw-btn:hover { opacity:0.85; }
+    .pw-error { color:#e05555; font-size:0.8rem; margin-top:0.6rem; min-height:1.2em; }
+    .pw-footer { color:var(--text-ghost); font-size:0.7rem; margin-top:2.5rem; letter-spacing:0.04em; }
+  </style>
+</head>
+<body>
+
+<div id="pw-gate">
+  <div class="pw-wrap">
+    <div class="pw-eyebrow">Mexzungu Consulting &middot; Client Portal</div>
+    <div class="pw-logo">HavenPay</div>
+    <p class="pw-sub">Your project workspace. Workstreams, documents, and billing in one place.</p>
+    <div class="pw-rule"></div>
+    <input id="pw-input" class="pw-input" type="password" placeholder="Access code" autocomplete="off">
+    <button class="pw-btn" onclick="checkPw()">Enter Portal</button>
+    <p class="pw-error" id="pw-error"></p>
+    <p class="pw-footer">Mexzungu Consulting &middot; Confidential &middot; Do not share</p>
+  </div>
+</div>
+<div id="denied" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;">
+  <div style="text-align:center;max-width:320px;">
+    <div style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pink);margin-bottom:1rem;">Access restricted</div>
+    <div style="font-size:0.85rem;color:var(--text-soft);">Return to the <a href="../" style="color:var(--pink);text-decoration:none;">client hub</a>.</div>
+  </div>
+</div>
+
+<div id="page" class="hidden">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="../" class="back-link" id="js-back-link">← HavenPay Hub</a>
+      <div class="topbar-sep"></div>
+      <span class="topbar-crumb">WS2 Fundraising</span>
+    </div>
+    <div class="topbar-right" id="js-updated"></div>
+  </div>
+
+  <div class="page">
+
+    <div class="ws-header">
+      <div class="ws-code">WS2 · Deal Closing</div>
+      <div class="ws-title">Fundraising</div>
+      <div class="ws-sub">Pepe in the room on every investor call, term sheet negotiation, and closing.</div>
+      <div class="ws-meta">
+        <div class="ws-badge badge-active"><span class="badge-dot"></span>Active</div>
+        <div class="ws-since" id="js-since"></div>
+      </div>
+    </div>
+
+    <!-- ROUND OVERVIEW -->
+    <div class="section">
+      <div class="section-label">Round Overview</div>
+      <div class="round-grid" id="js-round-grid"></div>
+    </div>
+
+    <!-- INVESTOR PIPELINE -->
+    <div class="section">
+      <div class="section-label">Investor Pipeline</div>
+      <div id="js-pipeline"></div>
+    </div>
+
+    <!-- TASKS IN MOTION -->
+    <div class="section">
+      <div class="section-label">Tasks in Motion</div>
+      <div class="task-list" id="js-tasks"></div>
+    </div>
+
+    <!-- DEAL LOG -->
+    <div class="section">
+      <div class="section-label">Deal Log</div>
+      <div class="dl-timeline" id="js-deal-log"></div>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="section">
+      <div class="section-label">Documents</div>
+      <div class="doc-nav">
+        <button class="doc-tab active" data-tab="engagement">Engagement</button>
+        <button class="doc-tab" data-tab="deliverables">Deliverables</button>
+        <button class="doc-tab" data-tab="reference">Reference</button>
+      </div>
+      <div id="panel-engagement" class="doc-panel active"></div>
+      <div id="panel-deliverables" class="doc-panel"></div>
+      <div id="panel-reference" class="doc-panel"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const STATUS_MAP = {
+  'identified': 'Identified',
+  'introduced': 'Introduced',
+  'meeting': 'Meeting',
+  'term-sheet': 'Term Sheet',
+  'closing': 'Closing',
+  'passed': 'Passed'
+};
+const TYPE_LABELS = { call:'Call', milestone:'Milestone', decision:'Decision' };
+const DOC_ICONS = { PDF:'📄', Doc:'📝', Sheet:'📊', Deck:'📑', Link:'🔗' };
+
+function badge(status) {
+  const cls = 's-' + status;
+  return `<span class="status-badge ${cls}">${STATUS_MAP[status] || status}</span>`;
+}
+
+function formatDate(str) {
+  if (!str) return '';
+  return new Date(str + 'T00:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+}
+
+async function initPage() {
+  let d;
+  try {
+    const res = await fetch('../data.json');
+    d = await res.json();
+  } catch(e) { document.getElementById('denied').classList.remove('hidden'); return; }
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get('token') || sessionStorage.getItem('hp_token') || d.meta.token;
+  sessionStorage.setItem('hp_token', token);
+
+  document.title = 'Fundraising · ' + d.meta.client + ' Hub';
+  document.getElementById('js-back-link').href = '../?token=' + token;
+  document.getElementById('js-updated').textContent = 'Updated ' + d.meta.updated;
+
+  const ws = d.workstreams.find(w => w.id === 'fundraising');
+  document.getElementById('js-since').textContent = ws.activated ? 'Active since ' + formatDate(ws.activated) : '';
+
+  // Round overview
+  const fr = d.fundraising_data;
+  const roundCards = [
+    { label: 'Round Target', value: fr.round_target || 'TBD' },
+    { label: 'Instrument', value: fr.instrument || 'TBD' },
+    { label: 'Close Target', value: fr.close_target || 'TBD' }
+  ];
+  document.getElementById('js-round-grid').innerHTML = roundCards.map(c => `
+    <div class="round-card">
+      <div class="round-card-label">${c.label}</div>
+      <div class="round-card-value ${c.value === 'TBD' ? 'empty' : ''}">${c.value}</div>
+    </div>
+  `).join('');
+
+  // Investor pipeline
+  const pipelineEl = document.getElementById('js-pipeline');
+  if (!fr.investors || fr.investors.length === 0) {
+    pipelineEl.innerHTML = `<div class="pipeline-empty"><span>🎯</span>No investors logged yet. Pipeline to be built together.</div>`;
+  } else {
+    pipelineEl.innerHTML = `
+      <table class="inv-table">
+        <thead><tr>
+          <th>Investor</th><th>Type</th><th>Target Amount</th><th>Status</th><th>Last Contact</th>
+        </tr></thead>
+        <tbody>${fr.investors.map(inv => `
+          <tr>
+            <td><div class="inv-name">${inv.name}</div><div class="inv-fund">${inv.fund || ''}</div></td>
+            <td><div class="inv-mono">${inv.type || ''}</div></td>
+            <td><div class="inv-mono">${inv.amount || 'TBD'}</div></td>
+            <td>${badge(inv.status)}</td>
+            <td><div class="inv-mono">${inv.last_contact || 'n/a'}</div>${inv.notes ? `<div class="inv-note">${inv.notes}</div>` : ''}</td>
+          </tr>
+        `).join('')}</tbody>
+      </table>`;
+  }
+
+  // Tasks
+  document.getElementById('js-tasks').innerHTML = d.tasks.map(t => `
+    <div class="task-row">
+      <div class="task-left">
+        <div class="task-title">${t.title}</div>
+        ${t.note ? `<div class="task-note">${t.note}</div>` : ''}
+      </div>
+      <div class="task-right">
+        <div class="task-owner">${t.owner}</div>
+        <div class="task-eta">${t.eta || ''}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Deal log (newest first)
+  const dlEl = document.getElementById('js-deal-log');
+  const entries = [...d.deal_log].reverse();
+  dlEl.innerHTML = entries.map(e => {
+    const dotCls = e.current ? 'type-current' : 'type-' + e.type;
+    const typeLabel = e.current ? 'In Progress' : (TYPE_LABELS[e.type] || e.type);
+    const decisions = e.decisions && e.decisions.length
+      ? `<ul class="dl-decisions">${e.decisions.map(dec => `<li>${dec}</li>`).join('')}</ul>` : '';
+    const next = e.next ? `<div class="dl-next">${e.next}</div>` : '';
+    return `
+      <div class="dl-entry">
+        <div class="dl-dot ${dotCls}"></div>
+        <div class="dl-header">
+          <span class="dl-date">${e.date}</span>
+          <span class="dl-type ${dotCls}">${typeLabel}</span>
+        </div>
+        <div class="dl-title">${e.title}</div>
+        <div class="dl-summary">${e.summary}</div>
+        ${decisions}${next}
+      </div>`;
+  }).join('');
+
+  // Documents
+  ['engagement','deliverables','reference'].forEach(cat => {
+    const docs = (d.documents || {})[cat] || [];
+    const panel = document.getElementById('panel-' + cat);
+    if (docs.length === 0) {
+      panel.innerHTML = '<div class="doc-empty">No documents in this category yet</div>';
+    } else {
+      panel.innerHTML = `<div class="doc-list">${docs.map(f => `
+        <a href="${f.link}" target="_blank" class="doc-row">
+          <div class="doc-left">
+            <span class="doc-icon">${DOC_ICONS[f.type] || '📄'}</span>
+            <div><div class="doc-name">${f.title}</div><div class="doc-date">${f.date}</div></div>
+          </div>
+          <span class="doc-chip">${f.type}</span>
+        </a>`).join('')}</div>`;
+    }
+  });
+
+  // Doc tabs
+  document.querySelectorAll('.doc-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.tab;
+      document.querySelectorAll('.doc-tab').forEach(t => t.classList.toggle('active', t === btn));
+      document.querySelectorAll('.doc-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + cat));
+    });
+  });
+
+  document.getElementById('page').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

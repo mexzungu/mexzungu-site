@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Finance · HavenPay Hub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:#0d0d0d; --bg-card:#131313; --bg-mid:#1a1a1a; --bg-hover:#1e1e1e;
+      --border:#1f1f1f; --border-mid:#2a2a2a;
+      --text:#f0ebe7; --text-mid:#b8b0aa; --text-soft:#7a7068; --text-ghost:#484038;
+      --pink:#e14b87; --pink-dim:rgba(225,75,135,0.10); --pink-border:rgba(225,75,135,0.22);
+      --amber:#c98f1a; --amber-dim:rgba(201,143,26,0.10);
+      --green:#28a856; --green-dim:rgba(40,168,86,0.10);
+      --blue:#4a8fd4; --blue-dim:rgba(74,143,212,0.10);
+      --red:#d94444; --red-dim:rgba(217,68,68,0.10);
+      --sans:'Space Grotesk',-apple-system,sans-serif;
+      --mono:'IBM Plex Mono',monospace;
+      --head:'RocknRoll One','Space Grotesk',sans-serif;
+    }
+    html { background: var(--bg); }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    .hidden { display: none !important; }
+
+    /* TOP BAR */
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:1.4rem 2rem 1.2rem; border-bottom:1px solid var(--border-mid); max-width:1000px; margin:0 auto; }
+    .topbar-left { display:flex; align-items:center; gap:0.9rem; }
+    .back-link { display:flex; align-items:center; gap:0.4rem; font-family:var(--mono); font-size:0.65rem; letter-spacing:0.08em; color:var(--text-ghost); text-decoration:none; transition:color 0.15s; }
+    .back-link:hover { color:var(--pink); }
+    .topbar-sep { width:1px; height:16px; background:var(--border-mid); }
+    .topbar-crumb { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue); }
+    .topbar-right { font-family:var(--mono); font-size:0.62rem; color:var(--text-ghost); }
+
+    /* PAGE */
+    .page { max-width:1000px; margin:0 auto; padding:0 2rem 6rem; }
+
+    /* HEADER */
+    .page-header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--border); }
+    .page-code { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-ghost); margin-bottom:0.6rem; }
+    .page-title { font-family:var(--head); font-size:clamp(1.6rem,4vw,2.2rem); color:var(--text); line-height:1.15; margin-bottom:0.4rem; }
+    .page-sub { font-size:0.88rem; color:var(--text-soft); }
+
+    /* SECTION */
+    .section { padding:2rem 0; border-bottom:1px solid var(--border); }
+    .section:last-of-type { border-bottom:none; }
+    .section-label { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--pink); margin-bottom:1.25rem; }
+
+    /* EL CARD */
+    .el-card {
+      display:flex; align-items:center; justify-content:space-between; gap:1.25rem;
+      padding:1.25rem 1.5rem; background:var(--bg-card);
+      border:1px solid var(--border-mid); border-radius:10px;
+      flex-wrap:wrap;
+    }
+    .el-left { display:flex; align-items:center; gap:1rem; }
+    .el-icon { font-size:1.4rem; opacity:0.7; flex-shrink:0; }
+    .el-title { font-size:0.9rem; font-weight:600; color:var(--text); margin-bottom:0.2rem; }
+    .el-meta { font-family:var(--mono); font-size:0.63rem; color:var(--text-ghost); }
+    .el-download {
+      display:inline-flex; align-items:center; gap:0.45rem;
+      padding:0.5rem 1.1rem; background:var(--pink); color:#fff;
+      border-radius:6px; font-size:0.76rem; font-weight:600;
+      text-decoration:none; transition:opacity 0.15s; white-space:nowrap;
+    }
+    .el-download:hover { opacity:0.82; color:#fff; }
+
+    /* BILLING TABLE */
+    .billing-table { width:100%; border-collapse:collapse; }
+    .billing-table th { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-ghost); text-align:left; padding:0 0.75rem 0.75rem 0; border-bottom:1px solid var(--border-mid); }
+    .billing-table th.right { text-align:right; padding-right:0; }
+    .billing-table td { padding:0.9rem 0.75rem 0.9rem 0; border-bottom:1px solid var(--border); font-size:0.84rem; vertical-align:top; }
+    .billing-table td.right { text-align:right; }
+    .billing-table tr:last-child td { border-bottom:none; }
+    .b-title { color:var(--text); font-weight:500; }
+    .b-note { font-size:0.73rem; color:var(--text-ghost); margin-top:0.2rem; }
+    .b-due { font-family:var(--mono); font-size:0.75rem; color:var(--text-soft); }
+    .b-amount { font-family:var(--mono); font-size:0.88rem; color:var(--text); font-weight:500; }
+
+    .badge { display:inline-flex; align-items:center; gap:0.28rem; padding:0.2rem 0.55rem; border-radius:20px; font-family:var(--mono); font-size:0.6rem; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; white-space:nowrap; }
+    .badge-dot { width:5px; height:5px; border-radius:50%; }
+    .b-paid     { background:var(--green-dim); color:var(--green); border:1px solid rgba(40,168,86,0.2); }
+    .b-paid     .badge-dot { background:var(--green); }
+    .b-invoiced { background:var(--amber-dim); color:var(--amber); border:1px solid rgba(201,143,26,0.2); }
+    .b-invoiced .badge-dot { background:var(--amber); }
+    .b-overdue  { background:var(--red-dim); color:var(--red); border:1px solid rgba(217,68,68,0.2); }
+    .b-overdue  .badge-dot { background:var(--red); }
+    .b-upcoming { background:rgba(72,64,56,0.3); color:var(--text-soft); }
+    .b-upcoming .badge-dot { background:var(--text-soft); }
+
+    /* FEE STRUCTURE */
+    .fee-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:0.875rem; }
+    @media(max-width:540px){ .fee-grid { grid-template-columns:1fr; } }
+    .fee-card { background:var(--bg-card); border:1px solid var(--border-mid); border-radius:10px; padding:1.25rem 1.4rem; }
+    .fee-card-label { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-ghost); margin-bottom:0.5rem; }
+    .fee-card-value { font-size:1rem; font-weight:600; color:var(--text); margin-bottom:0.3rem; }
+    .fee-card-note { font-size:0.75rem; color:var(--text-soft); line-height:1.55; }
+
+    /* PAYMENT METHODS */
+    .pm-list { display:flex; flex-direction:column; gap:0.5rem; }
+    .pm-row { display:flex; align-items:flex-start; gap:1rem; padding:0.9rem 1.1rem; background:var(--bg-card); border:1px solid var(--border-mid); border-radius:8px; }
+    .pm-method { font-family:var(--mono); font-size:0.72rem; font-weight:500; color:var(--text); min-width:120px; flex-shrink:0; padding-top:0.05rem; }
+    .pm-detail { font-size:0.8rem; color:var(--text-soft); line-height:1.55; word-break:break-all; }
+
+    #pw-gate { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:9999; padding:2rem; }
+    #pw-gate.hidden { display:none; }
+    .pw-wrap { max-width:420px; width:100%; text-align:center; }
+    .pw-eyebrow { font-size:0.62rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--pink); font-weight:500; margin-bottom:2rem; }
+    .pw-logo { font-family:var(--head); font-size:2.4rem; color:var(--text); margin-bottom:0.4rem; }
+    .pw-sub { font-size:0.84rem; color:var(--text-soft); margin-bottom:2.5rem; line-height:1.6; }
+    .pw-rule { width:32px; height:1px; background:var(--pink); margin:0 auto 2.5rem; }
+    .pw-input { width:100%; padding:0.95rem 1.25rem; background:var(--bg-mid); border:1px solid var(--border-mid); border-radius:2px; color:var(--text); font-family:var(--mono); font-size:0.9rem; letter-spacing:0.12em; margin-bottom:0.8rem; transition:border-color 0.2s; }
+    .pw-input:focus { outline:none; border-color:var(--pink); }
+    .pw-btn { width:100%; padding:0.95rem; background:var(--pink); color:#fff; border:none; border-radius:2px; font-family:var(--sans); font-size:0.75rem; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; cursor:pointer; transition:opacity 0.2s; }
+    .pw-btn:hover { opacity:0.85; }
+    .pw-error { color:#e05555; font-size:0.8rem; margin-top:0.6rem; min-height:1.2em; }
+    .pw-footer { color:var(--text-ghost); font-size:0.7rem; margin-top:2.5rem; letter-spacing:0.04em; }
+  </style>
+</head>
+<body>
+
+<div id="pw-gate">
+  <div class="pw-wrap">
+    <div class="pw-eyebrow">Mexzungu Consulting &middot; Client Portal</div>
+    <div class="pw-logo">HavenPay</div>
+    <p class="pw-sub">Your project workspace. Workstreams, documents, and billing in one place.</p>
+    <div class="pw-rule"></div>
+    <input id="pw-input" class="pw-input" type="password" placeholder="Access code" autocomplete="off">
+    <button class="pw-btn" onclick="checkPw()">Enter Portal</button>
+    <p class="pw-error" id="pw-error"></p>
+    <p class="pw-footer">Mexzungu Consulting &middot; Confidential &middot; Do not share</p>
+  </div>
+</div>
+<div id="denied" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;">
+  <div style="text-align:center;max-width:320px;">
+    <div style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pink);margin-bottom:1rem;">Access restricted</div>
+    <div style="font-size:0.85rem;color:var(--text-soft);">Return to the <a href="../" style="color:var(--pink);text-decoration:none;">client hub</a>.</div>
+  </div>
+</div>
+
+<div id="page" class="hidden">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="../" class="back-link" id="js-back-link">← HavenPay Hub</a>
+      <div class="topbar-sep"></div>
+      <span class="topbar-crumb">Finance</span>
+    </div>
+    <div class="topbar-right" id="js-updated"></div>
+  </div>
+
+  <div class="page">
+
+    <div class="page-header">
+      <div class="page-code">Finance</div>
+      <div class="page-title">Billing &amp; Payments</div>
+      <div class="page-sub">Invoices, fee structure, and payment details for the HavenPay engagement.</div>
+    </div>
+
+    <!-- ENGAGEMENT LETTER -->
+    <div class="section">
+      <div class="section-label">Engagement Letter</div>
+      <div class="el-card">
+        <div class="el-left">
+          <div class="el-icon">📄</div>
+          <div>
+            <div class="el-title" id="js-el-title"></div>
+            <div class="el-meta" id="js-el-meta"></div>
+          </div>
+        </div>
+        <a id="js-el-link" href="#" target="_blank" class="el-download">Download signed copy ↓</a>
+      </div>
+    </div>
+
+    <!-- INVOICES -->
+    <div class="section">
+      <div class="section-label">Invoices</div>
+      <table class="billing-table">
+        <thead><tr>
+          <th>Description</th><th>Due</th><th>Status</th><th class="right">Amount</th>
+        </tr></thead>
+        <tbody id="js-invoices"></tbody>
+      </table>
+    </div>
+
+    <!-- FEE STRUCTURE -->
+    <div class="section">
+      <div class="section-label">Fee Structure</div>
+      <div class="fee-grid" id="js-fee-grid"></div>
+    </div>
+
+    <!-- PAYMENT METHODS -->
+    <div class="section">
+      <div class="section-label">How to Pay</div>
+      <div class="pm-list" id="js-payment-methods"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function formatDate(str) {
+  if (!str) return '';
+  return new Date(str + 'T00:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+}
+
+function badge(status) {
+  const labels = { paid:'Paid', invoiced:'Invoiced', overdue:'Overdue', upcoming:'Upcoming' };
+  return `<span class="badge b-${status}"><span class="badge-dot"></span>${labels[status] || status}</span>`;
+}
+
+async function initPage() {
+  let d;
+  try {
+    const res = await fetch('../data.json');
+    d = await res.json();
+  } catch(e) { document.getElementById('denied').classList.remove('hidden'); return; }
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get('token') || sessionStorage.getItem('hp_token') || d.meta.token;
+  sessionStorage.setItem('hp_token', token);
+
+  document.title = 'Finance · ' + d.meta.client + ' Hub';
+  document.getElementById('js-back-link').href = '../?token=' + token;
+  document.getElementById('js-updated').textContent = 'Updated ' + d.meta.updated;
+
+  // EL
+  const fin = d.finance;
+  document.getElementById('js-el-title').textContent = fin.el_title;
+  document.getElementById('js-el-meta').textContent = 'Signed ' + formatDate(fin.el_date) + ' by both parties';
+  document.getElementById('js-el-link').href = fin.el_link;
+
+  // Invoices
+  document.getElementById('js-invoices').innerHTML = fin.invoices.map(inv => `
+    <tr>
+      <td>
+        <div class="b-title">${inv.description}</div>
+        ${inv.note ? `<div class="b-note">${inv.note}</div>` : ''}
+      </td>
+      <td><div class="b-due">${inv.due ? formatDate(inv.due) : 'On close'}</div></td>
+      <td>${badge(inv.status)}</td>
+      <td class="right"><div class="b-amount">${inv.amount}</div></td>
+    </tr>
+  `).join('');
+
+  // Fee structure cards
+  const feeCards = [
+    { label: 'Monthly Admin Fee', value: '$500 / month', note: 'Billed while WS2 is open. Stops on close.' },
+    { label: 'Equity Success Fee', value: '2% of equity raised', note: 'Payable within 14 days of capital clearing.' },
+    { label: 'Debt Success Fee', value: '1% of debt facility', note: 'Payable within 14 days of capital clearing.' },
+    { label: 'Equity Conversion', value: 'Up to 40%', note: 'Any fee can be converted to HavenPay Technologies equity at next closing price.' }
+  ];
+  document.getElementById('js-fee-grid').innerHTML = feeCards.map(c => `
+    <div class="fee-card">
+      <div class="fee-card-label">${c.label}</div>
+      <div class="fee-card-value">${c.value}</div>
+      <div class="fee-card-note">${c.note}</div>
+    </div>
+  `).join('');
+
+  // Payment methods
+  document.getElementById('js-payment-methods').innerHTML = fin.payment_methods.map(pm => `
+    <div class="pm-row">
+      <div class="pm-method">${pm.method}</div>
+      <div class="pm-detail">${pm.detail}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('page').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

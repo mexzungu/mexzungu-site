@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Venture Architecture · HavenPay Hub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:#0d0d0d; --bg-card:#131313; --bg-mid:#1a1a1a;
+      --border:#1f1f1f; --border-mid:#2a2a2a;
+      --text:#f0ebe7; --text-mid:#b8b0aa; --text-soft:#7a7068; --text-ghost:#484038;
+      --pink:#e14b87; --pink-dim:rgba(225,75,135,0.10);
+      --sans:'Space Grotesk',-apple-system,sans-serif;
+      --mono:'IBM Plex Mono',monospace;
+      --head:'RocknRoll One','Space Grotesk',sans-serif;
+    }
+    html { background: var(--bg); }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    .hidden { display: none !important; }
+
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:1.4rem 2rem 1.2rem; border-bottom:1px solid var(--border-mid); max-width:1000px; margin:0 auto; }
+    .topbar-left { display:flex; align-items:center; gap:0.9rem; }
+    .back-link { display:flex; align-items:center; gap:0.4rem; font-family:var(--mono); font-size:0.65rem; letter-spacing:0.08em; color:var(--text-ghost); text-decoration:none; transition:color 0.15s; }
+    .back-link:hover { color:var(--pink); }
+    .topbar-sep { width:1px; height:16px; background:var(--border-mid); }
+    .topbar-crumb { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-ghost); }
+
+    .page { max-width:1000px; margin:0 auto; padding:0 2rem 6rem; }
+
+    .page-header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--border); }
+    .page-code { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-ghost); margin-bottom:0.6rem; }
+    .page-title { font-family:var(--head); font-size:clamp(1.6rem,4vw,2.2rem); color:var(--text-soft); line-height:1.15; margin-bottom:0.4rem; }
+    .page-sub { font-size:0.88rem; color:var(--text-ghost); margin-bottom:1.25rem; }
+    .not-active-badge { display:inline-flex; align-items:center; gap:0.3rem; padding:0.22rem 0.6rem; border-radius:20px; background:rgba(72,64,56,0.3); color:var(--text-ghost); font-family:var(--mono); font-size:0.62rem; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; }
+    .not-active-dot { width:5px; height:5px; border-radius:50%; background:var(--text-ghost); }
+
+    .section { padding:2rem 0; border-bottom:1px solid var(--border); }
+    .section:last-of-type { border-bottom:none; }
+    .section-label { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-ghost); margin-bottom:1.25rem; }
+
+    .deliverable-list { display:flex; flex-direction:column; gap:0.5rem; }
+    .deliverable-row { display:flex; align-items:flex-start; gap:1rem; padding:0.9rem 1.1rem; background:var(--bg-card); border:1px solid var(--border-mid); border-radius:8px; opacity:0.55; }
+    .deliverable-num { font-family:var(--mono); font-size:0.65rem; color:var(--text-ghost); flex-shrink:0; padding-top:0.15rem; min-width:1.5rem; }
+    .deliverable-title { font-size:0.85rem; color:var(--text-soft); font-weight:500; margin-bottom:0.2rem; }
+    .deliverable-desc { font-size:0.75rem; color:var(--text-ghost); line-height:1.55; }
+
+    .activate-block { margin-top:2rem; padding:1.5rem; background:var(--bg-card); border:1px solid var(--border-mid); border-radius:10px; text-align:center; }
+    .activate-label { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-ghost); margin-bottom:0.75rem; }
+    .activate-text { font-size:0.85rem; color:var(--text-soft); margin-bottom:1.25rem; line-height:1.65; }
+    .activate-cta { display:inline-flex; align-items:center; gap:0.45rem; padding:0.55rem 1.25rem; background:var(--pink); color:#fff; border-radius:6px; font-size:0.78rem; font-weight:600; text-decoration:none; transition:opacity 0.15s; }
+    .activate-cta:hover { opacity:0.82; color:#fff; }
+
+    #pw-gate { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:9999; padding:2rem; }
+    #pw-gate.hidden { display:none; }
+    .pw-wrap { max-width:420px; width:100%; text-align:center; }
+    .pw-eyebrow { font-size:0.62rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--pink); font-weight:500; margin-bottom:2rem; }
+    .pw-logo { font-family:var(--head); font-size:2.4rem; color:var(--text); margin-bottom:0.4rem; }
+    .pw-sub { font-size:0.84rem; color:var(--text-soft); margin-bottom:2.5rem; line-height:1.6; }
+    .pw-rule { width:32px; height:1px; background:var(--pink); margin:0 auto 2.5rem; }
+    .pw-input { width:100%; padding:0.95rem 1.25rem; background:var(--bg-mid); border:1px solid var(--border-mid); border-radius:2px; color:var(--text); font-family:var(--mono); font-size:0.9rem; letter-spacing:0.12em; margin-bottom:0.8rem; transition:border-color 0.2s; }
+    .pw-input:focus { outline:none; border-color:var(--pink); }
+    .pw-btn { width:100%; padding:0.95rem; background:var(--pink); color:#fff; border:none; border-radius:2px; font-family:var(--sans); font-size:0.75rem; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; cursor:pointer; transition:opacity 0.2s; }
+    .pw-btn:hover { opacity:0.85; }
+    .pw-error { color:#e05555; font-size:0.8rem; margin-top:0.6rem; min-height:1.2em; }
+    .pw-footer { color:var(--text-ghost); font-size:0.7rem; margin-top:2.5rem; letter-spacing:0.04em; }
+  </style>
+</head>
+<body>
+
+<div id="pw-gate">
+  <div class="pw-wrap">
+    <div class="pw-eyebrow">Mexzungu Consulting &middot; Client Portal</div>
+    <div class="pw-logo">HavenPay</div>
+    <p class="pw-sub">Your project workspace. Workstreams, documents, and billing in one place.</p>
+    <div class="pw-rule"></div>
+    <input id="pw-input" class="pw-input" type="password" placeholder="Access code" autocomplete="off">
+    <button class="pw-btn" onclick="checkPw()">Enter Portal</button>
+    <p class="pw-error" id="pw-error"></p>
+    <p class="pw-footer">Mexzungu Consulting &middot; Confidential &middot; Do not share</p>
+  </div>
+</div>
+<div id="denied" class="hidden" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;">
+  <div style="text-align:center;max-width:320px;">
+    <div style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pink);margin-bottom:1rem;">Access restricted</div>
+    <div style="font-size:0.85rem;color:var(--text-soft);">Return to the <a href="../" style="color:var(--pink);text-decoration:none;">client hub</a>.</div>
+  </div>
+</div>
+
+<div id="page" class="hidden">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="../" class="back-link" id="js-back-link">← HavenPay Hub</a>
+      <div class="topbar-sep"></div>
+      <span class="topbar-crumb">WS1 Venture Architecture</span>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <div class="page-header">
+      <div class="page-code">WS1 · Venture Architecture</div>
+      <div class="page-title">Venture Architecture</div>
+      <div class="page-sub">Entity structure, IP licensing framework, fundraising architecture, and regulatory navigation.</div>
+      <div class="not-active-badge"><span class="not-active-dot"></span>Not Active</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">What this workstream covers</div>
+      <div class="deliverable-list">
+        <div class="deliverable-row">
+          <div class="deliverable-num">01</div>
+          <div>
+            <div class="deliverable-title">Entity Architecture Memo</div>
+            <div class="deliverable-desc">NGO arm vs. HoldCo structure. Jurisdiction selection for each entity. IP ownership flow. Governance design for both arms.</div>
+          </div>
+        </div>
+        <div class="deliverable-row">
+          <div class="deliverable-num">02</div>
+          <div>
+            <div class="deliverable-title">IP Licensing Framework</div>
+            <div class="deliverable-desc">License structure between the NGO and HoldCo. Ensures grant-funded infrastructure feeds equity value without blurring legal boundaries.</div>
+          </div>
+        </div>
+        <div class="deliverable-row">
+          <div class="deliverable-num">03</div>
+          <div>
+            <div class="deliverable-title">Fundraising Architecture Memo</div>
+            <div class="deliverable-desc">How grants, catalytic capital, and equity fit together. Sequencing and instrument selection for each capital type.</div>
+          </div>
+        </div>
+        <div class="deliverable-row">
+          <div class="deliverable-num">04</div>
+          <div>
+            <div class="deliverable-title">Regulatory Navigation Brief</div>
+            <div class="deliverable-desc">CBK and Uganda licensing pathways. What HavenPay needs operationally before it triggers each regulatory threshold.</div>
+          </div>
+        </div>
+      </div>
+      <div class="activate-block">
+        <div class="activate-label">Activate this workstream</div>
+        <div class="activate-text">WS1 Venture Architecture is available as a separate engagement. Flat fee of $10,000 for all four deliverables above.</div>
+        <a id="js-activate-link" href="#" class="activate-cta">Talk to Pepe →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const PW = 'Outlaw-Master-2026';
+  const PW_SK = 'havenpay_hub_v1';
+  function checkPw() {
+    const v = document.getElementById('pw-input').value.trim();
+    if (v === PW) {
+      sessionStorage.setItem(PW_SK, '1');
+      document.getElementById('pw-gate').classList.add('hidden');
+      initPage();
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect code. Try again.';
+      document.getElementById('pw-input').value = '';
+    }
+  }
+  document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
+  if (sessionStorage.getItem(PW_SK) === '1') {
+    document.getElementById('pw-gate').classList.add('hidden');
+    initPage();
+  }
+
+async function initPage() {
+  let d;
+  try {
+    const res = await fetch('../data.json');
+    d = await res.json();
+  } catch(e) { document.getElementById('denied').classList.remove('hidden'); return; }
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get('token') || sessionStorage.getItem('hp_token') || d.meta.token;
+  sessionStorage.setItem('hp_token', token);
+
+  document.getElementById('js-back-link').href = '../?token=' + token;
+  document.getElementById('js-activate-link').href = d.meta.booking_url;
+  document.getElementById('page').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

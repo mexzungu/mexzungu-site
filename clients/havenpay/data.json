@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "token": "Outlaw-havenpay-2026",
+    "client": "HavenPay",
+    "tagline": "Financial Dignity for the Forcibly Displaced",
+    "pm": "Pepe Carrillo",
+    "pm_email": "pepe@mexzungu.com",
+    "booking_url": "https://mexzungu.com/talk_to_pepe",
+    "updated": "2026-05-15"
+  },
+  "current_focus": "Week of May 15: Mapping investor pipeline and round structure",
+  "workstreams": [
+    {
+      "id": "fundraising",
+      "code": "WS2",
+      "title": "Fundraising",
+      "subtitle": "Deal Closing",
+      "status": "active",
+      "activated": "2026-05-07",
+      "description": "Pepe in the room on every investor call, term sheet negotiation, and closing. 48-hour availability throughout the raise.",
+      "metric_label": "Investors in pipeline",
+      "metric_value": "0"
+    },
+    {
+      "id": "venture-architecture",
+      "code": "WS1",
+      "title": "Venture Architecture",
+      "subtitle": "Entity + IP Structure",
+      "status": "not-active",
+      "activated": null,
+      "description": "Entity architecture, IP licensing between NGO and HoldCo, fundraising structure, and regulatory navigation across Kenya and Uganda.",
+      "metric_label": null,
+      "metric_value": null
+    }
+  ],
+  "finance": {
+    "el_title": "Engagement Letter: HavenPay x Mexzungu Group",
+    "el_link": "https://drive.google.com/file/d/11kBAJISm43W8oDKRTBl4Dt9NpBfGZJCY/view",
+    "el_date": "2026-05-07",
+    "invoice_count_open": 1,
+    "next_due_label": "$500 due Jun 7 (not yet sent)",
+    "invoices": [
+      {
+        "id": "INV-001",
+        "description": "Monthly Administration Fee, May 2026",
+        "amount": "$500",
+        "status": "pending",
+        "due": "2026-06-07",
+        "note": "Billed monthly while WS2 is open"
+      },
+      {
+        "id": "SF-EQ",
+        "description": "Deal Closing Success Fee (Equity)",
+        "amount": "2% of equity raised",
+        "status": "upcoming",
+        "due": null,
+        "note": "Payable within 14 days of capital clearing"
+      },
+      {
+        "id": "SF-DT",
+        "description": "Deal Closing Success Fee (Debt)",
+        "amount": "1% of debt facility",
+        "status": "upcoming",
+        "due": null,
+        "note": "Payable within 14 days of capital clearing"
+      }
+    ],
+    "payment_methods": [
+      { "method": "Wire Transfer", "detail": "MCB Bank, Mauritius. Request details from Pepe." },
+      { "method": "Payoneer", "detail": "ACH or SEPA. Request details from Pepe." },
+      { "method": "USDC (Solana)", "detail": "CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A" }
+    ]
+  },
+  "fundraising_data": {
+    "round_target": null,
+    "instrument": null,
+    "close_target": null,
+    "investors": []
+  },
+  "tasks": [
+    {
+      "title": "Share investor CRM / deal tracker",
+      "note": "Grant and VC pipeline tracker mentioned on May 15 call",
+      "owner": "Yoeal",
+      "eta": "This week",
+      "status": "pending"
+    },
+    {
+      "title": "Map investor pipeline",
+      "note": "Round size, instrument preference, timeline to first close",
+      "owner": "Both",
+      "eta": "This week",
+      "status": "in-progress"
+    },
+    {
+      "title": "Co-founder candidate referrals",
+      "note": "Pepe to refer suitable candidates from network",
+      "owner": "Pepe",
+      "eta": "TBD",
+      "status": "pending"
+    }
+  ],
+  "documents": {
+    "engagement": [
+      {
+        "title": "Engagement Letter: HavenPay x Mexzungu Group",
+        "date": "2026-05-07",
+        "type": "PDF",
+        "link": "https://drive.google.com/file/d/11kBAJISm43W8oDKRTBl4Dt9NpBfGZJCY/view"
+      },
+      {
+        "title": "Venture Architecture Proposal",
+        "date": "2026-04-28",
+        "type": "PDF",
+        "link": "https://drive.google.com/file/d/1kZtNkVRLGV-5rAJmvQNygBoV1v2vvHpQ/view"
+      }
+    ],
+    "deliverables": [],
+    "reference": [
+      {
+        "title": "HavenPay Company Deck",
+        "date": "2026-04-23",
+        "type": "PDF",
+        "link": "https://drive.google.com/file/d/1MHgRbKIOFfyKlELXSMtF9PJyDG7x3a0_/view"
+      },
+      {
+        "title": "HavenPay Grant Deck",
+        "date": "2026-04-23",
+        "type": "PDF",
+        "link": "https://drive.google.com/file/d/1fD0SI4rEs81TtmpbEZLYrAGuTiQ-2Xds/view"
+      },
+      {
+        "title": "HavenPay Pre-Seed Data Room",
+        "date": "2026-04-23",
+        "type": "Link",
+        "link": "https://www.notion.so/havenpay/HavenPay-Pre-Seed-Data-Room-cd591545365448ec9110559456aec79e"
+      }
+    ]
+  },
+  "deal_log": [
+    {
+      "date": "2026-04-22",
+      "type": "call",
+      "title": "Initial reconnect call",
+      "summary": "Reconnected after a long gap. Covered HavenPay's mission, Kenya and Uganda strategy, dual-entity model (NGO + HoldCo), Kenyan regulatory support, and partnership with NGO for loan management.",
+      "decisions": [],
+      "next": "Proposal to follow"
+    },
+    {
+      "date": "2026-04-28",
+      "type": "milestone",
+      "title": "Venture Architecture proposal shared",
+      "summary": "Full Venture Architecture proposal deck sent. Four workstreams presented with economics.",
+      "decisions": [],
+      "next": "Yoeal to review and confirm scope"
+    },
+    {
+      "date": "2026-05-05",
+      "type": "call",
+      "title": "Discovery call: scope and fee structure",
+      "summary": "Aligned on engagement scope and economics. WS2 Deal Closing selected as the active workstream.",
+      "decisions": [
+        "WS2 Deal Closing activated (WS1 Venture Architecture not yet activated)",
+        "Fee: $500/mo admin + 2% equity success fee + 1% debt success fee",
+        "Prior fundraising explicitly excluded from success fee scope",
+        "Equity conversion option: up to 40% of fees convertible at next closing price"
+      ],
+      "next": "Yoeal to confirm start date. Pepe to refer co-founder candidates."
+    },
+    {
+      "date": "2026-05-07",
+      "type": "milestone",
+      "title": "Engagement Letter signed",
+      "summary": "Both parties executed the Engagement Letter. WS2 is live from this date.",
+      "decisions": [
+        "Engagement formally begins 2026-05-07",
+        "WS2 Deal Closing is the active workstream"
+      ],
+      "next": "Kick-off session to map investor pipeline"
+    },
+    {
+      "date": "2026-05-15",
+      "type": "call",
+      "title": "Deal strategy session",
+      "summary": "Active working session. Mapping investor pipeline, round structure, and hub infrastructure.",
+      "decisions": [],
+      "next": "Capture investor pipeline, round size, instrument preference, timeline to first close",
+      "current": true
+    }
+  ]
+}
