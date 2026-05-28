@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "client": "Nick and Lyndsay Handler",
+    "engagement": "Saranac Ventures Deal Advisory",
+    "tagline": "75% sale to Woo. $900,000. Delaware LLC formation to close.",
+    "status_summary": "Active. EL signed. Deal in motion.",
+    "updated": "28 May 2026",
+    "pm_email": "pepe@mexzungu.com",
+    "token": "Yc2nfSt1h80Z",
+    "accent_color": "#1a6b4a"
+  },
+  "awaiting": [
+    {
+      "label": "Delaware LLC formation: action required",
+      "detail": "Northwest Registered Agent is the recommended formation agent. We will walk you through this step by step. Expect Pepe to be in touch with the exact steps and what we need from you.",
+      "link": null,
+      "cta": null
+    }
+  ],
+  "workstreams": [
+    {
+      "code": "WS-01",
+      "title": "Delaware LLC Formation and Structure",
+      "description": "Form Saranac USA LLC via Northwest Registered Agent. Draft Operating Agreement for initial 100% Handler-owned entity, then the amended 75/25 post-sale version with full governance, profit waterfall, and Woo over-contribution mechanism.",
+      "status": "in-progress",
+      "deliverable": "Operating Agreement (initial + amended)",
+      "eta": "Jun 2026",
+      "updated": "28 May 2026"
+    },
+    {
+      "code": "WS-02",
+      "title": "Membership Purchase Agreement",
+      "description": "Draft the agreement under which Woo purchases 75% of Saranac USA LLC for $900,000. Cover representations and warranties, closing conditions, payment mechanics, and post-closing obligations on both sides.",
+      "status": "not-started",
+      "deliverable": "Membership Purchase Agreement",
+      "eta": "Jul 2026",
+      "updated": "28 May 2026"
+    },
+    {
+      "code": "WS-03",
+      "title": "Ancillary Documents and Coordination",
+      "description": "Land lease assignment agreement, Nick management equity arrangement, coordination with US attorney and Uganda counsel, closing checklist.",
+      "status": "not-started",
+      "deliverable": "Land lease assignment + management equity docs",
+      "eta": "Jul 2026",
+      "updated": "28 May 2026"
+    }
+  ],
+  "tasks": [
+    {
+      "title": "Delaware LLC formation via Northwest Registered Agent",
+      "note": "Handler action required. Pepe will provide step-by-step guidance.",
+      "owner": "Handlers + Studio",
+      "eta": "Jun 2026",
+      "status": "in-progress"
+    },
+    {
+      "title": "Confirm Woo entity structure and payment mechanics",
+      "note": "Lump sum vs installment TBD.",
+      "owner": "Handlers",
+      "eta": "Jun 2026",
+      "status": "pending"
+    },
+    {
+      "title": "Engage Uganda counsel for land lease assignment review",
+      "note": "Conservation zone compliance must be confirmed.",
+      "owner": "Handlers",
+      "eta": "Jun 2026",
+      "status": "pending"
+    }
+  ],
+  "documents": {
+    "engagement": [
+      {
+        "title": "Engagement Letter - Saranac x Mexzungu Group",
+        "date": "28 May 2026",
+        "type": "Doc",
+        "link": "https://mexzungu.com/proposals/saranac/"
+      }
+    ],
+    "deliverables": [],
+    "reference": [
+      {
+        "title": "Deal Advisory Proposal - Saranac Ventures",
+        "date": "28 May 2026",
+        "type": "Doc",
+        "link": "https://mexzungu.com/proposals/saranac/"
+      }
+    ]
+  },
+  "billing": [
+    {
+      "description": "Monthly retainer - June 2026",
+      "note": "First month. Invoiced at the start of each calendar month.",
+      "due": "2026-06-14",
+      "status": "upcoming",
+      "amount": "$500"
+    },
+    {
+      "description": "Success fee (1.5% of $900,000)",
+      "note": "Due within 14 days of Membership Purchase Agreement signing.",
+      "due": "TBD on closing",
+      "status": "pending",
+      "amount": "$13,500"
+    }
+  ]
+}
