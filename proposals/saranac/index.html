@@ -773,6 +773,66 @@
     .doc-footer a { color: var(--pink); text-decoration: none; }
     .doc-footer a:hover { text-decoration: underline; }
 
+    /* ── WORKSTREAM BLOCKS ── */
+    .workstream-block {
+      background: #f8f6f4;
+      border: 1px solid var(--ash);
+      border-left: 3px solid var(--green);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.4rem;
+      margin: 0.75rem 0 1.25rem;
+    }
+
+    .ws-title {
+      font-family: var(--heading);
+      font-size: 0.82rem;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.85rem;
+    }
+
+    .deliverable-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .deliverable-list li {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: #2a2a2a;
+      padding: 0.65rem 0 0.65rem 2.75rem;
+      position: relative;
+      border-bottom: 1px solid rgba(232, 227, 223, 0.8);
+    }
+
+    .deliverable-list li:last-child { border-bottom: none; }
+
+    .d-num {
+      position: absolute;
+      left: 0;
+      top: 0.7rem;
+      width: 1.7rem;
+      height: 1.7rem;
+      background: var(--green);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.68rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sans);
+    }
+
+    .d-title {
+      font-weight: 600;
+      color: var(--navy);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       .doc-inner { padding: 1.5rem; }
@@ -864,35 +924,92 @@
       <div class="proposal-section">
         <div class="proposal-eyebrow">Part 1 of 2: Deal Advisory Proposal</div>
 
-        <h2>The situation</h2>
-        <p>You are selling 75% of the business to a trusted buyer while staying on as operators and keeping a meaningful stake. The deal is friendly, the valuation is agreed at $1.2M, and the structure is clean: a Delaware LLC holds the economic rights to the Uganda operation, Woo buys 75% for $900,000, and the Handlers retain 25% with Nick continuing as General Manager. The Uganda land title stays in your names by legal necessity, with rights assigned to the US entity by agreement.</p>
-        <p>What you need now is someone to build the legal architecture, draft the documents, and get this across the line without surprises.</p>
+        <h2>What I Heard</h2>
+        <p>You have a deal that is essentially done. The buyer is someone you trust, the valuation is agreed, and both sides want to close without drama. What you do not have yet is the legal architecture that makes the deal real.</p>
+        <p>You are selling 75% of Saranac Ventures to Woo for $900,000. You retain 25%. Nick stays on as General Manager at $25,000 per year, structured as equity rather than a straight salary so it makes sense for everyone. The business operates in Uganda, which means the land title cannot easily move, so the structure has to work around that, not through it.</p>
+        <p>What you need is a US entity that holds the economic rights to the Uganda operation, a clean Operating Agreement that governs the 75/25 relationship, a Membership Purchase Agreement that closes the transaction, and the supporting documents that make the land lease and Nick's management role legally defensible. You also need someone to coordinate the US attorney and Uganda counsel so this does not fall apart between jurisdictions.</p>
+        <p>That is a deal architecture problem. And it is what I do.</p>
 
-        <h2>What we will do</h2>
-        <ul class="proposal-list">
-          <li>Guide the Delaware LLC formation via Northwest Registered Agent</li>
-          <li>Draft the Operating Agreement: initial 100% Handler structure, then the amended 75/25 post-sale version covering governance, profit waterfall, and Woo's over-contribution mechanism</li>
-          <li>Draft the Membership Purchase Agreement (Handlers to Woo, $900,000)</li>
-          <li>Draft the land lease assignment agreement (economic and control rights to Saranac USA, title stays with Handlers)</li>
-          <li>Document Nick's management equity arrangement ($25,000/year, structured with your US tax advisor)</li>
-          <li>Coordinate with your US attorney and Ugandan counsel through to closing</li>
-        </ul>
+        <h2>Scope of Engagement</h2>
 
-        <h2>What we will not do</h2>
-        <ul class="proposal-list">
-          <li>Provide US legal advice or appear as counsel of record in any US proceeding</li>
-          <li>Advise on Ugandan land law or the conservation zone implications (that is your Ugandan counsel's job)</li>
-          <li>Provide US tax advice on the $900,000 capital gains treatment or Nick's equity mechanics (that needs a US CPA)</li>
-        </ul>
+        <div class="workstream-block">
+          <div class="ws-title">Workstream 1 &#8212; Delaware LLC Formation and Operating Agreement</div>
+          <ul class="deliverable-list">
+            <li>
+              <span class="d-num">1</span>
+              <span class="d-title">Delaware LLC Formation</span>
+              Guide the formation of Saranac USA LLC via Northwest Registered Agent. Advise on the registered agent relationship, initial filing requirements, and the actions needed to make the LLC the legal and economic owner of the Uganda operation from day one.
+            </li>
+            <li>
+              <span class="d-num">2</span>
+              <span class="d-title">Initial Operating Agreement (100% Handler)</span>
+              Draft the Operating Agreement for the entity as initially owned 100% by Nick and Lyndsay Handler. Covers governance, decision rights, capital accounts, and the structural baseline before the sale closes.
+            </li>
+            <li>
+              <span class="d-num">3</span>
+              <span class="d-title">Amended Operating Agreement (75/25 Post-Sale)</span>
+              Draft the amended Operating Agreement reflecting Woo's 75% ownership, covering:
+              <ul class="proposal-list" style="margin-top:0.5rem;">
+                <li>Governance structure and board composition (proposed: 2 Woo seats, 1 Handler seat, 1 independent)</li>
+                <li>Profit waterfall: operating costs, reserve fund, staff school fees fund, 75/25 distribution to members</li>
+                <li>Nick's management equity: $25,000 per year as profits interest, guaranteed payment, or capital credit (mechanism confirmed with your US tax advisor)</li>
+                <li>Woo over-contribution mechanism: contributions beyond $225,000 treated as debt at 5%, repaid first at exit</li>
+                <li>Transfer restrictions and succession provisions</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
 
-        <h2>What this costs</h2>
+        <div class="workstream-block">
+          <div class="ws-title">Workstream 2 &#8212; Membership Purchase Agreement</div>
+          <ul class="deliverable-list">
+            <li>
+              <span class="d-num">4</span>
+              <span class="d-title">Membership Purchase Agreement</span>
+              Draft the agreement under which Woo purchases 75% of Saranac USA LLC for $900,000. Covers representations and warranties, closing conditions, payment mechanics (lump sum or installment, confirmed with the parties), post-closing obligations, and remedies. This is the document that closes the deal.
+            </li>
+          </ul>
+        </div>
+
+        <div class="workstream-block">
+          <div class="ws-title">Workstream 3 &#8212; Ancillary Documents and Counsel Coordination</div>
+          <ul class="deliverable-list">
+            <li>
+              <span class="d-num">5</span>
+              <span class="d-title">Land Lease Assignment Agreement</span>
+              Draft the agreement assigning economic and control rights from the Handlers to Saranac USA LLC, while land title remains with the Handlers as required by Ugandan law. Addresses the $1,000 per month rent arrangement and its restructuring within the LLC framework.
+            </li>
+            <li>
+              <span class="d-num">6</span>
+              <span class="d-title">Management Equity Documentation</span>
+              Document Nick's $25,000 per year arrangement in a form that is defensible with the IRS. The right instrument (profits interest, guaranteed payment, or capital credit) will be confirmed with your US tax advisor before drafting.
+            </li>
+            <li>
+              <span class="d-num">7</span>
+              <span class="d-title">Counsel Coordination and Closing</span>
+              Coordinate with your US attorney and Uganda counsel through to closing. Prepare strategic briefings, Q&amp;A, and document review checkpoints as needed. Prepare a closing checklist covering all conditions and deliverables.
+            </li>
+          </ul>
+        </div>
+
+        <h2>What We Are Not Doing</h2>
+        <p>We are not providing US legal advice or appearing as counsel of record. We are not advising on Ugandan land law or the conservation zone implications specific to your lease. We are not providing US tax advice on the capital gains treatment of the $900,000 sale or the mechanics of Nick's management equity. Those require a US attorney and a US CPA, and we will help you find them if you do not already have them.</p>
+
+        <h2>Why Mexzungu</h2>
+        <p>I have built this class of structure before.</p>
+        <p>Duara Education runs on exactly the same architecture: a Delaware entity that holds the IP and equity, and an East Africa operating entity underneath it. I designed the structure, drafted the governance documents, and coordinated the Kenya counsel. I am currently their legal strategist and a board investor.</p>
+        <p>I have active experience across Kenya, Uganda, Rwanda, and the broader East Africa region on cross-border deal structuring. I know what it takes to make a US holding entity work cleanly over an African operating business, including when the land cannot move and the title has to stay local.</p>
+        <p>I am also not a traditional law firm. I am a corporate lawyer who has operated inside organisations. I care about whether the structure works, not just whether it is technically defensible. You are selling a business you built. I want this to close cleanly and leave you with a 25% stake that is worth something.</p>
+
+        <h2>Engagement Terms</h2>
+        <p style="font-size:0.88rem;color:var(--stone);margin-bottom:0.75rem;">As discussed on the call:</p>
         <div class="fee-callout">
           <div class="fee-row">
-            <span class="fee-label">Monthly retainer (while deal is live)</span>
+            <span class="fee-label">Admin fee (active deal management, invoiced monthly)</span>
             <span class="fee-amount">$500/month</span>
           </div>
           <div class="fee-row">
-            <span class="fee-label">Success fee (1.5% of $900,000), due within 14 days of signing</span>
+            <span class="fee-label">Success fee (1.5% of $900,000, due within 14 days of signing)</span>
             <span class="fee-amount">$13,500</span>
           </div>
           <div class="fee-total">
@@ -901,6 +1018,9 @@
           </div>
         </div>
         <p>No equity. No uplift. No surprises.</p>
+
+        <h2>Next Step</h2>
+        <p>Sign below and we start immediately. If you have questions before signing, reply and we will get on a call.</p>
       </div>
 
       <!-- ===== DIVIDER CTA ===== -->
