@@ -102,6 +102,22 @@
     .fee-table td:first-child { color: var(--navy); font-weight: 500; width: 40%; }
     .fee-table tr:last-child td { border-bottom: none; }
 
+    /* FEE SELECTOR */
+    .fee-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1rem 0 1.25rem; }
+    .fee-card { border: 2px solid var(--ash); border-radius: 10px; padding: 1rem 1rem 1.25rem; cursor: pointer; background: #fff; transition: border-color 0.2s, background 0.2s; position: relative; }
+    .fee-card:hover { border-color: var(--navy); }
+    .fee-card.selected { border-color: var(--success); background: rgba(45,143,94,0.03); }
+    .fee-card-check { position: absolute; top: 0.65rem; right: 0.65rem; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ash); background: #fff; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+    .fee-card.selected .fee-card-check { background: var(--success); border-color: var(--success); }
+    .fee-card-tag { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); margin-bottom: 0.3rem; padding-right: 1.5rem; }
+    .fee-card.selected .fee-card-tag { color: var(--success); }
+    .fee-card-name { font-family: var(--heading); font-size: 0.85rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .fee-card-amount { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+    .fee-card.selected .fee-card-amount { color: var(--success); }
+    .fee-card-desc { font-size: 0.77rem; color: var(--stone); line-height: 1.5; }
+    .fee-selected-summary { background: rgba(45,143,94,0.05); border: 1px solid rgba(45,143,94,0.2); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.84rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .fee-selected-summary strong { color: var(--success); }
+
     /* SIGNATURE SECTION */
     .sig-section { margin-top: 3rem; padding-top: 2.5rem; border-top: 2px solid var(--ash); }
     .sig-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
@@ -167,6 +183,7 @@
       .doc-inner { padding: 1.5rem; }
       .sig-grid { grid-template-columns: 1fr; }
       .parties-grid { grid-template-columns: 1fr; }
+      .fee-selector-grid { grid-template-columns: 1fr; }
       .site-header { padding: 0.75rem 1rem; }
       .progress-bar-wrap { padding: 0.5rem 1rem; }
     }
@@ -256,25 +273,43 @@
         <div class="sub-item">(e) Anything outside sections 1 above.</div>
 
         <h2>3. What does this cost?</h2>
-        <p>We are proceeding on a retainer plus success fee structure:</p>
-        <table class="fee-table">
-          <thead>
-            <tr><th>Item</th><th>Amount</th><th>When</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Monthly retainer</td>
-              <td>$500 / month</td>
-              <td>From the date of this letter, invoiced monthly. Covers all advisory, drafting, Q&amp;A, and counsel coordination while the deal is live.</td>
-            </tr>
-            <tr>
-              <td>Success fee</td>
-              <td>$13,500 (1.5% of transaction value)</td>
-              <td>Due within 14 days of the purchase agreement being signed and the transaction closing.</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>The retainer is non-refundable. The success fee applies to any closing with Woo or any buyer introduced during this engagement, within 12 months of this letter. If we part ways before close and a qualifying transaction completes within 6 months of termination, the success fee still applies. The work was done.</p>
+        <p>Select your preferred fee structure. Your choice will be recorded with your signature.</p>
+
+        <div class="fee-selector-grid">
+          <div class="fee-card" id="fee-opt1" onclick="selectFee('option1')">
+            <div class="fee-card-check" id="check-opt1">
+              <svg id="check-icon-opt1" width="10" height="10" viewBox="0 0 10 10" fill="none" style="display:none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="fee-card-tag">Option 1</div>
+            <div class="fee-card-name">Hour bank</div>
+            <div class="fee-card-amount">€200 / hr</div>
+            <div class="fee-card-desc">Minimum 20h block (€4,000 upfront). Standard rate is €250/hr. Hour bank clients get 20% off. Unused hours roll forward.</div>
+          </div>
+          <div class="fee-card" id="fee-opt2" onclick="selectFee('option2')">
+            <div class="fee-card-check" id="check-opt2">
+              <svg id="check-icon-opt2" width="10" height="10" viewBox="0 0 10 10" fill="none" style="display:none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="fee-card-tag">Option 2</div>
+            <div class="fee-card-name">Fixed fee</div>
+            <div class="fee-card-amount">€10,000</div>
+            <div class="fee-card-desc">€5,000 at signing. €5,000 at purchase agreement close. Full scope, no surprises, no monthly tracking.</div>
+          </div>
+          <div class="fee-card selected" id="fee-opt3" onclick="selectFee('option3')">
+            <div class="fee-card-check" id="check-opt3">
+              <svg id="check-icon-opt3" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="fee-card-tag">Option 3 · Recommended</div>
+            <div class="fee-card-name">Retainer + success</div>
+            <div class="fee-card-amount">€500/mo + 1.5%</div>
+            <div class="fee-card-desc">€500/month while the deal is live, plus 1.5% of the transaction value at closing.</div>
+          </div>
+        </div>
+
+        <div class="fee-selected-summary" id="fee-summary">
+          Selected: <strong id="fee-summary-text">Option 3: Retainer + success fee (€500/month + 1.5% at closing)</strong>
+        </div>
+
+        <p style="font-size:0.85rem;color:var(--stone);">The retainer is non-refundable. The success fee applies to any closing with Woo or any buyer introduced during this engagement, within 12 months of this letter. If we part ways before close and a qualifying transaction completes within 6 months of termination, the success fee still applies. The work was done.</p>
 
         <h2>4. How do you pay?</h2>
         <p>Three options. Net 30 from invoice date.</p>
@@ -406,6 +441,28 @@
 
   var signed = { nick: false };
   var pads = {};
+  var selectedFee = 'option3';
+
+  var FEE_LABELS = {
+    option1: 'Option 1: Hour bank (€200/hr, minimum 20h block, €4,000 upfront)',
+    option2: 'Option 2: Fixed fee (€10,000, €5,000 at signing and €5,000 at closing)',
+    option3: 'Option 3: Retainer + success fee (€500/month + 1.5% at closing)'
+  };
+
+  function selectFee(opt) {
+    ['option1', 'option2', 'option3'].forEach(function(o) {
+      var card = document.getElementById('fee-opt' + o.slice(-1));
+      var icon = document.getElementById('check-icon-' + 'opt' + o.slice(-1));
+      card.classList.remove('selected');
+      if (icon) icon.style.display = 'none';
+    });
+    var chosen = document.getElementById('fee-opt' + opt.slice(-1));
+    var chosenIcon = document.getElementById('check-icon-opt' + opt.slice(-1));
+    chosen.classList.add('selected');
+    if (chosenIcon) chosenIcon.style.display = '';
+    selectedFee = opt;
+    document.getElementById('fee-summary-text').textContent = FEE_LABELS[opt];
+  }
 
   var today = new Date().toISOString().split('T')[0];
   document.getElementById('date-nick').value = today;
@@ -504,7 +561,9 @@
       document_type: DOC_TYPE,
       parties: DOC_PARTIES,
       required_signers: SIGNERS,
-      pre_signed: PRE_SIGNED
+      pre_signed: PRE_SIGNED,
+      selected_fee: selectedFee,
+      selected_fee_label: FEE_LABELS[selectedFee]
     };
 
     try {
@@ -525,9 +584,6 @@
       }
     } catch (err) {
       console.error('Partial save failed:', err);
-    }
-
-    if (signed.nick) {
       document.getElementById('completion-panel').classList.add('visible');
       setTimeout(function() {
         document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
