@@ -849,6 +849,103 @@
       .bank-block .bank-row { flex-direction: column; gap: 0.1rem; }
       .sla-table { font-size: 0.8rem; }
     }
+
+    /* ── DEAL FLOW DIAGRAM ── */
+    .deal-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin: 1.25rem 0 2rem;
+      overflow-x: auto;
+    }
+    .deal-step {
+      flex: 1;
+      min-width: 120px;
+      background: #f0f8f4;
+      border: 1px solid rgba(26,107,74,0.2);
+      border-radius: 8px;
+      padding: 1.1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.6rem;
+    }
+    .deal-step-num {
+      width: 2rem;
+      height: 2rem;
+      background: var(--green);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .deal-step-title { font-weight: 700; font-size: 0.82rem; color: var(--navy); line-height: 1.3; }
+    .deal-step-desc  { font-size: 0.75rem; color: var(--stone); line-height: 1.4; }
+    .deal-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 0.6rem;
+      color: var(--green);
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    /* ── ENTITY STRUCTURE DIAGRAM ── */
+    .entity-diagram {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.25rem 0 2rem;
+      align-items: start;
+    }
+    .entity-col { display: flex; flex-direction: column; align-items: center; }
+    .entity-col-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--mist);
+      margin-bottom: 0.75rem;
+    }
+    .entity-owners-row { display: flex; gap: 0.5rem; justify-content: center; width: 100%; }
+    .entity-box {
+      background: var(--navy);
+      color: #fafafa;
+      border-radius: 6px;
+      padding: 0.65rem 1rem;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 1.4;
+      min-width: 80px;
+    }
+    .entity-box.entity-holdco { background: var(--green); }
+    .entity-box.entity-opco   { background: var(--charcoal); }
+    .entity-pct { font-size: 0.68rem; font-weight: 400; color: rgba(255,255,255,0.6); display: block; margin-top: 2px; }
+    .entity-sub { font-size: 0.68rem; font-weight: 400; color: rgba(255,255,255,0.7); display: block; margin-top: 2px; }
+    .entity-line-v { width: 2px; height: 22px; background: var(--ash); margin: 0 auto; }
+    .entity-land-note {
+      font-size: 0.72rem;
+      color: var(--stone);
+      text-align: center;
+      margin-top: 0.75rem;
+      line-height: 1.5;
+      background: rgba(0,0,0,0.03);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--ash);
+    }
+    @media (max-width: 600px) {
+      .deal-flow { flex-direction: column; gap: 0.4rem; }
+      .deal-arrow { transform: rotate(90deg); justify-content: center; }
+      .entity-diagram { grid-template-columns: 1fr; }
+      .entity-owners-row { flex-direction: column; align-items: center; }
+    }
   </style>
 </head>
 <body>
@@ -930,10 +1027,60 @@
         <p>What you need is a US entity that holds the economic rights to the Uganda operation, a clean Operating Agreement that governs the 75/25 relationship, a Membership Purchase Agreement that closes the transaction, and the supporting documents that make the land lease and Nick's management role legally defensible. You also need someone to coordinate the US attorney and Uganda counsel so this does not fall apart between jurisdictions.</p>
         <p>That is a deal architecture problem. And it is what I do.</p>
 
+        <h2>How the deal works</h2>
+        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1.25rem;">Four steps from where you are now to a closed deal.</p>
+        <div class="deal-flow">
+          <div class="deal-step">
+            <div class="deal-step-num">1</div>
+            <div class="deal-step-title">Form Saranac USA LLC</div>
+            <div class="deal-step-desc">Delaware entity, Handlers 100%</div>
+          </div>
+          <div class="deal-arrow">&#8594;</div>
+          <div class="deal-step">
+            <div class="deal-step-num">2</div>
+            <div class="deal-step-title">Assign Uganda Rights</div>
+            <div class="deal-step-desc">Economic rights of Uganda business assigned to Saranac USA</div>
+          </div>
+          <div class="deal-arrow">&#8594;</div>
+          <div class="deal-step">
+            <div class="deal-step-num">3</div>
+            <div class="deal-step-title">Woo Buys 75%</div>
+            <div class="deal-step-desc">$900,000 for 75% of Saranac USA LLC</div>
+          </div>
+          <div class="deal-arrow">&#8594;</div>
+          <div class="deal-step">
+            <div class="deal-step-num">4</div>
+            <div class="deal-step-title">Close</div>
+            <div class="deal-step-desc">Handlers 25% &middot; Woo 75% &middot; Nick as GM</div>
+          </div>
+        </div>
+
+        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1.25rem;">The entity structure before and after the deal closes.</p>
+        <div class="entity-diagram">
+          <div class="entity-col">
+            <div class="entity-col-label">Before</div>
+            <div class="entity-box">Handlers<span class="entity-pct">100%</span></div>
+            <div class="entity-line-v"></div>
+            <div class="entity-box entity-opco">Saranac Ventures Uganda</div>
+          </div>
+          <div class="entity-col">
+            <div class="entity-col-label">After</div>
+            <div class="entity-owners-row">
+              <div class="entity-box">Woo<span class="entity-pct">75%</span></div>
+              <div class="entity-box">Handlers<span class="entity-pct">25%</span></div>
+            </div>
+            <div class="entity-line-v"></div>
+            <div class="entity-box entity-holdco">Saranac USA LLC<span class="entity-sub">Delaware</span></div>
+            <div class="entity-line-v"></div>
+            <div class="entity-box entity-opco">Saranac Ventures Uganda</div>
+            <div class="entity-land-note">Land title stays with Handlers (required by Ugandan law). Economic and control rights assigned to Saranac USA by agreement.</div>
+          </div>
+        </div>
+
         <h2>Scope of Engagement</h2>
 
         <div class="workstream-block">
-          <div class="ws-title">Workstream 1 &#8212; Delaware LLC Formation and Operating Agreement</div>
+          <div class="ws-title">Phase 1 &#8212; Delaware LLC Formation and Operating Agreement</div>
           <ul class="deliverable-list">
             <li>
               <span class="d-num">1</span>
@@ -961,7 +1108,7 @@
         </div>
 
         <div class="workstream-block">
-          <div class="ws-title">Workstream 2 &#8212; Membership Purchase Agreement</div>
+          <div class="ws-title">Phase 2 &#8212; Membership Purchase Agreement</div>
           <ul class="deliverable-list">
             <li>
               <span class="d-num">4</span>
@@ -972,7 +1119,7 @@
         </div>
 
         <div class="workstream-block">
-          <div class="ws-title">Workstream 3 &#8212; Ancillary Documents and Counsel Coordination</div>
+          <div class="ws-title">Phase 3 &#8212; Ancillary Documents and Counsel Coordination</div>
           <ul class="deliverable-list">
             <li>
               <span class="d-num">5</span>
@@ -1042,9 +1189,9 @@
         <h2>1. What are we working on together?</h2>
         <p>You are selling 75% of a US entity that will hold the economic rights to Saranac Ventures and Ecolodges Ltd, a Uganda ecolodge business, to a buyer you know ("Woo"). The Handlers retain 25%. Nick stays on as General Manager at $25,000/year, structured as equity rather than cash compensation. The Uganda land title stays in the Handlers' names by legal necessity, with economic and control rights assigned to the US entity by agreement.</p>
         <p>The deal has three moving parts and we are covering all three:</p>
-        <div class="sub-item"><strong>Workstream 1: Delaware LLC Formation and Structure.</strong> Guide the formation of Saranac USA LLC via Northwest Registered Agent ($50 formation + $90 state fee + $125/year registered agent). Draft the Operating Agreement for the initial 100% Handler-owned entity, then the amended OA reflecting the 75/25 post-sale structure. Cover governance (board composition: 2 Woo seats, 1 Handler seat), profit waterfall (ops costs, reserve fund, staff school fees fund, then 75/25 to members), and Woo's over-contribution mechanism (amounts beyond $225k treated as debt at 5%, repaid first at exit).</div>
-        <div class="sub-item"><strong>Workstream 2: Membership Purchase Agreement.</strong> Draft the agreement under which Woo purchases 75% of Saranac USA LLC for $900,000. Cover representations and warranties, closing conditions, payment mechanics (lump sum or installment, to be confirmed with the parties), and post-closing obligations on both sides.</div>
-        <div class="sub-item"><strong>Workstream 3: Ancillary Documents and Coordination.</strong> Draft the land lease assignment agreement (assigning economic rights from Handlers to Saranac USA while land title stays with the Handlers as required by Ugandan law). Draft the management equity arrangement for Nick (converting $25k/yr to profits interest, guaranteed payment, or capital credit, the right mechanism to be confirmed with US tax counsel). Coordinate all documents with your US attorney and Ugandan counsel for execution. Prepare Q&A and strategic briefings on any open structural questions as they arise.</div>
+        <div class="sub-item"><strong>Phase 1: Delaware LLC Formation and Structure.</strong> Guide the formation of Saranac USA LLC via Northwest Registered Agent ($50 formation + $90 state fee + $125/year registered agent). Draft the Operating Agreement for the initial 100% Handler-owned entity, then the amended OA reflecting the 75/25 post-sale structure. Cover governance (board composition: 2 Woo seats, 1 Handler seat), profit waterfall (ops costs, reserve fund, staff school fees fund, then 75/25 to members), and Woo's over-contribution mechanism (amounts beyond $225k treated as debt at 5%, repaid first at exit).</div>
+        <div class="sub-item"><strong>Phase 2: Membership Purchase Agreement.</strong> Draft the agreement under which Woo purchases 75% of Saranac USA LLC for $900,000. Cover representations and warranties, closing conditions, payment mechanics (lump sum or installment, to be confirmed with the parties), and post-closing obligations on both sides.</div>
+        <div class="sub-item"><strong>Phase 3: Ancillary Documents and Coordination.</strong> Draft the land lease assignment agreement (assigning economic rights from Handlers to Saranac USA while land title stays with the Handlers as required by Ugandan law). Draft the management equity arrangement for Nick (converting $25k/yr to profits interest, guaranteed payment, or capital credit, the right mechanism to be confirmed with US tax counsel). Coordinate all documents with your US attorney and Ugandan counsel for execution. Prepare Q&A and strategic briefings on any open structural questions as they arise.</div>
 
         <h2>2. What do you actually walk away with?</h2>
         <div class="sub-item">(a) A clean Delaware LLC with an operating agreement that governs the 75/25 structure, the profit waterfall, and Woo's economic rights.</div>
