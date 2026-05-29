@@ -8,6 +8,7 @@
     <title>Delta40 x Mexzungu: Sign Agreement</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
     <style>
         :root {
             --bg: #0d0d0d; --bg-card: #1a1a1a; --pink: #e14b87;
@@ -17,6 +18,24 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; line-height: 1.6; min-height: 100vh; }
 
+        #pw-gate { position: fixed; inset: 0; background: #0d0d0d; display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 2rem; }
+        #pw-gate.hidden { display: none; }
+        .pw-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 3rem 2.5rem; max-width: 420px; width: 100%; text-align: center; }
+        .pw-logo { height: 48px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 400; color: var(--text); margin-bottom: 0.6rem; }
+        .pw-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input { width: 100%; padding: 0.9rem 1rem; background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 1rem; transition: border-color 0.2s; text-align: center; }
+        .pw-input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn { width: 100%; padding: 0.9rem 2rem; background-color: var(--pink); color: var(--text); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; }
+        .pw-btn:hover { background-color: var(--pink-light); transform: scale(1.02); }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+
+        #sign-content { display: none; }
+        #sign-content.visible { display: block; }
+
         .sign-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,13,0.92); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(12px); }
         .nav-logo img { height: 36px; }
         .nav-back { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
@@ -24,17 +43,23 @@
 
         .sign-wrap { max-width: 680px; margin: 0 auto; padding: 9rem 2rem 5rem; }
         .sign-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 0.8rem; }
-        .sign-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 400; line-height: 1.15; margin-bottom: 1rem; }
-        .sign-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.75; margin-bottom: 2.5rem; }
+        .sign-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; line-height: 1.15; margin-bottom: 1rem; }
+        .sign-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.75; margin-bottom: 3rem; }
 
-        /* RETAINER SUMMARY */
-        .retainer-summary { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 2rem; margin-bottom: 2.5rem; }
-        .retainer-summary-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
-        .retainer-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.65rem 0; border-bottom: 1px solid rgba(42,42,42,0.7); }
-        .retainer-row:last-child { border-bottom: none; padding-bottom: 0; }
-        .retainer-key { font-size: 0.85rem; color: var(--muted); }
-        .retainer-val { font-size: 0.9rem; color: var(--text); font-weight: 600; text-align: right; }
-        .retainer-highlight { color: var(--pink); }
+        /* RETAINER SUMMARY CARD */
+        .retainer-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem 2rem; margin-bottom: 2.5rem; }
+        .retainer-card-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); font-weight: 700; margin-bottom: 0.75rem; }
+        .retainer-card-name { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.3rem; color: var(--text); margin-bottom: 0.5rem; }
+        .retainer-card-price { font-size: 1.6rem; font-weight: 700; color: var(--pink); margin-bottom: 0.25rem; }
+        .retainer-card-note { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.25rem; }
+        .retainer-tiers { display: flex; flex-direction: column; gap: 0.5rem; }
+        .retainer-tier { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; padding: 0.5rem 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+        .retainer-tier.active { background: rgba(225,75,135,0.08); border-color: rgba(225,75,135,0.3); }
+        .retainer-tier-label { color: var(--muted); }
+        .retainer-tier.active .retainer-tier-label { color: var(--text); }
+        .retainer-tier-price { font-weight: 700; color: var(--muted); }
+        .retainer-tier.active .retainer-tier-price { color: var(--pink); }
+        .retainer-tier-badge { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: var(--pink); color: #fff; border-radius: 4px; padding: 0.15rem 0.45rem; margin-left: 0.5rem; }
 
         /* FORM */
         .form-section { margin-bottom: 2.5rem; }
@@ -72,108 +97,140 @@
 </head>
 <body>
 
-<nav class="sign-nav">
-    <div class="nav-logo"><a href="/"><img src="/logo-v3.png" alt="Mexzungu Group"></a></div>
-    <a href="/proposals/delta40/" class="nav-back">&larr; Back to proposal</a>
-</nav>
-
-<div class="sign-wrap">
-    <div id="form-screen">
-        <div class="sign-label">Studio Foundation Retainer</div>
-        <h1 class="sign-heading">Confirm intent.<br>We handle the rest.</h1>
-        <p class="sign-sub">Fill in your details below. Mexzungu will prepare and send the engagement letter within 24 hours. You are not signing anything here. This records your intent to proceed with the Studio Foundation Retainer.</p>
-
-        <!-- RETAINER SUMMARY -->
-        <div class="retainer-summary">
-            <div class="retainer-summary-label">What you are confirming</div>
-            <div class="retainer-row">
-                <span class="retainer-key">Engagement</span>
-                <span class="retainer-val">Studio Foundation Retainer</span>
-            </div>
-            <div class="retainer-row">
-                <span class="retainer-key">Starting rate (16 companies)</span>
-                <span class="retainer-val retainer-highlight">$5,500/mo</span>
-            </div>
-            <div class="retainer-row">
-                <span class="retainer-key">Coverage</span>
-                <span class="retainer-val">Fund-level + full portfolio</span>
-            </div>
-            <div class="retainer-row">
-                <span class="retainer-key">Overage rate</span>
-                <span class="retainer-val">$150/hr</span>
-            </div>
-            <div class="retainer-row">
-                <span class="retainer-key">Success fee</span>
-                <span class="retainer-val">0.75% on raises above $2M</span>
-            </div>
-            <div class="retainer-row">
-                <span class="retainer-key">Equity option</span>
-                <span class="retainer-val">0.25% per new portfolio company</span>
-            </div>
-        </div>
-
-        <!-- CONTACT DETAILS -->
-        <div class="form-section">
-            <div class="form-section-title">Your details</div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="f-name">Full name</label>
-                    <input type="text" id="f-name" class="form-input" placeholder="Nick Handler">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="f-title">Title</label>
-                    <input type="text" id="f-title" class="form-input" placeholder="COO">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="f-email">Email</label>
-                    <input type="email" id="f-email" class="form-input" placeholder="nick@delta40.vc">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="f-start">Preferred start date</label>
-                    <input type="text" id="f-start" class="form-input" placeholder="e.g. June 1, 2026">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group full">
-                    <label class="form-label" for="f-notes">Anything to flag before the engagement letter? (optional)</label>
-                    <textarea id="f-notes" class="form-textarea" placeholder="Adjustments, questions, or notes for Pepe..."></textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- CONFIRMATIONS -->
-        <div class="form-section">
-            <div class="form-section-title">Confirmations</div>
-            <div class="check-list">
-                <div class="check-item">
-                    <input type="checkbox" id="chk-1" class="check-input">
-                    <label for="chk-1" class="check-label">I have read the full proposal at <a href="/proposals/delta40/">mexzungu.com/proposals/delta40</a> and understand the scope, pricing, and terms of the Studio Foundation Retainer.</label>
-                </div>
-                <div class="check-item">
-                    <input type="checkbox" id="chk-2" class="check-input">
-                    <label for="chk-2" class="check-label">I understand this form records my intent to proceed. The formal engagement letter will be sent by Mexzungu within 24 hours and will require a separate signature.</label>
-                </div>
-                <div class="check-item">
-                    <input type="checkbox" id="chk-3" class="check-input">
-                    <label for="chk-3" class="check-label">I confirm I am authorized to enter into commercial agreements on behalf of Delta40 Fund Management.</label>
-                </div>
-            </div>
-        </div>
-
-        <button class="submit-btn" id="submit-btn" onclick="submitForm()">Confirm intent and notify Mexzungu</button>
-        <p class="form-note">This does not charge your card or create a binding contract. It triggers the engagement letter preparation process.</p>
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo.png" alt="Mexzungu" class="pw-logo">
+        <div class="pw-label">Confidential</div>
+        <div class="pw-heading">Delta40 x Mexzungu</div>
+        <div class="pw-sub">Enter your access code to continue.</div>
+        <input type="password" id="pw-input" class="pw-input" placeholder="access code" autocomplete="off">
+        <button class="pw-btn" onclick="checkPw()">Enter</button>
+        <div class="pw-error" id="pw-error"></div>
     </div>
+</div>
 
-    <div id="success-screen">
-        <div class="success-icon">&#10003;</div>
-        <div class="success-heading">Selection received.</div>
-        <p class="success-body">Pepe has been notified. The engagement letter for the Studio Foundation Retainer will arrive within 24 hours. If anything needs adjusting before you sign, just reply to that email.<br><br>Looking forward to building this together.</p>
+<div id="sign-content">
+    <nav class="sign-nav">
+        <div class="nav-logo"><a href="/"><img src="/img/logo.png" alt="Mexzungu Group"></a></div>
+        <a href="/proposals/delta40/" class="nav-back">Back to proposal</a>
+    </nav>
+
+    <div class="sign-wrap">
+        <div id="form-screen">
+            <div class="sign-label">Studio Foundation Retainer</div>
+            <h1 class="sign-heading">Confirm intent.<br>We handle the rest.</h1>
+            <p class="sign-sub">Fill in your details below. Mexzungu will prepare and send the engagement letter within 24 hours. You are not signing anything here. This is your intent to proceed.</p>
+
+            <!-- RETAINER SUMMARY -->
+            <div class="retainer-card">
+                <div class="retainer-card-label">Selected Structure</div>
+                <div class="retainer-card-name">Studio Foundation Retainer</div>
+                <div class="retainer-card-price">$5,500/mo</div>
+                <div class="retainer-card-note">Starting rate for up to 20 portfolio companies. Fund-level and portfolio-level coverage included. Scales automatically as the portfolio grows.</div>
+                <div class="retainer-tiers">
+                    <div class="retainer-tier active">
+                        <span class="retainer-tier-label">Up to 20 companies <span class="retainer-tier-badge">Current</span></span>
+                        <span class="retainer-tier-price">$5,500/mo</span>
+                    </div>
+                    <div class="retainer-tier">
+                        <span class="retainer-tier-label">21&ndash;35 companies</span>
+                        <span class="retainer-tier-price">$7,000/mo</span>
+                    </div>
+                    <div class="retainer-tier">
+                        <span class="retainer-tier-label">36+ companies</span>
+                        <span class="retainer-tier-price">$8,500/mo</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT DETAILS -->
+            <div class="form-section">
+                <div class="form-section-title">Your details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="f-name">Full name</label>
+                        <input type="text" id="f-name" class="form-input" placeholder="Nick Handler">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-title">Title</label>
+                        <input type="text" id="f-title" class="form-input" placeholder="COO">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="f-email">Email</label>
+                        <input type="email" id="f-email" class="form-input" placeholder="nhandler@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="f-start">Preferred start date</label>
+                        <input type="text" id="f-start" class="form-input" placeholder="e.g. June 1, 2026">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group full">
+                        <label class="form-label" for="f-notes">Anything to flag before the engagement letter? (optional)</label>
+                        <textarea id="f-notes" class="form-textarea" placeholder="Adjustments, questions, or notes for Pepe..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFIRMATIONS -->
+            <div class="form-section">
+                <div class="form-section-title">Confirmations</div>
+                <div class="check-list">
+                    <div class="check-item">
+                        <input type="checkbox" id="chk-1" class="check-input">
+                        <label for="chk-1" class="check-label">I have read the full proposal at <a href="/proposals/delta40/">mexzungu.com/proposals/delta40</a> and understand the scope, pricing, and terms of the Studio Foundation Retainer.</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chk-2" class="check-input">
+                        <label for="chk-2" class="check-label">I understand this form records my intent to proceed. The formal engagement letter will be sent by Mexzungu within 24 hours and will require a separate signature.</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chk-3" class="check-input">
+                        <label for="chk-3" class="check-label">I confirm I am authorized to enter into commercial agreements on behalf of Delta40 Advisors Ltd.</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submit-btn" onclick="submitForm()">Confirm intent and notify Mexzungu</button>
+            <p class="form-note">This does not charge your card or create a binding contract. It triggers the engagement letter preparation process.</p>
+        </div>
+
+        <div id="success-screen">
+            <div class="success-icon">&#10003;</div>
+            <div class="success-heading">Intent received.</div>
+            <p class="success-body">Pepe has been notified. The engagement letter for the Studio Foundation Retainer will arrive within 24 hours. If anything needs adjusting before you sign, just reply to that email.<br><br>Looking forward to building this together.</p>
+        </div>
     </div>
 </div>
 
 <script>
+    const SESSION_KEY = 'delta40_auth';
+    const PASS = 'delta40-outlaw-0526';
+
+    function checkPw() {
+        const val = document.getElementById('pw-input').value.trim().toLowerCase();
+        const inp = document.getElementById('pw-input');
+        const err = document.getElementById('pw-error');
+        if (val === PASS) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            document.getElementById('pw-gate').classList.add('hidden');
+            document.getElementById('sign-content').classList.add('visible');
+        } else {
+            inp.classList.add('error');
+            err.textContent = 'Incorrect access code.';
+            setTimeout(() => inp.classList.remove('error'), 400);
+        }
+    }
+
+    document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('sign-content').classList.add('visible');
+    }
+
     function submitForm() {
         const name = document.getElementById('f-name').value.trim();
         const email = document.getElementById('f-email').value.trim();
@@ -212,7 +269,7 @@
         .catch(() => {
             btn.disabled = false;
             btn.textContent = 'Confirm intent and notify Mexzungu';
-            alert('Something went wrong. Please email pepe@mexzungu.com directly with your selection.');
+            alert('Something went wrong. Please email pepe@mexzungu.com directly.');
         });
     }
 </script>

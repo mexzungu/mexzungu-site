@@ -14,11 +14,17 @@
       --pink:       #e14b87;
       --pink-dark:  #b83a6b;
       --pink-light: #e86fa0;
+      --navy:       #1a1a2e;
+      --amber:      #b87d1a;
+      --amber-bg:   #fdf6ec;
+      --amber-border: rgba(184,125,26,0.25);
       --black:      #0d0d0d;
+      --white:      #fafafa;
       --ash:        #e8e3df;
       --stone:      #6b5e57;
       --mist:       #9a8f88;
       --charcoal:   #3d3533;
+      --success:    #2d8f5e;
       --heading:    'RocknRoll One', 'Space Grotesk', sans-serif;
       --sans:       'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     }
@@ -65,21 +71,20 @@
     .doc-subtitle { font-size: 0.9rem; color: var(--stone); margin-bottom: 2.5rem; }
 
     /* PARTIES */
-    .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
     .party-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.1rem 1.25rem; }
     .party-block .party-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); margin-bottom: 0.4rem; }
     .party-block .party-name { font-size: 0.95rem; font-weight: 600; color: var(--black); margin-bottom: 0.25rem; }
     .party-block .party-detail { font-size: 0.8rem; color: var(--stone); line-height: 1.5; }
-    .doc-date-line { font-size: 0.82rem; color: var(--mist); }
+    .doc-date-line { font-size: 0.82rem; color: var(--mist); margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--ash); }
 
-    /* PROPOSAL SECTIONS */
+    /* PROPOSAL SECTION */
     .proposal-section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--ash); }
     .proposal-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .proposal-eyebrow { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink-dark); margin-bottom: 1.25rem; }
-    .proposal-section h2 { font-family: var(--heading); font-size: 1.1rem; color: var(--black); margin: 1.75rem 0 0.6rem; }
+    .proposal-section h2 { font-family: var(--heading); font-size: 1.15rem; color: var(--black); margin: 1.75rem 0 0.6rem; }
     .proposal-section h2:first-of-type { margin-top: 0; }
     .proposal-section p { font-size: 0.95rem; line-height: 1.75; color: #2a2a2a; margin-bottom: 0.9rem; }
-    .proposal-section p:last-child { margin-bottom: 0; }
 
     /* BULLET LIST */
     .proposal-list { list-style: none; margin: 0 0 0.9rem; padding: 0; }
@@ -113,18 +118,28 @@
     .equity-block-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink-dark); margin-bottom: 0.5rem; }
     .equity-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
 
-    /* DISCLAIMER */
-    .disclaimer-block { font-size: 0.82rem; line-height: 1.65; color: var(--mist); background: #f8f6f4; border-radius: 6px; padding: 0.85rem 1.1rem; margin: 1rem 0 0; }
-
     /* NETWORK BLOCK */
     .network-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
     .network-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
 
+    /* DISCLAIMER */
+    .disclaimer-block { font-size: 0.82rem; line-height: 1.65; color: var(--mist); background: #f8f6f4; border-radius: 6px; padding: 0.85rem 1.1rem; margin: 1.25rem 0 0; }
+
     /* FINE PRINT */
     .fine-print { font-size: 0.82rem; line-height: 1.65; color: var(--mist); background: #f8f6f4; border-radius: 6px; padding: 0.9rem 1.1rem; margin: 1rem 0; }
 
+    /* TRACK RECORD LINK */
+    .btn-work {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 0.75rem;
+      font-size: 0.9rem; font-weight: 700; color: var(--pink-dark);
+      text-decoration: none; border-bottom: 2px solid var(--pink);
+      padding-bottom: 0.1rem; transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-work:hover { color: var(--pink); border-color: var(--pink-light); }
+
     /* CTA ROW */
-    .cta-row { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+    .cta-row { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
     .btn-sign {
       flex: 1; min-width: 220px;
       display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -141,16 +156,6 @@
       transition: border-color 0.2s ease;
     }
     .btn-call:hover { border-color: var(--stone); }
-
-    /* TRACK RECORD LINK */
-    .btn-work {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      margin-top: 0.75rem;
-      font-size: 0.9rem; font-weight: 700; color: var(--pink-dark);
-      text-decoration: none; border-bottom: 2px solid var(--pink);
-      padding-bottom: 0.1rem; transition: color 0.15s ease, border-color 0.15s ease;
-    }
-    .btn-work:hover { color: var(--pink); border-color: var(--pink-light); }
 
     /* FOOTER */
     .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--ash); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
@@ -199,7 +204,7 @@
       </div>
 
       <h1 class="doc-title">Delta40: Studio Foundation Retainer</h1>
-      <p class="doc-subtitle">Proposal. May 2026.</p>
+      <p class="doc-subtitle">Proposal. 29 May 2026.</p>
 
       <!-- 01 PARTIES -->
       <div class="proposal-section">
@@ -209,12 +214,20 @@
           <div class="party-block">
             <div class="party-label">The Client</div>
             <div class="party-name">Delta40 Advisors Ltd</div>
-            <div class="party-detail">Nairobi-based venture studio and fund manager. $20M fund closed February 2026. 16 portfolio companies across 30+ African countries.<br>Nick Handler (COO)</div>
+            <div class="party-detail">
+              Nairobi-based venture studio and fund manager.<br>
+              $20M fund closed February 2026. 16 portfolio companies across 30+ African countries.<br>
+              Nick Handler, COO<br>
+              <a href="mailto:nhandler@gmail.com" style="color:var(--pink);text-decoration:none;">nhandler@gmail.com</a>
+            </div>
           </div>
           <div class="party-block">
             <div class="party-label">The Studio</div>
-            <div class="party-name">Mexzungu Group Ltd</div>
-            <div class="party-detail">A Mauritius company. Royal Road, Henrietta, 73120, Mauritius.<br>Pepe Carrillo (Chief Disruption Officer)<br><a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a></div>
+            <div class="party-name">Mexzungu Consulting</div>
+            <div class="party-detail">
+              Pepe Carrillo (Chief Disruption Officer)<br>
+              <a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a>
+            </div>
           </div>
         </div>
 
@@ -223,16 +236,16 @@
 
       <!-- 02 THE CHALLENGE -->
       <div class="proposal-section">
-        <div class="proposal-eyebrow">02 &mdash; Context / The Challenge</div>
+        <div class="proposal-eyebrow">02 &mdash; The Challenge</div>
         <p>Delta40 closed a $20M fund in February 2026. Sixteen portfolio companies. Thirty-plus African countries. No in-house legal function. That is a deliberate design choice that works fine until it does not.</p>
-        <p>The complexity is real on two levels. At fund level: LP obligations, CMA and CBK regulatory requirements, investor reporting, co-investment structuring. At portfolio level: entity setup across multiple jurisdictions, commercial contracts, employment agreements, IP, and fundraising rounds that need legal architecture to close cleanly. When any of that breaks, it costs more to fix than a year of legal fees would have cost to prevent.</p>
-        <p>The Studio Foundation Retainer replaces that exposure with one monthly fee and a legal function that operates across both levels, scales automatically with the portfolio, and does not require Delta40 to manage separate counsel relationships for every jurisdiction or transaction.</p>
+        <p>The complexity runs deep on two levels. At fund level: LP obligations, CMA and CBK regulatory compliance, investor reporting, constitutional documents, co-investment structuring. At portfolio level: entity formation across multiple jurisdictions, commercial contracts, employment agreements, IP protection, and fundraising rounds that need clean legal architecture to close. When any of that breaks, it costs more to fix than a year of legal coverage would have cost to prevent.</p>
+        <p>At $100k-$500k initial checks, portfolio companies cannot afford standalone senior legal counsel. Delta40 filling that gap through a studio legal partner is a natural extension of the co-operator model. The Studio Foundation Retainer replaces scattered legal exposure with one monthly fee, one relationship, and a function that operates across fund and portfolio simultaneously.</p>
       </div>
 
-      <!-- 03 SCOPE -->
+      <!-- 03 SCOPE OF SERVICES -->
       <div class="proposal-section">
         <div class="proposal-eyebrow">03 &mdash; Scope of Services</div>
-        <p>Two levels of coverage under a single retainer. Fund-level work and portfolio-level work are both included. No internal allocation decisions, no tracking which company used which hours. That is Mexzungu's problem to manage, not Delta40's.</p>
+        <p>Two levels of coverage under a single retainer. No internal allocation decisions, no tracking which company used which hours. That is Mexzungu's problem to manage, not Delta40's.</p>
 
         <div class="scope-block">
           <div class="scope-title">Fund-Level</div>
@@ -241,7 +254,8 @@
             <li>Fund governance: investment committee support, board resolutions, manager obligations</li>
             <li>CMA and CBK regulatory compliance monitoring and filing coordination</li>
             <li>Investor reporting frameworks and disclosure obligations</li>
-            <li>Follow-on round structuring and co-investor negotiations</li>
+            <li>Constitutional documents maintenance and follow-on round structuring</li>
+            <li>Co-investor negotiations and co-investment documentation</li>
             <li>General legal access for Delta40 partners: async unlimited within reasonable scope, calls within 72 hours</li>
           </ul>
         </div>
@@ -249,33 +263,23 @@
         <div class="scope-block">
           <div class="scope-title">Portfolio-Level</div>
           <ul class="scope-list">
-            <li>Entity setup and corporate structuring for new portfolio companies</li>
+            <li>Entity formation and corporate structuring for new portfolio companies</li>
             <li>Commercial contracts, term sheets, vendor and supplier agreements</li>
             <li>Co-founder and employment agreements</li>
             <li>IP registration and protection coordination</li>
-            <li>Fundraising support for individual portfolio companies: SAFEs, equity rounds, convertible notes, debt facilities</li>
+            <li>Fundraising documentation for individual portfolio companies: SAFEs, equity rounds, convertible notes, debt facilities</li>
             <li>Cross-border compliance queries and regulatory navigation across operating jurisdictions</li>
           </ul>
         </div>
 
-        <p style="font-size:0.88rem;color:var(--stone);">Work outside retainer scope is billed at the preferred overage rate. See fee structure below.</p>
+        <p style="font-size:0.88rem;color:var(--stone);">Work materially outside retainer scope is billed at the preferred overage rate. See engagement model below.</p>
       </div>
 
       <!-- 04 ENGAGEMENT MODEL -->
       <div class="proposal-section">
         <div class="proposal-eyebrow">04 &mdash; Engagement Model</div>
-        <p>The Studio Foundation Retainer is a single monthly fee that scales automatically with the size of Delta40's portfolio. No renegotiation at any threshold. One invoice, one relationship, one point of contact across fund and portfolio.</p>
-        <p>As Delta40 adds portfolio companies, the retainer steps up to reflect expanded scope. The economics improve as the portfolio grows: fixed fund-level costs are already absorbed in the base rate, so each additional company adds less marginal cost than dealing with a patchwork of ad hoc counsel.</p>
-
-        <div class="equity-block">
-          <div class="equity-block-label">Equity Option</div>
-          <p>0.25% equity per new portfolio company onboarded, in lieu of one-time setup fees per company. When Delta40 brings in a new portfolio company and Mexzungu provides the initial legal setup (entity formation, co-founder agreement, corporate structure), the fee can be settled as 0.25% equity in that company at the most recent closing price instead of a cash invoice. This option is elected in writing before work commences on that company.</p>
-        </div>
-      </div>
-
-      <!-- 05 FEE STRUCTURE -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">05 &mdash; Fee Structure</div>
+        <p>One structure. A single monthly retainer that scales automatically with the size of Delta40's portfolio. No renegotiation at any threshold. One invoice, one relationship, one point of contact across fund and portfolio.</p>
+        <p>As Delta40 adds portfolio companies, the retainer steps up to reflect expanded scope. Fund-level costs are absorbed in the base rate, so each additional company adds less marginal cost than dealing with a patchwork of ad hoc counsel across 30+ jurisdictions.</p>
 
         <div class="fee-table-wrap">
           <table class="fee-table">
@@ -306,22 +310,27 @@
           </table>
         </div>
 
-        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1.5rem;">Current portfolio: 16 companies. Starting rate: $5,500/mo. Threshold repricing is automatic. No renegotiation at any stage.</p>
+        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1.5rem;">Current portfolio: 16 companies. Starting rate: $5,500/mo. Threshold repricing is automatic. No renegotiation.</p>
+
+        <div class="equity-block">
+          <div class="equity-block-label">Equity Option</div>
+          <p>0.25% equity per new portfolio company onboarded during the engagement, in lieu of one-time setup fees per company. When Delta40 brings in a new portfolio company and Mexzungu provides the initial legal setup (entity formation, co-founder agreement, corporate structure), the fee can be settled as 0.25% equity in that company at the most recent closing price instead of a cash invoice. Elected in writing before work commences on that company.</p>
+        </div>
 
         <h2>Overage Rate</h2>
-        <p>Work outside retainer scope including specialized regulatory filings, contested matters, and complex multi-party transactions is billed at <strong>$150/hr preferred rate</strong>, vs. $350/hr market rate for comparable cross-border legal advisory.</p>
+        <p>Work outside retainer scope, including specialized regulatory filings, contested matters, and complex multi-party transactions, is billed at <strong>$150/hr preferred rate</strong>, compared to $350+ market rate for comparable cross-border legal advisory.</p>
 
         <h2>Success Fee</h2>
-        <p>0.75% of capital raised on any raise above $2M. Capped or waived for raises below $2M. Applies to equity rounds, debt facilities, and SAFEs above the threshold. Payable 14 days after capital clears.</p>
+        <p>0.75% of capital raised on any round above $2M. Applies to equity rounds, debt facilities, and SAFEs above the threshold. Payable 14 days after capital clears. Waived for raises below $2M.</p>
 
         <div class="disclaimer-block">
           Fees are exclusive of registration fees and local counsel fees (if any). Where formal filings or local counsel appearances are required, those costs are quoted separately and passed through at cost.
         </div>
       </div>
 
-      <!-- 06 LOCAL COUNSEL -->
+      <!-- 05 LOCAL COUNSEL NETWORK -->
       <div class="proposal-section">
-        <div class="proposal-eyebrow">06 &mdash; Local Counsel Network</div>
+        <div class="proposal-eyebrow">05 &mdash; Local Counsel Network</div>
         <p>Mexzungu's local counsel network covers 30+ African jurisdictions. For matters requiring formal legal opinions, court filings, or in-jurisdiction appearances, Mexzungu coordinates directly with trusted local counsel, briefing them in context and managing the relationship so Delta40 does not have to.</p>
 
         <div class="network-block">
@@ -331,17 +340,17 @@
         <p>Most legal questions across a 30-country portfolio can be answered without triggering local counsel. When local counsel is required, Mexzungu handles the brief, the context, and the oversight. One relationship, across all the markets Delta40 operates in.</p>
       </div>
 
-      <!-- 07 WHY MEXZUNGU -->
+      <!-- 06 WHY MEXZUNGU -->
       <div class="proposal-section">
-        <div class="proposal-eyebrow">07 &mdash; Why Mexzungu</div>
+        <div class="proposal-eyebrow">06 &mdash; Why Mexzungu</div>
         <p>Cross-border deal structuring across Africa, built from 20+ years of legal practice at the intersection of corporate law, venture architecture, and emerging market operations. Deals structured under Delaware, Mauritius, Kenyan, and multiple African-jurisdiction law. Regulatory experience with CMA, CBK, and equivalent bodies across East and West Africa.</p>
         <p>We have built legal infrastructure for venture studios that move fast and cannot afford legal that slows them down. Entity setup, IP, fundraising support, fund governance, and cross-border compliance running simultaneously across distributed portfolios. We do not come from a law firm model. We come from inside the machine.</p>
         <a href="/work" class="btn-work" target="_blank">See our work &rarr;</a>
       </div>
 
-      <!-- 08 NEXT STEPS -->
+      <!-- 07 NEXT STEPS -->
       <div class="proposal-section">
-        <div class="proposal-eyebrow">08 &mdash; Next Steps</div>
+        <div class="proposal-eyebrow">07 &mdash; Next Steps</div>
         <p>Ready to proceed? Go to the signing page, confirm intent, and the engagement letter arrives within 24 hours. Nothing binding until the engagement letter is signed.</p>
         <div class="fine-print">
           This engagement is governed by the laws of Kenya and interpreted in accordance with English legal principles, consistent with Delta40's fund domicile and primary operating jurisdiction. Either party may terminate with 60 days written notice. Everything discussed stays confidential. This is venture architecture, deal structuring, and legal operations consulting and does not constitute licensed legal advice in any jurisdiction.
