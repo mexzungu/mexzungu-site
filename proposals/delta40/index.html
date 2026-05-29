@@ -91,12 +91,49 @@
     .proposal-list li { font-size: 0.92rem; line-height: 1.7; color: #2a2a2a; padding: 0.3rem 0 0.3rem 1.25rem; position: relative; }
     .proposal-list li::before { content: ''; position: absolute; left: 0; top: 0.75rem; width: 5px; height: 5px; border-radius: 50%; background: var(--pink); }
 
-    /* SCOPE BLOCKS */
-    .scope-block { background: #f8f6f4; border: 1px solid var(--ash); border-left: 3px solid var(--pink); border-radius: 0 8px 8px 0; padding: 1.1rem 1.4rem; margin: 0.75rem 0 1.25rem; }
-    .scope-title { font-family: var(--heading); font-size: 0.82rem; color: var(--black); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; }
+    /* SCOPE LIST (used inside cards) */
     .scope-list { list-style: none; margin: 0; padding: 0; }
     .scope-list li { font-size: 0.9rem; line-height: 1.65; color: #2a2a2a; padding: 0.55rem 0; border-bottom: 1px solid rgba(232,227,223,0.8); }
     .scope-list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+    /* SCOPE CARDS (clickable, collapsible) */
+    .scope-card {
+      border: 1px solid var(--ash); border-left: 3px solid var(--pink);
+      border-radius: 0 8px 8px 0; margin: 0.75rem 0 1.25rem;
+      overflow: hidden; scroll-margin-top: 6rem;
+    }
+    .scope-card-header {
+      width: 100%; background: #f8f6f4; padding: 1.1rem 1.4rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      cursor: pointer; border: none; text-align: left; font-family: var(--sans);
+      transition: background 0.15s ease;
+    }
+    .scope-card-header:hover { background: #ede8e4; }
+    .scope-card-info { flex: 1; }
+    .scope-card-title { font-family: var(--heading); font-size: 0.82rem; color: var(--black); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem; }
+    .scope-card-summary { font-size: 0.82rem; color: var(--stone); line-height: 1.5; }
+    .scope-card-chevron { color: var(--pink); font-size: 1.3rem; font-weight: 700; transition: transform 0.25s ease; flex-shrink: 0; display: inline-block; }
+    .scope-card-header[aria-expanded="true"] .scope-card-chevron { transform: rotate(90deg); }
+    .scope-card-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .scope-card-body.open { max-height: 900px; }
+    .scope-card-body-inner { padding: 0.9rem 1.4rem 1.1rem; background: #fff; border-top: 1px solid var(--ash); }
+
+    /* DEAL FLOW DIAGRAM */
+    .deal-flow { display: flex; align-items: stretch; gap: 0; margin: 1.25rem 0 2rem; overflow-x: auto; }
+    .deal-step { flex: 1; min-width: 100px; background: #fef0f6; border: 1px solid rgba(225,75,135,0.15); border-radius: 8px; padding: 1.1rem 0.75rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.6rem; }
+    .deal-step-num { width: 2rem; height: 2rem; background: var(--pink); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+    .deal-step-title { font-weight: 700; font-size: 0.78rem; color: var(--black); line-height: 1.3; }
+    .deal-step-desc { font-size: 0.72rem; color: var(--stone); line-height: 1.4; }
+    .deal-arrow { display: flex; align-items: center; padding: 0 0.4rem; color: var(--pink); font-size: 1.3rem; flex-shrink: 0; }
+
+    /* COVERAGE DIAGRAM (entity-diagram style, two-column) */
+    .coverage-diagram { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.25rem 0 2rem; }
+    .coverage-col { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem; }
+    .coverage-col-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink-dark); margin-bottom: 0.85rem; padding-bottom: 0.6rem; border-bottom: 2px solid var(--pink); }
+    .coverage-col ul { list-style: none; margin: 0; padding: 0; }
+    .coverage-col ul li { font-size: 0.82rem; line-height: 1.6; color: #2a2a2a; padding: 0.4rem 0 0.4rem 1rem; border-bottom: 1px solid rgba(232,227,223,0.8); position: relative; }
+    .coverage-col ul li:last-child { border-bottom: none; padding-bottom: 0; }
+    .coverage-col ul li::before { content: ''; position: absolute; left: 0; top: 0.72rem; width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
 
     /* FEE TABLE */
     .fee-table-wrap { border: 1px solid var(--ash); border-radius: 8px; overflow: hidden; margin: 1rem 0 0.75rem; }
@@ -118,9 +155,27 @@
     .equity-block-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink-dark); margin-bottom: 0.5rem; }
     .equity-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
 
+    /* VA CALLOUT */
+    .va-callout { background: #f0f7ee; border: 1px solid rgba(45,143,94,0.2); border-left: 3px solid var(--success); border-radius: 0 8px 8px 0; padding: 0.85rem 1.25rem; margin: 1rem 0 1.5rem; }
+    .va-callout-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--success); margin-bottom: 0.25rem; }
+    .va-callout p { font-size: 0.88rem; line-height: 1.65; color: #1a3d2b; margin: 0; }
+
     /* NETWORK BLOCK */
     .network-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
     .network-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
+
+    /* FEE OPTIONS (hour bank card style from Saranac) */
+    .fee-options { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1.25rem 0; }
+    .fee-option {
+      border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem 1.1rem;
+      display: flex; flex-direction: column; gap: 0.5rem; background: #f8f6f4;
+      position: relative;
+    }
+    .fee-option-tag { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); }
+    .fee-option-name { font-family: var(--heading); font-size: 0.88rem; color: var(--black); }
+    .fee-option-amount { font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 0.25rem 0; }
+    .fee-option-desc { font-size: 0.8rem; line-height: 1.55; color: var(--stone); }
+    .fee-option-for { font-size: 0.75rem; color: var(--mist); font-style: italic; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--ash); }
 
     /* DISCLAIMER */
     .disclaimer-block { font-size: 0.82rem; line-height: 1.65; color: var(--mist); background: #f8f6f4; border-radius: 6px; padding: 0.85rem 1.1rem; margin: 1rem 0 0; }
@@ -171,10 +226,13 @@
       .doc-title { font-size: 1.3rem; }
       .page-wrap { padding: 1.5rem 1rem 4rem; }
       .fee-table th:last-child, .fee-table td:last-child { display: none; }
+      .coverage-diagram { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
       .cta-row { flex-direction: column; }
       .btn-sign, .btn-call { width: 100%; text-align: center; justify-content: center; }
+      .deal-flow { flex-direction: column; gap: 0.4rem; }
+      .deal-arrow { transform: rotate(90deg); justify-content: center; }
     }
   </style>
 </head>
@@ -246,29 +304,111 @@
         <div class="proposal-eyebrow">03 &mdash; Scope of Services</div>
         <p>Two levels of coverage under a single retainer. Fund-level work and portfolio-level work are both included. No internal allocation decisions, no tracking which company used which hours. That is Mexzungu's problem to manage, not Delta40's.</p>
 
-        <div class="scope-block">
-          <div class="scope-title">Fund-Level</div>
-          <ul class="scope-list">
-            <li>LP agreement reviews and investor correspondence</li>
-            <li>Fund governance: investment committee support, board resolutions, manager obligations</li>
-            <li>CMA and CBK regulatory compliance monitoring and filing coordination</li>
-            <li>Investor reporting frameworks and disclosure obligations</li>
-            <li>Constitutional documents: fund formation documents, amendments, co-investor frameworks</li>
-            <li>Follow-on round structuring and co-investor negotiations</li>
-            <li>General legal access for Delta40 partners: async unlimited within reasonable scope, calls within 72 hours</li>
-          </ul>
+        <!-- DEAL FLOW DIAGRAM -->
+        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1rem;">How the retainer works, from a single invoice to full dual-level coverage.</p>
+        <div class="deal-flow">
+          <div class="deal-step">
+            <div class="deal-step-num">1</div>
+            <div class="deal-step-title">Monthly Retainer</div>
+            <div class="deal-step-desc">One invoice. One relationship. One point of contact.</div>
+          </div>
+          <div class="deal-arrow">&#8594;</div>
+          <div class="deal-step">
+            <div class="deal-step-num">2</div>
+            <div class="deal-step-title">Dual Coverage</div>
+            <div class="deal-step-desc">Fund-level + portfolio-level. No internal hour tracking.</div>
+          </div>
+          <div class="deal-arrow">&#8594;</div>
+          <div class="deal-step">
+            <div class="deal-step-num">3</div>
+            <div class="deal-step-title">Auto-Scales</div>
+            <div class="deal-step-desc">Price adjusts at every 10-company threshold. No renegotiation.</div>
+          </div>
+          <div class="deal-arrow">&#8594;</div>
+          <div class="deal-step">
+            <div class="deal-step-num">4</div>
+            <div class="deal-step-title">Preferred Overage</div>
+            <div class="deal-step-desc">Out-of-scope at $120/hr pre-purchased or $150/hr on demand.</div>
+          </div>
+          <div class="deal-arrow">&#8594;</div>
+          <div class="deal-step">
+            <div class="deal-step-num">5</div>
+            <div class="deal-step-title">Success Fee</div>
+            <div class="deal-step-desc">0.75% on raises above $2M. Aligned on outcomes.</div>
+          </div>
         </div>
 
-        <div class="scope-block">
-          <div class="scope-title">Portfolio-Level</div>
-          <ul class="scope-list">
-            <li>Entity formation and corporate structuring for new and existing portfolio companies</li>
-            <li>Commercial contracts, term sheets, vendor and supplier agreements</li>
-            <li>Co-founder and employment agreements, equity vesting, and option plans</li>
-            <li>IP registration, assignment, and protection coordination</li>
-            <li>Fundraising documentation per portfolio company: SAFEs, equity rounds, convertible notes, debt facilities</li>
-            <li>Cross-border compliance queries and regulatory navigation across operating jurisdictions</li>
-          </ul>
+        <!-- COVERAGE DIAGRAM -->
+        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1rem;">What each level covers. Click either card below to expand the full scope.</p>
+        <div class="coverage-diagram">
+          <div class="coverage-col">
+            <div class="coverage-col-label">Fund-Level</div>
+            <ul>
+              <li>LP agreements &amp; investor correspondence</li>
+              <li>CMA and CBK regulatory compliance</li>
+              <li>Fund governance &amp; board resolutions</li>
+              <li>Investor reporting frameworks</li>
+              <li>Constitutional documents &amp; amendments</li>
+              <li>Unlimited async for Delta40 partners</li>
+            </ul>
+          </div>
+          <div class="coverage-col">
+            <div class="coverage-col-label">Portfolio-Level (16 companies)</div>
+            <ul>
+              <li>Entity setup across jurisdictions</li>
+              <li>Commercial contracts &amp; term sheets</li>
+              <li>Co-founder agreements &amp; equity vesting</li>
+              <li>IP registration &amp; protection</li>
+              <li>Fundraising docs: SAFEs, notes, equity rounds</li>
+              <li>Cross-border compliance navigation</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- SCOPE CARDS (clickable, collapsible, hash-navigable) -->
+        <div class="scope-card" id="fund-level">
+          <button class="scope-card-header" onclick="toggleScope('fund-level')" aria-expanded="false">
+            <div class="scope-card-info">
+              <div class="scope-card-title">Fund-Level Coverage</div>
+              <div class="scope-card-summary">LP agreements, CMA/CBK compliance, fund governance. Unlimited async access for Delta40 partners within reasonable scope.</div>
+            </div>
+            <span class="scope-card-chevron">&#8250;</span>
+          </button>
+          <div class="scope-card-body" id="fund-level-body">
+            <div class="scope-card-body-inner">
+              <ul class="scope-list">
+                <li>LP agreement reviews and investor correspondence</li>
+                <li>Fund governance: investment committee support, board resolutions, manager obligations</li>
+                <li>CMA and CBK regulatory compliance monitoring and filing coordination</li>
+                <li>Investor reporting frameworks and disclosure obligations</li>
+                <li>Constitutional documents: fund formation documents, amendments, co-investor frameworks</li>
+                <li>Follow-on round structuring and co-investor negotiations</li>
+                <li>General legal access for Delta40 partners: async unlimited within reasonable scope, calls within 72 hours</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="scope-card" id="portfolio-level">
+          <button class="scope-card-header" onclick="toggleScope('portfolio-level')" aria-expanded="false">
+            <div class="scope-card-info">
+              <div class="scope-card-title">Portfolio-Level Coverage</div>
+              <div class="scope-card-summary">Entity setup, commercial contracts, IP, and fundraising docs across all 16 portfolio companies. No per-company billing.</div>
+            </div>
+            <span class="scope-card-chevron">&#8250;</span>
+          </button>
+          <div class="scope-card-body" id="portfolio-level-body">
+            <div class="scope-card-body-inner">
+              <ul class="scope-list">
+                <li>Entity formation and corporate structuring for new and existing portfolio companies</li>
+                <li>Commercial contracts, term sheets, vendor and supplier agreements</li>
+                <li>Co-founder and employment agreements, equity vesting, and option plans</li>
+                <li>IP registration, assignment, and protection coordination</li>
+                <li>Fundraising documentation per portfolio company: SAFEs, equity rounds, convertible notes, debt facilities</li>
+                <li>Cross-border compliance queries and regulatory navigation across operating jurisdictions</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <p style="font-size:0.88rem;color:var(--stone);">Work outside retainer scope is billed at the preferred overage rate. See engagement model below.</p>
@@ -295,12 +435,17 @@
                 <td>Fund-level + full portfolio coverage</td>
               </tr>
               <tr>
-                <td>21&ndash;35 companies</td>
+                <td>21&ndash;30 companies</td>
                 <td class="amount">$7,000/mo</td>
                 <td>Fund-level + full portfolio coverage</td>
               </tr>
               <tr>
-                <td>36+ companies</td>
+                <td>31&ndash;40 companies</td>
+                <td class="amount">$8,000/mo</td>
+                <td>Fund-level + full portfolio coverage</td>
+              </tr>
+              <tr>
+                <td>41+ companies</td>
                 <td class="amount">$8,500/mo</td>
                 <td>Fund-level + full portfolio coverage</td>
               </tr>
@@ -308,7 +453,12 @@
           </table>
         </div>
 
-        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1.5rem;">Current portfolio: 16 companies. Starting rate: $5,500/mo. Threshold repricing is automatic and requires no renegotiation.</p>
+        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1rem;">Current portfolio: 16 companies. Starting rate: $5,500/mo. Threshold repricing is automatic and requires no renegotiation.</p>
+
+        <div class="va-callout">
+          <div class="va-callout-label">Included in all tiers</div>
+          <p>1 VA hour per month included. Non-transferable between retainer periods.</p>
+        </div>
 
         <div class="equity-block">
           <div class="equity-block-label">Equity Option</div>
@@ -316,13 +466,25 @@
         </div>
 
         <h2>Overage Rate</h2>
-        <p>Work outside retainer scope including specialized regulatory filings, contested matters, and complex multi-party transactions is billed at <strong>$150/hr preferred rate</strong>, versus $350+ per hour market rate for comparable cross-border legal advisory.</p>
+        <p>Work outside retainer scope including specialized regulatory filings, contested matters, and complex multi-party transactions is billed at <strong>$150/hr preferred rate</strong>, versus $350+ per hour market rate for comparable cross-border legal advisory. Pre-purchase an hour bank at $120/hr. See flexible engagement options below.</p>
 
         <h2>Success Fee</h2>
         <p>0.75% of capital raised on any raise above $2M. Not applicable to raises below $2M. Applies to equity rounds, debt facilities, and SAFEs above the threshold. Payable 14 days after capital clears.</p>
 
         <div class="disclaimer-block">
           Fees are exclusive of registration fees and local counsel fees (if any). Where formal filings or local counsel appearances are required, those costs are quoted separately and passed through at cost.
+        </div>
+
+        <h2>Flexible Engagement Options</h2>
+        <p style="font-size:0.88rem;color:var(--stone);margin-bottom:1rem;">Need capacity beyond the retainer scope without committing to the on-demand overage rate? Pre-purchase a block of hours at a discount.</p>
+        <div class="fee-options">
+          <div class="fee-option">
+            <div class="fee-option-tag">Hour Bank</div>
+            <div class="fee-option-name">Pre-purchased hours</div>
+            <div class="fee-option-amount">$120/hr</div>
+            <div class="fee-option-desc">Buy a block of hours at the start of any retainer period. Standard on-demand overage rate is $150/hr. Hour bank locks in a 20% discount for pre-committed volume. Minimum purchase: 10 hours ($1,200). Non-transferable to the following retainer period.</div>
+            <div class="fee-option-for">Best for predictable workstreams: a fundraising round, a new country entry, or a batch of portfolio company setups.</div>
+          </div>
         </div>
       </div>
 
@@ -371,6 +533,42 @@
     </div>
   </div>
 </div>
+
+<script>
+  function toggleScope(id) {
+    var card = document.getElementById(id);
+    var body = document.getElementById(id + '-body');
+    var header = card.querySelector('.scope-card-header');
+    var isOpen = body.classList.contains('open');
+
+    if (isOpen) {
+      body.classList.remove('open');
+      header.setAttribute('aria-expanded', 'false');
+      if (window.location.hash === '#' + id) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    } else {
+      body.classList.add('open');
+      header.setAttribute('aria-expanded', 'true');
+      history.replaceState(null, '', '#' + id);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', function () {
+    var hash = window.location.hash.replace('#', '');
+    if (hash === 'fund-level' || hash === 'portfolio-level') {
+      var body = document.getElementById(hash + '-body');
+      var card = document.getElementById(hash);
+      if (body && card) {
+        body.classList.add('open');
+        card.querySelector('.scope-card-header').setAttribute('aria-expanded', 'true');
+        setTimeout(function () {
+          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
+    }
+  });
+</script>
 
 </body>
 </html>
