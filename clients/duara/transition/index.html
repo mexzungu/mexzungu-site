@@ -1716,7 +1716,7 @@
                 <div class="staff-card-body">
                   <div>
                     <div class="staff-section-label">Who they are</div>
-                    <div class="staff-section-text">Teachers in Training are practitioners working toward a teaching qualification while contributing to Duara schools. Three accepted tracks: <strong>TSC Registered</strong> (full TSC holder progressing their practice), <strong>TSC Candidate</strong> (e.g. a teaching student expecting TSC certification by year-end, currently transitioning from Educare), or <strong>Alternative Qualification</strong> (e.g. Montessori, ECE certification. Relevant training without a TSC pathway). They are <strong>not employees</strong>. They receive a fellowship stipend and structured coaching through the Duara Teacher Growth Framework.</div>
+                    <div class="staff-section-text">Teachers in Training are practitioners with TSC registration developing their teaching practice through the Duara Teacher Growth Framework. <strong>TSC registration is required at the time of signing.</strong> They are <strong>not employees</strong>. They receive a fellowship stipend and structured coaching over a 2-year fellowship period.</div>
                   </div>
                   <div>
                     <div class="staff-section-label">What they do</div>
@@ -1725,16 +1725,20 @@
                   <div class="staff-contract-box">
                     <div class="scb-header">
                       <span class="scb-label">Contract Type</span>
-                      <span class="scb-status draft">v1.1, Draft</span>
+                      <span class="scb-status draft">v1.1, Ready</span>
                     </div>
                     <div class="scb-body">
                       <strong>Teacher Training Fellowship Agreement</strong><br>
                       Duara to TiT direct. Structured as a fellowship grant. Not an employment contract and not a consulting agreement. The TiT receives a stipend (not a wage), is enrolled in a defined 2-year programme against the Duara Teacher Growth Framework, and has learning and placement obligations.
                       <br><br>
                       <strong>Why this structure:</strong> The Teacher in Training is genuinely in development. They do not yet hold full teaching credentials, or are actively working toward them. The fellowship structure accurately reflects this learning relationship, avoids employment classification, and creates a clear, positive progression path.
-                      <div class="struct-note">
-                        <div class="sn-label">Three qualification tracks</div>
-                        <p>Track A: TSC Registered. Track B: TSC Candidate (expected date documented). Track C: Alternative qualification (Montessori, ECE, etc.). Track C fellows may not qualify for the Teacher role in contexts requiring TSC. Duara confirms the applicable path at fellowship start.</p>
+                      <div class="struct-note confirmed">
+                        <div class="sn-label">Qualification requirement</div>
+                        <p>TSC registration is required at the time of signing and must remain current throughout the fellowship. If registration lapses or is suspended, Duara may suspend or terminate the fellowship without notice.</p>
+                      </div>
+                      <div style="display:flex;gap:0.6rem;margin-top:0.75rem;flex-wrap:wrap;">
+                        <a href="#tit-contract" class="scb-link" onclick="switchToContracts('tit')">View Fellowship Agreement →</a>
+                        <a href="https://docs.google.com/document/d/1PxxFJUYmf3hbcaUNQLUbWcyqUOiqMjeneC8faJE45J0/edit" target="_blank" class="scb-link outline">Open in Google Docs ↗</a>
                       </div>
                     </div>
                   </div>
@@ -2012,11 +2016,13 @@ Thanks — and best of luck with whatever you're working on now.</div>
                 <span class="doc-arrow">→</span>
               </div>
               <div class="doc-row" onclick="switchToContracts('tit')">
-                <div class="doc-row-icon">🎓</div>
+                <span class="doc-type-tag dtag-contract">Contract</span>
                 <div class="doc-row-body">
                   <span class="doc-name">Teacher in Training. Fellowship Agreement</span>
-                  <span class="doc-sub">Duara → TiT · 2-year programme · Fellowship grant · Three qualification tracks</span>
+                  <span class="doc-sub">Duara → TiT · 2-year programme · Fellowship grant · TSC registration required</span>
                 </div>
+                <span class="doc-meta-link"><a href="https://docs.google.com/document/d/1PxxFJUYmf3hbcaUNQLUbWcyqUOiqMjeneC8faJE45J0/edit" target="_blank" onclick="event.stopPropagation()">Google Doc ↗</a></span>
+                <span class="doc-arrow">→</span>
               </div>
               <div class="doc-row" onclick="switchToContracts('ec')">
                 <span class="doc-type-tag dtag-contract">Contract</span>
@@ -3389,11 +3395,11 @@ Thanks — and best of luck with whatever you're working on now.</div>
 <script>
   // ======================== PASSWORD GATE ========================
   const PW = 'Outlaw-Master-2026';
-  const CLIENT_PW = 'Outlaw-Duara-2026';
+  const CLIENT_PW = 'duara-2026';
 
   function checkPw() {
     const val = document.getElementById('pw-input').value.trim();
-    if (val === PW) {
+    if (val === PW || val === CLIENT_PW) {
       sessionStorage.setItem('duara-auth', '1');
       document.getElementById('pw-gate').classList.add('hidden');
       document.getElementById('portal').classList.add('visible');
