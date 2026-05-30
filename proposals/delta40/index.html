@@ -31,6 +31,50 @@
 
     body { font-family: var(--sans); background: #f0ece8; color: var(--black); min-height: 100vh; }
 
+    /* PASSWORD GATE */
+    #password-gate {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0a0a18;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease;
+    }
+    #password-gate.fade-out { opacity: 0; pointer-events: none; }
+    .gate-box {
+      display: flex; flex-direction: column; align-items: center; gap: 1.4rem;
+      width: 100%; max-width: 340px; padding: 2.5rem 2rem;
+    }
+    .gate-logo { height: 40px; width: auto; opacity: 0.95; }
+    .gate-wordmark { font-family: var(--heading); font-size: 0.85rem; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; margin-top: -0.6rem; }
+    .gate-divider { width: 40px; height: 2px; background: var(--pink); border-radius: 2px; margin: 0.1rem 0; }
+    .gate-title { font-family: var(--heading); font-size: 1rem; color: #fafafa; text-align: center; letter-spacing: 0.03em; }
+    .gate-subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.35); text-align: center; }
+    .gate-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 0.65rem; }
+    .gate-input {
+      width: 100%; padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px; color: #fafafa; font-family: var(--sans); font-size: 0.95rem;
+      outline: none; transition: border-color 0.15s ease;
+      text-align: center; letter-spacing: 0.08em;
+    }
+    .gate-input:focus { border-color: var(--pink); background: rgba(255,255,255,0.1); }
+    .gate-input.shake { animation: gate-shake 0.4s ease; border-color: #ff6b6b; }
+    .gate-btn {
+      width: 100%; padding: 0.9rem;
+      background: var(--pink); color: #fff; border: none;
+      border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s ease; letter-spacing: 0.02em;
+    }
+    .gate-btn:hover { background: var(--pink-dark); }
+    .gate-error { font-size: 0.78rem; color: #ff8080; text-align: center; min-height: 1.1em; }
+    @keyframes gate-shake {
+      0%, 100% { transform: translateX(0); }
+      18% { transform: translateX(-9px); }
+      36% { transform: translateX(9px); }
+      54% { transform: translateX(-6px); }
+      72% { transform: translateX(6px); }
+      90% { transform: translateX(-3px); }
+    }
+
     /* HEADER */
     .site-header {
       background: var(--black); padding: 1rem 2rem;
@@ -135,16 +179,64 @@
     .coverage-col ul li:last-child { border-bottom: none; padding-bottom: 0; }
     .coverage-col ul li::before { content: ''; position: absolute; left: 0; top: 0.72rem; width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
 
-    /* FEE TABLE */
-    .fee-table-wrap { border: 1px solid var(--ash); border-radius: 8px; overflow: hidden; margin: 1rem 0 0.75rem; }
-    .fee-table { width: 100%; border-collapse: collapse; }
-    .fee-table th { text-align: left; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mist); padding: 0.65rem 1rem; background: #f8f6f4; border-bottom: 1px solid var(--ash); }
-    .fee-table td { padding: 0.85rem 1rem; font-size: 0.9rem; color: #2a2a2a; border-bottom: 1px solid var(--ash); vertical-align: middle; }
-    .fee-table tr:last-child td { border-bottom: none; }
-    .fee-table .current-row td { background: #fef0f6; }
-    .fee-table .current-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #fff; background: var(--pink); border-radius: 4px; padding: 0.15rem 0.5rem; margin-left: 0.5rem; vertical-align: middle; }
-    .fee-table td.amount { font-weight: 700; color: var(--black); white-space: nowrap; }
-    .fee-table .current-row td.amount { color: var(--pink-dark); }
+    /* PRICING OPTIONS - 3 column grid */
+    .pricing-options {
+      display: grid; grid-template-columns: 1fr 1fr 1.1fr; gap: 1rem; margin: 1.5rem 0 1.25rem;
+      align-items: start;
+    }
+    .pricing-card {
+      border: 1px solid var(--ash); border-radius: 10px;
+      background: #f8f6f4; padding: 1.35rem 1.15rem;
+      display: flex; flex-direction: column; gap: 0.55rem;
+      position: relative;
+    }
+    .pricing-card.premium {
+      border: 1px solid rgba(225,75,135,0.35);
+      border-left: 3px solid var(--pink);
+      border-radius: 0 10px 10px 0;
+      background: #fff;
+      box-shadow: 0 2px 18px rgba(225,75,135,0.09);
+    }
+    .pricing-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.4rem; flex-wrap: wrap; }
+    .pricing-tag { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mist); }
+    .pricing-recommended {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: #fff; background: var(--pink); border-radius: 4px; padding: 0.12rem 0.45rem;
+      flex-shrink: 0;
+    }
+    .pricing-name { font-family: var(--heading); font-size: 0.88rem; color: var(--black); margin-top: 0.1rem; }
+    .pricing-badge { font-size: 1.05rem; font-weight: 700; color: var(--black); margin: 0.15rem 0 0.05rem; }
+    .pricing-card.premium .pricing-badge { color: var(--pink-dark); }
+    .pricing-desc { font-size: 0.78rem; line-height: 1.55; color: var(--stone); }
+    .pricing-detail { font-size: 0.78rem; line-height: 1.55; color: #2a2a2a; }
+    .pricing-detail ul { list-style: none; padding: 0; margin: 0.3rem 0 0.1rem; }
+    .pricing-detail ul li { padding: 0.22rem 0 0.22rem 0.85rem; position: relative; border-bottom: 1px solid rgba(232,227,223,0.7); }
+    .pricing-detail ul li:last-child { border-bottom: none; }
+    .pricing-detail ul li::before { content: ''; position: absolute; left: 0; top: 0.63rem; width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
+    .pricing-for { font-size: 0.73rem; color: var(--mist); font-style: italic; padding-top: 0.5rem; border-top: 1px solid var(--ash); margin-top: auto; }
+    .pricing-current-tier {
+      font-size: 0.72rem; font-weight: 700; color: var(--pink-dark);
+      background: #fef0f6; border-radius: 4px; padding: 0.3rem 0.6rem;
+      text-align: center; margin: 0.1rem 0;
+    }
+
+    /* Show pricing toggle inside Option 3 */
+    .pricing-table-toggle {
+      font-size: 0.73rem; color: var(--pink-dark); cursor: pointer;
+      background: none; border: none; padding: 0; font-family: var(--sans);
+      text-decoration: underline; text-underline-offset: 2px;
+      display: inline-block; margin: 0.15rem 0 0.25rem;
+    }
+    .pricing-inner-table { display: none; }
+    .pricing-inner-table.open { display: block; }
+    .pricing-inner-table table { width: 100%; border-collapse: collapse; font-size: 0.73rem; margin-top: 0.4rem; border: 1px solid var(--ash); border-radius: 6px; overflow: hidden; }
+    .pricing-inner-table th { text-align: left; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); padding: 0.45rem 0.65rem; background: #f8f6f4; border-bottom: 1px solid var(--ash); }
+    .pricing-inner-table td { padding: 0.5rem 0.65rem; color: #2a2a2a; border-bottom: 1px solid var(--ash); vertical-align: middle; }
+    .pricing-inner-table tr:last-child td { border-bottom: none; }
+    .pricing-inner-table .current-row td { background: #fef0f6; }
+    .pricing-inner-table td.amount { font-weight: 700; white-space: nowrap; }
+    .pricing-inner-table .current-row td.amount { color: var(--pink-dark); }
+    .pricing-inner-table .current-badge { display: inline-block; font-size: 0.55rem; font-weight: 700; text-transform: uppercase; color: #fff; background: var(--pink); border-radius: 3px; padding: 0.1rem 0.35rem; margin-left: 0.3rem; vertical-align: middle; }
 
     /* EQUITY CALLOUT */
     .equity-block {
@@ -155,27 +247,9 @@
     .equity-block-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink-dark); margin-bottom: 0.5rem; }
     .equity-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
 
-    /* VA CALLOUT */
-    .va-callout { background: #f0f7ee; border: 1px solid rgba(45,143,94,0.2); border-left: 3px solid var(--success); border-radius: 0 8px 8px 0; padding: 0.85rem 1.25rem; margin: 1rem 0 1.5rem; }
-    .va-callout-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--success); margin-bottom: 0.25rem; }
-    .va-callout p { font-size: 0.88rem; line-height: 1.65; color: #1a3d2b; margin: 0; }
-
     /* NETWORK BLOCK */
     .network-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
     .network-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
-
-    /* FEE OPTIONS (hour bank card style from Saranac) */
-    .fee-options { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1.25rem 0; }
-    .fee-option {
-      border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem 1.1rem;
-      display: flex; flex-direction: column; gap: 0.5rem; background: #f8f6f4;
-      position: relative;
-    }
-    .fee-option-tag { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); }
-    .fee-option-name { font-family: var(--heading); font-size: 0.88rem; color: var(--black); }
-    .fee-option-amount { font-size: 1.15rem; font-weight: 700; color: var(--black); margin: 0.25rem 0; }
-    .fee-option-desc { font-size: 0.8rem; line-height: 1.55; color: var(--stone); }
-    .fee-option-for { font-size: 0.75rem; color: var(--mist); font-style: italic; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--ash); }
 
     /* DISCLAIMER */
     .disclaimer-block { font-size: 0.82rem; line-height: 1.65; color: var(--mist); background: #f8f6f4; border-radius: 6px; padding: 0.85rem 1.1rem; margin: 1rem 0 0; }
@@ -225,8 +299,8 @@
       .site-header { padding: 0.75rem 1rem; }
       .doc-title { font-size: 1.3rem; }
       .page-wrap { padding: 1.5rem 1rem 4rem; }
-      .fee-table th:last-child, .fee-table td:last-child { display: none; }
       .coverage-diagram { grid-template-columns: 1fr; }
+      .pricing-options { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
       .cta-row { flex-direction: column; }
@@ -237,6 +311,22 @@
   </style>
 </head>
 <body>
+
+<!-- PASSWORD GATE -->
+<div id="password-gate">
+  <div class="gate-box">
+    <img src="/logo-v3.png" alt="Mexzungu Group" class="gate-logo">
+    <div class="gate-wordmark">Mexzungu Group</div>
+    <div class="gate-divider"></div>
+    <div class="gate-title">Delta40 Proposal</div>
+    <div class="gate-subtitle">This document is confidential. Enter the access code to continue.</div>
+    <div class="gate-input-wrap">
+      <input id="gate-input" class="gate-input" type="password" placeholder="Access code" autocomplete="off" spellcheck="false">
+      <button id="gate-btn" class="gate-btn">Continue</button>
+      <div id="gate-error" class="gate-error"></div>
+    </div>
+  </div>
+</div>
 
 <header class="site-header">
   <a href="https://mexzungu.com" class="logo-wrap">
@@ -275,7 +365,7 @@
             <div class="party-detail">
               Nairobi-based venture studio and fund manager. $20M fund closed February 2026. 16 portfolio companies across 30+ African countries.<br>
               Nick Handler, COO<br>
-              <a href="mailto:nhandler@gmail.com" style="color:var(--pink);text-decoration:none;">nhandler@gmail.com</a>
+              <a href="mailto:nick@delta40.com" style="color:var(--pink);text-decoration:none;">nick@delta40.com</a>
             </div>
           </div>
           <div class="party-block">
@@ -419,72 +509,102 @@
         <div class="proposal-eyebrow">04 &mdash; Engagement Model</div>
         <p>The Studio Foundation Retainer is a single monthly fee that scales automatically with the size of Delta40's portfolio. No renegotiation at any threshold. One invoice, one relationship, one point of contact across fund and portfolio.</p>
 
-        <div class="fee-table-wrap">
-          <table class="fee-table">
-            <thead>
-              <tr>
-                <th>Portfolio size</th>
-                <th>Monthly retainer</th>
-                <th>Coverage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="current-row">
-                <td>Up to 20 companies <span class="current-badge">Current</span></td>
-                <td class="amount">$5,500/mo</td>
-                <td>Fund-level + full portfolio coverage</td>
-              </tr>
-              <tr>
-                <td>21&ndash;30 companies</td>
-                <td class="amount">$7,000/mo</td>
-                <td>Fund-level + full portfolio coverage</td>
-              </tr>
-              <tr>
-                <td>31&ndash;40 companies</td>
-                <td class="amount">$8,000/mo</td>
-                <td>Fund-level + full portfolio coverage</td>
-              </tr>
-              <tr>
-                <td>41+ companies</td>
-                <td class="amount">$8,500/mo</td>
-                <td>Fund-level + full portfolio coverage</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- 3 PRICING OPTION CARDS -->
+        <div class="pricing-options">
+
+          <!-- OPTION 1: HOUR BANK -->
+          <div class="pricing-card">
+            <div class="pricing-card-top">
+              <div class="pricing-tag">Entry</div>
+            </div>
+            <div class="pricing-name">Hour Bank</div>
+            <div class="pricing-badge">$120/hr</div>
+            <div class="pricing-desc">No monthly commitment. Pre-purchase a block of hours at a discount off the standard $150/hr overage rate. Minimum purchase: 10 hours ($1,200). Valid for one retainer period (30 days). Non-transferable.</div>
+            <div class="pricing-for">Best for one-off needs: a fundraising round, a specific deal, cap table cleanup.</div>
+          </div>
+
+          <!-- OPTION 2: MODULAR -->
+          <div class="pricing-card">
+            <div class="pricing-card-top">
+              <div class="pricing-tag">Flexible</div>
+            </div>
+            <div class="pricing-name">Modular</div>
+            <div class="pricing-badge">from $3,000/mo</div>
+            <div class="pricing-detail">
+              Choose which level to activate:
+              <ul>
+                <li>Fund-Level only &mdash; $3,000/mo</li>
+                <li>Portfolio-Level only &mdash; $3,500/mo</li>
+                <li>Both levels together &mdash; $6,000/mo</li>
+              </ul>
+            </div>
+            <div class="pricing-desc" style="margin-top:0.15rem;">Add either level independently. Switch or combine at any 30-day renewal. No penalty for adjusting coverage.</div>
+            <div class="pricing-for">Best for funds with existing coverage on one side, or portfolios not yet fully structured.</div>
+          </div>
+
+          <!-- OPTION 3: ALL INCLUSIVE -->
+          <div class="pricing-card premium">
+            <div class="pricing-card-top">
+              <div class="pricing-tag">Premium</div>
+              <div class="pricing-recommended">Recommended</div>
+            </div>
+            <div class="pricing-name">All Inclusive</div>
+            <div class="pricing-badge">from $5,500/mo</div>
+            <div class="pricing-current-tier">Current tier: $5,500/mo &mdash; up to 20 companies</div>
+            <div class="pricing-desc">Full dual-level coverage. Auto-scaling at every 10-company threshold. No renegotiation, no internal allocation.</div>
+
+            <button class="pricing-table-toggle" onclick="togglePricingTable()" id="pricing-toggle-btn">Show pricing tiers</button>
+            <div class="pricing-inner-table" id="pricing-inner-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Portfolio size</th>
+                    <th>Monthly</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="current-row">
+                    <td>Up to 20 <span class="current-badge">Now</span></td>
+                    <td class="amount">$5,500</td>
+                  </tr>
+                  <tr>
+                    <td>21&ndash;30</td>
+                    <td class="amount">$7,000</td>
+                  </tr>
+                  <tr>
+                    <td>31&ndash;40</td>
+                    <td class="amount">$8,000</td>
+                  </tr>
+                  <tr>
+                    <td>41+</td>
+                    <td class="amount">$8,500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pricing-detail" style="margin-top:0.2rem;">
+              <ul>
+                <li>1 VA hour/month included (non-transferable)</li>
+                <li>0.75% success fee on raises over $2M</li>
+                <li>Overage: $150/hr on demand or $120/hr pre-purchased</li>
+              </ul>
+            </div>
+            <div class="pricing-for">Full coverage, both levels, fully automated. The institutional-grade option.</div>
+          </div>
+
         </div>
+        <!-- END PRICING OPTIONS -->
 
-        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1rem;">Current portfolio: 16 companies. Starting rate: $5,500/mo. Threshold repricing is automatic and requires no renegotiation.</p>
-
-        <div class="va-callout">
-          <div class="va-callout-label">Included in all tiers</div>
-          <p>1 VA hour per month included. Non-transferable between retainer periods.</p>
-        </div>
-
+        <!-- EQUITY BLOCK (below all cards) -->
         <div class="equity-block">
           <div class="equity-block-label">Equity Option</div>
           <p>0.25% equity per new portfolio company onboarded, in lieu of one-time setup fees per company. When Delta40 brings in a new portfolio company and Mexzungu provides the initial legal setup (entity formation, co-founder agreement, corporate structure), the fee can be settled as 0.25% equity in that company at the most recent closing price instead of a cash invoice. This option is elected in writing before work commences on that company.</p>
         </div>
 
-        <h2>Overage Rate</h2>
-        <p>Work outside retainer scope including specialized regulatory filings, contested matters, and complex multi-party transactions is billed at <strong>$150/hr preferred rate</strong>, versus $350+ per hour market rate for comparable cross-border legal advisory. Pre-purchase an hour bank at $120/hr. See flexible engagement options below.</p>
-
-        <h2>Success Fee</h2>
-        <p>0.75% of capital raised on any raise above $2M. Not applicable to raises below $2M. Applies to equity rounds, debt facilities, and SAFEs above the threshold. Payable 14 days after capital clears.</p>
-
+        <!-- DISCLAIMER (below all cards) -->
         <div class="disclaimer-block">
           Fees are exclusive of registration fees and local counsel fees (if any). Where formal filings or local counsel appearances are required, those costs are quoted separately and passed through at cost.
-        </div>
-
-        <h2>Flexible Engagement Options</h2>
-        <p style="font-size:0.88rem;color:var(--stone);margin-bottom:1rem;">Need capacity beyond the retainer scope without committing to the on-demand overage rate? Pre-purchase a block of hours at a discount.</p>
-        <div class="fee-options">
-          <div class="fee-option">
-            <div class="fee-option-tag">Hour Bank</div>
-            <div class="fee-option-name">Pre-purchased hours</div>
-            <div class="fee-option-amount">$120/hr</div>
-            <div class="fee-option-desc">Buy a block of hours at the start of any retainer period. Standard on-demand overage rate is $150/hr. Hour bank locks in a 20% discount for pre-committed volume. Minimum purchase: 10 hours ($1,200). Non-transferable to the following retainer period.</div>
-            <div class="fee-option-for">Best for predictable workstreams: a fundraising round, a new country entry, or a batch of portfolio company setups.</div>
-          </div>
         </div>
       </div>
 
@@ -535,6 +655,7 @@
 </div>
 
 <script>
+  /* ---- SCOPE CARD TOGGLE ---- */
   function toggleScope(id) {
     var card = document.getElementById(id);
     var body = document.getElementById(id + '-body');
@@ -568,6 +689,59 @@
       }
     }
   });
+
+  /* ---- PRICING TABLE TOGGLE ---- */
+  function togglePricingTable() {
+    var table = document.getElementById('pricing-inner-table');
+    var btn = document.getElementById('pricing-toggle-btn');
+    var isOpen = table.classList.contains('open');
+    if (isOpen) {
+      table.classList.remove('open');
+      btn.textContent = 'Show pricing tiers';
+    } else {
+      table.classList.add('open');
+      btn.textContent = 'Hide pricing tiers';
+    }
+  }
+
+  /* ---- PASSWORD GATE ---- */
+  (function () {
+    var PASS = 'delta40-2026';
+    var KEY = 'delta40_auth';
+    var gate = document.getElementById('password-gate');
+    var input = document.getElementById('gate-input');
+    var btn = document.getElementById('gate-btn');
+    var errorEl = document.getElementById('gate-error');
+
+    if (sessionStorage.getItem(KEY) === '1') {
+      gate.style.display = 'none';
+      return;
+    }
+
+    function unlock() {
+      if (input.value === PASS) {
+        sessionStorage.setItem(KEY, '1');
+        gate.classList.add('fade-out');
+        setTimeout(function () { gate.style.display = 'none'; }, 520);
+      } else {
+        input.classList.remove('shake');
+        void input.offsetWidth;
+        input.classList.add('shake');
+        errorEl.textContent = 'Incorrect access code. Try again.';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    btn.addEventListener('click', unlock);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') unlock();
+    });
+    input.addEventListener('input', function () {
+      errorEl.textContent = '';
+    });
+    input.focus();
+  })();
 </script>
 
 </body>
