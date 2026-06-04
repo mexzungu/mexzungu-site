@@ -240,6 +240,36 @@
     .equity-callout-headline { font-family: var(--heading); font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
     .equity-callout-body { font-size: 0.86rem; color: var(--muted); line-height: 1.72; }
 
+    /* JANIS TEASER */
+    .janis-teaser {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border: 1px solid var(--border2); border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin-top: 1.25rem;
+      background: rgba(212,160,57,0.03); flex-wrap: wrap;
+    }
+    .janis-teaser-main { display: flex; align-items: flex-start; gap: 0.65rem; flex: 1; min-width: 0; }
+    .janis-badge {
+      font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em;
+      color: var(--gold); background: rgba(212,160,57,0.12); padding: 0.2rem 0.5rem;
+      border-radius: 4px; white-space: nowrap; flex-shrink: 0; margin-top: 0.12rem;
+    }
+    .janis-teaser-copy { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+    .janis-learn-btn {
+      padding: 0.45rem 0.9rem; border: 1px solid rgba(212,160,57,0.4); border-radius: 6px;
+      background: transparent; color: var(--gold); font-family: var(--sans); font-size: 0.75rem;
+      font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.18s; flex-shrink: 0;
+    }
+    .janis-learn-btn:hover { background: rgba(212,160,57,0.08); border-color: var(--gold); }
+    .janis-detail {
+      display: none; border: 1px solid rgba(212,160,57,0.18); border-radius: 10px; padding: 1.5rem;
+      margin-top: 0.75rem; background: rgba(212,160,57,0.02);
+    }
+    .janis-detail-body { font-size: 0.87rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.25rem; }
+    .janis-pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .janis-pricing-item-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.3rem; }
+    .janis-pricing-item-value { font-family: var(--heading); font-size: 1.15rem; color: var(--gold); }
+    .janis-pricing-example { font-size: 0.79rem; color: #4a4a4a; border-top: 1px solid var(--border); padding-top: 0.75rem; line-height: 1.6; }
+
     /* PROJECT CATALOGUE */
     .catalogue { border: 1px solid var(--border2); border-radius: 12px; overflow: hidden; margin-top: 2rem; }
     .cat-item { border-bottom: 1px solid var(--border); }
@@ -270,6 +300,17 @@
     .fees-table td.rate-std { color: #383432; text-decoration: line-through; font-size: 0.82rem; }
     .fees-table td.rate-d40 { font-family: var(--heading); color: var(--pink); }
     .fees-terms { font-size: 0.83rem; color: var(--muted); line-height: 1.72; margin-top: 1.25rem; }
+
+    /* TRACK RECORD */
+    .track-items { display: flex; flex-direction: column; gap: 2.25rem; margin-top: 2rem; }
+    .track-item { border-left: 2px solid var(--border2); padding-left: 1.5rem; }
+    .track-item-co { font-family: var(--heading); font-size: 1.05rem; color: var(--text); margin-bottom: 0.5rem; }
+    .track-item-tags { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 0.65rem; }
+    .track-item-tag {
+      font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      color: #4a4a4a; border: 1px solid var(--border); border-radius: 3px; padding: 0.18rem 0.5rem;
+    }
+    .track-item-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.72; }
 
     /* FINE PRINT */
     .fine-print-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
@@ -451,26 +492,26 @@
     <div class="model-card" id="card-hourbank" onclick="selectModel('hourbank')">
       <div class="model-tag">On demand</div>
       <div class="model-name">Hour Bank</div>
-      <div class="model-desc">Pre-purchase blocks of hours at a Delta40 rate. No monthly commitment. Use for a specific term sheet, cap table review, or one-off filing. 50% of unused hours roll.</div>
+      <div class="model-desc">Pre-purchase blocks of hours at a Delta40 rate. No monthly commitment. Use for a specific term sheet, cap table review, or one-off contract. 50% of unused hours roll.</div>
       <div class="model-for">Best for: specific, bounded work. No ongoing need.</div>
     </div>
-    <div class="model-card" id="card-foundation" onclick="selectModel('foundation')">
-      <div class="model-tag">Retainer</div>
-      <div class="model-name">Foundation</div>
-      <div class="model-desc">Fixed monthly retainer covering the fund and portfolio companies. Reactive general support at a committed weekly hour allocation. Project catalogue work billed separately on top.</div>
-      <div class="model-for">Best for: ongoing access, reactive support, predictable cost.</div>
+    <div class="model-card" id="card-modular" onclick="selectModel('modular')">
+      <div class="model-tag">Modular</div>
+      <div class="model-name">Modular</div>
+      <div class="model-desc">Small monthly admin fee locking 5 to 10 hours of general support per week. Contracts, transactions, governance, and everything else from the project catalogue billed separately on top. You pay for what you use.</div>
+      <div class="model-for">Best for: active but unpredictable legal needs. Predictable access, variable cost.</div>
     </div>
     <div class="model-card active" id="card-studio" onclick="selectModel('studio')">
       <div class="model-badge">Recommended</div>
       <div class="model-tag">Embedded</div>
       <div class="model-name">Studio Partner</div>
-      <div class="model-desc">Proactive legal architecture embedded across the full portfolio. Higher weekly allocation. Quarterly governance reviews, board prep, regulatory monitoring. First call on capacity.</div>
+      <div class="model-desc">Fixed monthly fee covering 10 to 25 hours of embedded legal support across the full portfolio. Quarterly governance reviews, board prep, regulatory monitoring. Transactions billed separately at closing. AI legal intelligence layer available on activation.</div>
       <div class="model-for">Best for: Delta40 at scale. Full legal function without the headcount.</div>
     </div>
   </div>
   <div class="model-dots">
     <button class="model-dot" data-model="hourbank" onclick="selectModel('hourbank')"></button>
-    <button class="model-dot" data-model="foundation" onclick="selectModel('foundation')"></button>
+    <button class="model-dot" data-model="modular" onclick="selectModel('modular')"></button>
     <button class="model-dot active" data-model="studio" onclick="selectModel('studio')"></button>
   </div>
 </div>
@@ -485,7 +526,7 @@
   <div class="configurator">
     <div class="config-tabs">
       <button class="config-tab" onclick="switchTab('hourbank')" id="tab-hourbank">Hour Bank</button>
-      <button class="config-tab" onclick="switchTab('foundation')" id="tab-foundation">Foundation</button>
+      <button class="config-tab" onclick="switchTab('modular')" id="tab-modular">Modular</button>
       <button class="config-tab active" onclick="switchTab('studio')" id="tab-studio">Studio Partner &#9733;</button>
     </div>
 
@@ -522,14 +563,14 @@
       </div>
     </div>
 
-    <!-- FOUNDATION -->
-    <div class="config-panel" id="panel-foundation">
+    <!-- MODULAR -->
+    <div class="config-panel" id="panel-modular">
       <div class="dual-sliders">
         <div class="slider-wrap">
           <div class="config-sec-label">Portfolio companies</div>
           <div class="slider-row">
             <span class="slider-edge">0</span>
-            <input type="range" id="fn-companies" min="0" max="16" value="8" step="1" oninput="updateFoundation()">
+            <input type="range" id="fn-companies" min="0" max="16" value="8" step="1" oninput="updateModular()">
             <span class="slider-edge right">16</span>
           </div>
           <div class="slider-val" id="fn-companies-label">8 portfolio companies</div>
@@ -538,7 +579,7 @@
           <div class="config-sec-label">Hours per week</div>
           <div class="slider-row">
             <span class="slider-edge">5</span>
-            <input type="range" id="fn-hours" min="5" max="10" value="5" step="1" oninput="updateFoundation()">
+            <input type="range" id="fn-hours" min="5" max="10" value="5" step="1" oninput="updateModular()">
             <span class="slider-edge right">10</span>
           </div>
           <div class="slider-val" id="fn-hours-label">5 hrs/week</div>
@@ -547,23 +588,23 @@
       <div class="config-result">
         <div class="config-result-grid">
           <div>
-            <div class="config-result-label">Retainer (Delta40)</div>
-            <div class="config-result-value pink" id="fn-fee">$1,600/mo</div>
+            <div class="config-result-label">Admin fee (Delta40)</div>
+            <div class="config-result-value pink" id="fn-fee">$1,450/mo</div>
           </div>
           <div>
             <div class="config-result-label">Standard rate</div>
-            <div class="config-result-value struck" id="fn-std">$2,000/mo</div>
+            <div class="config-result-value struck" id="fn-std">$1,813/mo</div>
           </div>
           <div>
             <div class="config-result-label">You save</div>
-            <div class="config-result-value green" id="fn-save">$400/mo</div>
+            <div class="config-result-value green" id="fn-save">$363/mo</div>
           </div>
           <div>
-            <div class="config-result-label">Overage</div>
-            <div class="config-result-value small">$200/hr</div>
+            <div class="config-result-label">Overflow hours</div>
+            <div class="config-result-value small">$180/hr</div>
           </div>
         </div>
-        <div class="config-note">Retainer price covers general support hours only. Project catalogue work (readiness, architecture, transactions) is scoped and billed separately on top of the retainer.</div>
+        <div class="config-note">Admin fee covers 5 to 10 hours of general support per week. All project, contract, and transaction work is billed separately at project catalogue rates. If you exceed your weekly hours, overflow is available at $180/hr.</div>
       </div>
     </div>
 
@@ -582,9 +623,9 @@
         <div class="slider-wrap">
           <div class="config-sec-label">Hours per week</div>
           <div class="slider-row">
-            <span class="slider-edge">5</span>
-            <input type="range" id="sp-hours" min="5" max="20" value="10" step="1" oninput="updateStudio()">
-            <span class="slider-edge right">20</span>
+            <span class="slider-edge">10</span>
+            <input type="range" id="sp-hours" min="10" max="25" value="10" step="1" oninput="updateStudio()">
+            <span class="slider-edge right">25</span>
           </div>
           <div class="slider-val" id="sp-hours-label">10 hrs/week</div>
         </div>
@@ -593,22 +634,43 @@
         <div class="config-result-grid">
           <div>
             <div class="config-result-label">Monthly fee (Delta40)</div>
-            <div class="config-result-value pink" id="sp-fee">$4,500/mo</div>
+            <div class="config-result-value pink" id="sp-fee">$6,500/mo</div>
           </div>
           <div>
             <div class="config-result-label">Standard rate</div>
-            <div class="config-result-value struck" id="sp-std">$5,625/mo</div>
+            <div class="config-result-value struck" id="sp-std">$8,125/mo</div>
           </div>
           <div>
             <div class="config-result-label">You save</div>
-            <div class="config-result-value green" id="sp-save">$1,125/mo</div>
+            <div class="config-result-value green" id="sp-save">$1,625/mo</div>
           </div>
           <div>
-            <div class="config-result-label">Overage</div>
-            <div class="config-result-value small">$150/hr</div>
+            <div class="config-result-label">Overflow hours</div>
+            <div class="config-result-value small">$180/hr</div>
           </div>
         </div>
-        <div class="config-note">Includes quarterly governance reviews, board prep, and regulatory monitoring across the portfolio. Project catalogue at Studio Partner rates. Standard = D40 / 0.8.</div>
+        <div class="config-note">Fixed fee includes all general advisory and portfolio oversight. Transactions (equity rounds, debt facilities, M&amp;A) are always billed separately at closing via side letter. Overflow hours available at $180/hr.</div>
+      </div>
+      <div class="janis-teaser">
+        <div class="janis-teaser-main">
+          <span class="janis-badge">Add-on</span>
+          <span class="janis-teaser-copy">AI Legal Intelligence layer available. 24/7 legal assistant across all portfolio companies. Routine questions answered instantly, complex matters escalated to Pepe with full context compiled.</span>
+        </div>
+        <button class="janis-learn-btn" onclick="toggleJanis()">Learn more</button>
+      </div>
+      <div class="janis-detail" id="janis-detail">
+        <div class="janis-detail-body">Each portfolio company gets access to an AI-powered legal assistant trained on Mexzungu methodology and your portfolio's specific context. Founders ask questions and get immediate answers on routine legal matters. Complex issues are escalated to Pepe with full context already compiled, so his hours go toward decisions, not triage. One legal intelligence layer running across all portfolio companies simultaneously, 24 hours a day.</div>
+        <div class="janis-pricing-grid">
+          <div>
+            <div class="janis-pricing-item-label">Platform fee</div>
+            <div class="janis-pricing-item-value">$1,000/mo</div>
+          </div>
+          <div>
+            <div class="janis-pricing-item-label">Per portfolio company</div>
+            <div class="janis-pricing-item-value">$100/mo</div>
+          </div>
+        </div>
+        <div class="janis-pricing-example">Example: 16 companies = $2,600/month all-in. Activated by side letter. Available from day one of the Studio Partner engagement.</div>
       </div>
     </div>
   </div>
@@ -625,7 +687,7 @@
 <div class="prop-section" id="catalogue">
   <div class="prop-label">05 / Project catalogue</div>
   <div class="prop-heading">On-demand project work.</div>
-  <p class="prop-copy">Each project is activated by a side letter. Scope confirmed before billing. Prices shown are Delta40 rates, separate from and in addition to the monthly retainer.</p>
+  <p class="prop-copy">Each project is activated by a side letter. Scope confirmed before billing. Prices shown are Delta40 rates, separate from and in addition to the monthly fee.</p>
 
   <div class="catalogue">
 
@@ -732,7 +794,6 @@
           <li>IP inventory by asset type: tech, brand, data, content</li>
           <li>Ownership verification by jurisdiction</li>
           <li>Protection gap analysis</li>
-          <li>Filing status across operating markets</li>
           <li>Assignment agreement checklist</li>
         </ul>
       </div>
@@ -815,8 +876,37 @@
 <div class="prop-section" id="track">
   <div class="prop-label">07 / Track record</div>
   <div class="prop-heading">We have done this.</div>
-  <p class="prop-copy">Duara Education. Kenya operating entity above a Delaware C-Corp. Pepe designed the architecture, drafted the governance documents, structured the fundraising instruments across multiple rounds, and sits on the board as counsel-investor. Duara is scaling from 4 to 40 schools across East Africa.</p>
-  <p class="prop-copy"><a href="https://mexzungu.com/work" style="color:var(--pink);text-decoration:underline;text-underline-offset:3px;">mexzungu.com/work</a></p>
+
+  <div class="track-items">
+    <div class="track-item">
+      <div class="track-item-co">Duara Education</div>
+      <div class="track-item-tags">
+        <span class="track-item-tag">East Africa</span>
+        <span class="track-item-tag">Multi-round fundraising</span>
+        <span class="track-item-tag">Board seat</span>
+      </div>
+      <div class="track-item-desc">Kenya operating entity above a Delaware C-Corp. Governance architecture designed, fundraising instruments structured across multiple rounds, data room built. Pepe sits on the board as counsel-investor. Scaling from 4 to 40 schools across East Africa.</div>
+    </div>
+    <div class="track-item">
+      <div class="track-item-co">Havenpay</div>
+      <div class="track-item-tags">
+        <span class="track-item-tag">Cross-border payments</span>
+        <span class="track-item-tag">Fundraising</span>
+      </div>
+      <div class="track-item-desc">Cross-border payments infrastructure. Fundraising architecture, investor documentation, and capital structure advisory.</div>
+    </div>
+    <div class="track-item">
+      <div class="track-item-co">Pan African University</div>
+      <div class="track-item-tags">
+        <span class="track-item-tag">Series B</span>
+        <span class="track-item-tag">$30M</span>
+        <span class="track-item-tag">Fundraising</span>
+      </div>
+      <div class="track-item-desc">Series B fundraising. $30 million round. Transaction structure, investor documentation, and closing.</div>
+    </div>
+  </div>
+
+  <p class="prop-copy" style="margin-top:2rem;"><a href="https://mexzungu.com/work" style="color:var(--pink);text-decoration:underline;text-underline-offset:3px;">mexzungu.com/work</a></p>
 </div>
 
 <div class="prop-divider"></div>
@@ -939,23 +1029,23 @@ function renderHourBank() {
   scheduleSync();
 }
 
-/* ---- FOUNDATION ---- */
-function updateFoundation() {
+/* ---- MODULAR ---- */
+function updateModular() {
   var c = parseInt(document.getElementById('fn-companies').value);
   var h = parseInt(document.getElementById('fn-hours').value);
   var cLabel = c === 0 ? 'Fund only' : c + ' portfolio ' + (c === 1 ? 'company' : 'companies');
   document.getElementById('fn-companies-label').textContent = cLabel;
   document.getElementById('fn-hours-label').textContent = h + ' hrs/week';
-  // base: $800 at 5hrs, +$120/hr/week above 5
-  var base = 800 + (h - 5) * 120;
-  var fee = base + c * 100;
+  // $850 at 5hrs, +$130/hr/week above 5, $1,500 at 10hrs
+  var base = 850 + (h - 5) * 130;
+  var fee = base + c * 75;
   var std = Math.round(fee / 0.8);
   document.getElementById('fn-fee').textContent = '$' + fee.toLocaleString() + '/mo';
   document.getElementById('fn-std').textContent = '$' + std.toLocaleString() + '/mo';
   document.getElementById('fn-save').textContent = '$' + (std - fee).toLocaleString() + '/mo';
   scheduleSync();
 }
-window.updateFoundation = updateFoundation;
+window.updateModular = updateModular;
 
 /* ---- STUDIO PARTNER ---- */
 function updateStudio() {
@@ -964,11 +1054,9 @@ function updateStudio() {
   var cLabel = c === 0 ? 'Fund only' : c + ' ' + (c === 1 ? 'company' : 'companies');
   document.getElementById('sp-companies-label').textContent = cLabel;
   document.getElementById('sp-hours-label').textContent = h + ' hrs/week';
-  // t: 0 at 5hrs, 1 at 20hrs
-  var t = (h - 5) / 15;
-  var base = Math.round(1800 + t * 3700);   // $1,800 (5h) to $5,500 (20h)
-  var perCo = Math.round(150 + t * 100);    // $150 (5h) to $250 (20h) per company
-  var fee = base + c * perCo;
+  // $4,500 at 10hrs, $11,250 at 25hrs
+  var base = Math.round(4500 + (h - 10) / 15 * 6750);
+  var fee = base + c * 250;
   var std = Math.round(fee / 0.8);
   document.getElementById('sp-fee').textContent = '$' + fee.toLocaleString() + '/mo';
   document.getElementById('sp-std').textContent = '$' + std.toLocaleString() + '/mo';
@@ -977,9 +1065,22 @@ function updateStudio() {
 }
 window.updateStudio = updateStudio;
 
+/* ---- JANIS LAYER TOGGLE ---- */
+window.toggleJanis = function () {
+  var d = document.getElementById('janis-detail');
+  var btn = document.querySelector('.janis-learn-btn');
+  if (d.style.display === 'block') {
+    d.style.display = 'none';
+    btn.textContent = 'Learn more';
+  } else {
+    d.style.display = 'block';
+    btn.textContent = 'Close';
+  }
+};
+
 /* ---- INIT ---- */
 renderHourBank();
-updateFoundation();
+updateModular();
 updateStudio();
 
 /* ---- SERVER PERSISTENCE ---- */
@@ -996,17 +1097,16 @@ function doSync() {
     var rate = currentHours < 20 ? 200 : 150;
     payload.sliders = { hours_per_month: currentHours };
     payload.prices = { rate_d40: rate, rate_std: 250, total_d40: currentHours * rate };
-  } else if (model === 'Foundation') {
+  } else if (model === 'Modular') {
     var c2 = parseInt(document.getElementById('fn-companies').value);
     var h2 = parseInt(document.getElementById('fn-hours').value);
-    var fee2 = 800 + (h2 - 5) * 120 + c2 * 100;
+    var fee2 = 850 + (h2 - 5) * 130 + c2 * 75;
     payload.sliders = { companies: c2, hours_per_week: h2 };
     payload.prices = { monthly_d40: fee2, monthly_std: Math.round(fee2 / 0.8) };
   } else {
     var c3 = parseInt(document.getElementById('sp-companies').value);
     var h3 = parseInt(document.getElementById('sp-hours').value);
-    var t3 = (h3 - 5) / 15;
-    var fee3 = Math.round(1800 + t3 * 3700) + c3 * Math.round(150 + t3 * 100);
+    var fee3 = Math.round(4500 + (h3 - 10) / 15 * 6750) + c3 * 250;
     payload.sliders = { companies: c3, hours_per_week: h3 };
     payload.prices = { monthly_d40: fee3, monthly_std: Math.round(fee3 / 0.8) };
   }
