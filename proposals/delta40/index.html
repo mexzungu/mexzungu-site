@@ -9,739 +9,965 @@
   <link rel="stylesheet" href="/fonts.css">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --pink:       #e14b87;
-      --pink-dark:  #b83a6b;
-      --pink-light: #e86fa0;
-      --navy:       #1a1a2e;
-      --amber:      #b87d1a;
-      --amber-bg:   #fdf6ec;
-      --amber-border: rgba(184,125,26,0.25);
-      --black:      #0d0d0d;
-      --white:      #fafafa;
-      --ash:        #e8e3df;
-      --stone:      #6b5e57;
-      --mist:       #9a8f88;
-      --charcoal:   #3d3533;
-      --success:    #2d8f5e;
-      --heading:    'RocknRoll One', 'Space Grotesk', sans-serif;
-      --sans:       'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --pink:      #e14b87;
+      --pink-dark: #b83a6b;
+      --gold:      #d4a039;
+      --green:     #4caf7a;
+      --bg:        #0a0a0a;
+      --surface:   #111111;
+      --border:    #1e1e1e;
+      --border2:   #2a2a2a;
+      --text:      #fafafa;
+      --muted:     #6b5e57;
+      --dim:       #9a8f88;
+      --mid:       #c8c0bb;
+      --heading:   'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:      'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     }
-
-    body { font-family: var(--sans); background: #f0ece8; color: var(--black); min-height: 100vh; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    strong { font-weight: 600; }
 
     /* PASSWORD GATE */
-    #password-gate {
+    #pw-gate {
       position: fixed; inset: 0; z-index: 9999;
-      background: #0a0a18;
+      background: #050510;
       display: flex; align-items: center; justify-content: center;
       transition: opacity 0.5s ease;
     }
-    #password-gate.fade-out { opacity: 0; pointer-events: none; }
-    .gate-box {
-      display: flex; flex-direction: column; align-items: center; gap: 1.4rem;
-      width: 100%; max-width: 340px; padding: 2.5rem 2rem;
-    }
-    .gate-logo { height: 40px; width: auto; opacity: 0.95; }
-    .gate-wordmark { font-family: var(--heading); font-size: 0.85rem; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; margin-top: -0.6rem; }
-    .gate-divider { width: 40px; height: 2px; background: var(--pink); border-radius: 2px; margin: 0.1rem 0; }
-    .gate-title { font-family: var(--heading); font-size: 1rem; color: #fafafa; text-align: center; letter-spacing: 0.03em; }
-    .gate-subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.35); text-align: center; }
-    .gate-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 0.65rem; }
-    .gate-input {
+    #pw-gate.hidden { opacity: 0; pointer-events: none; }
+    .pw-card { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; width: 100%; max-width: 340px; padding: 2.5rem 2rem; }
+    .pw-logo { height: 40px; width: auto; opacity: 0.9; }
+    .pw-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); }
+    .pw-heading { font-family: var(--heading); font-size: 1.1rem; color: var(--text); text-align: center; }
+    .pw-sub { font-size: 0.8rem; color: var(--muted); text-align: center; line-height: 1.5; }
+    .pw-input {
       width: 100%; padding: 0.85rem 1rem;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 8px; color: #fafafa; font-family: var(--sans); font-size: 0.95rem;
-      outline: none; transition: border-color 0.15s ease;
-      text-align: center; letter-spacing: 0.08em;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px; color: var(--text); font-family: var(--sans); font-size: 0.95rem;
+      outline: none; transition: border-color 0.15s ease; text-align: center; letter-spacing: 0.08em;
     }
-    .gate-input:focus { border-color: var(--pink); background: rgba(255,255,255,0.1); }
-    .gate-input.shake { animation: gate-shake 0.4s ease; border-color: #ff6b6b; }
-    .gate-btn {
-      width: 100%; padding: 0.9rem;
-      background: var(--pink); color: #fff; border: none;
+    .pw-input:focus { border-color: var(--pink); }
+    .pw-input.error { border-color: #ff6b6b; animation: shake 0.4s ease; }
+    .pw-btn {
+      width: 100%; padding: 0.9rem; background: var(--pink); color: #fff; border: none;
       border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; transition: background 0.2s ease; letter-spacing: 0.02em;
+      cursor: pointer; transition: background 0.2s ease;
     }
-    .gate-btn:hover { background: var(--pink-dark); }
-    .gate-error { font-size: 0.78rem; color: #ff8080; text-align: center; min-height: 1.1em; }
-    @keyframes gate-shake {
+    .pw-btn:hover { background: var(--pink-dark); }
+    .pw-error { font-size: 0.78rem; color: #ff8080; text-align: center; min-height: 1.1em; }
+    .pw-footer-note { font-size: 0.72rem; color: var(--muted); text-align: center; line-height: 1.5; }
+    @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      18% { transform: translateX(-9px); }
-      36% { transform: translateX(9px); }
-      54% { transform: translateX(-6px); }
-      72% { transform: translateX(6px); }
-      90% { transform: translateX(-3px); }
+      20% { transform: translateX(-8px); } 40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
     }
 
-    /* HEADER */
-    .site-header {
-      background: var(--black); padding: 1rem 2rem;
-      display: flex; align-items: center; justify-content: space-between;
+    /* CONTENT */
+    #proposal-content { opacity: 0; transition: opacity 0.4s ease; }
+    #proposal-content.visible { opacity: 1; }
+
+    /* NAV */
+    nav {
       position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px;
     }
-    .site-header .logo-wrap { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-    .site-header img { height: 36px; width: auto; }
-    .header-meta { text-align: right; }
-    .header-meta h1 { font-family: var(--heading); font-size: 1rem; color: #fafafa; letter-spacing: 0.03em; }
-    .header-meta p { font-size: 0.78rem; color: var(--mist); margin-top: 2px; }
+    .nav-logo img { height: 32px; width: auto; display: block; }
+    .nav-right { font-size: 0.78rem; color: var(--muted); text-align: right; line-height: 1.5; }
+    .nav-right .nav-title { color: var(--dim); font-weight: 500; display: block; }
 
-    /* LAYOUT */
-    .page-wrap { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    /* HERO */
+    .proposal-hero { padding: 8rem 2rem 5rem; max-width: 860px; margin: 0 auto; }
+    .hero-tag { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); margin-bottom: 1.5rem; }
+    .hero-headline { font-family: var(--heading); font-size: 2.35rem; line-height: 1.2; color: var(--text); margin-bottom: 1.5rem; font-weight: 400; }
+    .hero-copy { font-size: 0.97rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; max-width: 700px; }
 
-    /* DOC CARD */
-    .doc-card {
-      background: #ffffff; border-radius: 12px;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
-      overflow: hidden;
+    /* SECTIONS */
+    .prop-divider { height: 1px; background: var(--border); max-width: 860px; margin: 0 auto; }
+    .prop-section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+    .prop-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); margin-bottom: 1rem; }
+    .prop-heading { font-family: var(--heading); font-size: 1.85rem; line-height: 1.25; color: var(--text); margin-bottom: 1.5rem; font-weight: 400; }
+    .prop-copy { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+    .prop-copy strong { color: var(--dim); }
+
+    /* HEARD */
+    .heard-block { margin-bottom: 1.75rem; }
+    .heard-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--dim); margin-bottom: 0.75rem; }
+    .heard-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    .heard-list li { font-size: 0.9rem; color: var(--muted); line-height: 1.65; padding-left: 1.2rem; position: relative; }
+    .heard-list li::before { content: ''; position: absolute; left: 0; top: 0.65rem; width: 5px; height: 5px; border-radius: 50%; background: var(--border2); }
+
+    /* RISKS */
+    .risk-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.75rem; margin-top: 2rem; }
+    .risk-item { display: grid; grid-template-columns: 42px 1fr; gap: 1rem; align-items: start; }
+    .risk-number { font-family: var(--heading); font-size: 1.5rem; color: var(--pink); opacity: 0.45; line-height: 1; padding-top: 0.05rem; }
+    .risk-title { font-size: 0.92rem; font-weight: 600; color: var(--mid); margin-bottom: 0.45rem; }
+    .risk-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.72; }
+    .risk-window { font-size: 0.85rem; color: #4a4a4a; font-style: italic; margin-top: 2rem; }
+
+    /* MODEL CARDS */
+    .model-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; margin-top: 2.5rem; }
+    .model-card {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 1.8rem 1.6rem; position: relative;
     }
-    .doc-top-stripe { background: var(--pink); height: 5px; }
-    .doc-inner { padding: 3rem 3.5rem; }
-
-    /* WORDMARK */
-    .doc-wordmark {
-      display: flex; align-items: center; gap: 1rem;
-      margin-bottom: 2.5rem; padding-bottom: 2rem;
-      border-bottom: 1px solid var(--ash);
+    .model-card.featured { border-color: #2d1f28; background: linear-gradient(160deg, #111 0%, #1a0f15 100%); }
+    .model-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--pink); color: #fff; font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.14em; padding: 0.25rem 0.9rem;
+      border-radius: 20px; white-space: nowrap;
     }
-    .doc-wordmark img { height: 40px; width: auto; }
-    .doc-wordmark-text { display: flex; flex-direction: column; }
-    .doc-wordmark-text span:first-child { font-family: var(--heading); font-size: 0.95rem; color: var(--black); letter-spacing: 0.04em; text-transform: uppercase; }
-    .doc-wordmark-text span:last-child { font-size: 0.75rem; color: var(--mist); margin-top: 2px; }
+    .model-tag { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); font-weight: 700; margin-bottom: 0.6rem; }
+    .model-name { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.75rem; }
+    .model-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.68; }
 
-    .doc-title { font-family: var(--heading); font-size: 1.7rem; color: var(--black); margin-bottom: 0.3rem; }
-    .doc-subtitle { font-size: 0.9rem; color: var(--stone); margin-bottom: 2.5rem; }
-
-    /* PARTIES */
-    .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
-    .party-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.1rem 1.25rem; }
-    .party-block .party-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); margin-bottom: 0.4rem; }
-    .party-block .party-name { font-size: 0.95rem; font-weight: 600; color: var(--black); margin-bottom: 0.25rem; }
-    .party-block .party-detail { font-size: 0.8rem; color: var(--stone); line-height: 1.5; }
-    .doc-date-line { font-size: 0.82rem; color: var(--mist); margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--ash); }
-
-    /* PROPOSAL SECTION */
-    .proposal-section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--ash); }
-    .proposal-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .proposal-eyebrow { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink-dark); margin-bottom: 1.25rem; }
-    .proposal-section h2 { font-family: var(--heading); font-size: 1.15rem; color: var(--black); margin: 1.75rem 0 0.6rem; }
-    .proposal-section h2:first-of-type { margin-top: 0; }
-    .proposal-section p { font-size: 0.95rem; line-height: 1.75; color: #2a2a2a; margin-bottom: 0.9rem; }
-
-    /* BULLET LIST */
-    .proposal-list { list-style: none; margin: 0 0 0.9rem; padding: 0; }
-    .proposal-list li { font-size: 0.92rem; line-height: 1.7; color: #2a2a2a; padding: 0.3rem 0 0.3rem 1.25rem; position: relative; }
-    .proposal-list li::before { content: ''; position: absolute; left: 0; top: 0.75rem; width: 5px; height: 5px; border-radius: 50%; background: var(--pink); }
-
-    /* SCOPE LIST (used inside cards) */
-    .scope-list { list-style: none; margin: 0; padding: 0; }
-    .scope-list li { font-size: 0.9rem; line-height: 1.65; color: #2a2a2a; padding: 0.55rem 0; border-bottom: 1px solid rgba(232,227,223,0.8); }
-    .scope-list li:last-child { border-bottom: none; padding-bottom: 0; }
-
-    /* SCOPE CARDS (clickable, collapsible) */
-    .scope-card {
-      border: 1px solid var(--ash); border-left: 3px solid var(--pink);
-      border-radius: 0 8px 8px 0; margin: 0.75rem 0 1.25rem;
-      overflow: hidden; scroll-margin-top: 6rem;
+    /* CONFIGURATOR */
+    .configurator { background: #0d0d0d; border: 1px solid var(--border2); border-radius: 16px; margin-top: 2.5rem; overflow: hidden; }
+    .config-tabs { display: flex; border-bottom: 1px solid var(--border2); }
+    .config-tab {
+      flex: 1; padding: 1rem 0.75rem; font-size: 0.82rem; font-weight: 600;
+      color: var(--muted); background: transparent; border: none; cursor: pointer;
+      border-bottom: 2px solid transparent; transition: all 0.2s ease; font-family: var(--sans);
     }
-    .scope-card-header {
-      width: 100%; background: #f8f6f4; padding: 1.1rem 1.4rem;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-      cursor: pointer; border: none; text-align: left; font-family: var(--sans);
-      transition: background 0.15s ease;
-    }
-    .scope-card-header:hover { background: #ede8e4; }
-    .scope-card-info { flex: 1; }
-    .scope-card-title { font-family: var(--heading); font-size: 0.82rem; color: var(--black); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem; }
-    .scope-card-summary { font-size: 0.82rem; color: var(--stone); line-height: 1.5; }
-    .scope-card-chevron { color: var(--pink); font-size: 1.3rem; font-weight: 700; transition: transform 0.25s ease; flex-shrink: 0; display: inline-block; }
-    .scope-card-header[aria-expanded="true"] .scope-card-chevron { transform: rotate(90deg); }
-    .scope-card-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-    .scope-card-body.open { max-height: 900px; }
-    .scope-card-body-inner { padding: 0.9rem 1.4rem 1.1rem; background: #fff; border-top: 1px solid var(--ash); }
+    .config-tab:hover { color: var(--dim); }
+    .config-tab.active { color: var(--pink); border-bottom-color: var(--pink); }
+    .config-panel { display: none; padding: 2rem; }
+    .config-panel.active { display: block; }
+    .config-sec-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 1rem; }
 
-    /* DEAL FLOW DIAGRAM */
-    .deal-flow { display: flex; align-items: stretch; gap: 0; margin: 1.25rem 0 2rem; overflow-x: auto; }
-    .deal-step { flex: 1; min-width: 100px; background: #fef0f6; border: 1px solid rgba(225,75,135,0.15); border-radius: 8px; padding: 1.1rem 0.75rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.6rem; }
-    .deal-step-num { width: 2rem; height: 2rem; background: var(--pink); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
-    .deal-step-title { font-weight: 700; font-size: 0.78rem; color: var(--black); line-height: 1.3; }
-    .deal-step-desc { font-size: 0.72rem; color: var(--stone); line-height: 1.4; }
-    .deal-arrow { display: flex; align-items: center; padding: 0 0.4rem; color: var(--pink); font-size: 1.3rem; flex-shrink: 0; }
+    /* HOUR BANK BUTTONS */
+    .hr-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .hr-btn {
+      padding: 0.7rem 1.5rem; border: 1px solid var(--border2); border-radius: 8px;
+      background: var(--surface); color: var(--dim); font-family: var(--sans); font-size: 0.9rem;
+      cursor: pointer; transition: all 0.18s ease; font-weight: 500;
+    }
+    .hr-btn:hover { border-color: var(--pink); color: var(--pink); }
+    .hr-btn.active { border-color: var(--pink); background: rgba(225,75,135,0.1); color: var(--pink); }
 
-    /* COVERAGE DIAGRAM (entity-diagram style, two-column) */
-    .coverage-diagram { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.25rem 0 2rem; }
-    .coverage-col { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem; }
-    .coverage-col-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink-dark); margin-bottom: 0.85rem; padding-bottom: 0.6rem; border-bottom: 2px solid var(--pink); }
-    .coverage-col ul { list-style: none; margin: 0; padding: 0; }
-    .coverage-col ul li { font-size: 0.82rem; line-height: 1.6; color: #2a2a2a; padding: 0.4rem 0 0.4rem 1rem; border-bottom: 1px solid rgba(232,227,223,0.8); position: relative; }
-    .coverage-col ul li:last-child { border-bottom: none; padding-bottom: 0; }
-    .coverage-col ul li::before { content: ''; position: absolute; left: 0; top: 0.72rem; width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
+    /* SLIDERS */
+    .slider-wrap { margin-bottom: 1.75rem; }
+    .slider-row { display: flex; align-items: center; gap: 0.85rem; margin: 0.6rem 0 0.2rem; }
+    .slider-edge { font-size: 0.77rem; color: var(--muted); min-width: 28px; }
+    .slider-edge.right { text-align: right; }
+    input[type="range"] {
+      flex: 1; -webkit-appearance: none; appearance: none;
+      height: 4px; border-radius: 2px; outline: none; cursor: pointer;
+      background: var(--border2);
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--pink); cursor: pointer;
+      box-shadow: 0 0 0 3px rgba(225,75,135,0.2);
+      transition: box-shadow 0.15s;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--pink); cursor: pointer; border: none;
+      box-shadow: 0 0 0 3px rgba(225,75,135,0.2);
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { box-shadow: 0 0 0 5px rgba(225,75,135,0.22); }
+    .slider-val { font-size: 0.88rem; font-weight: 600; color: var(--mid); }
 
-    /* PRICING OPTIONS - 3 column grid */
-    .pricing-options {
-      display: grid; grid-template-columns: 1fr 1fr 1.1fr; gap: 1rem; margin: 1.5rem 0 1.25rem;
-      align-items: start;
-    }
-    .pricing-card {
-      border: 1px solid var(--ash); border-radius: 10px;
-      background: #f8f6f4; padding: 1.35rem 1.15rem;
-      display: flex; flex-direction: column; gap: 0.55rem;
-      position: relative;
-    }
-    .pricing-card.premium {
-      border: 1px solid rgba(225,75,135,0.35);
-      border-left: 3px solid var(--pink);
-      border-radius: 0 10px 10px 0;
-      background: #fff;
-      box-shadow: 0 2px 18px rgba(225,75,135,0.09);
-    }
-    .pricing-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.4rem; flex-wrap: wrap; }
-    .pricing-tag { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mist); }
-    .pricing-recommended {
-      font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-      color: #fff; background: var(--pink); border-radius: 4px; padding: 0.12rem 0.45rem;
-      flex-shrink: 0;
-    }
-    .pricing-name { font-family: var(--heading); font-size: 0.88rem; color: var(--black); margin-top: 0.1rem; }
-    .pricing-badge { font-size: 1.05rem; font-weight: 700; color: var(--black); margin: 0.15rem 0 0.05rem; }
-    .pricing-card.premium .pricing-badge { color: var(--pink-dark); }
-    .pricing-desc { font-size: 0.78rem; line-height: 1.55; color: var(--stone); }
-    .pricing-detail { font-size: 0.78rem; line-height: 1.55; color: #2a2a2a; }
-    .pricing-detail ul { list-style: none; padding: 0; margin: 0.3rem 0 0.1rem; }
-    .pricing-detail ul li { padding: 0.22rem 0 0.22rem 0.85rem; position: relative; border-bottom: 1px solid rgba(232,227,223,0.7); }
-    .pricing-detail ul li:last-child { border-bottom: none; }
-    .pricing-detail ul li::before { content: ''; position: absolute; left: 0; top: 0.63rem; width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
-    .pricing-for { font-size: 0.73rem; color: var(--mist); font-style: italic; padding-top: 0.5rem; border-top: 1px solid var(--ash); margin-top: auto; }
-    .pricing-current-tier {
-      font-size: 0.72rem; font-weight: 700; color: var(--pink-dark);
-      background: #fef0f6; border-radius: 4px; padding: 0.3rem 0.6rem;
-      text-align: center; margin: 0.1rem 0;
-    }
+    /* STUDIO SLIDERS GRID */
+    .studio-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 0.5rem; }
 
-    /* Show pricing toggle inside Option 3 */
-    .pricing-table-toggle {
-      font-size: 0.73rem; color: var(--pink-dark); cursor: pointer;
-      background: none; border: none; padding: 0; font-family: var(--sans);
-      text-decoration: underline; text-underline-offset: 2px;
-      display: inline-block; margin: 0.15rem 0 0.25rem;
-    }
-    .pricing-inner-table { display: none; }
-    .pricing-inner-table.open { display: block; }
-    .pricing-inner-table table { width: 100%; border-collapse: collapse; font-size: 0.73rem; margin-top: 0.4rem; border: 1px solid var(--ash); border-radius: 6px; overflow: hidden; }
-    .pricing-inner-table th { text-align: left; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); padding: 0.45rem 0.65rem; background: #f8f6f4; border-bottom: 1px solid var(--ash); }
-    .pricing-inner-table td { padding: 0.5rem 0.65rem; color: #2a2a2a; border-bottom: 1px solid var(--ash); vertical-align: middle; }
-    .pricing-inner-table tr:last-child td { border-bottom: none; }
-    .pricing-inner-table .current-row td { background: #fef0f6; }
-    .pricing-inner-table td.amount { font-weight: 700; white-space: nowrap; }
-    .pricing-inner-table .current-row td.amount { color: var(--pink-dark); }
-    .pricing-inner-table .current-badge { display: inline-block; font-size: 0.55rem; font-weight: 700; text-transform: uppercase; color: #fff; background: var(--pink); border-radius: 3px; padding: 0.1rem 0.35rem; margin-left: 0.3rem; vertical-align: middle; }
+    /* CONFIG RESULT */
+    .config-result { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; }
+    .config-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .config-result-label { font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.3rem; }
+    .config-result-value { font-family: var(--heading); font-size: 1.4rem; color: var(--text); }
+    .config-result-value.pink { color: var(--pink); }
+    .config-result-value.struck { color: #383432; text-decoration: line-through; font-size: 1.1rem; font-family: var(--sans); font-weight: 400; }
+    .config-result-value.green { color: var(--green); font-size: 1.05rem; font-family: var(--sans); font-weight: 600; }
+    .config-result-value.small { font-size: 0.9rem; font-family: var(--sans); font-weight: 500; color: var(--dim); }
+    .config-note { font-size: 0.78rem; color: #4a4a4a; line-height: 1.65; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
 
     /* EQUITY CALLOUT */
-    .equity-block {
-      background: #fef0f6; border: 1px solid rgba(225,75,135,0.2);
-      border-left: 3px solid var(--pink);
-      border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.25rem 0;
-    }
-    .equity-block-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink-dark); margin-bottom: 0.5rem; }
-    .equity-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
+    .equity-callout { border: 1px solid var(--border2); border-left: 3px solid var(--pink); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin-top: 2rem; background: #0d0d0d; }
+    .equity-callout-headline { font-family: var(--heading); font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
+    .equity-callout-body { font-size: 0.86rem; color: var(--muted); line-height: 1.72; }
 
-    /* NETWORK BLOCK */
-    .network-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
-    .network-block p { font-size: 0.9rem; line-height: 1.7; color: #2a2a2a; margin: 0; }
+    /* PROJECT CATALOGUE */
+    .catalogue { border: 1px solid var(--border2); border-radius: 12px; overflow: hidden; margin-top: 2rem; }
+    .cat-item { border-bottom: 1px solid var(--border); }
+    .cat-item:last-child { border-bottom: none; }
+    .cat-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.5rem; cursor: pointer; transition: background 0.15s; }
+    .cat-header:hover { background: rgba(255,255,255,0.02); }
+    .cat-header-left { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 0; }
+    .cat-name { font-size: 0.92rem; font-weight: 600; color: var(--mid); }
+    .cat-prices { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .cat-price-std { font-size: 0.8rem; color: #383432; text-decoration: line-through; }
+    .cat-price-d40 { font-family: var(--heading); font-size: 0.95rem; color: var(--pink); }
+    .cat-chevron { color: var(--muted); transition: transform 0.25s ease; flex-shrink: 0; font-size: 0.85rem; }
+    .cat-item.open .cat-chevron { transform: rotate(180deg); }
+    .cat-body { display: none; padding: 0 1.5rem 1.5rem; }
+    .cat-item.open .cat-body { display: block; }
+    .cat-sublabel { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin-bottom: 0.45rem; }
+    .cat-what-text { font-size: 0.88rem; color: var(--muted); line-height: 1.68; margin-bottom: 1.1rem; }
+    .cat-del-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .cat-del-list li { font-size: 0.84rem; color: var(--muted); line-height: 1.58; padding-left: 1.1rem; position: relative; }
+    .cat-del-list li::before { content: ''; position: absolute; left: 0; top: 0.58rem; width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
 
-    /* DISCLAIMER */
-    .disclaimer-block { font-size: 0.82rem; line-height: 1.65; color: var(--mist); background: #f8f6f4; border-radius: 6px; padding: 0.85rem 1.1rem; margin: 1rem 0 0; }
+    /* SUCCESS FEES */
+    .fees-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.85rem; border: 1px solid var(--border2); border-radius: 10px; overflow: hidden; }
+    .fees-table th { text-align: left; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 0.65rem 1rem; background: #0d0d0d; border-bottom: 1px solid var(--border2); }
+    .fees-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+    .fees-table tr:last-child td { border-bottom: none; }
+    .fees-table td.type { font-weight: 600; color: var(--mid); }
+    .fees-table td.rate-std { color: #383432; text-decoration: line-through; font-size: 0.82rem; }
+    .fees-table td.rate-d40 { font-family: var(--heading); color: var(--pink); }
+    .fees-terms { font-size: 0.83rem; color: var(--muted); line-height: 1.72; margin-top: 1.25rem; }
+
+    /* CALLOUT */
+    .callout { background: #0d0d0d; border: 1px solid var(--border2); border-left: 3px solid var(--pink); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+    .callout strong { color: var(--dim); }
 
     /* FINE PRINT */
-    .fine-print { font-size: 0.82rem; line-height: 1.65; color: var(--mist); background: #f8f6f4; border-radius: 6px; padding: 0.9rem 1.1rem; margin: 1rem 0; }
+    .fine-print-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+    .fine-print-list li { font-size: 0.85rem; color: var(--muted); padding: 0.55rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 0.7rem; line-height: 1.65; }
+    .fine-print-list li:last-child { border-bottom: none; }
+    .fine-print-list li::before { content: '//'; color: var(--border2); font-family: monospace; font-size: 0.8rem; flex-shrink: 0; margin-top: 0.12rem; }
 
-    /* WORK LINK */
-    .btn-work {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      margin-top: 0.75rem;
-      font-size: 0.9rem; font-weight: 700; color: var(--pink-dark);
-      text-decoration: none; border-bottom: 2px solid var(--pink);
-      padding-bottom: 0.1rem; transition: color 0.15s ease, border-color 0.15s ease;
+    /* CTA */
+    .cta-section { text-align: center; padding: 6rem 2rem 8rem; max-width: 760px; margin: 0 auto; }
+    .cta-sub { font-size: 1rem; color: var(--muted); margin-bottom: 3rem; line-height: 1.7; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1.1rem 2.8rem; background-color: var(--pink);
+      background-image: radial-gradient(ellipse 12px 8px at 20% 40%, rgba(255,255,255,0.2) 0%, transparent 70%), radial-gradient(ellipse 8px 12px at 60% 25%, rgba(255,255,255,0.15) 0%, transparent 70%);
+      color: #fafafa; font-family: var(--heading); font-size: 1.1rem; font-weight: 400;
+      border-radius: 6px; transition: all 0.2s; letter-spacing: 0.01em;
+      box-shadow: 0 6px 24px rgba(225,75,135,0.4), 0 2px 4px rgba(0,0,0,0.2);
     }
-    .btn-work:hover { color: var(--pink); border-color: var(--pink-light); }
-
-    /* CTA ROW */
-    .cta-row { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
-    .btn-sign {
-      flex: 1; min-width: 220px;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-      background: var(--pink); color: #fff; text-decoration: none;
-      border-radius: 8px; font-family: var(--sans); font-size: 1rem; font-weight: 700;
-      padding: 1rem 1.75rem; transition: background 0.2s ease;
-    }
-    .btn-sign:hover { background: var(--pink-dark); }
-    .btn-call {
-      display: inline-flex; align-items: center; justify-content: center;
-      background: transparent; color: var(--black); text-decoration: none;
-      border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600;
-      padding: 1rem 1.75rem; border: 2px solid var(--ash);
-      transition: border-color 0.2s ease;
-    }
-    .btn-call:hover { border-color: var(--stone); }
+    .cta-btn:hover { background-color: #e86fa0; transform: scale(1.03); box-shadow: 0 8px 30px rgba(225,75,135,0.5); color: #fafafa; }
+    .cta-secondary { margin-top: 2rem; font-size: 0.85rem; color: #4a4a4a; }
+    .cta-secondary a { color: var(--dim); text-decoration: underline; text-underline-offset: 3px; }
+    .cta-secondary a:hover { color: var(--pink); }
 
     /* FOOTER */
-    .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--ash); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
-    .doc-footer p { font-size: 0.75rem; color: var(--mist); }
-    .doc-footer a { color: var(--pink); text-decoration: none; }
-    .doc-footer a:hover { text-decoration: underline; }
+    footer { border-top: 1px solid var(--border); padding: 2rem; font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    footer a { color: var(--gold); }
+    .footer-disclaimer { border-top: 1px solid var(--border); padding: 1rem 2rem; font-size: 0.75rem; color: #3d3533; text-align: center; }
 
-    /* MOBILE */
-    @media (max-width: 768px) {
-      .doc-inner { padding: 1.5rem; }
-      .parties-grid { grid-template-columns: 1fr; }
-      .site-header { padding: 0.75rem 1rem; }
-      .doc-title { font-size: 1.3rem; }
-      .page-wrap { padding: 1.5rem 1rem 4rem; }
-      .coverage-diagram { grid-template-columns: 1fr; }
-      .pricing-options { grid-template-columns: 1fr; }
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .proposal-hero { padding: 6rem 1.5rem 3.5rem; }
+      .hero-headline { font-size: 1.85rem; }
+      .prop-section { padding: 3.5rem 1.5rem; }
+      .model-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
-      .cta-row { flex-direction: column; }
-      .btn-sign, .btn-call { width: 100%; text-align: center; justify-content: center; }
-      .deal-flow { flex-direction: column; gap: 0.4rem; }
-      .deal-arrow { transform: rotate(90deg); justify-content: center; }
+      .hero-headline { font-size: 1.5rem; }
+      nav { padding: 0 1rem; }
+      .config-tabs { flex-direction: column; }
+      .config-tab { border-bottom: 1px solid var(--border); border-right: none; text-align: left; padding: 0.85rem 1.25rem; }
+      .config-tab.active { border-left: 3px solid var(--pink); border-bottom-color: var(--border); }
+      .config-panel { padding: 1.5rem; }
+      .studio-sliders { grid-template-columns: 1fr; gap: 1.25rem; }
+      .config-result-grid { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+      .hr-btn { flex: 1 1 calc(50% - 0.375rem); }
+      .cat-header { padding: 1rem 1.1rem; }
+      .cat-body { padding: 0 1.1rem 1.25rem; }
     }
   </style>
 </head>
 <body>
 
 <!-- PASSWORD GATE -->
-<div id="password-gate">
-  <div class="gate-box">
-    <img src="/logo-v3.png" alt="Mexzungu Group" class="gate-logo">
-    <div class="gate-wordmark">Mexzungu Group</div>
-    <div class="gate-divider"></div>
-    <div class="gate-title">Delta40 Proposal</div>
-    <div class="gate-subtitle">This document is confidential. Enter the access code to continue.</div>
-    <div class="gate-input-wrap">
-      <input id="gate-input" class="gate-input" type="password" placeholder="Access code" autocomplete="off" spellcheck="false">
-      <button id="gate-btn" class="gate-btn">Continue</button>
-      <div id="gate-error" class="gate-error"></div>
-    </div>
+<div id="pw-gate">
+  <div class="pw-card">
+    <img src="/logo-v3.png" alt="Mexzungu Group" class="pw-logo">
+    <div class="pw-label">Private Proposal</div>
+    <div class="pw-heading">This page is for you.</div>
+    <p class="pw-sub">Enter your access code to read the proposal.</p>
+    <input type="password" id="pw-input" class="pw-input" placeholder="access code" autocomplete="off" autofocus>
+    <button class="pw-btn" onclick="checkPassword()">Open proposal</button>
+    <div class="pw-error" id="pw-error"></div>
+    <p class="pw-footer-note">This proposal is confidential and prepared specifically for Delta40.</p>
   </div>
 </div>
 
-<header class="site-header">
-  <a href="https://mexzungu.com" class="logo-wrap">
-    <img src="/logo-v3.png" alt="Mexzungu Group">
-  </a>
-  <div class="header-meta">
-    <h1>Studio Foundation Retainer</h1>
-    <p>Delta40 x Mexzungu Group &nbsp;|&nbsp; May 2026</p>
+<!-- PROPOSAL CONTENT -->
+<div id="proposal-content">
+
+<nav>
+  <a href="https://mexzungu.com" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+  <div class="nav-right">
+    <span class="nav-title">Delta40 x Mexzungu Group</span>
+    <span>Proposal. June 2026.</span>
   </div>
-</header>
+</nav>
 
-<div class="page-wrap">
-  <div class="doc-card">
-    <div class="doc-top-stripe"></div>
-    <div class="doc-inner">
+<main>
 
-      <div class="doc-wordmark">
-        <img src="/logo-v3.png" alt="Mexzungu Group">
-        <div class="doc-wordmark-text">
-          <span>Mexzungu Group</span>
-          <span>Outlaw Studio. Chaos starts companies. Structure builds them.</span>
-        </div>
+<!-- HERO -->
+<div class="proposal-hero">
+  <div class="hero-tag">Delta40. Nick, Ritesh. June 2026.</div>
+  <h1 class="hero-headline">16 portfolio companies across 30 African countries. No in-house legal architecture. Not a problem yet. Not for long.</h1>
+  <p class="hero-copy">You came to the call. We listened. Here is what we are proposing.</p>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 01: WHAT WE HEARD -->
+<div class="prop-section">
+  <div class="prop-label">01 / What we heard</div>
+  <div class="prop-heading">What you said. What we understood.</div>
+
+  <div class="heard-block">
+    <div class="heard-label">What you said</div>
+    <ul class="heard-list">
+      <li>Studio model. 16 portfolio companies across 30+ African countries.</li>
+      <li>No in-house legal function.</li>
+      <li>Wilson Sonsini was a one-time fund structuring engagement. Not a standing relationship.</li>
+      <li>Single invoice. Internally flexible on how to account for it.</li>
+    </ul>
+  </div>
+
+  <div class="heard-block">
+    <div class="heard-label">What you did not say but we understood</div>
+    <p class="prop-copy">At 16 companies the gap is manageable. At 50 companies by 2030, the absence of a legal architecture is not an inconvenience. It is the thing every institutional LP and follow-on investor will find in diligence.</p>
+  </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 02: WHAT BREAKS -->
+<div class="prop-section">
+  <div class="prop-label">02 / What breaks</div>
+  <div class="prop-heading">Four risks. Named and concrete.</div>
+
+  <ul class="risk-list">
+    <li class="risk-item">
+      <div class="risk-number">1</div>
+      <div>
+        <div class="risk-title">Studio-built companies carry governance exposure.</div>
+        <div class="risk-desc">Five of your 16 companies were built inside the studio. Board composition, conflict provisions, founder IP not formally assigned. A Series A investor finds this in 30 minutes of DD.</div>
       </div>
-
-      <h1 class="doc-title">Delta40: Studio Foundation Retainer</h1>
-      <p class="doc-subtitle">Proposal. 29 May 2026.</p>
-
-      <!-- 01 PARTIES -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">01 &mdash; Parties</div>
-
-        <div class="parties-grid">
-          <div class="party-block">
-            <div class="party-label">The Client</div>
-            <div class="party-name">Delta40 Advisors Ltd</div>
-            <div class="party-detail">
-              Nairobi-based venture studio and fund manager. $20M fund closed February 2026. 16 portfolio companies across 30+ African countries.<br>
-              Nick Handler, COO<br>
-              <a href="mailto:nick@delta40.com" style="color:var(--pink);text-decoration:none;">nick@delta40.com</a>
-            </div>
-          </div>
-          <div class="party-block">
-            <div class="party-label">The Studio</div>
-            <div class="party-name">Mexzungu Consulting</div>
-            <div class="party-detail">
-              Pepe Carrillo (Chief Disruption Officer)<br>
-              <a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="doc-date-line">Dated: 29 May 2026 &nbsp;|&nbsp; Valid through 30 June 2026</div>
+    </li>
+    <li class="risk-item">
+      <div class="risk-number">2</div>
+      <div>
+        <div class="risk-title">Cross-border regulatory gaps are portfolio risk.</div>
+        <div class="risk-desc">CBK fintech licensing for Flowt. CBN requirements in Nigeria. CMA compliance in Kenya. One misstep costs the portfolio company the round.</div>
       </div>
-
-      <!-- 02 THE CHALLENGE -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">02 &mdash; The Challenge</div>
-        <p>Delta40 closed a $20M fund in February 2026. Sixteen portfolio companies. Thirty-plus African countries. No in-house legal function.</p>
-        <p>The complexity runs at two levels simultaneously. At fund level: LP obligations, CMA and CBK regulatory requirements, investor reporting, co-investment structuring, and constitutional documents that govern how capital moves. At portfolio level: entity setup across multiple jurisdictions, commercial contracts, co-founder and employment agreements, IP protection, and fundraising documentation for companies that cannot afford standalone senior legal counsel at the $100k&ndash;$500k check stage.</p>
-        <p>When legal infrastructure breaks at this scale, it does not break quietly. It breaks at due diligence, at fundraising, at regulatory inspection. A Studio Foundation Retainer replaces that exposure with one monthly fee and a legal function that operates across both levels, scales automatically with the portfolio, and does not require Delta40 to manage separate counsel relationships for every jurisdiction or transaction.</p>
+    </li>
+    <li class="risk-item">
+      <div class="risk-number">3</div>
+      <div>
+        <div class="risk-title">DFI LP compliance is a gating condition, not a future concern.</div>
+        <div class="risk-desc">FMO and GIZ require GDPR-equivalent data protection from portfolio companies before releasing follow-on capital. Most of your 16 companies are not ready.</div>
       </div>
-
-      <!-- 03 SCOPE OF SERVICES -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">03 &mdash; Scope of Services</div>
-        <p>Two levels of coverage under a single retainer. Fund-level work and portfolio-level work are both included. No internal allocation decisions, no tracking which company used which hours. That is Mexzungu's problem to manage, not Delta40's.</p>
-
-        <!-- DEAL FLOW DIAGRAM -->
-        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1rem;">How the retainer works, from a single invoice to full dual-level coverage.</p>
-        <div class="deal-flow">
-          <div class="deal-step">
-            <div class="deal-step-num">1</div>
-            <div class="deal-step-title">Monthly Retainer</div>
-            <div class="deal-step-desc">One invoice. One relationship. One point of contact.</div>
-          </div>
-          <div class="deal-arrow">&#8594;</div>
-          <div class="deal-step">
-            <div class="deal-step-num">2</div>
-            <div class="deal-step-title">Dual Coverage</div>
-            <div class="deal-step-desc">Fund-level + portfolio-level. No internal hour tracking.</div>
-          </div>
-          <div class="deal-arrow">&#8594;</div>
-          <div class="deal-step">
-            <div class="deal-step-num">3</div>
-            <div class="deal-step-title">Auto-Scales</div>
-            <div class="deal-step-desc">Price adjusts at every 10-company threshold. No renegotiation.</div>
-          </div>
-          <div class="deal-arrow">&#8594;</div>
-          <div class="deal-step">
-            <div class="deal-step-num">4</div>
-            <div class="deal-step-title">Preferred Overage</div>
-            <div class="deal-step-desc">Out-of-scope at $200/hr pre-purchased or $250/hr on demand.</div>
-          </div>
-          <div class="deal-arrow">&#8594;</div>
-          <div class="deal-step">
-            <div class="deal-step-num">5</div>
-            <div class="deal-step-title">Success Fee</div>
-            <div class="deal-step-desc">0.75% on raises above $2M. Aligned on outcomes.</div>
-          </div>
-        </div>
-
-        <!-- COVERAGE DIAGRAM -->
-        <p style="font-size:0.85rem;color:var(--stone);margin-bottom:1rem;">What each level covers. Click either card below to expand the full scope.</p>
-        <div class="coverage-diagram">
-          <div class="coverage-col">
-            <div class="coverage-col-label">Fund-Level</div>
-            <ul>
-              <li>LP agreements &amp; investor correspondence</li>
-              <li>CMA and CBK regulatory compliance</li>
-              <li>Fund governance &amp; board resolutions</li>
-              <li>Investor reporting frameworks</li>
-              <li>Constitutional documents &amp; amendments</li>
-              <li>Unlimited async for Delta40 partners</li>
-            </ul>
-          </div>
-          <div class="coverage-col">
-            <div class="coverage-col-label">Portfolio-Level (16 companies)</div>
-            <ul>
-              <li>Entity setup across jurisdictions</li>
-              <li>Commercial contracts &amp; term sheets</li>
-              <li>Co-founder agreements &amp; equity vesting</li>
-              <li>IP registration &amp; protection</li>
-              <li>Fundraising docs: SAFEs, notes, equity rounds</li>
-              <li>Cross-border compliance navigation</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- SCOPE CARDS (clickable, collapsible, hash-navigable) -->
-        <div class="scope-card" id="fund-level">
-          <button class="scope-card-header" onclick="toggleScope('fund-level')" aria-expanded="false">
-            <div class="scope-card-info">
-              <div class="scope-card-title">Fund-Level Coverage</div>
-              <div class="scope-card-summary">LP agreements, CMA/CBK compliance, fund governance. Unlimited async access for Delta40 partners within reasonable scope.</div>
-            </div>
-            <span class="scope-card-chevron">&#8250;</span>
-          </button>
-          <div class="scope-card-body" id="fund-level-body">
-            <div class="scope-card-body-inner">
-              <ul class="scope-list">
-                <li>LP agreement reviews and investor correspondence</li>
-                <li>Fund governance: investment committee support, board resolutions, manager obligations</li>
-                <li>CMA and CBK regulatory compliance monitoring and filing coordination</li>
-                <li>Investor reporting frameworks and disclosure obligations</li>
-                <li>Constitutional documents: fund formation documents, amendments, co-investor frameworks</li>
-                <li>Follow-on round structuring and co-investor negotiations</li>
-                <li>General legal access for Delta40 partners: async unlimited within reasonable scope, calls within 72 hours</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="scope-card" id="portfolio-level">
-          <button class="scope-card-header" onclick="toggleScope('portfolio-level')" aria-expanded="false">
-            <div class="scope-card-info">
-              <div class="scope-card-title">Portfolio-Level Coverage</div>
-              <div class="scope-card-summary">Entity setup, commercial contracts, IP, and fundraising docs across all 16 portfolio companies. No per-company billing.</div>
-            </div>
-            <span class="scope-card-chevron">&#8250;</span>
-          </button>
-          <div class="scope-card-body" id="portfolio-level-body">
-            <div class="scope-card-body-inner">
-              <ul class="scope-list">
-                <li>Entity formation and corporate structuring for new and existing portfolio companies</li>
-                <li>Commercial contracts, term sheets, vendor and supplier agreements</li>
-                <li>Co-founder and employment agreements, equity vesting, and option plans</li>
-                <li>IP registration, assignment, and protection coordination</li>
-                <li>Fundraising documentation per portfolio company: SAFEs, equity rounds, convertible notes, debt facilities</li>
-                <li>Cross-border compliance queries and regulatory navigation across operating jurisdictions</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <p style="font-size:0.88rem;color:var(--stone);">Work outside retainer scope is billed at the preferred overage rate. See engagement model below.</p>
+    </li>
+    <li class="risk-item">
+      <div class="risk-number">4</div>
+      <div>
+        <div class="risk-title">No standard legal architecture means every round starts from scratch.</div>
+        <div class="risk-desc">No template instruments, no consistent governance, no reusable structure. The cost compounds with every new raise, every new market, every new portfolio company.</div>
       </div>
+    </li>
+  </ul>
 
-      <!-- 04 ENGAGEMENT MODEL -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">04 &mdash; Engagement Model</div>
-        <p>The Studio Foundation Retainer is a single monthly fee that scales automatically with the size of Delta40's portfolio. No renegotiation at any threshold. One invoice, one relationship, one point of contact across fund and portfolio.</p>
+  <p class="risk-window">The window is the next portfolio company fundraising round. That is when this becomes visible to institutional investors.</p>
+</div>
 
-        <!-- 3 PRICING OPTION CARDS -->
-        <div class="pricing-options">
+<div class="prop-divider"></div>
 
-          <!-- OPTION 1: HOUR BANK -->
-          <div class="pricing-card">
-            <div class="pricing-card-top">
-              <div class="pricing-tag">Entry</div>
-            </div>
-            <div class="pricing-name">Hour Bank</div>
-            <div class="pricing-badge">$200/hr</div>
-            <div class="pricing-desc">No monthly commitment. Pre-purchase a block of hours at a discount off the standard $250/hr overage rate. Minimum purchase: 10 hours ($2,000). Valid for one retainer period (30 days). Non-transferable.</div>
-            <div class="pricing-for">Best for one-off needs: a fundraising round, a specific deal, cap table cleanup.</div>
-          </div>
+<!-- 03: WHAT WE BUILD -->
+<div class="prop-section">
+  <div class="prop-label">03 / What we build</div>
+  <div class="prop-heading">One relationship. Three ways to engage.</div>
+  <p class="prop-copy">Each model maps to a different point in Delta40's growth. Pick the one that fits now. Upgrade when the portfolio demands it.</p>
 
-          <!-- OPTION 2: MODULAR -->
-          <div class="pricing-card">
-            <div class="pricing-card-top">
-              <div class="pricing-tag">Flexible</div>
-            </div>
-            <div class="pricing-name">Modular</div>
-            <div class="pricing-badge">from $3,000/mo</div>
-            <div class="pricing-detail">
-              Choose which level to activate:
-              <ul>
-                <li>Fund-Level only &mdash; $3,000/mo</li>
-                <li>Portfolio-Level only &mdash; $3,500/mo</li>
-                <li>Both levels together &mdash; $6,000/mo</li>
-              </ul>
-            </div>
-            <div class="pricing-desc" style="margin-top:0.15rem;">Add either level independently. Switch or combine at any 30-day renewal. No penalty for adjusting coverage.</div>
-            <div class="pricing-for">Best for funds with existing coverage on one side, or portfolios not yet fully structured.</div>
-          </div>
-
-          <!-- OPTION 3: ALL INCLUSIVE -->
-          <div class="pricing-card premium">
-            <div class="pricing-card-top">
-              <div class="pricing-tag">Premium</div>
-              <div class="pricing-recommended">Recommended</div>
-            </div>
-            <div class="pricing-name">All Inclusive</div>
-            <div class="pricing-badge">from $5,500/mo</div>
-            <div class="pricing-current-tier">Current tier: $5,500/mo &mdash; up to 20 companies</div>
-            <div class="pricing-desc">Full dual-level coverage. Auto-scaling at every 10-company threshold. No renegotiation, no internal allocation.</div>
-
-            <button class="pricing-table-toggle" onclick="togglePricingTable()" id="pricing-toggle-btn">Show pricing tiers</button>
-            <div class="pricing-inner-table" id="pricing-inner-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Portfolio size</th>
-                    <th>Monthly</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="current-row">
-                    <td>Up to 20 <span class="current-badge">Now</span></td>
-                    <td class="amount">$5,500</td>
-                  </tr>
-                  <tr>
-                    <td>21&ndash;30</td>
-                    <td class="amount">$7,000</td>
-                  </tr>
-                  <tr>
-                    <td>31&ndash;40</td>
-                    <td class="amount">$8,000</td>
-                  </tr>
-                  <tr>
-                    <td>41+</td>
-                    <td class="amount">$8,500</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="pricing-detail" style="margin-top:0.2rem;">
-              <ul>
-                <li>1 VA hour/month included (non-transferable)</li>
-                <li>0.75% success fee on raises over $2M</li>
-                <li>Overage: $250/hr on demand or $200/hr pre-purchased</li>
-              </ul>
-            </div>
-            <div class="pricing-for">Full coverage, both levels, fully automated. The institutional-grade option.</div>
-          </div>
-
-        </div>
-        <!-- END PRICING OPTIONS -->
-
-        <!-- EQUITY BLOCK (below all cards) -->
-        <div class="equity-block">
-          <div class="equity-block-label">Equity Option</div>
-          <p>0.25% equity per new portfolio company onboarded, in lieu of one-time setup fees per company. When Delta40 brings in a new portfolio company and Mexzungu provides the initial legal setup (entity formation, co-founder agreement, corporate structure), the fee can be settled as 0.25% equity in that company at the most recent closing price instead of a cash invoice. This option is elected in writing before work commences on that company.</p>
-        </div>
-
-        <!-- DISCLAIMER (below all cards) -->
-        <div class="disclaimer-block">
-          Fees are exclusive of registration fees and local counsel fees (if any). Where formal filings or local counsel appearances are required, those costs are quoted separately and passed through at cost.
-        </div>
-      </div>
-
-      <!-- 05 LOCAL COUNSEL NETWORK -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">05 &mdash; Local Counsel Network</div>
-        <p>Mexzungu's local counsel network covers 30+ African jurisdictions. For matters requiring formal legal opinions, court filings, or in-jurisdiction appearances, Mexzungu coordinates directly with trusted local counsel, briefing them in context and managing the relationship so Delta40 does not have to.</p>
-
-        <div class="network-block">
-          <p>No separate retainer needed for local counsel coordination. Delta40 pays local counsel fees directly only where formal filings or court appearances are required. All coordination, briefing, and quality control is included in the retainer.</p>
-        </div>
-
-        <p>Most legal questions across a 30-country portfolio can be answered without triggering local counsel. When local counsel is required, Mexzungu handles the brief, the context, and the oversight. One relationship, across all the markets Delta40 operates in.</p>
-      </div>
-
-      <!-- 06 WHY MEXZUNGU -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">06 &mdash; Why Mexzungu</div>
-        <p>Cross-border deal structuring across Africa, built from 20+ years of legal practice at the intersection of corporate law, venture architecture, and emerging market operations. Deals structured under Delaware, Mauritius, Kenyan, and multiple African-jurisdiction law. Regulatory experience with CMA, CBK, and equivalent bodies across East and West Africa.</p>
-        <p>We have built legal infrastructure for venture studios that move fast and cannot afford legal that slows them down. Entity setup, IP, fundraising support, fund governance, and cross-border compliance running simultaneously across distributed portfolios. We do not come from a law firm model. We come from inside the machine.</p>
-        <a href="/work" class="btn-work" target="_blank">See our work &rarr;</a>
-      </div>
-
-      <!-- 07 NEXT STEPS -->
-      <div class="proposal-section">
-        <div class="proposal-eyebrow">07 &mdash; Next Steps</div>
-        <p>Ready to proceed? Confirm intent on the signing page and the engagement letter arrives within 24 hours. Nothing binding until the engagement letter is signed.</p>
-        <div class="fine-print">
-          This engagement is governed by the laws of Kenya and interpreted in accordance with English legal principles, consistent with Delta40's fund domicile and primary operating jurisdiction. Either party may terminate with 60 days written notice. Everything discussed stays confidential. This is venture architecture, deal structuring, and legal operations consulting and does not constitute licensed legal advice in any jurisdiction.
-        </div>
-        <div class="cta-row">
-          <a href="/sign/delta40/" class="btn-sign">
-            Confirm Intent &amp; Sign &nbsp; &#8594;
-          </a>
-          <a href="https://mexzungu.com/talk_to_pepe" target="_blank" class="btn-call">
-            Book a Call First
-          </a>
-        </div>
-      </div>
-
-      <div class="doc-footer">
-        <p>Mexzungu Group Ltd &nbsp;|&nbsp; Royal Road, Henrietta, 73120, Mauritius</p>
-        <p><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> &nbsp;|&nbsp; <a href="https://mexzungu.com">mexzungu.com</a></p>
-      </div>
-
+  <div class="model-grid">
+    <div class="model-card">
+      <div class="model-tag">On demand</div>
+      <div class="model-name">Hour Bank</div>
+      <div class="model-desc">Pre-purchase blocks of hours at a Delta40 rate. No monthly commitment. Use them for a specific term sheet, a cap table review, a one-off filing. Unused hours partially roll.</div>
+    </div>
+    <div class="model-card">
+      <div class="model-tag">Foundation</div>
+      <div class="model-name">Foundation</div>
+      <div class="model-desc">Fixed monthly fee covering the fund and up to 16 portfolio companies. Five hours per week of general support across fund and portfolio. Overage billed separately.</div>
+    </div>
+    <div class="model-card featured">
+      <div class="model-badge">Recommended</div>
+      <div class="model-tag">Full coverage</div>
+      <div class="model-name">Studio Partner</div>
+      <div class="model-desc">Fund governance, portfolio structural support, and configurable weekly hours. Built for a studio at Delta40's scale. One invoice. No internal allocation decisions.</div>
     </div>
   </div>
+
+  <p class="prop-copy" style="margin-top:2rem;">Configure each model below to see what it costs for your portfolio size and time needs.</p>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 04: CONFIGURATOR -->
+<div class="prop-section">
+  <div class="prop-label">04 / What this costs</div>
+  <div class="prop-heading">Configure your engagement.</div>
+
+  <div class="configurator">
+    <div class="config-tabs">
+      <button class="config-tab active" onclick="switchTab('hourbank')" id="tab-hourbank">Hour Bank</button>
+      <button class="config-tab" onclick="switchTab('foundation')" id="tab-foundation">Foundation</button>
+      <button class="config-tab" onclick="switchTab('studio')" id="tab-studio">Studio Partner &#9733;</button>
+    </div>
+
+    <!-- HOUR BANK -->
+    <div class="config-panel active" id="panel-hourbank">
+      <div class="config-sec-label">Select hours per month</div>
+      <div class="hr-buttons">
+        <button class="hr-btn active" onclick="selectHours(10)" id="hr-10">10 hrs</button>
+        <button class="hr-btn" onclick="selectHours(20)" id="hr-20">20 hrs</button>
+        <button class="hr-btn" onclick="selectHours(30)" id="hr-30">30 hrs</button>
+        <button class="hr-btn" onclick="selectHours(40)" id="hr-40">40 hrs</button>
+      </div>
+      <div class="config-result">
+        <div class="config-result-grid">
+          <div>
+            <div class="config-result-label">Delta40 rate</div>
+            <div class="config-result-value pink" id="hb-rate">$200/hr</div>
+            <div class="config-result-value struck">$250/hr</div>
+          </div>
+          <div>
+            <div class="config-result-label">Monthly total</div>
+            <div class="config-result-value pink" id="hb-total">$2,000</div>
+          </div>
+          <div>
+            <div class="config-result-label">Hours that roll (50%)</div>
+            <div class="config-result-value small" id="hb-roll">Up to 5 hrs</div>
+          </div>
+          <div>
+            <div class="config-result-label">Hours that expire</div>
+            <div class="config-result-value small" id="hb-expire">5 hrs</div>
+          </div>
+        </div>
+        <div class="config-note">50% of unused hours carry to the following month. The remainder expires. No monthly commitment. Buy again when you need to.</div>
+      </div>
+    </div>
+
+    <!-- FOUNDATION -->
+    <div class="config-panel" id="panel-foundation">
+      <div class="slider-wrap">
+        <div class="config-sec-label">Portfolio companies covered</div>
+        <div class="slider-row">
+          <span class="slider-edge">0</span>
+          <input type="range" id="foundation-slider" min="0" max="16" value="8" step="1" oninput="updateFoundation(this)">
+          <span class="slider-edge right">16</span>
+        </div>
+        <div class="slider-val" id="foundation-companies-label">8 portfolio companies</div>
+      </div>
+      <div class="config-result">
+        <div class="config-result-grid">
+          <div>
+            <div class="config-result-label">Monthly fee (Delta40)</div>
+            <div class="config-result-value pink" id="fn-fee">$1,600/mo</div>
+          </div>
+          <div>
+            <div class="config-result-label">Standard rate</div>
+            <div class="config-result-value struck" id="fn-std">$2,000/mo</div>
+          </div>
+          <div>
+            <div class="config-result-label">You save</div>
+            <div class="config-result-value green" id="fn-save">$400/mo</div>
+          </div>
+          <div>
+            <div class="config-result-label">Included</div>
+            <div class="config-result-value small">5 hrs/week</div>
+          </div>
+        </div>
+        <div class="config-note">Base: $800/mo fund only. +$100/mo per portfolio company. Overage above 5 hrs/week: $200/hr.</div>
+      </div>
+    </div>
+
+    <!-- STUDIO PARTNER -->
+    <div class="config-panel" id="panel-studio">
+      <div class="studio-sliders">
+        <div class="slider-wrap">
+          <div class="config-sec-label">Portfolio companies</div>
+          <div class="slider-row">
+            <span class="slider-edge">0</span>
+            <input type="range" id="studio-companies" min="0" max="16" value="8" step="1" oninput="updateStudio()">
+            <span class="slider-edge right">16</span>
+          </div>
+          <div class="slider-val" id="studio-companies-label">8 companies</div>
+        </div>
+        <div class="slider-wrap">
+          <div class="config-sec-label">Weekly hours</div>
+          <div class="slider-row">
+            <span class="slider-edge">5</span>
+            <input type="range" id="studio-hours" min="5" max="10" value="7" step="1" oninput="updateStudio()">
+            <span class="slider-edge right">10</span>
+          </div>
+          <div class="slider-val" id="studio-hours-label">7 hrs/week</div>
+        </div>
+      </div>
+      <div class="config-result">
+        <div class="config-result-grid">
+          <div>
+            <div class="config-result-label">Monthly fee (Delta40)</div>
+            <div class="config-result-value pink" id="sp-fee">$3,080/mo</div>
+          </div>
+          <div>
+            <div class="config-result-label">Standard rate</div>
+            <div class="config-result-value struck" id="sp-std">$3,850/mo</div>
+          </div>
+          <div>
+            <div class="config-result-label">You save</div>
+            <div class="config-result-value green" id="sp-save">$770/mo</div>
+          </div>
+          <div>
+            <div class="config-result-label">Overage</div>
+            <div class="config-result-value small">$150/hr</div>
+          </div>
+        </div>
+        <div class="config-note">At 5 hrs/week: $1,800 base + $100/company. At 10 hrs/week: $2,500 base + $150/company. Linear between. Standard = D40 rate / 0.8.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="equity-callout">
+    <div class="equity-callout-headline">Equity option.</div>
+    <div class="equity-callout-body">Up to 50% of any project fee can be settled as equity in the relevant portfolio company at the most recent closing price. Studio or company election. In writing before work begins.</div>
+  </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 05: PROJECT CATALOGUE -->
+<div class="prop-section">
+  <div class="prop-label">05 / Project catalogue</div>
+  <div class="prop-heading">On-demand project work.</div>
+  <p class="prop-copy">Activate any of these with a side letter. Delta40 retainer holders pay the prices shown.</p>
+
+  <div class="catalogue">
+
+    <div class="cat-item" id="cat-1">
+      <div class="cat-header" onclick="toggleCat('cat-1')">
+        <div class="cat-header-left">
+          <div class="cat-name">Investment Readiness</div>
+          <div class="cat-prices">
+            <span class="cat-price-std">$6,900</span>
+            <span class="cat-price-d40">$5,500</span>
+          </div>
+        </div>
+        <div class="cat-chevron">&#9660;</div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-sublabel">What</div>
+        <div class="cat-what-text">Full pre-raise structural audit for one portfolio company. Gets the company investor-ready before the first term sheet lands.</div>
+        <div class="cat-sublabel">Deliverables</div>
+        <ul class="cat-del-list">
+          <li>Entity structure review</li>
+          <li>Cap table audit and cleanup</li>
+          <li>Data room organized and populated</li>
+          <li>Investor docs reviewed (deck, financials, NDA)</li>
+          <li>Written readiness summary with red flags flagged</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cat-item" id="cat-2">
+      <div class="cat-header" onclick="toggleCat('cat-2')">
+        <div class="cat-header-left">
+          <div class="cat-name">Venture Architecture Readiness</div>
+          <div class="cat-prices">
+            <span class="cat-price-std">$8,100</span>
+            <span class="cat-price-d40">$6,500</span>
+          </div>
+        </div>
+        <div class="cat-chevron">&#9660;</div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-sublabel">What</div>
+        <div class="cat-what-text">Entity map, capital stack, governance framework. The document you hand to a lawyer, investor, or regulator and it holds up.</div>
+        <div class="cat-sublabel">Deliverables</div>
+        <ul class="cat-del-list">
+          <li>Structure memo: entity map, ownership design, jurisdiction</li>
+          <li>Capital architecture: instrument recommendation, fundraising structure</li>
+          <li>IP framework: asset inventory, founder assignment agreements</li>
+          <li>Governance framework: board composition, consent thresholds, reserved matters</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cat-item" id="cat-3">
+      <div class="cat-header" onclick="toggleCat('cat-3')">
+        <div class="cat-header-left">
+          <div class="cat-name">Founder Stack</div>
+          <div class="cat-prices">
+            <span class="cat-price-std">$4,400</span>
+            <span class="cat-price-d40">$3,500</span>
+          </div>
+        </div>
+        <div class="cat-chevron">&#9660;</div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-sublabel">What</div>
+        <div class="cat-what-text">For studio-built companies. The legal foundation before any external capital arrives.</div>
+        <div class="cat-sublabel">Deliverables</div>
+        <ul class="cat-del-list">
+          <li>Co-founder agreements</li>
+          <li>Equity vesting schedules (cliff and linear)</li>
+          <li>IP assignment to correct entity</li>
+          <li>Founder employment or contractor agreements</li>
+          <li>Initial board resolutions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cat-item" id="cat-4">
+      <div class="cat-header" onclick="toggleCat('cat-4')">
+        <div class="cat-header-left">
+          <div class="cat-name">Corporate Readiness</div>
+          <div class="cat-prices">
+            <span class="cat-price-std">$5,250</span>
+            <span class="cat-price-d40">$4,200</span>
+          </div>
+        </div>
+        <div class="cat-chevron">&#9660;</div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-sublabel">What</div>
+        <div class="cat-what-text">Corporate health review before a raise or a partnership. Finds what is broken before the investor does.</div>
+        <div class="cat-sublabel">Deliverables</div>
+        <ul class="cat-del-list">
+          <li>Entity structure check</li>
+          <li>Cap table review</li>
+          <li>Key contracts review: founder agreements, customer, vendor</li>
+          <li>Governance gap analysis</li>
+          <li>Structural risk summary with recommended fixes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cat-item" id="cat-5">
+      <div class="cat-header" onclick="toggleCat('cat-5')">
+        <div class="cat-header-left">
+          <div class="cat-name">IP Readiness</div>
+          <div class="cat-prices">
+            <span class="cat-price-std">$4,000</span>
+            <span class="cat-price-d40">$3,200</span>
+          </div>
+        </div>
+        <div class="cat-chevron">&#9660;</div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-sublabel">What</div>
+        <div class="cat-what-text">Full IP audit by jurisdiction. Answers the question every Series A investor asks: who owns what and where?</div>
+        <div class="cat-sublabel">Deliverables</div>
+        <ul class="cat-del-list">
+          <li>IP inventory by asset type: tech, brand, data, content</li>
+          <li>Ownership verification by jurisdiction</li>
+          <li>Protection gap analysis</li>
+          <li>Filing status across operating markets</li>
+          <li>Assignment agreement checklist</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cat-item" id="cat-6">
+      <div class="cat-header" onclick="toggleCat('cat-6')">
+        <div class="cat-header-left">
+          <div class="cat-name">Data Room Readiness</div>
+          <div class="cat-prices">
+            <span class="cat-price-std">$3,500</span>
+            <span class="cat-price-d40">$2,800</span>
+          </div>
+        </div>
+        <div class="cat-chevron">&#9660;</div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-sublabel">What</div>
+        <div class="cat-what-text">Build and populate the data room for a due diligence process. Investor-ready within two weeks.</div>
+        <div class="cat-sublabel">Deliverables</div>
+        <ul class="cat-del-list">
+          <li>Folder architecture built</li>
+          <li>Existing documents indexed and placed</li>
+          <li>Gap list of missing items</li>
+          <li>Document naming and version control applied</li>
+          <li>Investor-grade summary index</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cat-item" id="cat-7">
+      <div class="cat-header" onclick="toggleCat('cat-7')">
+        <div class="cat-header-left">
+          <div class="cat-name">Privacy Readiness</div>
+          <div class="cat-prices">
+            <span class="cat-price-std">$3,500</span>
+            <span class="cat-price-d40">$2,800</span>
+          </div>
+        </div>
+        <div class="cat-chevron">&#9660;</div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-sublabel">What</div>
+        <div class="cat-what-text">Data privacy and compliance review. Required for any portfolio company handling user data or raising from European DFIs.</div>
+        <div class="cat-sublabel">Deliverables</div>
+        <ul class="cat-del-list">
+          <li>Gap analysis vs GDPR and applicable local law: CBK data regs, NDPA Kenya</li>
+          <li>Data map and ROPA</li>
+          <li>Policy stack: privacy policy, cookie consent, vendor DPA templates</li>
+          <li>Prioritized remediation action plan</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 06: SUCCESS FEES -->
+<div class="prop-section">
+  <div class="prop-label">06 / Success fees</div>
+  <div class="prop-heading">When a portfolio company transaction closes.</div>
+  <p class="prop-copy">The following apply. Activated via side letter.</p>
+
+  <table class="fees-table">
+    <thead>
+      <tr>
+        <th>Transaction</th>
+        <th>Standard</th>
+        <th>Delta40</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="type">Debt facility</td>
+        <td class="rate-std">1%</td>
+        <td class="rate-d40">0.8%</td>
+      </tr>
+      <tr>
+        <td class="type">Equity round</td>
+        <td class="rate-std">1.875%</td>
+        <td class="rate-d40">1.5%</td>
+      </tr>
+      <tr>
+        <td class="type">M&amp;A</td>
+        <td class="rate-std">2.5%</td>
+        <td class="rate-d40">2%</td>
+      </tr>
+      <tr>
+        <td class="type">Asset deal</td>
+        <td class="rate-std">3.125%</td>
+        <td class="rate-d40">2.5%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="fees-terms">
+    Minimum deal size $500,000. Six months from written activation of the mandate. Six-month post-termination tail on deals introduced during the mandate period.
+  </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 07: TRACK RECORD -->
+<div class="prop-section">
+  <div class="prop-label">07 / Track record</div>
+  <div class="prop-heading">We have done this.</div>
+  <p class="prop-copy">Duara Education. Kenya operating entity above a Delaware C-Corp. Pepe designed the architecture, drafted the governance documents, structured the fundraising instruments across multiple rounds, and sits on the board as counsel-investor. Duara is scaling from 4 to 40 schools across East Africa.</p>
+  <p class="prop-copy"><a href="https://mexzungu.com/work" style="color:var(--pink);text-decoration:underline;text-underline-offset:3px;">mexzungu.com/work</a></p>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 08: FINE PRINT -->
+<div class="prop-section">
+  <div class="prop-label">08 / Fine print</div>
+  <div class="prop-heading">Short version.</div>
+  <ul class="fine-print-list">
+    <li>Mauritius law governs. 30-day written notice to terminate, either party. Mutual confidentiality.</li>
+    <li>This is structural consulting and venture architecture, not legal advice.</li>
+    <li>Fees exclude registration fees and local counsel fees, quoted separately and passed through at cost.</li>
+  </ul>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="prop-label">Ready?</div>
+  <h2 class="prop-heading" style="text-align:center;">Let us get to work.</h2>
+  <p class="cta-sub">The engagement letter is ready. Review and sign when you are.</p>
+  <a class="cta-btn" href="/sign/delta40">Review and sign the engagement letter</a>
+  <p class="cta-secondary">
+    Not ready? <a href="https://mexzungu.com/talk_to_pepe" target="_blank">Book 30 minutes.</a>
+  </p>
+</div>
+
+</main>
+
+<footer>
+  <span>Mexzungu Group Ltd. Royal Road, Henrietta, 73120, Mauritius</span>
+  <span><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> &nbsp; <a href="https://mexzungu.com">mexzungu.com</a></span>
+</footer>
+<div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice.</div>
+
 </div>
 
 <script>
-  /* ---- SCOPE CARD TOGGLE ---- */
-  function toggleScope(id) {
-    var card = document.getElementById(id);
-    var body = document.getElementById(id + '-body');
-    var header = card.querySelector('.scope-card-header');
-    var isOpen = body.classList.contains('open');
-
-    if (isOpen) {
-      body.classList.remove('open');
-      header.setAttribute('aria-expanded', 'false');
-      if (window.location.hash === '#' + id) {
-        history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
-    } else {
-      body.classList.add('open');
-      header.setAttribute('aria-expanded', 'true');
-      history.replaceState(null, '', '#' + id);
-    }
+/* ---- PASSWORD GATE ---- */
+(function () {
+  var CORRECT = 'delta40-2026';
+  var KEY = 'delta40_auth';
+  function unlock() {
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('proposal-content').classList.add('visible');
   }
-
-  window.addEventListener('DOMContentLoaded', function () {
-    var hash = window.location.hash.replace('#', '');
-    if (hash === 'fund-level' || hash === 'portfolio-level') {
-      var body = document.getElementById(hash + '-body');
-      var card = document.getElementById(hash);
-      if (body && card) {
-        body.classList.add('open');
-        card.querySelector('.scope-card-header').setAttribute('aria-expanded', 'true');
-        setTimeout(function () {
-          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
-      }
-    }
+  if (sessionStorage.getItem(KEY) === '1') { unlock(); return; }
+  document.getElementById('pw-input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') checkPassword();
   });
-
-  /* ---- PRICING TABLE TOGGLE ---- */
-  function togglePricingTable() {
-    var table = document.getElementById('pricing-inner-table');
-    var btn = document.getElementById('pricing-toggle-btn');
-    var isOpen = table.classList.contains('open');
-    if (isOpen) {
-      table.classList.remove('open');
-      btn.textContent = 'Show pricing tiers';
+  window.checkPassword = function () {
+    var val = document.getElementById('pw-input').value.trim();
+    var input = document.getElementById('pw-input');
+    var err = document.getElementById('pw-error');
+    if (val === CORRECT) {
+      sessionStorage.setItem(KEY, '1');
+      unlock();
     } else {
-      table.classList.add('open');
-      btn.textContent = 'Hide pricing tiers';
+      input.classList.add('error');
+      err.textContent = 'Wrong code. Try again.';
+      input.value = '';
+      setTimeout(function () { input.classList.remove('error'); }, 400);
+      setTimeout(function () { err.textContent = ''; }, 3000);
+      input.focus();
     }
+  };
+})();
+
+/* ---- RANGE TRACK FILL ---- */
+function fillTrack(el) {
+  var min = parseFloat(el.min) || 0;
+  var max = parseFloat(el.max) || 100;
+  var val = parseFloat(el.value) || 0;
+  var pct = ((val - min) / (max - min)) * 100;
+  el.style.background = 'linear-gradient(to right, #e14b87 ' + pct + '%, #2a2a2a ' + pct + '%)';
+}
+document.querySelectorAll('input[type="range"]').forEach(function (r) {
+  fillTrack(r);
+  r.addEventListener('input', function () { fillTrack(this); });
+});
+
+/* ---- TAB SWITCHING ---- */
+window.switchTab = function (tab) {
+  document.querySelectorAll('.config-tab').forEach(function (t) { t.classList.remove('active'); });
+  document.querySelectorAll('.config-panel').forEach(function (p) { p.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  scheduleSync();
+};
+
+/* ---- HOUR BANK ---- */
+var currentHours = 10;
+window.selectHours = function (hrs) {
+  currentHours = hrs;
+  document.querySelectorAll('.hr-btn').forEach(function (b) { b.classList.remove('active'); });
+  document.getElementById('hr-' + hrs).classList.add('active');
+  renderHourBank();
+};
+function renderHourBank() {
+  var rate = currentHours < 20 ? 200 : 150;
+  var total = currentHours * rate;
+  var roll = Math.floor(currentHours * 0.5);
+  var expire = currentHours - roll;
+  document.getElementById('hb-rate').textContent = '$' + rate + '/hr';
+  document.getElementById('hb-total').textContent = '$' + total.toLocaleString();
+  document.getElementById('hb-roll').textContent = 'Up to ' + roll + ' hrs';
+  document.getElementById('hb-expire').textContent = expire + ' hrs';
+  scheduleSync();
+}
+
+/* ---- FOUNDATION ---- */
+function updateFoundation(el) {
+  var c = parseInt(el ? el.value : document.getElementById('foundation-slider').value);
+  var label = c === 0 ? 'Fund only (0 portfolio companies)' : c + ' portfolio ' + (c === 1 ? 'company' : 'companies');
+  document.getElementById('foundation-companies-label').textContent = label;
+  var fee = 800 + c * 100;
+  var std = 1000 + c * 125;
+  var save = std - fee;
+  document.getElementById('fn-fee').textContent = '$' + fee.toLocaleString() + '/mo';
+  document.getElementById('fn-std').textContent = '$' + std.toLocaleString() + '/mo';
+  document.getElementById('fn-save').textContent = '$' + save.toLocaleString() + '/mo';
+  scheduleSync();
+}
+window.updateFoundation = updateFoundation;
+
+/* ---- STUDIO PARTNER ---- */
+function updateStudio() {
+  var c = parseInt(document.getElementById('studio-companies').value);
+  var h = parseInt(document.getElementById('studio-hours').value);
+  var cLabel = c === 0 ? 'Fund only' : c + ' ' + (c === 1 ? 'company' : 'companies');
+  document.getElementById('studio-companies-label').textContent = cLabel;
+  document.getElementById('studio-hours-label').textContent = h + ' hrs/week';
+  var t = (h - 5) / 5;
+  var base = 1800 + 700 * t;
+  var perCo = 100 + 50 * t;
+  var fee = Math.round(base + c * perCo);
+  var std = Math.round(fee / 0.8);
+  var save = std - fee;
+  document.getElementById('sp-fee').textContent = '$' + fee.toLocaleString() + '/mo';
+  document.getElementById('sp-std').textContent = '$' + std.toLocaleString() + '/mo';
+  document.getElementById('sp-save').textContent = '$' + save.toLocaleString() + '/mo';
+  scheduleSync();
+}
+window.updateStudio = updateStudio;
+
+/* ---- INIT ---- */
+renderHourBank();
+updateFoundation(null);
+updateStudio();
+
+/* ---- API PERSISTENCE ---- */
+var syncTimer = null;
+function scheduleSync() {
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(doSync, 500);
+}
+function doSync() {
+  var activeTab = document.querySelector('.config-tab.active');
+  var model = activeTab ? activeTab.textContent.replace(/\s*★/, '').trim() : 'Hour Bank';
+  var payload = { model: model, timestamp: new Date().toISOString(), sliders: {}, prices: {} };
+  if (model === 'Hour Bank') {
+    var rate = currentHours < 20 ? 200 : 150;
+    payload.sliders = { hours: currentHours };
+    payload.prices = { rate_d40: rate, rate_std: 250, total: currentHours * rate };
+  } else if (model === 'Foundation') {
+    var c2 = parseInt(document.getElementById('foundation-slider').value);
+    var fee2 = 800 + c2 * 100;
+    payload.sliders = { companies: c2 };
+    payload.prices = { monthly_d40: fee2, monthly_std: 1000 + c2 * 125 };
+  } else {
+    var c3 = parseInt(document.getElementById('studio-companies').value);
+    var h3 = parseInt(document.getElementById('studio-hours').value);
+    var t3 = (h3 - 5) / 5;
+    var fee3 = Math.round((1800 + 700 * t3) + c3 * (100 + 50 * t3));
+    payload.sliders = { companies: c3, hours_per_week: h3 };
+    payload.prices = { monthly_d40: fee3, monthly_std: Math.round(fee3 / 0.8) };
   }
+  fetch('https://api.mexzungu.com/delta40/configure', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function () {});
+}
 
-  /* ---- PASSWORD GATE ---- */
-  (function () {
-    var PASS = 'delta40-2026';
-    var KEY = 'delta40_auth';
-    var gate = document.getElementById('password-gate');
-    var input = document.getElementById('gate-input');
-    var btn = document.getElementById('gate-btn');
-    var errorEl = document.getElementById('gate-error');
-
-    if (sessionStorage.getItem(KEY) === '1') {
-      gate.style.display = 'none';
-      return;
-    }
-
-    function unlock() {
-      if (input.value === PASS) {
-        sessionStorage.setItem(KEY, '1');
-        gate.classList.add('fade-out');
-        setTimeout(function () { gate.style.display = 'none'; }, 520);
-      } else {
-        input.classList.remove('shake');
-        void input.offsetWidth;
-        input.classList.add('shake');
-        errorEl.textContent = 'Incorrect access code. Try again.';
-        input.value = '';
-        input.focus();
-      }
-    }
-
-    btn.addEventListener('click', unlock);
-    input.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') unlock();
-    });
-    input.addEventListener('input', function () {
-      errorEl.textContent = '';
-    });
-    input.focus();
-  })();
+/* ---- ACCORDION ---- */
+window.toggleCat = function (id) {
+  document.getElementById(id).classList.toggle('open');
+};
 </script>
 
 </body>
