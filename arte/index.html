@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Arte de Dominar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0b0b;
+    --bg2: #131010;
+    --bg3: #1a1515;
+    --gold: #c9a55a;
+    --gold-dim: #8a6e35;
+    --red: #8c1c1c;
+    --red-light: #c43030;
+    --text: #e8ddd0;
+    --text-dim: #9e8e80;
+    --border: #2a2020;
+    --yes: #2a4a2a;
+    --yes-text: #7abf7a;
+    --no: #3a2020;
+    --no-text: #bf7a7a;
+    --wait: #3a3020;
+    --wait-text: #bfa070;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 80px 24px 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(140,28,28,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 72px);
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  header .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 3vw, 22px);
+    font-style: italic;
+    color: var(--text-dim);
+    max-width: 500px;
+    margin: 0 auto 40px;
+  }
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 200px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-dim);
+    opacity: 0.4;
+  }
+  .divider-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+
+  /* NAV / STAGES OVERVIEW */
+  .stages-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .stages-nav::-webkit-scrollbar { display: none; }
+  .stage-tab {
+    flex: 1;
+    min-width: 140px;
+    padding: 20px 16px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .stage-tab:last-child { border-right: none; }
+  .stage-tab:hover { background: var(--bg2); }
+  .stage-tab.active { background: var(--bg3); }
+  .stage-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+  }
+  .stage-tab .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--gold-dim);
+    opacity: 0.5;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stage-tab.active .num { color: var(--gold); opacity: 1; }
+  .stage-tab .label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    line-height: 1.3;
+  }
+  .stage-tab.active .label { color: var(--text); }
+
+  /* MAIN CONTENT */
+  main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* FOUNDATION SECTION */
+  .foundation {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 60px;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .section-intro {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 640px;
+    margin-bottom: 32px;
+    line-height: 1.8;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .pillar {
+    background: var(--bg2);
+    padding: 24px 20px;
+    transition: background 0.2s;
+  }
+  .pillar:hover { background: var(--bg3); }
+  .pillar-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .pillar-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* NEGOTIATION CHECKLIST */
+  .checklist-title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  .checklist {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-dim);
+    padding: 10px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+  }
+  .checklist li::before {
+    content: '◇';
+    color: var(--gold-dim);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* STAGE SECTIONS */
+  .stage-section {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .stage-section:last-of-type { border-bottom: none; }
+
+  .stage-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .stage-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px;
+    font-weight: 300;
+    color: var(--border);
+    line-height: 0.85;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .stage-header-text {}
+  .stage-name-es {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .stage-name-en {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .stage-desc {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 32px;
+    max-width: 640px;
+  }
+
+  /* TACTICS */
+  .tactics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .tactic {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px 18px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .tactic:hover { border-color: var(--gold-dim); background: var(--bg3); }
+  .tactic-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .tactic-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* DECISION TREE */
+  .decision-tree-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 20px;
+  }
+  .decision-node {
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .decision-node:hover { border-color: var(--gold-dim); }
+  .decision-question {
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    user-select: none;
+  }
+  .decision-question .q-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--gold);
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .decision-node.open .q-icon { background: var(--gold-dim); color: var(--bg); }
+  .decision-question .q-text {
+    font-size: 14px;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.5;
+  }
+  .decision-question .q-toggle {
+    color: var(--gold-dim);
+    font-size: 18px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .decision-node.open .q-toggle { transform: rotate(180deg); }
+
+  .decision-answers {
+    display: none;
+    padding: 0 20px 20px 64px;
+  }
+  .decision-node.open .decision-answers { display: block; }
+
+  .answer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-left: 2px solid transparent;
+  }
+  .answer.yes {
+    background: rgba(42,74,42,0.3);
+    border-color: var(--yes-text);
+    color: var(--yes-text);
+  }
+  .answer.no {
+    background: rgba(58,32,32,0.3);
+    border-color: var(--no-text);
+    color: var(--no-text);
+  }
+  .answer.wait {
+    background: rgba(58,48,32,0.3);
+    border-color: var(--wait-text);
+    color: var(--wait-text);
+  }
+  .answer-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+    opacity: 0.8;
+  }
+
+  /* SIGNALS BOX */
+  .signals-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .signals-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .signal-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 6px;
+  }
+  .signal-list li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .signal-list li::before {
+    content: '/';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-size: 11px;
+  }
+
+  /* QUOTE */
+  .notas-quote {
+    border-left: 2px solid var(--gold-dim);
+    padding: 16px 20px;
+    margin: 24px 0;
+    background: rgba(201,165,90,0.04);
+  }
+  .notas-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1.7;
+    white-space: pre-line;
+  }
+
+  /* AFTERCARE */
+  .aftercare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .aftercare-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold-dim);
+    padding: 20px 18px;
+  }
+  .aftercare-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .aftercare-card ul { list-style: none; }
+  .aftercare-card ul li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 4px 0;
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .aftercare-card ul li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+  }
+
+  /* MISTAKES */
+  .mistakes-list {
+    list-style: none;
+    margin-top: 16px;
+  }
+  .mistakes-list li {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .mistakes-list li:last-child { border-bottom: none; }
+  .mistakes-list li::before {
+    content: '!';
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--red-light);
+    color: var(--red-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+  footer .mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--gold-dim);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    header { padding: 50px 20px 40px; }
+    main { padding: 0 16px 60px; }
+    .stage-header { flex-direction: column; gap: 0; }
+    .stage-number { font-size: 50px; line-height: 1; margin-bottom: 8px; }
+    .stages-nav { display: grid; grid-template-columns: 1fr 1fr; }
+    .stage-tab { border-right: none; border-bottom: 1px solid var(--border); }
+    .pillars { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Un manual privado</p>
+  <h1>El Arte de <em>Dominar</em></h1>
+  <p class="subtitle">Un flujo de decisiones para el que manda</p>
+  <div class="divider"><div class="divider-dot"></div></div>
+</header>
+
+<nav class="stages-nav" id="stages-nav">
+  <div class="stage-tab active" onclick="scrollToStage('foundation')">
+    <div class="num">0</div>
+    <div class="label">Fundamentos</div>
+  </div>
+  <div class="stage-tab" onclick="scrollToStage('stage1')">
+    <div class="num">1</div>
+    <div class="label">Las Migajas</div>
+  </div>
+  <div class="stage-tab" onclick="scrollToStage('stage2')">
+    <div class="num">2</div>
+    <div class="label">El Quiebre</div>
+  </div>
+  <div class="stage-tab" onclick="scrollToStage('stage3')">
+    <div class="num">3</div>
+    <div class="label">Intermitencia</div>
+  </div>
+  <div class="stage-tab" onclick="scrollToStage('stage4')">
+    <div class="num">4</div>
+    <div class="label">La Cautiva</div>
+  </div>
+  <div class="stage-tab" onclick="scrollToStage('aftercare')">
+    <div class="num">+</div>
+    <div class="label">Aftercare</div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- STAGE 0: FOUNDATION -->
+  <section class="foundation" id="foundation">
+    <p class="section-label">Antes de empezar</p>
+    <h2 class="section-title">Fundamentos: lo que no se negocia</h2>
+    <p class="section-intro">
+      El dominio real no comienza en la habitación. Comienza en la conversación. Sin esto, lo que sigue no es arte, es ruido.
+    </p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-name">SSC</div>
+        <div class="pillar-desc"><strong>Safe, Sane, Consensual.</strong> Seguro, cuerdo, consensuado. El estándar mínimo. Los tres, siempre.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">RACK</div>
+        <div class="pillar-desc"><strong>Risk Aware Consensual Kink.</strong> Reconoce que hay riesgo inherente. El acuerdo debe ser informado, no ingenuo.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Presencia</div>
+        <div class="pillar-desc">El Dom lleva la carga de la atención. Leer, calibrar, sostener. No hay autopiloto en el dominio.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Límites</div>
+        <div class="pillar-desc"><strong>Duros:</strong> intocables, nunca. <strong>Blandos:</strong> requieren negociación activa antes.</div>
+      </div>
+    </div>
+
+    <p class="checklist-title">Lista de negociación previa</p>
+    <ul class="checklist">
+      <li>Palabra de seguridad establecida (semáforo: rojo / amarillo / verde)</li>
+      <li>Límites duros de ambas partes, explícitos</li>
+      <li>Límites blandos discutidos, contextualizados</li>
+      <li>Estado emocional actual verificado</li>
+      <li>Condiciones físicas (dolor, fatiga, lesiones)</li>
+      <li>Expectativas del encuentro alineadas</li>
+      <li>Plan de aftercare acordado de antemano</li>
+      <li>Salida libre sin consecuencias, garantizada</li>
+    </ul>
+  </section>
+
+  <!-- STAGE 1 -->
+  <section class="stage-section" id="stage1">
+    <div class="stage-header">
+      <div class="stage-number">1</div>
+      <div class="stage-header-text">
+        <div class="stage-name-es">Aprender el lenguaje de las migajas del deseo</div>
+        <div class="stage-name-en">Reading the language of desire</div>
+      </div>
+    </div>
+
+    <p class="stage-desc">
+      El deseo no se anuncia. Se filtra. Una mano que tarda un segundo más de lo necesario. Una mirada que se rompe demasiado pronto. Un tono de voz que desciende. El Dom aprende a leer en fragmentos. Esta es la lectura, no la acción.
+    </p>
+
+    <div class="notas-quote">
+      <p>sepa que se presentan
+en fragmentos
+por ejemplo una mano
+distraída regresando una caricia
+algo más prolongada</p>
+    </div>
+
+    <div class="signals-box">
+      <p class="signals-title">Señales a leer</p>
+      <ul class="signal-list">
+        <li>Contacto visual sostenido, luego esquivado</li>
+        <li>Voz más baja de lo habitual</li>
+        <li>Orientación corporal hacia ti</li>
+        <li>Contacto físico iniciado o buscado</li>
+        <li>Reducción del espacio personal</li>
+        <li>Respuesta a tu tono, no a tus palabras</li>
+        <li>Pausas antes de responder</li>
+        <li>Rubor, respiración alterada</li>
+        <li>Complacencia en pequeñas cosas primero</li>
+        <li>Preguntas que no necesitan respuesta</li>
+      </ul>
+    </div>
+
+    <div class="tactics-grid">
+      <div class="tactic">
+        <div class="tactic-title">Presencia física deliberada</div>
+        <div class="tactic-desc">Ocupa el espacio con calma, no con agresión. El cuerpo transmite antes que las palabras. Movimientos lentos, contacto visual sostenido.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Silencio como herramienta</div>
+        <div class="tactic-desc">No llenes los silencios. Déjala habitar la incomodidad. El que habla primero, cede el marco.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Nombrar lo que ves</div>
+        <div class="tactic-desc">"Noto que..." sin juicio ni expectativa. Señalar la señal activa la conciencia de ella sobre su propio deseo.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Calibrar, no asumir</div>
+        <div class="tactic-desc">Las migajas se descifran con tiempo. Una señal no es un consentimiento. Busca patrones, no datos aislados.</div>
+      </div>
+    </div>
+
+    <p class="decision-tree-label">Flujo de decisión</p>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿Observas señales de apertura sostenidas (no una sola, un patrón)?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Si</span>Continúa con cautela. Responde a una señal con una pequeña prueba de presión: más contacto visual, acorta la distancia levemente. Observa la respuesta.</div>
+        <div class="answer no"><span class="answer-label">No</span>Quédate en observación. Sigue leyendo. No hay urgencia. El Dom que se precipita pierde el marco antes de empezar.</div>
+      </div>
+    </div>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿Al acortar la distancia o aumentar el tono, ella se orienta hacia ti o se aleja?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Hacia ti</span>Señal verde. El cuerpo no miente. Continúa al estadio 2 con parsimonia.</div>
+        <div class="answer no"><span class="answer-label">Se aleja</span>Retrocede. No es el momento o no eres el marco correcto. No insistas. El dominio real no se impone.</div>
+        <div class="answer wait"><span class="answer-label">Ambiguo</span>Mantén posición y espera. La ambigüedad no es un sí. Pide claridad directamente si el contexto lo permite.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 2 -->
+  <section class="stage-section" id="stage2">
+    <div class="stage-header">
+      <div class="stage-number">2</div>
+      <div class="stage-header-text">
+        <div class="stage-name-es">Perseguirlas hasta el quiebre</div>
+        <div class="stage-name-en">Pursuing to the breaking point</div>
+      </div>
+    </div>
+
+    <p class="stage-desc">
+      El quiebre no es una rendición forzada. Es el momento en que ella elige soltar el control. El Dom no quiebra a nadie, crea las condiciones para que ella se quiebre a sí misma. Hay una diferencia capital entre los dos.
+    </p>
+
+    <div class="notas-quote">
+      <p>la interesada indicará (sutilmente)
+un deseo de rendición
+
+le dirá algo así como
+    a la orden
+    como guste
+    sí padrón
+    cuántas cosas sabe</p>
+    </div>
+
+    <div class="tactics-grid">
+      <div class="tactic">
+        <div class="tactic-title">Presión calibrada</div>
+        <div class="tactic-desc">Aumenta la intensidad de forma gradual y reversible. Cada paso debe poder deshacerse. El escalado brusco rompe el hilo, no lo tensa.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">La pregunta directa</div>
+        <div class="tactic-desc">En el momento correcto, nombrar el deseo rompe la ambigüedad: "¿Quieres que decida yo?" La respuesta, ya sea sí o el silencio cómplice, es el quiebre.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Sostener el marco</div>
+        <div class="tactic-desc">El Dom no necesita validación. No pregunta si lo está haciendo bien. Su certeza es parte de la atracción. La inseguridad visible rompe el marco.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Leer el "amarillo"</div>
+        <div class="tactic-desc">El quiebre tiene un límite. Si aparece tensión real, incomodidad no erótica, o señales de retirada, para. El check-in silencioso es suficiente: una mirada, un toque suave.</div>
+      </div>
+    </div>
+
+    <div class="signals-box">
+      <p class="signals-title">Señales de quiebre genuino</p>
+      <ul class="signal-list">
+        <li>Reduce resistencia verbal / tono más suave</li>
+        <li>Espera instrucción antes de actuar</li>
+        <li>Responde a tu nombre para ella con agrado</li>
+        <li>Busca contacto físico en vez de crearlo</li>
+        <li>Silencio receptivo, no defensivo</li>
+        <li>"Como quieras" / "tú decides" sin ironía</li>
+        <li>Baja la mirada en contexto de aceptación</li>
+        <li>Respiración más lenta y profunda</li>
+      </ul>
+    </div>
+
+    <p class="decision-tree-label">Flujo de decisión</p>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿Al aumentar la presión (verbal, física, de marco), ella cede en lugar de resistir?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Si</span>Estás en el quiebre. Acelera levemente. Nómbralo: "Bien." Una sola palabra de reconocimiento vale más que un discurso.</div>
+        <div class="answer no"><span class="answer-label">Resistencia sostenida</span>La resistencia puede ser parte del juego o puede ser real. Distingue: resistencia lúdica tiene energía cálida; resistencia real tiene tensión fría. Ante la duda, pausa y verifica.</div>
+        <div class="answer wait"><span class="answer-label">Señal mixta</span>Para brevemente. Check-in directo: "¿Sigues conmigo?" La respuesta a esta pregunta es más valiosa que cualquier suposición.</div>
+      </div>
+    </div>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿La entrega se siente genuina o performativa?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Genuina</span>Avanza al estadio 3. La entrega genuina tiene quietud. La performativa tiene ansiedad por gustar.</div>
+        <div class="answer no"><span class="answer-label">Performativa</span>Reduce la presión. La performance indica que se siente evaluada, no sostenida. Vuelve a un ritmo más lento. El objetivo no es su actuación, es su presencia real.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 3 -->
+  <section class="stage-section" id="stage3">
+    <div class="stage-header">
+      <div class="stage-number">3</div>
+      <div class="stage-header-text">
+        <div class="stage-name-es">El baile de la intermitencia</div>
+        <div class="stage-name-en">The intermittency dance: passive submission</div>
+      </div>
+    </div>
+
+    <p class="stage-desc">
+      La intermitencia es el instrumento más poderoso del Dom. El refuerzo variable, más que el refuerzo constante, crea adhesión profunda. No porque sea crueldad, sino porque obliga a la sub a habitar su propio deseo, a anticipar, a sentir. Más, luego menos. Cerca, luego lejos.
+    </p>
+
+    <div class="notas-quote">
+      <p>la técnica es sencilla:
+    más    y luego    menos
+    cerca y luego     lejos
+
+ella aprenderá a
+    anticipar    lo que no llega
+    esperar    lo que se aleja</p>
+    </div>
+
+    <div class="tactics-grid">
+      <div class="tactic">
+        <div class="tactic-title">Refuerzo variable</div>
+        <div class="tactic-desc">Alterna momentos de atención intensa con retiro deliberado. El patrón impredecible, dentro de un marco seguro, intensifica el deseo de ella exponencialmente.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">La pausa</div>
+        <div class="tactic-desc">Detente cuando la intensidad llega a un pico. No escales inmediatamente. El espacio entre el pico y la acción siguiente es donde vive el deseo más intenso.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Precipitar sin completar</div>
+        <div class="tactic-desc">Llévala al borde y retira. Repite. Cada ciclo aumenta la acumulación. El objetivo no es la llegada, es la distancia recorrida.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Control verbal</div>
+        <div class="tactic-desc">En la fase de sumisión pasiva, las instrucciones son suaves pero no opcionales. "Quieta." "Espera." "No todavía." Cada cumplimiento refuerza el marco.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Anclar el estado</div>
+        <div class="tactic-desc">Un gesto, una palabra, un toque específico que marcas como señal del estado de sumisión. Se convierte en ancla: al repetirse, activa el estado directamente.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Leer la saturación</div>
+        <div class="tactic-desc">La intermitencia tiene un límite óptimo. Pasarlo produce frustración real, no erótica. Lee la diferencia: deseo insatisfecho tiene calor; saturación tiene irritación o disociación.</div>
+      </div>
+    </div>
+
+    <p class="decision-tree-label">Flujo de decisión</p>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿Al retirarte brevemente, ella busca restablecer el contacto?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Si</span>La intermitencia está funcionando. Mantén el ciclo. Extiende ligeramente el siguiente retiro.</div>
+        <div class="answer no"><span class="answer-label">No busca</span>O el marco no está establecido aún (vuelve al estadio 1-2) o está en un estado de desconexión. Verifica cuál es.</div>
+      </div>
+    </div>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿Observas acumulación de tensión erótica sostenida (anticipación viva, no frustración fría)?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Tensión viva</span>Es el momento de precipitarla. Llévala al límite que acordaron. Ahora es cuando decretas.</div>
+        <div class="answer no"><span class="answer-label">Frustración o distancia</span>La dosis fue excesiva. Reduce el ciclo, aumenta el contacto y la cercanía. Reconstruye antes de continuar.</div>
+        <div class="answer wait"><span class="answer-label">Incipiente</span>Sigue. Aún no está en el pico. Paciencia.</div>
+      </div>
+    </div>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿Ella pide o suplica de forma explícita o implícita?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Si</span>Ese es el clímax del estadio 3. Tienes su entrega activa. Decide conscientemente: ¿concedes ahora o extiendes el estado? Cualquier opción es válida. Hazla con intención.</div>
+        <div class="answer no"><span class="answer-label">No todavía</span>Continúa el ciclo. La súplica no se fuerza, se cultiva.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 4 -->
+  <section class="stage-section" id="stage4">
+    <div class="stage-header">
+      <div class="stage-number">4</div>
+      <div class="stage-header-text">
+        <div class="stage-name-es">Disponer de su cautiva</div>
+        <div class="stage-name-en">Active submission: the taking</div>
+      </div>
+    </div>
+
+    <p class="stage-desc">
+      La sumisión activa es el resultado de todo lo anterior, no su inicio. El Dom que llega aquí sin haber construido los estadios previos no domina, improvisa. Si llegó aquí, lo que sigue es consecuencia natural, no performance.
+    </p>
+
+    <div class="notas-quote">
+      <p>ahora es cuando
+si siguió todos los pasos su
+        cautiva se
+        rendirá
+        obedecerá
+            será
+                suya
+
+con la satisfacción
+de saber que
+usted no es
+el único que
+    disfruta</p>
+    </div>
+
+    <div class="tactics-grid">
+      <div class="tactic">
+        <div class="tactic-title">Decretar con certeza</div>
+        <div class="tactic-desc">No preguntes si está bien lo que ya negociaron. Actúa con la certeza de quien sabe que el mapa fue trazado juntos. La duda post-negociación es innecesaria y rompe el estado.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Instrucciones claras, breves</div>
+        <div class="tactic-desc">En sumisión activa, menos palabras tienen más peso. "Aquí." "Así." "Ahora." La instrucción precisa da más seguridad que el discurso.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Sostener su estado</div>
+        <div class="tactic-desc">Tu trabajo no termina con el decreto. El Dom sostiene el espacio para que la sumisión sea segura hasta el final. Presencia constante, no autopiloto.</div>
+      </div>
+      <div class="tactic">
+        <div class="tactic-title">Reconocimiento explícito</div>
+        <div class="tactic-desc">La sub en sumisión activa es vulnerable. Nombrar lo que ves con aprobación, sin condescendencia, ancla su experiencia: "Bien." "Exactamente así."</div>
+      </div>
+    </div>
+
+    <p class="decision-tree-label">Flujo de decisión</p>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿Ella cumple las instrucciones con facilidad o hay resistencia?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Cumple</span>El marco está sólido. Puedes aumentar la complejidad o la intensidad de las instrucciones gradualmente.</div>
+        <div class="answer no"><span class="answer-label">Resistencia lúdica</span>Si la resistencia tiene calor y juego, incorpórala. Es parte del baile, no una objeción.</div>
+        <div class="answer wait"><span class="answer-label">Resistencia real</span>Para. Reduce. Verifica. La resistencia real en este estadio es señal de que algo no fue negociado o de que superaste un límite. Nombra lo que ves y escucha.</div>
+      </div>
+    </div>
+    <div class="decision-node" onclick="toggleDecision(this)">
+      <div class="decision-question">
+        <div class="q-icon">?</div>
+        <div class="q-text">¿El estado de ella se mantiene presente (conectada, responsiva)?</div>
+        <div class="q-toggle">▾</div>
+      </div>
+      <div class="decision-answers">
+        <div class="answer yes"><span class="answer-label">Presente</span>Continúa. Estás en el corazón del dominio real.</div>
+        <div class="answer no"><span class="answer-label">Disociada o ausente</span>Para inmediatamente. La disociación es una señal de alarma. Baja la intensidad, crea contacto físico suave, pregunta directamente: "¿Sigues aquí?" Puede ser un límite alcanzado o trauma activado. Aftercare inmediato.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AFTERCARE -->
+  <section class="stage-section" id="aftercare">
+    <div class="stage-header">
+      <div class="stage-number">+</div>
+      <div class="stage-header-text">
+        <div class="stage-name-es">Aftercare: el territorio después</div>
+        <div class="stage-name-en">The landing. Non-negotiable.</div>
+      </div>
+    </div>
+
+    <p class="stage-desc">
+      La sumisión intensa produce un estado alterado, neurológico y emocional. El cuerpo de la sub ha liberado cortisol, adrenalina, endorfinas. La caída brusca de ese estado, el "sub-drop", puede ser devastadora. El aftercare no es opcional. Es parte del dominio. Un Dom que abandona después del clímax no domina, usa.
+    </p>
+
+    <div class="aftercare-grid">
+      <div class="aftercare-card">
+        <h4>Inmediato</h4>
+        <ul>
+          <li>Contacto físico suave, sostenido</li>
+          <li>Palabras de reconocimiento y presencia</li>
+          <li>Temperatura: manta, calor corporal</li>
+          <li>Agua o bebida dulce si es necesario</li>
+          <li>Sin demandas, sin análisis</li>
+          <li>Tu presencia completa, no tu teléfono</li>
+        </ul>
+      </div>
+      <div class="aftercare-card">
+        <h4>Horas después</h4>
+        <ul>
+          <li>Mensaje o contacto de verificación</li>
+          <li>"¿Cómo estás?" sin agenda</li>
+          <li>Espacio para procesar sin presión</li>
+          <li>No des por cerrado hasta escuchar</li>
+        </ul>
+      </div>
+      <div class="aftercare-card">
+        <h4>Dom-drop (también ocurre)</h4>
+        <ul>
+          <li>El Dom también puede caer</li>
+          <li>Adrenalina, responsabilidad, intensidad sostenida</li>
+          <li>Permite tu propio aftercare</li>
+          <li>Comunica si lo necesitas</li>
+        </ul>
+      </div>
+      <div class="aftercare-card">
+        <h4>Revisión posterior</h4>
+        <ul>
+          <li>¿Qué funcionó?</li>
+          <li>¿Algún límite rozado?</li>
+          <li>¿Qué repetir, qué ajustar?</li>
+          <li>Actualiza los límites conocidos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px;">
+      <p class="section-label">Errores frecuentes del Dom inexperto</p>
+      <ul class="mistakes-list">
+        <li>Precipitarse al estadio 4 sin construir los estadios previos. El dominio sin tensión previa es solo coerción.</li>
+        <li>Confundir el silencio con consentimiento. El silencio necesita contexto. En la duda, pregunta.</li>
+        <li>Perder el marco por inseguridad. Buscar validación de la sub rompe el espacio que ella necesita para soltar.</li>
+        <li>Ignorar el aftercare. Lo que se construye en la escena se destruye en el abandono posterior.</li>
+        <li>Escalar bruscamente. El dominio es escalada gradual y reversible, no intensidad máxima desde el inicio.</li>
+        <li>No distinguir resistencia lúdica de resistencia real. Una tiene calor, la otra tiene frío. Aprende la diferencia.</li>
+        <li>No negociar los límites antes. Improvisar los límites en el momento no es dominio, es irresponsabilidad.</li>
+        <li>Tomar la entrega como garantía permanente. Cada encuentro, el marco se restablece. El consentimiento no es acumulativo.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="mark">◈</span>
+  Uso privado
+</footer>
+
+<script>
+  function toggleDecision(node) {
+    node.classList.toggle('open');
+  }
+
+  function scrollToStage(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    document.querySelectorAll('.stage-tab').forEach(t => t.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
+
+  // Update active tab on scroll
+  const sections = ['foundation','stage1','stage2','stage3','stage4','aftercare'];
+  const tabs = document.querySelectorAll('.stage-tab');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf(entry.target.id);
+        if (idx >= 0) {
+          tabs.forEach(t => t.classList.remove('active'));
+          tabs[idx].classList.add('active');
+        }
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+</script>
+</body>
+</html>
