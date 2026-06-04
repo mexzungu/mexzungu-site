@@ -69,7 +69,7 @@
     #proposal-content.visible { opacity: 1; }
 
     /* NAV */
-    nav {
+    nav.topnav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -79,15 +79,51 @@
     .nav-right { font-size: 0.78rem; color: var(--muted); text-align: right; line-height: 1.5; }
     .nav-right .nav-title { color: var(--dim); font-weight: 500; display: block; }
 
+    /* PAGE LAYOUT */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: sticky;
+      top: 60px;
+      align-self: start;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      padding: 3rem 1.25rem 3rem 1.75rem;
+      border-right: 1px solid var(--border);
+    }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 0.1rem; }
+    .sidebar-cat {
+      font-size: 0.57rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.13em;
+      color: #333; margin: 1.5rem 0 0.5rem 0.6rem;
+    }
+    .sidebar-cat:first-child { margin-top: 0; }
+    .sidebar-link {
+      font-size: 0.67rem; font-weight: 500; color: var(--muted); text-decoration: none;
+      padding: 0.42rem 0.6rem; border-radius: 4px;
+      transition: color 0.15s; display: block; line-height: 1.5;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-link:hover { color: var(--dim); }
+    .sidebar-link.active { color: var(--pink); border-left-color: var(--pink); background: rgba(225,75,135,0.05); }
+
+    /* CONTENT AREA */
+    .content-area { min-width: 0; }
+
     /* HERO */
-    .proposal-hero { padding: 8rem 2rem 5rem; max-width: 860px; margin: 0 auto; }
+    .proposal-hero { padding: 7rem 3.5rem 5rem; max-width: 900px; }
     .hero-tag { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); margin-bottom: 1.5rem; }
-    .hero-headline { font-family: var(--heading); font-size: 2.35rem; line-height: 1.2; color: var(--text); margin-bottom: 1.5rem; font-weight: 400; }
-    .hero-copy { font-size: 0.97rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; max-width: 700px; }
+    .hero-headline { font-family: var(--heading); font-size: 2.3rem; line-height: 1.2; color: var(--text); margin-bottom: 1.5rem; font-weight: 400; }
+    .hero-copy { font-size: 0.97rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; max-width: 680px; }
 
     /* SECTIONS */
-    .prop-divider { height: 1px; background: var(--border); max-width: 860px; margin: 0 auto; }
-    .prop-section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+    .prop-divider { height: 1px; background: var(--border); margin: 0 3.5rem; }
+    .prop-section { padding: 5rem 3.5rem; max-width: 940px; }
     .prop-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); margin-bottom: 1rem; }
     .prop-heading { font-family: var(--heading); font-size: 1.85rem; line-height: 1.25; color: var(--text); margin-bottom: 1.5rem; font-weight: 400; }
     .prop-copy { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
@@ -100,21 +136,30 @@
     .heard-list li { font-size: 0.9rem; color: var(--muted); line-height: 1.65; padding-left: 1.2rem; position: relative; }
     .heard-list li::before { content: ''; position: absolute; left: 0; top: 0.65rem; width: 5px; height: 5px; border-radius: 50%; background: var(--border2); }
 
-    /* RISKS */
-    .risk-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.75rem; margin-top: 2rem; }
-    .risk-item { display: grid; grid-template-columns: 42px 1fr; gap: 1rem; align-items: start; }
-    .risk-number { font-family: var(--heading); font-size: 1.5rem; color: var(--pink); opacity: 0.45; line-height: 1; padding-top: 0.05rem; }
-    .risk-title { font-size: 0.92rem; font-weight: 600; color: var(--mid); margin-bottom: 0.45rem; }
-    .risk-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.72; }
+    /* RISK 2x2 */
+    .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.15rem; margin-top: 2.25rem; }
+    .risk-cell {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 1.75rem 1.6rem; position: relative; overflow: hidden;
+    }
+    .risk-cell::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--pink), transparent);
+    }
+    .risk-num { font-family: var(--heading); font-size: 2rem; color: var(--pink); opacity: 0.15; line-height: 1; margin-bottom: 0.75rem; }
+    .risk-title { font-size: 0.88rem; font-weight: 600; color: var(--mid); margin-bottom: 0.55rem; line-height: 1.4; }
+    .risk-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.72; }
     .risk-window { font-size: 0.85rem; color: #4a4a4a; font-style: italic; margin-top: 2rem; }
 
-    /* MODEL CARDS */
-    .model-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; margin-top: 2.5rem; }
+    /* MODEL CAROUSEL */
+    .model-cards { display: flex; gap: 1.15rem; margin-top: 2.5rem; }
     .model-card {
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 12px; padding: 1.8rem 1.6rem; position: relative;
+      flex: 1; background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 1.75rem 1.5rem; position: relative;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
     }
-    .model-card.featured { border-color: #2d1f28; background: linear-gradient(160deg, #111 0%, #1a0f15 100%); }
+    .model-card:hover { border-color: #3a3333; }
+    .model-card.active { border-color: var(--pink); background: linear-gradient(160deg, #111 0%, #1a0f15 100%); }
     .model-badge {
       position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
       background: var(--pink); color: #fff; font-size: 0.6rem; font-weight: 700;
@@ -123,7 +168,11 @@
     }
     .model-tag { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); font-weight: 700; margin-bottom: 0.6rem; }
     .model-name { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.75rem; }
-    .model-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.68; }
+    .model-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.68; margin-bottom: 1rem; }
+    .model-for { font-size: 0.74rem; color: var(--dim); border-top: 1px solid var(--border); padding-top: 0.75rem; line-height: 1.6; }
+    .model-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.2rem; }
+    .model-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); cursor: pointer; border: none; transition: background 0.2s; padding: 0; }
+    .model-dot.active { background: var(--pink); }
 
     /* CONFIGURATOR */
     .configurator { background: #0d0d0d; border: 1px solid var(--border2); border-radius: 16px; margin-top: 2.5rem; overflow: hidden; }
@@ -139,7 +188,7 @@
     .config-panel.active { display: block; }
     .config-sec-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 1rem; }
 
-    /* HOUR BANK BUTTONS */
+    /* HOUR BANK */
     .hr-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     .hr-btn {
       padding: 0.7rem 1.5rem; border: 1px solid var(--border2); border-radius: 8px;
@@ -151,6 +200,7 @@
 
     /* SLIDERS */
     .slider-wrap { margin-bottom: 1.75rem; }
+    .dual-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 0.5rem; }
     .slider-row { display: flex; align-items: center; gap: 0.85rem; margin: 0.6rem 0 0.2rem; }
     .slider-edge { font-size: 0.77rem; color: var(--muted); min-width: 28px; }
     .slider-edge.right { text-align: right; }
@@ -173,9 +223,6 @@
     }
     input[type="range"]::-webkit-slider-thumb:hover { box-shadow: 0 0 0 5px rgba(225,75,135,0.22); }
     .slider-val { font-size: 0.88rem; font-weight: 600; color: var(--mid); }
-
-    /* STUDIO SLIDERS GRID */
-    .studio-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 0.5rem; }
 
     /* CONFIG RESULT */
     .config-result { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; }
@@ -224,10 +271,6 @@
     .fees-table td.rate-d40 { font-family: var(--heading); color: var(--pink); }
     .fees-terms { font-size: 0.83rem; color: var(--muted); line-height: 1.72; margin-top: 1.25rem; }
 
-    /* CALLOUT */
-    .callout { background: #0d0d0d; border: 1px solid var(--border2); border-left: 3px solid var(--pink); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
-    .callout strong { color: var(--dim); }
-
     /* FINE PRINT */
     .fine-print-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
     .fine-print-list li { font-size: 0.85rem; color: var(--muted); padding: 0.55rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 0.7rem; line-height: 1.65; }
@@ -235,12 +278,12 @@
     .fine-print-list li::before { content: '//'; color: var(--border2); font-family: monospace; font-size: 0.8rem; flex-shrink: 0; margin-top: 0.12rem; }
 
     /* CTA */
-    .cta-section { text-align: center; padding: 6rem 2rem 8rem; max-width: 760px; margin: 0 auto; }
+    .cta-section { text-align: center; padding: 6rem 3.5rem 8rem; max-width: 760px; }
     .cta-sub { font-size: 1rem; color: var(--muted); margin-bottom: 3rem; line-height: 1.7; }
     .cta-btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
       padding: 1.1rem 2.8rem; background-color: var(--pink);
-      background-image: radial-gradient(ellipse 12px 8px at 20% 40%, rgba(255,255,255,0.2) 0%, transparent 70%), radial-gradient(ellipse 8px 12px at 60% 25%, rgba(255,255,255,0.15) 0%, transparent 70%);
+      background-image: radial-gradient(ellipse 12px 8px at 20% 40%, rgba(255,255,255,0.2) 0%, transparent 70%);
       color: #fafafa; font-family: var(--heading); font-size: 1.1rem; font-weight: 400;
       border-radius: 6px; transition: all 0.2s; letter-spacing: 0.01em;
       box-shadow: 0 6px 24px rgba(225,75,135,0.4), 0 2px 4px rgba(0,0,0,0.2);
@@ -251,25 +294,33 @@
     .cta-secondary a:hover { color: var(--pink); }
 
     /* FOOTER */
-    footer { border-top: 1px solid var(--border); padding: 2rem; font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    footer { border-top: 1px solid var(--border); padding: 2rem 3.5rem; font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
     footer a { color: var(--gold); }
     .footer-disclaimer { border-top: 1px solid var(--border); padding: 1rem 2rem; font-size: 0.75rem; color: #3d3533; text-align: center; }
 
     /* RESPONSIVE */
-    @media (max-width: 860px) {
+    @media (max-width: 1100px) {
+      .page-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
       .proposal-hero { padding: 6rem 1.5rem 3.5rem; }
-      .hero-headline { font-size: 1.85rem; }
       .prop-section { padding: 3.5rem 1.5rem; }
-      .model-grid { grid-template-columns: 1fr; }
+      .prop-divider { margin: 0 1.5rem; }
+      .cta-section { padding: 6rem 1.5rem 8rem; }
+      footer { padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 860px) {
+      .hero-headline { font-size: 1.85rem; }
+      .risk-grid { grid-template-columns: 1fr; }
+      .model-cards { flex-direction: column; }
+      .dual-sliders { grid-template-columns: 1fr; gap: 1.25rem; }
     }
     @media (max-width: 600px) {
       .hero-headline { font-size: 1.5rem; }
-      nav { padding: 0 1rem; }
+      nav.topnav { padding: 0 1rem; }
       .config-tabs { flex-direction: column; }
-      .config-tab { border-bottom: 1px solid var(--border); border-right: none; text-align: left; padding: 0.85rem 1.25rem; }
+      .config-tab { border-bottom: 1px solid var(--border); text-align: left; padding: 0.85rem 1.25rem; }
       .config-tab.active { border-left: 3px solid var(--pink); border-bottom-color: var(--border); }
       .config-panel { padding: 1.5rem; }
-      .studio-sliders { grid-template-columns: 1fr; gap: 1.25rem; }
       .config-result-grid { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
       .hr-btn { flex: 1 1 calc(50% - 0.375rem); }
       .cat-header { padding: 1rem 1.1rem; }
@@ -296,7 +347,7 @@
 <!-- PROPOSAL CONTENT -->
 <div id="proposal-content">
 
-<nav>
+<nav class="topnav">
   <a href="https://mexzungu.com" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
   <div class="nav-right">
     <span class="nav-title">Delta40 x Mexzungu Group</span>
@@ -304,7 +355,26 @@
   </div>
 </nav>
 
-<main>
+<div class="page-layout">
+
+  <!-- SIDEBAR INDEX -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <div class="sidebar-cat">Proposal</div>
+      <a href="#heard" class="sidebar-link" data-section="heard">01 / What we heard</a>
+      <a href="#breaks" class="sidebar-link" data-section="breaks">02 / What breaks</a>
+      <a href="#build" class="sidebar-link" data-section="build">03 / What we build</a>
+      <a href="#costs" class="sidebar-link" data-section="costs">04 / What this costs</a>
+      <a href="#catalogue" class="sidebar-link" data-section="catalogue">05 / Catalogue</a>
+      <a href="#fees" class="sidebar-link" data-section="fees">06 / Success fees</a>
+      <div class="sidebar-cat">About us</div>
+      <a href="#track" class="sidebar-link" data-section="track">07 / Track record</a>
+      <a href="#cta" class="sidebar-link" data-section="cta">Ready</a>
+    </nav>
+  </aside>
+
+  <div class="content-area">
+  <main>
 
 <!-- HERO -->
 <div class="proposal-hero">
@@ -316,7 +386,7 @@
 <div class="prop-divider"></div>
 
 <!-- 01: WHAT WE HEARD -->
-<div class="prop-section">
+<div class="prop-section" id="heard">
   <div class="prop-label">01 / What we heard</div>
   <div class="prop-heading">What you said. What we understood.</div>
 
@@ -339,40 +409,32 @@
 <div class="prop-divider"></div>
 
 <!-- 02: WHAT BREAKS -->
-<div class="prop-section">
+<div class="prop-section" id="breaks">
   <div class="prop-label">02 / What breaks</div>
   <div class="prop-heading">Four risks. Named and concrete.</div>
 
-  <ul class="risk-list">
-    <li class="risk-item">
-      <div class="risk-number">1</div>
-      <div>
-        <div class="risk-title">Studio-built companies carry governance exposure.</div>
-        <div class="risk-desc">Five of your 16 companies were built inside the studio. Board composition, conflict provisions, founder IP not formally assigned. A Series A investor finds this in 30 minutes of DD.</div>
-      </div>
-    </li>
-    <li class="risk-item">
-      <div class="risk-number">2</div>
-      <div>
-        <div class="risk-title">Cross-border regulatory gaps are portfolio risk.</div>
-        <div class="risk-desc">CBK fintech licensing for Flowt. CBN requirements in Nigeria. CMA compliance in Kenya. One misstep costs the portfolio company the round.</div>
-      </div>
-    </li>
-    <li class="risk-item">
-      <div class="risk-number">3</div>
-      <div>
-        <div class="risk-title">DFI LP compliance is a gating condition, not a future concern.</div>
-        <div class="risk-desc">FMO and GIZ require GDPR-equivalent data protection from portfolio companies before releasing follow-on capital. Most of your 16 companies are not ready.</div>
-      </div>
-    </li>
-    <li class="risk-item">
-      <div class="risk-number">4</div>
-      <div>
-        <div class="risk-title">No standard legal architecture means every round starts from scratch.</div>
-        <div class="risk-desc">No template instruments, no consistent governance, no reusable structure. The cost compounds with every new raise, every new market, every new portfolio company.</div>
-      </div>
-    </li>
-  </ul>
+  <div class="risk-grid">
+    <div class="risk-cell">
+      <div class="risk-num">1</div>
+      <div class="risk-title">Studio-built companies carry governance exposure.</div>
+      <div class="risk-desc">Five of your 16 companies were built inside the studio. Board composition, conflict provisions, founder IP not formally assigned. A Series A investor finds this in 30 minutes of DD.</div>
+    </div>
+    <div class="risk-cell">
+      <div class="risk-num">2</div>
+      <div class="risk-title">30 markets, no common legal standard.</div>
+      <div class="risk-desc">Each market adds regulatory surface area. Without a standard approach to data, employment, and operating agreements, every new portfolio company solves the same problem from scratch.</div>
+    </div>
+    <div class="risk-cell">
+      <div class="risk-num">3</div>
+      <div class="risk-title">DFI LP compliance is a gating condition, not a future concern.</div>
+      <div class="risk-desc">FMO and GIZ require GDPR-equivalent data protection from portfolio companies before releasing follow-on capital. Most of your 16 companies are not ready.</div>
+    </div>
+    <div class="risk-cell">
+      <div class="risk-num">4</div>
+      <div class="risk-title">No standard architecture means every round starts from scratch.</div>
+      <div class="risk-desc">No template instruments, no consistent governance, no reusable structure. The cost compounds with every new raise, every new market, every new portfolio company.</div>
+    </div>
+  </div>
 
   <p class="risk-window">The window is the next portfolio company fundraising round. That is when this becomes visible to institutional investors.</p>
 </div>
@@ -380,49 +442,55 @@
 <div class="prop-divider"></div>
 
 <!-- 03: WHAT WE BUILD -->
-<div class="prop-section">
+<div class="prop-section" id="build">
   <div class="prop-label">03 / What we build</div>
   <div class="prop-heading">One relationship. Three ways to engage.</div>
-  <p class="prop-copy">Each model maps to a different point in Delta40's growth. Pick the one that fits now. Upgrade when the portfolio demands it.</p>
+  <p class="prop-copy">Each model maps to a different level of involvement. Click a model to configure it below.</p>
 
-  <div class="model-grid">
-    <div class="model-card">
+  <div class="model-cards">
+    <div class="model-card" id="card-hourbank" onclick="selectModel('hourbank')">
       <div class="model-tag">On demand</div>
       <div class="model-name">Hour Bank</div>
-      <div class="model-desc">Pre-purchase blocks of hours at a Delta40 rate. No monthly commitment. Use them for a specific term sheet, a cap table review, a one-off filing. Unused hours partially roll.</div>
+      <div class="model-desc">Pre-purchase blocks of hours at a Delta40 rate. No monthly commitment. Use for a specific term sheet, cap table review, or one-off filing. 50% of unused hours roll.</div>
+      <div class="model-for">Best for: specific, bounded work. No ongoing need.</div>
     </div>
-    <div class="model-card">
-      <div class="model-tag">Foundation</div>
+    <div class="model-card" id="card-foundation" onclick="selectModel('foundation')">
+      <div class="model-tag">Retainer</div>
       <div class="model-name">Foundation</div>
-      <div class="model-desc">Fixed monthly fee covering the fund and up to 16 portfolio companies. Five hours per week of general support across fund and portfolio. Overage billed separately.</div>
+      <div class="model-desc">Fixed monthly retainer covering the fund and portfolio companies. Reactive general support at a committed weekly hour allocation. Project catalogue work billed separately on top.</div>
+      <div class="model-for">Best for: ongoing access, reactive support, predictable cost.</div>
     </div>
-    <div class="model-card featured">
+    <div class="model-card active" id="card-studio" onclick="selectModel('studio')">
       <div class="model-badge">Recommended</div>
-      <div class="model-tag">Full coverage</div>
+      <div class="model-tag">Embedded</div>
       <div class="model-name">Studio Partner</div>
-      <div class="model-desc">Fund governance, portfolio structural support, and configurable weekly hours. Built for a studio at Delta40's scale. One invoice. No internal allocation decisions.</div>
+      <div class="model-desc">Proactive legal architecture embedded across the full portfolio. Higher weekly allocation. Quarterly governance reviews, board prep, regulatory monitoring. First call on capacity.</div>
+      <div class="model-for">Best for: Delta40 at scale. Full legal function without the headcount.</div>
     </div>
   </div>
-
-  <p class="prop-copy" style="margin-top:2rem;">Configure each model below to see what it costs for your portfolio size and time needs.</p>
+  <div class="model-dots">
+    <button class="model-dot" data-model="hourbank" onclick="selectModel('hourbank')"></button>
+    <button class="model-dot" data-model="foundation" onclick="selectModel('foundation')"></button>
+    <button class="model-dot active" data-model="studio" onclick="selectModel('studio')"></button>
+  </div>
 </div>
 
 <div class="prop-divider"></div>
 
 <!-- 04: CONFIGURATOR -->
-<div class="prop-section">
+<div class="prop-section" id="costs">
   <div class="prop-label">04 / What this costs</div>
   <div class="prop-heading">Configure your engagement.</div>
 
   <div class="configurator">
     <div class="config-tabs">
-      <button class="config-tab active" onclick="switchTab('hourbank')" id="tab-hourbank">Hour Bank</button>
+      <button class="config-tab" onclick="switchTab('hourbank')" id="tab-hourbank">Hour Bank</button>
       <button class="config-tab" onclick="switchTab('foundation')" id="tab-foundation">Foundation</button>
-      <button class="config-tab" onclick="switchTab('studio')" id="tab-studio">Studio Partner &#9733;</button>
+      <button class="config-tab active" onclick="switchTab('studio')" id="tab-studio">Studio Partner &#9733;</button>
     </div>
 
     <!-- HOUR BANK -->
-    <div class="config-panel active" id="panel-hourbank">
+    <div class="config-panel" id="panel-hourbank">
       <div class="config-sec-label">Select hours per month</div>
       <div class="hr-buttons">
         <button class="hr-btn active" onclick="selectHours(10)" id="hr-10">10 hrs</button>
@@ -456,19 +524,30 @@
 
     <!-- FOUNDATION -->
     <div class="config-panel" id="panel-foundation">
-      <div class="slider-wrap">
-        <div class="config-sec-label">Portfolio companies covered</div>
-        <div class="slider-row">
-          <span class="slider-edge">0</span>
-          <input type="range" id="foundation-slider" min="0" max="16" value="8" step="1" oninput="updateFoundation(this)">
-          <span class="slider-edge right">16</span>
+      <div class="dual-sliders">
+        <div class="slider-wrap">
+          <div class="config-sec-label">Portfolio companies</div>
+          <div class="slider-row">
+            <span class="slider-edge">0</span>
+            <input type="range" id="fn-companies" min="0" max="16" value="8" step="1" oninput="updateFoundation()">
+            <span class="slider-edge right">16</span>
+          </div>
+          <div class="slider-val" id="fn-companies-label">8 portfolio companies</div>
         </div>
-        <div class="slider-val" id="foundation-companies-label">8 portfolio companies</div>
+        <div class="slider-wrap">
+          <div class="config-sec-label">Hours per week</div>
+          <div class="slider-row">
+            <span class="slider-edge">5</span>
+            <input type="range" id="fn-hours" min="5" max="10" value="5" step="1" oninput="updateFoundation()">
+            <span class="slider-edge right">10</span>
+          </div>
+          <div class="slider-val" id="fn-hours-label">5 hrs/week</div>
+        </div>
       </div>
       <div class="config-result">
         <div class="config-result-grid">
           <div>
-            <div class="config-result-label">Monthly fee (Delta40)</div>
+            <div class="config-result-label">Retainer (Delta40)</div>
             <div class="config-result-value pink" id="fn-fee">$1,600/mo</div>
           </div>
           <div>
@@ -480,56 +559,56 @@
             <div class="config-result-value green" id="fn-save">$400/mo</div>
           </div>
           <div>
-            <div class="config-result-label">Included</div>
-            <div class="config-result-value small">5 hrs/week</div>
+            <div class="config-result-label">Overage</div>
+            <div class="config-result-value small">$200/hr</div>
           </div>
         </div>
-        <div class="config-note">Base: $800/mo fund only. +$100/mo per portfolio company. Overage above 5 hrs/week: $200/hr.</div>
+        <div class="config-note">Retainer price covers general support hours only. Project catalogue work (readiness, architecture, transactions) is scoped and billed separately on top of the retainer.</div>
       </div>
     </div>
 
     <!-- STUDIO PARTNER -->
-    <div class="config-panel" id="panel-studio">
-      <div class="studio-sliders">
+    <div class="config-panel active" id="panel-studio">
+      <div class="dual-sliders">
         <div class="slider-wrap">
           <div class="config-sec-label">Portfolio companies</div>
           <div class="slider-row">
             <span class="slider-edge">0</span>
-            <input type="range" id="studio-companies" min="0" max="16" value="8" step="1" oninput="updateStudio()">
-            <span class="slider-edge right">16</span>
+            <input type="range" id="sp-companies" min="0" max="20" value="8" step="1" oninput="updateStudio()">
+            <span class="slider-edge right">20</span>
           </div>
-          <div class="slider-val" id="studio-companies-label">8 companies</div>
+          <div class="slider-val" id="sp-companies-label">8 companies</div>
         </div>
         <div class="slider-wrap">
-          <div class="config-sec-label">Weekly hours</div>
+          <div class="config-sec-label">Hours per week</div>
           <div class="slider-row">
             <span class="slider-edge">5</span>
-            <input type="range" id="studio-hours" min="5" max="10" value="7" step="1" oninput="updateStudio()">
-            <span class="slider-edge right">10</span>
+            <input type="range" id="sp-hours" min="5" max="20" value="10" step="1" oninput="updateStudio()">
+            <span class="slider-edge right">20</span>
           </div>
-          <div class="slider-val" id="studio-hours-label">7 hrs/week</div>
+          <div class="slider-val" id="sp-hours-label">10 hrs/week</div>
         </div>
       </div>
       <div class="config-result">
         <div class="config-result-grid">
           <div>
             <div class="config-result-label">Monthly fee (Delta40)</div>
-            <div class="config-result-value pink" id="sp-fee">$3,080/mo</div>
+            <div class="config-result-value pink" id="sp-fee">$4,500/mo</div>
           </div>
           <div>
             <div class="config-result-label">Standard rate</div>
-            <div class="config-result-value struck" id="sp-std">$3,850/mo</div>
+            <div class="config-result-value struck" id="sp-std">$5,625/mo</div>
           </div>
           <div>
             <div class="config-result-label">You save</div>
-            <div class="config-result-value green" id="sp-save">$770/mo</div>
+            <div class="config-result-value green" id="sp-save">$1,125/mo</div>
           </div>
           <div>
             <div class="config-result-label">Overage</div>
             <div class="config-result-value small">$150/hr</div>
           </div>
         </div>
-        <div class="config-note">At 5 hrs/week: $1,800 base + $100/company. At 10 hrs/week: $2,500 base + $150/company. Linear between. Standard = D40 rate / 0.8.</div>
+        <div class="config-note">Includes quarterly governance reviews, board prep, and regulatory monitoring across the portfolio. Project catalogue at Studio Partner rates. Standard = D40 / 0.8.</div>
       </div>
     </div>
   </div>
@@ -543,10 +622,10 @@
 <div class="prop-divider"></div>
 
 <!-- 05: PROJECT CATALOGUE -->
-<div class="prop-section">
+<div class="prop-section" id="catalogue">
   <div class="prop-label">05 / Project catalogue</div>
   <div class="prop-heading">On-demand project work.</div>
-  <p class="prop-copy">Activate any of these with a side letter. Delta40 retainer holders pay the prices shown.</p>
+  <p class="prop-copy">Each project is activated by a side letter. Scope confirmed before billing. Prices shown are Delta40 rates, separate from and in addition to the monthly retainer.</p>
 
   <div class="catalogue">
 
@@ -554,10 +633,7 @@
       <div class="cat-header" onclick="toggleCat('cat-1')">
         <div class="cat-header-left">
           <div class="cat-name">Investment Readiness</div>
-          <div class="cat-prices">
-            <span class="cat-price-std">$6,900</span>
-            <span class="cat-price-d40">$5,500</span>
-          </div>
+          <div class="cat-prices"><span class="cat-price-std">$6,900</span><span class="cat-price-d40">$5,500</span></div>
         </div>
         <div class="cat-chevron">&#9660;</div>
       </div>
@@ -579,10 +655,7 @@
       <div class="cat-header" onclick="toggleCat('cat-2')">
         <div class="cat-header-left">
           <div class="cat-name">Venture Architecture Readiness</div>
-          <div class="cat-prices">
-            <span class="cat-price-std">$8,100</span>
-            <span class="cat-price-d40">$6,500</span>
-          </div>
+          <div class="cat-prices"><span class="cat-price-std">$8,100</span><span class="cat-price-d40">$6,500</span></div>
         </div>
         <div class="cat-chevron">&#9660;</div>
       </div>
@@ -603,10 +676,7 @@
       <div class="cat-header" onclick="toggleCat('cat-3')">
         <div class="cat-header-left">
           <div class="cat-name">Founder Stack</div>
-          <div class="cat-prices">
-            <span class="cat-price-std">$4,400</span>
-            <span class="cat-price-d40">$3,500</span>
-          </div>
+          <div class="cat-prices"><span class="cat-price-std">$4,400</span><span class="cat-price-d40">$3,500</span></div>
         </div>
         <div class="cat-chevron">&#9660;</div>
       </div>
@@ -628,10 +698,7 @@
       <div class="cat-header" onclick="toggleCat('cat-4')">
         <div class="cat-header-left">
           <div class="cat-name">Corporate Readiness</div>
-          <div class="cat-prices">
-            <span class="cat-price-std">$5,250</span>
-            <span class="cat-price-d40">$4,200</span>
-          </div>
+          <div class="cat-prices"><span class="cat-price-std">$5,250</span><span class="cat-price-d40">$4,200</span></div>
         </div>
         <div class="cat-chevron">&#9660;</div>
       </div>
@@ -642,7 +709,7 @@
         <ul class="cat-del-list">
           <li>Entity structure check</li>
           <li>Cap table review</li>
-          <li>Key contracts review: founder agreements, customer, vendor</li>
+          <li>Key contracts review: founder, customer, vendor</li>
           <li>Governance gap analysis</li>
           <li>Structural risk summary with recommended fixes</li>
         </ul>
@@ -653,10 +720,7 @@
       <div class="cat-header" onclick="toggleCat('cat-5')">
         <div class="cat-header-left">
           <div class="cat-name">IP Readiness</div>
-          <div class="cat-prices">
-            <span class="cat-price-std">$4,000</span>
-            <span class="cat-price-d40">$3,200</span>
-          </div>
+          <div class="cat-prices"><span class="cat-price-std">$4,000</span><span class="cat-price-d40">$3,200</span></div>
         </div>
         <div class="cat-chevron">&#9660;</div>
       </div>
@@ -678,10 +742,7 @@
       <div class="cat-header" onclick="toggleCat('cat-6')">
         <div class="cat-header-left">
           <div class="cat-name">Data Room Readiness</div>
-          <div class="cat-prices">
-            <span class="cat-price-std">$3,500</span>
-            <span class="cat-price-d40">$2,800</span>
-          </div>
+          <div class="cat-prices"><span class="cat-price-std">$3,500</span><span class="cat-price-d40">$2,800</span></div>
         </div>
         <div class="cat-chevron">&#9660;</div>
       </div>
@@ -703,10 +764,7 @@
       <div class="cat-header" onclick="toggleCat('cat-7')">
         <div class="cat-header-left">
           <div class="cat-name">Privacy Readiness</div>
-          <div class="cat-prices">
-            <span class="cat-price-std">$3,500</span>
-            <span class="cat-price-d40">$2,800</span>
-          </div>
+          <div class="cat-prices"><span class="cat-price-std">$3,500</span><span class="cat-price-d40">$2,800</span></div>
         </div>
         <div class="cat-chevron">&#9660;</div>
       </div>
@@ -715,7 +773,7 @@
         <div class="cat-what-text">Data privacy and compliance review. Required for any portfolio company handling user data or raising from European DFIs.</div>
         <div class="cat-sublabel">Deliverables</div>
         <ul class="cat-del-list">
-          <li>Gap analysis vs GDPR and applicable local law: CBK data regs, NDPA Kenya</li>
+          <li>Gap analysis vs GDPR and applicable local law</li>
           <li>Data map and ROPA</li>
           <li>Policy stack: privacy policy, cookie consent, vendor DPA templates</li>
           <li>Prioritized remediation action plan</li>
@@ -729,40 +787,20 @@
 <div class="prop-divider"></div>
 
 <!-- 06: SUCCESS FEES -->
-<div class="prop-section">
+<div class="prop-section" id="fees">
   <div class="prop-label">06 / Success fees</div>
   <div class="prop-heading">When a portfolio company transaction closes.</div>
-  <p class="prop-copy">The following apply. Activated via side letter.</p>
+  <p class="prop-copy">The following apply to transactions we run or co-run. Activated via side letter.</p>
 
   <table class="fees-table">
     <thead>
-      <tr>
-        <th>Transaction</th>
-        <th>Standard</th>
-        <th>Delta40</th>
-      </tr>
+      <tr><th>Transaction</th><th>Standard</th><th>Delta40</th></tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="type">Debt facility</td>
-        <td class="rate-std">1%</td>
-        <td class="rate-d40">0.8%</td>
-      </tr>
-      <tr>
-        <td class="type">Equity round</td>
-        <td class="rate-std">1.875%</td>
-        <td class="rate-d40">1.5%</td>
-      </tr>
-      <tr>
-        <td class="type">M&amp;A</td>
-        <td class="rate-std">2.5%</td>
-        <td class="rate-d40">2%</td>
-      </tr>
-      <tr>
-        <td class="type">Asset deal</td>
-        <td class="rate-std">3.125%</td>
-        <td class="rate-d40">2.5%</td>
-      </tr>
+      <tr><td class="type">Debt facility</td><td class="rate-std">1%</td><td class="rate-d40">0.8%</td></tr>
+      <tr><td class="type">Equity round</td><td class="rate-std">1.875%</td><td class="rate-d40">1.5%</td></tr>
+      <tr><td class="type">M&amp;A</td><td class="rate-std">2.5%</td><td class="rate-d40">2%</td></tr>
+      <tr><td class="type">Asset deal</td><td class="rate-std">3.125%</td><td class="rate-d40">2.5%</td></tr>
     </tbody>
   </table>
 
@@ -774,7 +812,7 @@
 <div class="prop-divider"></div>
 
 <!-- 07: TRACK RECORD -->
-<div class="prop-section">
+<div class="prop-section" id="track">
   <div class="prop-label">07 / Track record</div>
   <div class="prop-heading">We have done this.</div>
   <p class="prop-copy">Duara Education. Kenya operating entity above a Delaware C-Corp. Pepe designed the architecture, drafted the governance documents, structured the fundraising instruments across multiple rounds, and sits on the board as counsel-investor. Duara is scaling from 4 to 40 schools across East Africa.</p>
@@ -783,7 +821,7 @@
 
 <div class="prop-divider"></div>
 
-<!-- 08: FINE PRINT -->
+<!-- FINE PRINT -->
 <div class="prop-section">
   <div class="prop-label">08 / Fine print</div>
   <div class="prop-heading">Short version.</div>
@@ -797,14 +835,12 @@
 <div class="prop-divider"></div>
 
 <!-- CTA -->
-<div class="cta-section">
+<div class="cta-section" id="cta">
   <div class="prop-label">Ready?</div>
   <h2 class="prop-heading" style="text-align:center;">Let us get to work.</h2>
   <p class="cta-sub">The engagement letter is ready. Review and sign when you are.</p>
   <a class="cta-btn" href="/sign/delta40">Review and sign the engagement letter</a>
-  <p class="cta-secondary">
-    Not ready? <a href="https://mexzungu.com/talk_to_pepe" target="_blank">Book 30 minutes.</a>
-  </p>
+  <p class="cta-secondary">Not ready? <a href="https://mexzungu.com/talk_to_pepe" target="_blank">Book 30 minutes.</a></p>
 </div>
 
 </main>
@@ -815,7 +851,9 @@
 </footer>
 <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice.</div>
 
-</div>
+  </div><!-- /content-area -->
+</div><!-- /page-layout -->
+</div><!-- /proposal-content -->
 
 <script>
 /* ---- PASSWORD GATE ---- */
@@ -852,8 +890,7 @@
 function fillTrack(el) {
   var min = parseFloat(el.min) || 0;
   var max = parseFloat(el.max) || 100;
-  var val = parseFloat(el.value) || 0;
-  var pct = ((val - min) / (max - min)) * 100;
+  var pct = ((parseFloat(el.value) - min) / (max - min)) * 100;
   el.style.background = 'linear-gradient(to right, #e14b87 ' + pct + '%, #2a2a2a ' + pct + '%)';
 }
 document.querySelectorAll('input[type="range"]').forEach(function (r) {
@@ -870,6 +907,19 @@ window.switchTab = function (tab) {
   scheduleSync();
 };
 
+/* ---- MODEL CARD SELECTOR ---- */
+window.selectModel = function (model) {
+  document.querySelectorAll('.model-card').forEach(function (c) { c.classList.remove('active'); });
+  document.querySelectorAll('.model-dot').forEach(function (d) { d.classList.remove('active'); });
+  var card = document.getElementById('card-' + model);
+  if (card) card.classList.add('active');
+  var dot = document.querySelector('.model-dot[data-model="' + model + '"]');
+  if (dot) dot.classList.add('active');
+  switchTab(model);
+  var costs = document.getElementById('costs');
+  if (costs) { setTimeout(function () { costs.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 120); }
+};
+
 /* ---- HOUR BANK ---- */
 var currentHours = 10;
 window.selectHours = function (hrs) {
@@ -882,55 +932,57 @@ function renderHourBank() {
   var rate = currentHours < 20 ? 200 : 150;
   var total = currentHours * rate;
   var roll = Math.floor(currentHours * 0.5);
-  var expire = currentHours - roll;
   document.getElementById('hb-rate').textContent = '$' + rate + '/hr';
   document.getElementById('hb-total').textContent = '$' + total.toLocaleString();
   document.getElementById('hb-roll').textContent = 'Up to ' + roll + ' hrs';
-  document.getElementById('hb-expire').textContent = expire + ' hrs';
+  document.getElementById('hb-expire').textContent = (currentHours - roll) + ' hrs';
   scheduleSync();
 }
 
 /* ---- FOUNDATION ---- */
-function updateFoundation(el) {
-  var c = parseInt(el ? el.value : document.getElementById('foundation-slider').value);
-  var label = c === 0 ? 'Fund only (0 portfolio companies)' : c + ' portfolio ' + (c === 1 ? 'company' : 'companies');
-  document.getElementById('foundation-companies-label').textContent = label;
-  var fee = 800 + c * 100;
-  var std = 1000 + c * 125;
-  var save = std - fee;
+function updateFoundation() {
+  var c = parseInt(document.getElementById('fn-companies').value);
+  var h = parseInt(document.getElementById('fn-hours').value);
+  var cLabel = c === 0 ? 'Fund only' : c + ' portfolio ' + (c === 1 ? 'company' : 'companies');
+  document.getElementById('fn-companies-label').textContent = cLabel;
+  document.getElementById('fn-hours-label').textContent = h + ' hrs/week';
+  // base: $800 at 5hrs, +$120/hr/week above 5
+  var base = 800 + (h - 5) * 120;
+  var fee = base + c * 100;
+  var std = Math.round(fee / 0.8);
   document.getElementById('fn-fee').textContent = '$' + fee.toLocaleString() + '/mo';
   document.getElementById('fn-std').textContent = '$' + std.toLocaleString() + '/mo';
-  document.getElementById('fn-save').textContent = '$' + save.toLocaleString() + '/mo';
+  document.getElementById('fn-save').textContent = '$' + (std - fee).toLocaleString() + '/mo';
   scheduleSync();
 }
 window.updateFoundation = updateFoundation;
 
 /* ---- STUDIO PARTNER ---- */
 function updateStudio() {
-  var c = parseInt(document.getElementById('studio-companies').value);
-  var h = parseInt(document.getElementById('studio-hours').value);
+  var c = parseInt(document.getElementById('sp-companies').value);
+  var h = parseInt(document.getElementById('sp-hours').value);
   var cLabel = c === 0 ? 'Fund only' : c + ' ' + (c === 1 ? 'company' : 'companies');
-  document.getElementById('studio-companies-label').textContent = cLabel;
-  document.getElementById('studio-hours-label').textContent = h + ' hrs/week';
-  var t = (h - 5) / 5;
-  var base = 1800 + 700 * t;
-  var perCo = 100 + 50 * t;
-  var fee = Math.round(base + c * perCo);
+  document.getElementById('sp-companies-label').textContent = cLabel;
+  document.getElementById('sp-hours-label').textContent = h + ' hrs/week';
+  // t: 0 at 5hrs, 1 at 20hrs
+  var t = (h - 5) / 15;
+  var base = Math.round(1800 + t * 3700);   // $1,800 (5h) to $5,500 (20h)
+  var perCo = Math.round(150 + t * 100);    // $150 (5h) to $250 (20h) per company
+  var fee = base + c * perCo;
   var std = Math.round(fee / 0.8);
-  var save = std - fee;
   document.getElementById('sp-fee').textContent = '$' + fee.toLocaleString() + '/mo';
   document.getElementById('sp-std').textContent = '$' + std.toLocaleString() + '/mo';
-  document.getElementById('sp-save').textContent = '$' + save.toLocaleString() + '/mo';
+  document.getElementById('sp-save').textContent = '$' + (std - fee).toLocaleString() + '/mo';
   scheduleSync();
 }
 window.updateStudio = updateStudio;
 
 /* ---- INIT ---- */
 renderHourBank();
-updateFoundation(null);
+updateFoundation();
 updateStudio();
 
-/* ---- API PERSISTENCE ---- */
+/* ---- SERVER PERSISTENCE ---- */
 var syncTimer = null;
 function scheduleSync() {
   clearTimeout(syncTimer);
@@ -938,28 +990,28 @@ function scheduleSync() {
 }
 function doSync() {
   var activeTab = document.querySelector('.config-tab.active');
-  var model = activeTab ? activeTab.textContent.replace(/\s*★/, '').trim() : 'Hour Bank';
+  var model = activeTab ? activeTab.textContent.replace(/\s*★/, '').trim() : 'Studio Partner';
   var payload = { model: model, timestamp: new Date().toISOString(), sliders: {}, prices: {} };
   if (model === 'Hour Bank') {
     var rate = currentHours < 20 ? 200 : 150;
-    payload.sliders = { hours: currentHours };
-    payload.prices = { rate_d40: rate, rate_std: 250, total: currentHours * rate };
+    payload.sliders = { hours_per_month: currentHours };
+    payload.prices = { rate_d40: rate, rate_std: 250, total_d40: currentHours * rate };
   } else if (model === 'Foundation') {
-    var c2 = parseInt(document.getElementById('foundation-slider').value);
-    var fee2 = 800 + c2 * 100;
-    payload.sliders = { companies: c2 };
-    payload.prices = { monthly_d40: fee2, monthly_std: 1000 + c2 * 125 };
+    var c2 = parseInt(document.getElementById('fn-companies').value);
+    var h2 = parseInt(document.getElementById('fn-hours').value);
+    var fee2 = 800 + (h2 - 5) * 120 + c2 * 100;
+    payload.sliders = { companies: c2, hours_per_week: h2 };
+    payload.prices = { monthly_d40: fee2, monthly_std: Math.round(fee2 / 0.8) };
   } else {
-    var c3 = parseInt(document.getElementById('studio-companies').value);
-    var h3 = parseInt(document.getElementById('studio-hours').value);
-    var t3 = (h3 - 5) / 5;
-    var fee3 = Math.round((1800 + 700 * t3) + c3 * (100 + 50 * t3));
+    var c3 = parseInt(document.getElementById('sp-companies').value);
+    var h3 = parseInt(document.getElementById('sp-hours').value);
+    var t3 = (h3 - 5) / 15;
+    var fee3 = Math.round(1800 + t3 * 3700) + c3 * Math.round(150 + t3 * 100);
     payload.sliders = { companies: c3, hours_per_week: h3 };
     payload.prices = { monthly_d40: fee3, monthly_std: Math.round(fee3 / 0.8) };
   }
   fetch('https://api.mexzungu.com/delta40/configure', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   }).catch(function () {});
 }
@@ -968,6 +1020,25 @@ function doSync() {
 window.toggleCat = function (id) {
   document.getElementById(id).classList.toggle('open');
 };
+
+/* ---- SIDEBAR ACTIVE STATE ---- */
+(function () {
+  var ids = ['heard', 'breaks', 'build', 'costs', 'catalogue', 'fees', 'track', 'cta'];
+  var links = document.querySelectorAll('.sidebar-link[data-section]');
+  function onScroll() {
+    var y = window.scrollY + 130;
+    var active = ids[0];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= y) active = id;
+    });
+    links.forEach(function (l) {
+      l.classList.toggle('active', l.dataset.section === active);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
 </script>
 
 </body>
