@@ -565,15 +565,16 @@
 
   document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
 
-  if (sessionStorage.getItem(PW_SK) === '1') {
+  // PASSWORD GATE DISABLED. Auto-bypass.
+  (function() {
     const params = new URLSearchParams(location.search);
     if (!params.get('token')) {
       params.set('token', 'Outlaw-havenpay-2026');
       history.replaceState(null, '', location.pathname + '?' + params.toString());
     }
     document.getElementById('pw-gate').classList.add('hidden');
-    initHub();
-  }
+    sessionStorage.setItem(PW_SK, '1');
+  })();
 </script>
 
 <script>
