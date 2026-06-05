@@ -236,6 +236,26 @@
 </div>
 
 <script>
+const PW = 'Outlaw-Master-2026';
+const CLIENT_PW = 'Outlaw-Havenpay-2026';
+const PW_SK = 'havenpay_hub_v1';
+function checkPw() {
+  const v = document.getElementById('pw-input').value.trim();
+  if (v === PW || v === CLIENT_PW) {
+    sessionStorage.setItem(PW_SK, '1');
+    document.getElementById('pw-gate').classList.add('hidden');
+    initPage();
+  } else {
+    document.getElementById('pw-error').textContent = 'Incorrect code. Try again.';
+    document.getElementById('pw-input').value = '';
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
+if (sessionStorage.getItem(PW_SK) === '1') {
+  document.getElementById('pw-gate').classList.add('hidden');
+  initPage();
+}
+
 const STATUS_MAP = {
   'identified': 'Identified',
   'introduced': 'Introduced',
