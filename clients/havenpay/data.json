@@ -6,9 +6,9 @@
     "pm": "Pepe Carrillo",
     "pm_email": "pepe@mexzungu.com",
     "booking_url": "https://mexzungu.com/talk_to_pepe",
-    "updated": "2026-05-15"
+    "updated": "2026-06-05"
   },
-  "current_focus": "Week of May 15: Mapping investor pipeline and round structure",
+  "current_focus": "June 5: Check-in call in progress. Round structure, investor pipeline, and next 30 days under active discussion.",
   "workstreams": [
     {
       "id": "fundraising",
@@ -44,9 +44,9 @@
         "id": "INV-001",
         "description": "Monthly Administration Fee, May 2026",
         "amount": "$500",
-        "status": "pending",
+        "status": "upcoming",
         "due": "2026-06-07",
-        "note": "Billed monthly while WS2 is open"
+        "note": "Invoice not yet sent. Due Jun 7. Billed monthly while WS2 is open."
       },
       {
         "id": "SF-EQ",
@@ -184,7 +184,15 @@
       "title": "Deal strategy session",
       "summary": "Active working session. Mapping investor pipeline, round structure, and hub infrastructure.",
       "decisions": [],
-      "next": "Capture investor pipeline, round size, instrument preference, timeline to first close",
+      "next": "Capture investor pipeline, round size, instrument preference, timeline to first close"
+    },
+    {
+      "date": "2026-06-05",
+      "type": "call",
+      "title": "Check-in call",
+      "summary": "Monthly check-in. Reviewed progress on investor pipeline mapping, round structure decisions, and priorities for the next 30 days.",
+      "decisions": [],
+      "next": "Finalize round target, instrument, and close timeline. Advance investor pipeline.",
       "current": true
     }
   ]
