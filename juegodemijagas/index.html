@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Juego de las Mijagas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0b0b;--bg2:#131010;--bg3:#1c1717;--bg4:#231d1d;--bg5:#2a2020;
+  --gold:#c9a55a;--gold2:#7a633a;--gold3:#e8c87a;
+  --red:#8c1c1c;--red2:#c43030;--red3:#6a1414;
+  --text:#e8ddd0;--dim:#9a8878;--border:#252020;--border2:#332828;
+  --yes-bg:#0a2010;--yes-b:#2a5a38;--yes-t:#7ecf9a;
+  --no-bg:#200a0a;--no-b:#5a2a2a;--no-t:#cf8080;
+  --wait-bg:#1e1808;--wait-b:#5a4018;--wait-t:#cfaa6a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.7;min-height:100vh;position:relative}
+
+/* Grain overlay */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:256px;opacity:.5;
+}
+
+/* ====== HEADER ====== */
+.header-wrap{position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+#header-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+header{position:relative;z-index:2;text-align:center;padding:80px 20px 64px;background:radial-gradient(ellipse 80% 70% at 50% 0%,rgba(140,28,28,.22),transparent)}
+.eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold2);margin-bottom:20px;opacity:.8}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,9vw,88px);font-weight:300;letter-spacing:1px;line-height:1.02;margin-bottom:10px}
+h1 em{font-style:italic;color:var(--gold)}
+.sub{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,3vw,22px);font-style:italic;color:var(--dim);margin-bottom:36px}
+.ornament{display:flex;align-items:center;justify-content:center;gap:16px}
+.ornament::before,.ornament::after{content:'';width:80px;height:1px;background:linear-gradient(to right,transparent,var(--gold2));opacity:.5}
+.ornament.rev::before,.ornament.rev::after{background:linear-gradient(to left,transparent,var(--gold2))}
+
+/* Dom levels preview strip */
+.levels-strip{display:flex;justify-content:center;gap:0;margin-top:36px;position:relative;z-index:2}
+.level-pip{text-align:center;padding:10px 20px;border:1px solid var(--border);border-right:none;opacity:.35;transition:opacity .3s}
+.level-pip:last-child{border-right:1px solid var(--border)}
+.level-pip .lp-num{font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--gold2);letter-spacing:2px;margin-bottom:3px}
+.level-pip .lp-name{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.level-pip.active-level{opacity:1;border-color:var(--gold2);background:rgba(201,165,90,.04)}
+
+/* ====== MODE BAR ====== */
+.mode-bar{display:flex;justify-content:center;gap:0;padding:0;border-bottom:1px solid var(--border);position:relative;z-index:10}
+.mode-btn{padding:14px 40px;border:none;border-right:1px solid var(--border);background:transparent;color:var(--dim);font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.mode-btn:last-child{border-right:none}
+.mode-btn:hover{background:var(--bg2);color:var(--text)}
+.mode-btn.active{background:var(--bg3);color:var(--text);border-bottom:2px solid var(--gold2)}
+.mode-btn.guide-btn.active{background:rgba(140,28,28,.15);border-bottom-color:var(--red2);color:var(--text)}
+
+/* ====== REFERENCE VIEW ====== */
+.stage-nav{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;background:var(--bg);backdrop-filter:blur(8px)}
+.stage-nav::-webkit-scrollbar{display:none}
+.nav-tab{flex:1;min-width:90px;padding:14px 8px;text-align:center;cursor:pointer;border-right:1px solid var(--border);transition:background .15s;text-decoration:none;display:block}
+.nav-tab:last-child{border-right:none}
+.nav-tab:hover{background:var(--bg2)}
+.nav-tab .tn{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--border2);line-height:1;margin-bottom:4px;transition:color .15s}
+.nav-tab:hover .tn{color:var(--gold2)}
+.nav-tab .tl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+
+.overview-map{padding:48px 20px;border-bottom:1px solid var(--border);overflow:hidden}
+.map-title{text-align:center;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:32px}
+.map-scroll{overflow-x:auto;padding-bottom:8px}
+.map-svg{min-width:700px;display:block;margin:0 auto}
+
+main{max-width:960px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1}
+.section{padding:64px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.sec-badge{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-badge::before{content:'';width:24px;height:1px;background:var(--gold2)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5.5vw,48px);font-weight:300;line-height:1.1;margin-bottom:8px}
+.sec-title em{font-style:italic;color:var(--gold)}
+.sec-en{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:24px;opacity:.6}
+.sec-intro{font-size:15px;color:var(--dim);max-width:640px;line-height:1.9;margin-bottom:36px}
+.sec-intro strong{color:var(--text);font-weight:400}
+.stage-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:28px}
+.big-num{font-family:'Cormorant Garamond',serif;font-size:100px;font-weight:300;line-height:.75;color:var(--bg4);flex-shrink:0;user-select:none;-webkit-text-stroke:1px var(--border2)}
+
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:32px}
+.pillar{background:var(--bg2);padding:22px 18px;transition:background .15s}
+.pillar:hover{background:var(--bg3)}
+.pillar h4{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);margin-bottom:8px}
+.pillar p{font-size:12px;color:var(--dim);line-height:1.65}
+
+.checklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px;margin-bottom:32px}
+.ci{display:flex;gap:10px;font-size:12px;color:var(--dim);padding:10px 14px;background:var(--bg2);border:1px solid var(--border);line-height:1.5;transition:border-color .15s}
+.ci:hover{border-color:var(--gold2)}
+.ci::before{content:'◇';color:var(--gold2);flex-shrink:0}
+
+/* Tactic carousel */
+.tactics{display:flex;overflow-x:auto;gap:12px;margin-bottom:36px;padding-bottom:8px;scrollbar-width:none;cursor:grab;user-select:none}
+.tactics::-webkit-scrollbar{display:none}
+.tactics.dragging{cursor:grabbing}
+.tactic{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--border2);padding:22px 20px;transition:border-color .15s,border-top-color .15s;min-width:220px;flex-shrink:0}
+.tactic:hover{border-top-color:var(--gold2)}
+.tactic h4{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--text);margin-bottom:8px}
+.tactic p{font-size:12px;color:var(--dim);line-height:1.7}
+.carousel-hint{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);opacity:.4;margin-bottom:8px;padding-left:2px}
+.carousel-hint::before{content:'← '}
+
+/* Intermittency wave */
+.wave-viz{margin-bottom:32px;background:var(--bg2);border:1px solid var(--border);padding:28px 20px 20px}
+.wave-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold2);margin-bottom:16px}
+.wave-svg{width:100%;overflow:visible}
+
+/* Stage scene art overlay */
+.scenario-art{position:absolute;top:12px;right:14px;opacity:.12;pointer-events:none;transition:opacity .4s}
+.scenario-card:hover .scenario-art{opacity:.22}
+
+/* Stage ambient glow (behind game body) */
+.gm-ambient{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 40% at 50% 80%,var(--stage-glow,transparent),transparent);
+  transition:background 1s;
+}
+.gm-body{position:relative}
+
+/* Staggered choice animations */
+@keyframes choiceIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.gm-choice{animation:choiceIn .35s cubic-bezier(.4,0,.2,1) both}
+.gm-choice:nth-child(1){animation-delay:0ms}
+.gm-choice:nth-child(2){animation-delay:80ms}
+.gm-choice:nth-child(3){animation-delay:160ms}
+
+/* Scenario card entrance */
+@keyframes sceneIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.scenario-card.entering{animation:sceneIn .4s cubic-bezier(.4,0,.2,1) both}
+
+/* XP pulse */
+@keyframes xpPulse{0%{box-shadow:0 0 0 0 rgba(201,165,90,.4)}70%{box-shadow:0 0 0 6px rgba(201,165,90,0)}100%{box-shadow:0 0 0 0 rgba(201,165,90,0)}}
+.xp-track.pulse{animation:xpPulse .6s ease-out}
+
+/* Stage section header art */
+.sec-stage-art{
+  position:absolute;right:-10px;top:-30px;
+  font-family:'Cormorant Garamond',serif;font-size:200px;font-weight:300;
+  color:var(--bg3);line-height:1;pointer-events:none;user-select:none;
+  -webkit-text-stroke:1px var(--bg4);
+}
+.section{position:relative;overflow:hidden}
+
+.signals{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:22px;margin-bottom:32px}
+.signals h4{font-family:'Cormorant Garamond',serif;font-size:18px;margin-bottom:14px;color:var(--gold)}
+.sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:4px}
+.sig-grid li{list-style:none;font-size:12px;color:var(--dim);padding:4px 0 4px 14px;position:relative;line-height:1.5}
+.sig-grid li::before{content:'/';position:absolute;left:0;color:var(--red);font-size:10px}
+
+.quote{border-left:2px solid var(--gold2);padding:18px 22px;margin:24px 0 32px;background:rgba(201,165,90,.04)}
+.quote p{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--gold);line-height:2;white-space:pre-line}
+
+.insight-box{background:var(--bg3);border:1px solid var(--border2);border-left:3px solid var(--gold2);padding:20px 22px;margin-bottom:28px}
+.insight-box p{font-size:13px;color:var(--dim);line-height:1.8}
+.insight-box strong{color:var(--gold);font-weight:400;font-family:'Cormorant Garamond',serif;font-size:15px}
+
+.tree-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.tree-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.flow-node{display:flex;flex-direction:column;align-items:center;position:relative}
+.flow-q{background:var(--bg3);border:1px solid var(--gold2);padding:18px 22px;max-width:540px;width:100%;font-size:13px;color:var(--text);line-height:1.65;text-align:center;display:flex;align-items:center;gap:14px}
+.flow-q .qn{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);flex-shrink:0}
+.flow-line-down{width:1px;height:26px;background:var(--gold2);opacity:.4;flex-shrink:0}
+.flow-hbar{position:relative;width:80%;max-width:480px;height:2px;background:linear-gradient(to right,var(--yes-b) 0%,var(--yes-b) 33%,var(--wait-b) 33%,var(--wait-b) 66%,var(--no-b) 66%,var(--no-b) 100%);opacity:.5}
+.flow-hbar.two{background:linear-gradient(to right,var(--yes-b) 0%,var(--yes-b) 50%,var(--no-b) 50%,var(--no-b) 100%)}
+.flow-branches{display:flex;gap:12px;width:90%;max-width:580px;align-items:flex-start}
+.flow-branch{flex:1;position:relative;padding-top:22px}
+.flow-branch::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:22px}
+.flow-branch.yes::before{background:var(--yes-b)}
+.flow-branch.no::before{background:var(--no-b)}
+.flow-branch.wait::before{background:var(--wait-b)}
+.branch-card{padding:14px 16px;font-size:12px;line-height:1.65;height:100%}
+.branch-card.yes{background:var(--yes-bg);border:1px solid var(--yes-b);color:var(--yes-t)}
+.branch-card.no{background:var(--no-bg);border:1px solid var(--no-b);color:var(--no-t)}
+.branch-card.wait{background:var(--wait-bg);border:1px solid var(--wait-b);color:var(--wait-t)}
+.branch-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;display:block;margin-bottom:6px;opacity:.8}
+.branch-next{display:inline-flex;align-items:center;gap:4px;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-top:10px;opacity:.5;cursor:pointer;text-decoration:none;transition:opacity .15s}
+.branch-next:hover{opacity:1}
+.branch-next::after{content:'→'}
+.tree-spacer{height:36px}
+
+footer{text-align:center;padding:36px 20px;border-top:1px solid var(--border);position:relative;z-index:1}
+footer .glyph{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold2);display:block;margin-bottom:6px}
+footer p{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+
+/* ====== GUIDED MODE ====== */
+#guided-mode{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;overflow-y:auto;flex-direction:column}
+#guided-mode.active{display:flex}
+
+.gm-header{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);flex-shrink:0;gap:16px;flex-wrap:wrap;background:var(--bg)}
+.gm-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold2);white-space:nowrap;letter-spacing:1px;font-style:italic}
+
+/* XP HUD */
+.xp-hud{display:flex;align-items:center;gap:16px;flex:1;justify-content:center;min-width:0}
+.xp-label{font-size:10px;letter-spacing:2px;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.xp-label span{color:var(--gold);font-size:13px;font-family:'Cormorant Garamond',serif}
+.xp-track{flex:1;max-width:200px;height:3px;background:var(--bg4);position:relative;border-radius:0}
+.xp-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(to right,var(--gold2),var(--gold3));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.level-tag{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding:4px 10px;border:1px solid rgba(201,165,90,.3);background:rgba(201,165,90,.05)}
+.gm-close{background:transparent;border:1px solid var(--border);color:var(--dim);padding:8px 18px;font-family:'Inter',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .15s;white-space:nowrap}
+.gm-close:hover{border-color:var(--red2);color:var(--red2)}
+
+/* Stage progress dots */
+.gm-progress{flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:16px 28px;border-bottom:1px solid var(--border);gap:8px;background:var(--bg)}
+.gm-stage-dot{width:30px;height:30px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--dim);transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;flex-shrink:0}
+.gm-stage-dot.done{background:var(--gold2);border-color:var(--gold2);color:var(--bg);font-weight:400}
+.gm-stage-dot.current{border-color:var(--gold);color:var(--gold);background:rgba(201,165,90,.1);box-shadow:0 0 12px rgba(201,165,90,.2)}
+.gm-stage-dot .dot-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);white-space:nowrap;opacity:0;transition:opacity .3s}
+.gm-stage-dot.current .dot-label{opacity:1}
+.stage-connector{flex:1;max-width:40px;height:1px;background:var(--border);transition:background .4s}
+.stage-connector.done{background:var(--gold2)}
+
+/* Game body */
+.gm-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 24px 28px;max-width:580px;margin:0 auto;width:100%}
+.gm-stage-label{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold2);margin-bottom:20px;text-align:center;width:100%;opacity:.7}
+
+/* Scenario card: sets the scene */
+.scenario-card{
+  width:100%;margin-bottom:28px;
+  padding:20px 24px;
+  border:1px solid var(--border2);
+  border-left:3px solid var(--gold2);
+  background:linear-gradient(135deg,rgba(201,165,90,.05),rgba(201,165,90,.01));
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-style:italic;
+  color:var(--dim);line-height:1.8;
+  position:relative;
+}
+.scenario-card::before{
+  content:'';position:absolute;top:0;right:0;
+  width:60px;height:1px;background:linear-gradient(to left,transparent,var(--gold2));
+  opacity:.3;
+}
+
+.gm-question{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(20px,3.8vw,30px);
+  font-weight:300;text-align:center;
+  line-height:1.3;margin-bottom:36px;
+  color:var(--text);width:100%;
+}
+
+/* Choice buttons: redesigned */
+.gm-choices{display:flex;flex-direction:column;gap:6px;width:100%;max-width:480px}
+.gm-choice{
+  padding:18px 24px;
+  border:1px solid var(--border);
+  border-left:3px solid var(--border2);
+  background:var(--bg2);
+  color:var(--dim);
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;
+  cursor:pointer;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  text-align:left;
+  line-height:1.45;
+  position:relative;
+  overflow:hidden;
+}
+.gm-choice::after{
+  content:'';position:absolute;left:0;top:0;width:0;height:100%;
+  transition:width .25s cubic-bezier(.4,0,.2,1);
+  z-index:0;
+}
+.gm-choice span{position:relative;z-index:1}
+.gm-choice.yes{border-left-color:rgba(42,90,56,.7)}
+.gm-choice.no{border-left-color:rgba(90,42,42,.7)}
+.gm-choice.wait{border-left-color:rgba(90,64,24,.7)}
+.gm-choice.yes:hover{border-color:var(--yes-b);color:var(--yes-t);border-left-color:var(--yes-b);background:var(--yes-bg)}
+.gm-choice.no:hover{border-color:var(--no-b);color:var(--no-t);border-left-color:var(--no-b);background:var(--no-bg)}
+.gm-choice.wait:hover{border-color:var(--wait-b);color:var(--wait-t);border-left-color:var(--wait-b);background:var(--wait-bg)}
+.choice-type-tag{font-family:'Inter',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;opacity:.5;display:block;margin-bottom:4px}
+
+/* Result card: slides up */
+.gm-result{
+  display:none;width:100%;max-width:480px;
+  border:1px solid var(--border2);
+  padding:28px;
+  transform:translateY(16px);opacity:0;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s;
+}
+.gm-result.show{display:block}
+.gm-result.reveal{transform:translateY(0);opacity:1}
+.result-marker{
+  font-family:'Inter',sans-serif;
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  margin-bottom:14px;padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.result-marker::before{content:'';width:16px;height:1px;background:currentColor;opacity:.6;flex-shrink:0}
+.result-heading{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;margin-bottom:14px;color:var(--text)}
+.result-advice{font-size:13px;color:var(--dim);line-height:1.8;margin-bottom:18px}
+.result-xp-line{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;font-style:italic;
+  letter-spacing:.5px;color:var(--gold2);
+  margin-bottom:24px;height:18px;
+}
+.gm-next-btn{
+  padding:12px 24px;border:1px solid var(--gold2);
+  background:transparent;color:var(--gold);
+  font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;display:block;width:100%;margin-bottom:8px;
+}
+.gm-next-btn:hover{background:var(--gold2);color:var(--bg)}
+.gm-restart-btn{
+  padding:10px 24px;border:1px solid var(--border);
+  background:transparent;color:var(--dim);
+  font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .15s;display:block;width:100%;
+}
+.gm-restart-btn:hover{border-color:var(--red2);color:var(--red2)}
+
+/* ====== END SCREEN ====== */
+.end-screen{display:none;width:100%;max-width:540px}
+.end-screen.show{display:block}
+.debrief-label{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold2);margin-bottom:12px;text-align:center}
+.debrief-level{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,7vw,60px);
+  font-weight:300;color:var(--gold);
+  line-height:1;margin-bottom:24px;text-align:center;
+}
+.debrief-xp-wrap{position:relative;max-width:300px;margin:0 auto 10px}
+.debrief-xp-track{height:4px;background:var(--bg4);position:relative}
+.debrief-xp-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(to right,var(--gold2),var(--gold3));transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.debrief-xp-text{font-size:10px;letter-spacing:2px;color:var(--dim);margin-bottom:40px;text-align:center}
+.debrief-xp-text span{color:var(--gold)}
+
+/* Badge shelf */
+.shelf-section{margin-bottom:28px}
+.shelf-title{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.badge{
+  padding:16px;
+  border:1px solid var(--border);
+  background:var(--bg2);
+  transition:all .2s;
+  position:relative;
+  overflow:hidden;
+}
+.badge.earned{
+  border-color:rgba(201,165,90,.4);
+  background:linear-gradient(135deg,rgba(201,165,90,.08) 0%,rgba(201,165,90,.02) 100%);
+  box-shadow:0 0 16px rgba(201,165,90,.1);
+}
+.badge.earned::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--gold2),var(--gold3));
+}
+.badge.locked{opacity:.2;filter:grayscale(1)}
+.badge-glyph{font-size:24px;margin-bottom:8px;display:block;color:var(--dim)}
+.badge.earned .badge-glyph{color:var(--gold)}
+.badge-name{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--dim);display:block;margin-bottom:4px;line-height:1.2}
+.badge.earned .badge-name{color:var(--gold)}
+.badge-skill{font-size:10px;color:var(--dim);line-height:1.45;letter-spacing:.2px}
+
+/* Debrief buttons */
+.debrief-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:32px}
+.db-btn-primary{flex:1;min-width:120px;padding:12px 20px;border:1px solid var(--gold2);background:transparent;color:var(--gold);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.db-btn-primary:hover{background:var(--gold2);color:var(--bg)}
+.db-btn-secondary{flex:1;min-width:120px;padding:12px 20px;border:1px solid var(--border);background:transparent;color:var(--dim);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.db-btn-secondary:hover{border-color:var(--red2);color:var(--red2)}
+
+/* ====== ACHIEVEMENT TOAST ====== */
+#ach-toast{
+  position:fixed;bottom:-100px;right:24px;z-index:500;
+  background:var(--bg3);
+  border:1px solid rgba(201,165,90,.4);
+  border-top:2px solid var(--gold);
+  padding:16px 20px;max-width:270px;
+  display:flex;align-items:flex-start;gap:14px;
+  transition:bottom .4s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+  box-shadow:0 4px 32px rgba(0,0,0,.5);
+}
+#ach-toast.visible{bottom:28px}
+.toast-glyph{font-size:22px;color:var(--gold);flex-shrink:0;line-height:1;padding-top:2px}
+.toast-micro{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:4px}
+.toast-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);margin-bottom:3px;line-height:1.2}
+.toast-skill{font-size:10px;color:var(--dim);line-height:1.45}
+
+/* XP reveal */
+#xp-reveal{
+  position:fixed;top:70px;right:32px;z-index:400;
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;letter-spacing:.5px;font-style:italic;
+  color:var(--gold);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s;
+  text-shadow:0 0 12px rgba(201,165,90,.4);
+}
+#xp-reveal.show{opacity:1}
+#xp-reveal.fade{opacity:0;transition:opacity .8s}
+
+/* History crumbs */
+.gm-history{flex-shrink:0;padding:12px 28px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:4px;justify-content:center;background:var(--bg)}
+.hist-crumb{font-size:9px;color:var(--dim);padding:3px 10px;border:1px solid var(--border);display:inline-flex;align-items:center;gap:6px}
+.hist-crumb .hc-ans{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:500}
+.hist-crumb .hc-ans.yes{color:var(--yes-t)}.hist-crumb .hc-ans.no{color:var(--no-t)}.hist-crumb .hc-ans.wait{color:var(--wait-t)}
+
+@keyframes waveDash{to{stroke-dashoffset:-300}}
+.wave-path-anim{stroke-dasharray:150;animation:waveDash 3s linear infinite}
+
+@media(max-width:640px){
+  header{padding:56px 16px 48px}
+  main{padding:0 14px 60px}
+  .big-num{font-size:70px}
+  .flow-branches{flex-direction:column;align-items:center;width:100%}
+  .flow-branch{width:92%;padding-top:8px}
+  .flow-branch::before{display:none}
+  .flow-hbar{display:none}
+  .gm-body{padding:28px 16px 20px}
+  .gm-question{font-size:19px}
+  .xp-hud{display:none}
+  .levels-strip{display:none}
+  .gm-choice{font-size:14px;padding:15px 18px}
+}
+body.guide-open .ref-view{display:none}
+</style>
+</head>
+<body>
+
+<!-- GUIDED MODE (fixed overlay, rendered first for z-index) -->
+<div id="guided-mode">
+
+  <div class="gm-header">
+    <div class="gm-title">El Juego de las Mijagas</div>
+    <div class="xp-hud">
+      <div class="xp-label">XP <span id="xp-count">0</span></div>
+      <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+      <div class="level-tag" id="level-tag">El Observador</div>
+    </div>
+    <button class="gm-close" onclick="setMode('ref')">Salir ✕</button>
+  </div>
+
+  <div class="gm-progress" id="gm-progress"></div>
+
+  <div class="gm-body">
+    <div class="gm-ambient" id="gm-ambient"></div>
+    <div class="gm-stage-label" id="gm-stage-label"></div>
+    <div class="scenario-card" id="gm-scenario"></div>
+    <div class="gm-question" id="gm-question"></div>
+    <div class="gm-choices" id="gm-choices"></div>
+
+    <div class="gm-result" id="gm-result">
+      <div class="result-marker" id="result-marker"></div>
+      <div class="result-heading" id="result-heading"></div>
+      <div class="result-advice" id="result-advice"></div>
+      <div class="result-xp-line" id="result-xp-line"></div>
+      <button class="gm-next-btn" id="gm-next-btn" onclick="advanceGuide()">Continuar</button>
+      <button class="gm-restart-btn" onclick="restartGuide()">Nueva sesion</button>
+    </div>
+
+    <div class="end-screen" id="end-screen"></div>
+  </div>
+
+  <div class="gm-history" id="gm-history"></div>
+</div>
+
+<!-- ACHIEVEMENT TOAST -->
+<div id="ach-toast">
+  <div class="toast-glyph" id="toast-glyph"></div>
+  <div>
+    <div class="toast-micro">Habilidad reconocida</div>
+    <div class="toast-name" id="toast-name"></div>
+    <div class="toast-skill" id="toast-skill"></div>
+  </div>
+</div>
+
+<!-- XP REVEAL -->
+<div id="xp-reveal"></div>
+
+<!-- REFERENCE VIEW -->
+<div class="ref-view">
+
+<div class="header-wrap">
+  <canvas id="header-canvas"></canvas>
+  <header>
+    <p class="eyebrow">Un ritual privado. Un juego serio.</p>
+    <h1>El Juego de <em>las Mijagas</em></h1>
+    <p class="sub">De la atraccion a la rendicion. El proceso.</p>
+    <div class="ornament"><span style="color:var(--gold);font-size:16px;line-height:1">◈</span></div>
+
+    <div class="levels-strip">
+      <div class="level-pip" id="lp0"><div class="lp-num">0 XP</div><div class="lp-name">El Observador</div></div>
+      <div class="level-pip" id="lp1"><div class="lp-num">30 XP</div><div class="lp-name">El Lector</div></div>
+      <div class="level-pip" id="lp2"><div class="lp-num">65 XP</div><div class="lp-name">El Arquitecto</div></div>
+      <div class="level-pip" id="lp3"><div class="lp-num">110 XP</div><div class="lp-name">El Maestro</div></div>
+    </div>
+  </header>
+</div>
+
+<div class="mode-bar">
+  <button class="mode-btn active" id="ref-btn" onclick="setMode('ref')">Mapa completo</button>
+  <button class="mode-btn guide-btn" id="guide-btn" onclick="setMode('guide')">Jugar en tiempo real</button>
+</div>
+
+<div class="overview-map">
+  <p class="map-title">El viaje completo</p>
+  <div class="map-scroll">
+    <svg class="map-svg" viewBox="0 0 900 130" width="900" height="130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="25" width="130" height="70" rx="2" fill="#1c1717" stroke="#5a4018" stroke-width="1"/>
+      <text x="75" y="52" text-anchor="middle" fill="#c9a55a" font-family="Cormorant Garamond,serif" font-size="24" font-weight="300">0</text>
+      <text x="75" y="70" text-anchor="middle" fill="#9a8878" font-family="Inter,sans-serif" font-size="8" letter-spacing="1.5">EL TERRENO</text>
+      <path d="M 140 60 L 158 60 M 153 55 L 158 60 L 153 65" stroke="#5a4018" stroke-width="1"/>
+      <rect x="158" y="25" width="130" height="70" rx="2" fill="#1c1717" stroke="#5a4018" stroke-width="1"/>
+      <text x="223" y="52" text-anchor="middle" fill="#c9a55a" font-family="Cormorant Garamond,serif" font-size="24" font-weight="300">1</text>
+      <text x="223" y="70" text-anchor="middle" fill="#9a8878" font-family="Inter,sans-serif" font-size="8" letter-spacing="1.5">LAS MIGAJAS</text>
+      <path d="M 288 60 L 306 60 M 301 55 L 306 60 L 301 65" stroke="#5a4018" stroke-width="1"/>
+      <rect x="306" y="25" width="130" height="70" rx="2" fill="#1c1717" stroke="#5a4018" stroke-width="1"/>
+      <text x="371" y="52" text-anchor="middle" fill="#c9a55a" font-family="Cormorant Garamond,serif" font-size="24" font-weight="300">2</text>
+      <text x="371" y="70" text-anchor="middle" fill="#9a8878" font-family="Inter,sans-serif" font-size="8" letter-spacing="1.5">EL QUIEBRE</text>
+      <path d="M 436 60 L 454 60 M 449 55 L 454 60 L 449 65" stroke="#5a4018" stroke-width="1"/>
+      <rect x="454" y="25" width="130" height="70" rx="2" fill="#1c1717" stroke="#8c3030" stroke-width="1"/>
+      <text x="519" y="52" text-anchor="middle" fill="#c9a55a" font-family="Cormorant Garamond,serif" font-size="24" font-weight="300">3</text>
+      <text x="519" y="70" text-anchor="middle" fill="#9a8878" font-family="Inter,sans-serif" font-size="8" letter-spacing="1.5">INTERMITENCIA</text>
+      <path d="M 584 60 L 602 60 M 597 55 L 602 60 L 597 65" stroke="#8c3030" stroke-width="1"/>
+      <rect x="602" y="25" width="130" height="70" rx="2" fill="#1c1717" stroke="#8c3030" stroke-width="2"/>
+      <text x="667" y="52" text-anchor="middle" fill="#e8c87a" font-family="Cormorant Garamond,serif" font-size="24" font-weight="300">4</text>
+      <text x="667" y="70" text-anchor="middle" fill="#c9a55a" font-family="Inter,sans-serif" font-size="8" letter-spacing="1.5">LA CAUTIVA</text>
+      <path d="M 732 60 L 750 60 M 745 55 L 750 60 L 745 65" stroke="#2a5a38" stroke-width="1"/>
+      <rect x="750" y="25" width="140" height="70" rx="2" fill="#0d2414" stroke="#2a5a38" stroke-width="1"/>
+      <text x="820" y="52" text-anchor="middle" fill="#7ecf9a" font-family="Cormorant Garamond,serif" font-size="24" font-weight="300">+</text>
+      <text x="820" y="70" text-anchor="middle" fill="#7ecf9a" font-family="Inter,sans-serif" font-size="8" letter-spacing="1.5">AFTERCARE</text>
+      <!-- Sub-labels -->
+      <text x="75" y="112" text-anchor="middle" fill="#5a4018" font-family="Inter,sans-serif" font-size="8">leer el campo</text>
+      <text x="223" y="112" text-anchor="middle" fill="#5a4018" font-family="Inter,sans-serif" font-size="8">lectura y mapeo</text>
+      <text x="371" y="112" text-anchor="middle" fill="#5a4018" font-family="Inter,sans-serif" font-size="8">primera rendicion</text>
+      <text x="519" y="112" text-anchor="middle" fill="#8c3030" font-family="Inter,sans-serif" font-size="8">condicionamiento</text>
+      <text x="667" y="112" text-anchor="middle" fill="#8c3030" font-family="Inter,sans-serif" font-size="8">rendicion profunda</text>
+      <text x="820" y="112" text-anchor="middle" fill="#2a5a38" font-family="Inter,sans-serif" font-size="8">el aterrizaje</text>
+    </svg>
+  </div>
+</div>
+
+<nav class="stage-nav">
+  <a class="nav-tab" href="#pacto"><div class="tn">0</div><div class="tl">El Terreno</div></a>
+  <a class="nav-tab" href="#migajas"><div class="tn">1</div><div class="tl">Migajas</div></a>
+  <a class="nav-tab" href="#quiebre"><div class="tn">2</div><div class="tl">Quiebre</div></a>
+  <a class="nav-tab" href="#intermitencia"><div class="tn">3</div><div class="tl">Intermitencia</div></a>
+  <a class="nav-tab" href="#cautiva"><div class="tn">4</div><div class="tl">Cautiva</div></a>
+  <a class="nav-tab" href="#aftercare"><div class="tn">+</div><div class="tl">Aftercare</div></a>
+</nav>
+
+<main>
+
+<section class="section" id="pacto">
+  <p class="sec-badge">El punto de partida</p>
+  <h2 class="sec-title"><em>El Terreno</em></h2>
+  <p class="sec-en">Reading the ground</p>
+  <p class="sec-intro">El dominio no se impone. Se ofrece. Y se acepta. Por eso el primer acto no es dominar: es leer si hay terreno donde eso es posible.</p>
+  <p class="sec-intro">Hay personas que tienen en ellas la posibilidad de la rendicion total. Personas que, en el contexto correcto y con la persona correcta, quieren soltar el control. No todas lo saben todavia. Y el hecho de que tengan esa capacidad no significa que quieran darsela a ti.</p>
+  <p class="sec-intro"><strong>Tu trabajo en este estadio es doble:</strong> leer si ella tiene esa apertura, y leer si hay algo entre los dos que hace que cederse a ti tenga sentido para ella. Sin ese terreno, lo que sigue es imposicion. Y la imposicion no es seduccion: es otra cosa.</p>
+
+  <div class="insight-box">
+    <p><strong>Nota practica:</strong> En algun punto del proceso, antes de cruzar a lo explicito, hay una conversacion. No una negociacion formal. Una claridad mutua: los dos saben lo que esta pasando, los dos lo quieren. Ese momento no es un obstaculo. Es parte del viaje, y lo que lo hace genuino.</p>
+  </div>
+
+  <p class="carousel-hint">Desliza</p>
+  <div class="tactics">
+    <div class="tactic"><h4>La apertura no es universal</h4><p>Que ella tenga capacidad de rendicion no significa que la tenga para ti. Lee las dos cosas por separado antes de actuar.</p></div>
+    <div class="tactic"><h4>El deseo de ser liderada</h4><p>No es sumision. Es la preferencia de moverse dentro de un marco que alguien mas sostiene. Hay personas que funcionan mejor asi. No es debilidad: es una manera de estar en el mundo.</p></div>
+    <div class="tactic"><h4>Tu papel en esta etapa</h4><p>No seduces todavia. Observas. El Dom que seduce sin leer el terreno primero construye sobre arena.</p></div>
+    <div class="tactic"><h4>La atraccion tiene direccion</h4><p>La atraccion generica y la atraccion que incluye el deseo de ser sometida por ti son cosas distintas. Ambas son datos. Solo la segunda te da terreno.</p></div>
+  </div>
+
+  <p class="tree-label">Flujo de decision</p>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Percibes en ella la posibilidad de querer ser liderada, y esa posibilidad te incluye a ti?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar two"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Si</span>El terreno existe. Hay algo que leer. Procede con presencia y sin apresurarte. <a class="branch-next" href="#migajas">Estadio 1</a></div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">No</span>No hay terreno todavia, o no en tu direccion. La seduccion no empieza donde no hay apertura. Espera o acepta la lectura.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="migajas">
+  <span class="sec-stage-art" aria-hidden="true">1</span>
+  <div class="stage-header">
+    <div class="big-num">1</div>
+    <div>
+      <h2 class="sec-title"><em>Las Migajas</em></h2>
+      <p class="sec-en">Reading before acting</p>
+    </div>
+  </div>
+  <p class="sec-intro">Antes de actuar, mapeas. Mapeas si ella esta filtrando senales de que quiere ser liderada, y si esas senales tienen que ver contigo. No lo que dice. Lo que hace su cuerpo, su ritmo, el espacio que crea o elimina entre los dos.</p>
+  <p class="sec-intro">El deseo de rendirse no se anuncia. Se filtra, en fragmentos, casi siempre sin que ella sea completamente consciente de que lo esta haciendo. Esta fase es <strong>solo lectura</strong>. No hay movimiento todavia.</p>
+
+  <div class="quote"><p>sepa que se presentan
+en fragmentos
+por ejemplo una mano
+distraida regresando una caricia
+algo mas prolongada
+
+es trabajo de usted aprender a
+  leerlas, descifrarlas, corresponderlas</p></div>
+
+  <div class="signals">
+    <h4>El lenguaje que hay que aprender</h4>
+    <ul class="sig-grid">
+      <li>Contacto visual sostenido, luego esquivado</li>
+      <li>Voz mas baja de lo habitual</li>
+      <li>Orientacion corporal hacia ti</li>
+      <li>Contacto fisico buscado o iniciado</li>
+      <li>Reduccion voluntaria del espacio personal</li>
+      <li>Respuesta al tono, no a las palabras</li>
+      <li>Pausas antes de responder</li>
+      <li>Complacencia en cosas pequenas, primero</li>
+      <li>Rubor, respiracion levemente alterada</li>
+    </ul>
+  </div>
+
+  <p class="carousel-hint">Desliza</p>
+  <div class="tactics">
+    <div class="tactic"><h4>Presencia deliberada</h4><p>Ocupa el espacio con calma. Movimientos lentos. El cuerpo comunica antes que las palabras. El Dom que se mueve rapido pierde el marco.</p></div>
+    <div class="tactic"><h4>El silencio como herramienta</h4><p>No llenes los silencios. El que habla primero cede el marco. Deja que el silencio trabaje.</p></div>
+    <div class="tactic"><h4>Nombrar lo que ves</h4><p>"Noto que..." sin juicio ni expectativa. Activa su conciencia sobre su propio deseo sin nombrarlo todavia.</p></div>
+    <div class="tactic"><h4>Patrones, no datos</h4><p>Una senal no es lectura. Un patron sostenido lo es. El Dom que actua sobre una sola senal se precipita.</p></div>
+  </div>
+
+  <p class="tree-label">Flujo de decision</p>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Observas un patron sostenido de senales de apertura, no una sola?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Si</span>Responde con una prueba minima de presion: acorta la distancia levemente. Observa la respuesta del cuerpo, no de las palabras.</div></div>
+      <div class="flow-branch wait"><div class="branch-card wait"><span class="branch-tag">Parcial</span>Calibra mas. Una senal no es un patron. Quédate en observacion activa sin actuar.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">No</span>Sigue observando. La paciencia en este estadio no es pasividad. Es lectura.</div></div>
+    </div>
+  </div>
+  <div class="tree-spacer"></div>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Al aplicar esa presion minima, ella se orienta hacia ti o se aleja?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Hacia ti</span>Senal verde. El cuerpo no miente. Avanza al estadio 2 con parsimonia. <a class="branch-next" href="#quiebre">Estadio 2</a></div></div>
+      <div class="flow-branch wait"><div class="branch-card wait"><span class="branch-tag">Ambiguo</span>Mantén la posicion. La ambigüedad no es un si. Crea espacio para que ella lo explicite si quiere.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Se aleja</span>No es el momento. Retrocede completamente. El dominio real no se impone.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="quiebre">
+  <span class="sec-stage-art" aria-hidden="true">2</span>
+  <div class="stage-header">
+    <div class="big-num">2</div>
+    <div>
+      <h2 class="sec-title"><em>El Quiebre</em></h2>
+      <p class="sec-en">The first surrender</p>
+    </div>
+  </div>
+  <p class="sec-intro"><strong>El quiebre no se anuncia. Se reconoce.</strong></p>
+  <p class="sec-intro">Es el momento en que deja de oponer resistencia y empieza a ceder. No es un acto de sumision consciente: es el primer movimiento involuntario hacia el espacio que tu creaste. Tu trabajo no es causarlo. Es reconocerlo cuando ocurre y sostenerlo sin presionar.</p>
+
+  <div class="insight-box">
+    <p><strong>La diferencia que importa:</strong> Hay dos tipos de cedida. La que viene del deseo genuino tiene quietud interior, presencia, una especie de apertura en el cuerpo. La que viene del deseo de complacer tiene ansiedad, busca tu aprobacion, mira si lo esta haciendo bien. La primera es el quiebre real. La segunda es teatro, y el teatro no se construye con mas presion.</p>
+  </div>
+
+  <p class="carousel-hint">Desliza</p>
+  <div class="tactics">
+    <div class="tactic"><h4>Reconocimiento minimo</h4><p>"Bien." Una sola palabra de reconocimiento vale mas que un discurso. No sobre-expliques. No busques su validacion.</p></div>
+    <div class="tactic"><h4>La pausa activa</h4><p>"Sigues conmigo?" Vale mas que cualquier suposicion. El Dom que asume paga el precio despues.</p></div>
+    <div class="tactic"><h4>Resistencia ludica vs. real</h4><p>La ludica tiene calor. La real tiene frio. Si hay duda: pausa completa y verifica. La duda no es un si.</p></div>
+    <div class="tactic"><h4>No celebres el quiebre</h4><p>Celebrarlo rompe el estado. Reconócelo internamente, mantén la presion calibrada, sigue.</p></div>
+  </div>
+
+  <p class="tree-label">Flujo de decision</p>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Al aumentar la presion, ella cede en lugar de resistir?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Cede</span>Estas en el quiebre. Reconócelo, sostén el momento, avanza con parsimonia.</div></div>
+      <div class="flow-branch wait"><div class="branch-card wait"><span class="branch-tag">Mixto</span>Para y verifica. La respuesta a "sigues conmigo?" vale mas que cualquier suposicion.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Resiste</span>Distingue el tipo. Resistencia ludica tiene calor. Resistencia real tiene frio. Si hay duda, pausa completa.</div></div>
+    </div>
+  </div>
+  <div class="tree-spacer"></div>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>La cedida se siente genuina o performativa?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar two"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Genuina</span>Hay quietud real. Presencia. Avanza al estadio 3. <a class="branch-next" href="#intermitencia">Estadio 3</a></div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Performativa</span>Se siente evaluada, no sostenida. Reduce la presion. Vuelve a un ritmo mas lento. El objetivo no es su actuacion.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="intermitencia">
+  <span class="sec-stage-art" aria-hidden="true">3</span>
+  <div class="stage-header">
+    <div class="big-num">3</div>
+    <div>
+      <h2 class="sec-title"><em>La Intermitencia</em></h2>
+      <p class="sec-en">The conditioning cycle</p>
+    </div>
+  </div>
+  <p class="sec-intro"><strong>La intermitencia es el mecanismo del condicionamiento.</strong></p>
+  <p class="sec-intro">Acercamiento y retirada. Presencia y ausencia. El sistema nervioso aprende el patron antes que la mente lo comprende. Cada ciclo de retiro y regreso construye anticipacion. La anticipacion construye deseo. El deseo construye la disposicion a ir mas lejos.</p>
+
+  <div class="insight-box">
+    <p><strong>Por que funciona:</strong> El refuerzo intermitente es el mecanismo mas poderoso de condicionamiento que existe. No la recompensa constante, no la privacion total. La alternancia. El Dom que solo da crea dependencia sin profundidad. El Dom que solo niega crea resentimiento. El Dom que alterna con intencion crea un estado al que ella quiere volver. Cada ciclo escala levemente. Siempre hacia arriba.</p>
+  </div>
+
+  <div class="wave-viz">
+    <p class="wave-label">Ciclo de intermitencia</p>
+    <svg class="wave-svg" viewBox="0 0 600 80" height="80" xmlns="http://www.w3.org/2000/svg">
+      <path class="wave-path-anim" d="M0 40 Q75 8 150 40 Q225 72 300 40 Q375 8 450 40 Q525 72 600 40" stroke="var(--gold2)" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <path d="M0 40 Q75 12 150 40 Q225 68 300 40 Q375 12 450 40 Q525 68 600 40" stroke="var(--gold3)" stroke-width="0.5" fill="none" opacity="0.25"/>
+      <text x="75" y="5" text-anchor="middle" fill="#5a4018" font-family="Inter,sans-serif" font-size="7" letter-spacing="1">PRESENCIA</text>
+      <text x="225" y="79" text-anchor="middle" fill="#5a4018" font-family="Inter,sans-serif" font-size="7" letter-spacing="1">RETIRO</text>
+      <text x="375" y="5" text-anchor="middle" fill="#5a4018" font-family="Inter,sans-serif" font-size="7" letter-spacing="1">REGRESO</text>
+      <text x="525" y="79" text-anchor="middle" fill="#5a4018" font-family="Inter,sans-serif" font-size="7" letter-spacing="1">+TENSION</text>
+      <circle cx="75" cy="8" r="2.5" fill="var(--gold2)" opacity="0.7"/>
+      <circle cx="225" cy="72" r="2.5" fill="var(--gold2)" opacity="0.5"/>
+      <circle cx="375" cy="8" r="2.5" fill="var(--gold3)" opacity="0.9"/>
+      <circle cx="525" cy="72" r="2.5" fill="var(--gold2)" opacity="0.5"/>
+    </svg>
+  </div>
+  <p class="carousel-hint">Desliza</p>
+  <div class="tactics">
+    <div class="tactic"><h4>El retiro con intencion</h4><p>No desaparezcas. Retírate. La diferencia es que ella sabe, en algun nivel, que el retiro es parte del baile.</p></div>
+    <div class="tactic"><h4>El regreso calibrado</h4><p>El regreso despues del retiro tiene que ser ligeramente mejor que la ultima vez. El ciclo escala. Esto es lo que construye la anticipacion.</p></div>
+    <div class="tactic"><h4>Leer la tension</h4><p>La tension erotica tiene calor. La irritacion tiene frio. Si la temperatura bajo, el ciclo fue demasiado largo.</p></div>
+    <div class="tactic"><h4>Timing es habilidad</h4><p>El Dom que se apresura en este estadio pierde todo lo acumulado. La paciencia aqui no es pasividad: es la habilidad mas difícil del juego.</p></div>
+  </div>
+
+  <p class="tree-label">Flujo de decision</p>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Al retirarte brevemente, ella busca restablecer el contacto?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar two"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Busca contacto</span>La intermitencia funciona. Extiende ligeramente el siguiente retiro. El ciclo esta construyendo.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Distante</span>O el marco no esta consolidado (vuelve al estadio 2) o hay desconexion real. Verifica antes de continuar.</div></div>
+    </div>
+  </div>
+  <div class="tree-spacer"></div>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>La tension que observas es erotica y viva, o hay irritacion?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Erotica, viva</span>Es el momento. La acumulacion llego al punto correcto. Precipítala hacia el limite acordado. <a class="branch-next" href="#cautiva">Estadio 4</a></div></div>
+      <div class="flow-branch wait"><div class="branch-card wait"><span class="branch-tag">Aun no en el pico</span>Sigue. El Dom que se apresura aqui pierde todo lo acumulado. Espera el momento correcto.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Irritacion</span>El ciclo fue demasiado largo. Reduce el retiro, aumenta el contacto, reconstruye antes de continuar.</div></div>
+    </div>
+  </div>
+  <div class="tree-spacer"></div>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Ella pide o suplica, de forma explicita o implicita?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar two"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Suplica genuina</span>Tienes su entrega activa. Decide con intencion: concedes ahora o extiendes? Cualquier opcion es valida. La intencion manda.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Todavia no</span>La suplica no se fuerza: se cultiva. Regresa al baile. No hay urgencia.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cautiva">
+  <span class="sec-stage-art" aria-hidden="true">4</span>
+  <div class="stage-header">
+    <div class="big-num">4</div>
+    <div>
+      <h2 class="sec-title"><em>La Cautiva</em></h2>
+      <p class="sec-en">Deep surrender</p>
+    </div>
+  </div>
+  <p class="sec-intro">La seduccion termino. No en el sentido de que se acabo, sino en el sentido de que llego a su destino: ella ahora <strong>quiere</strong> ser dominada por ti. No lo soporta. No lo tolera. Lo busca.</p>
+  <p class="sec-intro">Esto es lo que distingue La Cautiva de todos los estadios anteriores. Antes, tu eras el que construia la presion. Aqui, ella es la que orienta hacia ti. El peso del deseo cambio de lado. Tu trabajo en este estadio no es mas accion. Es sostener el espacio que hiciste posible. Y no abandonarla en el.</p>
+
+  <div class="insight-box">
+    <p><strong>Como se reconoce:</strong> Menos resistencia mental. Respuestas mas instintivas que racionales. Busca tu direccion antes de que la des. El cuerpo se orienta hacia ti sin que haya decision consciente. La seduccion fue exitosa cuando ya no tienes que seducir: cuando ella se seduce a si misma con la idea de someterse a ti.</p>
+  </div>
+
+  <p class="carousel-hint">Desliza</p>
+  <div class="tactics">
+    <div class="tactic"><h4>Instrucciones claras</h4><p>En este estadio, las instrucciones tienen que ser tan claras como el marco. Sin ambigüedad. Sin espacio para interpretacion innecesaria.</p></div>
+    <div class="tactic"><h4>Resistencia ludica</h4><p>La resistencia ludica en este estadio es parte del baile, no una objecion. Incorporala dentro del marco.</p></div>
+    <div class="tactic"><h4>Vigilancia total</h4><p>Sigues leyendo. La rendicion profunda no significa que tu trabajo de lectura termino. Aumenta la atencion.</p></div>
+    <div class="tactic"><h4>Reconoce cuando parar</h4><p>Un limite alcanzado en este estadio requiere parada inmediata y aftercare. Reconocer esto a tiempo es maestria.</p></div>
+  </div>
+
+  <p class="tree-label">Flujo de decision</p>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Ella cumple las instrucciones con presencia, no solo mecanicamente?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Cumple, presente</span>El marco esta consolidado. Puedes aumentar la complejidad gradualmente. Tu presencia sigue siendo mandatoria.</div></div>
+      <div class="flow-branch wait"><div class="branch-card wait"><span class="branch-tag">Resistencia ludica</span>Incorporala al baile. Es parte del juego, no una objecion real.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Resistencia real</span>Para inmediatamente. Un limite fue alcanzado. Aftercare ahora. Reconocer esto es maestria.</div></div>
+    </div>
+  </div>
+  <div class="tree-spacer"></div>
+  <div class="flow-node">
+    <div class="flow-q"><span class="qn">?</span>Ella permanece presente, conectada y responsiva?</div>
+    <div class="flow-line-down"></div>
+    <div class="flow-hbar two"></div>
+    <div class="flow-branches">
+      <div class="flow-branch yes"><div class="branch-card yes"><span class="branch-tag">Presente, conectada</span>Estas en el corazon del dominio real. Permanece presente tu tambien. El Dom que se va al piloto automatico aqui falla en lo mas importante.</div></div>
+      <div class="flow-branch no"><div class="branch-card no"><span class="branch-tag">Disociada o ausente</span>Para inmediatamente. Contacto fisico suave. "Sigues aqui?" Aftercare inmediato, sin debate. <a class="branch-next" href="#aftercare">Protocolo de aftercare</a></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="aftercare">
+  <p class="sec-badge">Al finalizar</p>
+  <h2 class="sec-title"><em>El Aterrizaje</em></h2>
+  <p class="sec-en">Aftercare</p>
+  <p class="sec-intro">La seduccion no termina cuando termina la intensidad. Termina cuando ella aterrizo. El aterrizaje no es un gesto de amabilidad: es la diferencia entre una experiencia que la acerca mas a ti y una que la deja perdida.</p>
+  <p class="sec-intro">Alguien que se rindio a ese nivel necesita volver al piso con cuidado. La desorientacion despues de una entrega profunda es real, y dura horas. Cerrar ese ciclo bien es lo que convierte la seduccion en algo que ella va a querer repetir.</p>
+
+  <p class="carousel-hint">Desliza</p>
+  <div class="tactics">
+    <div class="tactic"><h4>Contacto fisico suave</h4><p>Manta, abrazo, calor. El cuerpo necesita anclas fisicas para volver. No lo dejes flotar.</p></div>
+    <div class="tactic"><h4>Presencia, no palabras</h4><p>El análisis viene despues, si acaso. Ahora: presencia calma. No tienes que decir nada profundo.</p></div>
+    <div class="tactic"><h4>Agua y snack</h4><p>Necesidades fisicas primero. Siempre. No es opcional.</p></div>
+    <div class="tactic"><h4>Tiempo sin apuro</h4><p>No te vayas. No revises el telefono. No cambies de energia abruptamente. El aterrizaje tiene su propio ritmo.</p></div>
+    <div class="tactic"><h4>Check-in posterior</h4><p>Al dia siguiente. Un mensaje. "Como te sientes hoy?" El aftercare no es solo inmediato: el "drop" puede llegar horas o dias despues.</p></div>
+    <div class="tactic"><h4>El Dom tambien aterriza</h4><p>Dom drop existe. No estás inmune. Cuídate tambien despues de una sesion intensa.</p></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <span class="glyph">◈</span>
+  <p>Uso privado</p>
+</footer>
+
+</div><!-- /ref-view -->
+
+<script>
+// ====== CANVAS PARTICLES ======
+(function(){
+  const canvas = document.getElementById('header-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const headerWrap = canvas.closest('.header-wrap');
+  let particles = [];
+  const N = 28;
+
+  function resize(){
+    canvas.width = headerWrap.offsetWidth;
+    canvas.height = headerWrap.offsetHeight;
+  }
+
+  function mkParticle(randomY){
+    return {
+      x: Math.random() * canvas.width,
+      y: randomY !== undefined ? Math.random() * canvas.height : canvas.height * (0.5 + Math.random() * 0.5),
+      size: 0.8 + Math.random() * 2,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -(0.25 + Math.random() * 0.55),
+      life: 0,
+      maxLife: 90 + Math.random() * 130,
+      maxOp: 0.08 + Math.random() * 0.22
+    };
+  }
+
+  for(let i = 0; i < N; i++){
+    const p = mkParticle(true);
+    p.life = Math.random() * p.maxLife;
+    particles.push(p);
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      p.life++;
+      p.x += p.vx;
+      p.y += p.vy;
+      const prog = p.life / p.maxLife;
+      let op = prog < 0.2 ? (prog/0.2)*p.maxOp : prog > 0.7 ? ((1-prog)/0.3)*p.maxOp : p.maxOp;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(201,165,90,${op})`;
+      ctx.fill();
+      if(p.life >= p.maxLife || p.y < -10){ particles[i] = mkParticle(); }
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener('resize', resize);
+})();
+
+// ====== GAME DATA ======
+const DECISIONS = [
+  {
+    id:'d0', stage:0,
+    stageLabel:'Estadio 0: El Terreno',
+    scenario:'Aun no ha ocurrido nada explicito. Pero hay algo en la forma en que ella te mira, en el espacio que deja entre los dos, en como responde cuando tomas el peso de algo. Lees antes de actuar.',
+    question:'Percibes en ella la posibilidad de querer ser liderada, y algo en esa posibilidad te incluye a ti?',
+    choices:[
+      {
+        type:'yes', label:'Si. Hay algo en ella que quiere ser liderada, y hay algo de eso que va en mi direccion.',
+        response:'El terreno existe.',
+        advice:'No actues sobre ello todavia. Confirma el patron con mas lectura. La atraccion sin direccion clara no es terreno: es potencial.',
+        xp:10, xpLabel:'Terreno reconocido',
+        next:'d1a'
+      },
+      {
+        type:'no', label:'No veo esa apertura en ella, o no hacia mi.',
+        response:'No hay terreno todavia.',
+        advice:'La seduccion no empieza donde no hay apertura. Puede que la capacidad exista pero no en tu direccion. Ambas lecturas son validas. No forces.',
+        xp:0,
+        next:null, terminal:true
+      }
+    ]
+  },
+  {
+    id:'d1a', stage:1,
+    stageLabel:'Estadio 1: Las Migajas',
+    scenario:'Llevan un rato juntos. Debajo de la conversacion hay una corriente diferente. Antes de mover nada, lees el territorio.',
+    question:'Observas un patron sostenido de senales de apertura, no solo una?',
+    choices:[
+      {
+        type:'yes', label:'Si. Hay un patron claro.',
+        response:'Avanza con parsimonia.',
+        advice:'Responde con una prueba minima de presion: acorta la distancia levemente, sostén la mirada un segundo mas. Observa lo que hace su cuerpo, no lo que dice.',
+        xp:15, xpLabel:'Patron reconocido',
+        next:'d1b'
+      },
+      {
+        type:'wait', label:'Solo algunas senales aisladas.',
+        response:'Sigue calibrando.',
+        advice:'Una senal no es un patron. Quédate en observacion activa. El Dom que espera mas que ella ya esta un paso adelante.',
+        xp:5, xpLabel:'Calibracion activa',
+        next:'d1a'
+      },
+      {
+        type:'no', label:'No veo apertura todavia.',
+        response:'Observa, no actues.',
+        advice:'No hay urgencia. El Dom que se precipita pierde el marco antes de empezar. La paciencia aqui no es pasividad: es lectura.',
+        xp:0,
+        next:'d1a'
+      }
+    ]
+  },
+  {
+    id:'d1b', stage:1,
+    stageLabel:'Estadio 1: Las Migajas',
+    scenario:'Introduces una variacion minima. Un centimetro de distancia. Un segundo mas de mirada. Su cuerpo responde antes que su mente.',
+    question:'Al aplicar esa presion minima, ella se orienta hacia ti o se aleja?',
+    choices:[
+      {
+        type:'yes', label:'Se orienta hacia mi.',
+        response:'Senal verde. El cuerpo no miente.',
+        advice:'Avanza al estadio 2 con parsimonia. Lo que acabas de leer vale mas que cualquier cosa que ella hubiera dicho.',
+        xp:15, xpLabel:'Lectura corporal confirmada',
+        next:'d2a'
+      },
+      {
+        type:'wait', label:'Respuesta ambigua.',
+        response:'Mantén la posicion.',
+        advice:'La ambigüedad no es un si. Espera. Si el contexto lo permite, crea espacio para que ella lo haga explicito.',
+        xp:5, xpLabel:'Pausa correcta',
+        next:'d1b'
+      },
+      {
+        type:'no', label:'Se aleja.',
+        response:'El dominio real no se impone.',
+        advice:'Retrocede completamente. No es el momento o el marco correcto no existe todavia. Ambas lecturas son validas.',
+        xp:0,
+        next:null, terminal:true
+      }
+    ]
+  },
+  {
+    id:'d2a', stage:2,
+    stageLabel:'Estadio 2: El Quiebre',
+    scenario:'La lectura esta hecha. La presion empieza: gradual primero, mas directa despues. Algo tiene que ceder, o esto no era el momento.',
+    question:'Al aumentar la presion, ella cede en lugar de resistir?',
+    choices:[
+      {
+        type:'yes', label:'Cede. Se suaviza.',
+        response:'Estas en el quiebre.',
+        advice:'"Bien." Una sola palabra vale mas que un discurso. No sobre-expliques. No busques su validacion. El quiebre se sostiene con calma, no con celebracion.',
+        xp:15, xpLabel:'Quiebre reconocido',
+        next:'d2b'
+      },
+      {
+        type:'wait', label:'Senales mixtas.',
+        response:'Para y verifica.',
+        advice:'"Sigues conmigo?" La respuesta a esa pregunta vale mas que cualquier suposicion. El Dom que asume paga el precio despues.',
+        xp:5, xpLabel:'Verificacion correcta',
+        next:'d2a'
+      },
+      {
+        type:'no', label:'Resistencia sostenida.',
+        response:'Distingue el tipo.',
+        advice:'La resistencia ludica tiene calor. La real tiene frio. Si hay duda: pausa completa y verifica verbalmente. La duda no es un si.',
+        xp:0,
+        next:'d2a'
+      }
+    ]
+  },
+  {
+    id:'d2b', stage:2,
+    stageLabel:'Estadio 2: El Quiebre',
+    scenario:'Algo cedio. Hay dos tipos de cedida: la que viene del deseo y la que viene del deseo de complacer. La diferencia es todo.',
+    question:'La entrega se siente genuina, o performativa?',
+    choices:[
+      {
+        type:'yes', label:'Genuina. Hay quietud real.',
+        response:'Avanza al estadio 3.',
+        advice:'La entrega genuina tiene quietud interior. La performativa tiene ansiedad por gustar. Confía en esa lectura y avanza.',
+        xp:15, xpLabel:'Autenticidad identificada',
+        next:'d3a'
+      },
+      {
+        type:'no', label:'Performativa. Parece que actua.',
+        response:'Reduce la presion.',
+        advice:'Se siente evaluada, no sostenida. Vuelve a un ritmo mas lento. El objetivo no es su actuacion: es su presencia real.',
+        xp:0,
+        next:'d2a'
+      }
+    ]
+  },
+  {
+    id:'d3a', stage:3,
+    stageLabel:'Estadio 3: La Intermitencia',
+    scenario:'La entrega esta establecida. Te retiras, brevemente y con intencion. El vinculo se sostiene solo si era real.',
+    question:'Al retirarte, ella busca restablecer el contacto?',
+    choices:[
+      {
+        type:'yes', label:'Si. Busca el contacto.',
+        response:'La intermitencia funciona.',
+        advice:'Extiende ligeramente el siguiente retiro. El ciclo esta construyendo anticipacion de forma natural. Sigue.',
+        xp:15, xpLabel:'Ciclo activo',
+        next:'d3b'
+      },
+      {
+        type:'no', label:'No busca. Parece distante.',
+        response:'Algo no cuadra.',
+        advice:'O el marco no esta consolidado (vuelve al estadio 2) o hay desconexion real. Verifica antes de seguir.',
+        xp:0,
+        next:'d2a'
+      }
+    ]
+  },
+  {
+    id:'d3b', stage:3,
+    stageLabel:'Estadio 3: La Intermitencia',
+    scenario:'El ciclo lleva su tiempo. Cerca y lejos. Mas y menos. La temperatura en el cuarto ahora: sigue siendo erotica, o cambio de naturaleza?',
+    question:'La tension que observas es erotica y viva, o hay irritacion?',
+    choices:[
+      {
+        type:'yes', label:'Tension viva. Anticipacion clara.',
+        response:'Es el momento.',
+        advice:'Precipítala hacia el limite acordado. La acumulacion llego al punto correcto. Ahora decretas.',
+        xp:20, xpLabel:'Timing calibrado',
+        next:'d3c'
+      },
+      {
+        type:'wait', label:'Aun no en el pico.',
+        response:'Sigue.',
+        advice:'El Dom que se apresura aqui pierde todo lo acumulado. La paciencia en este estadio es la habilidad mas difícil del juego.',
+        xp:8, xpLabel:'Pausa inteligente',
+        next:'d3b'
+      },
+      {
+        type:'no', label:'Irritacion o distancia.',
+        response:'El ciclo fue demasiado largo.',
+        advice:'Reduce el retiro. Aumenta el contacto. Reconstruye antes de continuar. El escalado rapido tiene precio.',
+        xp:0,
+        next:'d3a'
+      }
+    ]
+  },
+  {
+    id:'d3c', stage:3,
+    stageLabel:'Estadio 3: La Intermitencia',
+    scenario:'La acumulacion construyo lo que tenia que construir. Ella esta en el limite. Lo siente. Tu tambien lo sabes.',
+    question:'Ella pide o suplica, de forma explicita o implicita?',
+    choices:[
+      {
+        type:'yes', label:'Si. Hay suplica genuina.',
+        response:'Tienes su entrega activa.',
+        advice:'Decide con intencion: concedes ahora o extiendes? Cualquier opcion es valida. La intencion es lo que manda, no la accion en si.',
+        xp:15, xpLabel:'Entrega activa reconocida',
+        next:'d4a'
+      },
+      {
+        type:'no', label:'Todavia no.',
+        response:'El ciclo continua.',
+        advice:'La suplica no se fuerza: se cultiva. Regresa al baile. No hay urgencia.',
+        xp:5, xpLabel:'Lectura honesta',
+        next:'d3b'
+      }
+    ]
+  },
+  {
+    id:'d4a', stage:4,
+    stageLabel:'Estadio 4: La Cautiva',
+    scenario:'Todo lo que construiste converge aqui. El mapa estuvo trazado desde el inicio. Decretas. El marco es tuyo.',
+    question:'Ella cumple las instrucciones con presencia, no solo mecanicamente?',
+    choices:[
+      {
+        type:'yes', label:'Cumple. El marco es solido.',
+        response:'El dominio esta consolidado.',
+        advice:'Puedes aumentar la complejidad gradualmente. Tu atencion no disminuye: el trabajo de lectura sigue, ahora en el estadio mas delicado.',
+        xp:20, xpLabel:'Marco consolidado',
+        next:'d4b'
+      },
+      {
+        type:'wait', label:'Resistencia ludica. Tiene calor.',
+        response:'Incorporala al baile.',
+        advice:'La resistencia ludica en este estadio es parte del juego, no una objecion. Usala dentro del marco establecido.',
+        xp:10, xpLabel:'Resistencia integrada',
+        next:'d4b'
+      },
+      {
+        type:'no', label:'Resistencia real.',
+        response:'Para inmediatamente.',
+        advice:'Un limite fue alcanzado o no estaba bien negociado. Reduce, verifica, escucha. Aftercare si es necesario. Reconocer esto a tiempo es maestria.',
+        xp:0,
+        next:null, aftercare:true
+      }
+    ]
+  },
+  {
+    id:'d4b', stage:4,
+    stageLabel:'Estadio 4: La Cautiva',
+    scenario:'El ultimo punto de comprobacion. El mas critico. Ella esta en el estadio mas vulnerable. Tu presencia no es opcional ahora.',
+    question:'Ella permanece presente, conectada y responsiva?',
+    choices:[
+      {
+        type:'yes', label:'Presente y conectada.',
+        response:'Estas en el corazon del dominio real.',
+        advice:'Permanece presente tu tambien. El Dom que se va al piloto automatico en este estadio falla a la sub en el momento que mas importa. La rendicion es completa cuando la presencia de ambos lo es.',
+        xp:30, xpLabel:'Presencia completa',
+        next:null, complete:true
+      },
+      {
+        type:'no', label:'Parece disociada o ausente.',
+        response:'Para inmediatamente.',
+        advice:'Baja la intensidad. Contacto fisico suave. "Sigues aqui?" La disociacion es una alarma. Aftercare inmediato, sin debate. Reconocer esto a tiempo es parte del dominio.',
+        xp:0,
+        next:null, aftercare:true
+      }
+    ]
+  }
+];
+
+const ACHIEVEMENTS = [
+  {id:'lector',glyph:'◉',name:'Lector de Cuerpo',skill:'Leiste el patron antes de actuar. Sin precipitacion.',cond:h=>h.some(x=>x.id==='d1a'&&x.type==='yes')&&h.some(x=>x.id==='d1b'&&x.type==='yes')},
+  {id:'umbral',glyph:'◆',name:'Guardian del Umbral',skill:'Distinguiste entrega genuina de performance. La diferencia mas sutil.',cond:h=>h.some(x=>x.id==='d2b'&&x.type==='yes')},
+  {id:'ritmo',glyph:'◈',name:'Calibrador de Ritmo',skill:'Sostuviste la intermitencia sin pasarte. El timing es una habilidad.',cond:h=>h.some(x=>x.id==='d3b'&&x.type==='yes')&&h.some(x=>x.id==='d3c')},
+  {id:'arquitecto',glyph:'▣',name:'Arquitecto de la Escena',skill:'Construiste el espacio que hizo posible el estadio 4.',cond:h=>h.some(x=>x.id==='d4a')},
+  {id:'maestro',glyph:'◑',name:'El Maestro del Marco',skill:'Completaste el viaje. La presencia sostenida hasta el final.',cond:h=>h.some(x=>x.id==='d4b'&&x.type==='yes')},
+  {id:'sinfisuras',glyph:'◎',name:'Sin Fisuras',skill:'Recorrida perfecta. Cada lectura, afinada.',cond:(h,perfect)=>perfect&&h.some(x=>x.id==='d4b'&&x.type==='yes')},
+  {id:'custodio',glyph:'◧',name:'Custodio',skill:'Reconociste cuando parar. Eso tambien es dominio.',cond:h=>h.some(x=>(x.id==='d4a'||x.id==='d4b')&&x.aftercare)}
+];
+
+function getDomLevel(xp){
+  if(xp>=110) return 'El Maestro del Marco';
+  if(xp>=65) return 'El Arquitecto';
+  if(xp>=30) return 'El Lector';
+  return 'El Observador';
+}
+
+const MAX_XP = 170;
+let gameXp=0, gameHistory=[], pendingNext=null, currentId=null;
+let earnedIds=new Set(), perfectRun=true, achQueue=[], achTimer=null;
+let twTimer=null;
+
+function getD(id){ return DECISIONS.find(d=>d.id===id); }
+
+// Stage decorative SVGs (injected into scenario card, opacity .12 via CSS)
+const STAGE_ART = [
+  `<svg width="70" height="50" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 25 Q35 5 65 25 Q35 45 5 25Z" stroke="#c9a55a" stroke-width="1.5" fill="none"/><circle cx="35" cy="25" r="8" stroke="#c9a55a" stroke-width="1.5" fill="none"/><circle cx="35" cy="25" r="3" fill="#c9a55a"/></svg>`,
+  `<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="15" r="2" fill="#c9a55a"/><circle cx="50" cy="25" r="1.5" fill="#c9a55a"/><circle cx="35" cy="38" r="3" fill="#c9a55a"/><circle cx="15" cy="50" r="1.5" fill="#c9a55a"/><circle cx="55" cy="55" r="2" fill="#c9a55a"/><line x1="20" y1="15" x2="35" y2="38" stroke="#c9a55a" stroke-width="0.5" stroke-dasharray="3 3"/><line x1="50" y1="25" x2="35" y2="38" stroke="#c9a55a" stroke-width="0.5" stroke-dasharray="3 3"/></svg>`,
+  `<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="35" y1="5" x2="25" y2="30" stroke="#c9a55a" stroke-width="1.5"/><line x1="25" y1="30" x2="48" y2="45" stroke="#c9a55a" stroke-width="1.5"/><line x1="48" y1="45" x2="30" y2="65" stroke="#c9a55a" stroke-width="1.5"/><circle cx="35" cy="5" r="2.5" fill="#c9a55a"/></svg>`,
+  `<svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 25 Q20 5 38 25 Q56 45 74 25" stroke="#c9a55a" stroke-width="1.5" fill="none"/><path d="M2 25 Q20 10 38 25 Q56 40 74 25" stroke="#c9a55a" stroke-width="0.5" fill="none" opacity="0.4"/></svg>`,
+  `<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M35 35 Q48 22 48 35 Q48 52 35 52 Q18 52 18 35 Q18 14 35 14 Q56 14 56 35 Q56 62 35 62" stroke="#c9a55a" stroke-width="1.5" fill="none"/></svg>`
+];
+
+// Stage background glow colors (sets --stage-glow on ambient overlay)
+const STAGE_GLOWS = [
+  'rgba(90,64,24,.12)',
+  'rgba(201,165,90,.14)',
+  'rgba(201,165,90,.18)',
+  'rgba(140,28,28,.18)',
+  'rgba(140,28,28,.26)'
+];
+
+function setMode(mode){
+  const el=document.getElementById('guided-mode');
+  document.getElementById('ref-btn').classList.toggle('active',mode==='ref');
+  document.getElementById('guide-btn').classList.toggle('active',mode==='guide');
+  if(mode==='guide'){
+    el.classList.add('active');
+    document.body.classList.add('guide-open');
+    restartGuide();
+  } else {
+    el.classList.remove('active');
+    document.body.classList.remove('guide-open');
+  }
+}
+
+function restartGuide(){
+  gameXp=0; gameHistory=[]; pendingNext=null; earnedIds=new Set(); perfectRun=true; achQueue=[];
+  if(achTimer){clearTimeout(achTimer);achTimer=null;}
+  if(twTimer){clearTimeout(twTimer);twTimer=null;}
+  document.getElementById('ach-toast').classList.remove('visible');
+  updateXpDisplay();
+  renderDecision('d0');
+}
+
+function updateXpDisplay(){
+  document.getElementById('xp-count').textContent=gameXp;
+  document.getElementById('xp-fill').style.width=Math.min(100,Math.round((gameXp/MAX_XP)*100))+'%';
+  document.getElementById('level-tag').textContent=getDomLevel(gameXp);
+  // Update level pips
+  ['lp0','lp1','lp2','lp3'].forEach(id=>document.getElementById(id)&&document.getElementById(id).classList.remove('active-level'));
+  const lvl=getDomLevel(gameXp);
+  if(lvl==='El Maestro del Marco') document.getElementById('lp3')&&document.getElementById('lp3').classList.add('active-level');
+  else if(lvl==='El Arquitecto') document.getElementById('lp2')&&document.getElementById('lp2').classList.add('active-level');
+  else if(lvl==='El Lector') document.getElementById('lp1')&&document.getElementById('lp1').classList.add('active-level');
+  else document.getElementById('lp0')&&document.getElementById('lp0').classList.add('active-level');
+}
+
+function typewrite(el, text, speed, cb){
+  if(twTimer){clearTimeout(twTimer);twTimer=null;}
+  el.textContent='';
+  let i=0;
+  function next(){
+    if(i<text.length){ el.textContent+=text[i++]; twTimer=setTimeout(next,speed); }
+    else if(cb) cb();
+  }
+  next();
+}
+
+function renderDecision(id){
+  const d=getD(id);
+  if(!d) return;
+  currentId=id;
+
+  const stages=[0,1,2,3,4];
+  const names=['Pacto','Migajas','Quiebre','Intermit.','Cautiva'];
+  const progEl=document.getElementById('gm-progress');
+  progEl.innerHTML='';
+  stages.forEach((s,i)=>{
+    const cls=s<d.stage?'done':s===d.stage?'current':'';
+    const dot=document.createElement('div');
+    dot.className='gm-stage-dot '+cls;
+    dot.innerHTML=i+'<span class="dot-label">'+names[i]+'</span>';
+    progEl.appendChild(dot);
+    if(i<stages.length-1){
+      const conn=document.createElement('div');
+      conn.className='stage-connector'+(s<d.stage?' done':'');
+      progEl.appendChild(conn);
+    }
+  });
+
+  document.getElementById('gm-stage-label').textContent=d.stageLabel;
+
+  const scenEl=document.getElementById('gm-scenario');
+  typewrite(scenEl, d.scenario, 18);
+  // Stage art
+  const oldArt=scenEl.querySelector('.scenario-art');
+  if(oldArt) oldArt.remove();
+  const artSvg=STAGE_ART[d.stage];
+  if(artSvg){const artEl=document.createElement('div');artEl.className='scenario-art';artEl.innerHTML=artSvg;scenEl.appendChild(artEl);}
+  // Entering animation
+  scenEl.classList.remove('entering');
+  requestAnimationFrame(()=>scenEl.classList.add('entering'));
+  // Ambient glow
+  const ambEl=document.getElementById('gm-ambient');
+  if(ambEl) ambEl.style.background=`radial-gradient(ellipse 60% 40% at 50% 80%,${STAGE_GLOWS[d.stage]||'transparent'},transparent)`;
+
+  document.getElementById('gm-question').textContent=d.question;
+
+  const choicesEl=document.getElementById('gm-choices');
+  const typeLabels={yes:'Si',no:'No',wait:'Espera'};
+  choicesEl.innerHTML=d.choices.map(c=>`
+    <button class="gm-choice ${c.type}" onclick="selectChoice('${id}','${c.type}')">
+      <span class="choice-type-tag">${typeLabels[c.type]||c.type}</span>
+      <span>${c.label}</span>
+    </button>`).join('');
+  choicesEl.style.display='flex';
+
+  document.getElementById('gm-result').classList.remove('show','reveal');
+  document.getElementById('end-screen').classList.remove('show');
+  renderHistory();
+}
+
+function selectChoice(decisionId,type){
+  const d=getD(decisionId);
+  const c=d.choices.find(x=>x.type===type);
+  if(!c) return;
+  if(type!=='yes') perfectRun=false;
+
+  gameXp+=c.xp||0;
+  updateXpDisplay();
+  if(c.xp>0){const xt=document.querySelector('.xp-track');if(xt){xt.classList.remove('pulse');requestAnimationFrame(()=>xt.classList.add('pulse'));setTimeout(()=>xt.classList.remove('pulse'),700);}}
+
+  const entry={id:decisionId,type,label:c.label,aftercare:c.aftercare||false};
+  gameHistory.push(entry);
+  pendingNext=c.next;
+
+  if(c.xp>0) showXpReveal(c.xp,c.xpLabel);
+  checkAchievements();
+
+  const resEl=document.getElementById('gm-result');
+  const markerEl=document.getElementById('result-marker');
+  const headEl=document.getElementById('result-heading');
+  const advEl=document.getElementById('result-advice');
+  const xpEl=document.getElementById('result-xp-line');
+  const nextBtn=document.getElementById('gm-next-btn');
+
+  markerEl.textContent=type==='yes'?'LECTURA CONFIRMADA':type==='no'?'ESCENA PAUSADA':'CALIBRANDO';
+  markerEl.style.color=type==='yes'?'var(--yes-t)':type==='no'?'var(--no-t)':'var(--wait-t)';
+
+  // Result card border color
+  resEl.style.borderColor=type==='yes'?'rgba(42,90,56,.5)':type==='no'?'rgba(90,42,42,.5)':'rgba(90,64,24,.5)';
+
+  headEl.textContent=c.response;
+  advEl.textContent=c.advice;
+  xpEl.textContent=c.xp>0?'+'+c.xp+' XP  /  '+c.xpLabel:'';
+
+  document.getElementById('gm-choices').style.display='none';
+
+  if(c.complete||c.aftercare){
+    nextBtn.textContent=c.complete?'Ver debrief final':'Ver protocolo de aftercare';
+    nextBtn.onclick=()=>showEndScreen(c.complete,c.aftercare);
+  } else if(!c.next){
+    nextBtn.textContent='Nueva sesion';
+    nextBtn.onclick=restartGuide;
+  } else {
+    nextBtn.textContent='Siguiente lectura';
+    nextBtn.onclick=advanceGuide;
+  }
+
+  resEl.classList.add('show');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>resEl.classList.add('reveal')));
+  renderHistory();
+}
+
+function advanceGuide(){ if(pendingNext) renderDecision(pendingNext); else restartGuide(); }
+
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{
+    if(earnedIds.has(a.id)) return;
+    if(a.cond(gameHistory,perfectRun)){ earnedIds.add(a.id); achQueue.push(a); if(!achTimer) processAchQueue(); }
+  });
+}
+
+function processAchQueue(){
+  if(!achQueue.length){achTimer=null;return;}
+  const a=achQueue.shift();
+  const toast=document.getElementById('ach-toast');
+  document.getElementById('toast-glyph').textContent=a.glyph;
+  document.getElementById('toast-name').textContent=a.name;
+  document.getElementById('toast-skill').textContent=a.skill;
+  toast.classList.add('visible');
+  achTimer=setTimeout(()=>{
+    toast.classList.remove('visible');
+    achTimer=setTimeout(processAchQueue,400);
+  },3200);
+}
+
+function showXpReveal(amount,label){
+  const el=document.getElementById('xp-reveal');
+  el.textContent='+'+amount+' / '+(label||'');
+  el.classList.add('show');
+  el.classList.remove('fade');
+  setTimeout(()=>{ el.classList.add('fade'); setTimeout(()=>el.classList.remove('show','fade'),800); },1800);
+}
+
+function showEndScreen(complete,aftercare){
+  checkAchievements();
+  document.getElementById('gm-result').classList.remove('show','reveal');
+  document.getElementById('gm-choices').style.display='none';
+
+  const pct=Math.min(100,Math.round((gameXp/MAX_XP)*100));
+  const level=getDomLevel(gameXp);
+  const earned=ACHIEVEMENTS.filter(a=>earnedIds.has(a.id));
+  const locked=ACHIEVEMENTS.filter(a=>!earnedIds.has(a.id));
+
+  const badgeHtml=a=>`
+    <div class="badge ${earnedIds.has(a.id)?'earned':'locked'}">
+      <span class="badge-glyph">${a.glyph}</span>
+      <span class="badge-name">${a.name}</span>
+      <div class="badge-skill">${a.skill}</div>
+    </div>`;
+
+  const outcomeText=complete?'Viaje completo':'Aftercare activado';
+
+  const endEl=document.getElementById('end-screen');
+  endEl.innerHTML=`
+    <div class="debrief-label">${outcomeText}</div>
+    <div class="debrief-level">${level}</div>
+    <div class="debrief-xp-wrap">
+      <div class="debrief-xp-track"><div class="debrief-xp-fill" id="debrief-fill" style="width:0%"></div></div>
+    </div>
+    <div class="debrief-xp-text"><span>${gameXp}</span> de ${MAX_XP} XP</div>
+
+    <div class="shelf-section">
+      <div class="shelf-title">Habilidades reconocidas esta sesion</div>
+      <div class="badge-grid">${earned.length?earned.map(badgeHtml).join(''):'<div style="font-size:12px;color:var(--dim);padding:6px 0">Ninguna esta sesion.</div>'}</div>
+    </div>
+
+    ${locked.length?`<div class="shelf-section">
+      <div class="shelf-title">Para desarrollar</div>
+      <div class="badge-grid">${locked.map(badgeHtml).join('')}</div>
+    </div>`:''}
+
+    <div class="debrief-actions">
+      ${complete
+        ?`<button class="db-btn-secondary" onclick="setMode('ref');setTimeout(()=>{document.getElementById('aftercare').scrollIntoView({behavior:'smooth'})},150)">Ver Aftercare</button>`
+        :`<button class="db-btn-primary" onclick="setMode('ref');setTimeout(()=>{document.getElementById('aftercare').scrollIntoView({behavior:'smooth'})},150)">Protocolo de Aftercare</button>`}
+      <button class="db-btn-secondary" onclick="restartGuide()">Nueva sesion</button>
+    </div>`;
+
+  endEl.classList.add('show');
+  setTimeout(()=>{ const f=document.getElementById('debrief-fill'); if(f) f.style.width=pct+'%'; },80);
+}
+
+function renderHistory(){
+  const el=document.getElementById('gm-history');
+  if(!gameHistory.length){el.innerHTML='';return;}
+  el.innerHTML=gameHistory.slice(-6).map(h=>{
+    const d=getD(h.id);
+    const short=d?d.question.substring(0,36)+'...':'';
+    const ans=h.type==='yes'?'SI':h.type==='no'?'NO':'~';
+    return `<div class="hist-crumb">${short} <span class="hc-ans ${h.type}">${ans}</span></div>`;
+  }).join('');
+}
+
+// Carousel drag-to-scroll
+(function(){
+  document.querySelectorAll('.tactics').forEach(function(el){
+    var isDown=false,startX,scrollLeft;
+    el.addEventListener('mousedown',function(e){isDown=true;el.classList.add('dragging');startX=e.pageX-el.offsetLeft;scrollLeft=el.scrollLeft;});
+    document.addEventListener('mouseup',function(){isDown=false;el.classList.remove('dragging');});
+    el.addEventListener('mousemove',function(e){if(!isDown)return;e.preventDefault();var x=e.pageX-el.offsetLeft;el.scrollLeft=scrollLeft-(x-startX);});
+    el.addEventListener('touchstart',function(e){startX=e.touches[0].pageX-el.offsetLeft;scrollLeft=el.scrollLeft;},{passive:true});
+    el.addEventListener('touchmove',function(e){var x=e.touches[0].pageX-el.offsetLeft;el.scrollLeft=scrollLeft-(x-startX);},{passive:true});
+  });
+})();
+
+// Init level pip
+updateXpDisplay();
+</script>
+</body>
+</html>
