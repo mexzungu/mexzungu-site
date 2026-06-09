@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engagement Letter: Audacity Labs x Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --pink: #e14b87; --pink-dark: #b83a6b;
+      --navy: #1a1a2e; --black: #0d0d0d; --white: #fafafa;
+      --ash: #e8e3df; --stone: #6b5e57; --mist: #9a8f88;
+      --charcoal: #3d3533; --success: #2d8f5e;
+      --heading: 'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body { font-family: var(--sans); background: #f0ece8; color: var(--black); min-height: 100vh; }
+
+    .site-header {
+      background: var(--navy); padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .site-header .logo-wrap { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .site-header img { height: 36px; width: auto; }
+    .header-meta { text-align: right; }
+    .header-meta h1 { font-family: var(--heading); font-size: 1rem; color: #fafafa; letter-spacing: 0.03em; }
+    .header-meta p { font-size: 0.78rem; color: var(--mist); margin-top: 2px; }
+
+    .progress-bar-wrap {
+      background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 0.6rem 2rem; display: flex; align-items: center; gap: 1.5rem;
+    }
+    .progress-steps { display: flex; align-items: center; gap: 0.5rem; }
+    .step { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--mist); }
+    .step.done { color: var(--success); }
+    .step.pending { color: #4a4a4a; }
+    .step-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+    .step-sep { color: #3a3a3a; font-size: 0.9rem; }
+    .progress-label { margin-left: auto; font-size: 0.78rem; color: var(--mist); }
+
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
+
+    .doc-card {
+      background: #fff; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .doc-top-stripe { height: 5px; background: linear-gradient(90deg, var(--pink), #b83a6b); }
+    .doc-inner { padding: 3rem; }
+
+    .doc-wordmark { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; }
+    .doc-wordmark img { height: 40px; }
+    .doc-wordmark-text { display: flex; flex-direction: column; gap: 2px; }
+    .doc-wordmark-text span:first-child { font-family: var(--heading); font-size: 0.95rem; color: var(--black); }
+    .doc-wordmark-text span:last-child { font-size: 0.72rem; color: var(--mist); }
+
+    h1.doc-title { font-family: var(--heading); font-size: 1.9rem; color: var(--black); font-weight: 400; margin-bottom: 0.3rem; }
+    p.doc-subtitle { font-size: 0.88rem; color: var(--mist); margin-bottom: 2rem; }
+
+    .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 2rem; }
+    .party-block { background: #f8f5f2; border-radius: 10px; padding: 1.2rem 1.4rem; }
+    .party-label { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mist); font-weight: 700; margin-bottom: 0.4rem; }
+    .party-name { font-family: var(--heading); font-size: 1rem; color: var(--black); margin-bottom: 0.3rem; }
+    .party-detail { font-size: 0.8rem; color: var(--stone); line-height: 1.6; }
+
+    .doc-date-line { font-size: 0.82rem; color: var(--mist); margin-bottom: 2rem; }
+
+    .doc-body h2 {
+      font-family: var(--heading); font-size: 1rem; font-weight: 400;
+      color: var(--black); margin: 2rem 0 0.6rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--ash);
+    }
+    .doc-body h2:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+    .doc-body p { font-size: 0.92rem; color: var(--stone); line-height: 1.8; margin-bottom: 0.8rem; }
+    .doc-body .intro-q { font-family: var(--heading); font-size: 1.05rem; color: var(--charcoal); font-weight: 400; margin-bottom: 0.4rem; }
+
+    .sub-item { font-size: 0.88rem; color: var(--stone); line-height: 1.75; margin-bottom: 0.7rem; padding-left: 1rem; border-left: 2px solid var(--ash); }
+    .sub-item strong { color: var(--charcoal); }
+
+    /* OPTION SELECTOR */
+    .option-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0; }
+    .option-card {
+      border: 2px solid var(--ash); border-radius: 10px; padding: 1.2rem;
+      cursor: pointer; transition: all 0.15s ease; position: relative;
+    }
+    .option-card:hover { border-color: var(--pink); }
+    .option-card.selected { border-color: var(--pink); background: #fef0f6; }
+    .option-card input[type="radio"] { position: absolute; opacity: 0; }
+    .option-tag {
+      font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--pink); font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .option-name { font-family: var(--heading); font-size: 0.95rem; color: var(--black); margin-bottom: 0.3rem; }
+    .option-price { font-size: 1.4rem; color: #d4a039; font-family: var(--heading); margin-bottom: 0.4rem; line-height: 1; }
+    .option-price-sub { font-size: 0.75rem; color: var(--mist); margin-bottom: 0.7rem; }
+    .option-desc { font-size: 0.8rem; color: var(--stone); line-height: 1.6; }
+
+    .bank-block { background: #f8f5f2; border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; }
+    .bank-row { display: flex; gap: 1rem; padding: 0.3rem 0; font-size: 0.85rem; }
+    .bank-label { color: var(--mist); font-weight: 600; min-width: 120px; flex-shrink: 0; }
+    .bank-val { color: var(--charcoal); font-family: monospace; }
+
+    /* SIGNATURE */
+    .sig-section { margin-top: 2.5rem; padding-top: 2rem; border-top: 2px solid var(--ash); }
+    .sig-section-header { margin-bottom: 1.5rem; }
+    .sig-section-header h3 { font-family: var(--heading); font-size: 1.1rem; font-weight: 400; color: var(--black); margin-bottom: 0.3rem; }
+    .sig-section-header span { font-size: 0.82rem; color: var(--mist); }
+
+    .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+    .sig-block {
+      border: 1px solid var(--ash); border-radius: 10px; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .sig-block.signed { border-color: var(--success); }
+    .sig-block.applied { border-color: var(--success); }
+
+    .sig-block-head {
+      background: #f0ece8; padding: 0.75rem 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sig-block.signed .sig-block-head { background: var(--success); }
+    .sig-block.applied .sig-block-head { background: var(--success); }
+    .sig-block-head .signer-name { font-size: 0.8rem; font-weight: 600; color: var(--black); }
+    .sig-block.signed .sig-block-head .signer-name,
+    .sig-block.applied .sig-block-head .signer-name { color: #fff; }
+    .sig-block-head .signer-title { font-size: 0.68rem; color: var(--mist); margin-top: 1px; }
+    .sig-block.signed .sig-block-head .signer-title,
+    .sig-block.applied .sig-block-head .signer-title { color: rgba(255,255,255,0.65); }
+
+    .signed-badge {
+      display: flex; align-items: center; gap: 0.3rem;
+      font-size: 0.68rem; color: #fafafa;
+      background: rgba(255,255,255,0.2); border-radius: 20px; padding: 0.2rem 0.55rem;
+    }
+
+    .sig-block-body { padding: 1rem; }
+    .sig-display {
+      height: 90px; display: flex; align-items: center; justify-content: center;
+      border: 1px dashed rgba(45,143,94,0.3); border-radius: 6px;
+      background: rgba(45,143,94,0.03); margin-bottom: 0.75rem;
+    }
+    .sig-cursive { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 1.6rem; color: var(--navy); letter-spacing: -0.02em; }
+    .sig-meta { font-size: 0.72rem; color: var(--mist); }
+
+    .sig-canvas-wrap { position: relative; margin-bottom: 0.75rem; }
+    canvas.sig-pad {
+      display: block; width: 100%; height: 100px;
+      border: 1px dashed #ccc; border-radius: 6px;
+      background: #fafafa; cursor: crosshair; touch-action: none;
+    }
+    .sig-watermark {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 0.75rem; color: #d0cac6; pointer-events: none; user-select: none; white-space: nowrap;
+    }
+    .sig-controls { display: flex; flex-direction: column; gap: 0.5rem; }
+    .sig-clear-btn { background: none; border: none; font-family: var(--sans); font-size: 0.72rem; color: var(--mist); cursor: pointer; text-align: right; padding: 0; text-decoration: underline; }
+    .sig-clear-btn:hover { color: var(--stone); }
+    .sig-email-wrap, .sig-date-wrap { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem; }
+    .sig-email-wrap label, .sig-date-wrap label { font-size: 0.72rem; color: var(--mist); white-space: nowrap; }
+    .sig-email-wrap input, .sig-date-wrap input {
+      font-family: var(--sans); font-size: 0.78rem; border: 1px solid var(--ash);
+      border-radius: 4px; padding: 0.25rem 0.5rem; color: var(--navy); flex: 1; min-width: 0;
+    }
+    .sig-agree-wrap { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.6rem; }
+    .sig-agree-wrap input[type="checkbox"] { margin-top: 2px; accent-color: var(--pink); flex-shrink: 0; }
+    .sig-agree-wrap label { font-size: 0.72rem; color: var(--stone); line-height: 1.4; }
+    .sig-apply-btn {
+      width: 100%; background: var(--pink); color: #fff; border: none; border-radius: 6px;
+      font-family: var(--sans); font-size: 0.82rem; font-weight: 600;
+      padding: 0.55rem 1rem; cursor: pointer; transition: background 0.2s, opacity 0.2s;
+    }
+    .sig-apply-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .sig-apply-btn:not(:disabled):hover { background: var(--pink-dark); }
+    .sig-applied-note { display: none; font-size: 0.78rem; color: var(--success); margin-top: 0.4rem; }
+    .sig-block.applied .sig-applied-note { display: block; }
+
+    .completion-wrap {
+      display: none; margin-top: 2rem; text-align: center;
+      background: #f0faf5; border: 1px solid rgba(45,143,94,0.2);
+      border-radius: 12px; padding: 2.5rem;
+    }
+    .completion-wrap.visible { display: block; }
+    .completion-wrap h3 { font-family: var(--heading); font-size: 1.3rem; color: var(--success); font-weight: 400; margin-bottom: 0.5rem; }
+    .btn-download {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--success); color: #fff; border: none;
+      border-radius: 6px; font-family: var(--sans); font-size: 0.88rem; font-weight: 600;
+      padding: 0.75rem 1.5rem; cursor: pointer; margin-top: 0.5rem; transition: opacity 0.2s;
+    }
+    .btn-download:hover { opacity: 0.85; }
+
+    .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--ash); font-size: 0.78rem; color: var(--mist); line-height: 1.8; }
+    .doc-footer a { color: var(--pink); text-decoration: none; }
+
+    @media (max-width: 680px) {
+      .doc-inner { padding: 1.5rem; }
+      .parties-grid { grid-template-columns: 1fr; }
+      .option-selector { grid-template-columns: 1fr; }
+      .sig-grid { grid-template-columns: 1fr; }
+      .site-header { padding: 0.75rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://mexzungu.com" class="logo-wrap">
+    <img src="/logo-v3.png" alt="Mexzungu Group">
+  </a>
+  <div class="header-meta">
+    <h1>Engagement Letter</h1>
+    <p>Audacity Labs x Mexzungu Group &nbsp;|&nbsp; June 2026</p>
+  </div>
+</header>
+
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="step done" id="step-pepe">
+      <span class="step-dot"></span>
+      <span>Pepe Carrillo</span>
+    </div>
+    <span class="step-sep">›</span>
+    <div class="step pending" id="step-ida">
+      <span class="step-dot"></span>
+      <span>Ida Mannoh</span>
+    </div>
+  </div>
+  <div class="progress-label" id="progress-label"><strong>1</strong> of 2 signatures collected</div>
+</div>
+
+<div class="page-wrap">
+  <div class="doc-card" id="document-root">
+    <div class="doc-top-stripe"></div>
+    <div class="doc-inner">
+
+      <div class="doc-wordmark">
+        <img src="/logo-v3.png" alt="Mexzungu Group">
+        <div class="doc-wordmark-text">
+          <span>Mexzungu Venture Architecture</span>
+          <span>Outlaw Studio. Chaos starts companies. Structure builds them.</span>
+        </div>
+      </div>
+
+      <h1 class="doc-title">Engagement Letter: Audacity Labs</h1>
+      <p class="doc-subtitle">Dated June 9, 2026</p>
+
+      <div class="parties-grid">
+        <div class="party-block">
+          <div class="party-label">The Client</div>
+          <div class="party-name">Ida Mannoh</div>
+          <div class="party-detail">Founder, Audacity Labs (Ghana).<br>Acting on behalf of Audacity Labs and the new entity to be incorporated under this engagement.</div>
+        </div>
+        <div class="party-block">
+          <div class="party-label">The Studio</div>
+          <div class="party-name">Mexzungu Group Ltd</div>
+          <div class="party-detail">A Mauritius company. Royal Road, Henrietta, 73120, Mauritius.<br>Signing through Pepe Carrillo (Chief Disruption Officer).<br><a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a></div>
+        </div>
+      </div>
+
+      <div class="doc-date-line">Dated: June 9, 2026</div>
+
+      <div class="doc-body">
+
+        <p class="intro-q">Why does this letter exist?</p>
+        <p>You have a device that works and a structure that does not fit what this is becoming. This letter captures what we are going to build together: the entity, the IP transfer, the cap table, and the fundraising architecture. Sign it and we start.</p>
+
+        <h2>1. What are we working on?</h2>
+        <p>Audacity Labs has developed an EV charging safety device. The intellectual property and development history sit in Audacity Labs (Ghana), but that entity is not the right vehicle for raising capital, holding IP across jurisdictions, or building a proper cap table. The goal of this engagement is to build the right structure from the ground up before you go near an investor.</p>
+        <p>Five deliverables:</p>
+        <div class="sub-item"><strong>Entity Architecture Memo.</strong> New HoldCo structure, jurisdiction recommendation, board composition, and decision rights. The blueprint everything else follows from.</div>
+        <div class="sub-item"><strong>IP Assignment Agreement.</strong> Formal legal transfer of all intellectual property from Audacity Labs to the new entity. Covers the Goliath engineering contract, monitoring software, brand, and any patents in process. Clean chain of title before any investor sees the cap table.</div>
+        <div class="sub-item"><strong>Cap Table Design.</strong> Founder shares, vesting schedule, and option pool if needed. Built to survive a term sheet without surprises.</div>
+        <div class="sub-item"><strong>Fundraising Instrument Design.</strong> Recommendation on SAFE, priced equity, or convertible note for the initial raise. Instrument drafted and ready to issue.</div>
+        <div class="sub-item"><strong>Investor Narrative Brief.</strong> One page. Written for the investor conversation. The questions they will ask about your structure are the ones this document answers before they ask them.</div>
+
+        <h2>2. What this does not include</h2>
+        <div class="sub-item">Any advice on commercial partnerships or third-party arrangements. That is a separate engagement if and when it is needed.</div>
+        <div class="sub-item">Dispute resolution or enforcement claims against Goliath or any prior contractor. We are building forward.</div>
+        <div class="sub-item">Local Ghanaian or Rwandan filing and registration. We coordinate with local counsel. Their fees are yours directly, at cost.</div>
+        <div class="sub-item">Incorporation fees and government filing costs. Billed to you at cost, no markup, separately invoiced.</div>
+        <div class="sub-item">US tax advice. We flag the right questions and point you to the right CPA.</div>
+
+        <h2>3. Assumptions going in</h2>
+        <div class="sub-item"><strong>Jurisdiction.</strong> The choice of entity jurisdiction (Delaware, European HoldCo, or other) will be determined together once we know where the majority of your investment capital is likely to come from. We will make a recommendation. You make the final call.</div>
+        <div class="sub-item"><strong>Timeline.</strong> Target: entity formation complete within 3 months of signing. If external factors push this out, we adjust the milestone payment accordingly.</div>
+        <div class="sub-item"><strong>What we need from you.</strong> Goliath contract, all development receipts, and any existing Audacity Labs corporate documents, within 5 business days of signing.</div>
+
+        <h2>4. Choose your fee structure</h2>
+        <p>Select below. Both options include the same five deliverables, the same success fee, and the same equity terms.</p>
+
+        <div class="option-selector" id="option-selector">
+          <label class="option-card selected" id="card-a" onclick="selectOption('a')">
+            <input type="radio" name="fee-option" value="a" checked>
+            <div class="option-tag">Option A (Recommended)</div>
+            <div class="option-name">Fixed Project</div>
+            <div class="option-price">$2,500</div>
+            <div class="option-price-sub">flat fee, all five deliverables</div>
+            <div class="option-desc">50% on signing ($1,250), 50% on entity formation ($1,250). Fixed cost, no surprises.</div>
+          </label>
+          <label class="option-card" id="card-b" onclick="selectOption('b')">
+            <input type="radio" name="fee-option" value="b">
+            <div class="option-tag">Option B</div>
+            <div class="option-name">Bank Hours</div>
+            <div class="option-price">$200<span style="font-size:1rem;">/hr</span></div>
+            <div class="option-price-sub">billed monthly</div>
+            <div class="option-desc">Pay for actual hours worked. Monthly invoices, 14-day payment terms.</div>
+          </label>
+        </div>
+
+        <p style="margin-top: 1rem;"><strong style="color:var(--charcoal);">Both options also include:</strong></p>
+        <div class="sub-item"><strong>1.5%</strong> of capital raised, payable within 14 days of money clearing.</div>
+        <div class="sub-item"><strong>0.40% equity</strong> in the new entity. Vests monthly from signing date, no cliff. Stops vesting if the engagement ends early.</div>
+        <div class="sub-item">Incorporation fees and government costs billed at cost, separately invoiced.</div>
+
+        <h2>5. How to pay</h2>
+        <p>We accept payment via:</p>
+        <div class="bank-block">
+          <div class="bank-row"><span class="bank-label">Wire (USD)</span><span class="bank-val">MCB, IBAN MU49MCBL0901000448521954000USD &nbsp;|&nbsp; SWIFT: MCBLMUMU</span></div>
+          <div class="bank-row"><span class="bank-label">Payoneer</span><span class="bank-val">pepe@mexzungu.com</span></div>
+          <div class="bank-row"><span class="bank-label">USDC (Solana)</span><span class="bank-val">CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A</span></div>
+        </div>
+
+        <h2>6. The fine print</h2>
+        <div class="sub-item">Mauritius law governs. Mexzungu Group Ltd, Royal Road, Henrietta, 73120, Mauritius.</div>
+        <div class="sub-item">Either party may terminate with 30 days written notice. Fees accrued to that date are payable.</div>
+        <div class="sub-item">Confidential. What happens in this engagement stays in this engagement. This survives termination.</div>
+        <div class="sub-item">This is structural and strategic consulting, not local legal advice. Local filings go through licensed local counsel.</div>
+        <div class="sub-item">Liability capped at fees paid in the prior 3 months.</div>
+        <div class="sub-item">Non-solicitation: neither party approaches the other's team for 12 months post-engagement.</div>
+
+      </div>
+
+      <!-- SIGNATURE SECTION -->
+      <div class="sig-section" id="sig-section">
+        <div class="sig-section-header">
+          <h3>Signatures</h3>
+          <span>Both parties must sign to complete the agreement.</span>
+        </div>
+
+        <div class="sig-grid">
+
+          <!-- PEPE: pre-signed -->
+          <div class="sig-block signed" id="block-pepe">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Pepe Carrillo</div>
+                <div class="signer-title">Chief Disruption Officer, Mexzungu Group Ltd</div>
+              </div>
+              <div class="signed-badge">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Signed
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-display">
+                <span class="sig-cursive">Pepe Carrillo</span>
+              </div>
+              <div class="sig-meta">Signed: June 9, 2026</div>
+            </div>
+          </div>
+
+          <!-- IDA MANNOH -->
+          <div class="sig-block" id="block-ida">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Ida Mannoh</div>
+                <div class="signer-title">Founder, Audacity Labs</div>
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-canvas-wrap">
+                <canvas class="sig-pad" id="canvas-ida"></canvas>
+                <span class="sig-watermark" id="wm-ida">Sign here</span>
+              </div>
+              <div class="sig-controls">
+                <button class="sig-clear-btn" onclick="clearSig('ida')">Clear</button>
+                <div class="sig-email-wrap">
+                  <label for="email-ida">Email</label>
+                  <input type="email" id="email-ida" placeholder="your@email.com" oninput="updateApplyBtn()">
+                </div>
+                <div class="sig-date-wrap">
+                  <label for="date-ida">Date</label>
+                  <input type="date" id="date-ida">
+                </div>
+                <div class="sig-agree-wrap">
+                  <input type="checkbox" id="agree-ida" onchange="updateApplyBtn()">
+                  <label for="agree-ida">I have read and agree to all terms above, including the fee structure I selected.</label>
+                </div>
+                <button class="sig-apply-btn" id="apply-ida" disabled onclick="applySig()">Apply Signature</button>
+              </div>
+              <div class="sig-applied-note">Signature applied.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="completion-wrap" id="completion-panel">
+          <h3>Agreement complete.</h3>
+          <p id="server-submit-status" style="font-size:0.85rem;color:var(--stone);margin-bottom:0.5rem;">Sending signed copy to Pepe...</p>
+          <p style="font-size:0.78rem;color:var(--mist);margin-bottom:1.25rem;">Download your copy for your records.</p>
+          <button class="btn-download" onclick="downloadPDF()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download Signed PDF
+          </button>
+        </div>
+
+      </div>
+
+      <div class="doc-footer">
+        <p>Mexzungu Group Ltd &nbsp;|&nbsp; Royal Road, Henrietta, 73120, Mauritius</p>
+        <p><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> &nbsp;|&nbsp; <a href="https://mexzungu.com">mexzungu.com</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+var signaturePad;
+
+function selectOption(opt) {
+  document.getElementById('card-a').classList.toggle('selected', opt === 'a');
+  document.getElementById('card-b').classList.toggle('selected', opt === 'b');
+  document.querySelector('input[value="a"]').checked = (opt === 'a');
+  document.querySelector('input[value="b"]').checked = (opt === 'b');
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  var canvas = document.getElementById('canvas-ida');
+  signaturePad = new SignaturePad(canvas, { minWidth: 0.5, maxWidth: 2.5, penColor: '#1a1a2e' });
+  signaturePad.addEventListener('endStroke', function() {
+    document.getElementById('wm-ida').style.display = 'none';
+    updateApplyBtn();
+  });
+
+  // Set today's date
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('date-ida').value = today;
+
+  function resizeCanvas() {
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    var data = signaturePad.toData();
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    signaturePad.fromData(data);
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+});
+
+function clearSig(id) {
+  signaturePad.clear();
+  document.getElementById('wm-ida').style.display = '';
+  updateApplyBtn();
+}
+
+function updateApplyBtn() {
+  var hasSignature = !signaturePad.isEmpty();
+  var hasEmail = document.getElementById('email-ida').value.trim().length > 3;
+  var hasAgreed = document.getElementById('agree-ida').checked;
+  document.getElementById('apply-ida').disabled = !(hasSignature && hasEmail && hasAgreed);
+}
+
+function applySig() {
+  var block = document.getElementById('block-ida');
+  block.classList.add('applied', 'signed');
+  document.getElementById('apply-ida').disabled = true;
+
+  // Update progress
+  document.getElementById('step-ida').className = 'step done';
+  document.getElementById('progress-label').innerHTML = '<strong>2</strong> of 2 signatures collected';
+
+  // Notify server
+  var selectedOption = document.querySelector('input[name="fee-option"]:checked').value;
+  var email = document.getElementById('email-ida').value.trim();
+  var signatureData = signaturePad.toDataURL();
+
+  fetch('/api/sign', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      engagement: 'audacity-labs',
+      signer: 'ida-mannoh',
+      email: email,
+      fee_option: selectedOption,
+      signature: signatureData,
+      date: document.getElementById('date-ida').value
+    })
+  }).then(function(r) {
+    var status = document.getElementById('server-submit-status');
+    if (r.ok) {
+      status.textContent = 'Signed copy sent to pepe@mexzungu.com.';
+      status.style.color = '#2d8f5e';
+    } else {
+      status.textContent = 'Could not send automatically. Please screenshot this page.';
+    }
+  }).catch(function() {
+    document.getElementById('server-submit-status').textContent = 'Could not send automatically. Please screenshot this page.';
+  });
+
+  document.getElementById('completion-panel').classList.add('visible');
+}
+
+function downloadPDF() {
+  var element = document.getElementById('document-root');
+  html2canvas(element, { scale: 2, useCORS: true }).then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+    var pdfWidth = pdf.internal.pageSize.getWidth();
+    var pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('Audacity-Labs-Mexzungu-EL-2026.pdf');
+  });
+}
+</script>
+
+</body>
+</html>

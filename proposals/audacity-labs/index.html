@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Audacity Labs: Mexzungu Group Proposal</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --bg-primary:     #0d0d0d;
+            --bg-card:        #1a1a1a;
+            --text-primary:   #fafafa;
+            --text-secondary: #9a8f88;
+            --text-muted:     #6b5e57;
+            --text-accent:    #e86fa0;
+            --border:         #2a2a2a;
+            --border-hover:   #e14b87;
+            --card-bg:        #1a1a1a;
+            --card-border:    #2a2a2a;
+            --nav-bg:         rgba(13, 13, 13, 0.92);
+        }
+
+        /* PASSWORD GATE */
+        #pw-gate {
+            position: fixed; inset: 0;
+            background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a;
+            border-radius: 12px; padding: 3rem 2.5rem;
+            max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.6rem; color: #fafafa; margin-bottom: 0.6rem; line-height: 1.2; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem;
+            background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-size: 1rem;
+            letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center;
+            transition: border-color 0.2s;
+        }
+        .pw-input:focus { outline: none; border-color: #e14b87; box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem;
+            background-color: #e14b87;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s; box-shadow: 0 4px 14px rgba(225,75,135,0.35);
+        }
+        .pw-btn:hover { background-color: #e86fa0; transform: scale(1.02); }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+        .pw-footer-note { font-size: 0.75rem; color: #4a4a4a; margin-top: 2rem; }
+
+        /* PROPOSAL */
+        #proposal-content { display: none; }
+        #proposal-content.visible { display: block; }
+
+        .proposal-hero {
+            min-height: 60vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 10rem 2rem 5rem; max-width: 1100px; margin: 0 auto;
+        }
+        .hero-tag {
+            font-family: 'Rock Salt', cursive; font-size: 0.75rem;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: #e14b87; margin-bottom: 1.5rem; opacity: 0.85;
+        }
+        .proposal-hero h1 {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(2.6rem, 5.5vw, 4.4rem); font-weight: 400;
+            line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 1.2rem; color: #fafafa;
+        }
+        .valid-note { font-size: 0.85rem; color: #6b5e57; letter-spacing: 0.05em; }
+
+        .prop-section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+        .prop-section + .prop-section { border-top: 1px solid #1e1e1e; }
+        .prop-divider { height: 1px; background: #1a1a1a; max-width: 860px; margin: 0 auto; }
+
+        .prop-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .prop-heading {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 400;
+            color: #fafafa; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 1.5rem;
+        }
+        .prop-copy { font-size: 1.05rem; color: #9a8f88; line-height: 1.85; max-width: 680px; }
+        .prop-copy strong { color: #c8c0bb; font-weight: 600; }
+
+        /* DELIVERABLES */
+        .deliverable-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2.5rem;
+        }
+        @media (max-width: 640px) { .deliverable-grid { grid-template-columns: 1fr; } }
+        .deliverable-block {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 1.8rem; transition: border-color 0.2s;
+        }
+        .deliverable-block:hover { border-color: #e14b87; }
+        .deliverable-num {
+            width: 1.8rem; height: 1.8rem; border-radius: 50%;
+            background: #1e1e1e; border: 1px solid #2d2d2d; color: #e14b87;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem;
+            font-weight: 700; margin-bottom: 0.9rem;
+        }
+        .deliverable-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1rem; color: #c8c0bb; line-height: 1.3; margin-bottom: 0.6rem;
+        }
+        .deliverable-body { font-size: 0.85rem; color: #6b5e57; line-height: 1.7; }
+
+        /* OUT OF SCOPE */
+        .oos-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+        .oos-list li {
+            font-size: 0.92rem; color: #6b5e57; padding: 0.65rem 0;
+            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.8rem; line-height: 1.6;
+        }
+        .oos-list li:last-child { border: none; }
+        .oos-list li::before { content: '//'; color: #2d2d2d; font-family: monospace; font-size: 0.8rem; flex-shrink: 0; margin-top: 0.15rem; }
+
+        /* PRICING */
+        .pricing-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+        }
+        @media (max-width: 680px) { .pricing-row { grid-template-columns: 1fr; } }
+        .pricing-card {
+            background: #111; border: 1px solid #2a2a2a;
+            border-radius: 14px; padding: 2rem 1.8rem;
+            display: flex; flex-direction: column;
+        }
+        .pricing-card.main {
+            border-color: #2d1f28;
+            background: linear-gradient(160deg, #111 0%, #1a0f15 100%);
+        }
+        .pricing-card-label {
+            font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: #e14b87; font-weight: 700; margin-bottom: 1rem;
+        }
+        .pricing-card-name {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.15rem; color: #fafafa; margin-bottom: 1.2rem; line-height: 1.3;
+        }
+        .pricing-number {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 2.2rem; color: #d4a039; letter-spacing: -0.02em; line-height: 1; margin-bottom: 0.3rem;
+        }
+        .pricing-number-sub { font-size: 0.8rem; color: #4a4a4a; margin-bottom: 1.2rem; }
+        .pricing-desc { font-size: 0.88rem; color: #6b5e57; line-height: 1.65; flex: 1; margin-bottom: 1.2rem; }
+        .pricing-desc strong { color: #9a8f88; }
+        .pricing-items { list-style: none; padding: 0; margin: 0; }
+        .pricing-items li {
+            font-size: 0.85rem; color: #c8c0bb; padding: 0.4rem 0;
+            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.6rem; line-height: 1.5;
+        }
+        .pricing-items li:last-child { border: none; }
+        .pricing-items li::before { content: ''; width: 6px; height: 6px; background: #e14b87; border-radius: 50%; flex-shrink: 0; margin-top: 0.45rem; }
+        .pricing-items li strong { color: #d4a039; font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; }
+
+        .equity-note {
+            margin-top: 1.5rem; padding: 1rem 1.2rem;
+            background: rgba(212,160,57,0.06); border-left: 3px solid #d4a039;
+            border-radius: 0 6px 6px 0; font-size: 0.85rem; color: #9a8f88; line-height: 1.6;
+        }
+        .equity-note strong { color: #d4a039; }
+
+        /* FINE PRINT */
+        .fine-print-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+        .fine-print-list li {
+            font-size: 0.88rem; color: #6b5e57; padding: 0.5rem 0;
+            border-bottom: 1px solid #1a1a1a; display: flex; gap: 0.7rem; line-height: 1.6;
+        }
+        .fine-print-list li:last-child { border: none; }
+        .fine-print-list li::before { content: '//'; color: #2d2d2d; font-family: monospace; font-size: 0.8rem; flex-shrink: 0; }
+
+        /* CTA */
+        .cta-section { text-align: center; padding: 6rem 2rem 8rem; max-width: 760px; margin: 0 auto; }
+        .cta-sub { font-size: 1rem; color: #6b5e57; margin-bottom: 3rem; line-height: 1.7; }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 0.6rem; padding: 1.1rem 2.8rem;
+            background-color: #e14b87; color: #fafafa;
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.1rem; border-radius: 6px; text-decoration: none;
+            transition: all 0.2s; box-shadow: 0 6px 24px rgba(225,75,135,0.4);
+        }
+        .cta-btn:hover { background-color: #e86fa0; transform: scale(1.03); color: #fafafa; }
+        .cta-secondary { margin-top: 2rem; font-size: 0.88rem; color: #4a4a4a; }
+        .cta-secondary a { color: #9a8f88; text-decoration: underline; text-underline-offset: 3px; }
+        .cta-secondary a:hover { color: #e14b87; }
+
+        @media (max-width: 768px) {
+            .proposal-hero { padding: 9rem 1.5rem 4rem; }
+            .prop-section { padding: 4rem 1.5rem; }
+            .cta-section { padding: 4rem 1.5rem 6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/logo-v3.png" alt="Mexzungu Group" class="pw-logo">
+        <div class="pw-label">Private Proposal</div>
+        <div class="pw-heading">This page is for you.</div>
+        <p class="pw-sub">Enter your access code to read the proposal.</p>
+        <input type="password" id="pw-input" class="pw-input" placeholder="access code" autocomplete="off" autofocus>
+        <button class="pw-btn" onclick="checkPassword()">Open proposal</button>
+        <div class="pw-error" id="pw-error"></div>
+        <p class="pw-footer-note">This proposal is confidential and prepared specifically for Ida Mannoh.</p>
+    </div>
+</div>
+
+<!-- PROPOSAL CONTENT -->
+<div id="proposal-content">
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li class="nav-dropdown">
+            <a href="/#pillars">What We Do</a>
+            <ul class="nav-dropdown-menu">
+                <li><a href="/venture-architecture">Venture Architecture</a></li>
+                <li><a href="/data-privacy">Data Privacy</a></li>
+                <li><a href="/rebel-capital">Rebel Capital</a></li>
+                <li><a href="/ai-ninja-factory">AI Ninja Factory</a></li>
+            </ul>
+        </li>
+        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+        <li><a href="/meet-the-band">Meet the Band</a></li>
+        <li><a href="/lets-jam" class="nav-cta">Let's Jam</a></li>
+    </ul>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div class="proposal-hero leopard-dense">
+    <div class="hero-tag">For Ida Mannoh, Audacity Labs</div>
+    <h1>The structure that gets<br>this device to market.</h1>
+    <p class="valid-note">Prepared specifically for Audacity Labs. Valid for 30 days from June 9, 2026.</p>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 01: WHAT WE HEARD -->
+<div class="prop-section">
+    <div class="prop-label">01 / What we heard</div>
+    <div class="prop-heading">The device works. The structure is not ready.</div>
+    <p class="prop-copy">
+        You built something real. EV drivers in Ghana are charging from domestic plugs not designed for the load, and the fire risk is real and growing fast as adoption accelerates. Your smart monitor reads voltage, current, and temperature and disconnects before something burns. The Ghana Energy Commission is paying attention. There is a market in Rwanda too.
+        <br><br>
+        The problem is not the device. It is that <strong>Audacity Labs is the wrong vessel</strong> for what this is becoming. The IP is tied to an entity that was not built for hardware, investors, or cross-border capital. You need a clean new structure: a new entity that holds the IP properly, a cap table that makes sense before the first institutional cheque lands, and fundraising instruments designed for how you are actually going to raise.
+        <br><br>
+        That is what we are building.
+    </p>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 02: WHAT WE WILL BUILD -->
+<div class="prop-section">
+    <div class="prop-label">02 / What we will build</div>
+    <div class="prop-heading">Five deliverables. One clean structure.</div>
+    <p class="prop-copy" style="margin-bottom: 0;">Each document is decision-ready. Not a framework, not a deck. Something you can hand to an investor or a government counterpart and have it hold up.</p>
+
+    <div class="deliverable-grid">
+
+        <div class="deliverable-block">
+            <div class="deliverable-num">1</div>
+            <div class="deliverable-title">Entity Architecture Memo</div>
+            <div class="deliverable-body">New HoldCo structure, jurisdiction recommendation (Delaware, European, or African holding entity depending on your investor pipeline), board composition, and decision rights. The blueprint for everything that follows.</div>
+        </div>
+
+        <div class="deliverable-block">
+            <div class="deliverable-num">2</div>
+            <div class="deliverable-title">IP Assignment Agreement</div>
+            <div class="deliverable-body">Formal transfer of all IP from Audacity Labs to the new entity. Covers the Goliath engineering contract, the monitoring software, brand, and any patents in process. Clean chain of title before you approach any investor.</div>
+        </div>
+
+        <div class="deliverable-block">
+            <div class="deliverable-num">3</div>
+            <div class="deliverable-title">Cap Table Design</div>
+            <div class="deliverable-body">Clean founding structure for the new entity. Founder shares, vesting schedule, option pool if needed. Built to survive a term sheet without surprises on either side.</div>
+        </div>
+
+        <div class="deliverable-block">
+            <div class="deliverable-num">4</div>
+            <div class="deliverable-title">Fundraising Instrument Design</div>
+            <div class="deliverable-body">Recommendation on SAFE vs priced equity vs convertible note for the $200-250k round. Instrument drafted and ready to issue. Investor-friendly without giving away the house.</div>
+        </div>
+
+        <div class="deliverable-block" style="grid-column: 1 / -1;">
+            <div class="deliverable-num">5</div>
+            <div class="deliverable-title">Investor Narrative Brief</div>
+            <div class="deliverable-body">One-page summary of the architecture, the structure, and the capital strategy. Written for the investor conversation, not for you. The questions they will ask about your setup are the ones this document is designed to answer before they ask them.</div>
+        </div>
+
+    </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 03: OUT OF SCOPE -->
+<div class="prop-section">
+    <div class="prop-label">03 / What this does not include</div>
+    <div class="prop-heading">Scope clarity prevents surprises.</div>
+    <ul class="oos-list">
+        <li>Any advice touching a Rwanda partnership or third-party commercial arrangements. That is a separate engagement if and when you need it.</li>
+        <li>Dispute resolution or enforcement claims against Goliath. We are building forward, not backwards.</li>
+        <li>Local Ghanaian or Rwandan filing and registration. We coordinate with local counsel. Their fees are yours directly.</li>
+        <li>Incorporation fees and government filing costs. Billed to you at cost, no markup.</li>
+        <li>US tax advice. We flag the questions and point you to the right CPA. We are not licensed for US tax.</li>
+    </ul>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 04: WHAT THIS COSTS -->
+<div class="prop-section">
+    <div class="prop-label">04 / What this costs</div>
+    <div class="prop-heading">Two ways to work together.</div>
+
+    <div class="pricing-row">
+
+        <div class="pricing-card main">
+            <div class="pricing-card-label">Option A (Recommended)</div>
+            <div class="pricing-card-name">Fixed Project</div>
+            <div class="pricing-number">$2,500</div>
+            <div class="pricing-number-sub">flat fee, all five deliverables</div>
+            <p class="pricing-desc">You know the cost before we start. No hourly billing, no scope drift. Split 50% on signing, 50% on entity formation. Best if you want certainty.</p>
+            <ul class="pricing-items">
+                <li><strong>$1,250</strong> on signing</li>
+                <li><strong>$1,250</strong> on entity formation</li>
+                <li><strong>1.5%</strong> of capital raised on close</li>
+                <li><strong>0.40%</strong> equity in new entity (monthly vest, no cliff)</li>
+                <li>Incorporation fees at cost</li>
+            </ul>
+        </div>
+
+        <div class="pricing-card">
+            <div class="pricing-card-label">Option B</div>
+            <div class="pricing-card-name">Bank Hours</div>
+            <div class="pricing-number">$200</div>
+            <div class="pricing-number-sub">per hour, billed monthly</div>
+            <p class="pricing-desc">Pay for what we actually do. Best if the scope is likely to evolve as we go or you want to start smaller and expand as momentum builds.</p>
+            <ul class="pricing-items">
+                <li>Monthly invoices, 14-day payment terms</li>
+                <li><strong>1.5%</strong> of capital raised on close</li>
+                <li><strong>0.40%</strong> equity in new entity (monthly vest, no cliff)</li>
+                <li>Incorporation fees at cost</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="equity-note">
+        <strong>On the equity.</strong> 0.40% vests monthly from the date of engagement, with no cliff. It is in the new entity, not Audacity Labs. If the engagement ends early, vesting stops at that date. Standard terms, nothing unusual.
+    </div>
+
+    <div style="margin-top: 1.5rem; padding: 1.2rem 1.5rem; background: #111; border: 1px solid #1e1e1e; border-radius: 10px;">
+        <p style="font-size: 0.88rem; color: #6b5e57; line-height: 1.7; margin: 0;">
+            <strong style="color: #9a8f88;">Payment accepted via:</strong> Wire transfer (MCB USD, details on request) &nbsp;|&nbsp; Payoneer (pepe@mexzungu.com) &nbsp;|&nbsp; USDC on Solana (CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A)
+        </p>
+    </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 05: FINE PRINT -->
+<div class="prop-section">
+    <div class="prop-label">05 / The fine print</div>
+    <div class="prop-heading">Short version.</div>
+    <ul class="fine-print-list">
+        <li>Mauritius law governs. Mexzungu Group Ltd, Royal Road, Henrietta, 73120, Mauritius.</li>
+        <li>Either party may terminate with 30 days written notice. Fees accrued to that date are payable.</li>
+        <li>Confidential. What happens in this engagement stays in this engagement.</li>
+        <li>This is structural and strategic consulting, not local legal advice. We design the architecture and coordinate execution. Local filings go through licensed local counsel.</li>
+        <li>Liability is capped at fees paid in the prior 3 months.</li>
+        <li>Non-solicitation: neither party approaches the other's team for 12 months post-engagement.</li>
+    </ul>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <div class="prop-label">Ready?</div>
+    <div class="prop-heading">Let us build the structure.</div>
+    <p class="cta-sub">Read the engagement letter and sign when you are ready. Takes about 3 minutes.</p>
+    <a class="cta-btn" href="https://mexzungu.com/sign/audacity-labs">
+        Review &amp; Sign the Engagement Letter
+    </a>
+    <p class="cta-secondary">
+        Got questions? <a href="mailto:pepe@mexzungu.com">Drop Pepe a note</a> or <a href="https://mexzungu.com/lets-jam">book a 15-min call.</a>
+    </p>
+</div>
+
+</main>
+
+<footer>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size: 0.85rem;">
+            <a href="/privacy/" style="color: var(--gold);">Privacy Policy</a> &middot;
+            <a href="/terms/" style="color: var(--gold);">Terms of Service</a>
+        </span>
+    </div>
+    <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice.</div>
+</footer>
+
+</div><!-- /proposal-content -->
+
+<script>
+(function() {
+    var CORRECT = 'audacity-0609';
+    var SESSION_KEY = 'audacity_labs_auth';
+
+    function unlock() {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('proposal-content').classList.add('visible');
+    }
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); return; }
+
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPassword();
+    });
+
+    window.checkPassword = function() {
+        var val = document.getElementById('pw-input').value.trim();
+        var input = document.getElementById('pw-input');
+        var err = document.getElementById('pw-error');
+        if (val === CORRECT) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            unlock();
+        } else {
+            input.classList.add('error');
+            err.textContent = 'Wrong code. Try again.';
+            input.value = '';
+            setTimeout(function() { input.classList.remove('error'); }, 400);
+            setTimeout(function() { err.textContent = ''; }, 3000);
+            input.focus();
+        }
+    };
+})();
+
+document.querySelectorAll('.nav-links a').forEach(function(l) {
+    l.addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.remove('open');
+    });
+});
+</script>
+
+</body>
+</html>
