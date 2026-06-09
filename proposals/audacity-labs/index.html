@@ -1013,8 +1013,11 @@ function initCarousel(id, total) {
         })(i);
         dotsEl.appendChild(d);
     }
-    setSlideSizes(id);
-    updateCarousel(id);
+    requestAnimationFrame(function() {
+        setSlideSizes(id);
+        updateCarousel(id);
+        setTimeout(function() { setSlideSizes(id); updateCarousel(id); }, 150);
+    });
 }
 
 function setSlideSizes(id) {
