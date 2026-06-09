@@ -209,7 +209,7 @@
             display: flex; transition: transform 0.35s ease;
         }
         .carousel-slide {
-            min-width: 100%; background: #111; border: 1px solid #2a2a2a;
+            min-width: 100%; flex-shrink: 0; background: #111; border: 1px solid #2a2a2a;
             border-radius: 14px; padding: 2rem; box-sizing: border-box;
         }
         .carousel-slide-num {
@@ -889,7 +889,8 @@ function initCarousel(id, total) {
 function updateCarousel(id) {
     var state = carousels[id];
     var inner = document.getElementById('carousel-' + id + '-inner');
-    inner.style.transform = 'translateX(-' + (state.current * 100) + '%)';
+    var track = document.querySelector('#carousel-' + id + ' .carousel-track');
+    inner.style.transform = 'translateX(-' + (state.current * track.offsetWidth) + 'px)';
     document.getElementById('carousel-' + id + '-counter').textContent = (state.current + 1) + ' of ' + state.total;
     document.getElementById('carousel-' + id + '-prev').disabled = state.current === 0;
     document.getElementById('carousel-' + id + '-next').disabled = state.current === state.total - 1;
@@ -913,6 +914,10 @@ function carouselGo(id, idx) {
     carousels[id].current = idx;
     updateCarousel(id);
 }
+
+window.addEventListener('resize', function() {
+    Object.keys(carousels).forEach(function(id) { updateCarousel(id); });
+});
 </script>
 
 </body>
