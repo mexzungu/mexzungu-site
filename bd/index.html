@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BD Pipeline | Mexzungu Group</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --pink:    #e14b87;
+      --gold:    #d4a039;
+      --green:   #4caf7a;
+      --amber:   #e8a020;
+      --red:     #e05252;
+      --bg:      #0a0a0a;
+      --surface: #111111;
+      --border:  #1e1e1e;
+      --border2: #2a2a2a;
+      --text:    #fafafa;
+      --muted:   #6b5e57;
+      --dim:     #9a8f88;
+      --mid:     #c8c0bb;
+      --heading: 'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:    'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* PASSWORD GATE */
+    #pw-gate {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #050505;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #pw-gate.hidden { display: none; }
+    .pw-card { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; width: 100%; max-width: 320px; padding: 2.5rem 2rem; }
+    .pw-logo { height: 36px; width: auto; opacity: 0.9; }
+    .pw-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); }
+    .pw-heading { font-family: var(--heading); font-size: 1.1rem; text-align: center; }
+    .pw-input {
+      width: 100%; padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px; color: var(--text); font-family: var(--sans); font-size: 0.95rem;
+      outline: none; text-align: center; letter-spacing: 0.08em; transition: border-color 0.15s;
+    }
+    .pw-input:focus { border-color: var(--pink); }
+    .pw-input.error { border-color: #ff6b6b; }
+    .pw-btn {
+      width: 100%; padding: 0.9rem; background: var(--pink); color: #fff; border: none;
+      border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .pw-btn:hover { background: #b83a6b; }
+    .pw-error { font-size: 0.78rem; color: #ff8080; text-align: center; min-height: 1.1em; }
+
+    /* CONTENT */
+    #crm-content { display: none; }
+    #crm-content.visible { display: block; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 58px;
+    }
+    .nav-logo img { height: 30px; width: auto; display: block; }
+    .nav-right { font-size: 0.75rem; color: var(--muted); text-align: right; }
+    .nav-right strong { color: var(--dim); }
+
+    /* PAGE */
+    .page { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+    /* HEADER */
+    .page-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink); margin-bottom: 0.6rem; }
+    .page-heading { font-family: var(--heading); font-size: 2rem; margin-bottom: 0.5rem; }
+    .page-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 2.5rem; }
+
+    /* STATS BAR */
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 3rem; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.4rem; }
+    .stat-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.4rem; }
+    .stat-value { font-family: var(--heading); font-size: 1.8rem; color: var(--text); }
+    .stat-value.pink { color: var(--pink); }
+    .stat-value.gold { color: var(--gold); }
+    .stat-value.amber { color: var(--amber); }
+    .stat-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* FUNNEL STRIP */
+    .funnel-strip { display: flex; gap: 0; margin-bottom: 3rem; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .funnel-step { flex: 1; padding: 0.75rem 0.5rem; text-align: center; background: var(--surface); border-right: 1px solid var(--border); cursor: default; }
+    .funnel-step:last-child { border-right: none; }
+    .funnel-step.active { background: rgba(225,75,135,0.07); }
+    .funnel-step-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.2rem; }
+    .funnel-step-count { font-family: var(--heading); font-size: 1.2rem; color: var(--dim); }
+    .funnel-step.active .funnel-step-count { color: var(--pink); }
+
+    /* SECTION */
+    .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.2rem; margin-top: 2.5rem; }
+    .section-title { font-family: var(--heading); font-size: 1rem; }
+    .section-count { font-size: 0.72rem; font-weight: 700; background: var(--border2); color: var(--dim); padding: 0.2rem 0.6rem; border-radius: 20px; }
+
+    /* LEAD CARDS */
+    .leads-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+    .lead-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.4rem 1.6rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;
+      transition: border-color 0.15s;
+    }
+    .lead-card:hover { border-color: var(--border2); }
+    .lead-card.urgent { border-left: 3px solid var(--amber); }
+    .lead-card.fresh { border-left: 3px solid var(--pink); }
+    .lead-card.cold { border-left: 3px solid var(--border2); opacity: 0.65; }
+
+    .lead-name { font-family: var(--heading); font-size: 1.05rem; margin-bottom: 0.3rem; }
+    .lead-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.8rem; align-items: center; }
+    .badge {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+      padding: 0.22rem 0.6rem; border-radius: 4px;
+    }
+    .badge-stage-proposal  { background: rgba(225,75,135,0.12); color: var(--pink); border: 1px solid rgba(225,75,135,0.2); }
+    .badge-stage-discovery { background: rgba(212,160,57,0.12); color: var(--gold); border: 1px solid rgba(212,160,57,0.2); }
+    .badge-stage-prospect  { background: rgba(200,192,187,0.1); color: var(--dim); border: 1px solid var(--border2); }
+    .badge-stage-lost      { background: rgba(224,82,82,0.1); color: var(--red); border: 1px solid rgba(224,82,82,0.2); }
+    .badge-type { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
+
+    .lead-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 1.5rem; }
+    .lead-row { font-size: 0.8rem; color: var(--dim); }
+    .lead-row-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.1rem; }
+
+    .lead-action { text-align: right; }
+    .action-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .action-text { font-size: 0.8rem; color: var(--dim); max-width: 200px; text-align: right; line-height: 1.5; }
+    .action-text.warn { color: var(--amber); }
+    .action-text.ok   { color: var(--green); }
+    .action-text.st   { color: var(--pink); font-weight: 600; }
+
+    .flag-st { display: inline-block; font-size: 0.58rem; font-weight: 700; background: rgba(225,75,135,0.15); color: var(--pink); border: 1px solid rgba(225,75,135,0.3); padding: 0.15rem 0.45rem; border-radius: 3px; letter-spacing: 0.08em; }
+    .flag-stale { display: inline-block; font-size: 0.58rem; font-weight: 700; background: rgba(232,160,32,0.1); color: var(--amber); border: 1px solid rgba(232,160,32,0.2); padding: 0.15rem 0.45rem; border-radius: 3px; letter-spacing: 0.08em; }
+
+    .value-text { font-family: var(--heading); font-size: 1rem; color: var(--text); }
+    .value-text.tbd { color: var(--muted); font-size: 0.85rem; font-family: var(--sans); }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0 0; }
+
+    @media (max-width: 768px) {
+      .page { padding: 2rem 1.25rem 5rem; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .funnel-strip { flex-wrap: wrap; }
+      .funnel-step { flex: 1 1 calc(33% - 2px); }
+      .lead-card { grid-template-columns: 1fr; }
+      .lead-action { text-align: left; }
+      .action-text { text-align: left; max-width: none; }
+      .lead-rows { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+  <div class="pw-card">
+    <img class="pw-logo" src="/img/logo-white.png" alt="Mexzungu">
+    <div class="pw-label">BD Pipeline</div>
+    <div class="pw-heading">Internal access only</div>
+    <input class="pw-input" id="pw-input" type="password" placeholder="Password" autocomplete="off">
+    <button class="pw-btn" onclick="checkPassword()">Enter</button>
+    <div class="pw-error" id="pw-error"></div>
+  </div>
+</div>
+
+<!-- CRM CONTENT -->
+<div id="crm-content">
+
+<nav>
+  <div class="nav-logo"><img src="/img/logo-white.png" alt="Mexzungu Group"></div>
+  <div class="nav-right"><strong>BD Pipeline</strong> · Mexzungu Group</div>
+</nav>
+
+<div class="page">
+
+  <div class="page-label">Business Development</div>
+  <div class="page-heading">Pipeline</div>
+  <div class="page-sub">Last updated: 2026-06-10. 8 leads tracked.</div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-label">Active leads</div>
+      <div class="stat-value pink">7</div>
+      <div class="stat-sub">1 lost, 0 won</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">At proposal stage</div>
+      <div class="stat-value gold">2</div>
+      <div class="stat-sub">Autentic.ai, Audacity Labs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Needs action</div>
+      <div class="stat-value amber">3</div>
+      <div class="stat-sub">Showtime pending or stale</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pipeline value</div>
+      <div class="stat-value" style="font-size:1.2rem;">$15k+</div>
+      <div class="stat-sub">excl. TBD + success fees</div>
+    </div>
+  </div>
+
+  <!-- FUNNEL STRIP -->
+  <div class="funnel-strip">
+    <div class="funnel-step">
+      <div class="funnel-step-label">Prospect</div>
+      <div class="funnel-step-count">1</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-step-label">Qualified</div>
+      <div class="funnel-step-count">0</div>
+    </div>
+    <div class="funnel-step active">
+      <div class="funnel-step-label">Discovery</div>
+      <div class="funnel-step-count">3</div>
+    </div>
+    <div class="funnel-step active">
+      <div class="funnel-step-label">Proposal</div>
+      <div class="funnel-step-count">3</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-step-label">Negotiation</div>
+      <div class="funnel-step-count">0</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-step-label">Won</div>
+      <div class="funnel-step-count">0</div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-step-label">Lost</div>
+      <div class="funnel-step-count">1</div>
+    </div>
+  </div>
+
+  <!-- PROPOSAL STAGE -->
+  <div class="section-header">
+    <div class="section-title">Proposal</div>
+    <div class="section-count">3 leads</div>
+  </div>
+  <div class="leads-grid">
+
+    <!-- Audacity Labs -->
+    <div class="lead-card fresh">
+      <div>
+        <div class="lead-name">Audacity Labs</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-proposal">Proposal sent</span>
+          <span class="badge badge-type">Venture Architecture</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contact</div>
+            <div class="lead-row">Ida Mannoh</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text tbd">TBD</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Last touch</div>
+            <div class="lead-row">2026-06-09 (proposal + WA sent)</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Proposal</div>
+            <div class="lead-row">mexzungu.com/proposals/audacity-labs</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Next action</div>
+        <div class="action-text ok">Await response</div>
+      </div>
+    </div>
+
+    <!-- Autentic.ai -->
+    <div class="lead-card urgent">
+      <div>
+        <div class="lead-name">Autentic.ai</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-proposal">Proposal</span>
+          <span class="badge badge-type">Venture Architecture</span>
+          <span class="flag-st">[ST]</span>
+          <span class="flag-stale">41 days unsent</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contacts</div>
+            <div class="lead-row">Dani Diestre Tomas, Aniol Carreras</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text">~€4k-5.5k</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Last touch</div>
+            <div class="lead-row">2026-04-17 (deck built)</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Proposal</div>
+            <div class="lead-row">Deck built, not sent</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Next action</div>
+        <div class="action-text st">[ST] Fire Away. 41 days unsent. Send or kill.</div>
+      </div>
+    </div>
+
+    <!-- HavenPay -->
+    <div class="lead-card urgent">
+      <div>
+        <div class="lead-name">HavenPay</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-proposal">Proposal sent</span>
+          <span class="badge badge-type">Venture Architecture</span>
+          <span class="flag-stale">25 days silent</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contact</div>
+            <div class="lead-row">Yoeal Haile</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text">$10,500 + 0.25% equity</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Last touch</div>
+            <div class="lead-row">2026-05-03 (proposal + WA)</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Proposal</div>
+            <div class="lead-row">mexzungu.com/proposals/havenpay</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Next action</div>
+        <div class="action-text warn">Follow-up. 25 days no reply.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DISCOVERY STAGE -->
+  <div class="section-header">
+    <div class="section-title">Discovery</div>
+    <div class="section-count">3 leads</div>
+  </div>
+  <div class="leads-grid">
+
+    <!-- Magna Collective -->
+    <div class="lead-card cold">
+      <div>
+        <div class="lead-name">Magna Collective</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-discovery">Discovery</span>
+          <span class="badge badge-type">Partnership / BD</span>
+          <span class="flag-stale">Likely stale</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contact</div>
+            <div class="lead-row">Femi Awoniyi</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text tbd">TBD</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Last touch</div>
+            <div class="lead-row">2026-04-20 (Pepe follow-up)</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Days since contact</div>
+            <div class="lead-row">50 days</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Next action</div>
+        <div class="action-text warn">Check. Likely stale.</div>
+      </div>
+    </div>
+
+    <!-- Silica GBS -->
+    <div class="lead-card cold">
+      <div>
+        <div class="lead-name">Silica GBS</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-discovery">Discovery</span>
+          <span class="badge badge-type">Venture Architecture</span>
+          <span class="flag-stale">45 days silent</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contacts</div>
+            <div class="lead-row">Samuel Darko, Sandip</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text tbd">TBD</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Last touch</div>
+            <div class="lead-row">2026-04-13 (fixed PDF sent)</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Days since contact</div>
+            <div class="lead-row">57 days</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Next action</div>
+        <div class="action-text warn">No response. Reassess or close.</div>
+      </div>
+    </div>
+
+    <!-- Yanka Network -->
+    <div class="lead-card cold">
+      <div>
+        <div class="lead-name">Yanka Network</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-discovery">Discovery</span>
+          <span class="badge badge-type">Due Diligence</span>
+          <span class="flag-stale">Likely stale</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contact</div>
+            <div class="lead-row">Peter Inyang</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text tbd">TBD</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Last touch</div>
+            <div class="lead-row">2026-04-22 (DD deadline)</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Days since contact</div>
+            <div class="lead-row">48 days</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Next action</div>
+        <div class="action-text warn">Status unknown. Likely stale.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROSPECT STAGE -->
+  <div class="section-header">
+    <div class="section-title">Prospect</div>
+    <div class="section-count">1 lead</div>
+  </div>
+  <div class="leads-grid">
+
+    <!-- Faith Gathoni -->
+    <div class="lead-card">
+      <div>
+        <div class="lead-name">Faith Gathoni</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-prospect">Prospect</span>
+          <span class="badge badge-type">TBD</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contact</div>
+            <div class="lead-row">Faith Gathoni</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text tbd">TBD</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Last touch</div>
+            <div class="lead-row">2026-05-15 (intro call)</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Open question</div>
+            <div class="lead-row">Client engagement or team member?</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Next action</div>
+        <div class="action-text warn">Clarify role: client or team?</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CLOSED -->
+  <hr class="divider">
+  <div class="section-header">
+    <div class="section-title">Closed</div>
+    <div class="section-count">1 lead</div>
+  </div>
+  <div class="leads-grid">
+
+    <!-- Saranac/Handlers -->
+    <div class="lead-card cold">
+      <div>
+        <div class="lead-name">Saranac / Handlers</div>
+        <div class="lead-meta">
+          <span class="badge badge-stage-lost">Lost</span>
+          <span class="badge badge-type">Deal Advisory (M&A)</span>
+        </div>
+        <div class="lead-rows">
+          <div>
+            <div class="lead-row-label">Contact</div>
+            <div class="lead-row">Nick Handler</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Closed</div>
+            <div class="lead-row">2026-06-09</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Reason</div>
+            <div class="lead-row">Using US counsel</div>
+          </div>
+          <div>
+            <div class="lead-row-label">Est. value</div>
+            <div class="lead-row value-text tbd">n/a</div>
+          </div>
+        </div>
+      </div>
+      <div class="lead-action">
+        <div class="action-label">Status</div>
+        <div class="action-text">Closed. No action.</div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /page -->
+</div><!-- /crm-content -->
+
+<script>
+(function() {
+  var CORRECT = 'mxg-crm-2026';
+  var KEY = 'mxg_crm_auth';
+  function unlock() {
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('crm-content').classList.add('visible');
+  }
+  if (sessionStorage.getItem(KEY) === '1') { unlock(); return; }
+  document.getElementById('pw-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') check();
+  });
+  window.checkPassword = function() { check(); };
+  function check() {
+    var val = document.getElementById('pw-input').value.trim();
+    if (val === CORRECT) {
+      sessionStorage.setItem(KEY, '1');
+      unlock();
+    } else {
+      var input = document.getElementById('pw-input');
+      var err = document.getElementById('pw-error');
+      input.classList.add('error');
+      err.textContent = 'Wrong password.';
+      setTimeout(function() { input.classList.remove('error'); }, 400);
+      setTimeout(function() { err.textContent = ''; }, 3000);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
