@@ -94,91 +94,279 @@
         .prop-copy { font-size: 1.05rem; color: #9a8f88; line-height: 1.85; max-width: 680px; }
         .prop-copy strong { color: #c8c0bb; font-weight: 600; }
 
-        /* DELIVERABLES */
-        .deliverable-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2.5rem;
-        }
-        @media (max-width: 640px) { .deliverable-grid { grid-template-columns: 1fr; } }
-        .deliverable-block {
-            background: #111; border: 1px solid #2a2a2a; border-radius: 12px;
-            padding: 1.8rem; transition: border-color 0.2s;
-        }
-        .deliverable-block:hover { border-color: #e14b87; }
-        .deliverable-num {
-            width: 1.8rem; height: 1.8rem; border-radius: 50%;
-            background: #1e1e1e; border: 1px solid #2d2d2d; color: #e14b87;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem;
-            font-weight: 700; margin-bottom: 0.9rem;
-        }
-        .deliverable-title {
-            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: 1rem; color: #c8c0bb; line-height: 1.3; margin-bottom: 0.6rem;
-        }
-        .deliverable-body { font-size: 0.85rem; color: #6b5e57; line-height: 1.7; }
-
-        /* OUT OF SCOPE */
-        .oos-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
-        .oos-list li {
+        /* BOLT LIST */
+        .bolt-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+        .bolt-list li {
             font-size: 0.92rem; color: #6b5e57; padding: 0.65rem 0;
             border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.8rem; line-height: 1.6;
         }
-        .oos-list li:last-child { border: none; }
-        .oos-list li::before { content: '//'; color: #2d2d2d; font-family: monospace; font-size: 0.8rem; flex-shrink: 0; margin-top: 0.15rem; }
+        .bolt-list li:last-child { border: none; }
+        .bolt-list li::before {
+            content: '';
+            display: inline-block;
+            width: 10px; height: 16px; flex-shrink: 0; margin-top: 0.1rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+
+        /* WORKSTREAM OVERVIEW DIAGRAM */
+        .ws-overview {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+        }
+        @media (max-width: 640px) { .ws-overview { grid-template-columns: 1fr; } }
+        .ws-track {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 1.8rem; position: relative; overflow: hidden;
+        }
+        .ws-track.ws1 { border-top: 3px solid #e14b87; }
+        .ws-track.ws2 { border-top: 3px solid #d4a039; }
+        .ws-track-badge {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 20px;
+            display: inline-block; margin-bottom: 1rem;
+        }
+        .ws1 .ws-track-badge { background: rgba(225,75,135,0.12); color: #e14b87; }
+        .ws2 .ws-track-badge { background: rgba(212,160,57,0.12); color: #d4a039; }
+        .ws-track-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.15rem; color: #fafafa; margin-bottom: 0.6rem;
+        }
+        .ws-track-desc { font-size: 0.85rem; color: #6b5e57; line-height: 1.65; margin-bottom: 1.2rem; }
+        .ws-track-outcome {
+            font-size: 0.8rem; color: #9a8f88;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .ws-track-outcome::before {
+            content: '';
+            display: inline-block; width: 8px; height: 13px; flex-shrink: 0;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .ws2 .ws-track-outcome::before { background-color: #d4a039; }
+        .ws-independent-note {
+            margin-top: 1.5rem; text-align: center;
+            font-size: 0.82rem; color: #4a4a4a; letter-spacing: 0.05em;
+        }
+
+        /* ENTITY STRUCTURE DIAGRAM */
+        .diagram-wrap {
+            margin: 2.5rem 0; background: #0f0f0f; border: 1px solid #1e1e1e;
+            border-radius: 14px; padding: 2.5rem 2rem; overflow-x: auto;
+        }
+        .diagram-label {
+            font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: #4a4a4a; font-weight: 600; margin-bottom: 1.5rem; text-align: center;
+        }
+        .entity-diagram {
+            display: flex; align-items: center; justify-content: center;
+            gap: 2rem; flex-wrap: wrap;
+        }
+        .entity-col { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; min-width: 180px; }
+        .entity-col-label {
+            font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: #4a4a4a; font-weight: 600;
+        }
+        .entity-box {
+            border-radius: 10px; padding: 1rem 1.2rem; text-align: center;
+            width: 100%; max-width: 200px;
+        }
+        .entity-box.before {
+            background: #1a1a1a; border: 1px dashed #3a3a3a;
+        }
+        .entity-box.after-hold {
+            background: linear-gradient(135deg, #1a0f15 0%, #1a1a1a 100%);
+            border: 1px solid #e14b87;
+        }
+        .entity-box.after-sub {
+            background: #111; border: 1px solid #2a2a2a;
+        }
+        .entity-box-name {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem;
+            font-weight: 700; color: #c8c0bb; margin-bottom: 0.35rem;
+        }
+        .entity-box-sub { font-size: 0.72rem; color: #4a4a4a; line-height: 1.4; }
+        .entity-box-tag {
+            font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; margin-top: 0.5rem; display: inline-block;
+            padding: 0.2rem 0.55rem; border-radius: 10px;
+        }
+        .entity-box.after-hold .entity-box-tag { background: rgba(225,75,135,0.15); color: #e14b87; }
+        .entity-box.before .entity-box-tag { background: rgba(107,94,87,0.15); color: #6b5e57; }
+        .entity-box.after-sub .entity-box-tag { background: rgba(107,94,87,0.1); color: #6b5e57; }
+        .entity-arrow {
+            display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+            color: #4a4a4a; font-size: 0.7rem; letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .entity-arrow svg { color: #e14b87; }
+        .entity-after-col { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+        .entity-connector { width: 1px; height: 20px; background: #2a2a2a; }
+
+        /* CAROUSEL */
+        .carousel-wrap { position: relative; margin-top: 2.5rem; }
+        .carousel-track { overflow: hidden; border-radius: 14px; }
+        .carousel-inner {
+            display: flex; transition: transform 0.35s ease;
+        }
+        .carousel-slide {
+            min-width: 100%; background: #111; border: 1px solid #2a2a2a;
+            border-radius: 14px; padding: 2rem; box-sizing: border-box;
+        }
+        .carousel-slide-num {
+            width: 2rem; height: 2rem; border-radius: 50%;
+            background: #1e1e1e; border: 1px solid #e14b87; color: #e14b87;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem;
+            font-weight: 700; margin-bottom: 1rem;
+        }
+        .carousel-slide-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.15rem; color: #fafafa; margin-bottom: 0.7rem; line-height: 1.2;
+        }
+        .carousel-slide-body { font-size: 0.92rem; color: #9a8f88; line-height: 1.75; }
+        .carousel-controls {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 1.2rem;
+        }
+        .carousel-btn {
+            background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px;
+            color: #9a8f88; padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem;
+            font-family: 'Space Grotesk', sans-serif; transition: all 0.2s;
+        }
+        .carousel-btn:hover { border-color: #e14b87; color: #e14b87; }
+        .carousel-btn:disabled { opacity: 0.3; cursor: default; }
+        .carousel-dots { display: flex; gap: 0.4rem; align-items: center; }
+        .carousel-dot {
+            width: 7px; height: 7px; border-radius: 50%; background: #2a2a2a;
+            transition: background 0.2s; cursor: pointer;
+        }
+        .carousel-dot.active { background: #e14b87; }
+        .carousel-counter { font-size: 0.78rem; color: #4a4a4a; font-family: 'Space Grotesk', sans-serif; }
+
+        /* WORKSTREAM SECTION HEADER */
+        .ws-section-header {
+            display: flex; align-items: flex-start; gap: 1.2rem;
+            margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .ws-section-badge {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 20px;
+            white-space: nowrap; margin-top: 0.4rem;
+        }
+        .ws-section-badge.ws1 { background: rgba(225,75,135,0.12); color: #e14b87; border: 1px solid rgba(225,75,135,0.2); }
+        .ws-section-badge.ws2 { background: rgba(212,160,57,0.12); color: #d4a039; border: 1px solid rgba(212,160,57,0.2); }
+
+        /* WS2 DELIVERABLES */
+        .service-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+        .service-item {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 1.4rem 1.6rem; display: flex; gap: 1.2rem; align-items: flex-start;
+            transition: border-color 0.2s;
+        }
+        .service-item:hover { border-color: rgba(212,160,57,0.3); }
+        .service-item-bolt {
+            width: 12px; height: 18px; flex-shrink: 0; margin-top: 0.15rem;
+            background-color: #d4a039;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .service-item-text {}
+        .service-item-name {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem;
+            font-weight: 700; color: #c8c0bb; margin-bottom: 0.35rem;
+        }
+        .service-item-body { font-size: 0.84rem; color: #6b5e57; line-height: 1.65; }
 
         /* PRICING */
+        .ws-pricing-block { margin-top: 2.5rem; }
+        .ws-pricing-label {
+            font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: #4a4a4a; font-weight: 600; margin-bottom: 1rem;
+        }
         .pricing-row {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
         }
         @media (max-width: 680px) { .pricing-row { grid-template-columns: 1fr; } }
         .pricing-card {
             background: #111; border: 1px solid #2a2a2a;
-            border-radius: 14px; padding: 2rem 1.8rem;
+            border-radius: 14px; padding: 1.8rem 1.6rem;
             display: flex; flex-direction: column;
         }
         .pricing-card.main {
             border-color: #2d1f28;
             background: linear-gradient(160deg, #111 0%, #1a0f15 100%);
         }
-        .pricing-card-label {
-            font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
-            color: #e14b87; font-weight: 700; margin-bottom: 1rem;
+        .pricing-card.gold-main {
+            border-color: #2d2510;
+            background: linear-gradient(160deg, #111 0%, #1a160a 100%);
         }
+        .pricing-card-label {
+            font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+            font-weight: 700; margin-bottom: 0.8rem;
+        }
+        .pricing-card.main .pricing-card-label { color: #e14b87; }
+        .pricing-card.gold-main .pricing-card-label { color: #d4a039; }
+        .pricing-card:not(.main):not(.gold-main) .pricing-card-label { color: #6b5e57; }
         .pricing-card-name {
             font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: 1.15rem; color: #fafafa; margin-bottom: 1.2rem; line-height: 1.3;
+            font-size: 1.05rem; color: #fafafa; margin-bottom: 1rem; line-height: 1.3;
         }
         .pricing-number {
             font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
-            font-size: 2.2rem; color: #d4a039; letter-spacing: -0.02em; line-height: 1; margin-bottom: 0.3rem;
+            font-size: 2rem; color: #d4a039; letter-spacing: -0.02em; line-height: 1; margin-bottom: 0.25rem;
         }
-        .pricing-number-sub { font-size: 0.8rem; color: #4a4a4a; margin-bottom: 1.2rem; }
-        .pricing-desc { font-size: 0.88rem; color: #6b5e57; line-height: 1.65; flex: 1; margin-bottom: 1.2rem; }
-        .pricing-desc strong { color: #9a8f88; }
+        .pricing-number-sub { font-size: 0.78rem; color: #4a4a4a; margin-bottom: 1rem; }
+        .pricing-desc { font-size: 0.85rem; color: #6b5e57; line-height: 1.65; flex: 1; margin-bottom: 1rem; }
         .pricing-items { list-style: none; padding: 0; margin: 0; }
         .pricing-items li {
-            font-size: 0.85rem; color: #c8c0bb; padding: 0.4rem 0;
-            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.6rem; line-height: 1.5;
+            font-size: 0.83rem; color: #c8c0bb; padding: 0.38rem 0;
+            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.55rem; align-items: flex-start; line-height: 1.5;
         }
         .pricing-items li:last-child { border: none; }
-        .pricing-items li::before { content: ''; width: 6px; height: 6px; background: #e14b87; border-radius: 50%; flex-shrink: 0; margin-top: 0.45rem; }
+        .pricing-items li::before {
+            content: '';
+            display: inline-block; width: 8px; height: 13px; flex-shrink: 0; margin-top: 0.1rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
         .pricing-items li strong { color: #d4a039; font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; }
 
-        .equity-note {
-            margin-top: 1.5rem; padding: 1rem 1.2rem;
-            background: rgba(212,160,57,0.06); border-left: 3px solid #d4a039;
-            border-radius: 0 6px 6px 0; font-size: 0.85rem; color: #9a8f88; line-height: 1.6;
+        .admin-fee-note {
+            margin-top: 1.2rem; padding: 1rem 1.2rem;
+            background: rgba(212,160,57,0.04); border-left: 3px solid rgba(212,160,57,0.4);
+            border-radius: 0 6px 6px 0; font-size: 0.82rem; color: #6b5e57; line-height: 1.6;
         }
-        .equity-note strong { color: #d4a039; }
+        .admin-fee-note strong { color: #d4a039; }
+
+        .equity-block {
+            margin-top: 2rem; background: #0f0f0f; border: 1px solid #1e1e1e;
+            border-radius: 14px; padding: 1.8rem; display: flex; gap: 1.2rem;
+        }
+        .equity-bolt {
+            width: 14px; height: 22px; flex-shrink: 0; margin-top: 0.1rem;
+            background-color: #d4a039;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .equity-block-text {}
+        .equity-block-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem;
+            font-weight: 700; color: #c8c0bb; margin-bottom: 0.5rem;
+        }
+        .equity-block-body { font-size: 0.85rem; color: #6b5e57; line-height: 1.7; }
+        .equity-block-body strong { color: #d4a039; }
 
         /* FINE PRINT */
         .fine-print-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
         .fine-print-list li {
             font-size: 0.88rem; color: #6b5e57; padding: 0.5rem 0;
-            border-bottom: 1px solid #1a1a1a; display: flex; gap: 0.7rem; line-height: 1.6;
+            border-bottom: 1px solid #1a1a1a; display: flex; gap: 0.8rem; line-height: 1.6; align-items: flex-start;
         }
         .fine-print-list li:last-child { border: none; }
-        .fine-print-list li::before { content: '//'; color: #2d2d2d; font-family: monospace; font-size: 0.8rem; flex-shrink: 0; }
+        .fine-print-list li::before {
+            content: '';
+            display: inline-block; width: 9px; height: 14px; flex-shrink: 0; margin-top: 0.2rem;
+            background-color: #2d2d2d;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
 
         /* CTA */
         .cta-section { text-align: center; padding: 6rem 2rem 8rem; max-width: 760px; margin: 0 auto; }
@@ -195,10 +383,19 @@
         .cta-secondary a { color: #9a8f88; text-decoration: underline; text-underline-offset: 3px; }
         .cta-secondary a:hover { color: #e14b87; }
 
+        /* PAYMENT BLOCK */
+        .payment-block {
+            margin-top: 1.5rem; padding: 1.2rem 1.5rem; background: #111;
+            border: 1px solid #1e1e1e; border-radius: 10px;
+            font-size: 0.85rem; color: #6b5e57; line-height: 1.7;
+        }
+        .payment-block strong { color: #9a8f88; }
+
         @media (max-width: 768px) {
             .proposal-hero { padding: 9rem 1.5rem 4rem; }
             .prop-section { padding: 4rem 1.5rem; }
             .cta-section { padding: 4rem 1.5rem 6rem; }
+            .entity-diagram { flex-direction: column; }
         }
     </style>
 </head>
@@ -248,7 +445,7 @@
 <!-- HERO -->
 <div class="proposal-hero leopard-dense">
     <div class="hero-tag">For Ida Mannoh, Audacity Labs</div>
-    <h1>The structure that gets<br>this device to market.</h1>
+    <h1>Two workstreams.<br>Activate one or both.</h1>
     <p class="valid-note">Prepared specifically for Audacity Labs. Valid for 30 days from June 9, 2026.</p>
 </div>
 
@@ -261,62 +458,323 @@
     <p class="prop-copy">
         You built something real. EV drivers in Ghana are charging from domestic plugs not designed for the load, and the fire risk is real and growing fast as adoption accelerates. Your smart monitor reads voltage, current, and temperature and disconnects before something burns. The Ghana Energy Commission is paying attention. There is a market in Rwanda too.
         <br><br>
-        The problem is not the device. It is that <strong>Audacity Labs is the wrong vessel</strong> for what this is becoming. The IP is tied to an entity that was not built for hardware, investors, or cross-border capital. You need a clean new structure: a new entity that holds the IP properly, a cap table that makes sense before the first institutional cheque lands, and fundraising instruments designed for how you are actually going to raise.
+        The problem is not the device. It is that <strong>Audacity Labs is the wrong vessel</strong> for what this is becoming. The IP is tied to an entity that was not built for hardware, investors, or cross-border capital. Before you can raise, you need a clean new structure.
         <br><br>
-        That is what we are building.
+        That is Workstream 1. When you are ready to take the raise to investors, that is Workstream 2. The two are independent. You can start with the structure and activate the capital closing track when you need it.
     </p>
-</div>
 
-<div class="prop-divider"></div>
-
-<!-- SECTION 02: WHAT WE WILL BUILD -->
-<div class="prop-section">
-    <div class="prop-label">02 / What we will build</div>
-    <div class="prop-heading">Five deliverables. One clean structure.</div>
-    <p class="prop-copy" style="margin-bottom: 0;">Each document is decision-ready. Not a framework, not a deck. Something you can hand to an investor or a government counterpart and have it hold up.</p>
-
-    <div class="deliverable-grid">
-
-        <div class="deliverable-block">
-            <div class="deliverable-num">1</div>
-            <div class="deliverable-title">Entity Architecture Memo</div>
-            <div class="deliverable-body">New HoldCo structure, jurisdiction recommendation (Delaware, European, or African holding entity depending on your investor pipeline), board composition, and decision rights. The blueprint for everything that follows.</div>
+    <!-- WORKSTREAM OVERVIEW -->
+    <div class="ws-overview">
+        <div class="ws-track ws1">
+            <div class="ws-track-badge">Workstream 1</div>
+            <div class="ws-track-title">Venture Architecture</div>
+            <div class="ws-track-desc">Build the structure before you raise. New entity, IP assignment, cap table, fundraising instruments, and investor narrative. Five deliverables. Weeks, not months.</div>
+            <div class="ws-track-outcome">Structure ready to receive capital</div>
         </div>
-
-        <div class="deliverable-block">
-            <div class="deliverable-num">2</div>
-            <div class="deliverable-title">IP Assignment Agreement</div>
-            <div class="deliverable-body">Formal transfer of all IP from Audacity Labs to the new entity. Covers the Goliath engineering contract, the monitoring software, brand, and any patents in process. Clean chain of title before you approach any investor.</div>
+        <div class="ws-track ws2">
+            <div class="ws-track-badge">Workstream 2</div>
+            <div class="ws-track-title">Capital Closing</div>
+            <div class="ws-track-desc">We stay in the room until the money clears. First investor call, term sheet review, closing support. Activate this when you are ready to raise. Does not require WS1 to be completed first.</div>
+            <div class="ws-track-outcome">Capital cleared and on the books</div>
         </div>
+    </div>
+    <div class="ws-independent-note">Both tracks are independently activatable. Pick one or both when you sign.</div>
 
-        <div class="deliverable-block">
-            <div class="deliverable-num">3</div>
-            <div class="deliverable-title">Cap Table Design</div>
-            <div class="deliverable-body">Clean founding structure for the new entity. Founder shares, vesting schedule, option pool if needed. Built to survive a term sheet without surprises on either side.</div>
+    <!-- ENTITY STRUCTURE DIAGRAM -->
+    <div class="diagram-wrap" style="margin-top: 2.5rem;">
+        <div class="diagram-label">What WS1 builds: entity structure before and after</div>
+        <div class="entity-diagram">
+
+            <!-- BEFORE -->
+            <div class="entity-col">
+                <div class="entity-col-label">Today</div>
+                <div class="entity-box before">
+                    <div class="entity-box-name">Audacity Labs</div>
+                    <div class="entity-box-sub">Ghana registration<br>IP inside, no clean structure</div>
+                    <div class="entity-box-tag">Mixed vessel</div>
+                </div>
+            </div>
+
+            <!-- ARROW -->
+            <div class="entity-arrow">
+                <svg width="40" height="16" viewBox="0 0 40 16" fill="none">
+                    <path d="M0 8 L32 8" stroke="#e14b87" stroke-width="1.5"/>
+                    <path d="M28 3 L38 8 L28 13" stroke="#e14b87" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+                <span>WS1</span>
+            </div>
+
+            <!-- AFTER -->
+            <div class="entity-col">
+                <div class="entity-col-label">After WS1</div>
+                <div class="entity-after-col">
+                    <div class="entity-box after-hold">
+                        <div class="entity-box-name">NewCo HoldCo</div>
+                        <div class="entity-box-sub">Clean entity. Delaware or EU.<br>Investor-ready cap table.</div>
+                        <div class="entity-box-tag">IP Owner</div>
+                    </div>
+                    <div class="entity-connector"></div>
+                    <div style="display:flex; gap:0.6rem;">
+                        <div class="entity-box after-sub" style="max-width:120px;">
+                            <div class="entity-box-name" style="font-size:0.74rem;">IP Vehicle</div>
+                            <div class="entity-box-sub">Assigned from<br>Audacity Labs</div>
+                        </div>
+                        <div class="entity-box after-sub" style="max-width:120px;">
+                            <div class="entity-box-name" style="font-size:0.74rem;">Operations</div>
+                            <div class="entity-box-sub">Ghana entity<br>continues</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-        <div class="deliverable-block">
-            <div class="deliverable-num">4</div>
-            <div class="deliverable-title">Fundraising Instrument Design</div>
-            <div class="deliverable-body">Recommendation on SAFE vs priced equity vs convertible note for the $200-250k round. Instrument drafted and ready to issue. Investor-friendly without giving away the house.</div>
-        </div>
-
-        <div class="deliverable-block" style="grid-column: 1 / -1;">
-            <div class="deliverable-num">5</div>
-            <div class="deliverable-title">Investor Narrative Brief</div>
-            <div class="deliverable-body">One-page summary of the architecture, the structure, and the capital strategy. Written for the investor conversation, not for you. The questions they will ask about your setup are the ones this document is designed to answer before they ask them.</div>
-        </div>
-
     </div>
 </div>
 
 <div class="prop-divider"></div>
 
-<!-- SECTION 03: OUT OF SCOPE -->
+<!-- SECTION 02: WORKSTREAM 1 -->
 <div class="prop-section">
-    <div class="prop-label">03 / What this does not include</div>
+    <div class="prop-label">02 / Workstream 1</div>
+    <div class="ws-section-header">
+        <div class="prop-heading" style="margin-bottom:0;">Venture Architecture</div>
+        <div class="ws-section-badge ws1">Structure Track</div>
+    </div>
+    <p class="prop-copy" style="margin-bottom: 0;">Five deliverables. Each one is decision-ready. Not a framework, not a deck. Something you can hand to an investor or a government counterpart and have it hold up.</p>
+
+    <!-- DELIVERABLES CAROUSEL -->
+    <div class="carousel-wrap" id="carousel-ws1">
+        <div class="carousel-track">
+            <div class="carousel-inner" id="carousel-ws1-inner">
+
+                <div class="carousel-slide">
+                    <div class="carousel-slide-num">1</div>
+                    <div class="carousel-slide-title">Entity Architecture Memo</div>
+                    <div class="carousel-slide-body">New HoldCo structure, jurisdiction recommendation (Delaware, European, or African holding entity depending on your investor pipeline), board composition, and decision rights. The blueprint for everything that follows.</div>
+                </div>
+
+                <div class="carousel-slide">
+                    <div class="carousel-slide-num">2</div>
+                    <div class="carousel-slide-title">IP Assignment Agreement</div>
+                    <div class="carousel-slide-body">Formal transfer of all IP from Audacity Labs to the new entity. Covers the Goliath engineering contract, the monitoring software, brand, and any patents in process. Clean chain of title before you approach any investor.</div>
+                </div>
+
+                <div class="carousel-slide">
+                    <div class="carousel-slide-num">3</div>
+                    <div class="carousel-slide-title">Cap Table Design</div>
+                    <div class="carousel-slide-body">Clean founding structure for the new entity. Founder shares, vesting schedule, option pool if needed. Built to survive a term sheet without surprises on either side.</div>
+                </div>
+
+                <div class="carousel-slide">
+                    <div class="carousel-slide-num">4</div>
+                    <div class="carousel-slide-title">Fundraising Instrument Design</div>
+                    <div class="carousel-slide-body">Recommendation on SAFE vs priced equity vs convertible note for the $200-250k round. Instrument drafted and ready to issue. Investor-friendly without giving away the house.</div>
+                </div>
+
+                <div class="carousel-slide">
+                    <div class="carousel-slide-num">5</div>
+                    <div class="carousel-slide-title">Investor Narrative Brief</div>
+                    <div class="carousel-slide-body">One-page summary of the architecture and the capital strategy. Written for the investor conversation, not for you. The questions they will ask about your setup are the ones this document is designed to answer before they ask them.</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn" id="carousel-ws1-prev" onclick="carouselPrev('ws1')" disabled>Prev</button>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+                <div class="carousel-dots" id="carousel-ws1-dots"></div>
+                <div class="carousel-counter" id="carousel-ws1-counter">1 of 5</div>
+            </div>
+            <button class="carousel-btn" id="carousel-ws1-next" onclick="carouselNext('ws1')">Next</button>
+        </div>
+    </div>
+
+    <!-- WS1 PRICING -->
+    <div class="ws-pricing-block">
+        <div class="ws-pricing-label">Workstream 1 pricing</div>
+        <div class="pricing-row">
+
+            <div class="pricing-card main">
+                <div class="pricing-card-label">Option A (Recommended)</div>
+                <div class="pricing-card-name">Fixed Project</div>
+                <div class="pricing-number">$2,500</div>
+                <div class="pricing-number-sub">flat fee, all five deliverables</div>
+                <p class="pricing-desc">Know the cost before we start. No hourly billing, no scope drift. Split 50/50 on signing and delivery.</p>
+                <ul class="pricing-items">
+                    <li><strong>$1,250</strong> on signing</li>
+                    <li><strong>$1,250</strong> on entity formation</li>
+                    <li>Incorporation fees at cost</li>
+                </ul>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-card-label">Option B</div>
+                <div class="pricing-card-name">Bank Hours</div>
+                <div class="pricing-number">$200</div>
+                <div class="pricing-number-sub">per hour, billed monthly</div>
+                <p class="pricing-desc">Pay for what we actually use. Best if scope is likely to evolve or you want to start smaller.</p>
+                <ul class="pricing-items">
+                    <li>Monthly invoices, 14-day payment terms</li>
+                    <li>Incorporation fees at cost</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 03: WORKSTREAM 2 -->
+<div class="prop-section">
+    <div class="prop-label">03 / Workstream 2</div>
+    <div class="ws-section-header">
+        <div class="prop-heading" style="margin-bottom:0;">Capital Closing</div>
+        <div class="ws-section-badge ws2">Raise Track</div>
+    </div>
+    <p class="prop-copy" style="margin-bottom: 0;">We stay in the room until the money clears. Activate this workstream when you are ready to take the raise to investors. Does not require Workstream 1 to be completed first.</p>
+
+    <!-- WS2 DELIVERABLES -->
+    <div class="service-list">
+
+        <div class="service-item">
+            <div class="service-item-bolt"></div>
+            <div class="service-item-text">
+                <div class="service-item-name">First Investor Call</div>
+                <div class="service-item-body">We are on the call. Not as a note-taker, as a co-presenter on structure, jurisdiction, and the entity architecture. The questions investors ask about your setup are exactly the ones we built the structure to answer.</div>
+            </div>
+        </div>
+
+        <div class="service-item">
+            <div class="service-item-bolt"></div>
+            <div class="service-item-text">
+                <div class="service-item-name">Term Sheet Negotiation</div>
+                <div class="service-item-body">We read every term sheet before you do. We flag what matters, what is standard, and what is designed to look standard but is not. You decide. We make sure you are deciding with full information.</div>
+            </div>
+        </div>
+
+        <div class="service-item">
+            <div class="service-item-bolt"></div>
+            <div class="service-item-text">
+                <div class="service-item-name">Closing Support</div>
+                <div class="service-item-body">On the closing call and available on 48-hour notice for anything that surfaces between term sheet and money clearing. Equity and debt closings only. Success fee applies at this stage.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- WS2 DIAGRAM -->
+    <div class="diagram-wrap" style="margin-top: 2rem;">
+        <div class="diagram-label">Capital closing timeline</div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap;">
+
+            <div style="text-align:center; padding: 0.8rem 1rem; min-width:110px;">
+                <div style="font-size:0.65rem; color:#d4a039; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.4rem;">Activation</div>
+                <div style="font-size:0.78rem; color:#9a8f88;">WS2 signed.<br>Admin fee starts<br>on first outreach.</div>
+            </div>
+
+            <div style="display:flex; align-items:center; padding: 0 0.4rem;">
+                <svg width="28" height="10" viewBox="0 0 28 10"><path d="M0 5 L20 5" stroke="#2a2a2a" stroke-width="1.5"/><path d="M16 1 L24 5 L16 9" stroke="#2a2a2a" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+
+            <div style="text-align:center; padding: 0.8rem 1rem; min-width:110px; background:#111; border:1px solid #1e1e1e; border-radius:10px;">
+                <div style="font-size:0.65rem; color:#d4a039; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.4rem;">Investor Calls</div>
+                <div style="font-size:0.78rem; color:#9a8f88;">Co-presenter<br>on structure and<br>architecture</div>
+            </div>
+
+            <div style="display:flex; align-items:center; padding: 0 0.4rem;">
+                <svg width="28" height="10" viewBox="0 0 28 10"><path d="M0 5 L20 5" stroke="#2a2a2a" stroke-width="1.5"/><path d="M16 1 L24 5 L16 9" stroke="#2a2a2a" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+
+            <div style="text-align:center; padding: 0.8rem 1rem; min-width:110px; background:#111; border:1px solid #1e1e1e; border-radius:10px;">
+                <div style="font-size:0.65rem; color:#d4a039; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.4rem;">Term Sheet</div>
+                <div style="font-size:0.78rem; color:#9a8f88;">We review first.<br>You decide with<br>full information.</div>
+            </div>
+
+            <div style="display:flex; align-items:center; padding: 0 0.4rem;">
+                <svg width="28" height="10" viewBox="0 0 28 10"><path d="M0 5 L20 5" stroke="#2a2a2a" stroke-width="1.5"/><path d="M16 1 L24 5 L16 9" stroke="#2a2a2a" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+
+            <div style="text-align:center; padding: 0.8rem 1rem; min-width:110px; background:linear-gradient(135deg,#1a160a,#111); border:1px solid rgba(212,160,57,0.3); border-radius:10px;">
+                <div style="font-size:0.65rem; color:#d4a039; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.4rem;">Close</div>
+                <div style="font-size:0.78rem; color:#9a8f88;">Capital clears.<br>Success fee<br>applies.</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- WS2 PRICING -->
+    <div class="ws-pricing-block">
+        <div class="ws-pricing-label">Workstream 2 pricing</div>
+        <div class="pricing-row">
+
+            <div class="pricing-card gold-main">
+                <div class="pricing-card-label">Option A (Recommended)</div>
+                <div class="pricing-card-name">Fixed Advisory</div>
+                <div class="pricing-number">$3,500</div>
+                <div class="pricing-number-sub">flat fee through close</div>
+                <p class="pricing-desc">Full closing support for a fixed amount. No monthly admin fee. Best if your raise timeline is well-defined.</p>
+                <ul class="pricing-items">
+                    <li><strong>$1,750</strong> on activation</li>
+                    <li><strong>$1,750</strong> on first term sheet received</li>
+                </ul>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-card-label">Option B</div>
+                <div class="pricing-card-name">Success Fee</div>
+                <div class="pricing-number" style="font-size:1.5rem;">1.5% or $5k</div>
+                <div class="pricing-number-sub">higher of the two, on close</div>
+                <p class="pricing-desc">Nothing due until capital clears. Monthly admin fee covers access and coordination while the raise is live.</p>
+                <ul class="pricing-items">
+                    <li><strong>$500/mo</strong> from first investor outreach</li>
+                    <li><strong>1.5%</strong> of capital raised on close</li>
+                    <li>Minimum success fee: <strong>$5,000</strong></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="admin-fee-note">
+            <strong>On the Option B admin fee.</strong> $500/mo starts from the date of first investor outreach, not from signing. It stops automatically when the raise closes or the engagement ends.
+        </div>
+    </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 04: EQUITY + CONVERSION -->
+<div class="prop-section">
+    <div class="prop-label">04 / Equity and conversion</div>
+    <div class="prop-heading">Standard terms. Nothing unusual.</div>
+
+    <div class="equity-block">
+        <div class="equity-bolt"></div>
+        <div class="equity-block-text">
+            <div class="equity-block-title">Equity grant: 0.40% in the new entity</div>
+            <div class="equity-block-body">
+                Vests monthly from the date of engagement, with no cliff. Applies to the new entity created in WS1, not Audacity Labs. If the engagement ends early, vesting stops at that date.
+            </div>
+        </div>
+    </div>
+
+    <div class="equity-block" style="margin-top:1rem;">
+        <div class="equity-bolt"></div>
+        <div class="equity-block-text">
+            <div class="equity-block-title">Fee-to-equity conversion: up to 30%</div>
+            <div class="equity-block-body">
+                Up to <strong>30%</strong> of any fee under either workstream may be converted to equity in the new entity at your discretion. Election must be made before the invoice is issued. Conversion price is the most recent closing price of the entity's shares. Available at your discretion on any invoice.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- SECTION 05: OUT OF SCOPE -->
+<div class="prop-section">
+    <div class="prop-label">05 / What this does not include</div>
     <div class="prop-heading">Scope clarity prevents surprises.</div>
-    <ul class="oos-list">
+    <ul class="bolt-list">
         <li>Any advice touching a Rwanda partnership or third-party commercial arrangements. That is a separate engagement if and when you need it.</li>
         <li>Dispute resolution or enforcement claims against Goliath. We are building forward, not backwards.</li>
         <li>Local Ghanaian or Rwandan filing and registration. We coordinate with local counsel. Their fees are yours directly.</li>
@@ -327,60 +785,9 @@
 
 <div class="prop-divider"></div>
 
-<!-- SECTION 04: WHAT THIS COSTS -->
+<!-- SECTION 06: FINE PRINT -->
 <div class="prop-section">
-    <div class="prop-label">04 / What this costs</div>
-    <div class="prop-heading">Two ways to work together.</div>
-
-    <div class="pricing-row">
-
-        <div class="pricing-card main">
-            <div class="pricing-card-label">Option A (Recommended)</div>
-            <div class="pricing-card-name">Fixed Project</div>
-            <div class="pricing-number">$2,500</div>
-            <div class="pricing-number-sub">flat fee, all five deliverables</div>
-            <p class="pricing-desc">You know the cost before we start. No hourly billing, no scope drift. Split 50% on signing, 50% on entity formation. Best if you want certainty.</p>
-            <ul class="pricing-items">
-                <li><strong>$1,250</strong> on signing</li>
-                <li><strong>$1,250</strong> on entity formation</li>
-                <li><strong>1.5%</strong> of capital raised on close</li>
-                <li><strong>0.40%</strong> equity in new entity (monthly vest, no cliff)</li>
-                <li>Incorporation fees at cost</li>
-            </ul>
-        </div>
-
-        <div class="pricing-card">
-            <div class="pricing-card-label">Option B</div>
-            <div class="pricing-card-name">Bank Hours</div>
-            <div class="pricing-number">$200</div>
-            <div class="pricing-number-sub">per hour, billed monthly</div>
-            <p class="pricing-desc">Pay for what we actually do. Best if the scope is likely to evolve as we go or you want to start smaller and expand as momentum builds.</p>
-            <ul class="pricing-items">
-                <li>Monthly invoices, 14-day payment terms</li>
-                <li><strong>1.5%</strong> of capital raised on close</li>
-                <li><strong>0.40%</strong> equity in new entity (monthly vest, no cliff)</li>
-                <li>Incorporation fees at cost</li>
-            </ul>
-        </div>
-
-    </div>
-
-    <div class="equity-note">
-        <strong>On the equity.</strong> 0.40% vests monthly from the date of engagement, with no cliff. It is in the new entity, not Audacity Labs. If the engagement ends early, vesting stops at that date. Standard terms, nothing unusual.
-    </div>
-
-    <div style="margin-top: 1.5rem; padding: 1.2rem 1.5rem; background: #111; border: 1px solid #1e1e1e; border-radius: 10px;">
-        <p style="font-size: 0.88rem; color: #6b5e57; line-height: 1.7; margin: 0;">
-            <strong style="color: #9a8f88;">Payment accepted via:</strong> Wire transfer (MCB USD, details on request) &nbsp;|&nbsp; Payoneer (pepe@mexzungu.com) &nbsp;|&nbsp; USDC on Solana (CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A)
-        </p>
-    </div>
-</div>
-
-<div class="prop-divider"></div>
-
-<!-- SECTION 05: FINE PRINT -->
-<div class="prop-section">
-    <div class="prop-label">05 / The fine print</div>
+    <div class="prop-label">06 / The fine print</div>
     <div class="prop-heading">Short version.</div>
     <ul class="fine-print-list">
         <li>Mauritius law governs. Mexzungu Group Ltd, Royal Road, Henrietta, 73120, Mauritius.</li>
@@ -390,6 +797,10 @@
         <li>Liability is capped at fees paid in the prior 3 months.</li>
         <li>Non-solicitation: neither party approaches the other's team for 12 months post-engagement.</li>
     </ul>
+
+    <div class="payment-block" style="margin-top:2rem;">
+        <strong>Payment accepted via:</strong> Wire transfer (MCB, IBAN MU49MCBL0901000448521954000USD, SWIFT: MCBLMUMU) &nbsp;|&nbsp; Payoneer (pepe@mexzungu.com) &nbsp;|&nbsp; USDC on Solana (CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A)
+    </div>
 </div>
 
 <div class="prop-divider"></div>
@@ -398,7 +809,7 @@
 <div class="cta-section">
     <div class="prop-label">Ready?</div>
     <div class="prop-heading">Let us build the structure.</div>
-    <p class="cta-sub">Read the engagement letter and sign when you are ready. Takes about 3 minutes.</p>
+    <p class="cta-sub">Review the engagement letter, choose your workstreams and pricing options, and sign when you are ready. Takes about 3 minutes.</p>
     <a class="cta-btn" href="https://mexzungu.com/sign/audacity-labs">
         Review &amp; Sign the Engagement Letter
     </a>
@@ -424,12 +835,13 @@
 
 <script>
 (function() {
-    var CORRECT = 'audacity-0609';
+    var CORRECT = 'audacity-2026';
     var SESSION_KEY = 'audacity_labs_auth';
 
     function unlock() {
         document.getElementById('pw-gate').classList.add('hidden');
         document.getElementById('proposal-content').classList.add('visible');
+        initCarousel('ws1', 5);
     }
 
     if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); return; }
@@ -456,11 +868,51 @@
     };
 })();
 
-document.querySelectorAll('.nav-links a').forEach(function(l) {
-    l.addEventListener('click', function() {
-        document.querySelector('.nav-links').classList.remove('open');
+var carousels = {};
+
+function initCarousel(id, total) {
+    carousels[id] = { current: 0, total: total };
+    var dotsEl = document.getElementById('carousel-' + id + '-dots');
+    dotsEl.innerHTML = '';
+    for (var i = 0; i < total; i++) {
+        var d = document.createElement('div');
+        d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('data-idx', i);
+        (function(idx) {
+            d.addEventListener('click', function() { carouselGo(id, idx); });
+        })(i);
+        dotsEl.appendChild(d);
+    }
+    updateCarousel(id);
+}
+
+function updateCarousel(id) {
+    var state = carousels[id];
+    var inner = document.getElementById('carousel-' + id + '-inner');
+    inner.style.transform = 'translateX(-' + (state.current * 100) + '%)';
+    document.getElementById('carousel-' + id + '-counter').textContent = (state.current + 1) + ' of ' + state.total;
+    document.getElementById('carousel-' + id + '-prev').disabled = state.current === 0;
+    document.getElementById('carousel-' + id + '-next').disabled = state.current === state.total - 1;
+    var dots = document.querySelectorAll('#carousel-' + id + '-dots .carousel-dot');
+    dots.forEach(function(d, i) {
+        d.classList.toggle('active', i === state.current);
     });
-});
+}
+
+function carouselNext(id) {
+    var state = carousels[id];
+    if (state.current < state.total - 1) { state.current++; updateCarousel(id); }
+}
+
+function carouselPrev(id) {
+    var state = carousels[id];
+    if (state.current > 0) { state.current--; updateCarousel(id); }
+}
+
+function carouselGo(id, idx) {
+    carousels[id].current = idx;
+    updateCarousel(id);
+}
 </script>
 
 </body>
