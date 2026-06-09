@@ -1420,6 +1420,8 @@
     <button class="tab-btn" data-tab="roster">Roster</button>
     <button class="tab-btn" data-tab="hireFire">Hire &amp; Fire</button>
     <button class="tab-btn" data-tab="audit">Audit Form</button>
+    <button class="tab-btn" data-tab="compliance">Compliance</button>
+    <button class="tab-btn" data-tab="decisions">Decisions</button>
   </div>
 
   <!-- PANELS -->
@@ -3501,6 +3503,389 @@ Thanks — and best of luck with whatever you're working on now.</div>
 
       </div>
     </div><!-- end tab-audit -->
+
+    <!-- ===================== COMPLIANCE TAB ===================== -->
+    <div class="panel" id="tab-compliance">
+      <div style="padding: 2.5rem 3rem; max-width: 1000px;">
+        <div class="section-label">School Compliance</div>
+        <h2 class="section-title">Compliance Heat Map</h2>
+        <div class="section-rule"></div>
+
+        <!-- Tier legend -->
+        <div style="display: flex; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div style="font-size: 0.75rem; color: var(--text-soft);"><span style="font-weight: 600; color: var(--text-mid);">T1 Core Legal:</span> ICA, OLA, Lease, Staff Contracts</div>
+          <div style="font-size: 0.75rem; color: var(--text-soft);"><span style="font-weight: 600; color: var(--text-mid);">T2 Operational:</span> EC Contracts, Safeguarding, Permit</div>
+          <div style="font-size: 0.75rem; color: var(--text-soft);"><span style="font-weight: 600; color: var(--text-mid);">T3 Regulatory:</span> Insurance, KRA/eTIMS</div>
+        </div>
+
+        <!-- Status key -->
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.75rem; flex-wrap: wrap; align-items: center;">
+          <span style="font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-ghost);">Key:</span>
+          <span style="background: var(--green-bg); color: var(--green-text); font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 2px; font-weight: 600;">OK</span>
+          <span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 2px; font-weight: 600;">SENT</span>
+          <span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 2px; font-weight: 600;">?</span>
+          <span style="background: var(--red-bg); color: #f87171; font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 2px; font-weight: 600;">MISSING</span>
+        </div>
+
+        <!-- Heat map table -->
+        <div style="overflow-x: auto; margin-bottom: 2rem; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card);">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border-mid); background: var(--bg-mid);">
+                <th style="text-align: left; padding: 0.75rem 1rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; white-space: nowrap;">School</th>
+                <th style="text-align: left; padding: 0.75rem 1rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; white-space: nowrap;">SE</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">ICA</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">OLA</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">Lease</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">Staff</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">EC</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">Safeguarding</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">Permit</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">Insurance</th>
+                <th style="text-align: center; padding: 0.75rem 0.75rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;">KRA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Gathiga -->
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.8rem 1rem; color: var(--text); font-weight: 500;">Gathiga</td>
+                <td style="padding: 0.8rem 1rem; color: var(--text-soft); font-size: 0.76rem; white-space: nowrap;">Flora Karimi</td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+              </tr>
+              <!-- Ruaka -->
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.8rem 1rem; color: var(--text); font-weight: 500;">Ruaka</td>
+                <td style="padding: 0.8rem 1rem; color: var(--text-soft); font-size: 0.76rem; white-space: nowrap;">Yvonne Didi Randiki</td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+              </tr>
+              <!-- Otiende -->
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.8rem 1rem; color: var(--text); font-weight: 500;">Otiende</td>
+                <td style="padding: 0.8rem 1rem; color: var(--text-soft); font-size: 0.76rem; white-space: nowrap;">Josephine Alube</td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+              </tr>
+              <!-- Kitengela -->
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.8rem 1rem; color: var(--text); font-weight: 500;">Kitengela</td>
+                <td style="padding: 0.8rem 1rem; color: var(--text-soft); font-size: 0.76rem; white-space: nowrap;">Winfred Munyao</td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+              </tr>
+              <!-- Utawala -->
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.8rem 1rem; color: var(--text); font-weight: 500;">Utawala</td>
+                <td style="padding: 0.8rem 1rem; color: var(--text-ghost); font-size: 0.76rem; font-style: italic;">Unknown</td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+              </tr>
+              <!-- Ruiru -->
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.8rem 1rem; color: var(--text); font-weight: 500;">Ruiru</td>
+                <td style="padding: 0.8rem 1rem; color: var(--text-soft); font-size: 0.76rem; white-space: nowrap;">Alice Nyambura</td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+              </tr>
+              <!-- Kamirithu -->
+              <tr>
+                <td style="padding: 0.8rem 1rem; color: var(--text); font-weight: 500;">Kamirithu</td>
+                <td style="padding: 0.8rem 1rem; color: var(--text-soft); font-size: 0.76rem; white-space: nowrap;">Gladys Njeri Mwaniki</td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--green-bg); color: var(--green-text); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">OK</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">SENT</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+                <td style="padding: 0.8rem 0.75rem; text-align: center;"><span style="background: var(--bg-hover); color: var(--text-ghost); font-size: 0.66rem; padding: 0.18rem 0.5rem; border-radius: 2px; font-weight: 600;">?</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Amber notice -->
+        <div style="border-left: 3px solid var(--amber); background: var(--amber-bg); padding: 1rem 1.25rem; border-radius: 0 3px 3px 0; font-size: 0.84rem; color: var(--amber-text); line-height: 1.7;">
+          Leases unconfirmed across all 7 schools. T2 (safeguarding, permits) and T3 (insurance, KRA/eTIMS) are fully unknown. Janis updates this tracker as documents are confirmed.
+        </div>
+      </div>
+    </div><!-- end tab-compliance -->
+
+    <!-- ===================== DECISIONS TAB ===================== -->
+    <div class="panel" id="tab-decisions">
+      <div style="padding: 2.5rem 3rem; max-width: 1000px;">
+        <div class="section-label">Decision Log</div>
+        <h2 class="section-title">Decisions</h2>
+        <div class="section-rule"></div>
+
+        <!-- Shared table styles via inline style block -->
+        <style>
+          .dec-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 0; }
+          .dec-table th { text-align: left; padding: 0.7rem 0.85rem; color: var(--text-ghost); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; border-bottom: 2px solid var(--border-mid); background: var(--bg-mid); }
+          .dec-table td { padding: 0.8rem 0.85rem; color: var(--text-mid); vertical-align: top; border-bottom: 1px solid var(--border); line-height: 1.55; }
+          .dec-table td:first-child { color: var(--text-ghost); white-space: nowrap; font-size: 0.76rem; }
+          .dec-table td:nth-child(2) { color: var(--text); }
+          .dec-table td:nth-child(3) { color: var(--text-soft); font-size: 0.76rem; }
+          .dec-table td:last-child { font-size: 0.76rem; color: var(--text-soft); }
+          .dec-table tr:last-child td { border-bottom: none; }
+          .dec-section { margin-bottom: 3rem; }
+          .dec-section-title { font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 0.35rem; }
+          .dec-section-heading { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; }
+          .dec-table-wrap { border: 1px solid var(--border); border-radius: 4px; background: var(--bg-card); overflow: hidden; }
+          .pend-overdue td { background: rgba(20,12,0,0.5); }
+          .pend-urgent td { background: rgba(20,8,8,0.5); }
+          .pend-status-overdue { color: var(--amber-text); font-weight: 600; }
+          .pend-status-urgent { color: #f87171; font-weight: 600; }
+        </style>
+
+        <!-- DUA-OPS -->
+        <div class="dec-section">
+          <div class="dec-section-title">DUA-OPS</div>
+          <div class="dec-section-heading">Operating Structure and Contracts</div>
+          <div class="dec-table-wrap">
+            <table class="dec-table">
+              <thead>
+                <tr>
+                  <th style="width: 110px;">Date</th>
+                  <th>Decision</th>
+                  <th style="width: 220px;">Approved by</th>
+                  <th style="width: 160px;">Shipped</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Apr 16 2026</td>
+                  <td>Contractor model confirmed for all tiers (SE, Teacher, Educare). Full employment ruled out.</td>
+                  <td>Victoria Peill, Daphne Kabeberi, Fatima Olofu, Pepe Carrillo</td>
+                  <td>All contracts</td>
+                </tr>
+                <tr>
+                  <td>May 18&ndash;26 2026</td>
+                  <td>Three-tier contract structure defined: Teacher (TSC-registered consulting), Teacher-in-Training (2-year fellowship), Educare (care role).</td>
+                  <td>Victoria Peill, Daphne Kabeberi, Fatima Olofu</td>
+                  <td>Templates finalized May 26</td>
+                </tr>
+                <tr>
+                  <td>May 26 2026</td>
+                  <td>KES 23,000/month fee cap on all contractor agreements (below WHT threshold).</td>
+                  <td>Victoria Peill, Daphne Kabeberi, Fatima Olofu, Pepe Carrillo</td>
+                  <td>Teacher Consulting Agreement v2.1</td>
+                </tr>
+                <tr>
+                  <td>May 26 2026</td>
+                  <td>eTIMS invoicing mandatory for all contractors before payment is processed.</td>
+                  <td>Victoria Peill, Daphne Kabeberi, Fatima Olofu, Pepe Carrillo</td>
+                  <td>Added to Teacher contracts</td>
+                </tr>
+                <tr>
+                  <td>Jun 8 2026</td>
+                  <td>Educare is a care role only. No structured programme required.</td>
+                  <td>Fatima Olofu</td>
+                  <td>EC contracts updated to v3.1, Jun 9</td>
+                </tr>
+                <tr>
+                  <td>Jun 8 2026</td>
+                  <td>Teacher-in-Training programme open to teachers with TSC in progress, not only TSC-certified.</td>
+                  <td>Fatima Olofu</td>
+                  <td>Janice Owino reclassified TiT, contract updated Jun 9</td>
+                </tr>
+                <tr>
+                  <td>Jun 8 2026</td>
+                  <td>SE hiring guidelines to be created (minimum TSC coverage per school).</td>
+                  <td>Fatima Olofu</td>
+                  <td>PENDING</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DUA-LOAN -->
+        <div class="dec-section">
+          <div class="dec-section-title">DUA-LOAN</div>
+          <div class="dec-section-heading">Treebeard Loan (Closed May 2026)</div>
+          <div class="dec-table-wrap">
+            <table class="dec-table">
+              <thead>
+                <tr>
+                  <th style="width: 110px;">Date</th>
+                  <th>Decision</th>
+                  <th style="width: 220px;">Approved by</th>
+                  <th style="width: 160px;">Shipped</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Apr 15 2026</td>
+                  <td>Governing law changed to England and Wales (not Delaware).</td>
+                  <td>Victoria Peill, Daphne Kabeberi, Pepe Carrillo</td>
+                  <td>Applied before Treebeard signature</td>
+                </tr>
+                <tr>
+                  <td>May 29 2026</td>
+                  <td>Full $50k drawn as single tranche.</td>
+                  <td>Victoria Peill</td>
+                  <td>Drawdown request sent May 29. Wire pending.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DUA-CLOSE -->
+        <div class="dec-section">
+          <div class="dec-section-title">DUA-CLOSE</div>
+          <div class="dec-section-heading">School Closures and Safeguarding</div>
+          <div class="dec-table-wrap">
+            <table class="dec-table">
+              <thead>
+                <tr>
+                  <th style="width: 110px;">Date</th>
+                  <th>Decision</th>
+                  <th style="width: 220px;">Approved by</th>
+                  <th style="width: 160px;">Shipped</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Apr 9 2026</td>
+                  <td>Administrative closure approach adopted for SE separations (mutual release, not misconduct litigation).</td>
+                  <td>Pepe Carrillo</td>
+                  <td>Applied to Dagoretti closure</td>
+                </tr>
+                <tr>
+                  <td>Apr 2 2026</td>
+                  <td>Shirley/Riruta precedent established as standard playbook for all future SE closures.</td>
+                  <td>Pepe Carrillo</td>
+                  <td>Standing policy</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DUA-CORP -->
+        <div class="dec-section">
+          <div class="dec-section-title">DUA-CORP</div>
+          <div class="dec-section-heading">Corporate and Governance</div>
+          <div class="dec-table-wrap">
+            <table class="dec-table">
+              <thead>
+                <tr>
+                  <th style="width: 110px;">Date</th>
+                  <th>Decision</th>
+                  <th style="width: 220px;">Approved by</th>
+                  <th style="width: 160px;">Shipped</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Jan 10 2026</td>
+                  <td>Pepe Carrillo engaged as Legal Counsel, Investor, and Board Director.</td>
+                  <td>Pepe Carrillo and Victoria Peill</td>
+                  <td>Active</td>
+                </tr>
+                <tr>
+                  <td>Sep 2023</td>
+                  <td>$50k SAFE investment: $5M post-money cap, 20% discount rate.</td>
+                  <td>Pepe Carrillo and Victoria Peill</td>
+                  <td>Outstanding</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pending Decisions -->
+        <div class="dec-section">
+          <div class="dec-section-title">Pending</div>
+          <div class="dec-section-heading">Pending Decisions</div>
+          <div class="dec-table-wrap">
+            <table class="dec-table">
+              <thead>
+                <tr>
+                  <th style="width: 60px;">ID</th>
+                  <th>Question</th>
+                  <th style="width: 160px;">Owner</th>
+                  <th style="width: 120px;">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="pend-overdue">
+                  <td style="color: var(--text-ghost); font-weight: 600;">PD1</td>
+                  <td>Written confirmation from accountant of KES 23,000 WHT threshold</td>
+                  <td>Daphne</td>
+                  <td><span class="pend-status-overdue">OVERDUE</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-ghost); font-weight: 600;">PD2</td>
+                  <td>Government school registration TSC requirement (all staff or minimum?)</td>
+                  <td>Fatima / Daphne</td>
+                  <td style="color: var(--text-soft);">Open</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-ghost); font-weight: 600;">PD3</td>
+                  <td>Draft SE hiring guidelines</td>
+                  <td>Pepe</td>
+                  <td style="color: var(--text-soft);">Not started</td>
+                </tr>
+                <tr class="pend-urgent">
+                  <td style="color: var(--text-ghost); font-weight: 600;">PD4</td>
+                  <td>Confirm Treebeard $50k wire status</td>
+                  <td>Daphne</td>
+                  <td><span class="pend-status-urgent">URGENT</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end tab-decisions -->
 
   </div><!-- end panels -->
 </div><!-- end portal -->
