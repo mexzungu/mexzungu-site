@@ -391,10 +391,49 @@
         }
         .payment-block strong { color: #9a8f88; }
 
-        /* HOUR BANK CONFIGURATOR */
-        .hb-config { background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 12px; padding: 1.5rem; margin-top: 1rem; }
-        .hb-config-label { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #6b5e57; margin-bottom: 0.9rem; }
-        .hr-buttons { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+        /* PRICING CARD HINT */
+        .pricing-cta-hint { margin-top: 1rem; font-size: 0.72rem; color: #e14b87; font-weight: 600; letter-spacing: 0.04em; }
+        .pricing-card { cursor: pointer; transition: border-color 0.18s ease; }
+        .pricing-card:hover { border-color: #333; }
+        .pricing-card.active-tab { border-color: #e14b87; }
+
+        /* WS1 CONFIGURATOR */
+        .ws1-configurator { background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 14px; margin-top: 2rem; overflow: hidden; }
+        .config-tabs { display: flex; border-bottom: 1px solid #2a2a2a; }
+        .config-tab {
+            flex: 1; padding: 0.9rem 0.75rem; font-size: 0.82rem; font-weight: 600;
+            color: #6b5e57; background: transparent; border: none; cursor: pointer;
+            border-bottom: 2px solid transparent; transition: all 0.18s ease; font-family: 'Space Grotesk', sans-serif;
+        }
+        .config-tab:hover { color: #9a8f88; }
+        .config-tab.active { color: #e14b87; border-bottom-color: #e14b87; }
+        .config-panel { display: none; padding: 2rem; }
+        .config-panel.active { display: block; }
+        .config-sec-label { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #6b5e57; margin-bottom: 1rem; }
+
+        /* JURISDICTION SLIDER */
+        .slider-row { display: flex; align-items: center; gap: 0.85rem; margin: 0 0 0.5rem; }
+        .slider-edge { font-size: 0.77rem; color: #6b5e57; min-width: 20px; }
+        .slider-edge.right { text-align: right; }
+        input[type="range"] {
+            flex: 1; -webkit-appearance: none; appearance: none;
+            height: 4px; border-radius: 2px; outline: none; cursor: pointer;
+            background: #2a2a2a;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: #e14b87; cursor: pointer;
+            box-shadow: 0 0 0 3px rgba(225,75,135,0.2);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px; height: 20px; border-radius: 50%;
+            background: #e14b87; cursor: pointer; border: none;
+        }
+        .slider-val { font-size: 0.85rem; font-weight: 600; color: #9a8f88; margin-bottom: 1.5rem; }
+
+        /* HR BUTTONS */
+        .hr-buttons { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
         .hr-btn {
             padding: 0.55rem 1.1rem; border: 1px solid #2a2a2a; border-radius: 7px;
             background: #111; color: #9a8f88; font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem;
@@ -402,19 +441,23 @@
         }
         .hr-btn:hover { border-color: #e14b87; color: #e14b87; }
         .hr-btn.active { border-color: #e14b87; background: rgba(225,75,135,0.1); color: #e14b87; }
-        .hb-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: #0a0a0a; border: 1px solid #1e1e1e; border-radius: 8px; padding: 1.2rem; }
-        .hb-result-label { font-size: 0.61rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6b5e57; margin-bottom: 0.2rem; }
-        .hb-result-value { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.3rem; color: #fafafa; }
-        .hb-result-value.pink { color: #e14b87; }
-        .hb-result-value.struck { color: #2e2e2e; text-decoration: line-through; font-size: 0.9rem; font-family: 'Space Grotesk', sans-serif; font-weight: 400; }
-        .hb-config-note { font-size: 0.75rem; color: #6b5e57; margin-top: 1rem; line-height: 1.6; }
+
+        /* CONFIG RESULT */
+        .config-result { background: #0a0a0a; border: 1px solid #1e1e1e; border-radius: 10px; padding: 1.4rem; }
+        .config-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        .config-result-label { font-size: 0.61rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6b5e57; margin-bottom: 0.25rem; }
+        .config-result-value { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.3rem; color: #fafafa; }
+        .config-result-value.pink { color: #e14b87; }
+        .config-result-value.struck { color: #2a2a2a; text-decoration: line-through; font-size: 0.88rem; font-family: 'Space Grotesk', sans-serif; font-weight: 400; margin-top: 0.15rem; }
+        .config-result-value.small { font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif; font-weight: 500; color: #9a8f88; }
+        .config-note { font-size: 0.74rem; color: #6b5e57; margin-top: 1.1rem; line-height: 1.65; }
 
         @media (max-width: 768px) {
             .proposal-hero { padding: 9rem 1.5rem 4rem; }
             .prop-section { padding: 4rem 1.5rem; }
             .cta-section { padding: 4rem 1.5rem 6rem; }
             .entity-diagram { flex-direction: column; }
-            .hb-result-grid { grid-template-columns: 1fr 1fr; }
+            .config-result-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -613,55 +656,100 @@
         <div class="ws-pricing-label">Workstream 1 pricing</div>
         <div class="pricing-row">
 
-            <div class="pricing-card main">
+            <div class="pricing-card main active-tab" id="card-fixed" onclick="jumpToTab('fixed')">
                 <div class="pricing-card-label">Option A (Recommended)</div>
                 <div class="pricing-card-name">Fixed Project</div>
-                <div class="pricing-number">$2,500</div>
-                <div class="pricing-number-sub">flat fee, all five deliverables</div>
-                <p class="pricing-desc">Know the cost before we start. No hourly billing, no scope drift. Split 50/50 on signing and delivery.</p>
-                <ul class="pricing-items">
-                    <li><strong>$1,250</strong> on signing</li>
-                    <li><strong>$1,250</strong> on entity formation</li>
-                    <li>Incorporation fees at cost</li>
-                </ul>
+                <div class="pricing-number">from $1,500</div>
+                <div class="pricing-number-sub">scales with jurisdictions</div>
+                <p class="pricing-desc">Know the full cost before we start. No hourly billing, no scope drift. 50/50 split on signing and formation.</p>
+                <div class="pricing-cta-hint">Configure below ↓</div>
             </div>
 
-            <div class="pricing-card">
+            <div class="pricing-card" id="card-hours" onclick="jumpToTab('hours')">
                 <div class="pricing-card-label">Option B</div>
                 <div class="pricing-card-name">Bank Hours</div>
+                <div class="pricing-number">from $150/hr</div>
+                <div class="pricing-number-sub">pre-buy 10-40 hrs/mo · 50% rollover</div>
                 <p class="pricing-desc">Pre-buy hours at a discount. Pay for what we actually use. Best if scope is likely to evolve or you want flexibility on pace.</p>
-                <div class="hb-config">
-                    <div class="hb-config-label">Hours per month</div>
-                    <div class="hr-buttons">
-                        <button class="hr-btn active" onclick="selectHours(10)" id="hr-10">10 hrs</button>
-                        <button class="hr-btn" onclick="selectHours(20)" id="hr-20">20 hrs</button>
-                        <button class="hr-btn" onclick="selectHours(30)" id="hr-30">30 hrs</button>
-                        <button class="hr-btn" onclick="selectHours(40)" id="hr-40">40 hrs</button>
-                    </div>
-                    <div class="hb-result-grid">
-                        <div>
-                            <div class="hb-result-label">Your rate</div>
-                            <div class="hb-result-value pink" id="hb-rate">$200/hr</div>
-                            <div class="hb-result-value struck">$250/hr</div>
-                        </div>
-                        <div>
-                            <div class="hb-result-label">Monthly total</div>
-                            <div class="hb-result-value pink" id="hb-total">$2,000</div>
-                        </div>
-                        <div>
-                            <div class="hb-result-label">Hours that roll (50%)</div>
-                            <div class="hb-result-value" id="hb-roll">Up to 5 hrs</div>
-                        </div>
-                        <div>
-                            <div class="hb-result-label">Hours that expire</div>
-                            <div class="hb-result-value" id="hb-expire">5 hrs</div>
-                        </div>
-                    </div>
-                    <div class="hb-config-note">50% of unused hours carry to the following month. The remainder expires. Incorporation fees billed at cost.</div>
-                </div>
+                <div class="pricing-cta-hint">Configure below ↓</div>
             </div>
 
         </div>
+
+        <!-- WS1 CONFIGURATOR -->
+        <div class="ws1-configurator" id="ws1-configurator">
+            <div class="config-tabs">
+                <button class="config-tab active" onclick="switchWS1Tab('fixed')" id="tab-fixed">Fixed Project</button>
+                <button class="config-tab" onclick="switchWS1Tab('hours')" id="tab-hours">Bank Hours</button>
+            </div>
+
+            <!-- FIXED PROJECT -->
+            <div class="config-panel active" id="panel-fixed">
+                <div class="config-sec-label">Jurisdictions involved</div>
+                <div class="slider-row">
+                    <span class="slider-edge">1</span>
+                    <input type="range" id="jur-slider" min="1" max="4" value="2" step="1" oninput="updateJurisdictions()">
+                    <span class="slider-edge right">4</span>
+                </div>
+                <div class="slider-val" id="jur-label">2 jurisdictions (holdco + opco, base)</div>
+                <div class="config-result">
+                    <div class="config-result-grid">
+                        <div>
+                            <div class="config-result-label">Fixed fee</div>
+                            <div class="config-result-value pink" id="jur-total">$2,500</div>
+                            <div class="config-result-value struck" id="jur-market">$5,000 market rate</div>
+                        </div>
+                        <div>
+                            <div class="config-result-label">Effective rate / jurisdiction</div>
+                            <div class="config-result-value pink" id="jur-rate">$1,250</div>
+                        </div>
+                        <div>
+                            <div class="config-result-label">Payment split</div>
+                            <div class="config-result-value small">50% signing · 50% formation</div>
+                        </div>
+                        <div>
+                            <div class="config-result-label">Incorporations</div>
+                            <div class="config-result-value small">At cost</div>
+                        </div>
+                    </div>
+                    <div class="config-note">Local counsel in each jurisdiction typically bills $2,000-3,500 per entity. The bundled rate saves you that overhead across the full structure.</div>
+                </div>
+            </div>
+
+            <!-- BANK HOURS -->
+            <div class="config-panel" id="panel-hours">
+                <div class="config-sec-label">Hours per month</div>
+                <div class="hr-buttons">
+                    <button class="hr-btn active" onclick="selectHours(10)" id="hr-10">10 hrs</button>
+                    <button class="hr-btn" onclick="selectHours(20)" id="hr-20">20 hrs</button>
+                    <button class="hr-btn" onclick="selectHours(30)" id="hr-30">30 hrs</button>
+                    <button class="hr-btn" onclick="selectHours(40)" id="hr-40">40 hrs</button>
+                </div>
+                <div class="config-result">
+                    <div class="config-result-grid">
+                        <div>
+                            <div class="config-result-label">Your rate</div>
+                            <div class="config-result-value pink" id="hb-rate">$200/hr</div>
+                            <div class="config-result-value struck">$250/hr standard</div>
+                        </div>
+                        <div>
+                            <div class="config-result-label">Monthly total</div>
+                            <div class="config-result-value pink" id="hb-total">$2,000</div>
+                        </div>
+                        <div>
+                            <div class="config-result-label">Hours that roll (50%)</div>
+                            <div class="config-result-value small" id="hb-roll">Up to 5 hrs</div>
+                        </div>
+                        <div>
+                            <div class="config-result-label">Hours that expire</div>
+                            <div class="config-result-value small" id="hb-expire">5 hrs</div>
+                        </div>
+                    </div>
+                    <div class="config-note">50% of unused hours carry to the following month. The remainder expires. Incorporation fees at cost.</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -969,7 +1057,38 @@ window.addEventListener('resize', function() {
     Object.keys(carousels).forEach(function(id) { setSlideSizes(id); updateCarousel(id); });
 });
 
-/* HOUR BANK CONFIGURATOR */
+/* WS1 CONFIGURATOR */
+var jurData = {
+    1: { total: 1500, rate: 1500, market: 2500, label: '1 jurisdiction (single entity setup)' },
+    2: { total: 2500, rate: 1250, market: 5000, label: '2 jurisdictions (holdco + opco, base)' },
+    3: { total: 3200, rate: 1067, market: 7500, label: '3 jurisdictions (holdco + 2 operating entities)' },
+    4: { total: 3690, rate: 922,  market: 10000, label: '4 jurisdictions (full multi-market structure)' }
+};
+
+window.updateJurisdictions = function() {
+    var n = parseInt(document.getElementById('jur-slider').value);
+    var d = jurData[n];
+    document.getElementById('jur-label').textContent = d.label;
+    document.getElementById('jur-total').textContent = '$' + d.total.toLocaleString();
+    document.getElementById('jur-rate').textContent = '$' + d.rate.toLocaleString();
+    document.getElementById('jur-market').textContent = '$' + d.market.toLocaleString() + ' market rate';
+};
+
+window.switchWS1Tab = function(tab) {
+    document.querySelectorAll('.config-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.config-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+    document.getElementById('card-fixed').classList.toggle('active-tab', tab === 'fixed');
+    document.getElementById('card-hours').classList.toggle('active-tab', tab === 'hours');
+};
+
+window.jumpToTab = function(tab) {
+    switchWS1Tab(tab);
+    var el = document.getElementById('ws1-configurator');
+    if (el) { setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60); }
+};
+
 var currentHours = 10;
 window.selectHours = function(hrs) {
     currentHours = hrs;
