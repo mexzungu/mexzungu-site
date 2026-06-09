@@ -2,607 +2,498 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Billing — Duara Education</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Duara: Billing</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0d0d0d;
-      --surface: #161616;
-      --border: #2a2a2a;
-      --pink: #ec4899;
-      --pink-dim: rgba(236,72,153,0.12);
-      --text: #e8e8e8;
-      --muted: #888;
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --green: #22c55e;
+      --bg:          #0d0d0d;
+      --bg-card:     #111111;
+      --bg-mid:      #1a1a1a;
+      --bg-hover:    #222222;
+      --text:        #fafafa;
+      --text-mid:    #c8c0bb;
+      --text-soft:   #9a8f88;
+      --text-ghost:  #5a5550;
+      --pink:        #e14b87;
+      --border:      #2a2a2a;
+      --border-mid:  #333333;
+      --green-bg:    #0d2016;
+      --green-text:  #6dd89a;
+      --amber-bg:    #1e1500;
+      --amber-text:  #f0c050;
+      --red-bg:      #1e0d0d;
+      --red-text:    #f08080;
     }
 
-    body {
-      font-family: 'Jost', sans-serif;
+    html, body {
+      min-height: 100%;
       background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* AUTH GATE */
-    #auth-gate {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
+    /* PASSWORD GATE */
+    #pw-gate {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; padding: 2rem;
     }
-    .auth-box {
-      background: var(--surface);
+    #pw-gate.hidden { display: none; }
+    .pw-wrap {
+      max-width: 400px; width: 100%; text-align: center;
+      background: var(--bg-mid);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2.5rem;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
+      border-radius: 4px; padding: 3rem 2.5rem;
     }
-    .auth-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      color: var(--pink);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.4rem;
+    .pw-eyebrow { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--text-ghost); margin-bottom: 0.5rem; }
+    .pw-title { font-size: 1.1rem; font-weight: 500; margin-bottom: 2rem; }
+    .pw-input {
+      width: 100%; background: var(--bg);
+      border: 1px solid var(--border-mid); border-radius: 3px;
+      color: var(--text); font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem; padding: 0.75rem 1rem;
+      text-align: center; letter-spacing: 0.1em; outline: none; margin-bottom: 1rem;
     }
-    .auth-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 2rem;
+    .pw-input:focus { border-color: var(--pink); }
+    .pw-btn {
+      width: 100%; background: var(--pink); color: #fff; border: none;
+      border-radius: 3px; font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.75rem 1rem; cursor: pointer;
     }
-    .auth-box input {
-      width: 100%;
-      background: #111;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.7rem 1rem;
-      border-radius: 6px;
-      font-family: 'Jost', sans-serif;
-      font-size: 0.9rem;
-      text-align: center;
-      letter-spacing: 0.1em;
-      margin-bottom: 1rem;
-    }
-    .auth-box input:focus { outline: none; border-color: var(--pink); }
-    .auth-btn {
-      width: 100%;
-      background: var(--pink);
-      color: #fff;
-      border: none;
-      padding: 0.75rem;
-      border-radius: 6px;
-      font-family: 'Jost', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.05em;
-    }
-    .auth-btn:hover { background: #d43f8a; }
-    .auth-error { color: var(--red); font-size: 0.8rem; margin-top: 0.75rem; display: none; }
+    .pw-btn:hover { opacity: 0.9; }
+    .pw-error { font-size: 0.75rem; color: var(--red-text); margin-top: 0.75rem; min-height: 1rem; }
 
     /* MAIN */
     #main { display: none; }
+    #main.visible { display: block; }
 
-    /* TOPBAR */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
+    .page-header {
       border-bottom: 1px solid var(--border);
-      background: var(--surface);
+      padding: 1.25rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .header-eyebrow { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-ghost); }
+    .header-title { font-size: 0.95rem; font-weight: 500; }
+    .header-divider { width: 1px; height: 28px; background: var(--border); }
+    .header-badge {
+      font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-ghost); border: 1px solid var(--border); border-radius: 2px; padding: 0.25rem 0.5rem;
     }
-    .back-link {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      transition: color 0.2s;
-    }
-    .back-link:hover { color: var(--text); }
-    .topbar-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      color: var(--pink);
-    }
-    .topbar-sep { color: var(--border); }
-    .topbar-section { font-size: 0.85rem; color: var(--muted); }
-    .lock-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 0.35rem 0.9rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      font-family: 'Jost', sans-serif;
-      transition: all 0.2s;
-    }
-    .lock-btn:hover { border-color: var(--pink); color: var(--text); }
+    .header-right { font-size: 0.7rem; color: var(--text-ghost); font-family: 'IBM Plex Mono', monospace; }
 
-    /* CONTENT */
-    .content {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2.5rem 2rem;
-    }
+    .container { max-width: 960px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 
-    /* SUMMARY STRIP */
-    .summary-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 2.5rem;
+    /* BALANCE HERO */
+    .balance-hero {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 4px; padding: 2rem 2.5rem; margin-bottom: 2rem;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 2rem; flex-wrap: wrap;
     }
-    .summary-cell {
-      background: var(--surface);
-      padding: 1.25rem 1.5rem;
-      text-align: center;
-    }
-    .summary-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-    .summary-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .summary-value.red { color: var(--red); }
-    .summary-value.amber { color: var(--amber); }
-    .summary-value.green { color: var(--green); }
+    .balance-main .label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-ghost); margin-bottom: 0.4rem; }
+    .balance-main .amount { font-family: 'IBM Plex Mono', monospace; font-size: 2.4rem; font-weight: 500; color: var(--amber-text); letter-spacing: -0.02em; }
+    .balance-main .sub { font-size: 0.72rem; color: var(--text-soft); margin-top: 0.4rem; }
+    .balance-breakdown { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .balance-item { text-align: right; }
+    .balance-item .b-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-ghost); margin-bottom: 0.3rem; }
+    .balance-item .b-amount { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 500; }
+    .balance-item.overdue .b-amount { color: var(--red-text); }
+    .balance-item.pending .b-amount { color: var(--amber-text); }
+    .balance-item.neutral .b-amount { color: var(--text-mid); }
 
-    /* SECTION HEADER */
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.25rem;
+    /* TABS */
+    .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .tab-btn {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      color: var(--text-ghost); cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.73rem;
+      font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 0.75rem 1.2rem; margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
     }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 500;
-      color: var(--text);
-    }
-    .note-text {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-style: italic;
-    }
+    .tab-btn:hover { color: var(--text-mid); }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--pink); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
     /* INVOICE TABLE */
-    .invoice-table-wrap {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .invoice-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-    .invoice-table thead {
-      background: #111;
-    }
+    .section-label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-ghost); margin-bottom: 1rem; }
+    .invoice-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
     .invoice-table th {
-      padding: 0.8rem 1.25rem;
-      text-align: left;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      font-weight: 500;
-      border-bottom: 1px solid var(--border);
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-ghost); font-weight: 400; text-align: left;
+      padding: 0 0.75rem 0.6rem; border-bottom: 1px solid var(--border);
     }
     .invoice-table td {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
+      padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--border);
+      color: var(--text-mid); vertical-align: top;
     }
-    .invoice-table tbody tr:last-child td { border-bottom: none; }
-    .invoice-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+    .invoice-table tr:last-child td { border-bottom: none; }
+    .invoice-table tr:hover td { background: var(--bg-hover); }
+    .mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; }
+    .amount-col { font-family: 'IBM Plex Mono', monospace; font-weight: 500; text-align: right; }
+    .hours-col { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; text-align: right; color: var(--text-soft); }
+    .status-badge {
+      display: inline-block; font-size: 0.58rem; letter-spacing: 0.12em;
+      text-transform: uppercase; font-weight: 500; padding: 0.2rem 0.45rem; border-radius: 2px;
+    }
+    .status-overdue { background: var(--red-bg); color: var(--red-text); }
+    .status-new { background: var(--amber-bg); color: var(--amber-text); }
+    .status-paid { background: var(--green-bg); color: var(--green-text); }
+    .total-row td {
+      border-top: 1px solid var(--border-mid) !important;
+      border-bottom: none !important; padding-top: 1rem !important;
+      color: var(--text) !important; font-weight: 500;
+    }
+    .total-row .amount-col { font-size: 0.9rem; color: var(--amber-text) !important; }
 
-    .inv-number {
-      font-family: 'Jost', monospace;
-      font-size: 0.8rem;
-      color: var(--muted);
+    /* TIMESHEET */
+    .invoice-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .invoice-card-header {
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
     }
-    .inv-desc { color: var(--text); }
-    .inv-amount {
-      font-weight: 600;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
+    .inv-id { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text-ghost); }
+    .inv-period { font-size: 0.88rem; font-weight: 500; }
+    .inv-total { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 500; color: var(--amber-text); margin-left: auto; }
+    .timesheet-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .timesheet-table th {
+      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-ghost); font-weight: 400; text-align: left;
+      padding: 0.6rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--bg-mid);
     }
-    .status-pill {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .timesheet-table th:last-child { text-align: right; }
+    .timesheet-table td {
+      padding: 0.9rem 1.5rem; border-bottom: 1px solid var(--border);
+      color: var(--text-mid); vertical-align: top; line-height: 1.55;
     }
-    .pill-overdue { background: rgba(239,68,68,0.15); color: var(--red); }
-    .pill-paid { background: rgba(34,197,94,0.12); color: var(--green); }
-    .pill-pending { background: rgba(245,158,11,0.15); color: var(--amber); }
+    .timesheet-table tr:last-child td { border-bottom: none; }
+    .date-col { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text-soft); white-space: nowrap; width: 76px; }
+    .h-col { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-soft); text-align: right; white-space: nowrap; width: 56px; }
+    .timesheet-subtotal td { background: var(--bg-mid); border-top: 1px solid var(--border-mid) !important; font-size: 0.75rem; color: var(--text-soft); padding: 0.65rem 1.5rem; }
+    .timesheet-subtotal .h-col { color: var(--amber-text) !important; font-weight: 500; font-size: 0.82rem; }
 
-    .dl-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 0.3rem 0.75rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      font-family: 'Jost', sans-serif;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .dl-btn:hover { border-color: var(--pink); color: var(--text); }
-
-    /* AGING SECTION */
-    .aging-wrap {
-      margin-top: 2.5rem;
-    }
-    .aging-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .aging-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.25rem;
-      text-align: center;
-    }
-    .aging-range {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-    .aging-amount {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-    .aging-amount.zero { color: var(--muted); }
-    .aging-amount.amber { color: var(--amber); }
-    .aging-amount.red { color: var(--red); }
-
-    /* HISTORY */
-    .history-wrap {
-      margin-top: 2.5rem;
-    }
-    .history-table-wrap {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .history-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-    }
-    .history-table th {
-      padding: 0.8rem 1.25rem;
-      text-align: left;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      font-weight: 500;
-      background: #111;
-      border-bottom: 1px solid var(--border);
-    }
-    .history-table td {
-      padding: 0.85rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-    }
-    .history-table tr:last-child td { border-bottom: none; }
-    .cr { color: var(--green); font-weight: 600; }
-    .db { color: var(--red); font-weight: 600; }
-
-    /* FOOTER */
-    .billing-footer {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-    .billing-footer p {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-    .billing-footer a {
-      color: var(--pink);
-      text-decoration: none;
-    }
-
-    @media (max-width: 680px) {
-      .summary-strip { grid-template-columns: repeat(2, 1fr); }
-      .aging-grid { grid-template-columns: repeat(2, 1fr); }
-      .invoice-table th:nth-child(3),
-      .invoice-table td:nth-child(3) { display: none; }
-      .topbar { padding: 1rem; }
-      .content { padding: 1.5rem 1rem; }
+    @media (max-width: 600px) {
+      .container { padding: 1.25rem 1rem 3rem; }
+      .balance-hero { padding: 1.5rem; }
+      .balance-main .amount { font-size: 1.8rem; }
+      .balance-breakdown { flex-direction: column; gap: 1rem; }
+      .balance-item { text-align: left; }
+      .page-header { padding: 1rem; }
+      .timesheet-table th, .timesheet-table td { padding: 0.75rem 1rem; }
+      .date-col { display: none; }
+      .tab-btn { padding: 0.75rem 0.75rem; font-size: 0.65rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- AUTH GATE -->
-<div id="auth-gate">
-  <div class="auth-box">
-    <div class="auth-logo">Duara Education</div>
-    <div class="auth-sub">Client Portal · Billing</div>
-    <input type="password" id="pw-input" placeholder="Enter access code" onkeydown="if(event.key==='Enter') checkAuth()">
-    <button class="auth-btn" onclick="checkAuth()">Access Billing</button>
-    <div class="auth-error" id="auth-error">Incorrect access code.</div>
+<div id="pw-gate">
+  <div class="pw-wrap">
+    <div class="pw-eyebrow">Mexzungu Group</div>
+    <div class="pw-title">Duara: Billing Portal</div>
+    <input id="pw-input" type="password" class="pw-input" placeholder="Access code" autocomplete="off">
+    <button class="pw-btn" onclick="checkPw()">Enter</button>
+    <div class="pw-error" id="pw-error"></div>
   </div>
 </div>
 
-<!-- MAIN -->
 <div id="main">
-  <div class="topbar">
-    <div class="topbar-left">
-      <a href="/clients/duara/" class="back-link">← Hub</a>
-      <span class="topbar-sep">|</span>
-      <span class="topbar-title">Duara Education</span>
-      <span class="topbar-sep">·</span>
-      <span class="topbar-section">Billing</span>
-    </div>
-    <button class="lock-btn" onclick="lockOut()">Lock</button>
-  </div>
 
-  <div class="content">
+  <header class="page-header">
+    <div class="header-left">
+      <div>
+        <div class="header-eyebrow">Mexzungu Group</div>
+        <div class="header-title">Duara Education: Billing</div>
+      </div>
+      <div class="header-divider"></div>
+      <div class="header-badge">Confidential</div>
+    </div>
+    <div class="header-right">$120 / hr</div>
+  </header>
 
-    <!-- SUMMARY -->
-    <div class="summary-strip">
-      <div class="summary-cell">
-        <div class="summary-label">Outstanding</div>
-        <div class="summary-value red">$12,258</div>
+  <div class="container">
+
+    <div class="balance-hero">
+      <div class="balance-main">
+        <div class="label">Total Outstanding</div>
+        <div class="amount">$17,838</div>
+        <div class="sub">Mexzungu Group Ltd &rarr; Duara Education Inc.</div>
       </div>
-      <div class="summary-cell">
-        <div class="summary-label">Overdue invoices</div>
-        <div class="summary-value red">4</div>
-      </div>
-      <div class="summary-cell">
-        <div class="summary-label">Oldest overdue</div>
-        <div class="summary-value amber">178 days</div>
-      </div>
-      <div class="summary-cell">
-        <div class="summary-label">Not yet sent</div>
-        <div class="summary-value amber">Apr 2026</div>
+      <div class="balance-breakdown">
+        <div class="balance-item overdue">
+          <div class="b-label">Overdue (invoiced)</div>
+          <div class="b-amount">$12,258</div>
+        </div>
+        <div class="balance-item pending">
+          <div class="b-label">New invoices</div>
+          <div class="b-amount">$5,580</div>
+        </div>
+        <div class="balance-item neutral">
+          <div class="b-label">New hours</div>
+          <div class="b-amount">46.5h</div>
+        </div>
       </div>
     </div>
 
-    <!-- INVOICES -->
-    <div class="section-header">
-      <div class="section-title">Invoices</div>
-      <div class="note-text">All amounts in USD</div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('history', this)">All Invoices</button>
+      <button class="tab-btn" onclick="switchTab('mar', this)">#014-26 March</button>
+      <button class="tab-btn" onclick="switchTab('apr', this)">#015-26 April</button>
+      <button class="tab-btn" onclick="switchTab('may', this)">#016-26 May</button>
     </div>
-    <div class="invoice-table-wrap">
+
+    <!-- ALL INVOICES -->
+    <div id="tab-history" class="tab-panel active">
+      <p class="section-label">Invoice history</p>
       <table class="invoice-table">
         <thead>
           <tr>
-            <th>Invoice #</th>
-            <th>Description</th>
-            <th>Issued</th>
-            <th>Due</th>
-            <th>Amount</th>
+            <th>Invoice</th>
+            <th>Period</th>
+            <th class="hours-col">Hours</th>
+            <th class="amount-col">Amount</th>
             <th>Status</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr style="opacity:0.55;">
-            <td><span class="inv-number">—</span></td>
-            <td class="inv-desc" style="color:var(--amber)">Advisory — April 2026</td>
-            <td style="color:var(--amber)">Not sent</td>
-            <td>—</td>
-            <td><span class="inv-amount" style="color:var(--amber)">TBD</span></td>
-            <td><span class="status-pill pill-pending">Pending</span></td>
-            <td>—</td>
+          <tr>
+            <td class="mono">#009-25</td>
+            <td>Sep 2025</td>
+            <td class="hours-col">17.75h</td>
+            <td class="amount-col">$2,130</td>
+            <td><span class="status-badge status-overdue">Overdue</span></td>
           </tr>
           <tr>
-            <td><span class="inv-number">002-26</span></td>
-            <td class="inv-desc">Advisory — March 2026</td>
-            <td>24 Feb 2026</td>
-            <td>24 Mar 2026</td>
-            <td><span class="inv-amount db">$3,906</span></td>
-            <td><span class="status-pill pill-overdue">Overdue</span></td>
-            <td><a class="dl-btn" href="#" onclick="dlInvoice('002-26');return false;">↓ PDF</a></td>
+            <td class="mono">#011-25</td>
+            <td>Nov 2025</td>
+            <td class="hours-col">27.25h</td>
+            <td class="amount-col">$3,270</td>
+            <td><span class="status-badge status-overdue">Overdue</span></td>
           </tr>
           <tr>
-            <td><span class="inv-number">012-25</span></td>
-            <td class="inv-desc">Advisory — January 2026</td>
-            <td>2 Jan 2026</td>
-            <td>2 Feb 2026</td>
-            <td><span class="inv-amount db">$2,952</span></td>
-            <td><span class="status-pill pill-overdue">Overdue</span></td>
-            <td><a class="dl-btn" href="#" onclick="dlInvoice('012-25');return false;">↓ PDF</a></td>
+            <td class="mono">#012-25</td>
+            <td>Dec 2025</td>
+            <td class="hours-col">24.6h</td>
+            <td class="amount-col">$2,952</td>
+            <td><span class="status-badge status-overdue">Overdue</span></td>
           </tr>
           <tr>
-            <td><span class="inv-number">011-25</span></td>
-            <td class="inv-desc">Advisory — December 2025</td>
-            <td>18 Nov 2025</td>
-            <td>18 Dec 2025</td>
-            <td><span class="inv-amount db">$3,270</span></td>
-            <td><span class="status-pill pill-overdue">Overdue</span></td>
-            <td><a class="dl-btn" href="#" onclick="dlInvoice('011-25');return false;">↓ PDF</a></td>
+            <td class="mono">#013-26</td>
+            <td>Jan + Feb 2026</td>
+            <td class="hours-col"></td>
+            <td class="amount-col">$3,906</td>
+            <td><span class="status-badge status-overdue">Overdue</span></td>
           </tr>
           <tr>
-            <td><span class="inv-number">009-25</span></td>
-            <td class="inv-desc">Advisory — November 2025</td>
-            <td>15 Oct 2025</td>
-            <td>15 Nov 2025</td>
-            <td><span class="inv-amount db">$2,130</span></td>
-            <td><span class="status-pill pill-overdue">Overdue</span></td>
-            <td><a class="dl-btn" href="#" onclick="dlInvoice('009-25');return false;">↓ PDF</a></td>
+            <td class="mono">#014-26</td>
+            <td>Mar 2026</td>
+            <td class="hours-col">8.7h</td>
+            <td class="amount-col">$1,044</td>
+            <td><span class="status-badge status-new">New</span></td>
+          </tr>
+          <tr>
+            <td class="mono">#015-26</td>
+            <td>Apr 2026</td>
+            <td class="hours-col">16.5h</td>
+            <td class="amount-col">$1,980</td>
+            <td><span class="status-badge status-new">New</span></td>
+          </tr>
+          <tr>
+            <td class="mono">#016-26</td>
+            <td>May 2026</td>
+            <td class="hours-col">21.3h</td>
+            <td class="amount-col">$2,556</td>
+            <td><span class="status-badge status-new">New</span></td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="3">Total outstanding</td>
+            <td class="amount-col">$17,838</td>
+            <td></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- AGING -->
-    <div class="aging-wrap">
-      <div class="section-header">
-        <div class="section-title">Accounts Receivable Aging</div>
-      </div>
-      <div class="aging-grid">
-        <div class="aging-card">
-          <div class="aging-range">Current (0–30 days)</div>
-          <div class="aging-amount zero">$0</div>
+    <!-- MARCH -->
+    <div id="tab-mar" class="tab-panel">
+      <div class="invoice-card">
+        <div class="invoice-card-header">
+          <span class="inv-id">#014-26</span>
+          <span class="inv-period">March 2026</span>
+          <span class="inv-total">$1,044</span>
         </div>
-        <div class="aging-card">
-          <div class="aging-range">31–60 days</div>
-          <div class="aging-amount amber">$3,906</div>
-        </div>
-        <div class="aging-card">
-          <div class="aging-range">61–120 days</div>
-          <div class="aging-amount red">$6,222</div>
-        </div>
-        <div class="aging-card">
-          <div class="aging-range">120+ days</div>
-          <div class="aging-amount red">$2,130</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAYMENT HISTORY -->
-    <div class="history-wrap">
-      <div class="section-header">
-        <div class="section-title">Invoice Log</div>
-      </div>
-      <div class="history-table-wrap">
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>Invoice #</th>
-              <th>Issued</th>
-              <th>Due</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Days overdue</th>
-            </tr>
-          </thead>
+        <table class="timesheet-table">
+          <thead><tr><th>Date</th><th>Narrative</th><th>Hrs</th></tr></thead>
           <tbody>
             <tr>
-              <td>002-26</td>
-              <td>24 Feb 2026</td>
-              <td>24 Mar 2026</td>
-              <td class="db">$3,906</td>
-              <td><span class="status-pill pill-overdue">Overdue</span></td>
-              <td class="db">49</td>
+              <td class="date-col">Mar 2</td>
+              <td>Incorporated Victoria's feedback on the ICA and Treebeard loan draft, responding to multiple comment threads across the working document. Addressed independent contractor fee mechanics, interest provisions, and loan commercial terms to align with operational preferences.</td>
+              <td class="h-col">2.7</td>
             </tr>
             <tr>
-              <td>012-25</td>
-              <td>2 Jan 2026</td>
-              <td>2 Feb 2026</td>
-              <td class="db">$2,952</td>
-              <td><span class="status-pill pill-overdue">Overdue</span></td>
-              <td class="db">99</td>
+              <td class="date-col">Mar 8</td>
+              <td>Finalized ICA Version 2, incorporating all feedback to date, and prepared a plain-language summary of key terms for Victoria's review. Completed equivalent review pass on the Operating License Agreement, ensuring structural consistency across the SE contracting framework.</td>
+              <td class="h-col">3.2</td>
             </tr>
             <tr>
-              <td>011-25</td>
-              <td>18 Nov 2025</td>
-              <td>18 Dec 2025</td>
-              <td class="db">$3,270</td>
-              <td><span class="status-pill pill-overdue">Overdue</span></td>
-              <td class="db">145</td>
+              <td class="date-col">Mar 28</td>
+              <td>Drafted, reviewed, and coordinated execution of ICA Amendment No.1, formalizing agreed changes to notice period, safeguarding obligations, fee naming, and automated invoicing mechanics. Confirmed execution with Victoria and prepared execution copy for filing.</td>
+              <td class="h-col">2.8</td>
             </tr>
-            <tr>
-              <td>009-25</td>
-              <td>15 Oct 2025</td>
-              <td>15 Nov 2025</td>
-              <td class="db">$2,130</td>
-              <td><span class="status-pill pill-overdue">Overdue</span></td>
-              <td class="db">178</td>
+            <tr class="timesheet-subtotal">
+              <td colspan="2">8.7 hours at $120/hr</td>
+              <td class="h-col">$1,044</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="billing-footer">
-      <p>To discuss outstanding invoices or payment arrangements, contact <a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a></p>
-      <p style="margin-top:0.4rem">Mexzungu Consulting · Billing data as of May 2026</p>
+    <!-- APRIL -->
+    <div id="tab-apr" class="tab-panel">
+      <div class="invoice-card">
+        <div class="invoice-card-header">
+          <span class="inv-id">#015-26</span>
+          <span class="inv-period">April 2026</span>
+          <span class="inv-total">$1,980</span>
+        </div>
+        <table class="timesheet-table">
+          <thead><tr><th>Date</th><th>Narrative</th><th>Hrs</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="date-col">Apr 2</td>
+              <td>Structured and drafted Treebeard $50,000 loan agreement with plain-English terms and question-style section headings. Updated board resolutions to Mexzungu standard, adding mandatory Implementation Actions clause. Revised SE-ICA and SE-OLA to reflect Victoria's feedback on revenue waterfall mechanics and IP ownership provisions.</td>
+              <td class="h-col">4.0</td>
+            </tr>
+            <tr>
+              <td class="date-col">Apr 8</td>
+              <td>Emergency legal package rebuild following loss of the primary working document and Mission and Asset Lock document. Reconstructed full legal package from archived source documents: corporate architecture overview, Treebeard loan agreement and board resolution, board governance and mission lock, SE Independent Contractor Agreement, Operating License Agreement, and Lease Template v4.0. Published as consolidated Google Doc and shared with Victoria.</td>
+              <td class="h-col">4.0</td>
+            </tr>
+            <tr>
+              <td class="date-col">Apr 9</td>
+              <td>Dagoretti school closure advisory: analyzed safeguarding incident and SE abandonment scenario. Recommended administrative closure approach over misconduct framing, referencing prior school closure and SE separation precedent. Drafted clean termination strategy and identified Child Protection Policy signature gap requiring remediation before closure is finalized.</td>
+              <td class="h-col">1.5</td>
+            </tr>
+            <tr>
+              <td class="date-col">Apr 15</td>
+              <td>Attended 30-minute call with Victoria and Daphne on loan agreement and contracts. Post-call: drafted Kenya Employment Act analysis for assistant teacher and Educare contractor classification, covering employment test factors, legal exposure under the Act, and recommended contractor structure. Separately drafted zero-to-100 equity transfer trigger mechanism for School Entrepreneurs, including four activation conditions and draft ICA clause language.</td>
+              <td class="h-col">4.5</td>
+            </tr>
+            <tr>
+              <td class="date-col">Apr 16</td>
+              <td>Attended 34-minute contracts strategy call with Victoria, Fatima, and Daphne. Post-call: redrafted and restructured AT employment classification analysis as a standalone advisory memo with numbered sections, scenario analysis, and plain-English conclusions. Distributed to Duara leadership team via Google Doc.</td>
+              <td class="h-col">2.5</td>
+            </tr>
+            <tr class="timesheet-subtotal">
+              <td colspan="2">16.5 hours at $120/hr</td>
+              <td class="h-col">$1,980</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MAY -->
+    <div id="tab-may" class="tab-panel">
+      <div class="invoice-card">
+        <div class="invoice-card-header">
+          <span class="inv-id">#016-26</span>
+          <span class="inv-period">May 2026</span>
+          <span class="inv-total">$2,556</span>
+        </div>
+        <table class="timesheet-table">
+          <thead><tr><th>Date</th><th>Narrative</th><th>Hrs</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="date-col">May 7</td>
+              <td>Attended 1-hour call with Victoria on Treebeard loan structure and contract deployment strategy. Advisory work on loan finalization: Delaware borrowing entity confirmed, drawdown structure options analyzed (single tranche preferred), purpose clause expanded to cover platform costs and capital expenditure.</td>
+              <td class="h-col">2.25</td>
+            </tr>
+            <tr>
+              <td class="date-col">May 11</td>
+              <td>Designed and launched staff contracts transition portal (mexzungu.com/clients/duara/transition/). Developed phased implementation plan covering audit, template finalization, signing outreach, and close-out. Structured four contract templates in portal. Drafted and sent portal launch communication to Victoria, Fatima, and Daphne.</td>
+              <td class="h-col">3.5</td>
+            </tr>
+            <tr>
+              <td class="date-col">May 12</td>
+              <td>Attended 50-minute Execution Check-in call (Victoria, Fatima, Daphne). Finalized personnel management approach and contract distribution workflow: staff roster upload and personalized contract emails per school. Coordinated dispatch of loan agreement to Treebeard for execution.</td>
+              <td class="h-col">2.0</td>
+            </tr>
+            <tr>
+              <td class="date-col">May 13</td>
+              <td>Finalized Teacher Consulting Agreement v2.0 and Educare Programme Agreement v2.0, incorporating Duara's standard format with plain-English terms. Designed and ran automated contract production pipeline, generating 12 individually personalized contracts across all schools, each pre-populated with the correct school, supervisor, and fee details. Full set shared with Victoria and Duara team.</td>
+              <td class="h-col">3.75</td>
+            </tr>
+            <tr>
+              <td class="date-col">May 15</td>
+              <td>Template review session: worked through Daphne and Fatima's comments on Teacher and Educare contract drafts. Accepted and integrated feedback on fee structure and engagement terms. Identified withholding tax threshold and eTIMS registration questions for resolution on next call.</td>
+              <td class="h-col">1.75</td>
+            </tr>
+            <tr>
+              <td class="date-col">May 18</td>
+              <td>Attended 30-minute weekly call. Developed Teacher in Training as a new contract tier: three-track qualification framework (TSC registered, TSC candidate, alternative qualification), 2-year duration, and 5-stage competency model with progression path to Teacher. Post-call: drafted Teacher in Training Fellowship Agreement from scratch. Updated Teacher Consulting Agreement with mandatory monthly invoicing clause. Reviewed and resolved five outstanding template comments. Restructured Educare Programme Agreement as a standard programme agreement (v3.0). Updated client portal with all four contract sections.</td>
+              <td class="h-col">4.25</td>
+            </tr>
+            <tr>
+              <td class="date-col">May 26</td>
+              <td>Attended weekly call (signing phase launch). Finalized fee structure: KES 23,000 monthly cap aligned to withholding tax threshold, eTIMS invoicing mandatory for all contractors, transition communications framing for teachers. Post-call: finalized Teacher Consulting Agreement v2.1 (eTIMS clause, simplified withholding tax table) and Teacher in Training Fellowship Agreement (TSC-registered track). Executed board consent for Treebeard loan via DocuSign.</td>
+              <td class="h-col">2.5</td>
+            </tr>
+            <tr>
+              <td class="date-col">May 29</td>
+              <td>Treebeard drawdown coordination: reviewed bank verification call request, prepared wire instruction context for Victoria and Daphne, confirmed next steps on transfer timing. Resolved Daphne's access issue for the legal Drive folder, confirming editor permissions across the Duara team.</td>
+              <td class="h-col">1.3</td>
+            </tr>
+            <tr class="timesheet-subtotal">
+              <td colspan="2">21.3 hours at $120/hr</td>
+              <td class="h-col">$2,556</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
   </div>
 </div>
 
 <script>
-const PASS = 'Outlaw-Master-2026';
-const CLIENT_PW = 'Outlaw-Duara-2026';
-const SESSION_KEY = 'duara_hub_v1';
+  const PW = 'duara-billing-2026';
 
-function checkAuth() {
-  const val = document.getElementById('pw-input').value;
-  if (val === PASS || val === CLIENT_PW) {
-    sessionStorage.setItem(SESSION_KEY, '1');
-    sessionStorage.setItem('duara-auth', '1');
-    sessionStorage.setItem('duara_tx2', '1');
-    showMain();
-  } else {
-    const err = document.getElementById('auth-error');
-    err.style.display = 'block';
-    setTimeout(() => { err.style.display = 'none'; }, 2500);
+  function checkPw() {
+    const v = document.getElementById('pw-input').value.trim();
+    if (v === PW) {
+      document.getElementById('pw-gate').classList.add('hidden');
+      document.getElementById('main').classList.add('visible');
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect access code.';
+    }
   }
-}
 
-function showMain() {
-  document.getElementById('auth-gate').style.display = 'none';
-  document.getElementById('main').style.display = 'block';
-}
+  document.getElementById('pw-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPw();
+  });
 
-function lockOut() {
-  sessionStorage.removeItem(SESSION_KEY);
-  sessionStorage.removeItem('duara-auth');
-  sessionStorage.removeItem('duara_tx2');
-  window.location.href = '/clients/duara/';
-}
-
-function dlInvoice(num) {
-  alert('PDF generation for ' + num + ' is coming soon. Contact pepe@mexzungu.com to request a copy.');
-}
-
-// Auto-unlock if already authenticated
-if (sessionStorage.getItem(SESSION_KEY) === '1') {
-  showMain();
-}
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
 </script>
 </body>
 </html>
