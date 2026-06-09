@@ -391,11 +391,30 @@
         }
         .payment-block strong { color: #9a8f88; }
 
+        /* HOUR BANK CONFIGURATOR */
+        .hb-config { background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 12px; padding: 1.5rem; margin-top: 1rem; }
+        .hb-config-label { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #6b5e57; margin-bottom: 0.9rem; }
+        .hr-buttons { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+        .hr-btn {
+            padding: 0.55rem 1.1rem; border: 1px solid #2a2a2a; border-radius: 7px;
+            background: #111; color: #9a8f88; font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.16s ease; font-weight: 500;
+        }
+        .hr-btn:hover { border-color: #e14b87; color: #e14b87; }
+        .hr-btn.active { border-color: #e14b87; background: rgba(225,75,135,0.1); color: #e14b87; }
+        .hb-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: #0a0a0a; border: 1px solid #1e1e1e; border-radius: 8px; padding: 1.2rem; }
+        .hb-result-label { font-size: 0.61rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6b5e57; margin-bottom: 0.2rem; }
+        .hb-result-value { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.3rem; color: #fafafa; }
+        .hb-result-value.pink { color: #e14b87; }
+        .hb-result-value.struck { color: #2e2e2e; text-decoration: line-through; font-size: 0.9rem; font-family: 'Space Grotesk', sans-serif; font-weight: 400; }
+        .hb-config-note { font-size: 0.75rem; color: #6b5e57; margin-top: 1rem; line-height: 1.6; }
+
         @media (max-width: 768px) {
             .proposal-hero { padding: 9rem 1.5rem 4rem; }
             .prop-section { padding: 4rem 1.5rem; }
             .cta-section { padding: 4rem 1.5rem 6rem; }
             .entity-diagram { flex-direction: column; }
+            .hb-result-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -610,13 +629,36 @@
             <div class="pricing-card">
                 <div class="pricing-card-label">Option B</div>
                 <div class="pricing-card-name">Bank Hours</div>
-                <div class="pricing-number">$200</div>
-                <div class="pricing-number-sub">per hour, billed monthly</div>
-                <p class="pricing-desc">Pay for what we actually use. Best if scope is likely to evolve or you want to start smaller.</p>
-                <ul class="pricing-items">
-                    <li>Monthly invoices, 14-day payment terms</li>
-                    <li>Incorporation fees at cost</li>
-                </ul>
+                <p class="pricing-desc">Pre-buy hours at a discount. Pay for what we actually use. Best if scope is likely to evolve or you want flexibility on pace.</p>
+                <div class="hb-config">
+                    <div class="hb-config-label">Hours per month</div>
+                    <div class="hr-buttons">
+                        <button class="hr-btn active" onclick="selectHours(10)" id="hr-10">10 hrs</button>
+                        <button class="hr-btn" onclick="selectHours(20)" id="hr-20">20 hrs</button>
+                        <button class="hr-btn" onclick="selectHours(30)" id="hr-30">30 hrs</button>
+                        <button class="hr-btn" onclick="selectHours(40)" id="hr-40">40 hrs</button>
+                    </div>
+                    <div class="hb-result-grid">
+                        <div>
+                            <div class="hb-result-label">Your rate</div>
+                            <div class="hb-result-value pink" id="hb-rate">$200/hr</div>
+                            <div class="hb-result-value struck">$250/hr</div>
+                        </div>
+                        <div>
+                            <div class="hb-result-label">Monthly total</div>
+                            <div class="hb-result-value pink" id="hb-total">$2,000</div>
+                        </div>
+                        <div>
+                            <div class="hb-result-label">Hours that roll (50%)</div>
+                            <div class="hb-result-value" id="hb-roll">Up to 5 hrs</div>
+                        </div>
+                        <div>
+                            <div class="hb-result-label">Hours that expire</div>
+                            <div class="hb-result-value" id="hb-expire">5 hrs</div>
+                        </div>
+                    </div>
+                    <div class="hb-config-note">50% of unused hours carry to the following month. The remainder expires. Incorporation fees billed at cost.</div>
+                </div>
             </div>
 
         </div>
@@ -926,6 +968,25 @@ function carouselGo(id, idx) {
 window.addEventListener('resize', function() {
     Object.keys(carousels).forEach(function(id) { setSlideSizes(id); updateCarousel(id); });
 });
+
+/* HOUR BANK CONFIGURATOR */
+var currentHours = 10;
+window.selectHours = function(hrs) {
+    currentHours = hrs;
+    document.querySelectorAll('.hr-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('hr-' + hrs).classList.add('active');
+    renderHourBank();
+};
+function renderHourBank() {
+    var rateMap = { 10: 200, 20: 180, 30: 165, 40: 150 };
+    var rate = rateMap[currentHours] || 200;
+    var total = currentHours * rate;
+    var roll = Math.floor(currentHours * 0.5);
+    document.getElementById('hb-rate').textContent = '$' + rate + '/hr';
+    document.getElementById('hb-total').textContent = '$' + total.toLocaleString();
+    document.getElementById('hb-roll').textContent = 'Up to ' + roll + ' hrs';
+    document.getElementById('hb-expire').textContent = (currentHours - roll) + ' hrs';
+}
 </script>
 
 </body>
