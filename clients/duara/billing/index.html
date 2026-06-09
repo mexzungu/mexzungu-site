@@ -42,42 +42,8 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* PASSWORD GATE */
-    #pw-gate {
-      position: fixed; inset: 0;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999; padding: 2rem;
-    }
-    #pw-gate.hidden { display: none; }
-    .pw-wrap {
-      max-width: 400px; width: 100%; text-align: center;
-      background: var(--bg-mid);
-      border: 1px solid var(--border);
-      border-radius: 4px; padding: 3rem 2.5rem;
-    }
-    .pw-eyebrow { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--text-ghost); margin-bottom: 0.5rem; }
-    .pw-title { font-size: 1.1rem; font-weight: 500; margin-bottom: 2rem; }
-    .pw-input {
-      width: 100%; background: var(--bg);
-      border: 1px solid var(--border-mid); border-radius: 3px;
-      color: var(--text); font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.9rem; padding: 0.75rem 1rem;
-      text-align: center; letter-spacing: 0.1em; outline: none; margin-bottom: 1rem;
-    }
-    .pw-input:focus { border-color: var(--pink); }
-    .pw-btn {
-      width: 100%; background: var(--pink); color: #fff; border: none;
-      border-radius: 3px; font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 0.75rem 1rem; cursor: pointer;
-    }
-    .pw-btn:hover { opacity: 0.9; }
-    .pw-error { font-size: 0.75rem; color: var(--red-text); margin-top: 0.75rem; min-height: 1rem; }
-
     /* MAIN */
-    #main { display: none; }
-    #main.visible { display: block; }
+    #main { display: block; }
 
     .page-header {
       border-bottom: 1px solid var(--border);
@@ -201,17 +167,7 @@
 </head>
 <body>
 
-<div id="pw-gate">
-  <div class="pw-wrap">
-    <div class="pw-eyebrow">Mexzungu Group</div>
-    <div class="pw-title">Duara: Billing Portal</div>
-    <input id="pw-input" type="password" class="pw-input" placeholder="Access code" autocomplete="off">
-    <button class="pw-btn" onclick="checkPw()">Enter</button>
-    <div class="pw-error" id="pw-error"></div>
-  </div>
-</div>
-
-<div id="main">
+<div id="main" class="visible">
 
   <header class="page-header">
     <div class="header-left">
@@ -472,22 +428,6 @@
 </div>
 
 <script>
-  const PW = 'duara-billing-2026';
-
-  function checkPw() {
-    const v = document.getElementById('pw-input').value.trim();
-    if (v === PW) {
-      document.getElementById('pw-gate').classList.add('hidden');
-      document.getElementById('main').classList.add('visible');
-    } else {
-      document.getElementById('pw-error').textContent = 'Incorrect access code.';
-    }
-  }
-
-  document.getElementById('pw-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkPw();
-  });
-
   function switchTab(id, btn) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
