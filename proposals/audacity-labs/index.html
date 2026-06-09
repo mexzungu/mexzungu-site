@@ -883,7 +883,15 @@ function initCarousel(id, total) {
         })(i);
         dotsEl.appendChild(d);
     }
+    setSlideSizes(id);
     updateCarousel(id);
+}
+
+function setSlideSizes(id) {
+    var track = document.querySelector('#carousel-' + id + ' .carousel-track');
+    var w = track.offsetWidth;
+    var slides = document.querySelectorAll('#carousel-' + id + '-inner .carousel-slide');
+    slides.forEach(function(s) { s.style.width = w + 'px'; });
 }
 
 function updateCarousel(id) {
@@ -916,7 +924,7 @@ function carouselGo(id, idx) {
 }
 
 window.addEventListener('resize', function() {
-    Object.keys(carousels).forEach(function(id) { updateCarousel(id); });
+    Object.keys(carousels).forEach(function(id) { setSlideSizes(id); updateCarousel(id); });
 });
 </script>
 
