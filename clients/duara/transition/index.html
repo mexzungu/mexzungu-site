@@ -1350,6 +1350,21 @@
     .roster-doc-link:hover { color: #e14b87; text-decoration: underline; }
     .rc-inactive { background: var(--bg-hover); color: var(--text-ghost); border: 1px solid var(--border); }
     .roster-school-note { font-size: 0.7rem; color: var(--text-ghost); flex-shrink: 0; min-width: 68px; }
+    .compliance-map { margin-bottom: 2.5rem; }
+    .compliance-map-title { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-ghost); font-weight: 600; margin-bottom: 1rem; }
+    .compliance-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; }
+    .compliance-card { border: 1px solid var(--border); border-radius: 4px; padding: 0.85rem 1rem; background: var(--bg-mid); position: relative; overflow: hidden; }
+    .compliance-card-name { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 0.5rem; }
+    .compliance-fraction { font-family: 'RocknRoll One', sans-serif; font-size: 1.4rem; font-weight: 400; line-height: 1; margin-bottom: 0.5rem; }
+    .compliance-fraction.cf-green { color: var(--green-text); }
+    .compliance-fraction.cf-amber { color: var(--amber-text); }
+    .compliance-fraction.cf-red { color: #f87171; }
+    .compliance-bar-wrap { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .compliance-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+    .compliance-bar-fill.cb-green { background: var(--green-text); }
+    .compliance-bar-fill.cb-amber { background: var(--amber-text); }
+    .compliance-bar-fill.cb-red { background: #f87171; }
+    .compliance-pct { font-size: 0.62rem; color: var(--text-ghost); margin-top: 0.3rem; }
     .roster-inactive { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
     .roster-inactive-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.1rem; background: var(--bg-mid); cursor: pointer; user-select: none; transition: background 0.15s; }
     .roster-inactive-toggle:hover { background: var(--bg-hover); }
@@ -2456,6 +2471,91 @@ Thanks — and best of luck with whatever you're working on now.</div>
           <div class="roster-stat">
             <div class="roster-stat-value red">13</div>
             <div class="roster-stat-label">Incorrect Contracts</div>
+          </div>
+        </div>
+
+        <!-- Compliance map per school -->
+        <div class="compliance-map">
+          <div class="compliance-map-title">Compliance by school</div>
+          <div class="compliance-grid">
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Gathiga</div>
+              <div class="compliance-fraction cf-red">1 / 4</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-red" style="width:25%"></div></div>
+              <div class="compliance-pct">25% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Ruaka</div>
+              <div class="compliance-fraction cf-red">1 / 5</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-red" style="width:20%"></div></div>
+              <div class="compliance-pct">20% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Otiende</div>
+              <div class="compliance-fraction cf-red">1 / 3</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-red" style="width:33%"></div></div>
+              <div class="compliance-pct">33% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Utawala</div>
+              <div class="compliance-fraction cf-amber">1 / 2</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-amber" style="width:50%"></div></div>
+              <div class="compliance-pct">50% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Kamirithu</div>
+              <div class="compliance-fraction cf-amber">1 / 2</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-amber" style="width:50%"></div></div>
+              <div class="compliance-pct">50% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Kitengela</div>
+              <div class="compliance-fraction cf-amber">1 / 2</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-amber" style="width:50%"></div></div>
+              <div class="compliance-pct">50% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Ruiru</div>
+              <div class="compliance-fraction cf-amber">1 / 2</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-amber" style="width:50%"></div></div>
+              <div class="compliance-pct">50% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Ondiri</div>
+              <div class="compliance-fraction cf-green">1 / 1</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-green" style="width:100%"></div></div>
+              <div class="compliance-pct">100% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Tassia</div>
+              <div class="compliance-fraction cf-green">1 / 1</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-green" style="width:100%"></div></div>
+              <div class="compliance-pct">100% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Ngatataek</div>
+              <div class="compliance-fraction cf-green">1 / 1</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-green" style="width:100%"></div></div>
+              <div class="compliance-pct">100% correct</div>
+            </div>
+
+            <div class="compliance-card">
+              <div class="compliance-card-name">Umoja 1</div>
+              <div class="compliance-fraction cf-green">1 / 1</div>
+              <div class="compliance-bar-wrap"><div class="compliance-bar-fill cb-green" style="width:100%"></div></div>
+              <div class="compliance-pct">100% correct</div>
+            </div>
+
           </div>
         </div>
 
