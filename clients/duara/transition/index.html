@@ -128,12 +128,11 @@
 
     /* ===================== PORTAL SHELL ===================== */
     #portal {
-      display: none;
+      display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
     }
-    #portal.visible { display: flex; }
 
     /* ---- TOPBAR ---- */
     .topbar {
@@ -1397,20 +1396,6 @@
 <body>
 
 <!-- ======================== PASSWORD GATE ======================== -->
-<div id="pw-gate">
-  <div class="pw-wrap">
-    <img src="/logo-v3.png" alt="Mexzungu" class="pw-logo">
-    <div class="pw-eyebrow">Restricted Access</div>
-    <h1 class="pw-title">Contract Transition Portal</h1>
-    <p class="pw-sub">Duara Education · May 2026 · Internal use only</p>
-    <div class="pw-rule"></div>
-    <input type="password" id="pw-input" class="pw-input" placeholder="Enter access code" autocomplete="off">
-    <button class="pw-btn" id="pw-btn">Access Portal</button>
-    <div class="pw-error" id="pw-error"></div>
-    <p class="pw-footer">mexzungu.com — confidential</p>
-  </div>
-</div>
-
 <!-- ======================== PORTAL SHELL ======================== -->
 <div id="portal">
 
@@ -3997,9 +3982,6 @@ Thanks — and best of luck with whatever you're working on now.</div>
 </div><!-- end portal -->
 
 <script>
-  // Password gate disabled. Open access.
-  document.getElementById('pw-gate').classList.add('hidden');
-  document.getElementById('portal').classList.add('visible');
   initAudit();
   initPortalData();
 
