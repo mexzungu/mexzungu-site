@@ -100,11 +100,23 @@
       font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.92);
+      transition: color 0.3s;
+    }
+
+    nav.scrolled .nav-links a {
       color: var(--brown);
-      transition: color 0.2s;
     }
 
     .nav-links a:hover { color: var(--terra); }
+
+    .nav-logo {
+      transition: filter 0.4s;
+    }
+
+    nav.scrolled .nav-logo {
+      filter: brightness(0);
+    }
 
     .nav-hamburger {
       display: none;
@@ -118,8 +130,12 @@
       display: block;
       width: 22px;
       height: 1.5px;
-      background: var(--brown);
+      background: rgba(255, 255, 255, 0.92);
       transition: all 0.3s;
+    }
+
+    nav.scrolled .nav-hamburger span {
+      background: var(--brown);
     }
 
     /* ──────────────────────────────
@@ -132,6 +148,7 @@
       background-size: cover;
       background-position: center top;
       background-repeat: no-repeat;
+      background-attachment: fixed;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -356,7 +373,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 80px;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .about-image-wrap {
@@ -377,17 +394,6 @@
     .about-logo-display {
       width: 75%;
       opacity: 0.85;
-    }
-
-    .about-accent {
-      position: absolute;
-      bottom: -24px;
-      right: -24px;
-      width: 120px;
-      height: 120px;
-      border: 1.5px solid var(--sage-light);
-      border-radius: 2px;
-      pointer-events: none;
     }
 
     .about-label {
@@ -499,6 +505,14 @@
       color: var(--brown-light);
       letter-spacing: 0.08em;
       margin-top: 8px;
+    }
+
+    .service-journey-subtitle {
+      display: block;
+      font-size: 0.85em;
+      font-style: italic;
+      color: rgba(58, 46, 40, 0.55);
+      margin-top: 14px;
     }
 
     .service-detail-list {
@@ -1250,6 +1264,7 @@
     .contact-form textarea {
       resize: vertical;
       min-height: 120px;
+      border-color: #a8c5a0;
     }
 
     .btn-send {
@@ -1580,7 +1595,6 @@
         <div class="about-image-bg">
           <img src="https://mexzungu.com/img/social/einatdotanbycandacesmith-2-69.jpg" alt="Einat Dotan" class="about-logo-display" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
         </div>
-        <div class="about-accent"></div>
       </div>
       <div class="about-content">
         <p class="about-label">About Einat</p>
@@ -1631,6 +1645,7 @@
           <li>A closing integration session</li>
           <li>A personal map for moving forward</li>
         </ul>
+        <span class="service-journey-subtitle">Three-month online or in person private journey</span>
         <div class="service-price">€2,100</div>
         <div class="service-location">Three-month private journey</div>
       </div>
@@ -1653,9 +1668,7 @@
         <!-- WORKSHOPS column -->
         <div class="experiences-col">
           <h3 class="experiences-col-title">Workshops</h3>
-          <p>Group sessions created around intuition, emotional healing, embodiment, connection, and self-awareness.</p>
-          <p>These may include intuition workshops, singing and healing events, emotional eating workshops, authentic relating, consent practices, guided emotional release, and experiences created for festivals, studios, retreats, and private groups.</p>
-          <p>Available for private groups, studios, and retreat programmes. Reach out to discuss.</p>
+          <p>Group sessions created in a playful and experiential way around intuition, emotional healing, embodiment, connection, self-awareness, emotional eating, authentic relating, consent practices, and curated workshops designed for specific events, festivals, and retreats.</p>
         </div>
 
         <!-- RETREATS column -->
@@ -1677,24 +1690,21 @@
         <div class="event-card">
           <div class="event-card-name">[Event Name]</div>
           <div class="event-card-date">[Date]</div>
-          <div class="event-card-price">[Price]</div>
-          <button class="btn-book-now" onclick="openBookingModal('[Event Name]')">Reserve</button>
+          <button class="btn-book-now" onclick="reserveEvent('[Event Name]')">Reserve</button>
         </div>
 
         <!-- Event Card 2 (placeholder) -->
         <div class="event-card">
           <div class="event-card-name">[Event Name]</div>
           <div class="event-card-date">[Date]</div>
-          <div class="event-card-price">[Price]</div>
-          <button class="btn-book-now" onclick="openBookingModal('[Event Name]')">Reserve</button>
+          <button class="btn-book-now" onclick="reserveEvent('[Event Name]')">Reserve</button>
         </div>
 
         <!-- Event Card 3 (placeholder) -->
         <div class="event-card">
           <div class="event-card-name">[Event Name]</div>
           <div class="event-card-date">[Date]</div>
-          <div class="event-card-price">[Price]</div>
-          <button class="btn-book-now" onclick="openBookingModal('[Event Name]')">Reserve</button>
+          <button class="btn-book-now" onclick="reserveEvent('[Event Name]')">Reserve</button>
         </div>
 
       </div>
@@ -1891,28 +1901,13 @@
   <div class="booking-modal-overlay" id="booking-modal" role="dialog" aria-modal="true" aria-label="Book a session">
     <div class="booking-modal-box">
       <button class="booking-modal-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
-      <p class="booking-modal-label">Begin your journey</p>
-      <h3 id="booking-modal-title">Safe to Feel Session</h3>
-      <form class="booking-form"
-            action="https://formsubmit.co/einatdot@gmail.com"
-            method="POST">
-        <input type="hidden" name="_subject" value="New booking enquiry. Safe to Feel">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://mexzungu.com/safetofeel/?booked=1">
-        <input type="hidden" name="interested_in" id="booking-interested-hidden">
-        <input type="text" name="name" placeholder="Your name" required autocomplete="name">
-        <input type="email" name="email" placeholder="Your email" required autocomplete="email">
-        <select name="interested_in_display" id="booking-select" required>
-          <option value="" disabled>Interested in…</option>
-          <option value="Safe to Feel Session">Safe to Feel Session (€120)</option>
-          <option value="The Safe to Feel Journey">The Safe to Feel Journey (€2,100)</option>
-          <option value="Workshop or retreat">Workshop or retreat</option>
-          <option value="Not sure yet">Not sure yet</option>
-        </select>
-        <textarea name="message" placeholder="Anything you'd like Einat to know before reaching out" rows="4"></textarea>
-        <button type="submit" class="btn-booking-submit">Send enquiry</button>
-      </form>
-      <p class="booking-note">Einat will be in touch within 48 hours.</p>
+      <h3 id="booking-modal-title">Book a Safe to Feel Session</h3>
+      <div class="booking-form">
+        <input type="text" id="booking-name" placeholder="Your name" autocomplete="name">
+        <input type="email" id="booking-email" placeholder="Your email" autocomplete="email">
+        <textarea id="booking-message" placeholder="Tell me a little about yourself and what brought you here..." rows="4"></textarea>
+        <button type="button" class="btn-booking-submit" onclick="submitBookingInquiry()">Send</button>
+      </div>
     </div>
   </div>
 
@@ -1982,7 +1977,7 @@
 
     // Close on Escape
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') { closeModal(); closeBookingModal(); }
     });
 
     // ── Carousel ──────────────────────────────────────────────────────
@@ -2061,6 +2056,47 @@
     function closeMenu() {
       document.getElementById('mobile-menu').classList.remove('open');
       document.body.style.overflow = '';
+    }
+
+    // ── Booking inquiry modal ─────────────────────────────────────────
+    var _bookingService = '';
+
+    function openBookingModal(service) {
+      _bookingService = service || '';
+      var label = _bookingService ? 'Book a ' + _bookingService : 'Book a Session';
+      document.getElementById('booking-modal-title').textContent = label;
+      document.getElementById('booking-name').value = '';
+      document.getElementById('booking-email').value = '';
+      document.getElementById('booking-message').value = '';
+      document.getElementById('booking-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBookingModal() {
+      document.getElementById('booking-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function submitBookingInquiry() {
+      var name    = document.getElementById('booking-name').value.trim();
+      var email   = document.getElementById('booking-email').value.trim();
+      var message = document.getElementById('booking-message').value.trim();
+      var service = _bookingService || 'a session';
+      var text = 'Hi Einat, I am interested in booking a ' + service + '.'
+               + (name    ? ' Name: '  + name  + '.' : '')
+               + (email   ? ' Email: ' + email + '.' : '')
+               + (message ? ' ' + message             : '');
+      window.open('https://wa.me/34666267243?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    document.getElementById('booking-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeBookingModal();
+    });
+
+    // ── Reserve event via WhatsApp ────────────────────────────────────
+    function reserveEvent(eventName) {
+      var text = 'Hi Einat, I would like to reserve a spot at ' + eventName;
+      window.open('https://wa.me/34666267243?text=' + encodeURIComponent(text), '_blank');
     }
   </script>
 
