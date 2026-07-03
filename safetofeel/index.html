@@ -1509,6 +1509,171 @@
       html { scroll-behavior: auto; }
       * { transition-duration: 0.01ms !important; }
     }
+
+    /* ──────────────────────────────
+       INTAKE INTERACTIVE PANELS
+    ────────────────────────────── */
+    .intake-choices-container {
+      max-width: 760px;
+      margin: 0 auto;
+      transition: opacity 0.4s ease;
+    }
+
+    .intake-choices-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .choice-card {
+      display: block;
+      width: 100%;
+      padding: 1.75rem 2rem;
+      background: var(--warm-white);
+      border: 1px solid rgba(138, 158, 138, 0.25);
+      border-radius: 3px;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--brown);
+      line-height: 1.4;
+      transition: background 0.25s ease, border-color 0.25s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .choice-card:hover {
+      background: var(--sage-pale);
+      border-color: var(--sage-light);
+    }
+
+    .intake-no-wrong {
+      font-size: 0.78rem;
+      color: var(--brown-light);
+      opacity: 0.6;
+      letter-spacing: 0.03em;
+    }
+
+    .intake-welcome-back {
+      display: none;
+      font-style: italic;
+      font-size: 0.875rem;
+      color: var(--sage);
+      margin-top: 20px;
+    }
+
+    .intake-panel {
+      display: none;
+      opacity: 0;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+      transition: opacity 0.4s ease;
+    }
+
+    .intake-panel-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 300;
+      color: var(--brown);
+      margin-bottom: 32px;
+    }
+
+    .intake-panel-body p {
+      font-size: 15px;
+      color: var(--brown-mid);
+      line-height: 1.9;
+      margin-bottom: 18px;
+    }
+
+    .intake-panel-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intake-panel-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .btn-intake-primary {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--brown);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1.5px solid var(--brown);
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-intake-primary:hover {
+      background: var(--terra);
+      border-color: var(--terra);
+    }
+
+    .btn-intake-outline {
+      display: inline-block;
+      padding: 14px 36px;
+      background: transparent;
+      color: var(--brown);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1.5px solid rgba(58, 46, 40, 0.3);
+      cursor: pointer;
+      transition: border-color 0.25s ease, color 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-intake-outline:hover {
+      border-color: var(--terra);
+      color: var(--terra);
+    }
+
+    .intake-not-ready {
+      display: block;
+      margin-top: 2.5rem;
+      font-size: 0.78rem;
+      color: rgba(58, 46, 40, 0.45);
+      text-align: center;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.02em;
+      text-decoration: underline;
+    }
+
+    .intake-not-ready:hover {
+      color: var(--brown-mid);
+    }
+
+    @media (max-width: 640px) {
+      .intake-choices-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .intake-panel-actions {
+        flex-direction: column;
+      }
+
+      .btn-intake-primary,
+      .btn-intake-outline {
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1557,35 +1722,79 @@
   <section class="intake" id="intake">
     <p class="intake-label">Where to begin</p>
     <h2>What brought you here today?</h2>
-    <p class="intake-sub">Everyone arrives differently. Choose what feels closest.</p>
 
-    <div class="intake-options">
-      <input class="intake-option" type="radio" name="intake" id="opt1">
-      <label for="opt1">
-        <span class="intake-label-title">I am exhausted</span>
-        <span class="intake-label-sub">Running on empty, disconnected from myself</span>
-      </label>
-
-      <input class="intake-option" type="radio" name="intake" id="opt2">
-      <label for="opt2">
-        <span class="intake-label-title">I feel stuck</span>
-        <span class="intake-label-sub">Same patterns repeating, I cannot break free</span>
-      </label>
-
-      <input class="intake-option" type="radio" name="intake" id="opt3">
-      <label for="opt3">
-        <span class="intake-label-title">Something is shifting</span>
-        <span class="intake-label-sub">I sense change coming and need support</span>
-      </label>
-
-      <input class="intake-option" type="radio" name="intake" id="opt4">
-      <label for="opt4">
-        <span class="intake-label-title">I am not sure yet</span>
-        <span class="intake-label-sub">Just exploring, no pressure</span>
-      </label>
+    <!-- Choices view -->
+    <div class="intake-choices-container" id="intake-choices">
+      <div class="intake-choices-grid">
+        <button class="choice-card" data-choice="exhausted" onclick="selectIntakeChoice('exhausted')">I am exhausted</button>
+        <button class="choice-card" data-choice="stuck" onclick="selectIntakeChoice('stuck')">I feel stuck</button>
+        <button class="choice-card" data-choice="shifting" onclick="selectIntakeChoice('shifting')">Something is shifting</button>
+        <button class="choice-card" data-choice="unsure" onclick="selectIntakeChoice('unsure')">I am not sure yet</button>
+      </div>
+      <p class="intake-no-wrong">There are no wrong answers.</p>
+      <p class="intake-welcome-back" id="intake-welcome-back">You are welcome to stay. Take your time.</p>
     </div>
 
-    <button class="btn-continue" type="button" onclick="scrollToServices()">Continue</button>
+    <!-- Panel 1: Exhausted -->
+    <div class="intake-panel" id="panel-exhausted">
+      <h3 class="intake-panel-heading">I am exhausted</h3>
+      <div class="intake-panel-body">
+        <p>Sometimes healing does not begin by doing more.</p>
+        <p>It begins by finally allowing yourself to stop.</p>
+        <p>If you are feeling depleted, I would love to invite you to begin gently.</p>
+      </div>
+      <div class="intake-panel-actions">
+        <a href="#services" class="btn-intake-primary">Explore Private Sessions</a>
+        <a href="#contact" class="btn-intake-outline">Message me</a>
+      </div>
+      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
+    </div>
+
+    <!-- Panel 2: Stuck -->
+    <div class="intake-panel" id="panel-stuck">
+      <h3 class="intake-panel-heading">I feel stuck</h3>
+      <div class="intake-panel-body">
+        <p>Often what keeps us stuck is not a lack of answers.</p>
+        <p>It is repeating the same unconscious patterns.</p>
+        <p>Together we can explore what is asking to change.</p>
+      </div>
+      <div class="intake-panel-actions">
+        <a href="#services" class="btn-intake-primary">Discover the Safe to Feel Journey</a>
+        <a href="#contact" class="btn-intake-outline">Message me</a>
+      </div>
+      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
+    </div>
+
+    <!-- Panel 3: Shifting -->
+    <div class="intake-panel" id="panel-shifting">
+      <h3 class="intake-panel-heading">Something is shifting</h3>
+      <div class="intake-panel-body">
+        <p>You are sensing that something new wants to emerge.</p>
+        <p>This can be one of the most beautiful moments to receive support.</p>
+      </div>
+      <div class="intake-panel-actions">
+        <a href="#experiences" class="btn-intake-primary">Upcoming Experiences</a>
+        <a href="#services" class="btn-intake-outline">Private Sessions</a>
+      </div>
+      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
+    </div>
+
+    <!-- Panel 4: Not sure yet -->
+    <div class="intake-panel" id="panel-unsure">
+      <h3 class="intake-panel-heading">I am not sure yet</h3>
+      <div class="intake-panel-body">
+        <p>You do not have to know.</p>
+        <p>Curiosity is enough.</p>
+        <p>Take your time exploring.</p>
+      </div>
+      <div class="intake-panel-actions">
+        <a href="#about" class="btn-intake-outline">About Einat</a>
+        <a href="#testimonials" class="btn-intake-outline">Voices from the Work</a>
+        <a href="#experiences" class="btn-intake-outline">Experiences</a>
+      </div>
+      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
+    </div>
+
   </section>
 
   <!-- ABOUT -->
@@ -2097,6 +2306,54 @@
     function reserveEvent(eventName) {
       var text = 'Hi Einat, I would like to reserve a spot at ' + eventName;
       window.open('https://wa.me/34666267243?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    // ── Intake interactive panels ─────────────────────────────────────
+    function selectIntakeChoice(choice) {
+      var choicesEl = document.getElementById('intake-choices');
+      var panelEl   = document.getElementById('panel-' + choice);
+      if (!panelEl) return;
+
+      // Fade choices out
+      choicesEl.style.opacity = '0';
+      choicesEl.style.pointerEvents = 'none';
+
+      setTimeout(function() {
+        // Hide choices, reset any previously visible panel
+        choicesEl.style.display = 'none';
+        document.querySelectorAll('.intake-panel').forEach(function(p) {
+          p.style.display = 'none';
+          p.style.opacity = '0';
+        });
+
+        // Reveal chosen panel with a fade-in
+        panelEl.style.display = 'block';
+        void panelEl.offsetWidth; // force reflow so transition fires
+        panelEl.style.opacity = '1';
+      }, 420);
+    }
+
+    function returnToIntakeChoices() {
+      var choicesEl = document.getElementById('intake-choices');
+
+      // Fade active panel out
+      document.querySelectorAll('.intake-panel').forEach(function(p) {
+        if (p.style.display === 'block') {
+          p.style.opacity = '0';
+          setTimeout(function() { p.style.display = 'none'; }, 420);
+        }
+      });
+
+      // Surface the soft welcome-back line
+      document.getElementById('intake-welcome-back').style.display = 'block';
+
+      // After panel fades, restore choices with fade-in
+      setTimeout(function() {
+        choicesEl.style.display = 'block';
+        void choicesEl.offsetWidth; // force reflow
+        choicesEl.style.opacity = '1';
+        choicesEl.style.pointerEvents = '';
+      }, 420);
     }
   </script>
 
