@@ -614,12 +614,27 @@
 
     .event-card {
       background: var(--warm-white);
-      padding: 36px 28px;
       border-radius: 2px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0;
       transition: background 0.25s;
+      overflow: hidden;
+    }
+
+    .event-card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .event-card-body {
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
     }
 
     .event-card:hover {
@@ -1890,28 +1905,36 @@
       <!-- UPCOMING EXPERIENCES -->
       <p class="upcoming-section-title">Upcoming Experiences</p>
 
-      <!-- EINAT: Replace these 3 event placeholders with real event data -->
       <div class="event-cards">
 
-        <!-- Event Card 1 (placeholder) -->
+        <!-- Event Card 1: Erostatic Dance -->
         <div class="event-card">
-          <div class="event-card-name">[Event Name]</div>
-          <div class="event-card-date">[Date]</div>
-          <button class="btn-book-now" onclick="reserveEvent('[Event Name]')">Reserve</button>
+          <img class="event-card-img" src="https://mexzungu.com/img/social/erostatic-dance-july.png" alt="Erostatic Dance">
+          <div class="event-card-body">
+            <div class="event-card-name">Erostatic Dance</div>
+            <div class="event-card-date">July 19 &nbsp;·&nbsp; 11:00 to 14:30 &nbsp;·&nbsp; Casa Lazar, Barcelona</div>
+            <button class="btn-book-now" onclick="reserveEvent('Erostatic Dance')">Reserve</button>
+          </div>
         </div>
 
-        <!-- Event Card 2 (placeholder) -->
+        <!-- Event Card 2: Safe to Feel Eros -->
         <div class="event-card">
-          <div class="event-card-name">[Event Name]</div>
-          <div class="event-card-date">[Date]</div>
-          <button class="btn-book-now" onclick="reserveEvent('[Event Name]')">Reserve</button>
+          <img class="event-card-img" src="https://mexzungu.com/img/social/safe-to-feel-eros.png" alt="Safe to Feel Eros">
+          <div class="event-card-body">
+            <div class="event-card-name">Safe to Feel Eros</div>
+            <div class="event-card-date">July 26 &nbsp;·&nbsp; 11:00 to 14:00 &nbsp;·&nbsp; Ynspire Space, Barcelona</div>
+            <button class="btn-book-now" onclick="reserveEvent('Safe to Feel Eros')">Reserve</button>
+          </div>
         </div>
 
-        <!-- Event Card 3 (placeholder) -->
+        <!-- Event Card 3: Laboratorio Festival -->
         <div class="event-card">
-          <div class="event-card-name">[Event Name]</div>
-          <div class="event-card-date">[Date]</div>
-          <button class="btn-book-now" onclick="reserveEvent('[Event Name]')">Reserve</button>
+          <img class="event-card-img" src="https://mexzungu.com/img/social/labo.png" alt="Laboratorio Festival">
+          <div class="event-card-body">
+            <div class="event-card-name">Laboratorio Festival</div>
+            <div class="event-card-date">August 17 to 23 &nbsp;·&nbsp; with Jessica Walker</div>
+            <button class="btn-book-now" onclick="reserveEvent('Laboratorio Festival')">Reserve</button>
+          </div>
         </div>
 
       </div>
