@@ -402,6 +402,7 @@
       text-transform: uppercase;
       color: var(--sage);
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .about h2 {
@@ -1264,7 +1265,6 @@
     .contact-form textarea {
       resize: vertical;
       min-height: 120px;
-      border-color: #a8c5a0;
     }
 
     .btn-send {
@@ -1321,7 +1321,7 @@
       font-weight: 400;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      border: 1.5px solid rgba(250, 248, 244, 0.3);
+      border: 1px solid #a8c5a0;
       border-radius: 2px;
       transition: border-color 0.25s, color 0.25s, background 0.25s;
       white-space: nowrap;
@@ -1855,8 +1855,6 @@
           <li>A personal map for moving forward</li>
         </ul>
         <span class="service-journey-subtitle">Three-month online or in person private journey</span>
-        <div class="service-price">€2,100</div>
-        <div class="service-location">Three-month private journey</div>
       </div>
 
     </div>
@@ -1877,7 +1875,7 @@
         <!-- WORKSHOPS column -->
         <div class="experiences-col">
           <h3 class="experiences-col-title">Workshops</h3>
-          <p>Group sessions created in a playful and experiential way around intuition, emotional healing, embodiment, connection, self-awareness, emotional eating, authentic relating, consent practices, and curated workshops designed for specific events, festivals, and retreats.</p>
+          <p>Experiential workshops that invite self-discovery, emotional healing, authentic connection, and embodiment through themes including intuition, emotional eating, authentic relating, consent practices, and more. Custom workshops are also created for retreats, festivals, and special events.</p>
         </div>
 
         <!-- RETREATS column -->
@@ -2078,12 +2076,15 @@
 
       <div class="contact-layout">
         <!-- Contact form -->
-        <form class="contact-form" action="mailto:einatdot@gmail.com" method="POST" enctype="text/plain">
-          <input type="text" name="name" placeholder="Your name" required autocomplete="name">
-          <input type="email" name="email" placeholder="Your email" required autocomplete="email">
-          <textarea name="message" placeholder="Your message" rows="5" required></textarea>
-          <button type="submit" class="btn-send">Send message</button>
-        </form>
+        <div id="contact-form-wrap">
+          <form class="contact-form" id="contact-form">
+            <input type="text" id="contact-name" name="name" placeholder="Your name" required autocomplete="name">
+            <input type="email" id="contact-email" name="email" placeholder="Your email" required autocomplete="email">
+            <textarea id="contact-message" name="message" placeholder="Your message" rows="5" required></textarea>
+            <button type="submit" class="btn-send">Send message</button>
+          </form>
+          <div id="contact-result" style="display:none;"></div>
+        </div>
 
         <!-- WhatsApp -->
         <div class="contact-wa">
@@ -2111,11 +2112,15 @@
     <div class="booking-modal-box">
       <button class="booking-modal-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
       <h3 id="booking-modal-title">Book a Safe to Feel Session</h3>
-      <div class="booking-form">
-        <input type="text" id="booking-name" placeholder="Your name" autocomplete="name">
-        <input type="email" id="booking-email" placeholder="Your email" autocomplete="email">
-        <textarea id="booking-message" placeholder="Tell me a little about yourself and what brought you here..." rows="4"></textarea>
-        <button type="button" class="btn-booking-submit" onclick="submitBookingInquiry()">Send</button>
+      <div id="booking-form-wrap">
+        <div class="booking-form">
+          <input type="text" id="booking-name" placeholder="Your name" required autocomplete="name">
+          <input type="email" id="booking-email" placeholder="Your email" required autocomplete="email">
+          <input type="tel" id="booking-whatsapp" placeholder="Your WhatsApp number (optional)" autocomplete="tel">
+          <textarea id="booking-message" placeholder="Tell me a little about yourself and what brought you here..." rows="4" required></textarea>
+          <button type="button" class="btn-booking-submit" onclick="submitBookingInquiry()">Send</button>
+        </div>
+        <div id="booking-result" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -2276,7 +2281,12 @@
       document.getElementById('booking-modal-title').textContent = label;
       document.getElementById('booking-name').value = '';
       document.getElementById('booking-email').value = '';
+      document.getElementById('booking-whatsapp').value = '';
       document.getElementById('booking-message').value = '';
+      document.querySelector('#booking-form-wrap .booking-form').style.display = '';
+      var resultEl = document.getElementById('booking-result');
+      resultEl.style.display = 'none';
+      resultEl.innerHTML = '';
       document.getElementById('booking-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -2287,19 +2297,63 @@
     }
 
     function submitBookingInquiry() {
-      var name    = document.getElementById('booking-name').value.trim();
-      var email   = document.getElementById('booking-email').value.trim();
-      var message = document.getElementById('booking-message').value.trim();
-      var service = _bookingService || 'a session';
-      var text = 'Hi Einat, I am interested in booking a ' + service + '.'
-               + (name    ? ' Name: '  + name  + '.' : '')
-               + (email   ? ' Email: ' + email + '.' : '')
-               + (message ? ' ' + message             : '');
-      window.open('https://wa.me/34666267243?text=' + encodeURIComponent(text), '_blank');
+      var name     = document.getElementById('booking-name').value.trim();
+      var email    = document.getElementById('booking-email').value.trim();
+      var whatsapp = document.getElementById('booking-whatsapp').value.trim();
+      var message  = document.getElementById('booking-message').value.trim();
+      if (!name || !email || !message) return;
+      var resultEl = document.getElementById('booking-result');
+      fetch('https://formsubmit.co/ajax/einatdot@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, whatsapp: whatsapp, message: message, _subject: 'New inquiry - Safe to Feel', _captcha: 'false', _template: 'table' })
+      })
+      .then(function(r) {
+        if (r.ok) {
+          document.querySelector('#booking-form-wrap .booking-form').style.display = 'none';
+          resultEl.style.display = 'block';
+          resultEl.innerHTML = '<p style="font-family:\'Cormorant Garamond\',serif;font-size:1.1rem;color:var(--brown-mid);line-height:1.8;text-align:center;padding:24px 0;">Thank you. Einat will be in touch with you soon.</p>';
+        } else {
+          resultEl.style.display = 'block';
+          resultEl.innerHTML = '<p style="color:var(--terra);font-size:14px;margin-top:12px;">Something went wrong. Please try again.</p>';
+        }
+      })
+      .catch(function() {
+        resultEl.style.display = 'block';
+        resultEl.innerHTML = '<p style="color:var(--terra);font-size:14px;margin-top:12px;">Something went wrong. Please try again.</p>';
+      });
     }
 
     document.getElementById('booking-modal').addEventListener('click', function(e) {
       if (e.target === this) closeBookingModal();
+    });
+
+    // ── Contact form AJAX ─────────────────────────────────────────────
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var name     = document.getElementById('contact-name').value.trim();
+      var email    = document.getElementById('contact-email').value.trim();
+      var message  = document.getElementById('contact-message').value.trim();
+      var resultEl = document.getElementById('contact-result');
+      fetch('https://formsubmit.co/ajax/einatdot@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, message: message, _subject: 'Contact - Safe to Feel', _captcha: 'false', _template: 'table' })
+      })
+      .then(function(r) {
+        if (r.ok) {
+          document.getElementById('contact-form').style.display = 'none';
+          resultEl.style.display = 'block';
+          resultEl.innerHTML = '<p style="font-family:\'Cormorant Garamond\',serif;font-size:1.15rem;color:rgba(250,248,244,0.85);line-height:1.8;padding:20px 0;">Thank you. Einat will be in touch with you soon.</p>';
+        } else {
+          resultEl.style.display = 'block';
+          resultEl.innerHTML = '<p style="color:var(--lotus-pink);font-size:14px;margin-top:12px;">Something went wrong. Please try again.</p>';
+        }
+      })
+      .catch(function() {
+        resultEl.style.display = 'block';
+        resultEl.innerHTML = '<p style="color:var(--lotus-pink);font-size:14px;margin-top:12px;">Something went wrong. Please try again.</p>';
+      });
     });
 
     // ── Reserve event via WhatsApp ────────────────────────────────────
