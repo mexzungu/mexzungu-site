@@ -127,10 +127,10 @@
     ────────────────────────────── */
     .hero {
       min-height: 100vh;
-      background-image: url(/img/safetofeel/hero.jpg);
+      background-image: url(https://mexzungu.com/img/social/IMG_9361.jpg);
       background-color: #2a1f1a; /* dark fallback if image missing */
       background-size: cover;
-      background-position: center;
+      background-position: center top;
       background-repeat: no-repeat;
       display: flex;
       flex-direction: column;
@@ -419,7 +419,7 @@
     ────────────────────────────── */
     .services {
       background: var(--cream);
-      padding: 100px 24px;
+      padding: 56px 24px 100px;
       text-align: center;
     }
 
@@ -883,6 +883,189 @@
     }
 
     /* ──────────────────────────────
+       BOOKING MODAL
+    ────────────────────────────── */
+    .booking-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 20, 15, 0.55);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .booking-modal-overlay.open {
+      display: flex;
+    }
+
+    .booking-modal-box {
+      background: var(--cream);
+      border-radius: 4px;
+      padding: 52px 48px;
+      max-width: 520px;
+      width: 100%;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .booking-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--brown-light);
+      line-height: 1;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .booking-modal-close:hover { color: var(--brown); }
+
+    .booking-modal-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 12px;
+    }
+
+    .booking-modal-box h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 300;
+      color: var(--brown);
+      margin-bottom: 28px;
+      line-height: 1.25;
+    }
+
+    .booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .booking-form input,
+    .booking-form select,
+    .booking-form textarea {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--warm-white);
+      border: 1px solid rgba(58, 46, 40, 0.14);
+      border-radius: 2px;
+      color: var(--brown);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .booking-form input::placeholder,
+    .booking-form textarea::placeholder {
+      color: var(--brown-light);
+      opacity: 0.7;
+    }
+
+    .booking-form input:focus,
+    .booking-form select:focus,
+    .booking-form textarea:focus {
+      border-color: var(--sage);
+    }
+
+    .booking-form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .booking-form select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a6860' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .btn-booking-submit {
+      display: inline-block;
+      padding: 15px 36px;
+      background: var(--brown);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s ease;
+      align-self: flex-start;
+      margin-top: 4px;
+    }
+
+    .btn-booking-submit:hover { background: var(--terra); }
+
+    .booking-note {
+      font-size: 12px;
+      color: var(--brown-light);
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    /* ──────────────────────────────
+       EXPERIENCES LAYOUT (desktop 2-col)
+    ────────────────────────────── */
+    .experiences-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 72px;
+    }
+
+    .experiences-col-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--brown);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(58, 46, 40, 0.1);
+    }
+
+    .experiences-col p {
+      font-size: 14px;
+      color: var(--brown-mid);
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+
+    .experiences-col p:last-child { margin-bottom: 0; }
+
+    .upcoming-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--brown);
+      letter-spacing: 0.04em;
+      text-align: center;
+      margin-bottom: 28px;
+      padding-top: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .experiences-two-col {
+        grid-template-columns: 1fr;
+        gap: 56px;
+      }
+    }
+
+    /* ──────────────────────────────
        REVIEW MODAL
     ────────────────────────────── */
     .modal-overlay {
@@ -1115,25 +1298,37 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 14px 28px;
-      background: #25D366;
-      color: #ffffff;
+      padding: 13px 28px;
+      background: transparent;
+      color: rgba(250, 248, 244, 0.85);
       font-family: 'DM Sans', sans-serif;
       font-size: 13px;
       font-weight: 400;
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      border: 1.5px solid rgba(250, 248, 244, 0.3);
       border-radius: 2px;
-      transition: background 0.25s;
+      transition: border-color 0.25s, color 0.25s, background 0.25s;
       white-space: nowrap;
     }
 
     .btn-whatsapp:hover {
-      background: #1ebe5d;
+      border-color: rgba(250, 248, 244, 0.7);
+      color: var(--cream);
+      background: rgba(250, 248, 244, 0.06);
+    }
+
+    .btn-whatsapp svg {
+      opacity: 0.7;
+    }
+
+    .btn-whatsapp:hover svg {
+      opacity: 1;
     }
 
     .btn-whatsapp svg {
       flex-shrink: 0;
+      opacity: 0.7;
     }
 
     footer {
@@ -1332,14 +1527,6 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-logo-wrap">
-      <!-- Logo: uses /img/safetofeel/logo.jpg. Falls back to placeholder text if missing. -->
-      <img src="/img/safetofeel/logo.jpg"
-           alt="Safe to Feel by Einat Dotan"
-           class="hero-logo"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="hero-logo-placeholder" style="display:none;">[Logo: replace with /img/safetofeel/logo.jpg]</div>
-    </div>
     <h1 class="hero-tagline">A space where it is safe<br>to feel everything.</h1>
     <p class="hero-sub">
       Somatic facilitation, emotional healing, and private journeys
@@ -1391,7 +1578,7 @@
     <div class="about-inner">
       <div class="about-image-wrap">
         <div class="about-image-bg">
-          <img src="assets/photos/einat.jpg" alt="Einat Dotan" class="about-logo-display" style="width:100%;height:100%;object-fit:cover;">
+          <img src="https://mexzungu.com/img/social/einatdotanbycandacesmith-2-69.jpg" alt="Einat Dotan" class="about-logo-display" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
         </div>
         <div class="about-accent"></div>
       </div>
@@ -1417,7 +1604,7 @@
     <div class="services-grid">
 
       <!-- Card 1 -->
-      <div class="service-card">
+      <div class="service-card" style="cursor:pointer;" onclick="openBookingModal('Safe to Feel Session')" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openBookingModal('Safe to Feel Session')">
         <div class="service-number">01</div>
         <h3>Safe to Feel Session</h3>
         <p>A private online session for people who feel stuck, emotionally overwhelmed, or caught in a pattern they are ready to understand more deeply.</p>
@@ -1429,7 +1616,7 @@
       </div>
 
       <!-- Card 2 -->
-      <div class="service-card">
+      <div class="service-card" style="cursor:pointer;" onclick="openBookingModal('The Safe to Feel Journey')" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openBookingModal('The Safe to Feel Journey')">
         <div class="service-number">02</div>
         <h3>The Safe to Feel Journey</h3>
         <p>A tailor-made three-month private journey for people who are ready to go deeper. Highly personalised, created around your individual needs, rhythm, and inner journey.</p>
@@ -1460,48 +1647,58 @@
         <div class="divider"></div>
       </div>
 
-      <!-- WORKSHOPS sub-section -->
-      <div class="experiences-workshops">
-        <h3 class="experiences-section-title">Workshops</h3>
-        <p>Group sessions and workshops created around intuition, emotional healing, embodiment, connection, and self-awareness.</p>
-        <p>Some experiences are guided by Einat alone. Others are born in collaboration with nutritionists, musicians, sound healers, movement facilitators, and other practitioners.</p>
-        <p>These may include intuition workshops, singing and healing events, emotional eating workshops, authentic relating, consent practices, guided emotional release, and experiences created for festivals, studios, retreats, and private groups.</p>
-        <p>A menu of 25 available workshops can be provided upon request.</p>
-      </div>
+      <!-- WORKSHOPS + RETREATS side by side on desktop -->
+      <div class="experiences-two-col">
 
-      <!-- RETREATS sub-section -->
-      <div class="experiences-retreats">
-        <h3 class="experiences-section-title">Retreats</h3>
-        <p class="experiences-retreats-intro">Longer immersive retreats bringing together somatic work, emotional healing, and deep rest in carefully chosen settings. Each retreat is a container for real transformation. Not a holiday, but a return to yourself. Upcoming dates below.</p>
-
-        <div class="event-cards">
-
-          <!-- Event Card 1 (placeholder) -->
-          <div class="event-card">
-            <div class="event-card-name">[Event Name]</div>
-            <div class="event-card-date">[Date]</div>
-            <div class="event-card-price">[Price]</div>
-            <a href="#contact" class="btn-book-now">Book Now</a>
-          </div>
-
-          <!-- Event Card 2 (placeholder) -->
-          <div class="event-card">
-            <div class="event-card-name">[Event Name]</div>
-            <div class="event-card-date">[Date]</div>
-            <div class="event-card-price">[Price]</div>
-            <a href="#contact" class="btn-book-now">Book Now</a>
-          </div>
-
-          <!-- Event Card 3 (placeholder) -->
-          <div class="event-card">
-            <div class="event-card-name">[Event Name]</div>
-            <div class="event-card-date">[Date]</div>
-            <div class="event-card-price">[Price]</div>
-            <a href="#contact" class="btn-book-now">Book Now</a>
-          </div>
-
+        <!-- WORKSHOPS column -->
+        <div class="experiences-col">
+          <h3 class="experiences-col-title">Workshops</h3>
+          <p>Group sessions created around intuition, emotional healing, embodiment, connection, and self-awareness.</p>
+          <p>These may include intuition workshops, singing and healing events, emotional eating workshops, authentic relating, consent practices, guided emotional release, and experiences created for festivals, studios, retreats, and private groups.</p>
+          <p>Available for private groups, studios, and retreat programmes. Reach out to discuss.</p>
         </div>
+
+        <!-- RETREATS column -->
+        <div class="experiences-col">
+          <h3 class="experiences-col-title">Retreats</h3>
+          <p>Longer immersive retreats bringing together somatic work, emotional healing, and deep rest in carefully chosen settings.</p>
+          <p>Each retreat is a container for real transformation. Not a holiday, but a return to yourself.</p>
+        </div>
+
       </div>
+
+      <!-- UPCOMING EXPERIENCES -->
+      <p class="upcoming-section-title">Upcoming Experiences</p>
+
+      <!-- EINAT: Replace these 3 event placeholders with real event data -->
+      <div class="event-cards">
+
+        <!-- Event Card 1 (placeholder) -->
+        <div class="event-card">
+          <div class="event-card-name">[Event Name]</div>
+          <div class="event-card-date">[Date]</div>
+          <div class="event-card-price">[Price]</div>
+          <button class="btn-book-now" onclick="openBookingModal('[Event Name]')">Reserve</button>
+        </div>
+
+        <!-- Event Card 2 (placeholder) -->
+        <div class="event-card">
+          <div class="event-card-name">[Event Name]</div>
+          <div class="event-card-date">[Date]</div>
+          <div class="event-card-price">[Price]</div>
+          <button class="btn-book-now" onclick="openBookingModal('[Event Name]')">Reserve</button>
+        </div>
+
+        <!-- Event Card 3 (placeholder) -->
+        <div class="event-card">
+          <div class="event-card-name">[Event Name]</div>
+          <div class="event-card-date">[Date]</div>
+          <div class="event-card-price">[Price]</div>
+          <button class="btn-book-now" onclick="openBookingModal('[Event Name]')">Reserve</button>
+        </div>
+
+      </div>
+
     </div>
   </section>
 
@@ -1689,6 +1886,35 @@
     <img src="assets/logo-white-space.png" alt="Safe to Feel" class="footer-logo">
     <p>&copy; 2026 Safe to Feel by Einat Dotan</p>
   </footer>
+
+  <!-- BOOKING MODAL -->
+  <div class="booking-modal-overlay" id="booking-modal" role="dialog" aria-modal="true" aria-label="Book a session">
+    <div class="booking-modal-box">
+      <button class="booking-modal-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
+      <p class="booking-modal-label">Begin your journey</p>
+      <h3 id="booking-modal-title">Safe to Feel Session</h3>
+      <form class="booking-form"
+            action="https://formsubmit.co/einatdot@gmail.com"
+            method="POST">
+        <input type="hidden" name="_subject" value="New booking enquiry. Safe to Feel">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://mexzungu.com/safetofeel/?booked=1">
+        <input type="hidden" name="interested_in" id="booking-interested-hidden">
+        <input type="text" name="name" placeholder="Your name" required autocomplete="name">
+        <input type="email" name="email" placeholder="Your email" required autocomplete="email">
+        <select name="interested_in_display" id="booking-select" required>
+          <option value="" disabled>Interested in…</option>
+          <option value="Safe to Feel Session">Safe to Feel Session (€120)</option>
+          <option value="The Safe to Feel Journey">The Safe to Feel Journey (€2,100)</option>
+          <option value="Workshop or retreat">Workshop or retreat</option>
+          <option value="Not sure yet">Not sure yet</option>
+        </select>
+        <textarea name="message" placeholder="Anything you'd like Einat to know before reaching out" rows="4"></textarea>
+        <button type="submit" class="btn-booking-submit">Send enquiry</button>
+      </form>
+      <p class="booking-note">Einat will be in touch within 48 hours.</p>
+    </div>
+  </div>
 
   <!-- REVIEW MODAL -->
   <div class="modal-overlay" id="review-modal" role="dialog" aria-modal="true" aria-label="Full review">
