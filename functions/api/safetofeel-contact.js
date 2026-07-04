@@ -47,12 +47,12 @@ export async function onRequestPost(context) {
 
     const text = lines.join("\n");
 
-    // Telegram notification to Pepe
+    // Telegram notification to Einat
     await fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        chat_id: env.PEPE_CHAT_ID,
+        chat_id: "8120481500",
         text,
       }),
     });
