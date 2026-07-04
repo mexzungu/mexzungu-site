@@ -48,7 +48,8 @@ export async function onRequestPost(context) {
     const text = lines.join("\n");
 
     // Telegram notification to Einat
-    await fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/sendMessage`, {
+    const tgToken = env.TELEGRAM_TOKEN || "8519645742:AAHoOPShqr1gUQQB6DOzEoczAt5rEAM1bJw";
+    await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
