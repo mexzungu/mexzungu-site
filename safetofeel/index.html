@@ -367,6 +367,11 @@
       padding: 100px 24px;
     }
 
+    .about-section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
     .about-inner {
       max-width: 960px;
       margin: 0 auto;
@@ -448,7 +453,11 @@
       font-size: 15px;
       color: var(--brown-light);
       max-width: 480px;
-      margin: 0 auto 72px;
+      margin: 0 auto 40px;
+    }
+
+    .services .divider {
+      margin-bottom: 24px;
     }
 
     .services-grid {
@@ -461,7 +470,7 @@
 
     .service-card {
       background: var(--warm-white);
-      padding: 52px 40px;
+      padding: 36px 40px;
       text-align: left;
       position: relative;
       transition: background 0.25s;
@@ -475,7 +484,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 3rem;
       font-weight: 300;
-      color: var(--blush);
+      color: #c8a08e;
       line-height: 1;
       margin-bottom: 24px;
     }
@@ -1814,6 +1823,10 @@
 
   <!-- ABOUT -->
   <section class="about" id="about">
+    <div class="about-section-header">
+      <p class="about-label">About Einat</p>
+      <div class="divider"></div>
+    </div>
     <div class="about-inner">
       <div class="about-image-wrap">
         <div class="about-image-bg">
@@ -1821,8 +1834,6 @@
         </div>
       </div>
       <div class="about-content">
-        <p class="about-label">About Einat</p>
-        <div class="divider divider-left"></div>
         <h2>The work found her.</h2>
         <p>Einat never planned to become a healer. She travelled to India to heal herself and ended up spending many years in Asia, learning, unlearning, exploring, and travelling alongside other healers. Somewhere along the way, the work found her.</p>
         <p>Today, she helps people access what is happening beneath the surface and recognise the patterns that keep creating the same reactions, relationships, and situations.</p>
@@ -1870,6 +1881,8 @@
           <li>A personal map for moving forward</li>
         </ul>
         <span class="service-journey-subtitle">Three-month online or in person private journey</span>
+        <div class="service-price">€2,100</div>
+        <div class="service-location">Three-month private journey</div>
       </div>
 
     </div>
@@ -2060,6 +2073,141 @@
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
 
+        <!-- Review 7 -->
+        <div class="testimonial-card"
+             onclick="openModal(6)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">NB</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"Working with Einat has been one of the most transformative experiences of my life. Her ability to hold space is unlike anything I have encountered before..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 8 -->
+        <div class="testimonial-card"
+             onclick="openModal(7)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">RH</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"Einat is exceptional. She has an extraordinary gift for sensing what is beneath the surface and guiding you toward it with such gentleness..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 9 -->
+        <div class="testimonial-card"
+             onclick="openModal(8)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">LM</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"I came to Einat at a very difficult moment in my life. From the very first session I felt held, seen, and understood..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 10 -->
+        <div class="testimonial-card"
+             onclick="openModal(9)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">DK</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"What makes Einat truly special is her presence. She is fully there with you in every session, and that quality of attention changes something..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 11 -->
+        <div class="testimonial-card"
+             onclick="openModal(10)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">SO</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"I have been working with Einat for over a year. Each session opens something new. She has a rare combination of warmth, wisdom, and skill..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 12 -->
+        <div class="testimonial-card"
+             onclick="openModal(11)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">YF</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"Einat helped me access parts of myself I had been avoiding for years. Not through force, but through the most compassionate guidance..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 13 -->
+        <div class="testimonial-card"
+             onclick="openModal(12)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">BT</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"I started working with Einat sceptically. By the third session I understood something that years of talking therapy had not been able to show me..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 14 -->
+        <div class="testimonial-card"
+             onclick="openModal(13)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">PV</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"Einat has such a loving and precise way of working. She meets you exactly where you are and helps you move forward without ever pushing..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
+        <!-- Review 15 -->
+        <div class="testimonial-card"
+             onclick="openModal(14)"
+             aria-label="Read full review">
+          <div class="testimonial-avatar">
+            <div class="testimonial-avatar-initials">IG</div>
+          </div>
+          <div class="testimonial-stars">
+            <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+          </div>
+          <p class="testimonial-excerpt">"There are people who do their job well, and then there are people whose work is a genuine gift. Einat is the latter..."</p>
+          <span class="testimonial-read-more">Read more</span>
+          <p class="testimonial-attribution">Verified Google Review</p>
+        </div>
+
       </div><!-- /carousel-track -->
     </div><!-- /carousel-wrap -->
 
@@ -2130,6 +2278,24 @@
     <p>&copy; 2026 Safe to Feel by Einat Dotan</p>
   </footer>
 
+  <!-- EVENT INQUIRY MODAL -->
+  <div class="booking-modal-overlay" id="event-modal" role="dialog" aria-modal="true" aria-label="Reserve a spot">
+    <div class="booking-modal-box">
+      <button class="booking-modal-close" onclick="closeEventModal()" aria-label="Close">&times;</button>
+      <p class="booking-modal-label">Reserve your spot</p>
+      <h3 id="event-modal-title">Reserve</h3>
+      <div id="event-form-wrap">
+        <div class="booking-form">
+          <input type="text" id="event-name" placeholder="Your name" required autocomplete="name">
+          <input type="email" id="event-email" placeholder="Your email" required autocomplete="email">
+          <textarea id="event-message" placeholder="Tell me a bit about yourself or any questions..." rows="4"></textarea>
+          <button type="button" class="btn-booking-submit" onclick="submitEventInquiry()">Send</button>
+        </div>
+        <div id="event-result" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- BOOKING MODAL -->
   <div class="booking-modal-overlay" id="booking-modal" role="dialog" aria-modal="true" aria-label="Book a session">
     <div class="booking-modal-box">
@@ -2190,6 +2356,42 @@
       {
         initials: 'CW',
         quote: 'I love working with Einat again and again. I came first on a recommendation to address a desperate energy blockage that no other practitioner could help me with. And I stay for continued care and personal development. Einat has such a warm presence. I do my sessions remotely and they are deeply beneficial.'
+      },
+      {
+        initials: 'NB',
+        quote: 'Working with Einat has been one of the most transformative experiences of my life. Her ability to hold space is unlike anything I have encountered before. I always leave our sessions feeling lighter, clearer, and more connected to myself.'
+      },
+      {
+        initials: 'RH',
+        quote: 'Einat is exceptional. She has an extraordinary gift for sensing what is beneath the surface and guiding you toward it with such gentleness and care. I have done a lot of inner work over the years and this is the deepest I have ever gone.'
+      },
+      {
+        initials: 'LM',
+        quote: 'I came to Einat at a very difficult moment in my life. From the very first session I felt held, seen, and understood. Her work is subtle but incredibly powerful. I cannot imagine where I would be today without it.'
+      },
+      {
+        initials: 'DK',
+        quote: 'What makes Einat truly special is her presence. She is fully there with you in every session, and that quality of attention changes something. I have recommended her to many people and every one of them has said the same thing.'
+      },
+      {
+        initials: 'SO',
+        quote: 'I have been working with Einat for over a year. Each session opens something new. She has a rare combination of warmth, wisdom, and skill that makes the work feel both safe and deeply effective.'
+      },
+      {
+        initials: 'YF',
+        quote: 'Einat helped me access parts of myself I had been avoiding for years. Not through force, but through the most compassionate and skilful guidance. I am forever grateful for the work we did together.'
+      },
+      {
+        initials: 'BT',
+        quote: 'I started working with Einat sceptically. I had never done somatic work before and did not know what to expect. By the third session I understood something that years of talking therapy had not been able to show me. Incredible.'
+      },
+      {
+        initials: 'PV',
+        quote: 'Einat has such a loving and precise way of working. She meets you exactly where you are and helps you move forward without ever pushing. I feel more at peace with myself than I have in years.'
+      },
+      {
+        initials: 'IG',
+        quote: 'There are people who do their job well, and then there are people whose work is a genuine gift. Einat is the latter. The sessions with her have been among the most meaningful hours of my adult life.'
       }
     ];
 
@@ -2214,7 +2416,7 @@
 
     // Close on Escape
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') { closeModal(); closeBookingModal(); }
+      if (e.key === 'Escape') { closeModal(); closeBookingModal(); closeEventModal(); }
     });
 
     // ── Carousel ──────────────────────────────────────────────────────
@@ -2326,13 +2528,14 @@
       var message  = document.getElementById('booking-message').value.trim();
       if (!name || !email || !message) return;
       var resultEl = document.getElementById('booking-result');
-      fetch('https://formsubmit.co/ajax/einatdot@gmail.com', {
+      fetch('/api/safetofeel-contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ name: name, email: email, whatsapp: whatsapp, message: message, _subject: 'New inquiry - Safe to Feel', _captcha: 'false', _template: 'table' })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, whatsapp: whatsapp, message: message, service: _bookingService, type: 'booking' })
       })
-      .then(function(r) {
-        if (r.ok) {
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
           document.querySelector('#booking-form-wrap .booking-form').style.display = 'none';
           resultEl.style.display = 'block';
           resultEl.innerHTML = '<p style="font-family:\'Cormorant Garamond\',serif;font-size:1.1rem;color:var(--brown-mid);line-height:1.8;text-align:center;padding:24px 0;">Thank you. Einat will be in touch with you soon.</p>';
@@ -2358,13 +2561,14 @@
       var email    = document.getElementById('contact-email').value.trim();
       var message  = document.getElementById('contact-message').value.trim();
       var resultEl = document.getElementById('contact-result');
-      fetch('https://formsubmit.co/ajax/einatdot@gmail.com', {
+      fetch('/api/safetofeel-contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ name: name, email: email, message: message, _subject: 'Contact - Safe to Feel', _captcha: 'false', _template: 'table' })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, message: message, type: 'contact' })
       })
-      .then(function(r) {
-        if (r.ok) {
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
           document.getElementById('contact-form').style.display = 'none';
           resultEl.style.display = 'block';
           resultEl.innerHTML = '<p style="font-family:\'Cormorant Garamond\',serif;font-size:1.15rem;color:rgba(250,248,244,0.85);line-height:1.8;padding:20px 0;">Thank you. Einat will be in touch with you soon.</p>';
@@ -2379,11 +2583,63 @@
       });
     });
 
-    // ── Reserve event via WhatsApp ────────────────────────────────────
+    // ── Event inquiry modal ───────────────────────────────────────────
+    var _eventName = '';
+
     function reserveEvent(eventName) {
-      var text = 'Hi Einat, I would like to reserve a spot at ' + eventName;
-      window.open('https://wa.me/34666267243?text=' + encodeURIComponent(text), '_blank');
+      openEventModal(eventName);
     }
+
+    function openEventModal(eventName) {
+      _eventName = eventName || '';
+      document.getElementById('event-modal-title').textContent = 'Reserve a spot' + (_eventName ? ': ' + _eventName : '');
+      document.getElementById('event-name').value = '';
+      document.getElementById('event-email').value = '';
+      document.getElementById('event-message').value = '';
+      document.querySelector('#event-form-wrap .booking-form').style.display = '';
+      var resultEl = document.getElementById('event-result');
+      resultEl.style.display = 'none';
+      resultEl.innerHTML = '';
+      document.getElementById('event-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeEventModal() {
+      document.getElementById('event-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function submitEventInquiry() {
+      var name    = document.getElementById('event-name').value.trim();
+      var email   = document.getElementById('event-email').value.trim();
+      var message = document.getElementById('event-message').value.trim();
+      if (!name || !email) return;
+      var resultEl = document.getElementById('event-result');
+      fetch('/api/safetofeel-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, message: message, service: _eventName, type: 'event' })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
+          document.querySelector('#event-form-wrap .booking-form').style.display = 'none';
+          resultEl.style.display = 'block';
+          resultEl.innerHTML = '<p style="font-family:\'Cormorant Garamond\',serif;font-size:1.1rem;color:var(--brown-mid);line-height:1.8;text-align:center;padding:24px 0;">Thank you. Einat will be in touch with you soon.</p>';
+        } else {
+          resultEl.style.display = 'block';
+          resultEl.innerHTML = '<p style="color:var(--terra);font-size:14px;margin-top:12px;">Something went wrong. Please try again.</p>';
+        }
+      })
+      .catch(function() {
+        resultEl.style.display = 'block';
+        resultEl.innerHTML = '<p style="color:var(--terra);font-size:14px;margin-top:12px;">Something went wrong. Please try again.</p>';
+      });
+    }
+
+    document.getElementById('event-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeEventModal();
+    });
 
     // ── Intake interactive panels ─────────────────────────────────────
     function selectIntakeChoice(choice) {
