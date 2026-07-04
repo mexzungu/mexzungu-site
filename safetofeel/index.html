@@ -971,15 +971,17 @@
       text-transform: uppercase;
       color: var(--sage);
       margin-bottom: 12px;
+      text-align: center;
     }
 
     .booking-modal-box h3 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.9rem;
-      font-weight: 300;
+      font-weight: 600;
       color: var(--brown);
       margin-bottom: 28px;
       line-height: 1.25;
+      text-align: center;
     }
 
     .booking-form {
@@ -1880,9 +1882,8 @@
           <li>A closing integration session</li>
           <li>A personal map for moving forward</li>
         </ul>
-        <span class="service-journey-subtitle">Three-month online or in person private journey</span>
+        <span class="service-journey-subtitle">Three-month online or in-person private journey</span>
         <div class="service-price">€2,100</div>
-        <div class="service-location">Three-month private journey</div>
       </div>
 
     </div>
@@ -2291,6 +2292,7 @@
           <textarea id="event-message" placeholder="Tell me a bit about yourself or any questions..." rows="4"></textarea>
           <button type="button" class="btn-booking-submit" onclick="submitEventInquiry()">Send</button>
         </div>
+        <p class="booking-note" style="text-align:center;margin-top:20px;">Or reach out directly on <a href="https://wa.me/34666267243" target="_blank" rel="noopener" style="color:var(--terra);text-decoration:underline;">WhatsApp</a>.</p>
         <div id="event-result" style="display:none;"></div>
       </div>
     </div>
@@ -2309,6 +2311,7 @@
           <textarea id="booking-message" placeholder="Tell me a little about yourself and what brought you here..." rows="4" required></textarea>
           <button type="button" class="btn-booking-submit" onclick="submitBookingInquiry()">Send</button>
         </div>
+        <p class="booking-note" style="text-align:center;margin-top:20px;">Or reach out directly on <a href="https://wa.me/34666267243" target="_blank" rel="noopener" style="color:var(--terra);text-decoration:underline;">WhatsApp</a>.</p>
         <div id="booking-result" style="display:none;"></div>
       </div>
     </div>
@@ -2502,7 +2505,9 @@
 
     function openBookingModal(service) {
       _bookingService = service || '';
-      var label = _bookingService ? 'Book a ' + _bookingService : 'Book a Session';
+      var label = _bookingService === 'The Safe to Feel Journey'
+        ? 'Book the Safe to Feel Journey'
+        : (_bookingService ? 'Book a ' + _bookingService : 'Book a Session');
       document.getElementById('booking-modal-title').textContent = label;
       document.getElementById('booking-name').value = '';
       document.getElementById('booking-email').value = '';

@@ -1,7 +1,10 @@
 /**
- * Cloudflare Pages Function — Safe to Feel contact / booking / event inquiry
+ * Cloudflare Pages Function: Safe to Feel contact / booking / event inquiry
  * POST /api/safetofeel-contact
- * Receives form submission, pings Pepe on Telegram with inquiry details.
+ *
+ * Notifies Pepe via Telegram AND emails Einat directly at einatdot@gmail.com.
+ * Requires RESEND_API_KEY set in Cloudflare Pages > Settings > Environment variables.
+ * Free tier at resend.com (100 emails/day) is sufficient.
  */
 
 export async function onRequestPost(context) {
@@ -42,14 +45,36 @@ export async function onRequestPost(context) {
     if (message)  lines.push(``, `Message:`, message);
     lines.push(``, `via safetofeel.mexzungu.com`);
 
+    const text = lines.join("\n");
+
+    // Telegram notification to Pepe
     await fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: env.PEPE_CHAT_ID,
-        text: lines.join("\n"),
+        text,
       }),
     });
+
+    // Email notification directly to Einat via Resend
+    // Set RESEND_API_KEY in Cloudflare Pages > Settings > Environment variables
+    if (env.RESEND_API_KEY) {
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: "Safe to Feel <noreply@mexzungu.com>",
+          to: ["einatdot@gmail.com"],
+          reply_to: email,
+          subject: `Safe to Feel: ${label} from ${name}`,
+          text,
+        }),
+      });
+    }
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200, headers: corsHeaders,
