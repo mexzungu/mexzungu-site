@@ -2,10 +2,16 @@
  * Cloudflare Pages Function: Safe to Feel contact / booking / event inquiry
  * POST /api/safetofeel-contact
  *
- * Notifies Pepe via Telegram AND emails Einat directly at einatdot@gmail.com.
- * Requires RESEND_API_KEY set in Cloudflare Pages > Settings > Environment variables.
- * Free tier at resend.com (100 emails/day) is sufficient.
+ * Relays form submissions to the VPS tools server, which sends the Telegram
+ * notification to Einat. CF Workers cannot reach api.telegram.org directly
+ * (Telegram blocks Cloudflare's outbound IPs with 401). The relay at
+ * forms.mexzungu.com/safetofeel-notify handles Telegram delivery from the VPS.
+ *
+ * Email via Resend is optional. Set RESEND_API_KEY in Cloudflare Pages env vars.
  */
+
+const RELAY_URL = "https://forms.mexzungu.com/safetofeel-notify";
+const RELAY_SECRET = "stf-relay-2026";
 
 export async function onRequestPost(context) {
   const { env, request } = context;
@@ -34,34 +40,30 @@ export async function onRequestPost(context) {
     };
     const label = typeLabels[type] || "Inquiry";
 
-    const lines = [
-      `🌿 Safe to Feel: ${label}`,
-      ``,
-      `Name: ${name}`,
-      `Email: ${email}`,
-    ];
-    if (whatsapp) lines.push(`WhatsApp: ${whatsapp}`);
-    if (service)  lines.push(`Service / Event: ${service}`);
-    if (message)  lines.push(``, `Message:`, message);
-    lines.push(``, `via safetofeel.mexzungu.com`);
-
-    const text = lines.join("\n");
-
-    // Telegram notification to Einat
-    const tgToken = env.TELEGRAM_TOKEN || "8519645742:AAHoOPShqr1gUQQB6DOzEoczAt5rEAM1bJw";
-    await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+    // Relay to VPS tools server for Telegram delivery
+    const relayRes = await fetch(RELAY_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: "8120481500",
-        text,
-      }),
+      body: JSON.stringify({ name, email, message, whatsapp, service, type, secret: RELAY_SECRET }),
     });
+    const relayBody = await relayRes.json();
 
-    // Email notification directly to Einat via Resend
-    // Set RESEND_API_KEY in Cloudflare Pages > Settings > Environment variables
+    // Email notification via Resend (optional, requires RESEND_API_KEY in CF env vars)
+    let emailStatus = "skipped";
     if (env.RESEND_API_KEY) {
-      await fetch("https://api.resend.com/emails", {
+      const lines = [
+        `Safe to Feel: ${label}`,
+        ``,
+        `Name: ${name}`,
+        `Email: ${email}`,
+      ];
+      if (whatsapp) lines.push(`WhatsApp: ${whatsapp}`);
+      if (service)  lines.push(`Service / Event: ${service}`);
+      if (message)  lines.push(``, `Message:`, message);
+      lines.push(``, `via safetofeel.mexzungu.com`);
+      const text = lines.join("\n");
+
+      const emailRes = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,9 +77,14 @@ export async function onRequestPost(context) {
           text,
         }),
       });
+      emailStatus = emailRes.ok ? "sent" : "failed";
     }
 
-    return new Response(JSON.stringify({ ok: true }), {
+    return new Response(JSON.stringify({
+      ok: relayBody.ok === true,
+      telegram: relayBody.ok ? "delivered" : relayBody,
+      email: emailStatus,
+    }), {
       status: 200, headers: corsHeaders,
     });
 

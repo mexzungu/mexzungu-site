@@ -1438,13 +1438,21 @@
 
     .mobile-close {
       position: absolute;
-      top: 28px;
-      right: 28px;
-      font-size: 28px;
-      cursor: pointer;
-      color: var(--brown);
+      top: 24px;
+      right: 24px;
+      font-size: 32px;
       line-height: 1;
+      color: var(--brown);
+      background: transparent;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      z-index: 2;
+      -webkit-tap-highlight-color: transparent;
     }
+
+    .mobile-close:hover,
+    .mobile-close:focus-visible { color: var(--terra); outline: none; }
 
     /* ──────────────────────────────
        RESPONSIVE
@@ -1686,10 +1694,153 @@
       color: var(--brown-mid);
     }
 
+    /* ── Conversation flow ────────────────────────────────────────── */
+    .intake-conversation {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: left;
+      opacity: 1;
+      transition: opacity 0.45s ease;
+    }
+
+    .conversation-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 28px;
+      min-height: 60px;
+    }
+
+    .bubble {
+      max-width: 90%;
+      padding: 18px 24px;
+      border-radius: 22px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.55;
+      opacity: 0;
+      transform: translateY(6px);
+      animation: bubbleIn 0.55s ease forwards;
+    }
+
+    @keyframes bubbleIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .bubble-einat {
+      align-self: flex-start;
+      background: var(--warm-white);
+      border: 1px solid rgba(138, 158, 138, 0.28);
+      color: var(--brown);
+      border-bottom-left-radius: 6px;
+      position: relative;
+    }
+
+    .bubble-einat::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      bottom: 8px;
+      width: 14px;
+      height: 14px;
+      background: var(--warm-white);
+      border-left: 1px solid rgba(138, 158, 138, 0.28);
+      border-bottom: 1px solid rgba(138, 158, 138, 0.28);
+      border-bottom-left-radius: 3px;
+      transform: rotate(45deg);
+    }
+
+    .bubble-question {
+      align-self: flex-start;
+      background: var(--sage-pale);
+      border: 1px solid var(--sage-light);
+      color: var(--brown);
+      font-style: italic;
+      border-bottom-left-radius: 6px;
+    }
+
+    .bubble-you {
+      align-self: flex-end;
+      background: var(--brown);
+      color: var(--cream);
+      border-bottom-right-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-style: normal;
+    }
+
+    .conversation-choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      margin-bottom: 4px;
+    }
+
+    .chip-choice {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 22px;
+      background: var(--warm-white);
+      color: var(--brown);
+      border: 1.5px solid rgba(138, 158, 138, 0.35);
+      border-radius: 999px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      text-decoration: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .chip-choice:hover {
+      background: var(--sage-pale);
+      border-color: var(--sage);
+    }
+
+    .chip-primary {
+      background: var(--brown);
+      color: var(--cream);
+      border-color: var(--brown);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      padding: 13px 26px;
+    }
+
+    .chip-primary:hover {
+      background: var(--terra);
+      border-color: var(--terra);
+      color: var(--cream);
+    }
+
+    /* Dim the rest of the page while the conversation is active,
+       so the visitor feels heard, not surveyed. */
+    body.intake-conversing main > section:not(.intake),
+    body.intake-conversing .footer-cta,
+    body.intake-conversing footer {
+      opacity: 0.18;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    body.intake-conversing .intake {
+      padding-top: 120px;
+      padding-bottom: 120px;
+    }
+
     @media (max-width: 640px) {
       .intake-choices-grid {
         grid-template-columns: 1fr;
       }
+
+      .bubble { font-size: 1.05rem; padding: 14px 18px; }
+      .chip-choice { font-size: 0.85rem; padding: 11px 18px; }
 
       .intake-panel-actions {
         flex-direction: column;
@@ -1715,14 +1866,14 @@
       <li><a href="#testimonials">Reviews</a></li>
       <li><a href="#contact" class="nav-cta">Connect</a></li>
     </ul>
-    <div class="nav-hamburger" id="hamburger" onclick="openMenu()">
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
       <span></span><span></span><span></span>
     </div>
   </nav>
 
   <!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobile-menu">
-    <span class="mobile-close" onclick="closeMenu()">&#215;</span>
+  <div class="mobile-menu" id="mobile-menu" onclick="handleMobileMenuBackdrop(event)">
+    <button type="button" class="mobile-close" onclick="closeMenu()" aria-label="Close menu">&#215;</button>
     <a href="#services" onclick="closeMenu()">Work with Me</a>
     <a href="#experiences" onclick="closeMenu()">Experiences</a>
     <a href="#testimonials" onclick="closeMenu()">Reviews</a>
@@ -1761,64 +1912,11 @@
       <p class="intake-welcome-back" id="intake-welcome-back">You are welcome to stay. Take your time.</p>
     </div>
 
-    <!-- Panel 1: Exhausted -->
-    <div class="intake-panel" id="panel-exhausted">
-      <h3 class="intake-panel-heading">I am exhausted</h3>
-      <div class="intake-panel-body">
-        <p>Sometimes healing does not begin by doing more.</p>
-        <p>It begins by finally allowing yourself to stop.</p>
-        <p>If you are feeling depleted, I would love to invite you to begin gently.</p>
-      </div>
-      <div class="intake-panel-actions">
-        <a href="#services" class="btn-intake-primary">Explore Private Sessions</a>
-        <a href="#contact" class="btn-intake-outline">Message me</a>
-      </div>
-      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
-    </div>
-
-    <!-- Panel 2: Stuck -->
-    <div class="intake-panel" id="panel-stuck">
-      <h3 class="intake-panel-heading">I feel stuck</h3>
-      <div class="intake-panel-body">
-        <p>Often what keeps us stuck is not a lack of answers.</p>
-        <p>It is repeating the same unconscious patterns.</p>
-        <p>Together we can explore what is asking to change.</p>
-      </div>
-      <div class="intake-panel-actions">
-        <a href="#services" class="btn-intake-primary">Discover the Safe to Feel Journey</a>
-        <a href="#contact" class="btn-intake-outline">Message me</a>
-      </div>
-      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
-    </div>
-
-    <!-- Panel 3: Shifting -->
-    <div class="intake-panel" id="panel-shifting">
-      <h3 class="intake-panel-heading">Something is shifting</h3>
-      <div class="intake-panel-body">
-        <p>You are sensing that something new wants to emerge.</p>
-        <p>This can be one of the most beautiful moments to receive support.</p>
-      </div>
-      <div class="intake-panel-actions">
-        <a href="#experiences" class="btn-intake-primary">Upcoming Experiences</a>
-        <a href="#services" class="btn-intake-outline">Private Sessions</a>
-      </div>
-      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
-    </div>
-
-    <!-- Panel 4: Not sure yet -->
-    <div class="intake-panel" id="panel-unsure">
-      <h3 class="intake-panel-heading">I am not sure yet</h3>
-      <div class="intake-panel-body">
-        <p>You do not have to know.</p>
-        <p>Curiosity is enough.</p>
-        <p>Take your time exploring.</p>
-      </div>
-      <div class="intake-panel-actions">
-        <a href="#about" class="btn-intake-outline">About Einat</a>
-        <a href="#testimonials" class="btn-intake-outline">Voices from the Work</a>
-        <a href="#experiences" class="btn-intake-outline">Experiences</a>
-      </div>
-      <button class="intake-not-ready" onclick="returnToIntakeChoices()">I am not ready yet</button>
+    <!-- Conversation view: speech bubbles + follow-up choices -->
+    <div class="intake-conversation" id="intake-conversation" hidden>
+      <div class="conversation-stream" id="conversation-stream" role="log" aria-live="polite" aria-relevant="additions"></div>
+      <div class="conversation-choices" id="conversation-choices"></div>
+      <button type="button" class="intake-not-ready" onclick="returnToIntakeChoices()">Start over</button>
     </div>
 
   </section>
@@ -1994,7 +2092,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"I came to Einat after seeing several therapists over the years. Working with Einat felt completely different..."</p>
+          <p class="testimonial-excerpt">"I feel like I can share absolutely everything without fear of judgment."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2009,7 +2107,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Einat is very attentive and loving. She is always available and truly present, taking care with a lot of love..."</p>
+          <p class="testimonial-excerpt">"Her work is very powerful, and I am still impressed by the strength of the sessions and how much they truly transform."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2024,7 +2122,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Einat has helped me so much these past five years, like no one ever did. The sun starts shining again..."</p>
+          <p class="testimonial-excerpt">"Einat has helped me so much these past five years, like no one ever did."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2039,7 +2137,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Einat is deep in my heart. Her guidance is so loving and complete on all levels that each time I discover a new self..."</p>
+          <p class="testimonial-excerpt">"A session with Einat is the best gift I can give myself. Pure bliss."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2054,7 +2152,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Einat is a great therapist. She is really gifted, and it's rare to find people like her who are so passionate..."</p>
+          <p class="testimonial-excerpt">"It's rare to find people like her who are so passionate about what they do and care so much."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2069,7 +2167,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"I love working with Einat again and again. I came first on a recommendation to address a desperate energy blockage..."</p>
+          <p class="testimonial-excerpt">"I came first to address a desperate energy blockage that no other practitioner could help me with. I stay for continued care and personal development."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2084,7 +2182,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Working with Einat has been one of the most transformative experiences of my life. Her ability to hold space is unlike anything I have encountered before..."</p>
+          <p class="testimonial-excerpt">"I always leave our sessions feeling lighter, clearer, and more connected to myself."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2099,7 +2197,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Einat is exceptional. She has an extraordinary gift for sensing what is beneath the surface and guiding you toward it with such gentleness..."</p>
+          <p class="testimonial-excerpt">"I have done a lot of inner work over the years and this is the deepest I have ever gone."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2114,7 +2212,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"I came to Einat at a very difficult moment in my life. From the very first session I felt held, seen, and understood..."</p>
+          <p class="testimonial-excerpt">"From the very first session I felt held, seen, and understood."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2129,7 +2227,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"What makes Einat truly special is her presence. She is fully there with you in every session, and that quality of attention changes something..."</p>
+          <p class="testimonial-excerpt">"She is fully there with you in every session, and that quality of attention changes something."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2144,7 +2242,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"I have been working with Einat for over a year. Each session opens something new. She has a rare combination of warmth, wisdom, and skill..."</p>
+          <p class="testimonial-excerpt">"She has a rare combination of warmth, wisdom, and skill that makes the work feel both safe and deeply effective."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2159,7 +2257,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Einat helped me access parts of myself I had been avoiding for years. Not through force, but through the most compassionate guidance..."</p>
+          <p class="testimonial-excerpt">"Einat helped me access parts of myself I had been avoiding for years, through the most compassionate and skilful guidance."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2174,7 +2272,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"I started working with Einat sceptically. By the third session I understood something that years of talking therapy had not been able to show me..."</p>
+          <p class="testimonial-excerpt">"By the third session I understood something that years of talking therapy had not been able to show me."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2189,7 +2287,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"Einat has such a loving and precise way of working. She meets you exactly where you are and helps you move forward without ever pushing..."</p>
+          <p class="testimonial-excerpt">"She meets you exactly where you are and helps you move forward without ever pushing."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2204,7 +2302,7 @@
           <div class="testimonial-stars">
             <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
           </div>
-          <p class="testimonial-excerpt">"There are people who do their job well, and then there are people whose work is a genuine gift. Einat is the latter..."</p>
+          <p class="testimonial-excerpt">"There are people who do their job well, and then there are people whose work is a genuine gift. Einat is the latter."</p>
           <span class="testimonial-read-more">Read more</span>
           <p class="testimonial-attribution">Verified Google Review</p>
         </div>
@@ -2499,6 +2597,14 @@
       document.getElementById('mobile-menu').classList.remove('open');
       document.body.style.overflow = '';
     }
+    function toggleMenu() {
+      var menu = document.getElementById('mobile-menu');
+      if (menu.classList.contains('open')) { closeMenu(); } else { openMenu(); }
+    }
+    // Tap on the empty backdrop (not on a link or the close button) closes the menu.
+    function handleMobileMenuBackdrop(e) {
+      if (e.target && e.target.id === 'mobile-menu') closeMenu();
+    }
 
     // ── Booking inquiry modal ─────────────────────────────────────────
     var _bookingService = '';
@@ -2646,52 +2752,378 @@
       if (e.target === this) closeEventModal();
     });
 
-    // ── Intake interactive panels ─────────────────────────────────────
-    function selectIntakeChoice(choice) {
-      var choicesEl = document.getElementById('intake-choices');
-      var panelEl   = document.getElementById('panel-' + choice);
-      if (!panelEl) return;
+    // ── Intake conversation flow ──────────────────────────────────────
+    // Data-driven state machine. Each node = a small conversational
+    // turn (one or more Einat bubbles, an optional follow-up question,
+    // then choices). Choices either point to `next` (another node),
+    // an outbound `href` + optional CTA `label`, or `action: 'reset'`.
+    var intakeFlow = {
+      // ── EXHAUSTED ────────────────────────────────────────────────
+      exhausted_1: {
+        bubbles: [
+          "Being exhausted is often the first sign that your body has been carrying more than you realize.",
+          "Thank you for saying it out loud."
+        ],
+        question: "What kind of exhaustion feels closest right now?",
+        choices: [
+          { label: "My body feels heavy",     next: "exhausted_body" },
+          { label: "My mind will not stop",   next: "exhausted_mind" },
+          { label: "Both, and I cannot tell them apart", next: "exhausted_both" }
+        ]
+      },
+      exhausted_body: {
+        bubbles: [
+          "Your body has been asking for permission to rest.",
+          "In a session, we start there. Slowly. No fixing, no performing."
+        ],
+        question: "Would you like to see what a private session actually looks like?",
+        choices: [
+          { label: "Yes, show me", href: "#services", primary: true },
+          { label: "I'd rather write to Einat first", href: "#contact" },
+          { label: "I need more time",  action: "reset" }
+        ]
+      },
+      exhausted_mind: {
+        bubbles: [
+          "The mind loops when the body has not been listened to.",
+          "This work shifts that from the inside, not by trying harder."
+        ],
+        question: "Where would you like to begin?",
+        choices: [
+          { label: "Private sessions", href: "#services", primary: true },
+          { label: "Send Einat a note", href: "#contact" },
+          { label: "Take me back", action: "reset" }
+        ]
+      },
+      exhausted_both: {
+        bubbles: [
+          "That is exactly where somatic work does its deepest listening.",
+          "You do not have to arrive with clarity. You only have to arrive."
+        ],
+        question: "Ready to see how Einat holds this kind of moment?",
+        choices: [
+          { label: "Show me the sessions", href: "#services", primary: true },
+          { label: "Message Einat", href: "#contact" },
+          { label: "Not yet", action: "reset" }
+        ]
+      },
 
-      // Fade choices out
+      // ── STUCK ────────────────────────────────────────────────────
+      stuck_1: {
+        bubbles: [
+          "Stuck usually means something inside is ready to move but doesn't know how yet.",
+          "That is a good place to start."
+        ],
+        question: "Where do you feel the stuck the most?",
+        choices: [
+          { label: "In my relationships",    next: "stuck_rel" },
+          { label: "In my work or purpose",  next: "stuck_work" },
+          { label: "In my body",             next: "stuck_body" },
+          { label: "It's everywhere",        next: "stuck_all" }
+        ]
+      },
+      stuck_rel: {
+        bubbles: [
+          "Patterns in relationships almost always live in the body before they live in the story.",
+          "That is where we look together."
+        ],
+        question: "The Safe to Feel Journey is designed for exactly this. Want to see it?",
+        choices: [
+          { label: "Discover the Journey", href: "#services", primary: true },
+          { label: "Write to Einat first", href: "#contact" },
+          { label: "Take me back", action: "reset" }
+        ]
+      },
+      stuck_work: {
+        bubbles: [
+          "When purpose feels blocked, it is often because energy is stuck somewhere older.",
+          "We follow it, gently, until it can move again."
+        ],
+        question: "Would you like to see the private path?",
+        choices: [
+          { label: "Yes, show me", href: "#services", primary: true },
+          { label: "Message Einat", href: "#contact" },
+          { label: "Not right now", action: "reset" }
+        ]
+      },
+      stuck_body: {
+        bubbles: [
+          "The body is not lying to you. It is asking to be heard differently.",
+          "That is what somatic work opens up."
+        ],
+        question: "Ready to begin?",
+        choices: [
+          { label: "Explore private sessions", href: "#services", primary: true },
+          { label: "Send a note first", href: "#contact" },
+          { label: "Not yet", action: "reset" }
+        ]
+      },
+      stuck_all: {
+        bubbles: [
+          "Nothing to name yet is completely okay.",
+          "We begin with what is present in this exact moment, not what you think should be there."
+        ],
+        question: "Would you like to see the Safe to Feel Journey?",
+        choices: [
+          { label: "Show me", href: "#services", primary: true },
+          { label: "Message Einat", href: "#contact" },
+          { label: "Take me back", action: "reset" }
+        ]
+      },
+
+      // ── SHIFTING ─────────────────────────────────────────────────
+      shifting_1: {
+        bubbles: [
+          "That is a tender and powerful moment.",
+          "Something in you is opening. Not everything needs a name yet."
+        ],
+        question: "How would you like to hold this shift?",
+        choices: [
+          { label: "Privately, one on one",    next: "shifting_private" },
+          { label: "With people I trust",      next: "shifting_group" },
+          { label: "Both, if it's possible",   next: "shifting_both" }
+        ]
+      },
+      shifting_private: {
+        bubbles: [
+          "Private sessions give the shift the space it needs.",
+          "No performance, no explanation. Just what is here."
+        ],
+        question: "Want to see how to begin?",
+        choices: [
+          { label: "See private sessions", href: "#services", primary: true },
+          { label: "Message Einat", href: "#contact" },
+          { label: "Not yet", action: "reset" }
+        ]
+      },
+      shifting_group: {
+        bubbles: [
+          "Retreats and workshops move something that private work alone cannot.",
+          "A field of witnesses, a container that holds you."
+        ],
+        question: "Want to see what is coming up?",
+        choices: [
+          { label: "See upcoming experiences", href: "#experiences", primary: true },
+          { label: "Message Einat", href: "#contact" },
+          { label: "Take me back", action: "reset" }
+        ]
+      },
+      shifting_both: {
+        bubbles: [
+          "That is often the deepest path.",
+          "The private work carries you inward. The group work reflects you back."
+        ],
+        question: "Where would you like to start looking?",
+        choices: [
+          { label: "Upcoming experiences", href: "#experiences", primary: true },
+          { label: "Private sessions", href: "#services" },
+          { label: "Not yet", action: "reset" }
+        ]
+      },
+
+      // ── UNSURE ───────────────────────────────────────────────────
+      unsure_1: {
+        bubbles: [
+          "That is honest.",
+          "Not knowing is a doorway too. You do not have to arrive here with a question."
+        ],
+        question: "What feels most alive to explore first?",
+        choices: [
+          { label: "Who is Einat",              next: "unsure_einat" },
+          { label: "What others have found",    next: "unsure_others" },
+          { label: "How the work actually feels", next: "unsure_work" },
+          { label: "Just let me look around",   next: "unsure_browse" }
+        ]
+      },
+      unsure_einat: {
+        bubbles: [
+          "Getting a sense of the person you might work with matters more than any modality.",
+          "Read a little about Einat, and see if something in you responds."
+        ],
+        question: "Ready?",
+        choices: [
+          { label: "About Einat", href: "#about", primary: true },
+          { label: "Voices from the work", href: "#testimonials" },
+          { label: "Take me back", action: "reset" }
+        ]
+      },
+      unsure_others: {
+        bubbles: [
+          "Their stories often say more than my own words can.",
+          "Fifteen voices, all describing something very quiet and very real."
+        ],
+        question: "Want to read them?",
+        choices: [
+          { label: "Voices from the work", href: "#testimonials", primary: true },
+          { label: "About Einat", href: "#about" },
+          { label: "Take me back", action: "reset" }
+        ]
+      },
+      unsure_work: {
+        bubbles: [
+          "The work is somatic, meaning it lives in the body, not just in talk.",
+          "It is felt more than it is explained. Best sensed through the sessions themselves."
+        ],
+        question: "Want to see the offerings?",
+        choices: [
+          { label: "See the sessions", href: "#services", primary: true },
+          { label: "Experiences and retreats", href: "#experiences" },
+          { label: "Not yet", action: "reset" }
+        ]
+      },
+      unsure_browse: {
+        bubbles: [
+          "Take your time.",
+          "There is nowhere to arrive. You are already here."
+        ],
+        question: "",
+        choices: [
+          { label: "Take me back",  action: "reset" }
+        ]
+      }
+    };
+
+    var intakeStart = {
+      exhausted: "exhausted_1",
+      stuck:     "stuck_1",
+      shifting:  "shifting_1",
+      unsure:    "unsure_1"
+    };
+
+    var intakeChoiceLabels = {
+      exhausted: "I am exhausted",
+      stuck:     "I feel stuck",
+      shifting:  "Something is shifting",
+      unsure:    "I am not sure yet"
+    };
+
+    var _intakeTimers = [];
+    function _clearIntakeTimers() {
+      _intakeTimers.forEach(function(t) { clearTimeout(t); });
+      _intakeTimers = [];
+    }
+
+    function _appendBubble(text, cls) {
+      var stream = document.getElementById('conversation-stream');
+      var b = document.createElement('div');
+      b.className = 'bubble ' + (cls || 'bubble-einat');
+      b.textContent = text;
+      stream.appendChild(b);
+      // Bring the newest turn into view, staying inside the section
+      // so the visitor is not yanked around on the page.
+      setTimeout(function() {
+        b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 40);
+    }
+
+    function _renderChoices(node) {
+      var choicesEl = document.getElementById('conversation-choices');
+      choicesEl.innerHTML = '';
+      node.choices.forEach(function(c) {
+        var el;
+        if (c.href) {
+          el = document.createElement('a');
+          el.href = c.href;
+        } else {
+          el = document.createElement('button');
+          el.type = 'button';
+        }
+        el.className = 'chip-choice' + (c.primary ? ' chip-primary' : '');
+        el.textContent = c.label;
+        el.addEventListener('click', function() {
+          if (c.href) {
+            // Show the choice as the visitor's own bubble, then hand
+            // the conversation off to the destination section. Reset
+            // after a beat so the intake is fresh when they return.
+            _appendBubble(c.label, 'bubble-you');
+            document.getElementById('conversation-choices').innerHTML = '';
+            _intakeTimers.push(setTimeout(returnToIntakeChoices, 900));
+          } else if (c.action === 'reset') {
+            returnToIntakeChoices();
+          } else if (c.next) {
+            _appendBubble(c.label, 'bubble-you');
+            document.getElementById('conversation-choices').innerHTML = '';
+            _intakeTimers.push(setTimeout(function() { _renderNode(c.next); }, 380));
+          }
+        });
+        choicesEl.appendChild(el);
+      });
+      // Fade choices in after bubbles finish appearing
+      choicesEl.style.opacity = '0';
+      _intakeTimers.push(setTimeout(function() { choicesEl.style.opacity = '1'; }, 80));
+    }
+
+    function _renderNode(id) {
+      var node = intakeFlow[id];
+      if (!node) return;
+      var choicesEl = document.getElementById('conversation-choices');
+      choicesEl.style.opacity = '0';
+
+      var delay = 250;
+      node.bubbles.forEach(function(text) {
+        _intakeTimers.push(setTimeout(function() { _appendBubble(text, 'bubble-einat'); }, delay));
+        delay += 650;
+      });
+      if (node.question) {
+        _intakeTimers.push(setTimeout(function() { _appendBubble(node.question, 'bubble-question'); }, delay));
+        delay += 500;
+      }
+      _intakeTimers.push(setTimeout(function() { _renderChoices(node); }, delay));
+    }
+
+    function selectIntakeChoice(choice) {
+      var startId = intakeStart[choice];
+      if (!startId) return;
+
+      var choicesEl = document.getElementById('intake-choices');
+      var convEl    = document.getElementById('intake-conversation');
+      var stream    = document.getElementById('conversation-stream');
+      var convChoices = document.getElementById('conversation-choices');
+
+      // Fade the choice grid out
       choicesEl.style.opacity = '0';
       choicesEl.style.pointerEvents = 'none';
 
-      setTimeout(function() {
-        // Hide choices, reset any previously visible panel
+      _intakeTimers.push(setTimeout(function() {
         choicesEl.style.display = 'none';
-        document.querySelectorAll('.intake-panel').forEach(function(p) {
-          p.style.display = 'none';
-          p.style.opacity = '0';
-        });
+        stream.innerHTML = '';
+        convChoices.innerHTML = '';
+        convEl.hidden = false;
+        convEl.style.opacity = '0';
+        void convEl.offsetWidth;
+        document.body.classList.add('intake-conversing');
+        convEl.style.opacity = '1';
 
-        // Reveal chosen panel with a fade-in
-        panelEl.style.display = 'block';
-        void panelEl.offsetWidth; // force reflow so transition fires
-        panelEl.style.opacity = '1';
-      }, 420);
+        // Mirror the visitor's initial choice as their own bubble so
+        // the exchange feels like a conversation from the first beat.
+        _appendBubble(intakeChoiceLabels[choice] || '', 'bubble-you');
+        _intakeTimers.push(setTimeout(function() { _renderNode(startId); }, 500));
+      }, 420));
     }
 
     function returnToIntakeChoices() {
+      _clearIntakeTimers();
       var choicesEl = document.getElementById('intake-choices');
+      var convEl    = document.getElementById('intake-conversation');
+      var stream    = document.getElementById('conversation-stream');
+      var convChoices = document.getElementById('conversation-choices');
 
-      // Fade active panel out
-      document.querySelectorAll('.intake-panel').forEach(function(p) {
-        if (p.style.display === 'block') {
-          p.style.opacity = '0';
-          setTimeout(function() { p.style.display = 'none'; }, 420);
-        }
-      });
+      convEl.style.opacity = '0';
+      _intakeTimers.push(setTimeout(function() {
+        convEl.hidden = true;
+        stream.innerHTML = '';
+        convChoices.innerHTML = '';
+        document.body.classList.remove('intake-conversing');
 
-      // Surface the soft welcome-back line
-      document.getElementById('intake-welcome-back').style.display = 'block';
-
-      // After panel fades, restore choices with fade-in
-      setTimeout(function() {
+        // Restore the choice grid
         choicesEl.style.display = 'block';
-        void choicesEl.offsetWidth; // force reflow
+        void choicesEl.offsetWidth;
         choicesEl.style.opacity = '1';
         choicesEl.style.pointerEvents = '';
-      }, 420);
+
+        var wb = document.getElementById('intake-welcome-back');
+        if (wb) wb.style.display = 'block';
+      }, 420));
     }
   </script>
 
