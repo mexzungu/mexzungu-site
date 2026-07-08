@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Ops Audit | Mexzungu Group</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; padding: 2rem 1rem; }
+  .container { max-width: 680px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 2.5rem; }
+  .logo { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; color: #E14B87; text-transform: uppercase; margin-bottom: 1rem; }
+  h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; line-height: 1.2; }
+  .subtitle { font-size: 0.95rem; color: #888; line-height: 1.6; }
+  .progress-bar { background: #1a1a1a; border-radius: 4px; height: 4px; margin-bottom: 2rem; }
+  .progress-fill { background: #E14B87; height: 4px; border-radius: 4px; transition: width 0.3s ease; width: 0%; }
+  .question-block { display: none; }
+  .question-block.active { display: block; }
+  .q-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; color: #E14B87; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .q-text { font-size: 1.15rem; font-weight: 600; color: #fff; margin-bottom: 1.5rem; line-height: 1.4; }
+  .options { display: flex; flex-direction: column; gap: 0.65rem; }
+  .option { display: flex; align-items: center; gap: 0.9rem; background: #111; border: 1px solid #2a2a2a; border-radius: 8px; padding: 0.9rem 1.1rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .option:hover { border-color: #E14B87; background: #161616; }
+  .option.selected { border-color: #E14B87; background: #1a0d11; }
+  .option-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #444; flex-shrink: 0; transition: border-color 0.15s, background 0.15s; }
+  .option.selected .option-dot { border-color: #E14B87; background: #E14B87; }
+  .option-label { font-size: 0.92rem; color: #ccc; line-height: 1.4; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+  .btn { padding: 0.7rem 1.5rem; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; transition: opacity 0.15s; }
+  .btn-primary { background: #E14B87; color: #fff; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary { background: transparent; color: #666; border: 1px solid #2a2a2a; }
+  .btn-secondary:hover { color: #ccc; border-color: #444; }
+  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  input[type=text], input[type=email] { width: 100%; background: #111; border: 1px solid #2a2a2a; border-radius: 6px; color: #e0e0e0; font-size: 0.9rem; padding: 0.7rem 0.9rem; margin-bottom: 0.75rem; font-family: inherit; outline: none; transition: border-color 0.15s; }
+  input:focus { border-color: #E14B87; }
+  label { font-size: 0.78rem; font-weight: 600; color: #888; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">Mexzungu Group</div>
+    <h1>Free Ops Audit</h1>
+    <p class="subtitle">3 minutes. 10 questions. Walk away knowing exactly what to automate first.</p>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  <form id="audit-form" action="/audit/submit" method="post">
+    <div class="question-block active" data-q="1">
+      <div class="q-num">Question 1 of 10</div>
+      <div class="q-text">How many hours per week do you spend on email management?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q1','0')"><div class="option-dot"></div><span class="option-label">Under 2 hours</span></div>
+        <div class="option" onclick="pick(this,'q1','1')"><div class="option-dot"></div><span class="option-label">2 to 5 hours</span></div>
+        <div class="option" onclick="pick(this,'q1','2')"><div class="option-dot"></div><span class="option-label">5 to 10 hours</span></div>
+        <div class="option" onclick="pick(this,'q1','3')"><div class="option-dot"></div><span class="option-label">More than 10 hours</span></div>
+      </div>
+      <input type="hidden" name="q1" id="q1" value="">
+    </div>
+    <div class="question-block" data-q="2">
+      <div class="q-num">Question 2 of 10</div>
+      <div class="q-text">How do you follow up on unpaid invoices?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q2','0')"><div class="option-dot"></div><span class="option-label">Automated system handles it</span></div>
+        <div class="option" onclick="pick(this,'q2','1')"><div class="option-dot"></div><span class="option-label">Calendar reminders</span></div>
+        <div class="option" onclick="pick(this,'q2','2')"><div class="option-dot"></div><span class="option-label">I remember to check</span></div>
+        <div class="option" onclick="pick(this,'q2','3')"><div class="option-dot"></div><span class="option-label">Invoices sometimes get forgotten</span></div>
+      </div>
+      <input type="hidden" name="q2" id="q2" value="">
+    </div>
+    <div class="question-block" data-q="3">
+      <div class="q-num">Question 3 of 10</div>
+      <div class="q-text">How do you manage your calendar and scheduling?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q3','0')"><div class="option-dot"></div><span class="option-label">Fully automated (Calendly or similar)</span></div>
+        <div class="option" onclick="pick(this,'q3','1')"><div class="option-dot"></div><span class="option-label">Assistant manages it</span></div>
+        <div class="option" onclick="pick(this,'q3','2')"><div class="option-dot"></div><span class="option-label">I manage it manually</span></div>
+        <div class="option" onclick="pick(this,'q3','3')"><div class="option-dot"></div><span class="option-label">No real system, things get double-booked</span></div>
+      </div>
+      <input type="hidden" name="q3" id="q3" value="">
+    </div>
+    <div class="question-block" data-q="4">
+      <div class="q-num">Question 4 of 10</div>
+      <div class="q-text">How many apps does your team use to coordinate work?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q4','0')"><div class="option-dot"></div><span class="option-label">1 to 2 (simple and integrated)</span></div>
+        <div class="option" onclick="pick(this,'q4','1')"><div class="option-dot"></div><span class="option-label">3 to 4</span></div>
+        <div class="option" onclick="pick(this,'q4','2')"><div class="option-dot"></div><span class="option-label">5 to 8 (things get missed)</span></div>
+        <div class="option" onclick="pick(this,'q4','3')"><div class="option-dot"></div><span class="option-label">9 or more (everything is fragmented)</span></div>
+      </div>
+      <input type="hidden" name="q4" id="q4" value="">
+    </div>
+    <div class="question-block" data-q="5">
+      <div class="q-num">Question 5 of 10</div>
+      <div class="q-text">How do you track what was agreed in client meetings?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q5','0')"><div class="option-dot"></div><span class="option-label">Automated notes or CRM logging</span></div>
+        <div class="option" onclick="pick(this,'q5','1')"><div class="option-dot"></div><span class="option-label">Someone takes notes and files them</span></div>
+        <div class="option" onclick="pick(this,'q5','2')"><div class="option-dot"></div><span class="option-label">I write it down if I remember</span></div>
+        <div class="option" onclick="pick(this,'q5','3')"><div class="option-dot"></div><span class="option-label">I rely on memory or email threads</span></div>
+      </div>
+      <input type="hidden" name="q5" id="q5" value="">
+    </div>
+    <div class="question-block" data-q="6">
+      <div class="q-num">Question 6 of 10</div>
+      <div class="q-text">How much time on recurring internal reports or status updates?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q6','0')"><div class="option-dot"></div><span class="option-label">Under 1 hour per week</span></div>
+        <div class="option" onclick="pick(this,'q6','1')"><div class="option-dot"></div><span class="option-label">1 to 3 hours per week</span></div>
+        <div class="option" onclick="pick(this,'q6','2')"><div class="option-dot"></div><span class="option-label">3 to 6 hours per week</span></div>
+        <div class="option" onclick="pick(this,'q6','3')"><div class="option-dot"></div><span class="option-label">More than 6 hours per week</span></div>
+      </div>
+      <input type="hidden" name="q6" id="q6" value="">
+    </div>
+    <div class="question-block" data-q="7">
+      <div class="q-num">Question 7 of 10</div>
+      <div class="q-text">How do you handle inbound leads or new business inquiries?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q7','0')"><div class="option-dot"></div><span class="option-label">Automated intake and CRM routing</span></div>
+        <div class="option" onclick="pick(this,'q7','1')"><div class="option-dot"></div><span class="option-label">Team member manages the inbox</span></div>
+        <div class="option" onclick="pick(this,'q7','2')"><div class="option-dot"></div><span class="option-label">I reply when I can</span></div>
+        <div class="option" onclick="pick(this,'q7','3')"><div class="option-dot"></div><span class="option-label">Leads sometimes go cold before I reply</span></div>
+      </div>
+      <input type="hidden" name="q7" id="q7" value="">
+    </div>
+    <div class="question-block" data-q="8">
+      <div class="q-num">Question 8 of 10</div>
+      <div class="q-text">How organized are your files and documents?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q8','0')"><div class="option-dot"></div><span class="option-label">Fully organized, findable in under 30 seconds</span></div>
+        <div class="option" onclick="pick(this,'q8','1')"><div class="option-dot"></div><span class="option-label">Mostly organized with a few messy corners</span></div>
+        <div class="option" onclick="pick(this,'q8','2')"><div class="option-dot"></div><span class="option-label">Scattered across multiple places</span></div>
+        <div class="option" onclick="pick(this,'q8','3')"><div class="option-dot"></div><span class="option-label">It is a search-and-pray situation</span></div>
+      </div>
+      <input type="hidden" name="q8" id="q8" value="">
+    </div>
+    <div class="question-block" data-q="9">
+      <div class="q-num">Question 9 of 10</div>
+      <div class="q-text">How often do tasks or follow-ups fall through the cracks?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q9','0')"><div class="option-dot"></div><span class="option-label">Rarely or never</span></div>
+        <div class="option" onclick="pick(this,'q9','1')"><div class="option-dot"></div><span class="option-label">Once or twice a month</span></div>
+        <div class="option" onclick="pick(this,'q9','2')"><div class="option-dot"></div><span class="option-label">Once or twice a week</span></div>
+        <div class="option" onclick="pick(this,'q9','3')"><div class="option-dot"></div><span class="option-label">It is a recurring problem</span></div>
+      </div>
+      <input type="hidden" name="q9" id="q9" value="">
+    </div>
+    <div class="question-block" data-q="10">
+      <div class="q-num">Question 10 of 10</div>
+      <div class="q-text">What costs you the most time every week?</div>
+      <div class="options">
+        <div class="option" onclick="pick(this,'q10','email')"><div class="option-dot"></div><span class="option-label">Email and communications</span></div>
+        <div class="option" onclick="pick(this,'q10','finance')"><div class="option-dot"></div><span class="option-label">Finance, invoicing, or payments</span></div>
+        <div class="option" onclick="pick(this,'q10','clients')"><div class="option-dot"></div><span class="option-label">Client tracking and follow-up</span></div>
+        <div class="option" onclick="pick(this,'q10','coordination')"><div class="option-dot"></div><span class="option-label">Internal coordination and reporting</span></div>
+      </div>
+      <input type="hidden" name="q10" id="q10" value="">
+    </div>
+    <div class="question-block" data-q="11">
+      <div class="q-num">Almost done</div>
+      <div class="q-text">Where should we send your personalized results?</div>
+      <label for="name">Your name</label>
+      <input type="text" id="name" name="name" placeholder="Alex">
+      <label for="email">Your email</label>
+      <input type="email" id="email" name="email" placeholder="alex@yourcompany.com" required>
+      <label for="company">Company (optional)</label>
+      <input type="text" id="company" name="company" placeholder="Acme Inc">
+    </div>
+    <div class="nav">
+      <button type="button" class="btn btn-secondary" id="back-btn" onclick="goBack()" style="display:none">Back</button>
+      <button type="button" class="btn btn-primary" id="next-btn" onclick="goNext()" disabled>Next</button>
+    </div>
+  </form>
+</div>
+<script>
+var cur=1,tot=11,ans={};
+function pick(el,qid,val){
+  el.closest('.options').querySelectorAll('.option').forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');
+  document.getElementById(qid).value=val; ans[qid]=val;
+  document.getElementById('next-btn').disabled=false;
+}
+function upd(){document.getElementById('progress').style.width=(((cur-1)/(tot-1))*100)+'%';}
+function goNext(){
+  if(cur<10&&!ans['q'+cur])return;
+  if(cur===11){var em=document.getElementById('email').value;if(!em){document.getElementById('email').focus();return;}document.getElementById('next-btn').disabled=true;document.getElementById('next-btn').textContent='Calculating...';document.getElementById('audit-form').submit();return;}
+  document.querySelector('[data-q="'+cur+'"]').classList.remove('active');cur++;
+  document.querySelector('[data-q="'+cur+'"]').classList.add('active');upd();
+  document.getElementById('back-btn').style.display=cur>1?'block':'none';
+  var nb=document.getElementById('next-btn');
+  nb.textContent=cur===11?'Get My Results':'Next';
+  nb.disabled=cur<11&&!ans['q'+cur];
+}
+function goBack(){
+  document.querySelector('[data-q="'+cur+'"]').classList.remove('active');cur--;
+  document.querySelector('[data-q="'+cur+'"]').classList.add('active');upd();
+  document.getElementById('back-btn').style.display=cur>1?'block':'none';
+  document.getElementById('next-btn').textContent='Next';
+  document.getElementById('next-btn').disabled=!ans['q'+cur];
+}
+upd();
+</script>
+</body>
+</html>
