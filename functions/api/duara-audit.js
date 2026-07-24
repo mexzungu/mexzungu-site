@@ -1,8 +1,12 @@
 /**
  * Cloudflare Pages Function — Duara AT Audit submission handler
  * POST /api/duara-audit
- * Receives AT audit entries from Daphne/Fatima, pings Pepe on Telegram.
+ * Receives AT audit entries from Daphne/Fatima, pings Pepe on Telegram,
+ * and persists the full submission to the VPS audit log.
  */
+
+const VPS_AUDIT    = "http://204.168.188.119:8741/clients/duara/audit-log";
+const DUARA_SECRET = "duara-save-2026";
 
 export async function onRequestPost(context) {
   const { env, request } = context;
@@ -68,6 +72,14 @@ Submitted via mexzungu.com/clients/duara/transition`;
     if (!tgRes.ok) {
       throw new Error(`Telegram error: ${tgRes.status}`);
     }
+
+    // Persist to VPS audit log (fire-and-forget — Telegram ping is the critical path)
+    const secret = (env && env.DUARA_SAVE_SECRET) || DUARA_SECRET;
+    fetch(VPS_AUDIT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-duara-secret": secret },
+      body: JSON.stringify({ secret, submittedBy, entries, source: "audit-form" }),
+    }).catch(() => {});
 
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: corsHeaders });
 
