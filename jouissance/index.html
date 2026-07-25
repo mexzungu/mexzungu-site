@@ -190,12 +190,32 @@ textarea:focus{border-color:var(--accent)}
 </div>
 
 <div class="screen" id="invite-entry">
-  <div class="container center" style="justify-content:center">
+  <div class="container center" style="justify-content:center;gap:0.75rem">
     <div class="wordmark mb2" style="opacity:1">jouissance</div>
-    <label class="field-label" for="inv-code">Your invitation code</label>
-    <input type="text" id="inv-code" placeholder="enter code" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
-    <div class="error-msg" id="inv-err"></div>
-    <div style="margin-top:1.5rem"><button class="btn btn-primary" id="inv-submit">Enter</button></div>
+
+    <div style="display:flex;gap:0;border:1px solid rgba(155,127,166,.3);border-radius:4px;overflow:hidden;width:100%;max-width:320px;margin-bottom:0.5rem">
+      <button id="tab-register" onclick="authTab('register')" style="flex:1;padding:0.65rem;background:var(--accent);color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem">Register</button>
+      <button id="tab-login" onclick="authTab('login')" style="flex:1;padding:0.65rem;background:transparent;color:var(--muted);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem">Sign in</button>
+    </div>
+
+    <div id="auth-register" style="width:100%;display:flex;flex-direction:column;gap:0.75rem">
+      <input type="text" id="reg-name" placeholder="your name" autocomplete="name">
+      <input type="email" id="reg-email" placeholder="email" autocomplete="email">
+      <input type="password" id="reg-pass" placeholder="password (min 8 chars)" autocomplete="new-password">
+      <label style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.8rem;color:var(--muted);cursor:pointer">
+        <input type="checkbox" id="reg-consent" style="margin-top:2px;width:16px;height:16px;min-width:16px;accent-color:var(--accent)">
+        <span>I understand my answers are visible only to Agathe and held under GDPR Article 9.</span>
+      </label>
+      <button class="btn btn-primary" id="reg-submit">Create account</button>
+    </div>
+
+    <div id="auth-login" style="width:100%;display:none;flex-direction:column;gap:0.75rem">
+      <input type="email" id="login-email-p" placeholder="email" autocomplete="email">
+      <input type="password" id="login-pass-p" placeholder="password" autocomplete="current-password">
+      <button class="btn btn-primary" id="login-submit-p">Sign in</button>
+    </div>
+
+    <div class="error-msg" id="inv-err" style="min-height:1.2rem"></div>
   </div>
 </div>
 
@@ -559,26 +579,58 @@ async function boot(){
   }catch(e){setTimeout(()=>show('invite-entry'),2500)}
 }
 
-// Invite
-document.getElementById('inv-submit').addEventListener('click',async()=>{
-  const code=document.getElementById('inv-code').value.trim();
-  if(!code)return;
-  const btn=document.getElementById('inv-submit');
-  btn.disabled=true;
+// Auth tab switch
+function authTab(tab){
+  const isReg=tab==='register';
+  document.getElementById('auth-register').style.display=isReg?'flex':'none';
+  document.getElementById('auth-login').style.display=isReg?'none':'flex';
+  document.getElementById('tab-register').style.background=isReg?'var(--accent)':'transparent';
+  document.getElementById('tab-register').style.color=isReg?'#fff':'var(--muted)';
+  document.getElementById('tab-login').style.background=isReg?'transparent':'var(--accent)';
+  document.getElementById('tab-login').style.color=isReg?'var(--muted)':'#fff';
+  document.getElementById('inv-err').textContent='';
+}
+
+// Register
+document.getElementById('reg-submit').addEventListener('click',async()=>{
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const consent=document.getElementById('reg-consent').checked;
+  const err=document.getElementById('inv-err');
+  if(!name||!email||!pass){err.textContent='Please fill in all fields.';return;}
+  if(!consent){err.textContent='Please accept the consent checkbox.';return;}
+  const btn=document.getElementById('reg-submit');btn.disabled=true;err.textContent='';
   try{
-    const r=await fetch(API+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({invite_code:code})});
+    const r=await fetch(API+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:email,password:pass,display_name:name,consent_gdpr:true})});
     const d=await r.json();
     if(r.ok&&d.token){
       token=d.token;localStorage.setItem('jouissance_token',token);
       localStorage.setItem('jouissance_profile_step','1');
       show('welcome');
-    } else {
-      document.getElementById('inv-err').textContent=d.detail||'Invalid code.';
-      btn.disabled=false;
-    }
-  }catch(e){document.getElementById('inv-err').textContent='Connection error.';btn.disabled=false}
+    } else {err.textContent=d.detail||'Registration failed.';btn.disabled=false;}
+  }catch(e){err.textContent='Connection error.';btn.disabled=false;}
 });
-document.getElementById('inv-code').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inv-submit').click()});
+
+// Login (participant portal)
+document.getElementById('login-submit-p').addEventListener('click',async()=>{
+  const email=document.getElementById('login-email-p').value.trim();
+  const pass=document.getElementById('login-pass-p').value;
+  const err=document.getElementById('inv-err');
+  if(!email||!pass){err.textContent='Please enter email and password.';return;}
+  const btn=document.getElementById('login-submit-p');btn.disabled=true;err.textContent='';
+  try{
+    const r=await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:email,password:pass})});
+    const d=await r.json();
+    if(r.ok&&d.token){
+      token=d.token;localStorage.setItem('jouissance_token',token);
+      show('splash');boot();
+    } else {err.textContent=d.detail||'Invalid email or password.';btn.disabled=false;}
+  }catch(e){err.textContent='Connection error.';btn.disabled=false;}
+});
+document.getElementById('login-pass-p').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-submit-p').click()});
 
 // Welcome
 document.getElementById('welcome').addEventListener('click',()=>show('consent'));
