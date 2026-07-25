@@ -176,6 +176,14 @@ textarea:focus{border-color:var(--accent)}
 .modal-actions{display:flex;gap:.75rem;margin-top:1rem}
 .modal-actions .btn{flex:1}
 
+/* Difficulty badges */
+.diff-badge{display:inline-block;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.18rem .55rem;border-radius:3px;margin-bottom:.6rem;font-family:'DM Sans',sans-serif}
+.easy-badge{background:rgba(155,127,166,.12);color:rgba(155,127,166,.7);border:1px solid rgba(155,127,166,.18)}
+.mild-badge{background:rgba(197,135,58,.1);color:var(--secondary);border:1px solid rgba(197,135,58,.22)}
+.spicy-badge{background:rgba(180,80,80,.1);color:#c47a7a;border:1px solid rgba(180,80,80,.2)}
+.chal-card.done-today{opacity:.38;pointer-events:none}
+.chal-card.done-today .chal-card-pts::before{content:'Completed '}
+
 /* Animations */
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeInOut{0%{opacity:0;transform:translateY(4px)}25%{opacity:1;transform:translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateY(-4px)}}
@@ -191,7 +199,11 @@ textarea:focus{border-color:var(--accent)}
 
 <div class="screen" id="invite-entry">
   <div class="container center" style="justify-content:center;gap:0.75rem">
-    <div class="wordmark mb2" style="opacity:1">jouissance</div>
+    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:1.5rem">
+      <div style="color:var(--secondary);font-size:1.6rem;letter-spacing:.35em;margin-bottom:.5rem;opacity:.7">&#10022; &#9670; &#10022;</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:3.6rem;letter-spacing:.04em;color:var(--accent);line-height:1">jouissance</div>
+      <div style="font-size:.7rem;letter-spacing:.22em;color:rgba(244,239,230,.32);text-transform:uppercase;margin-top:.6rem">l'incertitude certaine</div>
+    </div>
 
     <div style="display:flex;gap:0;border:1px solid rgba(155,127,166,.3);border-radius:4px;overflow:hidden;width:100%;max-width:320px;margin-bottom:0.5rem">
       <button id="tab-register" onclick="authTab('register')" style="flex:1;padding:0.65rem;background:var(--accent);color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem">Register</button>
@@ -220,9 +232,15 @@ textarea:focus{border-color:var(--accent)}
 </div>
 
 <div class="screen" id="welcome">
-  <div class="container center" style="justify-content:center">
-    <div class="welcome-text">Bienvenue.<br>You are in the right place.</div>
-    <div class="tap-hint">Tap anywhere to continue</div>
+  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem;text-align:center">
+    <div class="wordmark" style="opacity:1">jouissance</div>
+    <div class="welcome-text" style="font-size:1.6rem">Bienvenue.</div>
+    <div style="color:var(--muted);font-size:0.95rem;line-height:1.9">
+      Over the next 14 days, you will receive daily Rituals: small practices to prepare your body and presence for August 14.<br><br>
+      Before you begin, Agathe wants to understand who you are.<br><br>
+      What follows are 10 questions. Take your time. There are no right answers. Your responses stay with Agathe only.
+    </div>
+    <button class="btn btn-primary" id="welcome-begin" style="max-width:240px;margin-top:1rem">Begin my profile</button>
   </div>
 </div>
 
@@ -351,16 +369,32 @@ textarea:focus{border-color:var(--accent)}
     </div>
   </div>
   <div class="home-body">
-    <div class="chal-card" id="h-chal" style="display:none">
-      <div class="chal-card-title" id="h-chal-title"></div>
-      <div class="chal-card-desc" id="h-chal-desc"></div>
-      <div class="chal-card-pts">+5 pts</div>
+    <div id="h-challenges-section" style="display:none">
+      <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1.1rem">Today's Rituals</div>
+      <div class="chal-card" id="h-chal-easy">
+        <div class="diff-badge easy-badge">Easy</div>
+        <div class="chal-card-title" id="h-chal-easy-title"></div>
+        <div class="chal-card-desc" id="h-chal-easy-desc"></div>
+        <div class="chal-card-pts" id="h-chal-easy-pts">+5 pts</div>
+      </div>
+      <div class="chal-card" id="h-chal-mild">
+        <div class="diff-badge mild-badge">Mild</div>
+        <div class="chal-card-title" id="h-chal-mild-title"></div>
+        <div class="chal-card-desc" id="h-chal-mild-desc"></div>
+        <div class="chal-card-pts" id="h-chal-mild-pts">+10 pts</div>
+      </div>
+      <div class="chal-card" id="h-chal-spicy">
+        <div class="diff-badge spicy-badge">Spicy</div>
+        <div class="chal-card-title" id="h-chal-spicy-title"></div>
+        <div class="chal-card-desc" id="h-chal-spicy-desc"></div>
+        <div class="chal-card-pts" id="h-chal-spicy-pts">+15 pts</div>
+      </div>
     </div>
     <div class="no-chal" id="h-no-chal" style="display:none">Your space is waiting for you.</div>
     <div class="presence-line" id="h-presence"></div>
   </div>
   <div class="home-footer">
-    <button class="nav-btn" id="nav-modules">Modules</button>
+    <button class="nav-btn" id="nav-modules">Practices</button>
     <button class="nav-btn" id="nav-rewards">Rewards</button>
   </div>
 </div>
@@ -404,7 +438,7 @@ textarea:focus{border-color:var(--accent)}
 <div class="screen" id="modules">
   <div class="screen-header">
     <button class="back-btn" data-back="home">&#8592;</button>
-    <div class="screen-label">Modules</div>
+    <div class="screen-label">Practices</div>
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
     <div id="mod-list"></div>
@@ -418,8 +452,21 @@ textarea:focus{border-color:var(--accent)}
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
     <div class="ct-title" id="md-title"></div>
-    <div class="mod-content" id="md-body"></div>
-    <button class="btn btn-primary mb2" id="md-complete">Mark complete (+10 pts)</button>
+    <div class="mod-content" id="md-body" style="margin-bottom:1.5rem"></div>
+    <div id="md-submit-area">
+      <div class="field-label" style="margin-bottom:0.5rem">What came up for you?</div>
+      <textarea id="md-resp" placeholder="Write here..." style="min-height:120px"></textarea>
+      <div class="char-counter" id="md-cc">0 / 50</div>
+      <div class="media-row" style="margin-top:0.75rem">
+        <button class="media-btn" id="md-mb-audio" title="Voice note">&#9834;</button>
+        <button class="media-btn" id="md-mb-video" title="Photo or video">&#9645;</button>
+        <input type="file" id="md-fi-audio" accept="audio/*" style="display:none" capture="microphone">
+        <input type="file" id="md-fi-video" accept="video/*,image/*" style="display:none" capture="environment">
+        <span class="media-label" id="md-media-lbl"></span>
+      </div>
+      <button class="btn btn-primary mb2" id="md-complete" style="margin-top:1rem">Submit (+10 pts)</button>
+    </div>
+    <div id="md-done-msg" style="display:none;color:rgba(244,239,230,.5);font-style:italic;padding:1rem 0;text-align:center">Received.</div>
   </div>
 </div>
 
@@ -455,6 +502,20 @@ textarea:focus{border-color:var(--accent)}
     <div class="d14-sent" id="d14-sent">Received.<br>See you tonight.</div>
   </div>
 </div>
+
+<div id="tour-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,14,35,.97);z-index:300;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 2rem;text-align:center;gap:1.5rem">
+  <div id="tour-dots" style="display:flex;gap:8px;margin-bottom:0.5rem">
+    <div class="t-dot active"></div><div class="t-dot"></div><div class="t-dot"></div>
+  </div>
+  <div id="tour-icon" style="font-size:2.5rem">&#9737;</div>
+  <div id="tour-title" style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--text)">Your daily Ritual</div>
+  <div id="tour-body" style="color:var(--muted);font-size:0.95rem;line-height:1.8;max-width:320px">Each day a new practice appears on your home screen. Complete it, share what came up, and earn points.</div>
+  <button class="btn btn-primary" id="tour-next" style="max-width:200px;margin-top:1rem">Next</button>
+</div>
+<style>
+.t-dot{width:7px;height:7px;border-radius:50%;background:rgba(197,135,58,.3);transition:background .3s}
+.t-dot.active{background:var(--secondary)}
+</style>
 
 <div id="bc-overlay">
   <div class="ov-header">
@@ -634,7 +695,7 @@ document.getElementById('login-submit-p').addEventListener('click',async()=>{
 document.getElementById('login-pass-p').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-submit-p').click()});
 
 // Welcome
-document.getElementById('welcome').addEventListener('click',()=>show('consent'));
+document.getElementById('welcome-begin').addEventListener('click',()=>show('consent'));
 
 // Consent
 document.getElementById('consent-chk').addEventListener('change',function(){document.getElementById('consent-btn').disabled=!this.checked});
@@ -693,12 +754,36 @@ document.getElementById('p-submit').addEventListener('click',async()=>{
   }catch(e){}
   show('profile-complete');
 });
-document.getElementById('p-begin').addEventListener('click',()=>{loadHome();show('home')});
+document.getElementById('p-begin').addEventListener('click',()=>startTour());
+
+const TOUR_STEPS=[
+  {icon:'&#9737;',title:'Your daily Ritual',body:'Each day a new practice appears on your home screen. Complete it, share what came up, and earn points.'},
+  {icon:'&#10022;',title:'Collect and redeem',body:'Points become Rewards: real experiences waiting for you on August 14. The more you practice, the more you unlock.'},
+  {icon:'&#9670;',title:'Go deeper with Practices',body:'Five texts to read and reflect on at your own pace. Submit what surfaces in you. No right answers.'}
+];
+let tourStep=0;
+function startTour(){
+  tourStep=0;renderTourStep();
+  document.getElementById('tour-overlay').style.display='flex';
+}
+function renderTourStep(){
+  const s=TOUR_STEPS[tourStep];
+  document.getElementById('tour-icon').innerHTML=s.icon;
+  document.getElementById('tour-title').textContent=s.title;
+  document.getElementById('tour-body').textContent=s.body;
+  document.getElementById('tour-next').textContent=tourStep<TOUR_STEPS.length-1?'Next':'Let\'s go';
+  document.querySelectorAll('.t-dot').forEach((d,i)=>d.classList.toggle('active',i===tourStep));
+}
+document.getElementById('tour-next').addEventListener('click',()=>{
+  if(tourStep<TOUR_STEPS.length-1){tourStep++;renderTourStep();}
+  else{document.getElementById('tour-overlay').style.display='none';loadHome();show('home');}
+});
 
 // Home
+let challengesAll = {};
 async function loadHome(){
   try{
-    const [mr,cr,br]=await Promise.all([apiFetch('/auth/me'),apiFetch('/challenges/today'),apiFetch('/broadcasts/inbox')]);
+    const [mr,cr,br]=await Promise.all([apiFetch('/auth/me'),apiFetch('/challenges/today-all'),apiFetch('/broadcasts/inbox')]);
     if(mr.ok){
       const m=await mr.json();pts=m.points||0;
       document.getElementById('h-pts').textContent=pts+' pts';
@@ -706,34 +791,59 @@ async function loadHome(){
       document.getElementById('h-presence').textContent=d>0?`You have been here for ${d} day${d!==1?'s':''}.`:'';
     }
     if(cr.ok){
-      const c=await cr.json();currentChal=c;
-      document.getElementById('h-chal').style.display='block';
-      document.getElementById('h-no-chal').style.display='none';
-      document.getElementById('h-chal-title').textContent=c.title||'Today';
-      document.getElementById('h-chal-desc').textContent=c.description||'';
+      const data=await cr.json();
+      challengesAll=data.challenges||{};
+      const completedToday=data.completed_today||false;
+      const section=document.getElementById('h-challenges-section');
+      const hasAny=Object.keys(challengesAll).length>0;
+      section.style.display=hasAny?'block':'none';
+      document.getElementById('h-no-chal').style.display=hasAny?'none':'block';
+      ['easy','mild','spicy'].forEach(diff=>{
+        const c=challengesAll[diff];
+        const card=document.getElementById('h-chal-'+diff);
+        if(!card)return;
+        if(c){
+          document.getElementById('h-chal-'+diff+'-title').textContent=c.title||'Today';
+          document.getElementById('h-chal-'+diff+'-desc').textContent=(c.description||'').substring(0,100);
+          const pts_v=c.points_value||(diff==='easy'?5:diff==='spicy'?15:10);
+          document.getElementById('h-chal-'+diff+'-pts').textContent='+'+pts_v+' pts';
+          card.style.display='block';
+        } else {
+          card.style.display='none';
+        }
+        card.classList.toggle('done-today',completedToday);
+      });
     } else {
-      document.getElementById('h-chal').style.display='none';
+      document.getElementById('h-challenges-section').style.display='none';
       document.getElementById('h-no-chal').style.display='block';
     }
     if(br.ok){
       const b=await br.json();
       const items=Array.isArray(b)?b:(b.broadcasts||[]);
-      const unread=items.length>0;
-      document.getElementById('bell-dot').classList.toggle('on',unread);
+      document.getElementById('bell-dot').classList.toggle('on',items.length>0);
     }
   }catch(e){}
 }
 
-document.getElementById('h-chal').addEventListener('click',()=>{
-  if(!currentChal)return;
-  document.getElementById('ct-title').textContent=currentChal.title||'';
-  document.getElementById('ct-desc').textContent=currentChal.description||'';
+function openChallenge(diff){
+  const c=challengesAll[diff];
+  if(!c)return;
+  currentChal=c;
+  document.getElementById('ct-title').textContent=c.title||'';
+  document.getElementById('ct-desc').textContent=c.description||'';
+  const ptsHint=document.querySelector('#challenge-today .pts-hint');
+  if(ptsHint)ptsHint.textContent='+'+(c.points_value||(diff==='easy'?5:diff==='spicy'?15:10))+' pts on submission';
   document.getElementById('ct-resp').value='';
   document.getElementById('ct-cc').textContent='0 / 50';
   document.getElementById('ct-submit').disabled=true;
   uploads={};document.getElementById('media-lbl').textContent='';
   document.querySelectorAll('.media-btn').forEach(b=>b.classList.remove('on'));
   show('challenge-today');
+}
+
+['easy','mild','spicy'].forEach(diff=>{
+  const card=document.getElementById('h-chal-'+diff);
+  if(card)card.addEventListener('click',()=>openChallenge(diff));
 });
 document.getElementById('nav-modules').addEventListener('click',()=>{loadMods();show('modules')});
 document.getElementById('nav-rewards').addEventListener('click',()=>{loadRewards();show('rewards')});
@@ -779,9 +889,10 @@ document.getElementById('ct-submit').addEventListener('click',async()=>{
       if(r.ok)data=await r.json();
     }
     pts=data.total_points||data.points||pts;
+    const ptsAwarded=data.points_awarded||(currentChal&&currentChal.points_value)||5;
     const day=currentChal?(currentChal.day||0):0;
     const isSurprise=SURPRISE_DAYS.includes(day);
-    document.getElementById('pts-gained').textContent=isSurprise?'+15':'+5';
+    document.getElementById('pts-gained').textContent=isSurprise?'+'+(ptsAwarded+10):'+'+ptsAwarded;
     if(isSurprise){
       document.getElementById('surprise-q').textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
       setTimeout(()=>document.getElementById('surprise-box').classList.add('on'),1200);
@@ -805,27 +916,52 @@ async function loadMods(){
     const done=completedMods.includes(id)||completedMods.includes(m.name);
     const card=document.createElement('div');
     card.className='mod-card';
-    card.innerHTML=`<div class="mod-name">${m.name}</div><div class="mod-right"><span class="mod-pts">+10 pts</span><div class="dot ${done?'filled':''}"></div></div>`;
+    card.innerHTML=`<div class="mod-name">${m.name}</div><div style="color:var(--muted);font-size:.8rem;margin-top:.3rem;line-height:1.5">${m.body.substring(0,80)}...</div><div class="mod-right" style="margin-top:.5rem"><span class="mod-pts">${done?'Done':'+ 10 pts'}</span><div class="dot ${done?'filled':''}"></div></div>`;
     card.addEventListener('click',()=>{
       currentModId=id;
       document.getElementById('md-title').textContent=m.name;
       document.getElementById('md-label').textContent=m.name;
       document.getElementById('md-body').textContent=m.body;
-      const cb=document.getElementById('md-complete');
-      cb.disabled=done;cb.textContent=done?'Completed':'Mark complete (+10 pts)';
+      document.getElementById('md-resp').value='';
+      document.getElementById('md-cc').textContent='0 / 50';
+      document.getElementById('md-media-lbl').textContent='';
+      document.querySelectorAll('#md-mb-audio,#md-mb-video').forEach(b=>b.classList.remove('on'));
+      const area=document.getElementById('md-submit-area');
+      const doneMsg=document.getElementById('md-done-msg');
+      if(done){area.style.display='none';doneMsg.style.display='block';}
+      else{area.style.display='block';doneMsg.style.display='none';}
       show('module-detail');
     });
     list.appendChild(card);
   });
 }
+const mdResp=document.getElementById('md-resp'),mdCc=document.getElementById('md-cc');
+let mdUploads={};
+mdResp.addEventListener('input',()=>{const l=mdResp.value.length;mdCc.textContent=l+' / 50';mdCc.classList.toggle('ok',l>=50)});
+document.getElementById('md-mb-audio').addEventListener('click',()=>document.getElementById('md-fi-audio').click());
+document.getElementById('md-mb-video').addEventListener('click',()=>document.getElementById('md-fi-video').click());
+document.getElementById('md-fi-audio').addEventListener('change',function(){if(this.files[0]){mdUploads.audio=this.files[0];document.getElementById('md-mb-audio').classList.add('on');document.getElementById('md-media-lbl').textContent=this.files[0].name.substring(0,28);}});
+document.getElementById('md-fi-video').addEventListener('change',function(){if(this.files[0]){mdUploads.video=this.files[0];document.getElementById('md-mb-video').classList.add('on');document.getElementById('md-media-lbl').textContent=this.files[0].name.substring(0,28);}});
+
 document.getElementById('md-complete').addEventListener('click',async()=>{
-  const btn=document.getElementById('md-complete');btn.disabled=true;
+  const btn=document.getElementById('md-complete');btn.disabled=true;btn.textContent='Sending...';
   try{
-    const r=await apiFetch('/modules/'+currentModId+'/complete',{method:'POST'});
-    if(r.ok){const d=await r.json();pts=d.points||pts}
+    const hasMedia=Object.keys(mdUploads).length>0;
+    if(hasMedia){
+      const fd=new FormData();
+      fd.append('response_text',mdResp.value);
+      fd.append('media_type',Object.keys(mdUploads)[0]);
+      Object.entries(mdUploads).forEach(([k,f])=>fd.append('media_file',f));
+      await apiForm('/modules/'+currentModId+'/submit-media',fd);
+    } else {
+      const r=await apiFetch('/modules/'+currentModId+'/complete',{method:'POST',body:JSON.stringify({response:mdResp.value})});
+      if(r.ok){const d=await r.json();pts=d.points||pts}
+    }
   }catch(e){}
-  btn.textContent='Completed';
-  setTimeout(()=>{loadMods();show('modules')},600);
+  document.getElementById('md-submit-area').style.display='none';
+  document.getElementById('md-done-msg').style.display='block';
+  mdUploads={};
+  setTimeout(()=>{loadMods();show('modules')},1200);
 });
 
 // Rewards: fetch from API, show 3-tier pricing
@@ -841,29 +977,57 @@ async function loadRewards(){
     const d=await r.json();
     const rewards=d.rewards||[];
     list.innerHTML='';
+    // Group by tier using local REWARDS structure as category map
+    const tierMap={};
+    REWARDS.forEach(t=>{t.items.forEach(i=>{tierMap[i.id]=t.tier;})});
+    const grouped={};
     rewards.forEach(item=>{
-      const card=document.createElement('div');
-      card.className='rwd-card';
-      const cp=item.cost_pepe||item.cost;
-      const ca=item.cost_agathe||item.cost;
-      const cb=item.cost_both||item.cost;
-      const canAffordAny=pts>=Math.min(cp,ca,cb);
-      const soldOut=item.sold_out||false;
-      const claimed=item.already_claimed||false;
-      card.innerHTML=`
-        <div class="rwd-head">
+      const tier=tierMap[item.id]||'Other';
+      if(!grouped[tier])grouped[tier]=[];
+      grouped[tier].push(item);
+    });
+    const tierOrder=REWARDS.map(t=>t.tier);
+    tierOrder.forEach(tier=>{
+      const items=grouped[tier];
+      if(!items||!items.length)return;
+      const section=document.createElement('div');
+      section.style.cssText='border-bottom:1px solid rgba(155,127,166,.15);margin-bottom:.25rem';
+      const header=document.createElement('div');
+      header.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.9rem 0;cursor:pointer';
+      header.innerHTML=`<div style="font-family:\'Cormorant Garamond\',serif;font-size:1rem;letter-spacing:.08em;color:var(--secondary)">${tier}</div><span class="tier-chevron" style="color:var(--muted);font-size:.8rem;transition:transform .3s">&#9660;</span>`;
+      const body=document.createElement('div');
+      body.style.cssText='overflow:hidden;max-height:0;transition:max-height .35s ease';
+      items.forEach(item=>{
+        const cp=item.cost_pepe||item.cost;
+        const ca=item.cost_agathe||item.cost;
+        const cb=item.cost_both||item.cost;
+        const canAffordAny=pts>=Math.min(cp,ca,cb);
+        const soldOut=item.sold_out||false;
+        const claimed=item.already_claimed||false;
+        const card=document.createElement('div');
+        card.className='rwd-card';
+        card.style.marginBottom='.75rem';
+        card.innerHTML=`
           <div class="rwd-name">${item.emoji||''} ${item.title||''}</div>
-        </div>
-        <div class="rwd-desc">${item.description||''}</div>
-        <div style="display:flex;gap:.5rem;margin:.5rem 0;flex-wrap:wrap">
-          <span style="font-size:.72rem;color:var(--secondary)">${cp} pts (Pepe)</span>
-          <span style="font-size:.72rem;color:rgba(155,127,166,.7)">${ca} pts (Agathe)</span>
-          <span style="font-size:.72rem;color:rgba(197,135,58,.7)">${cb} pts (Together)</span>
-        </div>
-        ${!claimed&&!soldOut?`<button class="btn-redeem" data-id="${item.id}" data-name="${item.title||''}" data-cp="${cp}" data-ca="${ca}" data-cb="${cb}" ${canAffordAny?'':'disabled'}>${canAffordAny?'Redeem':'Need '+Math.min(cp,ca,cb)+' pts'}</button>`
-          :claimed?`<span style="font-size:.72rem;color:rgba(155,127,166,.5)">Already redeemed</span>`
-          :`<span style="font-size:.72rem;color:var(--red)">Sold out</span>`}`;
-      list.appendChild(card);
+          <div class="rwd-desc">${item.description||''}</div>
+          <div style="display:flex;gap:.5rem;margin:.4rem 0;flex-wrap:wrap">
+            <span style="font-size:.72rem;color:var(--secondary)">${cp} pts (Pepe)</span>
+            <span style="font-size:.72rem;color:rgba(155,127,166,.7)">${ca} pts (Agathe)</span>
+            <span style="font-size:.72rem;color:rgba(197,135,58,.7)">${cb} pts (Together)</span>
+          </div>
+          ${!claimed&&!soldOut?`<button class="btn-redeem" data-id="${item.id}" data-name="${item.title||''}" data-cp="${cp}" data-ca="${ca}" data-cb="${cb}" ${canAffordAny?'':'disabled'}>${canAffordAny?'Redeem':'Need '+Math.min(cp,ca,cb)+' pts'}</button>`
+            :claimed?`<span style="font-size:.72rem;color:rgba(155,127,166,.5)">Already redeemed</span>`
+            :`<span style="font-size:.72rem;color:var(--red)">Sold out</span>`}`;
+        body.appendChild(card);
+      });
+      let open=false;
+      header.addEventListener('click',()=>{
+        open=!open;
+        body.style.maxHeight=open?body.scrollHeight+'px':'0';
+        header.querySelector('.tier-chevron').style.transform=open?'rotate(180deg)':'';
+      });
+      section.appendChild(header);section.appendChild(body);
+      list.appendChild(section);
     });
     list.querySelectorAll('.btn-redeem:not(:disabled)').forEach(btn=>{
       btn.addEventListener('click',()=>{
