@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D0A12">
+<meta name="apple-mobile-web-app-title" content="Jouissance">
+<link rel="manifest" href="/jouissance/manifest.json">
+<link rel="apple-touch-icon" href="/jouissance/icons/icon-192.png">
+<title>jouissance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0D0A12;--text:#F4EFE6;--accent:#9B7FA6;--secondary:#C5873A;--border:#1E1829}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;font-size:18px;line-height:1.6;overflow:hidden}
+.screen{display:none;position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;flex-direction:column}
+.screen.active{display:flex}
+.container{max-width:480px;margin:0 auto;padding:2rem 1.5rem;width:100%;flex:1;display:flex;flex-direction:column}
+.center{align-items:center;justify-content:center;text-align:center}
+
+/* Splash */
+#splash{align-items:center;justify-content:center;gap:1rem}
+.wordmark{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--accent);font-size:2.2rem;letter-spacing:.05em}
+#splash .wordmark{opacity:0;animation:fadeIn 1.5s ease forwards}
+.tagline{font-size:.85rem;color:rgba(244,239,230,.45);letter-spacing:.18em;opacity:0;animation:fadeIn 1.2s ease 1s forwards}
+
+/* Inputs */
+input[type=text]{width:100%;background:var(--border);border:1px solid rgba(155,127,166,.3);border-radius:4px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;padding:1rem 1.25rem;outline:none;transition:border-color .4s;-webkit-appearance:none}
+input[type=text]:focus{border-color:var(--accent)}
+textarea{width:100%;background:var(--border);border:1px solid rgba(155,127,166,.3);border-radius:4px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;padding:1rem 1.25rem;outline:none;resize:none;min-height:130px;transition:border-color .4s;line-height:1.6;-webkit-appearance:none}
+textarea:focus{border-color:var(--accent)}
+.field-label{font-size:.78rem;letter-spacing:.12em;color:rgba(244,239,230,.55);text-transform:uppercase;margin-bottom:.75rem;display:block}
+
+/* Buttons */
+.btn{display:block;width:100%;padding:1rem;background:transparent;border:1px solid var(--accent);border-radius:4px;color:var(--accent);font-family:'DM Sans',sans-serif;font-size:.88rem;letter-spacing:.1em;cursor:pointer;transition:background .3s,color .3s;min-height:48px}
+.btn:hover{background:rgba(155,127,166,.1)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.btn-primary:hover{background:rgba(155,127,166,.85)}
+.error-msg{color:#c47a7a;font-size:.82rem;margin-top:.5rem;min-height:1.1rem}
+
+/* Welcome */
+#welcome{cursor:pointer}
+.welcome-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2rem;line-height:1.35;margin-bottom:2rem}
+.tap-hint{font-size:.75rem;color:rgba(244,239,230,.35);letter-spacing:.14em;text-transform:uppercase}
+
+/* Consent */
+.consent-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;margin-bottom:1.5rem}
+.consent-body{color:rgba(244,239,230,.72);font-size:.92rem;line-height:1.85;margin-bottom:2rem}
+.checkbox-row{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:2rem;cursor:pointer}
+.checkbox-row input{width:20px;height:20px;min-width:20px;accent-color:var(--accent);margin-top:3px;cursor:pointer}
+.checkbox-row label{font-size:.88rem;color:rgba(244,239,230,.8);cursor:pointer;line-height:1.5}
+
+/* Profile */
+.profile-question{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;line-height:1.45;margin-bottom:1.75rem}
+.optional-hint{font-size:.72rem;color:rgba(244,239,230,.38);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.radio-cards{display:flex;gap:.75rem;margin-bottom:2rem;flex-wrap:wrap}
+.radio-card{flex:1;min-width:80px;border:1px solid rgba(155,127,166,.28);border-radius:4px;padding:1rem .5rem;text-align:center;cursor:pointer;transition:border-color .3s,background .3s;font-size:.9rem;color:rgba(244,239,230,.65);user-select:none;min-height:48px;display:flex;align-items:center;justify-content:center}
+.radio-card.selected{border-color:var(--accent);background:rgba(155,127,166,.12);color:var(--text)}
+.char-counter{font-size:.72rem;color:rgba(244,239,230,.32);text-align:right;margin-top:.4rem;margin-bottom:1.5rem}
+.char-counter.ok{color:var(--secondary)}
+
+/* Profile complete */
+.pc-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2rem;margin-bottom:1rem}
+.pc-sub{color:rgba(244,239,230,.48);font-size:.9rem;margin-bottom:3rem}
+
+/* Home */
+#home{overflow:hidden}
+.home-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.home-header .wordmark{font-size:1.4rem}
+.header-right{display:flex;align-items:center;gap:1rem}
+.pts-display{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--secondary);font-size:1.1rem}
+.bell-btn{background:none;border:none;color:rgba(244,239,230,.55);cursor:pointer;font-size:1.3rem;position:relative;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.bell-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--secondary);border-radius:50%;display:none}
+.bell-dot.on{display:block}
+.home-body{flex:1;overflow-y:auto;padding:1.75rem 1.5rem;max-width:480px;margin:0 auto;width:100%}
+.chal-card{border:1px solid rgba(155,127,166,.22);border-radius:6px;padding:1.5rem;cursor:pointer;transition:border-color .3s,background .3s;margin-bottom:1.75rem;background:rgba(30,24,41,.5)}
+.chal-card:hover{border-color:var(--accent);background:rgba(155,127,166,.06)}
+.chal-card-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;margin-bottom:.5rem}
+.chal-card-desc{font-size:.88rem;color:rgba(244,239,230,.58);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.chal-card-pts{margin-top:1rem;font-size:.72rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase}
+.presence-line{font-size:.83rem;color:rgba(244,239,230,.42);font-style:italic}
+.no-chal{font-size:.9rem;color:rgba(244,239,230,.38);font-style:italic;padding:1.5rem 0}
+.home-footer{display:flex;border-top:1px solid var(--border);flex-shrink:0}
+.nav-btn{flex:1;background:none;border:none;color:rgba(244,239,230,.48);font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:1.1rem;min-height:56px;transition:color .3s}
+.nav-btn:hover{color:var(--text)}
+.nav-btn+.nav-btn{border-left:1px solid var(--border)}
+
+/* Screen header */
+.screen-header{display:flex;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem}
+.back-btn{background:none;border:none;color:rgba(244,239,230,.48);cursor:pointer;font-size:1.3rem;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.screen-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:rgba(244,239,230,.65)}
+
+/* Challenge today */
+.ct-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;margin-bottom:1rem;line-height:1.3}
+.ct-desc{color:rgba(244,239,230,.72);font-size:.93rem;line-height:1.85;margin-bottom:1.75rem}
+.pts-hint{font-size:.72rem;color:var(--secondary);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
+.media-row{display:flex;gap:.75rem;margin:.75rem 0 1.75rem;align-items:center}
+.media-btn{background:none;border:1px solid rgba(155,127,166,.22);border-radius:4px;color:rgba(244,239,230,.48);cursor:pointer;width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:border-color .3s,color .3s;flex-shrink:0}
+.media-btn:hover,.media-btn.on{border-color:var(--accent);color:var(--accent)}
+.media-label{font-size:.72rem;color:rgba(244,239,230,.32);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+
+/* Challenge complete */
+#challenge-complete{align-items:center;justify-content:center}
+.received{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.5rem;margin-bottom:1rem}
+.pts-gained{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--secondary);margin-bottom:2rem;opacity:0;animation:fadeInOut 2.8s ease .3s forwards}
+.surprise-box{display:none;text-align:center;margin-bottom:2rem}
+.surprise-box.on{display:block;animation:fadeIn .8s ease forwards}
+.surprise-lbl{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--accent);font-size:1.2rem;margin-bottom:.75rem}
+.surprise-q{font-size:.88rem;color:rgba(244,239,230,.58);font-style:italic;line-height:1.85;max-width:300px;margin:0 auto}
+
+/* Modules */
+.section-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;margin-bottom:1.5rem}
+.mod-card{border:1px solid var(--border);border-radius:6px;padding:1.2rem 1.5rem;margin-bottom:.65rem;cursor:pointer;transition:border-color .3s,background .3s;display:flex;align-items:center;justify-content:space-between;min-height:62px}
+.mod-card:hover{border-color:var(--accent);background:rgba(155,127,166,.04)}
+.mod-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem}
+.mod-right{display:flex;align-items:center;gap:.75rem}
+.mod-pts{font-size:.72rem;color:var(--secondary)}
+.dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(155,127,166,.38);background:transparent;flex-shrink:0}
+.dot.filled{background:var(--accent);border-color:var(--accent)}
+
+/* Module detail */
+.mod-content{color:rgba(244,239,230,.68);font-size:.93rem;line-height:1.95;margin-bottom:2.5rem}
+
+/* Rewards */
+.pts-big{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2rem;color:var(--secondary);margin-bottom:.25rem}
+.pts-big-lbl{font-size:.72rem;color:rgba(244,239,230,.32);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.75rem}
+.tier-lbl{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin:1.5rem 0 .75rem}
+.rwd-card{border:1px solid var(--border);border-radius:6px;padding:1.2rem;margin-bottom:.55rem;transition:border-color .3s}
+.rwd-card:hover{border-color:rgba(155,127,166,.28)}
+.rwd-card.surprise{border-style:dashed;border-color:rgba(155,127,166,.18);opacity:.6}
+.rwd-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.4rem}
+.rwd-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem}
+.rwd-pts{font-size:.78rem;color:var(--secondary);white-space:nowrap;margin-left:.5rem}
+.rwd-desc{font-size:.83rem;color:rgba(244,239,230,.52);line-height:1.65;margin-bottom:.65rem}
+.rwd-time{font-size:.7rem;color:rgba(244,239,230,.28);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.65rem}
+.btn-redeem{padding:.55rem 1rem;border:1px solid var(--accent);background:transparent;color:var(--accent);font-size:.78rem;letter-spacing:.07em;border-radius:4px;cursor:pointer;transition:background .3s;min-height:38px}
+.btn-redeem:hover{background:rgba(155,127,166,.1)}
+.btn-redeem:disabled{opacity:.28;cursor:not-allowed}
+
+/* Redemptions */
+.rdm-item{border-bottom:1px solid var(--border);padding:1rem 0}
+.rdm-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;margin-bottom:.25rem}
+.rdm-meta{font-size:.78rem;color:rgba(244,239,230,.38)}
+.rdm-status{display:inline-block;margin-left:.5rem;font-size:.68rem;color:var(--secondary);text-transform:uppercase;letter-spacing:.08em}
+.rdm-status.done{color:rgba(155,127,166,.65)}
+
+/* Day 14 */
+#day14{align-items:center;justify-content:center}
+.d14-today{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:3.2rem;margin-bottom:1rem;text-align:center}
+.d14-q{font-size:.92rem;color:rgba(244,239,230,.58);text-align:center;margin-bottom:2.5rem;line-height:1.75;max-width:310px}
+.d14-sent{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:rgba(244,239,230,.65);text-align:center;line-height:1.85;display:none}
+
+/* Broadcasts overlay */
+#bc-overlay{display:none;position:fixed;inset:0;background:rgba(13,10,18,.97);z-index:100;flex-direction:column}
+#bc-overlay.on{display:flex}
+.ov-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border)}
+.ov-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem}
+.close-btn{background:none;border:none;color:rgba(244,239,230,.48);cursor:pointer;font-size:1.4rem;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.bc-list{flex:1;overflow-y:auto;padding:1.5rem;max-width:480px;margin:0 auto;width:100%}
+.bc-item{border-bottom:1px solid var(--border);padding:1rem 0}
+.bc-msg{font-size:.92rem;line-height:1.72;margin-bottom:.35rem}
+.bc-meta{font-size:.72rem;color:rgba(244,239,230,.32)}
+.bc-empty{font-size:.88rem;color:rgba(244,239,230,.32);font-style:italic;padding:2rem 0}
+
+/* Redeem modal */
+#rdm-modal{display:none;position:fixed;inset:0;background:rgba(13,10,18,.95);z-index:200;align-items:center;justify-content:center;padding:1.5rem}
+#rdm-modal.on{display:flex}
+.modal-box{background:#150F1E;border:1px solid rgba(155,127,166,.28);border-radius:8px;padding:2rem;width:100%;max-width:430px}
+.modal-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;margin-bottom:.4rem}
+.modal-sub{font-size:.83rem;color:rgba(244,239,230,.48);margin-bottom:1.5rem;line-height:1.65}
+.modal-actions{display:flex;gap:.75rem;margin-top:1rem}
+.modal-actions .btn{flex:1}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeInOut{0%{opacity:0;transform:translateY(4px)}25%{opacity:1;transform:translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateY(-4px)}}
+.mb2{margin-bottom:2rem}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="splash">
+  <div class="wordmark">jouissance</div>
+  <div class="tagline">l'incertitude certaine</div>
+</div>
+
+<div class="screen" id="invite-entry">
+  <div class="container center" style="justify-content:center">
+    <div class="wordmark mb2" style="opacity:1">jouissance</div>
+    <label class="field-label" for="inv-code">Your invitation code</label>
+    <input type="text" id="inv-code" placeholder="enter code" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+    <div class="error-msg" id="inv-err"></div>
+    <div style="margin-top:1.5rem"><button class="btn btn-primary" id="inv-submit">Enter</button></div>
+  </div>
+</div>
+
+<div class="screen" id="welcome">
+  <div class="container center" style="justify-content:center">
+    <div class="welcome-text">Bienvenue.<br>You are in the right place.</div>
+    <div class="tap-hint">Tap anywhere to continue</div>
+  </div>
+</div>
+
+<div class="screen" id="consent">
+  <div class="container" style="justify-content:center">
+    <div class="consent-title">Before we begin</div>
+    <div class="consent-body">What you share here stays between us. Your answers are visible only to Agathe and the Jouissance team. This information is held under GDPR Article 9 and used solely to shape your experience.</div>
+    <label class="checkbox-row">
+      <input type="checkbox" id="consent-chk">
+      <label>I understand and consent</label>
+    </label>
+    <button class="btn btn-primary" id="consent-btn" disabled>Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q1">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">How do you name pleasure in your everyday life?</div>
+    <textarea id="a1" placeholder="Write here..."></textarea>
+    <div class="char-counter" id="cc1">0 / 50</div>
+    <button class="btn btn-primary pnext" data-q="1">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q2">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">What draws you most?</div>
+    <div class="radio-cards" id="rc2">
+      <div class="radio-card" data-v="Intensity">Intensity</div>
+      <div class="radio-card" data-v="Softness">Softness</div>
+      <div class="radio-card" data-v="Surprise">Surprise</div>
+    </div>
+    <button class="btn btn-primary pnext" data-q="2" id="q2btn" disabled>Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q3">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">When you imagine yourself at your most desirable, where are you, who are you with, what are you doing?</div>
+    <textarea id="a3" placeholder="Write here..."></textarea>
+    <div class="char-counter" id="cc3">0 / 50</div>
+    <button class="btn btn-primary pnext" data-q="3">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q4">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">Do you prefer to lead, to follow, or both?</div>
+    <div class="radio-cards" id="rc4">
+      <div class="radio-card" data-v="Lead">Lead</div>
+      <div class="radio-card" data-v="Follow">Follow</div>
+      <div class="radio-card" data-v="Both">Both</div>
+    </div>
+    <button class="btn btn-primary pnext" data-q="4" id="q4btn" disabled>Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q5">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">What does consent mean to you in a space of exploration?</div>
+    <textarea id="a5" placeholder="Write here..."></textarea>
+    <div class="char-counter" id="cc5">0 / 50</div>
+    <button class="btn btn-primary pnext" data-q="5">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q6">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">Are there practices or energies you want to explore?</div>
+    <div class="optional-hint">Optional</div>
+    <textarea id="a6" placeholder="Write here..."></textarea>
+    <div style="margin-top:1rem"><button class="btn btn-primary pnext" data-q="6">Continue</button></div>
+  </div>
+</div>
+
+<div class="screen" id="profile-q7">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">Are there limits you want others to know about?</div>
+    <div class="optional-hint">Optional</div>
+    <textarea id="a7" placeholder="Write here..."></textarea>
+    <div style="margin-top:1rem"><button class="btn btn-primary pnext" data-q="7">Continue</button></div>
+  </div>
+</div>
+
+<div class="screen" id="profile-q8">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">What have you been most afraid to want?</div>
+    <textarea id="a8" placeholder="Write here..."></textarea>
+    <div class="char-counter" id="cc8">0 / 50</div>
+    <button class="btn btn-primary pnext" data-q="8">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q9">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">How do you want to be seen by this group?</div>
+    <textarea id="a9" placeholder="Write here..."></textarea>
+    <div class="char-counter" id="cc9">0 / 50</div>
+    <button class="btn btn-primary pnext" data-q="9">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-q10">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">What do you want to feel on August 14th?</div>
+    <textarea id="a10" placeholder="Write here..."></textarea>
+    <div class="char-counter" id="cc10">0 / 50</div>
+    <button class="btn btn-primary" id="p-submit">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="profile-complete">
+  <div class="container center" style="justify-content:center">
+    <div class="pc-title">Your profile is kept.</div>
+    <div class="pc-sub">Agathe will read it.</div>
+    <button class="btn btn-primary" id="p-begin">Begin</button>
+  </div>
+</div>
+
+<div class="screen" id="home">
+  <div class="home-header">
+    <div class="wordmark" style="opacity:1">jouissance</div>
+    <div class="header-right">
+      <div class="pts-display" id="h-pts">0 pts</div>
+      <button class="bell-btn" id="bell-btn">&#9651;<span class="bell-dot" id="bell-dot"></span></button>
+    </div>
+  </div>
+  <div class="home-body">
+    <div class="chal-card" id="h-chal" style="display:none">
+      <div class="chal-card-title" id="h-chal-title"></div>
+      <div class="chal-card-desc" id="h-chal-desc"></div>
+      <div class="chal-card-pts">+5 pts</div>
+    </div>
+    <div class="no-chal" id="h-no-chal" style="display:none">Your space is waiting for you.</div>
+    <div class="presence-line" id="h-presence"></div>
+  </div>
+  <div class="home-footer">
+    <button class="nav-btn" id="nav-modules">Modules</button>
+    <button class="nav-btn" id="nav-rewards">Rewards</button>
+  </div>
+</div>
+
+<div class="screen" id="challenge-today">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">Today</div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div class="ct-title" id="ct-title"></div>
+    <div class="ct-desc" id="ct-desc"></div>
+    <div class="pts-hint">+5 pts on submission</div>
+    <textarea id="ct-resp" placeholder="Write here..." style="min-height:150px"></textarea>
+    <div class="char-counter" id="ct-cc">0 / 50</div>
+    <div class="media-row">
+      <button class="media-btn" id="mb-audio" title="Voice note">&#9834;</button>
+      <button class="media-btn" id="mb-video" title="Video or image">&#9645;</button>
+      <button class="media-btn" id="mb-file" title="File">&#128206;</button>
+      <input type="file" id="fi-audio" accept="audio/*" style="display:none" capture="microphone">
+      <input type="file" id="fi-video" accept="video/*,image/*" style="display:none" capture="environment">
+      <input type="file" id="fi-doc" accept="*/*" style="display:none">
+      <span class="media-label" id="media-lbl"></span>
+    </div>
+    <button class="btn btn-primary mb2" id="ct-submit" disabled>Send</button>
+  </div>
+</div>
+
+<div class="screen" id="challenge-complete">
+  <div class="container center" style="justify-content:center">
+    <div class="received">Received.</div>
+    <div class="pts-gained" id="pts-gained">+5</div>
+    <div class="surprise-box" id="surprise-box">
+      <div class="surprise-lbl">Something for you.</div>
+      <div class="surprise-q" id="surprise-q"></div>
+    </div>
+    <button class="btn" id="cc-back" style="max-width:200px">Back</button>
+  </div>
+</div>
+
+<div class="screen" id="modules">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">Modules</div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div id="mod-list"></div>
+  </div>
+</div>
+
+<div class="screen" id="module-detail">
+  <div class="screen-header">
+    <button class="back-btn" data-back="modules">&#8592;</button>
+    <div class="screen-label" id="md-label"></div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div class="ct-title" id="md-title"></div>
+    <div class="mod-content" id="md-body"></div>
+    <button class="btn btn-primary mb2" id="md-complete">Mark complete (+10 pts)</button>
+  </div>
+</div>
+
+<div class="screen" id="rewards">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">Rewards</div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div class="pts-big" id="rwd-pts">0 pts</div>
+    <div class="pts-big-lbl">available</div>
+    <div id="rwd-list"></div>
+    <div style="height:2rem"></div>
+  </div>
+</div>
+
+<div class="screen" id="redemptions">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">My Exchanges</div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div id="rdm-list"></div>
+  </div>
+</div>
+
+<div class="screen" id="day14">
+  <div class="container center" style="justify-content:center;max-width:360px;margin:auto">
+    <div class="d14-today">Today.</div>
+    <div class="d14-q">Write one true thing about what you want tonight.</div>
+    <textarea id="d14-resp" placeholder="Write here..." style="min-height:130px" class="mb2"></textarea>
+    <button class="btn btn-primary mb2" id="d14-submit" style="max-width:200px">Send</button>
+    <div class="d14-sent" id="d14-sent">Received.<br>See you tonight.</div>
+  </div>
+</div>
+
+<div id="bc-overlay">
+  <div class="ov-header">
+    <div class="ov-title">Messages</div>
+    <button class="close-btn" id="bc-close">&#10005;</button>
+  </div>
+  <div class="bc-list" id="bc-list"></div>
+</div>
+
+<div id="rdm-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-rwd-name">Reward</div>
+    <div class="modal-sub">Describe what you want and who you want to deliver it. Agathe will receive this.</div>
+    <textarea id="modal-details" placeholder="What you want... and who..." style="min-height:110px"></textarea>
+    <div class="modal-actions">
+      <button class="btn" id="modal-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
+  ? 'http://127.0.0.1:8746/jouissance'
+  : 'https://mexzungu.com/api/jouissance-auth';
+
+let token = localStorage.getItem('jouissance_token');
+let pts = 0;
+let currentChal = null;
+let currentModId = null;
+let pendingRwdId = null;
+let uploads = {};
+
+const SURPRISE_DAYS = [3,5,7,9,11];
+const QUOTES = [
+  'Desire is not something you find. It is something you remember.',
+  'The body knows before the mind admits.',
+  'There is nothing more intimate than saying what you actually want.',
+  'What you call impossible is often just unfamiliar.',
+  'Every limit is also a door.'
+];
+const MODULES = {
+  'm1': {name:'The Body as Portal', body:'Your body is not a vehicle for your mind. It is the source. This module invites you to arrive, fully, in the skin you are in. Notice what it is carrying. Notice what it is asking for. The body does not lie. It only whispers in languages we have forgotten.'},
+  'm2': {name:'The Language of Desire', body:'Desire has a vocabulary most of us never learn. Not the vocabulary of want-this, do-that, but the older language of sensation, image, and longing. Here you begin to find your words. To say, precisely and without apology, what moves you.'},
+  'm3': {name:'Energy and Presence', body:'Presence is not attention. It is the quality of contact between you and the world. Some people walk into a room and the room changes. This is not magic. It is practice. This module is about learning to inhabit your own field.'},
+  'm4': {name:'Surrender and Safety', body:'Surrender is not weakness. It is the most advanced skill in intimacy. To release control deliberately, to trust the container, to let go without disappearing. This requires safety, and safety requires knowing exactly where your edges are.'},
+  'm5': {name:'Integration', body:'What you have felt, written, and explored over these days is not separate from your life. It is your life, more honestly expressed. Integration is the practice of carrying what you have found back into every room you enter.'}
+};
+const REWARDS = [
+  {tier:'WORDS & ATTENTION', items:[
+    {id:'letter',name:'The Letter',pts:20,desc:'Agathe writes you a personal note. Tell her what you want her to say.',time:null},
+    {id:'notice',name:'What I Notice',pts:25,desc:'Someone writes what they find most beautiful about you. You choose who.',time:null},
+    {id:'question',name:'The Question',pts:30,desc:'Ask anyone in the room one question they must answer honestly.',time:null},
+    {id:'story',name:'The Story',pts:35,desc:'Someone tells you a story about desire. Their own. You choose who.',time:null}
+  ]},
+  {tier:'PRESENCE & SENSATION', items:[
+    {id:'mirror',name:'The Mirror',pts:40,desc:'Reread your own profile. Write what surprised you.',time:'15 min'},
+    {id:'touch',name:'The Touch',pts:45,desc:'Ten minutes of deliberate, non-sexual touch. Head, hands, back. You choose who.',time:'10 min'},
+    {id:'meditation',name:'The Meditation',pts:45,desc:'A 20-minute guided audio by Agathe.',time:'20 min'},
+    {id:'bath',name:'The Bath',pts:55,desc:'A bath drawn for you, oils chosen by someone else. You choose who and what mood.',time:'30 min'},
+    {id:'meal',name:'The Meal',pts:60,desc:'Someone cooks for you. You choose what and who.',time:'1 evening'}
+  ]},
+  {tier:'EXPERIENCE & RITUAL', items:[
+    {id:'convo',name:'The Conversation',pts:65,desc:'A 30-minute 1:1 with Agathe. You direct it.',time:'30 min'},
+    {id:'perfume',name:'The Perfume',pts:70,desc:'A perfume chosen for you and sent. You choose who picks it. Physical delivery by Aug 10.',time:null},
+    {id:'reading',name:'The Reading',pts:75,desc:'Someone reads to you for 20 minutes. Text and reader of your choice.',time:'20 min'},
+    {id:'playlist',name:'The Playlist',pts:80,desc:'A playlist made for you, for a mood you describe. You choose who makes it.',time:null},
+    {id:'softfire',name:'Soft Fire',pts:80,desc:"Agathe's 20-minute sensual audio recording.",time:'20 min'}
+  ]},
+  {tier:'INTENSITY', items:[
+    {id:'promise',name:'The Promise',pts:85,desc:'One element of the August 14 evening, designed by you. Name what and who delivers it.',time:'45 min'},
+    {id:'blindfold',name:'The Blindfold',pts:90,desc:'Someone guides your senses for 15 minutes while you cannot see. You choose who and where.',time:'15 min'},
+    {id:'shibari-light',name:'Shibari Light',pts:95,desc:'A gentle rope-binding ritual, fully clothed. Aesthetic, meditative. You choose who ties.',time:'30 min'},
+    {id:'confession',name:'The Confession',pts:100,desc:'You tell someone something you have never said. They witness. They do not respond. You choose who.',time:'20 min'},
+    {id:'mirror-motion',name:'The Mirror in Motion',pts:110,desc:'Someone dances for you, or with you, for you alone. You choose who and what music.',time:'20 min'},
+    {id:'shibari-deep',name:'Shibari Deep',pts:115,desc:'A full shibari session, partial undress, your limits respected. You describe what you want and who ties.',time:'45 min'},
+    {id:'carte-blanche',name:'Carte Blanche',pts:200,desc:'You design one experience for August 14, without limits. Write what you want, who you want, how long.',time:null}
+  ]},
+  {tier:'SURPRISE MENUS', surprise:true, items:[
+    {id:'sm1',name:'Surprise Menu I',pts:null,desc:'Unlocked by Agathe. One of: The Letter, What I Notice, or The Story, her choice.'},
+    {id:'sm2',name:'Surprise Menu II',pts:null,desc:'One of: The Touch, The Bath, or The Meal, her choice.'},
+    {id:'sm3',name:'Surprise Menu III',pts:null,desc:'One of: The Reading, The Playlist, or Soft Fire, her choice.'},
+    {id:'sm4',name:'Surprise Menu IV',pts:null,desc:'One of: The Promise, The Confession, or Shibari Light, her choice.'}
+  ]}
+];
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el){el.classList.add('active');el.scrollTop=0}
+}
+
+async function apiFetch(path,opts={}){
+  const h={'Content-Type':'application/json',...(opts.headers||{})};
+  if(token) h['Authorization']='Bearer '+token;
+  return fetch(API+path,{...opts,headers:h});
+}
+async function apiForm(path,fd){
+  const h={};
+  if(token) h['Authorization']='Bearer '+token;
+  return fetch(API+path,{method:'POST',headers:h,body:fd});
+}
+
+async function boot(){
+  const _up=new URLSearchParams(window.location.search);
+  const _pt=_up.get('preview');
+  if(_pt){token=_pt;localStorage.setItem('jouissance_token',token);window.history.replaceState({},'',window.location.pathname);}
+  if(!token){setTimeout(()=>show('invite-entry'),2500);return}
+  try{
+    const r=await apiFetch('/auth/me');
+    if(!r.ok){localStorage.removeItem('jouissance_token');setTimeout(()=>show('invite-entry'),2500);return}
+    const u=await r.json();
+    pts=u.points||0;
+    if(!u.profile_complete){
+      const s=parseInt(localStorage.getItem('jouissance_profile_step')||'1');
+      setTimeout(()=>show('profile-q'+Math.min(Math.max(s,1),10)),2500);
+    } else if((u.challenge_day||0)===14){
+      setTimeout(()=>show('day14'),2500);
+    } else {
+      setTimeout(()=>{loadHome();show('home')},2500);
+    }
+  }catch(e){setTimeout(()=>show('invite-entry'),2500)}
+}
+
+// Invite
+document.getElementById('inv-submit').addEventListener('click',async()=>{
+  const code=document.getElementById('inv-code').value.trim();
+  if(!code)return;
+  const btn=document.getElementById('inv-submit');
+  btn.disabled=true;
+  try{
+    const r=await fetch(API+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({invite_code:code})});
+    const d=await r.json();
+    if(r.ok&&d.token){
+      token=d.token;localStorage.setItem('jouissance_token',token);
+      localStorage.setItem('jouissance_profile_step','1');
+      show('welcome');
+    } else {
+      document.getElementById('inv-err').textContent=d.detail||'Invalid code.';
+      btn.disabled=false;
+    }
+  }catch(e){document.getElementById('inv-err').textContent='Connection error.';btn.disabled=false}
+});
+document.getElementById('inv-code').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inv-submit').click()});
+
+// Welcome
+document.getElementById('welcome').addEventListener('click',()=>show('consent'));
+
+// Consent
+document.getElementById('consent-chk').addEventListener('change',function(){document.getElementById('consent-btn').disabled=!this.checked});
+document.getElementById('consent-btn').addEventListener('click',async()=>{
+  try{await apiFetch('/consent',{method:'POST',body:JSON.stringify({consented:true})})}catch(e){}
+  show('profile-q1');localStorage.setItem('jouissance_profile_step','1');
+});
+
+// Char counters
+[1,3,5,8,9,10].forEach(n=>{
+  const ta=document.getElementById('a'+n),cc=document.getElementById('cc'+n);
+  if(!ta||!cc)return;
+  ta.addEventListener('input',()=>{const l=ta.value.length;cc.textContent=l+' / 50';cc.classList.toggle('ok',l>=50)});
+});
+
+// Radio cards
+function setupRadio(cid,btnId,key){
+  const c=document.getElementById(cid);
+  if(!c)return;
+  c.querySelectorAll('.radio-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      c.querySelectorAll('.radio-card').forEach(x=>x.classList.remove('selected'));
+      card.classList.add('selected');
+      window._pAnswers=window._pAnswers||{};
+      window._pAnswers[key]=card.dataset.v;
+      const b=document.getElementById(btnId);if(b)b.disabled=false;
+    });
+  });
+}
+setupRadio('rc2','q2btn','q2');
+setupRadio('rc4','q4btn','q4');
+
+// Profile next
+window._pAnswers={};
+document.querySelectorAll('.pnext').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const q=parseInt(btn.dataset.q);
+    const ta=document.getElementById('a'+q);
+    if(ta) window._pAnswers['q'+q]=ta.value.trim();
+    const nxt=q+1;
+    localStorage.setItem('jouissance_profile_step',String(nxt));
+    show('profile-q'+nxt);
+  });
+});
+
+document.getElementById('p-submit').addEventListener('click',async()=>{
+  window._pAnswers['q10']=(document.getElementById('a10').value||'').trim();
+  const btn=document.getElementById('p-submit');btn.disabled=true;
+  const a=window._pAnswers;
+  try{
+    await apiFetch('/profile',{method:'POST',body:JSON.stringify({
+      q1:a.q1||'',q2:a.q2||'',q3:a.q3||'',q4:a.q4||'',q5:a.q5||'',
+      q6:a.q6||'',q7:a.q7||'',q8:a.q8||'',q9:a.q9||'',q10:a.q10||''
+    })});
+    localStorage.setItem('jouissance_profile_complete','true');
+  }catch(e){}
+  show('profile-complete');
+});
+document.getElementById('p-begin').addEventListener('click',()=>{loadHome();show('home')});
+
+// Home
+async function loadHome(){
+  try{
+    const [mr,cr,br]=await Promise.all([apiFetch('/auth/me'),apiFetch('/challenges/today'),apiFetch('/broadcasts/inbox')]);
+    if(mr.ok){
+      const m=await mr.json();pts=m.points||0;
+      document.getElementById('h-pts').textContent=pts+' pts';
+      const d=m.presence_days||0;
+      document.getElementById('h-presence').textContent=d>0?`You have been here for ${d} day${d!==1?'s':''}.`:'';
+    }
+    if(cr.ok){
+      const c=await cr.json();currentChal=c;
+      document.getElementById('h-chal').style.display='block';
+      document.getElementById('h-no-chal').style.display='none';
+      document.getElementById('h-chal-title').textContent=c.title||'Today';
+      document.getElementById('h-chal-desc').textContent=c.description||'';
+    } else {
+      document.getElementById('h-chal').style.display='none';
+      document.getElementById('h-no-chal').style.display='block';
+    }
+    if(br.ok){
+      const b=await br.json();
+      const items=Array.isArray(b)?b:(b.broadcasts||[]);
+      const unread=items.length>0;
+      document.getElementById('bell-dot').classList.toggle('on',unread);
+    }
+  }catch(e){}
+}
+
+document.getElementById('h-chal').addEventListener('click',()=>{
+  if(!currentChal)return;
+  document.getElementById('ct-title').textContent=currentChal.title||'';
+  document.getElementById('ct-desc').textContent=currentChal.description||'';
+  document.getElementById('ct-resp').value='';
+  document.getElementById('ct-cc').textContent='0 / 50';
+  document.getElementById('ct-submit').disabled=true;
+  uploads={};document.getElementById('media-lbl').textContent='';
+  document.querySelectorAll('.media-btn').forEach(b=>b.classList.remove('on'));
+  show('challenge-today');
+});
+document.getElementById('nav-modules').addEventListener('click',()=>{loadMods();show('modules')});
+document.getElementById('nav-rewards').addEventListener('click',()=>{loadRewards();show('rewards')});
+document.getElementById('bell-btn').addEventListener('click',()=>{loadBc();document.getElementById('bc-overlay').classList.add('on')});
+
+// Challenge today
+const ctResp=document.getElementById('ct-resp'),ctCc=document.getElementById('ct-cc');
+ctResp.addEventListener('input',()=>{
+  const l=ctResp.value.length;
+  ctCc.textContent=l+' / 50';ctCc.classList.toggle('ok',l>=50);
+  document.getElementById('ct-submit').disabled=l<50;
+});
+
+function setupMedia(btnId,fiId,type){
+  document.getElementById(btnId).addEventListener('click',()=>document.getElementById(fiId).click());
+  document.getElementById(fiId).addEventListener('change',function(){
+    if(this.files[0]){
+      uploads[type]=this.files[0];
+      document.getElementById(btnId).classList.add('on');
+      document.getElementById('media-lbl').textContent=this.files[0].name.substring(0,28);
+    }
+  });
+}
+setupMedia('mb-audio','fi-audio','audio');
+setupMedia('mb-video','fi-video','video');
+setupMedia('mb-file','fi-doc','doc');
+
+document.getElementById('ct-submit').addEventListener('click',async()=>{
+  const btn=document.getElementById('ct-submit');btn.disabled=true;btn.textContent='Sending...';
+  try{
+    const chalId=currentChal&&currentChal.id?currentChal.id:1;
+    const hasMedia=Object.keys(uploads).length>0;
+    let data={};
+    if(hasMedia){
+      const fd=new FormData();
+      fd.append('response_text',ctResp.value);
+      fd.append('media_type',Object.keys(uploads)[0]||'text');
+      Object.entries(uploads).forEach(([k,f])=>fd.append('media_file',f));
+      const r=await apiForm('/challenges/'+chalId+'/submit-media',fd);
+      if(r.ok)data=await r.json();
+    } else {
+      const r=await apiFetch('/challenges/'+chalId+'/complete',{method:'POST',body:JSON.stringify({response:ctResp.value})});
+      if(r.ok)data=await r.json();
+    }
+    pts=data.total_points||data.points||pts;
+    const day=currentChal?(currentChal.day||0):0;
+    const isSurprise=SURPRISE_DAYS.includes(day);
+    document.getElementById('pts-gained').textContent=isSurprise?'+15':'+5';
+    if(isSurprise){
+      document.getElementById('surprise-q').textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+      setTimeout(()=>document.getElementById('surprise-box').classList.add('on'),1200);
+    } else {
+      document.getElementById('surprise-box').classList.remove('on');
+    }
+    show('challenge-complete');
+  }catch(e){btn.disabled=false;btn.textContent='Send'}
+});
+document.getElementById('cc-back').addEventListener('click',()=>{loadHome();show('home')});
+
+// Modules
+let completedMods=[];
+async function loadMods(){
+  try{
+    const r=await apiFetch('/modules');
+    if(r.ok){const d=await r.json();completedMods=(d.modules||[]).filter(m=>m.completed).map(m=>m.id||m.title)}
+  }catch(e){}
+  const list=document.getElementById('mod-list');list.innerHTML='';
+  Object.entries(MODULES).forEach(([id,m])=>{
+    const done=completedMods.includes(id)||completedMods.includes(m.name);
+    const card=document.createElement('div');
+    card.className='mod-card';
+    card.innerHTML=`<div class="mod-name">${m.name}</div><div class="mod-right"><span class="mod-pts">+10 pts</span><div class="dot ${done?'filled':''}"></div></div>`;
+    card.addEventListener('click',()=>{
+      currentModId=id;
+      document.getElementById('md-title').textContent=m.name;
+      document.getElementById('md-label').textContent=m.name;
+      document.getElementById('md-body').textContent=m.body;
+      const cb=document.getElementById('md-complete');
+      cb.disabled=done;cb.textContent=done?'Completed':'Mark complete (+10 pts)';
+      show('module-detail');
+    });
+    list.appendChild(card);
+  });
+}
+document.getElementById('md-complete').addEventListener('click',async()=>{
+  const btn=document.getElementById('md-complete');btn.disabled=true;
+  try{
+    const r=await apiFetch('/modules/'+currentModId+'/complete',{method:'POST'});
+    if(r.ok){const d=await r.json();pts=d.points||pts}
+  }catch(e){}
+  btn.textContent='Completed';
+  setTimeout(()=>{loadMods();show('modules')},600);
+});
+
+// Rewards: fetch from API, show 3-tier pricing
+let pendingRwdGiver = 'pepe';
+async function loadRewards(){
+  try{const r=await apiFetch('/auth/me');if(r.ok){const d=await r.json();pts=d.points||pts}}catch(e){}
+  document.getElementById('rwd-pts').textContent=pts+' pts';
+  const list=document.getElementById('rwd-list');
+  list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1rem 0">Loading...</div>';
+  try{
+    const r=await apiFetch('/user/rewards');
+    if(!r.ok){list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic">Could not load rewards.</div>';return;}
+    const d=await r.json();
+    const rewards=d.rewards||[];
+    list.innerHTML='';
+    rewards.forEach(item=>{
+      const card=document.createElement('div');
+      card.className='rwd-card';
+      const cp=item.cost_pepe||item.cost;
+      const ca=item.cost_agathe||item.cost;
+      const cb=item.cost_both||item.cost;
+      const canAffordAny=pts>=Math.min(cp,ca,cb);
+      const soldOut=item.sold_out||false;
+      const claimed=item.already_claimed||false;
+      card.innerHTML=`
+        <div class="rwd-head">
+          <div class="rwd-name">${item.emoji||''} ${item.title||''}</div>
+        </div>
+        <div class="rwd-desc">${item.description||''}</div>
+        <div style="display:flex;gap:.5rem;margin:.5rem 0;flex-wrap:wrap">
+          <span style="font-size:.72rem;color:var(--secondary)">${cp} pts (Pepe)</span>
+          <span style="font-size:.72rem;color:rgba(155,127,166,.7)">${ca} pts (Agathe)</span>
+          <span style="font-size:.72rem;color:rgba(197,135,58,.7)">${cb} pts (Together)</span>
+        </div>
+        ${!claimed&&!soldOut?`<button class="btn-redeem" data-id="${item.id}" data-name="${item.title||''}" data-cp="${cp}" data-ca="${ca}" data-cb="${cb}" ${canAffordAny?'':'disabled'}>${canAffordAny?'Redeem':'Need '+Math.min(cp,ca,cb)+' pts'}</button>`
+          :claimed?`<span style="font-size:.72rem;color:rgba(155,127,166,.5)">Already redeemed</span>`
+          :`<span style="font-size:.72rem;color:var(--red)">Sold out</span>`}`;
+      list.appendChild(card);
+    });
+    list.querySelectorAll('.btn-redeem:not(:disabled)').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        pendingRwdId=btn.dataset.id;
+        pendingRwdGiver='pepe';
+        document.getElementById('modal-rwd-name').textContent=btn.dataset.name;
+        // Build giver selector in modal
+        const cp=parseInt(btn.dataset.cp)||0;
+        const ca=parseInt(btn.dataset.ca)||0;
+        const cb=parseInt(btn.dataset.cb)||0;
+        const modalSub=document.getElementById('rdm-modal').querySelector('.modal-sub');
+        if(modalSub){
+          modalSub.innerHTML=`Who delivers this?<br>
+            <div style="display:flex;gap:.5rem;margin:.75rem 0;flex-wrap:wrap">
+              <button onclick="setGiver('pepe',this)" class="btn giver-btn" style="flex:1;min-width:80px;padding:.5rem;font-size:.82rem" data-g="pepe"${pts<cp?' disabled':''}>Pepe<br><span style="font-size:.7rem;opacity:.7">${cp} pts</span></button>
+              <button onclick="setGiver('agathe',this)" class="btn giver-btn" style="flex:1;min-width:80px;padding:.5rem;font-size:.82rem" data-g="agathe"${pts<ca?' disabled':''}>Agathe<br><span style="font-size:.7rem;opacity:.7">${ca} pts</span></button>
+              <button onclick="setGiver('both',this)" class="btn giver-btn" style="flex:1;min-width:80px;padding:.5rem;font-size:.82rem" data-g="both"${pts<cb?' disabled':''}>Together<br><span style="font-size:.7rem;opacity:.7">${cb} pts</span></button>
+            </div>`;
+        }
+        document.getElementById('modal-details').style.display='none';
+        document.getElementById('rdm-modal').classList.add('on');
+      });
+    });
+  }catch(e){list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic">Error loading rewards.</div>';}
+}
+
+function setGiver(g,btn){
+  pendingRwdGiver=g;
+  document.querySelectorAll('.giver-btn').forEach(b=>b.classList.remove('btn-primary'));
+  if(btn)btn.classList.add('btn-primary');
+}
+
+document.getElementById('modal-cancel').addEventListener('click',()=>{
+  document.getElementById('rdm-modal').classList.remove('on');
+  pendingRwdId=null;
+  pendingRwdGiver='pepe';
+  const d=document.getElementById('modal-details');if(d)d.style.display='';
+});
+document.getElementById('modal-confirm').addEventListener('click',async()=>{
+  if(!pendingRwdId)return;
+  try{
+    await apiFetch('/user/rewards/'+pendingRwdId+'/redeem',{method:'POST',body:JSON.stringify({giver:pendingRwdGiver})});
+  }catch(e){}
+  document.getElementById('rdm-modal').classList.remove('on');
+  const d=document.getElementById('modal-details');if(d)d.style.display='';
+  loadRedemptions();show('redemptions');
+});
+
+// Redemptions
+async function loadRedemptions(){
+  const list=document.getElementById('rdm-list');
+  list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1rem 0">Loading...</div>';
+  try{
+    const r=await apiFetch('/rewards/redemptions');
+    if(r.ok){
+      const d=await r.json();const items=Array.isArray(d)?d:(d.redemptions||[]);
+      if(!items.length){list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1rem 0">Nothing yet.</div>';return}
+      list.innerHTML=items.map(x=>`<div class="rdm-item"><div class="rdm-name">${x.title||x.reward_name||''}</div><div class="rdm-meta">${x.redeemed_at||x.date||''}<span class="rdm-status ${x.fulfilled?'done':''}">${x.fulfilled?'fulfilled':'pending'}</span></div></div>`).join('');
+    }
+  }catch(e){list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic">Could not load.</div>'}
+}
+
+// Broadcasts
+async function loadBc(){
+  const list=document.getElementById('bc-list');list.innerHTML='';
+  try{
+    const r=await apiFetch('/broadcasts/inbox');
+    if(r.ok){
+      const d=await r.json();const items=Array.isArray(d)?d:(d.broadcasts||[]);
+      if(!items.length){list.innerHTML='<div class="bc-empty">Nothing yet.</div>';return}
+      items.forEach(b=>{
+        const el=document.createElement('div');el.className='bc-item';
+        el.innerHTML=`<div class="bc-msg">${b.message||''}</div><div class="bc-meta">${b.sent_at||b.created_at||''}</div>`;
+        list.appendChild(el);
+      });
+      document.getElementById('bell-dot').classList.remove('on');
+    }
+  }catch(e){}
+}
+document.getElementById('bc-close').addEventListener('click',()=>document.getElementById('bc-overlay').classList.remove('on'));
+
+// Day 14
+document.getElementById('d14-submit').addEventListener('click',async()=>{
+  const btn=document.getElementById('d14-submit');
+  const text=document.getElementById('d14-resp').value.trim();
+  if(!text)return;
+  btn.disabled=true;
+  try{
+    const fd=new FormData();fd.append('response_text',text);fd.append('day14','true');
+    await apiForm('/challenges/submit',fd);
+  }catch(e){}
+  document.getElementById('d14-resp').style.display='none';
+  btn.style.display='none';
+  document.querySelector('.d14-q').style.display='none';
+  const sent=document.getElementById('d14-sent');
+  sent.style.display='block';sent.style.animation='fadeIn .8s ease forwards';
+});
+
+// Back buttons
+document.querySelectorAll('.back-btn[data-back]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const t=btn.dataset.back;
+    if(t==='home'){loadHome();show('home')}else show(t);
+  });
+});
+
+boot();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/jouissance/sw.js',{scope:'/jouissance/'}));
+}
+</script>
+</body>
+</html>
