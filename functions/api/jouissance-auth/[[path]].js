@@ -35,7 +35,8 @@ export async function onRequest(context) {
 
     const responseHeaders = { ...CORS };
     for (const [k, v] of upstream.headers.entries()) {
-      if (!["transfer-encoding", "connection"].includes(k.toLowerCase())) {
+      const kl = k.toLowerCase();
+      if (!["transfer-encoding", "connection"].includes(kl) && !kl.startsWith("access-control-")) {
         responseHeaders[k] = v;
       }
     }
