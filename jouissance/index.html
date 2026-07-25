@@ -560,6 +560,7 @@ async function apiForm(path,fd){
 
 async function boot(){
   const _up=new URLSearchParams(window.location.search);
+  if(_up.get('register')){localStorage.removeItem('jouissance_token');token=null;window.history.replaceState({},'',window.location.pathname);}
   const _pt=_up.get('preview');
   if(_pt){token=_pt;localStorage.setItem('jouissance_token',token);window.history.replaceState({},'',window.location.pathname);}
   if(!token){setTimeout(()=>show('invite-entry'),2500);return}
