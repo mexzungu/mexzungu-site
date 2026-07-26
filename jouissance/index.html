@@ -15,7 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0D0A12;--text:#F4EFE6;--accent:#9B7FA6;--secondary:#C5873A;--border:#1E1829}
+:root{--bg:#0D0A12;--text:#F4EFE6;--accent:#9B7FA6;--secondary:#C5873A;--border:#1E1829;--muted:rgba(244,239,230,.45)}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;font-size:18px;line-height:1.6;overflow:hidden}
 .screen{display:none;position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;flex-direction:column}
 .screen.active{display:flex}
@@ -188,6 +188,53 @@ textarea:focus{border-color:var(--accent)}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeInOut{0%{opacity:0;transform:translateY(4px)}25%{opacity:1;transform:translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateY(-4px)}}
 .mb2{margin-bottom:2rem}
+
+/* Know Yourself screen */
+.ky-intro{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:rgba(244,239,230,.42);margin-bottom:1.75rem;line-height:1.65}
+.ky-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:.85rem;transition:border-color .3s}
+.ky-card.completed{border-color:rgba(155,127,166,.3)}
+.ky-card-header{display:flex;align-items:center;gap:.9rem;padding:1.1rem 1.2rem;cursor:pointer;transition:background .2s}
+.ky-card-header:active{background:rgba(155,127,166,.05)}
+.ky-emoji{font-size:1.35rem;flex-shrink:0}
+.ky-meta{flex:1}
+.ky-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--text)}
+.ky-sub{font-size:.74rem;color:rgba(244,239,230,.4);margin-top:.18rem}
+.ky-badge{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;border:1px solid var(--border);color:rgba(244,239,230,.32)}
+.ky-badge.done{border-color:rgba(155,127,166,.28);color:var(--accent)}
+.ky-body{padding:0 1.2rem 1.2rem;display:none}
+.ky-body.open{display:block}
+.ky-q-label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.32);margin-bottom:.5rem}
+.ky-question{font-size:.92rem;color:rgba(244,239,230,.75);margin-bottom:.8rem;line-height:1.65}
+.ky-options{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.2rem}
+.ky-opt{background:transparent;border:1px solid rgba(155,127,166,.18);border-radius:4px;color:rgba(244,239,230,.6);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:.7rem 1rem;text-align:left;cursor:pointer;transition:border-color .2s,background .2s,color .2s;line-height:1.45}
+.ky-opt.sel{border-color:var(--accent);background:rgba(155,127,166,.1);color:var(--text)}
+.ky-progress{font-size:.72rem;color:rgba(244,239,230,.3);margin-bottom:.9rem;letter-spacing:.05em}
+.ky-submit-btn{background:var(--accent);border:none;border-radius:4px;color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.08em;padding:.75rem;width:100%;cursor:pointer;margin-top:.3rem}
+.ky-submit-btn:disabled{opacity:.3;cursor:not-allowed}
+.ky-result{background:rgba(155,127,166,.07);border:1px solid rgba(155,127,166,.14);border-radius:6px;padding:1.25rem;margin-top:.25rem}
+.ky-result-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:var(--accent);margin-bottom:.65rem}
+.ky-result-interp{font-size:.87rem;color:rgba(244,239,230,.68);line-height:1.75}
+.ky-bar-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.45rem;font-size:.78rem;color:rgba(244,239,230,.55)}
+.ky-bar-label{width:96px;flex-shrink:0}
+.ky-bar-track{flex:1;height:3px;background:rgba(155,127,166,.1);border-radius:2px}
+.ky-bar-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .7s}
+.ky-bar-pct{width:32px;text-align:right;flex-shrink:0}
+.ky-spectrum-track{height:4px;background:rgba(155,127,166,.12);border-radius:2px;margin:.5rem 0 .25rem;position:relative}
+.ky-spectrum-fill{position:absolute;height:100%;background:var(--accent);border-radius:2px;transition:left .6s,width .6s}
+.ky-spectrum-labels{display:flex;justify-content:space-between;font-size:.63rem;color:rgba(244,239,230,.3);margin-top:.4rem;margin-bottom:.9rem}
+.ky-ring{width:70px;height:70px;border-radius:50%;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--accent);margin:0 auto .9rem}
+/* chip cloud for turn-on map */
+.ky-cloud{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem}
+.ky-chip{background:transparent;border:1px solid var(--border);border-radius:20px;color:rgba(244,239,230,.5);font-family:'DM Sans',sans-serif;font-size:.76rem;padding:.3rem .8rem;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.ky-chip.sel{border-color:var(--accent);background:rgba(155,127,166,.1);color:var(--text)}
+
+/* PWA install banner */
+#pwa-banner{position:fixed;bottom:0;left:0;right:0;background:rgba(21,15,30,.98);border-top:1px solid rgba(155,127,166,.22);padding:.9rem 1.5rem;display:none;z-index:250;align-items:center;gap:.9rem}
+#pwa-banner.show{display:flex}
+.pwa-icon{font-size:1.4rem;flex-shrink:0}
+.pwa-text{flex:1;font-size:.82rem;color:rgba(244,239,230,.68);line-height:1.45}
+.pwa-install-btn{background:var(--accent);border:none;border-radius:4px;color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.07em;padding:.55rem 1.1rem;cursor:pointer;white-space:nowrap}
+.pwa-dismiss{background:none;border:none;color:rgba(244,239,230,.32);font-size:1.1rem;cursor:pointer;padding:.4rem;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -214,11 +261,7 @@ textarea:focus{border-color:var(--accent)}
       <input type="text" id="reg-name" placeholder="your name" autocomplete="name">
       <input type="email" id="reg-email" placeholder="email" autocomplete="email">
       <input type="password" id="reg-pass" placeholder="password (min 8 chars)" autocomplete="new-password">
-      <label style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.8rem;color:var(--muted);cursor:pointer">
-        <input type="checkbox" id="reg-consent" style="margin-top:2px;width:16px;height:16px;min-width:16px;accent-color:var(--accent)">
-        <span>I understand my answers are visible only to Agathe and held under GDPR Article 9.</span>
-      </label>
-      <button class="btn btn-primary" id="reg-submit">Create account</button>
+      <button class="btn btn-primary" id="reg-submit">Continue</button>
     </div>
 
     <div id="auth-login" style="width:100%;display:none;flex-direction:column;gap:0.75rem">
@@ -228,6 +271,95 @@ textarea:focus{border-color:var(--accent)}
     </div>
 
     <div class="error-msg" id="inv-err" style="min-height:1.2rem"></div>
+  </div>
+</div>
+
+<div class="screen" id="reg-onboard-1">
+  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem">
+    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">1 of 5</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">How do you identify?</div>
+    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">e.g. queer, bisexual, straight, fluid, pansexual. Use your own words.</div>
+    <input type="text" id="reg-q1-input" placeholder="your answer..." style="width:100%;max-width:340px">
+    <button class="btn btn-primary" id="reg-onboard-1-next" style="max-width:240px">Continue</button>
+    <div class="error-msg" id="reg-ob1-err" style="min-height:1rem"></div>
+  </div>
+</div>
+
+<div class="screen" id="reg-onboard-2">
+  <div class="container" style="justify-content:center;gap:1.2rem;padding:3rem 2rem">
+    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">2 of 5</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">Your relationship landscape</div>
+    <div id="reg-q2-cards" style="display:flex;flex-direction:column;gap:0.6rem;width:100%;max-width:340px">
+      <div class="radio-card" data-v="solo" style="padding:0.9rem 1.2rem">Solo explorer</div>
+      <div class="radio-card" data-v="partnered" style="padding:0.9rem 1.2rem">Partnered</div>
+      <div class="radio-card" data-v="open" style="padding:0.9rem 1.2rem">In an open relationship</div>
+      <div class="radio-card" data-v="polyamorous" style="padding:0.9rem 1.2rem">Polyamorous</div>
+      <div class="radio-card" data-v="other" style="padding:0.9rem 1.2rem">Other</div>
+    </div>
+    <button class="btn btn-primary" id="reg-onboard-2-next" disabled style="max-width:240px">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="reg-onboard-3">
+  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem">
+    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">3 of 5</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">What are you coming to explore?</div>
+    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">No right answers. Let something true come through.</div>
+    <textarea id="reg-q3-input" placeholder="your answer..." style="width:100%;max-width:340px;min-height:120px;resize:vertical"></textarea>
+    <button class="btn btn-primary" id="reg-onboard-3-next" style="max-width:240px">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="reg-onboard-4">
+  <div class="container" style="justify-content:center;gap:1.2rem;padding:3rem 2rem">
+    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">4 of 5</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">Your energetic nature</div>
+    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">In intimacy, where do you tend to flow?</div>
+    <div id="reg-q4-cards" style="display:flex;flex-direction:column;gap:0.6rem;width:100%;max-width:340px">
+      <div class="radio-card" data-v="give" style="padding:0.9rem 1.2rem">I tend to give</div>
+      <div class="radio-card" data-v="receive" style="padding:0.9rem 1.2rem">I tend to receive</div>
+      <div class="radio-card" data-v="flow" style="padding:0.9rem 1.2rem">I flow between both</div>
+      <div class="radio-card" data-v="discovering" style="padding:0.9rem 1.2rem">I am still discovering</div>
+    </div>
+    <button class="btn btn-primary" id="reg-onboard-4-next" disabled style="max-width:240px">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="reg-onboard-5">
+  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem">
+    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">5 of 5</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">One limit you want respected</div>
+    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">This stays with Agathe. It shapes the container she holds for you.</div>
+    <textarea id="reg-q5-input" placeholder="your answer..." style="width:100%;max-width:340px;min-height:120px;resize:vertical"></textarea>
+    <button class="btn btn-primary" id="reg-onboard-5-next" style="max-width:240px">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="reg-photo">
+  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem;text-align:center">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);line-height:1.3">A face for Agathe</div>
+    <div style="color:var(--muted);font-size:0.85rem;line-height:1.7">Optional. Agathe will see this before you arrive. It helps her hold you from the first moment.</div>
+    <div id="reg-photo-preview" style="width:120px;height:120px;border-radius:50%;background:rgba(155,127,166,.15);border:1px solid rgba(155,127,166,.3);display:flex;align-items:center;justify-content:center;margin:0 auto;overflow:hidden">
+      <span style="color:var(--muted);font-size:2rem">&#9670;</span>
+    </div>
+    <input type="file" id="reg-photo-input" accept="image/*" style="display:none">
+    <button class="btn btn-secondary" id="reg-photo-choose" style="max-width:240px">Choose photo</button>
+    <div class="error-msg" id="reg-photo-err" style="min-height:1rem"></div>
+    <button class="btn btn-primary" id="reg-photo-next" style="max-width:240px">Continue</button>
+    <button style="background:none;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer;text-decoration:underline" id="reg-photo-skip">Skip for now</button>
+  </div>
+</div>
+
+<div class="screen" id="reg-gdpr">
+  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem;text-align:center">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);line-height:1.3">Before you enter</div>
+    <div style="color:var(--muted);font-size:0.9rem;line-height:1.8">What you share here stays between us. Your answers are visible only to Agathe and the Jouissance team. This information is held under GDPR Article 9 and used solely to shape your experience.</div>
+    <label style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.85rem;color:var(--muted);cursor:pointer;text-align:left;max-width:340px">
+      <input type="checkbox" id="reg-gdpr-chk" style="margin-top:2px;width:16px;height:16px;min-width:16px;accent-color:var(--accent)">
+      <span>I understand my answers are visible only to Agathe and held under GDPR Article 9.</span>
+    </label>
+    <div class="error-msg" id="reg-gdpr-err" style="min-height:1rem"></div>
+    <button class="btn btn-primary" id="reg-gdpr-submit" style="max-width:240px">Create my account</button>
   </div>
 </div>
 
@@ -372,22 +504,22 @@ textarea:focus{border-color:var(--accent)}
     <div id="h-challenges-section" style="display:none">
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1.1rem">Today's Rituals</div>
       <div class="chal-card" id="h-chal-easy">
-        <div class="diff-badge easy-badge">Easy</div>
+        <div class="diff-badge easy-badge">Tender</div>
         <div class="chal-card-title" id="h-chal-easy-title"></div>
         <div class="chal-card-desc" id="h-chal-easy-desc"></div>
-        <div class="chal-card-pts" id="h-chal-easy-pts">+5 pts</div>
+        <div class="chal-card-pts" id="h-chal-easy-pts">+1 pt</div>
       </div>
       <div class="chal-card" id="h-chal-mild">
-        <div class="diff-badge mild-badge">Mild</div>
+        <div class="diff-badge mild-badge">Alive</div>
         <div class="chal-card-title" id="h-chal-mild-title"></div>
         <div class="chal-card-desc" id="h-chal-mild-desc"></div>
-        <div class="chal-card-pts" id="h-chal-mild-pts">+10 pts</div>
+        <div class="chal-card-pts" id="h-chal-mild-pts">+3 pts</div>
       </div>
       <div class="chal-card" id="h-chal-spicy">
-        <div class="diff-badge spicy-badge">Spicy</div>
+        <div class="diff-badge spicy-badge">Bold</div>
         <div class="chal-card-title" id="h-chal-spicy-title"></div>
         <div class="chal-card-desc" id="h-chal-spicy-desc"></div>
-        <div class="chal-card-pts" id="h-chal-spicy-pts">+15 pts</div>
+        <div class="chal-card-pts" id="h-chal-spicy-pts">+7 pts</div>
       </div>
     </div>
     <div class="no-chal" id="h-no-chal" style="display:none">Your space is waiting for you.</div>
@@ -395,6 +527,7 @@ textarea:focus{border-color:var(--accent)}
   </div>
   <div class="home-footer">
     <button class="nav-btn" id="nav-modules">Practices</button>
+    <button class="nav-btn" id="nav-mirror">Mirror</button>
     <button class="nav-btn" id="nav-rewards">Rewards</button>
   </div>
 </div>
@@ -407,7 +540,7 @@ textarea:focus{border-color:var(--accent)}
   <div class="container" style="flex:1;overflow-y:auto">
     <div class="ct-title" id="ct-title"></div>
     <div class="ct-desc" id="ct-desc"></div>
-    <div class="pts-hint">+5 pts on submission</div>
+    <div class="pts-hint" id="ct-pts-hint">+1 pt on submission</div>
     <textarea id="ct-resp" placeholder="Write here..." style="min-height:150px"></textarea>
     <div class="char-counter" id="ct-cc">0 / 50</div>
     <div class="media-row">
@@ -464,7 +597,7 @@ textarea:focus{border-color:var(--accent)}
         <input type="file" id="md-fi-video" accept="video/*,image/*" style="display:none" capture="environment">
         <span class="media-label" id="md-media-lbl"></span>
       </div>
-      <button class="btn btn-primary mb2" id="md-complete" style="margin-top:1rem">Submit (+10 pts)</button>
+      <button class="btn btn-primary mb2" id="md-complete" style="margin-top:1rem">Submit (+3 pts)</button>
     </div>
     <div id="md-done-msg" style="display:none;color:rgba(244,239,230,.5);font-style:italic;padding:1rem 0;text-align:center">Received.</div>
   </div>
@@ -490,6 +623,17 @@ textarea:focus{border-color:var(--accent)}
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
     <div id="rdm-list"></div>
+  </div>
+</div>
+
+<div class="screen" id="know-yourself">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">Know Yourself</div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div class="ky-intro">Six maps. One territory. Each test takes under five minutes.</div>
+    <div id="ky-tests"></div>
   </div>
 </div>
 
@@ -523,6 +667,13 @@ textarea:focus{border-color:var(--accent)}
     <button class="close-btn" id="bc-close">&#10005;</button>
   </div>
   <div class="bc-list" id="bc-list"></div>
+</div>
+
+<div id="pwa-banner">
+  <div class="pwa-icon">&#43;</div>
+  <div class="pwa-text">Add jouissance to your home screen for the full experience.</div>
+  <button class="pwa-install-btn" id="pwa-install-btn">Install</button>
+  <button class="pwa-dismiss" id="pwa-dismiss">&#10005;</button>
 </div>
 
 <div id="rdm-modal">
@@ -566,33 +717,33 @@ const MODULES = {
 };
 const REWARDS = [
   {tier:'WORDS & ATTENTION', items:[
-    {id:'letter',name:'The Letter',pts:20,desc:'Agathe writes you a personal note. Tell her what you want her to say.',time:null},
-    {id:'notice',name:'What I Notice',pts:25,desc:'Someone writes what they find most beautiful about you. You choose who.',time:null},
-    {id:'question',name:'The Question',pts:30,desc:'Ask anyone in the room one question they must answer honestly.',time:null},
-    {id:'story',name:'The Story',pts:35,desc:'Someone tells you a story about desire. Their own. You choose who.',time:null}
+    {id:'letter',name:'The Letter',pts:4,desc:'Agathe writes you a personal note. Tell her what you want her to say.',time:null},
+    {id:'notice',name:'What I Notice',pts:5,desc:'Someone writes what they find most beautiful about you. You choose who.',time:null},
+    {id:'question',name:'The Question',pts:6,desc:'Ask anyone in the room one question they must answer honestly.',time:null},
+    {id:'story',name:'The Story',pts:7,desc:'Someone tells you a story about desire. Their own. You choose who.',time:null}
   ]},
   {tier:'PRESENCE & SENSATION', items:[
-    {id:'mirror',name:'The Mirror',pts:40,desc:'Reread your own profile. Write what surprised you.',time:'15 min'},
-    {id:'touch',name:'The Touch',pts:45,desc:'Ten minutes of deliberate, non-sexual touch. Head, hands, back. You choose who.',time:'10 min'},
-    {id:'meditation',name:'The Meditation',pts:45,desc:'A 20-minute guided audio by Agathe.',time:'20 min'},
-    {id:'bath',name:'The Bath',pts:55,desc:'A bath drawn for you, oils chosen by someone else. You choose who and what mood.',time:'30 min'},
-    {id:'meal',name:'The Meal',pts:60,desc:'Someone cooks for you. You choose what and who.',time:'1 evening'}
+    {id:'mirror',name:'The Mirror',pts:8,desc:'Reread your own profile. Write what surprised you.',time:'15 min'},
+    {id:'touch',name:'The Touch',pts:9,desc:'Ten minutes of deliberate, non-sexual touch. Head, hands, back. You choose who.',time:'10 min'},
+    {id:'meditation',name:'The Meditation',pts:9,desc:'A 20-minute guided audio by Agathe.',time:'20 min'},
+    {id:'bath',name:'The Bath',pts:11,desc:'A bath drawn for you, oils chosen by someone else. You choose who and what mood.',time:'30 min'},
+    {id:'meal',name:'The Meal',pts:12,desc:'Someone cooks for you. You choose what and who.',time:'1 evening'}
   ]},
   {tier:'EXPERIENCE & RITUAL', items:[
-    {id:'convo',name:'The Conversation',pts:65,desc:'A 30-minute 1:1 with Agathe. You direct it.',time:'30 min'},
-    {id:'perfume',name:'The Perfume',pts:70,desc:'A perfume chosen for you and sent. You choose who picks it. Physical delivery by Aug 10.',time:null},
-    {id:'reading',name:'The Reading',pts:75,desc:'Someone reads to you for 20 minutes. Text and reader of your choice.',time:'20 min'},
-    {id:'playlist',name:'The Playlist',pts:80,desc:'A playlist made for you, for a mood you describe. You choose who makes it.',time:null},
-    {id:'softfire',name:'Soft Fire',pts:80,desc:"Agathe's 20-minute sensual audio recording.",time:'20 min'}
+    {id:'convo',name:'The Conversation',pts:13,desc:'A 30-minute 1:1 with Agathe. You direct it.',time:'30 min'},
+    {id:'perfume',name:'The Perfume',pts:14,desc:'A perfume chosen for you and sent. You choose who picks it. Physical delivery by Aug 10.',time:null},
+    {id:'reading',name:'The Reading',pts:15,desc:'Someone reads to you for 20 minutes. Text and reader of your choice.',time:'20 min'},
+    {id:'playlist',name:'The Playlist',pts:16,desc:'A playlist made for you, for a mood you describe. You choose who makes it.',time:null},
+    {id:'softfire',name:'Soft Fire',pts:16,desc:"Agathe's 20-minute sensual audio recording.",time:'20 min'}
   ]},
   {tier:'INTENSITY', items:[
-    {id:'promise',name:'The Promise',pts:85,desc:'One element of the August 14 evening, designed by you. Name what and who delivers it.',time:'45 min'},
-    {id:'blindfold',name:'The Blindfold',pts:90,desc:'Someone guides your senses for 15 minutes while you cannot see. You choose who and where.',time:'15 min'},
-    {id:'shibari-light',name:'Shibari Light',pts:95,desc:'A gentle rope-binding ritual, fully clothed. Aesthetic, meditative. You choose who ties.',time:'30 min'},
-    {id:'confession',name:'The Confession',pts:100,desc:'You tell someone something you have never said. They witness. They do not respond. You choose who.',time:'20 min'},
-    {id:'mirror-motion',name:'The Mirror in Motion',pts:110,desc:'Someone dances for you, or with you, for you alone. You choose who and what music.',time:'20 min'},
-    {id:'shibari-deep',name:'Shibari Deep',pts:115,desc:'A full shibari session, partial undress, your limits respected. You describe what you want and who ties.',time:'45 min'},
-    {id:'carte-blanche',name:'Carte Blanche',pts:200,desc:'You design one experience for August 14, without limits. Write what you want, who you want, how long.',time:null}
+    {id:'promise',name:'The Promise',pts:17,desc:'One element of the August 14 evening, designed by you. Name what and who delivers it.',time:'45 min'},
+    {id:'blindfold',name:'The Blindfold',pts:18,desc:'Someone guides your senses for 15 minutes while you cannot see. You choose who and where.',time:'15 min'},
+    {id:'shibari-light',name:'Shibari Light',pts:19,desc:'A gentle rope-binding ritual, fully clothed. Aesthetic, meditative. You choose who ties.',time:'30 min'},
+    {id:'confession',name:'The Confession',pts:20,desc:'You tell someone something you have never said. They witness. They do not respond. You choose who.',time:'20 min'},
+    {id:'mirror-motion',name:'The Mirror in Motion',pts:22,desc:'Someone dances for you, or with you, for you alone. You choose who and what music.',time:'20 min'},
+    {id:'shibari-deep',name:'Shibari Deep',pts:23,desc:'A full shibari session, partial undress, your limits respected. You describe what you want and who ties.',time:'45 min'},
+    {id:'carte-blanche',name:'Carte Blanche',pts:40,desc:'You design one experience for August 14, without limits. Write what you want, who you want, how long.',time:null}
   ]},
   {tier:'SURPRISE MENUS', surprise:true, items:[
     {id:'sm1',name:'Surprise Menu I',pts:null,desc:'Unlocked by Agathe. One of: The Letter, What I Notice, or The Story, her choice.'},
@@ -654,24 +805,108 @@ function authTab(tab){
 }
 
 // Register
-document.getElementById('reg-submit').addEventListener('click',async()=>{
+window.regData={};
+document.getElementById('reg-submit').addEventListener('click',()=>{
   const name=document.getElementById('reg-name').value.trim();
   const email=document.getElementById('reg-email').value.trim();
   const pass=document.getElementById('reg-pass').value;
-  const consent=document.getElementById('reg-consent').checked;
   const err=document.getElementById('inv-err');
   if(!name||!email||!pass){err.textContent='Please fill in all fields.';return;}
-  if(!consent){err.textContent='Please accept the consent checkbox.';return;}
-  const btn=document.getElementById('reg-submit');btn.disabled=true;err.textContent='';
+  err.textContent='';
+  window.regData={name,email,pass};
+  show('reg-onboard-1');
+});
+
+// Reg onboarding screens
+document.getElementById('reg-onboard-1-next').addEventListener('click',()=>{
+  window.regData.reg_q1=document.getElementById('reg-q1-input').value.trim();
+  show('reg-onboard-2');
+});
+
+(function setupRegQ2(){
+  const container=document.getElementById('reg-q2-cards');
+  const nextBtn=document.getElementById('reg-onboard-2-next');
+  container.querySelectorAll('.radio-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      container.querySelectorAll('.radio-card').forEach(x=>x.classList.remove('selected'));
+      card.classList.add('selected');
+      window.regData.reg_q2=card.dataset.v;
+      nextBtn.disabled=false;
+    });
+  });
+  nextBtn.addEventListener('click',()=>show('reg-onboard-3'));
+})();
+
+document.getElementById('reg-onboard-3-next').addEventListener('click',()=>{
+  window.regData.reg_q3=document.getElementById('reg-q3-input').value.trim();
+  show('reg-onboard-4');
+});
+
+(function setupRegQ4(){
+  const container=document.getElementById('reg-q4-cards');
+  const nextBtn=document.getElementById('reg-onboard-4-next');
+  container.querySelectorAll('.radio-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      container.querySelectorAll('.radio-card').forEach(x=>x.classList.remove('selected'));
+      card.classList.add('selected');
+      window.regData.reg_q4=card.dataset.v;
+      nextBtn.disabled=false;
+    });
+  });
+  nextBtn.addEventListener('click',()=>show('reg-onboard-5'));
+})();
+
+document.getElementById('reg-onboard-5-next').addEventListener('click',()=>{
+  window.regData.reg_q5=document.getElementById('reg-q5-input').value.trim();
+  show('reg-photo');
+});
+
+// Photo upload
+let regPhotoFile=null;
+document.getElementById('reg-photo-choose').addEventListener('click',()=>document.getElementById('reg-photo-input').click());
+document.getElementById('reg-photo-input').addEventListener('change',function(){
+  const f=this.files[0];
+  if(!f)return;
+  const err=document.getElementById('reg-photo-err');
+  if(f.size>2*1024*1024){err.textContent='Photo must be under 2MB.';return;}
+  err.textContent='';
+  regPhotoFile=f;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const preview=document.getElementById('reg-photo-preview');
+    preview.innerHTML='<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover">';
+  };
+  reader.readAsDataURL(f);
+});
+document.getElementById('reg-photo-next').addEventListener('click',()=>show('reg-gdpr'));
+document.getElementById('reg-photo-skip').addEventListener('click',()=>{regPhotoFile=null;show('reg-gdpr');});
+
+// GDPR + final register submit
+document.getElementById('reg-gdpr-chk').addEventListener('change',function(){
+  document.getElementById('reg-gdpr-submit').disabled=!this.checked;
+});
+document.getElementById('reg-gdpr-submit').disabled=true;
+document.getElementById('reg-gdpr-submit').addEventListener('click',async()=>{
+  const btn=document.getElementById('reg-gdpr-submit');
+  const err=document.getElementById('reg-gdpr-err');
+  btn.disabled=true;err.textContent='';
+  const d=window.regData;
   try{
     const r=await fetch(API+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({username:email,password:pass,display_name:name,consent_gdpr:true})});
-    const d=await r.json();
-    if(r.ok&&d.token){
-      token=d.token;localStorage.setItem('jouissance_token',token);
+      body:JSON.stringify({username:d.email,password:d.pass,display_name:d.name,consent_gdpr:true,
+        reg_q1:d.reg_q1||'',reg_q2:d.reg_q2||'',reg_q3:d.reg_q3||'',reg_q4:d.reg_q4||'',reg_q5:d.reg_q5||''})});
+    const j=await r.json();
+    if(r.ok&&j.token){
+      token=j.token;localStorage.setItem('jouissance_token',token);
+      if(regPhotoFile){
+        try{
+          const fd=new FormData();fd.append('photo',regPhotoFile);
+          await fetch(API+'/profile/photo',{method:'POST',headers:{Authorization:'Bearer '+token},body:fd});
+        }catch(pe){}
+      }
       localStorage.setItem('jouissance_profile_step','1');
       show('welcome');
-    } else {err.textContent=d.detail||'Registration failed.';btn.disabled=false;}
+    } else {err.textContent=j.detail||'Registration failed.';btn.disabled=false;}
   }catch(e){err.textContent='Connection error.';btn.disabled=false;}
 });
 
@@ -805,7 +1040,7 @@ async function loadHome(){
         if(c){
           document.getElementById('h-chal-'+diff+'-title').textContent=c.title||'Today';
           document.getElementById('h-chal-'+diff+'-desc').textContent=(c.description||'').substring(0,100);
-          const pts_v=c.points_value||(diff==='easy'?5:diff==='spicy'?15:10);
+          const pts_v=c.points_value||(diff==='easy'?1:diff==='spicy'?7:3);
           document.getElementById('h-chal-'+diff+'-pts').textContent='+'+pts_v+' pts';
           card.style.display='block';
         } else {
@@ -832,7 +1067,7 @@ function openChallenge(diff){
   document.getElementById('ct-title').textContent=c.title||'';
   document.getElementById('ct-desc').textContent=c.description||'';
   const ptsHint=document.querySelector('#challenge-today .pts-hint');
-  if(ptsHint)ptsHint.textContent='+'+(c.points_value||(diff==='easy'?5:diff==='spicy'?15:10))+' pts on submission';
+  const pv=c.points_value||(diff==='easy'?1:diff==='spicy'?7:3);if(ptsHint)ptsHint.textContent='+'+pv+' pt'+(pv===1?'':'s')+' on submission';
   document.getElementById('ct-resp').value='';
   document.getElementById('ct-cc').textContent='0 / 50';
   document.getElementById('ct-submit').disabled=true;
@@ -845,8 +1080,6 @@ function openChallenge(diff){
   const card=document.getElementById('h-chal-'+diff);
   if(card)card.addEventListener('click',()=>openChallenge(diff));
 });
-document.getElementById('nav-modules').addEventListener('click',()=>{loadMods();show('modules')});
-document.getElementById('nav-rewards').addEventListener('click',()=>{loadRewards();show('rewards')});
 document.getElementById('bell-btn').addEventListener('click',()=>{loadBc();document.getElementById('bc-overlay').classList.add('on')});
 
 // Challenge today
@@ -909,7 +1142,7 @@ let completedMods=[];
 async function loadMods(){
   try{
     const r=await apiFetch('/modules');
-    if(r.ok){const d=await r.json();completedMods=(d.modules||[]).filter(m=>m.completed).map(m=>m.id||m.title)}
+    if(r.ok){const d=await r.json();const arr=Array.isArray(d)?d:(d.modules||[]);completedMods=arr.filter(m=>m.completed).map(m=>m.id||m.title)}
   }catch(e){}
   const list=document.getElementById('mod-list');list.innerHTML='';
   Object.entries(MODULES).forEach(([id,m])=>{
@@ -947,14 +1180,15 @@ document.getElementById('md-complete').addEventListener('click',async()=>{
   const btn=document.getElementById('md-complete');btn.disabled=true;btn.textContent='Sending...';
   try{
     const hasMedia=Object.keys(mdUploads).length>0;
+    const modIntId=parseInt(String(currentModId).replace(/\D/g,''))||currentModId;
     if(hasMedia){
       const fd=new FormData();
       fd.append('response_text',mdResp.value);
       fd.append('media_type',Object.keys(mdUploads)[0]);
       Object.entries(mdUploads).forEach(([k,f])=>fd.append('media_file',f));
-      await apiForm('/modules/'+currentModId+'/submit-media',fd);
+      await apiForm('/modules/'+modIntId+'/submit-media',fd);
     } else {
-      const r=await apiFetch('/modules/'+currentModId+'/complete',{method:'POST',body:JSON.stringify({response:mdResp.value})});
+      const r=await apiFetch('/modules/'+modIntId+'/complete',{method:'POST',body:JSON.stringify({response:mdResp.value})});
       if(r.ok){const d=await r.json();pts=d.points||pts}
     }
   }catch(e){}
@@ -1132,6 +1366,241 @@ document.querySelectorAll('.back-btn[data-back]').forEach(btn=>{
     const t=btn.dataset.back;
     if(t==='home'){loadHome();show('home')}else show(t);
   });
+});
+
+// ---- KNOW YOURSELF (Mirror) ----
+const KY_TESTS=[
+  {
+    id:'ds-spectrum',emoji:'⚖',title:'The Spectrum',sub:'Where do you naturally land on the D/s axis?',
+    questions:[
+      {q:'When things are uncertain, I prefer to...',opts:['Take charge and direct',-2],opts2:[['Take charge and direct',-2],['Read the room and adapt',0],['Follow someone else\'s lead',2]]},
+    ],
+    _q:[
+      {q:'When things are uncertain, I prefer to...',a:[['Take charge and direct',-2],['Read the room and adapt',0],['Follow someone else\'s lead',2]]},
+      {q:'In intimate moments, the idea that excites me most is...',a:[['Being the one who decides what happens',-2],['Co-creating together equally',0],['Surrendering completely to someone I trust',2]]},
+      {q:'Receiving explicit instructions from someone feels...',a:[['Limiting and frustrating',-2],['Depends entirely on who',0],['Deeply relaxing and freeing',2]]},
+      {q:'The phrase that resonates most is...',a:[['I want to be the one holding the space',-2],['I want us both to feel free',0],['I want to be held completely',2]]},
+      {q:'When I imagine being physically restrained...',a:[['I\'d want to be the one doing the restraining',-2],['I\'m curious but unsure which side',0],['Something in me relaxes at the thought',2]]},
+      {q:'After an intense intimate experience, I feel most replenished by...',a:[['Knowing I held the other person well',-2],['The connection we created together',0],['The care I received while I let go',2]]},
+    ],
+    score(answers){const total=answers.reduce((a,b)=>a+b,0);if(total<=-8)return{label:'Dominant',pct:5,interp:"You carry a strong natural pull toward holding space, directing energy, and being the one others can trust to lead. In intimacy, your deepest pleasure often comes from the other person's surrender. This is not about control for its own sake. It's about the profound responsibility of holding someone completely."};if(total<=-4)return{label:'Dominant-leaning',pct:25,interp:"You lean naturally toward taking the lead but you're not rigid about it. You enjoy being in charge when the chemistry is right, but you can move fluidly when the situation calls for it."};if(total<=2)return{label:'Switch',pct:50,interp:"You move between both poles with genuine pleasure. Depending on the person, the moment, or your own internal state, you can lead or surrender with equal authenticity."};if(total<=6)return{label:'Submissive-leaning',pct:75,interp:"You have a natural draw toward surrendering, toward being guided, held, and cared for. Your work is learning to ask for the conditions that make your surrender feel safe."};return{label:'Submissive',pct:95,interp:"Your deepest pleasure lives in full surrender to someone you completely trust. This takes enormous strength and self-knowledge."};},
+    render(r){return`<div class="ky-spectrum-track"><div class="ky-spectrum-fill" style="left:${r.pct-7}%;width:14%"></div></div><div class="ky-spectrum-labels"><span>Dominant</span><span>Switch</span><span>Submissive</span></div><div class="ky-result-label">${r.label}</div><p class="ky-result-interp">${r.interp}</p>`}
+  },
+  {
+    id:'ssk-orientation',emoji:'◈',title:'Your Desire Language',sub:'Sensual, Sexual, or Kink. What speaks to you?',
+    _q:[
+      {q:'What I crave most in intimate connection is...',a:[['Skin, scent, warmth, presence. The full sensory immersion.','S'],['The pure physical intensity of bodies meeting','X'],['The psychology, the power, the edge of something slightly forbidden','K']]},
+      {q:'The most arousing thing someone can do is...',a:[['Move incredibly slowly and pay total attention to every signal I give','S'],['Show me how much they want my body','X'],['Play with power in a way that makes my mind go quiet','K']]},
+      {q:'I feel most alive in intimacy when...',a:[['Every sense is engaged and time disappears','S'],['The physical pleasure is so intense I can\'t think','X'],['There is a dynamic at play that goes beyond bodies','K']]},
+      {q:'After an intense experience, what I remember most is...',a:[['The quality of touch, the warmth, how held I felt','S'],['The physical peak, the release, the intensity','X'],['The energy between us, the unspoken agreement, the psychology','K']]},
+      {q:'The word that most resonates with what I want is...',a:[['Dissolve','S'],['Devour','X'],['Surrender (but with intention behind it)','K']]},
+      {q:'Ritual appeals to me because...',a:[['It deepens presence and makes the ordinary sacred','S'],['It builds anticipation that makes the physical release more intense','X'],['It creates a container where roles and power can be clearly defined','K']]},
+    ],
+    score(answers){const c={S:0,X:0,K:0};answers.forEach(a=>{if(c[a]!==undefined)c[a]++});const t=Object.values(c).reduce((a,b)=>a+b,0)||1;return{S:Math.round(c.S/t*100),X:Math.round(c.X/t*100),K:Math.round(c.K/t*100)};},
+    render(r){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];const labels={S:'Sensual',X:'Sexual',K:'Kink-oriented'};const interps={S:"Your primary desire language is Sensual. You're deeply responsive to atmosphere, texture, slowness, and presence. For you, intimacy is a full-body immersion experience.",X:"Your primary desire language is Sexual. You're drawn to the raw physical intensity of bodies meeting, the energy of mutual desire, the pleasure of pure sensation.",K:"Your primary desire language is Kink-oriented. What moves you most isn't just physical. It's psychological. Power dynamics, the edge of transgression, the deliberate construction of a scene."};return`<div class="ky-result-label">${labels[top]}</div><div style="margin-bottom:.75rem">${Object.entries(labels).map(([k,l])=>`<div class="ky-bar-row"><span class="ky-bar-label">${l}</span><div class="ky-bar-track"><div class="ky-bar-fill" style="width:${r[k]}%"></div></div><span class="ky-bar-pct">${r[k]}%</span></div>`).join('')}</div><p class="ky-result-interp">${interps[top]}</p>`}
+  },
+  {
+    id:'desire-driver',emoji:'◎',title:'What Drives Desire',sub:'The engine underneath your wanting.',
+    _q:[
+      {q:'I feel most turned on when...',a:[['I feel completely safe and truly seen','safety'],['The physical sensation is overwhelming','sensation'],['Something unexpected or new happens','novelty'],['There\'s a clear power differential in play','power'],['I\'m inside a fantasy world we\'ve both agreed to enter','fantasy']]},
+      {q:'What kills desire for me faster than anything is...',a:[['Feeling emotionally unsafe or unseen','safety'],['Sensory disconnection or numbness','sensation'],['Routine and predictability','novelty'],['No clear direction or dynamic','power'],['Being pulled out of the imaginary space','fantasy']]},
+      {q:'My most memorable intimate experiences involved...',a:[['Deep emotional trust and vulnerability','safety'],['Extraordinary physical sensation','sensation'],['Something we\'d never done before','novelty'],['One of us clearly in charge','power'],['A story or role we were playing together','fantasy']]},
+      {q:'If I could design the perfect experience, it would start with...',a:[['A long, unhurried conversation that builds real connection','safety'],['Touch that gradually intensifies without agenda','sensation'],['A spontaneous invitation to do something unexpected','novelty'],['An explicit agreement about who leads','power'],['Setting up a scene or story together','fantasy']]},
+    ],
+    score(answers){const c={safety:0,sensation:0,novelty:0,power:0,fantasy:0};answers.forEach(a=>{if(c[a]!==undefined)c[a]++});return c;},
+    render(r){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];const labels={safety:'Safety',sensation:'Sensation',novelty:'Novelty',power:'Power',fantasy:'Fantasy'};const interps={safety:"Your desire is rooted in safety. You don't need wild or complex, you need real. When you feel genuinely seen and emotionally safe, your desire unlocks fully.",sensation:"Your desire lives in the body. Sensation is your primary doorway. You're deeply responsive to touch, temperature, pressure, and physical intensity.",novelty:"Novelty is your desire engine. New experiences, unexpected moments, the edge of the unknown. Routine dampens you; surprise awakens you.",power:"Power dynamics are your primary desire driver. The explicit negotiation of who leads and who follows, the clarity of a defined dynamic, the trust that makes that dynamic possible.",fantasy:"Your desire lives in imagination. You're aroused by story, by character, by the co-creation of a shared world."};return`<div class="ky-result-label">Your engine: ${labels[top]}</div><div style="margin-bottom:.75rem">${Object.entries(labels).map(([k,l])=>`<div class="ky-bar-row"><span class="ky-bar-label">${l}</span><div class="ky-bar-track"><div class="ky-bar-fill" style="width:${r[k]*25}%"></div></div></div>`).join('')}</div><p class="ky-result-interp">${interps[top]}</p>`}
+  },
+  {
+    id:'communication-style',emoji:'◇',title:'How You Communicate',sub:'Your intimacy communication signature.',
+    _q:[
+      {q:'When I want something in an intimate moment, I usually...',a:[['Say it directly and clearly','direct'],['Find a way to show rather than tell','nonverbal'],['Wait and hope they notice','silent'],['Turn it into a game or playful ask','playful']]},
+      {q:'When something doesn\'t feel right, I tend to...',a:[['Name it immediately','direct'],['Pull back physically and hope they read it','nonverbal'],['Push through without saying anything','silent'],['Redirect with humor or a different suggestion','playful']]},
+      {q:'My biggest challenge in asking for what I want is...',a:[['Nothing. I ask directly.','direct'],['Finding the right words when my body already knows','nonverbal'],['Fear of being too much or asking for too much','silent'],['Being taken seriously when I\'m being playful','playful']]},
+      {q:'After an experience, I process by...',a:[['Talking through what worked and what didn\'t','direct'],['Staying in physical closeness without words','nonverbal'],['Internalizing everything quietly','silent'],['Making it light, finding the funny in it','playful']]},
+    ],
+    score(answers){const c={direct:0,nonverbal:0,silent:0,playful:0};answers.forEach(a=>{if(c[a]!==undefined)c[a]++});return c;},
+    render(r){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];const labels={direct:'Direct',nonverbal:'Somatic',silent:'Internal',playful:'Playful'};const interps={direct:"You communicate directly. Words are your preferred tool and you're generally comfortable naming what you want. Your growth edge is learning that not everyone receives direct communication the same way.",nonverbal:"Your body speaks before your words do. You're highly tuned to physical signals: touch, space, breath. Your growth edge is developing a verbal vocabulary that matches your somatic one.",silent:"You tend to process intimacy internally and may struggle to ask for what you need. Your growth edge is the practice of naming one want per encounter, even something tiny.",playful:"You use lightness and humor as your primary communication style. Your growth edge is learning to drop into something more serious when the moment calls for it."};return`<div class="ky-result-label">${labels[top]} Communicator</div><p class="ky-result-interp">${interps[top]}</p>`}
+  },
+  {
+    id:'body-connection',emoji:'○',title:'Body Connection',sub:'How present are you in your own body?',
+    _q:[
+      {q:'During intimate moments, I am usually...',a:[['Fully inside my body and sensations',3],['Mostly present with occasional mind-wandering',2],['About half and half, body and thoughts',1],['Mostly in my head, watching from above',0]]},
+      {q:'I notice physical sensations in my body...',a:[['Immediately and clearly',3],['After a short delay',2],['Only when they become quite strong',1],['I sometimes miss them entirely',0]]},
+      {q:'When something doesn\'t feel right, my body...',a:[['Signals it immediately and I listen',3],['Signals it and I notice eventually',2],['Signals something but I override it',1],['I tend not to notice until much later',0]]},
+      {q:'Taking a full conscious breath right now feels...',a:[['Natural and immediate',3],['Possible with a little effort',2],['I had to really try',1],['My breath is shallow most of the time',0]]},
+      {q:'After a physical or sexual experience, I tend to...',a:[['Come back to my body naturally',3],['Take a few minutes to ground',2],['Feel floaty or disconnected for a while',1],['Often feel numb or strangely absent',0]]},
+    ],
+    score(answers){return answers.reduce((a,b)=>a+b,0);},
+    render(total){const pct=Math.round(total/15*100);const levels=[[0,40,'Developing Connection',"Your body and you are still getting acquainted. The practices in this experience are specifically designed for where you are. Somatic awareness is a skill, not a fixed trait."],[40,70,'Building Connection',"You have a real relationship with your body but there are moments when you lose the thread. Your work is building consistency, learning to return to your body faster when you drift."],[70,101,'Embodied',"You live in your body with a high degree of awareness. You notice sensations quickly, you trust your body's signals, and you come back naturally when you drift."]];const [,,label,interp]=levels.find(([min,max])=>pct>=min&&pct<max)||levels[0];return`<div class="ky-ring"><span>${pct}%</span></div><div class="ky-result-label">${label}</div><p class="ky-result-interp">${interp}</p>`}
+  },
+  {
+    id:'turn-on-map',emoji:'✦',title:'Turn-On Map',sub:'Select everything that resonates.',
+    isMap:true,
+    cats:[
+      {id:'touch',l:'Quality of touch',d:'Slow, deliberate, attentive touch'},
+      {id:'words',l:'Words and voice',d:"What's said, how it's said, the tone"},
+      {id:'eye',l:'Eye contact',d:'Being truly seen'},
+      {id:'scent',l:'Scent',d:'Body, environment, specific smells'},
+      {id:'power',l:'Power differential',d:'Someone clearly in charge'},
+      {id:'surrender',l:'Full surrender',d:'Letting go completely'},
+      {id:'anticipation',l:'Anticipation',d:'The buildup before anything happens'},
+      {id:'risk',l:'The edge',d:'Slight risk, transgression, the almost-too-much'},
+      {id:'ritual',l:'Ritual',d:'Intentional setup, sacred atmosphere'},
+      {id:'play',l:'Playfulness',d:'Lightness, laughter, games'},
+      {id:'restraint',l:'Physical restraint',d:'Being held in place'},
+      {id:'witness',l:'Being witnessed',d:'Someone watching or knowing'},
+      {id:'novelty',l:'Novelty',d:'First times, new territory'},
+      {id:'depth',l:'Emotional depth',d:'Intimacy as emotional vulnerability'},
+      {id:'body',l:'Pure physical sensation',d:'Bodies, intensity, pleasure'},
+      {id:'fantasy',l:'Fantasy and role',d:'Story, character, imagination'},
+    ],
+  }
+];
+
+let kyAnswers={};
+let kyResults={};
+
+async function loadKnowYourself(){
+  const container=document.getElementById('ky-tests');
+  if(!container)return;
+  // Load saved profiles from API
+  try{
+    const r=await apiFetch('/profiles');
+    if(r.ok){const d=await r.json();const profs=Array.isArray(d)?d:(d.profiles||[]);profs.forEach(p=>{if(p.test_id)kyResults[p.test_id]=p.scores||{};})}
+  }catch(e){}
+  renderKyTests();
+}
+
+function renderKyTests(){
+  const container=document.getElementById('ky-tests');
+  if(!container)return;
+  container.innerHTML=KY_TESTS.map(t=>{
+    const done=!!kyResults[t.id];
+    return`<div class="ky-card${done?' completed':''}" id="kyc-${t.id}">
+      <div class="ky-card-header" onclick="toggleKyCard('${t.id}')">
+        <div class="ky-emoji">${t.emoji}</div>
+        <div class="ky-meta"><div class="ky-title">${t.title}</div><div class="ky-sub">${t.sub}</div></div>
+        <div class="ky-badge${done?' done':''}">${done?'Done':'Take it'}</div>
+      </div>
+      <div class="ky-body" id="kyb-${t.id}"></div>
+    </div>`;
+  }).join('');
+}
+
+function toggleKyCard(id){
+  const body=document.getElementById('kyb-'+id);
+  if(!body)return;
+  const isOpen=body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.ky-body').forEach(b=>{b.classList.remove('open');b.innerHTML='';});
+  if(!isOpen){
+    body.classList.add('open');
+    renderKyTest(id,body);
+  }
+}
+
+function renderKyTest(id,body){
+  const t=KY_TESTS.find(x=>x.id===id);
+  if(!t)return;
+  if(!kyAnswers[id])kyAnswers[id]={};
+  // If already done, show result
+  if(kyResults[id]&&Object.keys(kyResults[id]).length>0){
+    body.innerHTML=`<div class="ky-result">${t.render?t.render(kyResults[id]):''}</div><button class="ky-submit-btn" style="margin-top:.85rem;background:transparent;border:1px solid rgba(155,127,166,.25);color:rgba(244,239,230,.45);font-size:.78rem" onclick="kyRetake('${id}')">Retake</button>`;
+    return;
+  }
+  if(t.isMap){renderKyMap(t,body);return;}
+  // Q&A test
+  const qIdx=Object.keys(kyAnswers[id]).length;
+  if(qIdx>=t._q.length){
+    // All answered, compute and show result
+    const answers=t._q.map((_,i)=>kyAnswers[id][i]);
+    const result=t.score(answers);
+    body.innerHTML=`<div class="ky-result">${t.render(result)}</div><button class="ky-submit-btn" onclick="kySubmit('${id}',${JSON.stringify(result).replace(/'/g,"\\'")})" style="margin-top:.85rem">Save result</button>`;
+    return;
+  }
+  const q=t._q[qIdx];
+  body.innerHTML=`<div class="ky-progress">Question ${qIdx+1} of ${t._q.length}</div>
+    <div class="ky-question">${q.q}</div>
+    <div class="ky-options">${q.a.map((opt,i)=>`<button class="ky-opt" onclick="kyAnswer('${id}',${qIdx},${JSON.stringify(opt[1])})">${opt[0]}</button>`).join('')}</div>`;
+}
+
+function kyAnswer(id,qIdx,val){
+  kyAnswers[id][qIdx]=val;
+  const body=document.getElementById('kyb-'+id);
+  if(body)renderKyTest(id,body);
+}
+
+function kyRetake(id){
+  delete kyAnswers[id];
+  delete kyResults[id];
+  const body=document.getElementById('kyb-'+id);
+  if(body)renderKyTest(id,body);
+}
+
+function renderKyMap(t,body){
+  const saved=kyResults[t.id];
+  const selIds=saved&&saved.selected?saved.selected:[];
+  body.innerHTML=`<div class="ky-cloud">${t.cats.map(c=>`<button class="ky-chip${selIds.includes(c.id)?' sel':''}" onclick="toggleKyChip(this,'${t.id}','${c.id}')" title="${c.d}">${c.l}</button>`).join('')}</div>
+    <button class="ky-submit-btn" id="ky-map-save" onclick="kySubmitMap('${t.id}')">Save my map</button>`;
+}
+
+function toggleKyChip(btn,testId,chipId){
+  btn.classList.toggle('sel');
+}
+
+async function kySubmitMap(id){
+  const body=document.getElementById('kyb-'+id);
+  const selected=[];
+  body.querySelectorAll('.ky-chip.sel').forEach(b=>{
+    const t=KY_TESTS.find(x=>x.id===id);
+    const cat=t.cats.find(c=>c.l===b.textContent);
+    if(cat)selected.push(cat.id);
+  });
+  const scores={selected};
+  await kySaveToApi(id,scores);
+  kyResults[id]=scores;
+  renderKyTests();
+  body.classList.add('open');
+  body.innerHTML=`<div class="ky-result"><div class="ky-result-label">Saved.</div><p class="ky-result-interp">${selected.length?'Your activation points: '+selected.map(s=>{const t2=KY_TESTS.find(x=>x.id===id);const c=t2.cats.find(x=>x.id===s);return c?c.l:s}).join(', ')+'.':"Select at least one to build your map."}</p></div>`;
+}
+
+async function kySubmit(id,result){
+  await kySaveToApi(id,result);
+  kyResults[id]=result;
+  renderKyTests();
+  const body=document.getElementById('kyb-'+id);
+  if(body){
+    const t=KY_TESTS.find(x=>x.id===id);
+    body.classList.add('open');
+    body.innerHTML=`<div class="ky-result">${t.render(result)}</div>`;
+  }
+}
+
+async function kySaveToApi(testId,scores){
+  try{
+    await apiFetch('/profiles/submit',{method:'POST',body:JSON.stringify({test_id:testId,scores,version:'jouissance'})});
+  }catch(e){}
+}
+
+document.getElementById('nav-mirror').addEventListener('click',()=>{loadKnowYourself();show('know-yourself');});
+document.getElementById('nav-modules').addEventListener('click',()=>{loadMods();show('modules')});
+document.getElementById('nav-rewards').addEventListener('click',()=>{loadRewards();show('rewards')});
+
+// ---- PWA INSTALL ----
+let _dip=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();_dip=e;
+  if(!window.matchMedia('(display-mode: standalone)').matches&&!localStorage.getItem('pwa_dismissed')){
+    setTimeout(()=>document.getElementById('pwa-banner').classList.add('show'),3000);
+  }
+});
+document.getElementById('pwa-install-btn').addEventListener('click',()=>{
+  if(_dip){_dip.prompt();_dip.userChoice.then(()=>{_dip=null;});}
+  document.getElementById('pwa-banner').classList.remove('show');
+});
+document.getElementById('pwa-dismiss').addEventListener('click',()=>{
+  document.getElementById('pwa-banner').classList.remove('show');
+  localStorage.setItem('pwa_dismissed','1');
 });
 
 boot();

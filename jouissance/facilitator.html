@@ -682,11 +682,23 @@ function buildCard(p) {
   const hasPend = p.pending_redemptions && p.pending_redemptions.length;
   const badge = hasPend ? `<div class="pending-badge">${p.pending_redemptions.length} reward${p.pending_redemptions.length>1?'s':''}</div>` : '';
 
+  const avatarHtml = p.photo_url
+    ? `<img src="${API}/profile/photo/${p.id}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" onerror="this.parentNode.textContent='${init}'">`
+    : init;
+
+  const regQLabels = ['How they identify','Relationship landscape','Coming to explore','Energetic nature','Limit to respect'];
+  const rq = p.reg_questions || {};
+  const regQHtml = regQLabels.map((lbl, i) => {
+    const a = rq[`q${i+1}`]; if (!a) return '';
+    return `<div><div class="qa-q">${lbl}</div><div class="qa-a">${esc(a)}</div></div>`;
+  }).filter(Boolean).join('');
+
   const profile = p.profile || {};
-  const qaHtml = PROFILE_QUESTIONS.map((q, i) => {
+  const profileHtml = PROFILE_QUESTIONS.map((q, i) => {
     const a = profile[`q${i+1}`]; if (!a) return '';
     return `<div><div class="qa-q">${q}</div><div class="qa-a">${esc(a)}</div></div>`;
-  }).filter(Boolean).join('') || '<div class="empty">Profile not yet complete.</div>';
+  }).filter(Boolean).join('');
+  const qaHtml = (regQHtml + profileHtml) || '<div class="empty">Profile not yet complete.</div>';
 
   const respHtml = (p.recent_responses || []).length
     ? (p.recent_responses || []).map(r =>
@@ -715,7 +727,7 @@ function buildCard(p) {
   return `
   <div class="participant-card${hasPend?' has-pending':''}" id="pc${p.id}">
     <div class="participant-header" onclick="toggle(${p.id})">
-      <div class="participant-avatar">${init}</div>
+      <div class="participant-avatar">${avatarHtml}</div>
       <div class="participant-info">
         <div class="participant-name">${nm || em}</div>
         <div class="participant-email">${em}</div>
@@ -765,9 +777,10 @@ async function sendChallenge(pid, name) {
   const text = document.getElementById('ct'+pid).value.trim();
   const pts = parseInt(document.getElementById('cp'+pid).value) || 0;
   if (!text) { toast('Write the challenge first.'); return; }
-  const r = await req('/facilitator/custom-challenge', {
+  const dayNum = Math.max(1, Math.min(14, Math.ceil((Date.now() - new Date('2026-08-01').getTime()) / 86400000) + 1));
+  const r = await req('/admin/challenge/custom', {
     method: 'POST',
-    body: JSON.stringify({ participant_id: pid, text, bonus_points: pts })
+    body: JSON.stringify({ participant_id: pid, day_number: dayNum, challenge_title: text.substring(0, 60), challenge_description: text })
   });
   if (!r || !r.ok) { toast('Failed to send.'); return; }
   document.getElementById('ct'+pid).value = '';
