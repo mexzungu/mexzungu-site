@@ -715,43 +715,6 @@ const MODULES = {
   'm4': {name:'Surrender and Safety', body:'Surrender is not weakness. It is the most advanced skill in intimacy. To release control deliberately, to trust the container, to let go without disappearing. This requires safety, and safety requires knowing exactly where your edges are.'},
   'm5': {name:'Integration', body:'What you have felt, written, and explored over these days is not separate from your life. It is your life, more honestly expressed. Integration is the practice of carrying what you have found back into every room you enter.'}
 };
-const REWARDS = [
-  {tier:'WORDS & ATTENTION', items:[
-    {id:'letter',name:'The Letter',pts:4,desc:'Agathe writes you a personal note. Tell her what you want her to say.',time:null},
-    {id:'notice',name:'What I Notice',pts:5,desc:'Someone writes what they find most beautiful about you. You choose who.',time:null},
-    {id:'question',name:'The Question',pts:6,desc:'Ask anyone in the room one question they must answer honestly.',time:null},
-    {id:'story',name:'The Story',pts:7,desc:'Someone tells you a story about desire. Their own. You choose who.',time:null}
-  ]},
-  {tier:'PRESENCE & SENSATION', items:[
-    {id:'mirror',name:'The Mirror',pts:8,desc:'Reread your own profile. Write what surprised you.',time:'15 min'},
-    {id:'touch',name:'The Touch',pts:9,desc:'Ten minutes of deliberate, non-sexual touch. Head, hands, back. You choose who.',time:'10 min'},
-    {id:'meditation',name:'The Meditation',pts:9,desc:'A 20-minute guided audio by Agathe.',time:'20 min'},
-    {id:'bath',name:'The Bath',pts:11,desc:'A bath drawn for you, oils chosen by someone else. You choose who and what mood.',time:'30 min'},
-    {id:'meal',name:'The Meal',pts:12,desc:'Someone cooks for you. You choose what and who.',time:'1 evening'}
-  ]},
-  {tier:'EXPERIENCE & RITUAL', items:[
-    {id:'convo',name:'The Conversation',pts:13,desc:'A 30-minute 1:1 with Agathe. You direct it.',time:'30 min'},
-    {id:'perfume',name:'The Perfume',pts:14,desc:'A perfume chosen for you and sent. You choose who picks it. Physical delivery by Aug 10.',time:null},
-    {id:'reading',name:'The Reading',pts:15,desc:'Someone reads to you for 20 minutes. Text and reader of your choice.',time:'20 min'},
-    {id:'playlist',name:'The Playlist',pts:16,desc:'A playlist made for you, for a mood you describe. You choose who makes it.',time:null},
-    {id:'softfire',name:'Soft Fire',pts:16,desc:"Agathe's 20-minute sensual audio recording.",time:'20 min'}
-  ]},
-  {tier:'INTENSITY', items:[
-    {id:'promise',name:'The Promise',pts:17,desc:'One element of the August 14 evening, designed by you. Name what and who delivers it.',time:'45 min'},
-    {id:'blindfold',name:'The Blindfold',pts:18,desc:'Someone guides your senses for 15 minutes while you cannot see. You choose who and where.',time:'15 min'},
-    {id:'shibari-light',name:'Shibari Light',pts:19,desc:'A gentle rope-binding ritual, fully clothed. Aesthetic, meditative. You choose who ties.',time:'30 min'},
-    {id:'confession',name:'The Confession',pts:20,desc:'You tell someone something you have never said. They witness. They do not respond. You choose who.',time:'20 min'},
-    {id:'mirror-motion',name:'The Mirror in Motion',pts:22,desc:'Someone dances for you, or with you, for you alone. You choose who and what music.',time:'20 min'},
-    {id:'shibari-deep',name:'Shibari Deep',pts:23,desc:'A full shibari session, partial undress, your limits respected. You describe what you want and who ties.',time:'45 min'},
-    {id:'carte-blanche',name:'Carte Blanche',pts:40,desc:'You design one experience for August 14, without limits. Write what you want, who you want, how long.',time:null}
-  ]},
-  {tier:'SURPRISE MENUS', surprise:true, items:[
-    {id:'sm1',name:'Surprise Menu I',pts:null,desc:'Unlocked by Agathe. One of: The Letter, What I Notice, or The Story, her choice.'},
-    {id:'sm2',name:'Surprise Menu II',pts:null,desc:'One of: The Touch, The Bath, or The Meal, her choice.'},
-    {id:'sm3',name:'Surprise Menu III',pts:null,desc:'One of: The Reading, The Playlist, or Soft Fire, her choice.'},
-    {id:'sm4',name:'Surprise Menu IV',pts:null,desc:'One of: The Promise, The Confession, or Shibari Light, her choice.'}
-  ]}
-];
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -934,8 +897,7 @@ document.getElementById('welcome-begin').addEventListener('click',()=>show('cons
 
 // Consent
 document.getElementById('consent-chk').addEventListener('change',function(){document.getElementById('consent-btn').disabled=!this.checked});
-document.getElementById('consent-btn').addEventListener('click',async()=>{
-  try{await apiFetch('/consent',{method:'POST',body:JSON.stringify({consented:true})})}catch(e){}
+document.getElementById('consent-btn').addEventListener('click',()=>{
   show('profile-q1');localStorage.setItem('jouissance_profile_step','1');
 });
 
@@ -1029,6 +991,7 @@ async function loadHome(){
       const data=await cr.json();
       challengesAll=data.challenges||{};
       const completedToday=data.completed_today||false;
+      const completedTodayDiff=data.completed_today_difficulty||null;
       const section=document.getElementById('h-challenges-section');
       const hasAny=Object.keys(challengesAll).length>0;
       section.style.display=hasAny?'block':'none';
@@ -1046,7 +1009,7 @@ async function loadHome(){
         } else {
           card.style.display='none';
         }
-        card.classList.toggle('done-today',completedToday);
+        card.classList.toggle('done-today',completedToday&&diff===completedTodayDiff);
       });
     } else {
       document.getElementById('h-challenges-section').style.display='none';
@@ -1198,7 +1161,8 @@ document.getElementById('md-complete').addEventListener('click',async()=>{
   setTimeout(()=>{loadMods();show('modules')},1200);
 });
 
-// Rewards: fetch from API, show 3-tier pricing
+/// Rewards: fetch from API, group by category
+const CATEGORY_LABELS={'ritual':'Ritual','personal':'Personal','session':'Session','workshop':'Workshop','community':'Community'};
 let pendingRwdGiver = 'pepe';
 async function loadRewards(){
   try{const r=await apiFetch('/auth/me');if(r.ok){const d=await r.json();pts=d.points||pts}}catch(e){}
@@ -1211,31 +1175,24 @@ async function loadRewards(){
     const d=await r.json();
     const rewards=d.rewards||[];
     list.innerHTML='';
-    // Group by tier using local REWARDS structure as category map
-    const tierMap={};
-    REWARDS.forEach(t=>{t.items.forEach(i=>{tierMap[i.id]=t.tier;})});
     const grouped={};
     rewards.forEach(item=>{
-      const tier=tierMap[item.id]||'Other';
-      if(!grouped[tier])grouped[tier]=[];
-      grouped[tier].push(item);
+      const cat=item.category||'other';
+      if(!grouped[cat])grouped[cat]=[];
+      grouped[cat].push(item);
     });
-    const tierOrder=REWARDS.map(t=>t.tier);
-    tierOrder.forEach(tier=>{
-      const items=grouped[tier];
-      if(!items||!items.length)return;
+    Object.entries(grouped).forEach(([cat,items])=>{
+      const tierLabel=CATEGORY_LABELS[cat]||(cat.charAt(0).toUpperCase()+cat.slice(1));
       const section=document.createElement('div');
       section.style.cssText='border-bottom:1px solid rgba(155,127,166,.15);margin-bottom:.25rem';
       const header=document.createElement('div');
       header.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.9rem 0;cursor:pointer';
-      header.innerHTML=`<div style="font-family:\'Cormorant Garamond\',serif;font-size:1rem;letter-spacing:.08em;color:var(--secondary)">${tier}</div><span class="tier-chevron" style="color:var(--muted);font-size:.8rem;transition:transform .3s">&#9660;</span>`;
+      header.innerHTML=`<div style="font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:.08em;color:var(--secondary)">${tierLabel}</div><span class="tier-chevron" style="color:var(--muted);font-size:.8rem;transition:transform .3s">&#9660;</span>`;
       const body=document.createElement('div');
       body.style.cssText='overflow:hidden;max-height:0;transition:max-height .35s ease';
       items.forEach(item=>{
-        const cp=item.cost_pepe||item.cost;
-        const ca=item.cost_agathe||item.cost;
-        const cb=item.cost_both||item.cost;
-        const canAffordAny=pts>=Math.min(cp,ca,cb);
+        const cost=item.cost||0;
+        const canAfford=pts>=cost;
         const soldOut=item.sold_out||false;
         const claimed=item.already_claimed||false;
         const card=document.createElement('div');
@@ -1244,12 +1201,8 @@ async function loadRewards(){
         card.innerHTML=`
           <div class="rwd-name">${item.emoji||''} ${item.title||''}</div>
           <div class="rwd-desc">${item.description||''}</div>
-          <div style="display:flex;gap:.5rem;margin:.4rem 0;flex-wrap:wrap">
-            <span style="font-size:.72rem;color:var(--secondary)">${cp} pts (Pepe)</span>
-            <span style="font-size:.72rem;color:rgba(155,127,166,.7)">${ca} pts (Agathe)</span>
-            <span style="font-size:.72rem;color:rgba(197,135,58,.7)">${cb} pts (Together)</span>
-          </div>
-          ${!claimed&&!soldOut?`<button class="btn-redeem" data-id="${item.id}" data-name="${item.title||''}" data-cp="${cp}" data-ca="${ca}" data-cb="${cb}" ${canAffordAny?'':'disabled'}>${canAffordAny?'Redeem':'Need '+Math.min(cp,ca,cb)+' pts'}</button>`
+          <div style="margin:.4rem 0"><span style="font-size:.72rem;color:var(--secondary)">${cost} pts</span></div>
+          ${!claimed&&!soldOut?`<button class="btn-redeem" data-id="${item.id}" data-name="${item.title||''}" data-cost="${cost}" ${canAfford?'':'disabled'}>${canAfford?'Redeem':'Need '+cost+' pts'}</button>`
             :claimed?`<span style="font-size:.72rem;color:rgba(155,127,166,.5)">Already redeemed</span>`
             :`<span style="font-size:.72rem;color:var(--red)">Sold out</span>`}`;
         body.appendChild(card);
@@ -1268,19 +1221,8 @@ async function loadRewards(){
         pendingRwdId=btn.dataset.id;
         pendingRwdGiver='pepe';
         document.getElementById('modal-rwd-name').textContent=btn.dataset.name;
-        // Build giver selector in modal
-        const cp=parseInt(btn.dataset.cp)||0;
-        const ca=parseInt(btn.dataset.ca)||0;
-        const cb=parseInt(btn.dataset.cb)||0;
         const modalSub=document.getElementById('rdm-modal').querySelector('.modal-sub');
-        if(modalSub){
-          modalSub.innerHTML=`Who delivers this?<br>
-            <div style="display:flex;gap:.5rem;margin:.75rem 0;flex-wrap:wrap">
-              <button onclick="setGiver('pepe',this)" class="btn giver-btn" style="flex:1;min-width:80px;padding:.5rem;font-size:.82rem" data-g="pepe"${pts<cp?' disabled':''}>Pepe<br><span style="font-size:.7rem;opacity:.7">${cp} pts</span></button>
-              <button onclick="setGiver('agathe',this)" class="btn giver-btn" style="flex:1;min-width:80px;padding:.5rem;font-size:.82rem" data-g="agathe"${pts<ca?' disabled':''}>Agathe<br><span style="font-size:.7rem;opacity:.7">${ca} pts</span></button>
-              <button onclick="setGiver('both',this)" class="btn giver-btn" style="flex:1;min-width:80px;padding:.5rem;font-size:.82rem" data-g="both"${pts<cb?' disabled':''}>Together<br><span style="font-size:.7rem;opacity:.7">${cb} pts</span></button>
-            </div>`;
-        }
+        if(modalSub){modalSub.innerHTML=`Confirm redemption for ${btn.dataset.cost} pts.`;}
         document.getElementById('modal-details').style.display='none';
         document.getElementById('rdm-modal').classList.add('on');
       });
@@ -1288,11 +1230,6 @@ async function loadRewards(){
   }catch(e){list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic">Error loading rewards.</div>';}
 }
 
-function setGiver(g,btn){
-  pendingRwdGiver=g;
-  document.querySelectorAll('.giver-btn').forEach(b=>b.classList.remove('btn-primary'));
-  if(btn)btn.classList.add('btn-primary');
-}
 
 document.getElementById('modal-cancel').addEventListener('click',()=>{
   document.getElementById('rdm-modal').classList.remove('on');
@@ -1350,8 +1287,7 @@ document.getElementById('d14-submit').addEventListener('click',async()=>{
   if(!text)return;
   btn.disabled=true;
   try{
-    const fd=new FormData();fd.append('response_text',text);fd.append('day14','true');
-    await apiForm('/challenges/submit',fd);
+    await apiFetch('/challenges/submit',{method:'POST',body:JSON.stringify({response_text:text,day14:true})});
   }catch(e){}
   document.getElementById('d14-resp').style.display='none';
   btn.style.display='none';
