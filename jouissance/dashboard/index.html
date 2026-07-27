@@ -248,6 +248,64 @@
   .btn-done:hover { background: var(--green); color: var(--bg); }
   .btn-done:disabled { opacity: 0.4; cursor: not-allowed; }
 
+  .btn-view {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .btn-view:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-view.active { border-color: var(--gold); color: var(--gold); }
+
+  .detail-row { background: var(--surface) !important; }
+  .detail-row:hover { background: var(--surface) !important; }
+  .detail-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 20px 16px 24px;
+  }
+  .detail-section-hd {
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-item { margin-bottom: 12px; }
+  .detail-lbl {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .detail-val {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.55;
+    word-break: break-word;
+  }
+  .detail-sub-meta { margin-bottom: 4px; }
+  .detail-empty {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 780px) {
+    .detail-panel { grid-template-columns: 1fr; }
+  }
+
   .empty {
     text-align: center;
     padding: 40px 24px;
@@ -368,7 +426,7 @@
 <script>
 const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
   ? 'http://127.0.0.1:8746'
-  : 'https://mexzungu.com/api/jouissance-auth';
+  : 'https://jouissance.mexzungu.com';
 
 let token = localStorage.getItem('j_dash_token') || '';
 let redemptions = [];
@@ -582,6 +640,7 @@ function renderParticipants() {
       ${th('points', 'Points')}
       ${th('streak', 'Streak')}
       ${th('last_active', 'Last Active')}
+      <th></th>
     </tr></thead>
     <tbody>${sorted.map(ppRow).join('')}</tbody>
   </table>`;
@@ -589,13 +648,72 @@ function renderParticipants() {
 
 function ppRow(p) {
   const streak = p.streak ?? 0;
-  return `<tr>
+  const pid = p.id || p.email || Math.random().toString(36).slice(2);
+
+  // Profile answers
+  const profile = p.profile || {};
+  let profileHtml = '';
+  for (let i = 1; i <= 10; i++) {
+    const val = profile['q' + i];
+    if (val) profileHtml += `<div class="detail-item"><span class="detail-lbl">Q${i}</span><div class="detail-val">${esc(val)}</div></div>`;
+  }
+  if (!profileHtml) profileHtml = '<div class="detail-empty">No profile answers yet.</div>';
+
+  // Know yourself results
+  let kyHtml = '';
+  if (p.ky_results && p.ky_results.length) {
+    kyHtml = p.ky_results.map(r =>
+      `<div class="detail-item"><span class="detail-lbl">${esc(r.test_id)}</span><div class="detail-val" style="font-size:11px;font-family:monospace">${esc(JSON.stringify(r.scores))}</div></div>`
+    ).join('');
+  } else {
+    kyHtml = '<div class="detail-empty">Not yet taken.</div>';
+  }
+
+  // Submissions
+  let subHtml = '';
+  if (p.recent_responses && p.recent_responses.length) {
+    subHtml = p.recent_responses.map(r =>
+      `<div class="detail-item"><div class="detail-sub-meta"><span class="detail-lbl">${esc(r.date)} &mdash; ${esc(r.challenge)}</span></div><div class="detail-val">${esc((r.text || '').substring(0, 250))}</div></div>`
+    ).join('');
+  } else {
+    subHtml = '<div class="detail-empty">No submissions yet.</div>';
+  }
+
+  return `<tr id="pp-row-${esc(pid)}">
     <td>${esc(p.name || p.email || 'Unknown')}</td>
     <td class="muted">${esc(p.cohort_name || '-')}</td>
     <td><span class="pts-val">${p.points ?? 0}</span></td>
     <td><span class="streak-val">${streak}</span> <span class="muted" style="font-size:11px">day${streak !== 1 ? 's' : ''}</span></td>
     <td class="muted" style="font-size:12px">${fmtDate(p.last_active) || '-'}</td>
+    <td><button class="btn-view" id="btn-view-${esc(pid)}" onclick="toggleDetail('${esc(pid)}')">View</button></td>
+  </tr>
+  <tr id="pp-detail-${esc(pid)}" class="detail-row" style="display:none">
+    <td colspan="6">
+      <div class="detail-panel">
+        <div>
+          <div class="detail-section-hd">Profile Answers</div>
+          ${profileHtml}
+        </div>
+        <div>
+          <div class="detail-section-hd">Know Yourself</div>
+          ${kyHtml}
+        </div>
+        <div>
+          <div class="detail-section-hd">Submissions</div>
+          ${subHtml}
+        </div>
+      </div>
+    </td>
   </tr>`;
+}
+
+function toggleDetail(pid) {
+  const detail = document.getElementById('pp-detail-' + pid);
+  const btn = document.getElementById('btn-view-' + pid);
+  if (!detail) return;
+  const open = detail.style.display === 'none';
+  detail.style.display = open ? 'table-row' : 'none';
+  if (btn) { btn.textContent = open ? 'Hide' : 'View'; btn.classList.toggle('active', open); }
 }
 
 function sortBy(col) {
