@@ -1350,6 +1350,8 @@ document.getElementById('md-complete').addEventListener('click',async()=>{
 /// Rewards: fetch from API, group by category
 const CATEGORY_LABELS={'ritual':'Ritual','personal':'Personal','session':'Session','workshop':'Workshop','community':'Community'};
 let pendingRwdGiver = 'pepe';
+let pendingRwdEmoji = '';
+let pendingRwdCost = 0;
 async function loadRewards(){
   try{const r=await apiFetch('/auth/me');if(r.ok){const d=await r.json();pts=d.points||pts}}catch(e){}
   document.getElementById('rwd-pts').textContent=pts+' pts';
@@ -1389,7 +1391,7 @@ async function loadRewards(){
           <div class="rwd-name">${item.emoji||''} ${item.title||''}</div>
           <div class="rwd-desc">${item.description||''}</div>
           <div style="margin:.4rem 0"><span style="font-size:.72rem;color:var(--secondary)">${cost} pts</span></div>
-          ${!claimed&&!soldOut?`<button class="btn-redeem" data-id="${item.id}" data-name="${item.title||''}" data-cost="${cost}" ${canAfford?'':'disabled'}>${canAfford?'Redeem':'Need '+cost+' pts'}</button>`
+          ${!claimed&&!soldOut?`<button class="btn-redeem" data-id="${item.id}" data-name="${item.title||''}" data-cost="${cost}" data-emoji="${item.emoji||''}" ${canAfford?'':'disabled'}>${canAfford?'Redeem':'Need '+cost+' pts'}</button>`
             :claimed?`<span style="font-size:.72rem;color:rgba(155,127,166,.5)">Already redeemed</span>`
             :`<span style="font-size:.72rem;color:var(--red)">Sold out</span>`}`;
         body.appendChild(card);
@@ -1406,6 +1408,8 @@ async function loadRewards(){
     list.querySelectorAll('.btn-redeem:not(:disabled)').forEach(btn=>{
       btn.addEventListener('click',()=>{
         pendingRwdId=btn.dataset.id;
+        pendingRwdEmoji=btn.dataset.emoji||'';
+        pendingRwdCost=parseInt(btn.dataset.cost)||0;
         pendingRwdGiver='pepe';
         document.getElementById('modal-rwd-name').textContent=btn.dataset.name;
         const modalSub=document.getElementById('rdm-modal').querySelector('.modal-sub');
@@ -1426,12 +1430,31 @@ document.getElementById('modal-cancel').addEventListener('click',()=>{
 });
 document.getElementById('modal-confirm').addEventListener('click',async()=>{
   if(!pendingRwdId)return;
+  const rwdName=document.getElementById('modal-rwd-name').textContent;
+  const rwdEmoji=pendingRwdEmoji;
+  const rwdCost=pendingRwdCost;
   try{
     await apiFetch('/user/rewards/'+pendingRwdId+'/redeem',{method:'POST',body:JSON.stringify({giver:pendingRwdGiver})});
   }catch(e){}
   document.getElementById('rdm-modal').classList.remove('on');
   const d=document.getElementById('modal-details');if(d)d.style.display='';
-  loadRedemptions();show('redemptions');
+  pts=Math.max(0,pts-rwdCost);
+  document.getElementById('h-pts').textContent=pts+' pts';
+  document.getElementById('rwd-pts').textContent=pts+' pts';
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(13,10,18,.96);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;text-align:center;padding:2rem;opacity:0;transition:opacity .4s';
+  ov.innerHTML=
+    (rwdEmoji?'<div style="font-size:3.5rem">'+rwdEmoji+'</div>':'')+
+    '<div style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:1.8rem;color:var(--secondary)">'+rwdName+'</div>'+
+    '<div style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:1.2rem;color:var(--text)">'+rwdCost+' points burned</div>'+
+    '<div style="font-size:.8rem;color:rgba(244,239,230,.42);letter-spacing:.06em">'+pts+' points remaining</div>';
+  document.body.appendChild(ov);
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{ov.style.opacity='1';});});
+  let dismissed=false;
+  const dismiss=()=>{if(dismissed)return;dismissed=true;ov.style.opacity='0';setTimeout(()=>{ov.remove();loadRedemptions();show('redemptions');},400);};
+  ov.addEventListener('click',dismiss,{once:true});
+  setTimeout(dismiss,3000);
+  pendingRwdId=null;pendingRwdEmoji='';pendingRwdCost=0;
 });
 
 // Redemptions
