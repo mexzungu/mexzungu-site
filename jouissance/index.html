@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0D0A12">
 <meta name="apple-mobile-web-app-title" content="Jouissance">
 <link rel="manifest" href="/jouissance/manifest.json">
 <link rel="apple-touch-icon" href="/jouissance/icons/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="/jouissance/favicon.svg">
+<link rel="shortcut icon" href="/jouissance/favicon.svg">
 <title>jouissance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +18,8 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0D0A12;--text:#F4EFE6;--accent:#9B7FA6;--secondary:#C5873A;--border:#1E1829;--muted:rgba(244,239,230,.45)}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;font-size:18px;line-height:1.6;overflow:hidden}
-.screen{display:none;position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;flex-direction:column}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;font-size:clamp(16px,4.5vw,19px);line-height:1.6;overflow:hidden}
+.screen{display:none;position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
 .screen.active{display:flex}
 .container{max-width:480px;margin:0 auto;padding:2rem 1.5rem;width:100%;flex:1;display:flex;flex-direction:column}
 .center{align-items:center;justify-content:center;text-align:center}
