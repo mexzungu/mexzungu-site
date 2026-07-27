@@ -90,6 +90,43 @@ textarea:focus{border-color:var(--accent)}
 .nav-btn:hover{color:var(--text)}
 .nav-btn+.nav-btn{border-left:1px solid var(--border)}
 
+/* Daily Pepe message */
+.daily-msg-block{width:100%;text-align:center;padding:1.5rem 0 1rem;margin-bottom:1rem}
+.daily-msg-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:#f4efe6;line-height:1.55}
+.daily-msg-attr{font-family:'DM Sans',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-top:.55rem}
+
+/* Arc overlay */
+.arc-overlay{position:fixed;inset:0;background:rgba(13,10,18,.96);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity .6s}
+.arc-overlay.visible{opacity:1;pointer-events:all}
+.arc-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.4rem;color:#f4efe6;margin-bottom:.6rem}
+.arc-day{font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:1.5rem}
+.arc-copy{font-size:.92rem;color:rgba(244,239,230,.62);line-height:1.8;max-width:320px}
+
+/* Leaderboard screen */
+#leaderboard{overflow:hidden}
+.lb-body{flex:1;overflow-y:auto;padding:1.75rem 1.5rem;max-width:480px;margin:0 auto;width:100%}
+.lb-rank-number{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:5rem;color:var(--secondary);line-height:1;margin-bottom:.2rem}
+.lb-rank-of{font-size:.78rem;color:rgba(244,239,230,.38);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem}
+.lb-bar-track{width:100%;height:6px;background:rgba(155,127,166,.15);border-radius:3px;margin-bottom:2rem;overflow:hidden}
+.lb-bar-fill{height:100%;background:var(--secondary);border-radius:3px;transition:width .8s ease}
+.lb-section-label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1rem}
+.lb-dots{display:flex;gap:1.2rem;align-items:flex-end;margin-bottom:2rem}
+.lb-dot{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.lb-dot-circle{width:14px;height:14px;border-radius:50%;background:var(--accent);opacity:.5}
+.lb-dot-circle.top{opacity:1;background:var(--secondary)}
+.lb-dot-pts{font-size:.7rem;color:rgba(244,239,230,.38)}
+.lb-cohort-row{display:flex;justify-content:space-between;align-items:center;padding:.8rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.lb-cohort-rank{color:rgba(244,239,230,.38);font-size:.72rem;min-width:24px}
+.lb-cohort-pts{color:var(--secondary);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem}
+
+/* Messages section on home */
+.msg-section{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.msg-section-label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1rem}
+.msg-bubble{background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.75rem;font-size:.88rem;line-height:1.65;color:rgba(244,239,230,.82)}
+.msg-meta{font-size:.68rem;color:rgba(244,239,230,.28);margin-top:.4rem;letter-spacing:.06em}
+.msg-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--accent);border-radius:50%;display:none}
+.msg-dot.on{display:block}
+
 /* Screen header */
 .screen-header{display:flex;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem}
 .back-btn{background:none;border:none;color:rgba(244,239,230,.48);cursor:pointer;font-size:1.3rem;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
@@ -501,6 +538,15 @@ textarea:focus{border-color:var(--accent)}
     </div>
   </div>
   <div class="home-body">
+    <div id="h-personalization" style="padding:.5rem 0 1.25rem"></div>
+    <div id="h-daily-msg" class="daily-msg-block" style="display:none">
+      <div class="daily-msg-text" id="h-daily-msg-text"></div>
+      <div class="daily-msg-attr">Pepe</div>
+    </div>
+    <div id="h-msg-section" class="msg-section" style="display:none">
+      <div class="msg-section-label">From Agathe</div>
+      <div id="h-msg-list"></div>
+    </div>
     <div id="h-challenges-section" style="display:none">
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1.1rem">Today's Rituals</div>
       <div class="chal-card" id="h-chal-easy">
@@ -529,6 +575,33 @@ textarea:focus{border-color:var(--accent)}
     <button class="nav-btn" id="nav-modules">Practices</button>
     <button class="nav-btn" id="nav-mirror">Mirror</button>
     <button class="nav-btn" id="nav-rewards">Rewards</button>
+    <button class="nav-btn" id="nav-ranking" style="position:relative">Ranking<span class="msg-dot" id="msg-dot"></span></button>
+  </div>
+</div>
+
+<!-- Arc overlay -->
+<div class="arc-overlay" id="arc-overlay">
+  <div class="arc-label" id="arc-label"></div>
+  <div class="arc-day" id="arc-day"></div>
+  <div class="arc-copy" id="arc-copy"></div>
+</div>
+
+<!-- Leaderboard screen -->
+<div class="screen" id="leaderboard">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">Ranking</div>
+  </div>
+  <div class="lb-body">
+    <div id="lb-content">
+      <div class="lb-rank-number" id="lb-rank-num">--</div>
+      <div class="lb-rank-of" id="lb-rank-of">of -- women</div>
+      <div class="lb-bar-track"><div class="lb-bar-fill" id="lb-bar" style="width:0%"></div></div>
+      <div class="lb-section-label">Top 3</div>
+      <div class="lb-dots" id="lb-dots"></div>
+      <div class="lb-section-label" id="lb-cohort-label" style="display:none">Your Circle</div>
+      <div id="lb-cohort-list"></div>
+    </div>
   </div>
 </div>
 
@@ -597,7 +670,7 @@ textarea:focus{border-color:var(--accent)}
         <input type="file" id="md-fi-video" accept="video/*,image/*" style="display:none" capture="environment">
         <span class="media-label" id="md-media-lbl"></span>
       </div>
-      <button class="btn btn-primary mb2" id="md-complete" style="margin-top:1rem">Submit (+3 pts)</button>
+      <button class="btn btn-primary mb2" id="md-complete" style="margin-top:1rem">Offer (+3 pts)</button>
     </div>
     <div id="md-done-msg" style="display:none;color:rgba(244,239,230,.5);font-style:italic;padding:1rem 0;text-align:center">Received.</div>
   </div>
@@ -986,12 +1059,64 @@ async function loadHome(){
       document.getElementById('h-pts').textContent=pts+' pts';
       const d=m.presence_days||0;
       document.getElementById('h-presence').textContent=d>0?`You have been here for ${d} day${d!==1?'s':''}.`:'';
+      // Personalization block
+      const pBlock=document.getElementById('h-personalization');
+      if(pBlock){
+        const name=m.display_name||'';
+        const q4=(m.reg_q4||'').toLowerCase();
+        const q3=(m.reg_q3||'').trim();
+        const roleLine=q4.includes('receiver')?'You are here to receive.'
+          :q4.includes('giver')?'You are here to give.'
+          :q4.includes('fluid')?'You move between worlds.'
+          :'The discovery has already begun.';
+        const q3Truncated=q3.length>60?q3.substring(0,60)+'…':q3;
+        const streakVal=m.streak||0;
+        const streakHtml=streakVal===0
+          ?`<div style="margin-top:.5rem"><span style="font-size:.82rem;color:var(--muted)">${streakVal} day streak</span><div style="font-size:.75rem;color:rgba(244,239,230,.28);margin-top:.2rem;font-style:italic">Day one is the hardest. You are already here.</div></div>`
+          :`<div style="margin-top:.5rem;font-size:.82rem;color:var(--muted)">${streakVal} day streak</div>`;
+        pBlock.innerHTML=`<h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;font-weight:400;margin-bottom:.4rem;color:var(--text)">${name}</h2>`
+          +`<p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;color:rgba(244,239,230,.6);margin-bottom:.3rem">${roleLine}</p>`
+          +(q3Truncated?`<p style="font-family:'DM Sans',sans-serif;font-size:.8rem;color:rgba(244,239,230,.4);margin-bottom:.2rem">You came here for: ${q3Truncated}</p>`:'')
+          +streakHtml;
+      }
     }
     if(cr.ok){
       const data=await cr.json();
       challengesAll=data.challenges||{};
       const completedToday=data.completed_today||false;
       const completedTodayDiff=data.completed_today_difficulty||null;
+      // Daily Pepe message
+      const dmBlock=document.getElementById('h-daily-msg');
+      if(data.daily_message){
+        document.getElementById('h-daily-msg-text').textContent=data.daily_message;
+        dmBlock.style.display='block';
+      } else {
+        dmBlock.style.display='none';
+      }
+      // Arc overlay (show once per date)
+      if(data.arc_marker){
+        const today=new Date().toISOString().slice(0,10);
+        const arcKey='jouissance_arc_'+today;
+        if(!localStorage.getItem(arcKey)){
+          localStorage.setItem(arcKey,'1');
+          const labels={opening:'The Door Opens',deepening:'The Practice Deepens',midpoint:'The Centre of the Labyrinth',threshold:'The Threshold',closing:'The Closing'};
+          const copies={
+            opening:'You are stepping into something real. The door is open.',
+            deepening:'Each day is a layer. You are going deeper.',
+            midpoint:'You are at the centre. Most people leave at this point. You are still here.',
+            threshold:'You are at the edge of what you knew. This is exactly where you should be.',
+            closing:'Tomorrow you step into what you have been preparing for. Tonight, rest in what you have already become.'
+          };
+          const dayNum=Math.min(14,Math.max(1,Math.floor((new Date(today)-new Date('2026-08-01'))/(864e5))+1));
+          document.getElementById('arc-label').textContent=labels[data.arc_marker]||data.arc_marker;
+          document.getElementById('arc-day').textContent='Day '+dayNum+' of 14';
+          document.getElementById('arc-copy').textContent=copies[data.arc_marker]||'';
+          const ov=document.getElementById('arc-overlay');
+          setTimeout(()=>ov.classList.add('visible'),400);
+          setTimeout(()=>ov.classList.remove('visible'),4400);
+          ov.addEventListener('click',()=>ov.classList.remove('visible'),{once:true});
+        }
+      }
       const section=document.getElementById('h-challenges-section');
       const hasAny=Object.keys(challengesAll).length>0;
       section.style.display=hasAny?'block':'none';
@@ -1019,6 +1144,55 @@ async function loadHome(){
       const b=await br.json();
       const items=Array.isArray(b)?b:(b.broadcasts||[]);
       document.getElementById('bell-dot').classList.toggle('on',items.length>0);
+    }
+    // Participant messages
+    try{
+      const mr2=await apiFetch('/my/messages');
+      if(mr2.ok){
+        const md=await mr2.json();
+        const msgs=md.messages||[];
+        const unread=md.unread_count||0;
+        document.getElementById('msg-dot').classList.toggle('on',unread>0);
+        const msgSection=document.getElementById('h-msg-section');
+        const msgList=document.getElementById('h-msg-list');
+        if(msgs.length>0){
+          msgSection.style.display='block';
+          msgList.innerHTML=msgs.map(m=>{
+            const d=new Date(m.sent_at+'Z');
+            const label=d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+            return `<div class="msg-bubble">${m.message}<div class="msg-meta">${label}</div></div>`;
+          }).join('');
+        } else {
+          msgSection.style.display='none';
+        }
+      }
+    }catch(e){}
+  }catch(e){}
+}
+
+async function loadLeaderboard(){
+  try{
+    const [lr,cr]=await Promise.all([apiFetch('/leaderboard'),apiFetch('/leaderboard/cohort')]);
+    if(lr.ok){
+      const d=await lr.json();
+      document.getElementById('lb-rank-num').textContent='#'+d.my_rank;
+      document.getElementById('lb-rank-of').textContent='of '+d.total_participants+' women';
+      document.getElementById('lb-bar').style.width=(d.percentile||0)+'%';
+      const top3=d.top_3_points||[];
+      document.getElementById('lb-dots').innerHTML=top3.map((p,i)=>`<div class="lb-dot"><div class="lb-dot-circle${i===0?' top':''}"></div><div class="lb-dot-pts">${p} pts</div></div>`).join('');
+    }
+    if(cr.ok){
+      const cd=await cr.json();
+      const members=cd.members||[];
+      const lbl=document.getElementById('lb-cohort-label');
+      const list=document.getElementById('lb-cohort-list');
+      if(members.length>0){
+        lbl.style.display='block';
+        list.innerHTML=members.map(m=>`<div class="lb-cohort-row"><span class="lb-cohort-rank">#${m.rank}</span><span>${m.display_name}</span><span class="lb-cohort-pts">${m.points} pts</span></div>`).join('');
+      } else {
+        lbl.style.display='none';
+        list.innerHTML='';
+      }
     }
   }catch(e){}
 }
@@ -1096,6 +1270,16 @@ document.getElementById('ct-submit').addEventListener('click',async()=>{
       document.getElementById('surprise-box').classList.remove('on');
     }
     show('challenge-complete');
+    // Completion ritual overlay
+    const RITUAL_LINES=['Noted.','It is held.','You showed up.','This counts.','Remembered.'];
+    const ritualLine=RITUAL_LINES[new Date().getDate()%5];
+    const ptsText=isSurprise?'+'+(ptsAwarded+10):'+'+ptsAwarded;
+    const ov=document.createElement('div');
+    ov.style.cssText='position:fixed;inset:0;background:rgba(13,11,10,0.97);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;opacity:1;transition:opacity 0.6s ease';
+    ov.innerHTML='<div style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:3.5rem;color:#C5873A">'+ptsText+'</div>'
+      +'<div style="font-family:\'DM Sans\',sans-serif;font-size:1rem;color:#F4EFE6;letter-spacing:.08em">'+ritualLine+'</div>';
+    document.body.appendChild(ov);
+    setTimeout(()=>{ov.style.opacity='0';setTimeout(()=>{if(ov.parentNode)ov.remove();},600);},2500);
   }catch(e){btn.disabled=false;btn.textContent='Send'}
 });
 document.getElementById('cc-back').addEventListener('click',()=>{loadHome();show('home')});
@@ -1168,13 +1352,14 @@ async function loadRewards(){
   try{const r=await apiFetch('/auth/me');if(r.ok){const d=await r.json();pts=d.points||pts}}catch(e){}
   document.getElementById('rwd-pts').textContent=pts+' pts';
   const list=document.getElementById('rwd-list');
-  list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1rem 0">Loading...</div>';
+  list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1rem 0">...</div>';
   try{
     const r=await apiFetch('/user/rewards');
     if(!r.ok){list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic">Could not load rewards.</div>';return;}
     const d=await r.json();
     const rewards=d.rewards||[];
     list.innerHTML='';
+    if(!rewards.length){list.innerHTML='<div style="color:rgba(244,239,230,.38);font-style:italic;padding:1.5rem 0">Your points are building. Something is waiting.</div>';return;}
     const grouped={};
     rewards.forEach(item=>{
       const cat=item.category||'other';
