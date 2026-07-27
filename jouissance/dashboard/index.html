@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jouissance — facilitator dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0D0A12;
+    --surface: #13101A;
+    --surface2: #1A1625;
+    --text: #F4EFE6;
+    --muted: #9A8FA0;
+    --gold: #C5873A;
+    --border: #1E1829;
+    --green: #5A8A6A;
+    --red: #A05060;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ── AUTH ── */
+  #auth-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 16px;
+    padding: 32px;
+  }
+  .auth-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 40px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .auth-subtitle {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .auth-field {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 13px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    width: 320px;
+    max-width: 100%;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+  .auth-field:focus { border-color: var(--gold); }
+  .auth-btn {
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 320px;
+    max-width: 100%;
+    border-radius: 2px;
+    margin-top: 4px;
+    transition: opacity 0.2s;
+  }
+  .auth-btn:hover { opacity: 0.85; }
+  .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #auth-error {
+    color: var(--red);
+    font-size: 12px;
+    display: none;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  /* ── DASHBOARD ── */
+  #main { display: none; }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .h-left { display: flex; align-items: center; gap: 20px; }
+  .h-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .h-role {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-left: 1px solid var(--border);
+    padding-left: 20px;
+  }
+  .h-right { display: flex; align-items: center; gap: 16px; }
+  .h-email { font-size: 12px; color: var(--muted); }
+  .btn-hdr {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .btn-hdr:hover { border-color: var(--gold); color: var(--text); }
+
+  .page { max-width: 1200px; margin: 0 auto; padding: 36px 32px 64px; }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 44px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 22px 24px;
+    border-radius: 2px;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-lbl {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 52px; }
+  .section-hd {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .section-hd .badge {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--bg);
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  /* ── TABLES ── */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th.sortable { cursor: pointer; user-select: none; }
+  thead th.sortable:hover { color: var(--text); }
+  thead th.sorted-asc::after  { content: ' ↑'; color: var(--gold); }
+  thead th.sorted-desc::after { content: ' ↓'; color: var(--gold); }
+  tbody td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background 0.15s; }
+  tbody tr:hover { background: rgba(255,255,255,0.018); }
+  tbody tr.fading { opacity: 0; transition: opacity 0.5s; }
+
+  .emoji-cell { font-size: 20px; line-height: 1; }
+  .gold { color: var(--gold); }
+  .muted { color: var(--muted); }
+  .pts-val { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 20px; }
+  .streak-val { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 18px; }
+
+  .btn-done {
+    background: none;
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: 5px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .btn-done:hover { background: var(--green); color: var(--bg); }
+  .btn-done:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .empty {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+  }
+  .loading {
+    text-align: center;
+    padding: 32px;
+    color: var(--muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+  }
+
+  #toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 20px;
+    font-size: 13px;
+    border-radius: 2px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  #toast.show      { opacity: 1; }
+  #toast.show.ok   { border-color: var(--green); }
+  #toast.show.err  { border-color: var(--red); }
+
+  @media (max-width: 780px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 0 16px; }
+    .h-role { display: none; }
+    .page { padding: 20px 16px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── AUTH ── -->
+<div id="auth-screen">
+  <div class="auth-wordmark">jouissance</div>
+  <div class="auth-subtitle">Facilitator Dashboard</div>
+  <input class="auth-field" type="email" id="login-email" placeholder="facilitator email" autocomplete="email">
+  <input class="auth-field" type="password" id="login-pass" placeholder="password" autocomplete="current-password">
+  <button class="auth-btn" id="login-btn" onclick="doLogin()">Enter</button>
+  <div id="auth-error"></div>
+</div>
+
+<!-- ── MAIN ── -->
+<div id="main">
+  <header>
+    <div class="h-left">
+      <div class="h-wordmark">jouissance</div>
+      <div class="h-role">Facilitator Dashboard</div>
+    </div>
+    <div class="h-right">
+      <span class="h-email" id="h-email"></span>
+      <button class="btn-hdr" onclick="loadAll()">↻ Refresh</button>
+      <button class="btn-hdr" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-num" id="s-users">-</div>
+        <div class="stat-lbl">Participants</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="s-comp">-</div>
+        <div class="stat-lbl">Completions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="s-pts">-</div>
+        <div class="stat-lbl">Points Earned</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="s-pend">-</div>
+        <div class="stat-lbl">Pending Redemptions</div>
+      </div>
+    </div>
+
+    <!-- Pending Redemptions -->
+    <div class="section">
+      <div class="section-hd">
+        Pending redemptions
+        <span class="badge" id="rd-badge" style="display:none"></span>
+      </div>
+      <div class="tbl-wrap" id="rd-wrap">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Participants -->
+    <div class="section">
+      <div class="section-hd">Participants</div>
+      <div class="tbl-wrap" id="pp-wrap">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ? 'http://127.0.0.1:8746'
+  : 'https://safetofeel.me/api';
+
+let token = localStorage.getItem('j_dash_token') || '';
+let redemptions = [];
+let participants = [];
+let sortCol = 'points';
+let sortDir = 'desc';
+
+function parseJwt(t) {
+  try { return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); }
+  catch { return null; }
+}
+
+async function api(path, opts = {}) {
+  const h = { 'Content-Type': 'application/json' };
+  if (token) h['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(API_BASE + '/jouissance' + path, { headers: h, ...opts });
+  if (res.status === 401) { logout(); return null; }
+  return res;
+}
+
+// ── Auth ──
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('auth-error');
+  const btn   = document.getElementById('login-btn');
+
+  errEl.style.display = 'none';
+  if (!email || !pass) { setAuthErr('Email and password required.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Entering...';
+
+  try {
+    const res = await fetch(API_BASE + '/jouissance/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: email, password: pass })
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      setAuthErr(data.detail || data.message || 'Login failed (' + res.status + ').');
+      return;
+    }
+
+    const t = data.access_token || data.token;
+    if (!t) { setAuthErr('No token in response.'); return; }
+
+    token = t;
+    localStorage.setItem('j_dash_token', token);
+    boot();
+  } catch (e) {
+    setAuthErr('Network error: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enter';
+  }
+}
+
+function setAuthErr(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function logout() {
+  localStorage.removeItem('j_dash_token');
+  token = '';
+  document.getElementById('main').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+}
+
+function boot() {
+  const p = parseJwt(token);
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('main').style.display = 'block';
+  document.getElementById('h-email').textContent = p?.sub || p?.email || '';
+  loadAll();
+}
+
+async function loadAll() {
+  await Promise.all([loadStats(), loadRedemptions(), loadParticipants()]);
+}
+
+// ── Stats ──
+async function loadStats() {
+  const res = await api('/facilitator/stats');
+  if (!res || !res.ok) return;
+  const d = await res.json();
+  document.getElementById('s-users').textContent = fmt(d.total_users);
+  document.getElementById('s-comp').textContent  = fmt(d.total_completions);
+  document.getElementById('s-pts').textContent   = fmt(d.total_points_earned);
+  document.getElementById('s-pend').textContent  = fmt(d.pending_redemptions);
+}
+
+// ── Redemptions ──
+async function loadRedemptions() {
+  const wrap = document.getElementById('rd-wrap');
+  const res = await api('/facilitator/redemptions');
+  if (!res || !res.ok) { wrap.innerHTML = '<div class="empty">Could not load redemptions.</div>'; return; }
+  const data = await res.json();
+  redemptions = Array.isArray(data) ? data : (data.redemptions || []);
+  renderRedemptions();
+}
+
+function renderRedemptions() {
+  const wrap  = document.getElementById('rd-wrap');
+  const badge = document.getElementById('rd-badge');
+  const pending = redemptions.filter(r => !r.fulfilled);
+
+  badge.textContent    = pending.length;
+  badge.style.display  = pending.length ? 'inline-block' : 'none';
+
+  if (!pending.length) {
+    wrap.innerHTML = '<div class="empty">All clear — no pending redemptions.</div>';
+    return;
+  }
+
+  wrap.innerHTML = `<table>
+    <thead><tr>
+      <th style="width:42px"></th>
+      <th>Reward</th>
+      <th>Participant</th>
+      <th>Cost</th>
+      <th>Requested</th>
+      <th></th>
+    </tr></thead>
+    <tbody>${pending.map(rdRow).join('')}</tbody>
+  </table>`;
+}
+
+function rdRow(r) {
+  return `<tr id="rd-${r.id}">
+    <td class="emoji-cell">${esc(r.emoji || '')}</td>
+    <td class="gold">${esc(r.title || '')}</td>
+    <td class="muted">${esc(r.email || '')}</td>
+    <td class="muted">${r.cost != null ? r.cost + ' pts' : ''}</td>
+    <td class="muted" style="font-size:12px">${fmtDate(r.redeemed_at)}</td>
+    <td><button class="btn-done" id="btn-${r.id}" onclick="fulfill(${r.id})">Mark Done</button></td>
+  </tr>`;
+}
+
+async function fulfill(id) {
+  const btn = document.getElementById('btn-' + id);
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  const res = await api('/admin/redemptions/' + id + '/fulfill', {
+    method: 'POST',
+    body: JSON.stringify({ notes: '' })
+  });
+
+  if (!res || !res.ok) {
+    btn.disabled = false;
+    btn.textContent = 'Mark Done';
+    toast('Failed to fulfill.', 'err');
+    return;
+  }
+
+  const row = document.getElementById('rd-' + id);
+  if (row) { row.classList.add('fading'); }
+  setTimeout(() => {
+    redemptions = redemptions.map(r => r.id === id ? { ...r, fulfilled: true } : r);
+    renderRedemptions();
+    loadStats();
+  }, 520);
+
+  toast('Marked as done.', 'ok');
+}
+
+// ── Participants ──
+async function loadParticipants() {
+  const wrap = document.getElementById('pp-wrap');
+  const res = await api('/facilitator/participants');
+  if (!res || !res.ok) { wrap.innerHTML = '<div class="empty">Could not load participants.</div>'; return; }
+  const data = await res.json();
+  participants = Array.isArray(data) ? data : (data.participants || []);
+  renderParticipants();
+}
+
+function renderParticipants() {
+  const wrap = document.getElementById('pp-wrap');
+  if (!participants.length) {
+    wrap.innerHTML = '<div class="empty">No participants yet.</div>';
+    return;
+  }
+
+  const sorted = [...participants].sort((a, b) => {
+    let av = a[sortCol] ?? (typeof a[sortCol] === 'number' ? 0 : '');
+    let bv = b[sortCol] ?? (typeof b[sortCol] === 'number' ? 0 : '');
+    if (typeof av === 'string') av = av.toLowerCase();
+    if (typeof bv === 'string') bv = bv.toLowerCase();
+    if (av < bv) return sortDir === 'asc' ? -1 : 1;
+    if (av > bv) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  function th(key, label) {
+    let cls = 'sortable';
+    if (sortCol === key) cls += ' sorted-' + sortDir;
+    return `<th class="${cls}" onclick="sortBy('${key}')">${label}</th>`;
+  }
+
+  wrap.innerHTML = `<table>
+    <thead><tr>
+      ${th('name', 'Name')}
+      ${th('cohort_name', 'Cohort')}
+      ${th('points', 'Points')}
+      ${th('streak', 'Streak')}
+      ${th('last_active', 'Last Active')}
+    </tr></thead>
+    <tbody>${sorted.map(ppRow).join('')}</tbody>
+  </table>`;
+}
+
+function ppRow(p) {
+  const streak = p.streak ?? 0;
+  return `<tr>
+    <td>${esc(p.name || p.email || 'Unknown')}</td>
+    <td class="muted">${esc(p.cohort_name || '-')}</td>
+    <td><span class="pts-val">${p.points ?? 0}</span></td>
+    <td><span class="streak-val">${streak}</span> <span class="muted" style="font-size:11px">day${streak !== 1 ? 's' : ''}</span></td>
+    <td class="muted" style="font-size:12px">${fmtDate(p.last_active) || '-'}</td>
+  </tr>`;
+}
+
+function sortBy(col) {
+  if (sortCol === col) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortCol = col;
+    sortDir = (col === 'points' || col === 'streak') ? 'desc' : 'asc';
+  }
+  renderParticipants();
+}
+
+// ── Utils ──
+function esc(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmt(v) {
+  if (v == null) return '-';
+  return typeof v === 'number' ? v.toLocaleString() : String(v);
+}
+function fmtDate(iso) {
+  if (!iso) return '';
+  try { return new Date(iso).toLocaleDateString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }); }
+  catch { return String(iso); }
+}
+
+let toastTimer;
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = ''; }, 3200);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('auth-screen').style.display !== 'none') doLogin();
+});
+
+// Auto-login if stored token is still valid
+(function () {
+  if (!token) return;
+  const p = parseJwt(token);
+  if (!p) { localStorage.removeItem('j_dash_token'); return; }
+  if (p.exp && p.exp < Date.now() / 1000) { localStorage.removeItem('j_dash_token'); return; }
+  boot();
+})();
+</script>
+</body>
+</html>
