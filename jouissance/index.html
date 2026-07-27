@@ -1747,17 +1747,18 @@ function renderKyTest(id,body){
     // All answered, compute and show result
     const answers=t._q.map((_,i)=>kyAnswers[id][i]);
     const result=t.score(answers);
-    body.innerHTML=`<div class="ky-result">${t.render(result)}</div><button class="ky-submit-btn" onclick="kySubmit('${id}',${JSON.stringify(result).replace(/'/g,"\\'")})" style="margin-top:.85rem">Save result</button>`;
+    body.innerHTML=`<div class="ky-result">${t.render(result)}</div><button class="ky-submit-btn" onclick="kySubmit('${id}')" style="margin-top:.85rem">Save result</button>`;
     return;
   }
   const q=t._q[qIdx];
   body.innerHTML=`<div class="ky-progress">Question ${qIdx+1} of ${t._q.length}</div>
     <div class="ky-question">${q.q}</div>
-    <div class="ky-options">${q.a.map((opt,i)=>`<button class="ky-opt" onclick="kyAnswer('${id}',${qIdx},${JSON.stringify(opt[1])})">${opt[0]}</button>`).join('')}</div>`;
+    <div class="ky-options">${q.a.map((opt,i)=>`<button class="ky-opt" onclick="kyAnswer('${id}',${qIdx},${i})">${opt[0]}</button>`).join('')}</div>`;
 }
 
-function kyAnswer(id,qIdx,val){
-  kyAnswers[id][qIdx]=val;
+function kyAnswer(id,qIdx,optIdx){
+  const t=KY_TESTS.find(x=>x.id===id);
+  kyAnswers[id][qIdx]=t._q[qIdx].a[optIdx][1];
   const body=document.getElementById('kyb-'+id);
   if(body)renderKyTest(id,body);
 }
@@ -1796,13 +1797,15 @@ async function kySubmitMap(id){
   body.innerHTML=`<div class="ky-result"><div class="ky-result-label">Saved.</div><p class="ky-result-interp">${selected.length?'Your activation points: '+selected.map(s=>{const t2=KY_TESTS.find(x=>x.id===id);const c=t2.cats.find(x=>x.id===s);return c?c.l:s}).join(', ')+'.':"Select at least one to build your map."}</p></div>`;
 }
 
-async function kySubmit(id,result){
+async function kySubmit(id){
+  const t=KY_TESTS.find(x=>x.id===id);
+  const answers=t._q.map((_,i)=>kyAnswers[id]?kyAnswers[id][i]:undefined);
+  const result=t.score(answers);
   await kySaveToApi(id,result);
   kyResults[id]=result;
   renderKyTests();
   const body=document.getElementById('kyb-'+id);
   if(body){
-    const t=KY_TESTS.find(x=>x.id===id);
     body.classList.add('open');
     body.innerHTML=`<div class="ky-result">${t.render(result)}</div>`;
   }
