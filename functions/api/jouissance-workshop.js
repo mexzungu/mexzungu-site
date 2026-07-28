@@ -1,5 +1,5 @@
 /**
- * Cloudflare Pages Function. Pleasure Workshop data persistence proxy
+ * Cloudflare Pages Function. Jouissance Workshop data persistence proxy
  * POST /api/pleasure-workshop { ...carte_data } → save participant submission to VPS
  * GET  /api/pleasure-workshop                   → return all submissions (facilitator)
  *
@@ -17,7 +17,7 @@ const CORS = {
 
 export async function onRequestGet() {
   try {
-    const res  = await fetch(`${VPS}/pleasure-workshop/responses`);
+    const res  = await fetch(`${VPS}/jouissance-workshop/responses`);
     const data = await res.json();
     return new Response(JSON.stringify(data), { status: 200, headers: CORS });
   } catch (err) {
@@ -28,7 +28,7 @@ export async function onRequestGet() {
 export async function onRequestPost(context) {
   try {
     const body = await context.request.json();
-    const res  = await fetch(`${VPS}/pleasure-workshop/submit`, {
+    const res  = await fetch(`${VPS}/jouissance-workshop/submit`, {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
       body:    JSON.stringify(body),
