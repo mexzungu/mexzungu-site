@@ -283,6 +283,30 @@ textarea:focus{border-color:var(--accent)}
 .ky-chip{background:transparent;border:1px solid var(--border);border-radius:20px;color:rgba(244,239,230,.5);font-family:'DM Sans',sans-serif;font-size:.76rem;padding:.3rem .8rem;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
 .ky-chip.sel{border-color:var(--accent);background:rgba(155,127,166,.1);color:var(--text)}
 
+/* WhatsApp support btn */
+.wa-support-btn{background:none;border:none;color:rgba(244,239,230,.38);cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;transition:color .3s;text-decoration:none;padding:.5rem}
+.wa-support-btn:hover{color:#E14B87}
+.wa-support-btn svg{width:24px;height:24px}
+
+/* Day-before checklist */
+.checklist-block{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.checklist-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;margin-bottom:.5rem}
+.checklist-unlock-label{font-size:.72rem;color:rgba(244,239,230,.38);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.checklist-items{list-style:none;padding:0;margin:0}
+.checklist-item{display:flex;align-items:flex-start;gap:.75rem;padding:.65rem 0;border-bottom:1px solid rgba(155,127,166,.1)}
+.checklist-item:last-child{border-bottom:none}
+.checklist-item input[type=checkbox]{width:18px;height:18px;min-width:18px;accent-color:var(--accent);cursor:pointer;margin-top:3px}
+.checklist-item label{font-size:.9rem;color:rgba(244,239,230,.8);cursor:pointer;line-height:1.5}
+.checklist-item.locked label{color:rgba(244,239,230,.32);cursor:default}
+.checklist-unlocked-banner{margin-bottom:1rem;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;color:var(--accent);text-align:center;padding:.6rem 1rem;background:rgba(155,127,166,.07);border:1px solid rgba(155,127,166,.2);border-radius:4px}
+
+/* Notification prompt */
+.notif-prompt{background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.18);border-radius:6px;padding:.85rem 1rem;margin-top:1rem;display:flex;align-items:center;gap:.75rem}
+.notif-prompt-text{flex:1;font-size:.8rem;color:rgba(244,239,230,.58);line-height:1.45}
+.notif-prompt-btns{display:flex;gap:.5rem;flex-shrink:0}
+.notif-prompt-btn{background:none;border:1px solid rgba(155,127,166,.28);border-radius:4px;color:rgba(244,239,230,.5);font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.06em;padding:.35rem .65rem;cursor:pointer;transition:border-color .2s,color .2s;white-space:nowrap;min-height:32px}
+.notif-prompt-btn:hover{border-color:var(--accent);color:var(--accent)}
+
 /* PWA install banner */
 #pwa-banner{position:fixed;bottom:0;left:0;right:0;background:rgba(21,15,30,.98);border-top:1px solid rgba(155,127,166,.22);padding:.9rem 1.5rem;display:none;z-index:250;align-items:center;gap:.9rem}
 #pwa-banner.show{display:flex}
@@ -574,6 +598,7 @@ textarea:focus{border-color:var(--accent)}
     <div class="wordmark" style="opacity:1">jouissance</div>
     <div class="header-right">
       <div class="pts-display" id="h-pts">0 pts</div>
+      <a href="https://wa.me/13477700838?text=Hola%2C+tengo+una+pregunta+sobre+la+app+de+Jouissance" target="_blank" rel="noopener" class="wa-support-btn" aria-label="Speak to Janis"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
       <button class="bell-btn" id="bell-btn">&#9651;<span class="bell-dot" id="bell-dot"></span></button>
     </div>
   </div>
@@ -610,6 +635,13 @@ textarea:focus{border-color:var(--accent)}
     </div>
     <div class="no-chal" id="h-no-chal" style="display:none">Your space is waiting for you.</div>
     <div class="presence-line" id="h-presence"></div>
+    <div id="notif-prompt" class="notif-prompt" style="display:none">
+      <div class="notif-prompt-text">Get a reminder when the August 13 checklist unlocks.</div>
+      <div class="notif-prompt-btns">
+        <button class="notif-prompt-btn" onclick="notifAllow()">Allow</button>
+        <button class="notif-prompt-btn" onclick="notifSkip()">Skip</button>
+      </div>
+    </div>
     <div id="workshop-countdown" style="margin-top:1.25rem;padding:.85rem 1rem;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;text-align:center;cursor:pointer" onclick="show('workshop')">
       <div id="wc-label" style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:.3rem">The Workshop</div>
       <div id="wc-value" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--secondary)">Loading...</div>
@@ -945,6 +977,18 @@ textarea:focus{border-color:var(--accent)}
             <div class="faq-a">No. The only thing required is willingness.</div>
           </div>
         </div>
+      </div>
+      <!-- Day-before checklist -->
+      <div class="checklist-block" id="aug13-checklist">
+        <div class="checklist-title" id="cl-title">&#128274; August 14. Final Preparation</div>
+        <div class="checklist-unlock-label" id="cl-unlock-label">Unlocks August 13 at 10pm</div>
+        <ul class="checklist-items" id="cl-items">
+          <li class="checklist-item locked"><label>I know where I am going (address confirmed)</label></li>
+          <li class="checklist-item locked"><label>My yoga mat is ready to bring</label></li>
+          <li class="checklist-item locked"><label>I have something beautiful to wear underneath</label></li>
+          <li class="checklist-item locked"><label>I have done today&#x2019;s practice</label></li>
+          <li class="checklist-item locked"><label>I am arriving open</label></li>
+        </ul>
       </div>
     </div>
     <div id="ws-today" style="display:none">
@@ -1431,6 +1475,7 @@ async function loadHome(){
         }
       }
     }catch(e){}
+    showNotifPrompt();
   }catch(e){}
 }
 
@@ -2211,6 +2256,87 @@ document.getElementById('pwa-dismiss').addEventListener('click',()=>{
   document.getElementById('pwa-banner').classList.remove('show');
   localStorage.setItem('pwa_dismissed','1');
 });
+
+// ---- DAY-BEFORE CHECKLIST ----
+const CL_ITEMS=[
+  'I know where I am going (address confirmed)',
+  'My yoga mat is ready to bring',
+  'I have something beautiful to wear underneath',
+  'I have done today’s practice',
+  'I am arriving open'
+];
+const CL_UNLOCK=new Date(Date.UTC(2026,7,13,20,0,0)); // Aug 13 22:00 CEST = 20:00 UTC
+const CL_KEY='jouissance_checklist_aug13';
+
+function renderChecklist(){
+  const unlocked=new Date()>=CL_UNLOCK;
+  const title=document.getElementById('cl-title');
+  const label=document.getElementById('cl-unlock-label');
+  const container=document.getElementById('cl-items');
+  if(!title||!container)return;
+  if(unlocked){
+    title.textContent='August 14. Final Preparation';
+    label.style.display='none';
+    let banner=document.getElementById('cl-unlock-banner');
+    if(!banner){
+      banner=document.createElement('div');
+      banner.id='cl-unlock-banner';
+      banner.className='checklist-unlocked-banner';
+      banner.textContent='Your evening starts tomorrow. You are ready.';
+      container.parentNode.insertBefore(banner,container);
+    }
+    const saved=JSON.parse(localStorage.getItem(CL_KEY)||'[]');
+    container.innerHTML=CL_ITEMS.map((item,i)=>`<li class="checklist-item"><input type="checkbox" id="cl-${i}"${saved.includes(i)?' checked':''}onchange="clToggle(${i})"><label for="cl-${i}">${item}</label></li>`).join('');
+  } else {
+    title.textContent='🔒 August 14. Final Preparation';
+    label.style.display='';
+    container.innerHTML=CL_ITEMS.map(item=>`<li class="checklist-item locked"><label>${item}</label></li>`).join('');
+  }
+}
+
+function clToggle(idx){
+  const saved=JSON.parse(localStorage.getItem(CL_KEY)||'[]');
+  const pos=saved.indexOf(idx);
+  if(pos===-1)saved.push(idx);else saved.splice(pos,1);
+  localStorage.setItem(CL_KEY,JSON.stringify(saved));
+}
+
+renderChecklist();
+setInterval(renderChecklist,60000);
+
+// ---- NOTIFICATION PROMPT ----
+function showNotifPrompt(){
+  if(!('Notification' in window))return;
+  if(Notification.permission!=='default')return;
+  if(localStorage.getItem('jouissance_notif_prompted'))return;
+  const el=document.getElementById('notif-prompt');
+  if(el)el.style.display='flex';
+}
+
+function notifAllow(){
+  localStorage.setItem('jouissance_notif_prompted','1');
+  const el=document.getElementById('notif-prompt');
+  if(el)el.style.display='none';
+  Notification.requestPermission().then(perm=>{
+    if(perm==='granted'){
+      const ms=CL_UNLOCK.getTime()-Date.now();
+      if(ms>0){
+        setTimeout(()=>{
+          new Notification('Jouissance',{
+            body:'Your evening starts tomorrow. The August 13 checklist is now unlocked.',
+            icon:'/jouissance/icons/icon-192.png'
+          });
+        },ms);
+      }
+    }
+  });
+}
+
+function notifSkip(){
+  localStorage.setItem('jouissance_notif_prompted','1');
+  const el=document.getElementById('notif-prompt');
+  if(el)el.style.display='none';
+}
 
 boot();
 
