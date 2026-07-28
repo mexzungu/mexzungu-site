@@ -326,10 +326,19 @@ textarea:focus{border-color:var(--accent)}
     </div>
 
     <div id="auth-register" style="width:100%;display:flex;flex-direction:column;gap:0.75rem">
-      <input type="text" id="reg-name" placeholder="your name" autocomplete="name">
-      <input type="email" id="reg-email" placeholder="email" autocomplete="email">
-      <input type="password" id="reg-pass" placeholder="password (min 8 chars)" autocomplete="new-password">
-      <button class="btn btn-primary" id="reg-submit">Continue</button>
+      <!-- Step 1: code gate -->
+      <div id="reg-code-step" style="display:flex;flex-direction:column;gap:0.75rem">
+        <div style="font-size:0.78rem;letter-spacing:.1em;color:var(--muted);text-align:center;text-transform:uppercase">Enter your personal access code</div>
+        <input type="text" id="reg-code" placeholder="your code" autocomplete="off" style="text-align:center;letter-spacing:.12em;text-transform:uppercase">
+        <button class="btn btn-primary" id="reg-code-submit">Verify code</button>
+      </div>
+      <!-- Step 2: data collection (hidden until code verified) -->
+      <div id="reg-data-step" style="display:none;flex-direction:column;gap:0.75rem">
+        <input type="text" id="reg-name" placeholder="your name" autocomplete="name">
+        <input type="email" id="reg-email" placeholder="email" autocomplete="email">
+        <input type="password" id="reg-pass" placeholder="password (min 8 chars)" autocomplete="new-password">
+        <button class="btn btn-primary" id="reg-submit">Continue</button>
+      </div>
     </div>
 
     <div id="auth-login" style="width:100%;display:none;flex-direction:column;gap:0.75rem">
@@ -891,10 +900,52 @@ textarea:focus{border-color:var(--accent)}
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">What to Expect</div>
       <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:1.25rem">A 4-hour immersive experience in somatic and sexual awareness. You will be in a small group of women who have done the same 14 days of preparation you are doing now. What happens in the room depends on what you bring into it.</p>
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">How to Prepare</div>
-      <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:1.25rem">Complete your daily rituals. Do the Know Yourself tests. Write honestly in your profile. The more you bring to the app, the more you will bring to the room. Logistics details will arrive by August 10.</p>
+      <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:1.25rem">Complete your daily rituals. Do the Know Yourself tests. Write honestly in your profile. The more you bring to the app, the more you will bring to the room.</p>
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">How to Arrive</div>
-      <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:2rem">Come rested. Come without an agenda. Bring a journal. Wear something that feels like you. Leave your performance at the door.</p>
+      <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:2rem">Come rested. Come without an agenda. Wear something beautiful underneath and something comfortable on top. Bring your yoga mat. Leave your performance at the door.</p>
       <button class="btn btn-primary" onclick="show('home')" style="max-width:280px">Go to Today's Rituals</button>
+      <div style="margin-top:2rem">
+        <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">FAQ</div>
+        <div id="ws-faq">
+          <style>
+            .faq-item{border-bottom:1px solid rgba(155,127,166,.12)}
+            .faq-q{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;cursor:pointer;gap:1rem}
+            .faq-q-text{font-size:.88rem;color:rgba(244,239,230,.82);line-height:1.5}
+            .faq-toggle{font-size:1rem;color:rgba(155,127,166,.7);flex-shrink:0;transition:transform .2s;user-select:none}
+            .faq-a{font-size:.83rem;color:rgba(244,239,230,.55);line-height:1.75;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .2s}
+            .faq-item.open .faq-a{max-height:200px;padding-bottom:.75rem}
+            .faq-item.open .faq-toggle{transform:rotate(45deg)}
+          </style>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">When?</span><span class="faq-toggle">+</span></div>
+            <div class="faq-a">Saturday, August 14. Doors open at 7pm. Plan for the full evening.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Where?</span><span class="faq-toggle">+</span></div>
+            <div class="faq-a">Agathe's place. Address is in your invitation message.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What to wear?</span><span class="faq-toggle">+</span></div>
+            <div class="faq-a">Something beautiful underneath. Something comfortable on top. The layers are part of it.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What to bring?</span><span class="faq-toggle">+</span></div>
+            <div class="faq-a">Your yoga mat.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What is this, exactly?</span><span class="faq-toggle">+</span></div>
+            <div class="faq-a">A guided evening of presence, slow burn, and pleasure. Not a class. Not a lecture. An experience designed to let you feel things you usually don't give yourself permission to feel. Come with curiosity and an open body.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Do I need to prepare anything?</span><span class="faq-toggle">+</span></div>
+            <div class="faq-a">Yes. The daily practices in the app. Five to ten minutes each. Do them. They are not homework. They are how you arrive ready.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Do I need experience with anything?</span><span class="faq-toggle">+</span></div>
+            <div class="faq-a">No. The only thing required is willingness.</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="ws-today" style="display:none">
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;color:var(--secondary);margin-bottom:.5rem">Today is the day.</div>
@@ -1033,8 +1084,27 @@ function authTab(tab){
   document.getElementById('inv-err').textContent='';
 }
 
-// Register
+// Register step 1: verify access code
 window.regData={};
+document.getElementById('reg-code-submit').addEventListener('click',async()=>{
+  const code=document.getElementById('reg-code').value.trim().toUpperCase();
+  const err=document.getElementById('inv-err');
+  const btn=document.getElementById('reg-code-submit');
+  if(!code){err.textContent='Please enter your access code.';return;}
+  err.textContent='';btn.disabled=true;btn.textContent='Checking…';
+  try{
+    const r=await fetch(API+'/auth/validate-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})});
+    const j=await r.json();
+    if(r.ok&&j.valid){
+      window.regData.access_code=code;
+      document.getElementById('reg-code-step').style.display='none';
+      document.getElementById('reg-data-step').style.display='flex';
+    } else {err.textContent=j.detail||'Invalid code.';btn.disabled=false;btn.textContent='Verify code';}
+  }catch(e){err.textContent='Connection error.';btn.disabled=false;btn.textContent='Verify code';}
+});
+document.getElementById('reg-code').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('reg-code-submit').click()});
+
+// Register step 2: name/email/password
 document.getElementById('reg-submit').addEventListener('click',()=>{
   const name=document.getElementById('reg-name').value.trim();
   const email=document.getElementById('reg-email').value.trim();
@@ -1042,7 +1112,7 @@ document.getElementById('reg-submit').addEventListener('click',()=>{
   const err=document.getElementById('inv-err');
   if(!name||!email||!pass){err.textContent='Please fill in all fields.';return;}
   err.textContent='';
-  window.regData={name,email,pass};
+  window.regData={...window.regData,name,email,pass};
   show('reg-onboard-1');
 });
 
@@ -1123,6 +1193,7 @@ document.getElementById('reg-gdpr-submit').addEventListener('click',async()=>{
   try{
     const r=await fetch(API+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({username:d.email,password:d.pass,display_name:d.name,consent_gdpr:true,
+        access_code:d.access_code||'',
         reg_q1:d.reg_q1||'',reg_q2:d.reg_q2||'',reg_q3:d.reg_q3||'',reg_q4:d.reg_q4||'',reg_q5:d.reg_q5||''})});
     const j=await r.json();
     if(r.ok&&j.token){
@@ -1265,8 +1336,8 @@ async function loadHome(){
         const q3Truncated=q3.length>60?q3.substring(0,60)+'…':q3;
         const streakVal=m.streak||0;
         const streakHtml=streakVal===0
-          ?`<div style="margin-top:.5rem"><span style="font-size:.82rem;color:var(--muted)">${streakVal} day streak</span><div style="font-size:.75rem;color:rgba(244,239,230,.28);margin-top:.2rem;font-style:italic">Day one is the hardest. You are already here.</div></div>`
-          :`<div style="margin-top:.5rem;font-size:.82rem;color:var(--muted)">${streakVal} day streak</div>`;
+          ?`<div style="margin-top:.75rem;display:flex;align-items:center;gap:.5rem"><span style="font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,239,230,.28)">Day one is the hardest. You are already here.</span></div>`
+          :`<div style="margin-top:.75rem;display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .75rem;background:rgba(155,127,166,.12);border:1px solid rgba(155,127,166,.25);border-radius:20px"><span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--accent)">${streakVal}</span><span style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,239,230,.45)">${streakVal===1?'day':'days'} streak</span></div>`;
         pBlock.innerHTML=`<h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;font-weight:400;margin-bottom:.4rem;color:var(--text)">${name}</h2>`
           +`<p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;color:rgba(244,239,230,.6);margin-bottom:.3rem">${roleLine}</p>`
           +(q3Truncated?`<p style="font-family:'DM Sans',sans-serif;font-size:.8rem;color:rgba(244,239,230,.4);margin-bottom:.2rem">You came here for: ${q3Truncated}</p>`:'')
@@ -2142,6 +2213,11 @@ document.getElementById('pwa-dismiss').addEventListener('click',()=>{
 });
 
 boot();
+
+function toggleFaq(el){
+  const item=el.closest('.faq-item');
+  item.classList.toggle('open');
+}
 </script>
 <script>
 if('serviceWorker' in navigator){
