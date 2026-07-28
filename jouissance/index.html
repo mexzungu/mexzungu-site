@@ -88,9 +88,11 @@ textarea:focus{border-color:var(--accent)}
 .presence-line{font-size:.83rem;color:rgba(244,239,230,.42);font-style:italic}
 .no-chal{font-size:.9rem;color:rgba(244,239,230,.38);font-style:italic;padding:1.5rem 0}
 .home-footer{display:flex;border-top:1px solid var(--border);flex-shrink:0}
-.nav-btn{flex:1;background:none;border:none;color:rgba(244,239,230,.48);font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:1.1rem;min-height:56px;transition:color .3s}
+.nav-btn{flex:1;background:none;border:none;color:rgba(244,239,230,.48);font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:.7rem .25rem;min-height:56px;transition:color .3s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem}
 .nav-btn:hover{color:var(--text)}
 .nav-btn+.nav-btn{border-left:1px solid var(--border)}
+.nav-icon{font-size:1rem;line-height:1;color:rgba(225,75,135,.55);transition:color .3s}
+.nav-btn:hover .nav-icon,.nav-btn.active .nav-icon{color:var(--accent)}
 
 /* Daily Pepe message */
 .daily-msg-block{width:100%;text-align:center;padding:1.5rem 0 1rem;margin-bottom:1rem}
@@ -154,13 +156,24 @@ textarea:focus{border-color:var(--accent)}
 
 /* Modules */
 .section-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;margin-bottom:1.5rem}
-.mod-card{border:1px solid var(--border);border-radius:6px;padding:1.2rem 1.5rem;margin-bottom:.65rem;cursor:pointer;transition:border-color .3s,background .3s;display:flex;align-items:center;justify-content:space-between;min-height:62px}
+.mod-card{border:1px solid var(--border);border-radius:6px;padding:1.1rem 1.25rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .3s,background .3s;display:flex;align-items:center;justify-content:space-between;min-height:62px}
 .mod-card:hover{border-color:var(--accent);background:rgba(155,127,166,.04)}
-.mod-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem}
+.mod-card.mod-locked{cursor:default;pointer-events:none}
+.mod-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem}
 .mod-right{display:flex;align-items:center;gap:.75rem}
 .mod-pts{font-size:.72rem;color:var(--secondary)}
 .dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(155,127,166,.38);background:transparent;flex-shrink:0}
 .dot.filled{background:var(--accent);border-color:var(--accent)}
+.prac-bundle-header{position:relative;padding:1rem 1.25rem 1rem;border:1px solid rgba(155,127,166,.22);border-radius:6px;margin-bottom:.85rem;background:rgba(30,24,41,.5)}
+.prac-bundle-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;color:var(--cream);margin-bottom:.15rem}
+.prac-bundle-sub{font-size:.72rem;color:var(--secondary);letter-spacing:.06em;text-transform:uppercase}
+.prac-corner{position:absolute;width:10px;height:10px;border-color:var(--accent);border-style:solid;opacity:.55}
+.prac-corner.tl{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.prac-corner.tr{top:-1px;right:-1px;border-width:2px 2px 0 0}
+.prac-corner.bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px}
+.prac-corner.br{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.prac-locked-banner{font-size:.75rem;color:rgba(244,239,230,.38);letter-spacing:.08em;padding:.45rem .5rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+.prac-grayed{opacity:.38;pointer-events:none}
 
 /* Module detail */
 .mod-content{color:rgba(244,239,230,.68);font-size:.93rem;line-height:1.95;margin-bottom:2.5rem}
@@ -250,6 +263,9 @@ textarea:focus{border-color:var(--accent)}
 .ky-progress{font-size:.72rem;color:rgba(244,239,230,.3);margin-bottom:.9rem;letter-spacing:.05em}
 .ky-submit-btn{background:var(--accent);border:none;border-radius:4px;color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.08em;padding:.75rem;width:100%;cursor:pointer;margin-top:.3rem}
 .ky-submit-btn:disabled{opacity:.3;cursor:not-allowed}
+.ky-mode-toggle{display:flex;gap:0;border:1px solid rgba(155,127,166,.25);border-radius:4px;overflow:hidden;margin-bottom:1.25rem}
+.ky-mode-tab{flex:1;padding:.55rem .5rem;background:transparent;color:var(--muted);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;transition:background .2s,color .2s;letter-spacing:.03em}
+.ky-mode-tab.active{background:rgba(155,127,166,.18);color:var(--text)}
 .ky-result{background:rgba(155,127,166,.07);border:1px solid rgba(155,127,166,.14);border-radius:6px;padding:1.25rem;margin-top:.25rem}
 .ky-result-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:var(--accent);margin-bottom:.65rem}
 .ky-result-interp{font-size:.87rem;color:rgba(244,239,230,.68);line-height:1.75}
@@ -279,6 +295,13 @@ textarea:focus{border-color:var(--accent)}
 <body>
 
 <div class="screen active" id="splash">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 108" style="width:48px;height:52px;margin-bottom:.75rem;opacity:0;animation:fadeIn 1.5s ease .3s forwards">
+    <path d="M50 6 C30 6 12 24 12 50 C12 70 24 92 50 102 C76 92 88 70 88 50 C88 24 70 6 50 6Z" fill="rgba(155,127,166,0.06)" stroke="#9B7FA6" stroke-width="1.4" stroke-opacity="0.75"/>
+    <path d="M50 20 C37 20 27 35 27 50 C27 65 37 80 50 86 C63 80 73 65 73 50 C73 35 63 20 50 20Z" fill="rgba(155,127,166,0.09)" stroke="#9B7FA6" stroke-width="1" stroke-opacity="0.55"/>
+    <ellipse cx="50" cy="56" rx="7" ry="12" fill="rgba(155,127,166,0.13)"/>
+    <circle cx="50" cy="17" r="2.8" fill="#9B7FA6" opacity="0.72"/>
+    <path d="M44 19 C44 12 56 12 56 19" fill="none" stroke="#9B7FA6" stroke-width="1" stroke-opacity="0.4" stroke-linecap="round"/>
+  </svg>
   <div class="wordmark">jouissance</div>
   <div class="tagline">l'incertitude certaine</div>
 </div>
@@ -286,7 +309,13 @@ textarea:focus{border-color:var(--accent)}
 <div class="screen" id="invite-entry">
   <div class="container center" style="justify-content:center;gap:0.75rem">
     <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:1.5rem">
-      <div style="color:var(--secondary);font-size:1.6rem;letter-spacing:.35em;margin-bottom:.5rem;opacity:.7">&#10022; &#9670; &#10022;</div>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 108" style="width:44px;height:48px;margin-bottom:.85rem">
+        <path d="M50 6 C30 6 12 24 12 50 C12 70 24 92 50 102 C76 92 88 70 88 50 C88 24 70 6 50 6Z" fill="rgba(155,127,166,0.06)" stroke="#9B7FA6" stroke-width="1.4" stroke-opacity="0.75"/>
+        <path d="M50 20 C37 20 27 35 27 50 C27 65 37 80 50 86 C63 80 73 65 73 50 C73 35 63 20 50 20Z" fill="rgba(155,127,166,0.09)" stroke="#9B7FA6" stroke-width="1" stroke-opacity="0.55"/>
+        <ellipse cx="50" cy="56" rx="7" ry="12" fill="rgba(155,127,166,0.13)"/>
+        <circle cx="50" cy="17" r="2.8" fill="#9B7FA6" opacity="0.72"/>
+        <path d="M44 19 C44 12 56 12 56 19" fill="none" stroke="#9B7FA6" stroke-width="1" stroke-opacity="0.4" stroke-linecap="round"/>
+      </svg>
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:3.6rem;letter-spacing:.04em;color:var(--accent);line-height:1">jouissance</div>
       <div style="font-size:.7rem;letter-spacing:.22em;color:rgba(244,239,230,.32);text-transform:uppercase;margin-top:.6rem">l'incertitude certaine</div>
     </div>
@@ -578,12 +607,12 @@ textarea:focus{border-color:var(--accent)}
     </div>
   </div>
   <div class="home-footer" style="overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none">
-    <button class="nav-btn" id="nav-modules">Practices</button>
-    <button class="nav-btn" id="nav-mirror">Mirror</button>
-    <button class="nav-btn" id="nav-rewards">Rewards</button>
-    <button class="nav-btn" id="nav-ranking" style="position:relative">Ranking<span class="msg-dot" id="msg-dot"></span></button>
-    <button class="nav-btn" id="nav-resources" onclick="show('resources')">&#128218; Resources</button>
-    <button class="nav-btn" id="nav-workshop" onclick="show('workshop')">&#10023; Workshop</button>
+    <button class="nav-btn" id="nav-modules"><span class="nav-icon">✦</span>Practices</button>
+    <button class="nav-btn" id="nav-mirror"><span class="nav-icon">◎</span>Mirror</button>
+    <button class="nav-btn" id="nav-rewards"><span class="nav-icon">♦</span>Rewards</button>
+    <button class="nav-btn" id="nav-ranking" style="position:relative"><span class="nav-icon">△</span>Ranking<span class="msg-dot" id="msg-dot"></span></button>
+    <button class="nav-btn" id="nav-resources" onclick="show('resources')"><span class="nav-icon">◈</span>Resources</button>
+    <button class="nav-btn" id="nav-workshop" onclick="show('workshop')"><span class="nav-icon">✧</span>Workshop</button>
   </div>
 </div>
 
@@ -605,10 +634,8 @@ textarea:focus{border-color:var(--accent)}
       <div class="lb-rank-number" id="lb-rank-num">--</div>
       <div class="lb-rank-of" id="lb-rank-of">of -- women</div>
       <div class="lb-bar-track"><div class="lb-bar-fill" id="lb-bar" style="width:0%"></div></div>
-      <div class="lb-section-label">Top 3</div>
-      <div class="lb-dots" id="lb-dots"></div>
-      <div class="lb-section-label" id="lb-cohort-label" style="display:none">Your Circle</div>
-      <div id="lb-cohort-list"></div>
+      <div class="lb-section-label" style="margin-top:1.5rem">Scoreboard</div>
+      <div id="lb-full-list" style="width:100%;max-width:320px;margin:0 auto"></div>
     </div>
   </div>
 </div>
@@ -713,7 +740,11 @@ textarea:focus{border-color:var(--accent)}
     <div class="screen-label">Know Yourself</div>
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
-    <div class="ky-intro">Six maps. One territory. Each test takes under five minutes.</div>
+    <div class="ky-intro">Six maps. One territory. Choose your depth below.</div>
+    <div class="ky-mode-toggle">
+      <button class="ky-mode-tab active" id="kymt-quick" onclick="setKyMode('quick')">Quick &middot; 10 questions</button>
+      <button class="ky-mode-tab" id="kymt-full" onclick="setKyMode('full')">Deep Dive &middot; 20 questions</button>
+    </div>
     <div id="ky-tests"></div>
   </div>
 </div>
@@ -734,43 +765,117 @@ textarea:focus{border-color:var(--accent)}
     <div class="screen-label">Resources</div>
   </div>
   <div style="flex:1;overflow-y:auto;padding:1.75rem 1.5rem;max-width:480px;margin:0 auto;width:100%">
-    <div class="section-title">Preparatory Reading</div>
-    <p style="font-size:.88rem;color:rgba(244,239,230,.7);margin-bottom:1.5rem;line-height:1.75">Books to read before the workshop. Each one will deepen what you carry into the room.</p>
-    <div style="background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;margin-bottom:.2rem">The Body Keeps the Score</div>
-      <div style="font-size:.75rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem">Bessel van der Kolk</div>
-      <div style="font-size:.85rem;color:rgba(244,239,230,.62);line-height:1.7">On how trauma and emotion live in the body. The foundational text for understanding why somatic work matters.</div>
-    </div>
-    <div style="background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;margin-bottom:.2rem">Come As You Are</div>
-      <div style="font-size:.75rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem">Emily Nagoski</div>
-      <div style="font-size:.85rem;color:rgba(244,239,230,.62);line-height:1.7">The science of female desire. What actually shapes arousal and why your body responds the way it does.</div>
-    </div>
-    <div style="background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;margin-bottom:.2rem">Mating in Captivity</div>
-      <div style="font-size:.75rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem">Esther Perel</div>
-      <div style="font-size:.85rem;color:rgba(244,239,230,.62);line-height:1.7">On desire, intimacy, and what erotic aliveness actually requires from us.</div>
-    </div>
-    <div style="background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:2rem">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;margin-bottom:.2rem">The Surrender Experiment</div>
-      <div style="font-size:.75rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem">Michael A. Singer</div>
-      <div style="font-size:.85rem;color:rgba(244,239,230,.62);line-height:1.7">On releasing internal resistance and opening to what arrives. Useful for what you are about to walk into.</div>
-    </div>
 
-    <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.6rem">Daily Practices</div>
-    <p style="font-size:.88rem;color:rgba(244,239,230,.7);margin-bottom:1.25rem;line-height:1.75">Three practices to carry through the 14 days.</p>
-    <div style="background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;margin-bottom:.6rem">Vagal Toning Breath</div>
-      <div style="font-size:.85rem;color:rgba(244,239,230,.62);line-height:1.7">Inhale 4 counts. Hold 2. Exhale 8. Five rounds before bed. Calms the nervous system and builds capacity for presence.</div>
-    </div>
-    <div style="background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;margin-bottom:.6rem">3-Minute Body Scan</div>
-      <div style="font-size:.85rem;color:rgba(244,239,230,.62);line-height:1.7">Head to toe. Notice one place of tension and one of ease. Name them out loud or in writing. One minute is enough.</div>
-    </div>
-    <div style="background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:1rem">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;margin-bottom:.6rem">Perineum Pulse</div>
-      <div style="font-size:.85rem;color:rgba(244,239,230,.62);line-height:1.7">Contract your perineum as you inhale. Hold at the top. Release fully as you exhale. Ten rounds. Do this whenever you remember.</div>
-    </div>
+    <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.6rem">Books</div>
+    <p style="font-size:.85rem;color:rgba(244,239,230,.6);margin-bottom:1.25rem;line-height:1.75">Read before the workshop. Each one will deepen what you carry into the room.</p>
+
+    <a href="https://www.amazon.com/dp/1548178527" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.25);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+      <img src="https://covers.openlibrary.org/b/isbn/1548178527-M.jpg" alt="Open Her" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">Open Her</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Eyal Matsliah</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">A guide to feminine sexual awakening from the inside out. Practical, embodied, and honest about what men rarely say and women rarely hear.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Amazon &rarr;</div>
+      </div>
+    </a>
+
+    <a href="https://www.amazon.com/dp/0143127748" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+      <img src="https://covers.openlibrary.org/b/isbn/0143127748-M.jpg" alt="The Body Keeps the Score" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">The Body Keeps the Score</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Bessel van der Kolk</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">How trauma and emotion live in the body. The foundational text for understanding why somatic work matters.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Amazon &rarr;</div>
+      </div>
+    </a>
+
+    <a href="https://www.amazon.com/dp/1476762090" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+      <img src="https://covers.openlibrary.org/b/isbn/1476762090-M.jpg" alt="Come As You Are" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">Come As You Are</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Emily Nagoski</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">The science of female desire. What actually shapes arousal and why your body responds the way it does.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Amazon &rarr;</div>
+      </div>
+    </a>
+
+    <a href="https://www.amazon.com/dp/0060753641" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+      <img src="https://covers.openlibrary.org/b/isbn/0060753641-M.jpg" alt="Mating in Captivity" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">Mating in Captivity</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Esther Perel</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">On desire, intimacy, and what erotic aliveness actually requires from us.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Amazon &rarr;</div>
+      </div>
+    </a>
+
+    <a href="https://www.amazon.com/dp/080414110X" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:2rem">
+      <img src="https://covers.openlibrary.org/b/isbn/080414110X-M.jpg" alt="The Surrender Experiment" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">The Surrender Experiment</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Michael A. Singer</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">On releasing internal resistance and opening to what arrives. Useful for what you are about to walk into.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Amazon &rarr;</div>
+      </div>
+    </a>
+
+    <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.6rem">Articles</div>
+    <p style="font-size:.85rem;color:rgba(244,239,230,.6);margin-bottom:1.25rem;line-height:1.75">Short reads worth sitting with.</p>
+
+    <a href="https://www.emilynagoski.com/come-as-you-are" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.15rem">The Dual Control Model of Sexual Response</div>
+      <div style="font-size:.72rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem">Emily Nagoski</div>
+      <div style="font-size:.83rem;color:rgba(244,239,230,.6);line-height:1.7">Why your accelerator and brake are the whole story. The model that explains almost everything about how desire actually works.</div>
+      <div style="font-size:.72rem;color:var(--secondary);margin-top:.55rem;opacity:.7">emilynagoski.com &rarr;</div>
+    </a>
+
+    <a href="https://www.estherperel.com/blog" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.15rem">The Erotic Is an Antidote to Death</div>
+      <div style="font-size:.72rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem">Esther Perel</div>
+      <div style="font-size:.83rem;color:rgba(244,239,230,.6);line-height:1.7">On why aliveness, desire, and sensuality are not luxuries. The philosophical case for what this workshop is about.</div>
+      <div style="font-size:.72rem;color:var(--secondary);margin-top:.55rem;opacity:.7">estherperel.com &rarr;</div>
+    </a>
+
+    <a href="https://www.somatica.com/somatic-sexuality" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:2rem">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.15rem">What Is Somatic Sexuality?</div>
+      <div style="font-size:.72rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem">Somatica Institute</div>
+      <div style="font-size:.83rem;color:rgba(244,239,230,.6);line-height:1.7">A grounded introduction to body-based sexuality work. Good context for what you are about to experience.</div>
+      <div style="font-size:.72rem;color:var(--secondary);margin-top:.55rem;opacity:.7">somatica.com &rarr;</div>
+    </a>
+
+    <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.6rem">Podcasts</div>
+    <p style="font-size:.85rem;color:rgba(244,239,230,.6);margin-bottom:1.25rem;line-height:1.75">Listen while you walk or cook. The conversations that go deeper.</p>
+
+    <a href="https://podcasts.apple.com/us/podcast/where-should-we-begin-with-esther-perel/id1237931798" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+      <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/7d/2f/96/7d2f96e0-1b7e-46c0-7dea-d72a7e2b7b38/mza_1843521504946397702.jpg/300x300bb.jpg" alt="Where Should We Begin" style="width:60px;min-width:60px;height:60px;object-fit:cover;border-radius:6px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">Where Should We Begin?</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Esther Perel</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">Live couples therapy sessions. Raw, intimate, and extraordinary. Listen to one episode before the workshop.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Apple Podcasts &rarr;</div>
+      </div>
+    </a>
+
+    <a href="https://podcasts.apple.com/us/podcast/the-pleasure-mechanics-podcast/id989073330" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+      <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts115/v4/74/f5/42/74f54231-5bf4-03c2-8a18-0e1a9a1a0c84/mza_3887539855765024551.jpg/300x300bb.jpg" alt="Pleasure Mechanics" style="width:60px;min-width:60px;height:60px;object-fit:cover;border-radius:6px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">Pleasure Mechanics</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Charlotte &amp; William Dayton</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">Direct, practical conversations about pleasure, bodies, and desire. No shame, no fluff.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Apple Podcasts &rarr;</div>
+      </div>
+    </a>
+
+    <a href="https://podcasts.apple.com/us/podcast/the-embodiment-podcast/id1330447019" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:2rem">
+      <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/83/94/3b/83943b5c-dba0-3b75-5a42-f64d79c33f82/mza_14560573688547543083.jpg/300x300bb.jpg" alt="The Embodiment Podcast" style="width:60px;min-width:60px;height:60px;object-fit:cover;border-radius:6px;background:rgba(155,127,166,.15)">
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">The Embodiment Podcast</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Mark Walsh</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">Somatic intelligence, body awareness, and presence. The bridge between theory and what you will do in the room.</div>
+        <div style="font-size:.7rem;color:var(--secondary);margin-top:.45rem;opacity:.7">Apple Podcasts &rarr;</div>
+      </div>
+    </a>
+
   </div>
 </div>
 
@@ -784,12 +889,12 @@ textarea:focus{border-color:var(--accent)}
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2rem;color:var(--secondary);margin-bottom:.3rem">August 14</div>
       <div id="ws-days-away" style="font-size:.82rem;color:rgba(244,239,230,.45);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem"></div>
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">What to Expect</div>
-      <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:1.25rem">A full-day immersive experience in somatic and sexual awareness. You will be in a small group of women who have done the same 14 days of preparation you are doing now. What happens in the room depends on what you bring into it.</p>
+      <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:1.25rem">A 4-hour immersive experience in somatic and sexual awareness. You will be in a small group of women who have done the same 14 days of preparation you are doing now. What happens in the room depends on what you bring into it.</p>
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">How to Prepare</div>
       <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:1.25rem">Complete your daily rituals. Do the Know Yourself tests. Write honestly in your profile. The more you bring to the app, the more you will bring to the room. Logistics details will arrive by August 10.</p>
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">How to Arrive</div>
       <p style="font-size:.92rem;color:rgba(244,239,230,.72);line-height:1.85;margin-bottom:2rem">Come rested. Come without an agenda. Bring a journal. Wear something that feels like you. Leave your performance at the door.</p>
-      <button class="btn btn-primary" onclick="show('modules')" style="max-width:280px">Go to Today's Rituals</button>
+      <button class="btn btn-primary" onclick="show('home')" style="max-width:280px">Go to Today's Rituals</button>
     </div>
     <div id="ws-today" style="display:none">
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;color:var(--secondary);margin-bottom:.5rem">Today is the day.</div>
@@ -1260,27 +1365,20 @@ async function loadHome(){
 
 async function loadLeaderboard(){
   try{
-    const [lr,cr]=await Promise.all([apiFetch('/leaderboard'),apiFetch('/leaderboard/cohort')]);
+    const lr=await apiFetch('/leaderboard');
     if(lr.ok){
       const d=await lr.json();
       document.getElementById('lb-rank-num').textContent='#'+d.my_rank;
       document.getElementById('lb-rank-of').textContent='of '+d.total_participants+' women';
       document.getElementById('lb-bar').style.width=(d.percentile||0)+'%';
-      const top3=d.top_3_points||[];
-      document.getElementById('lb-dots').innerHTML=top3.map((p,i)=>`<div class="lb-dot"><div class="lb-dot-circle${i===0?' top':''}"></div><div class="lb-dot-pts">${p} pts</div></div>`).join('');
-    }
-    if(cr.ok){
-      const cd=await cr.json();
-      const members=cd.members||[];
-      const lbl=document.getElementById('lb-cohort-label');
-      const list=document.getElementById('lb-cohort-list');
-      if(members.length>0){
-        lbl.style.display='block';
-        list.innerHTML=members.map(m=>`<div class="lb-cohort-row"><span class="lb-cohort-rank">#${m.rank}</span><span>${m.display_name}</span><span class="lb-cohort-pts">${m.points} pts</span></div>`).join('');
-      } else {
-        lbl.style.display='none';
-        list.innerHTML='';
-      }
+      const medals=['🥇','🥈','🥉'];
+      const full=d.full_list||[];
+      document.getElementById('lb-full-list').innerHTML=full.map((m,i)=>`
+        <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 0;border-bottom:1px solid rgba(155,127,166,.12)">
+          <span style="font-size:1.2rem;width:1.5rem;text-align:center">${medals[i]||'<span style="font-size:.8rem;color:var(--muted)">#'+(i+1)+'</span>'}</span>
+          <span style="flex:1;font-size:.95rem">${m.display_name}</span>
+          <span style="color:var(--secondary);font-size:.9rem;font-weight:600">${m.points} pts</span>
+        </div>`).join('');
     }
   }catch(e){}
 }
@@ -1380,28 +1478,53 @@ async function loadMods(){
     if(r.ok){const d=await r.json();const arr=Array.isArray(d)?d:(d.modules||[]);completedMods=arr.filter(m=>m.completed).map(m=>m.id||m.title)}
   }catch(e){}
   const list=document.getElementById('mod-list');list.innerHTML='';
+  const unlocked=new Date()>=new Date('2026-08-14T00:00:00');
+
+  // Bundle 1: Day After Retreat
+  const b1=document.createElement('div');
+  b1.innerHTML=`<div class="prac-bundle-header"><div class="prac-corner tl"></div><div class="prac-corner tr"></div><div class="prac-bundle-title">Day After Retreat</div><div class="prac-bundle-sub">Five practices to carry what opened, forward</div><div class="prac-corner bl"></div><div class="prac-corner br"></div></div>${!unlocked?'<div class="prac-locked-banner">&#128274;&nbsp; Unlocks August 14</div>':''}`;
+  const cards=document.createElement('div');
+  cards.className=unlocked?'':'prac-grayed';
   Object.entries(MODULES).forEach(([id,m])=>{
     const done=completedMods.includes(id)||completedMods.includes(m.name);
     const card=document.createElement('div');
-    card.className='mod-card';
-    card.innerHTML=`<div class="mod-name">${m.name}</div><div style="color:var(--muted);font-size:.8rem;margin-top:.3rem;line-height:1.5">${m.body.substring(0,80)}...</div><div class="mod-right" style="margin-top:.5rem"><span class="mod-pts">${done?'Done':'+ 10 pts'}</span><div class="dot ${done?'filled':''}"></div></div>`;
-    card.addEventListener('click',()=>{
-      currentModId=id;
-      document.getElementById('md-title').textContent=m.name;
-      document.getElementById('md-label').textContent=m.name;
-      document.getElementById('md-body').textContent=m.body;
-      document.getElementById('md-resp').value='';
-      document.getElementById('md-cc').textContent='0 / 50';
-      document.getElementById('md-media-lbl').textContent='';
-      document.querySelectorAll('#md-mb-audio,#md-mb-video').forEach(b=>b.classList.remove('on'));
-      const area=document.getElementById('md-submit-area');
-      const doneMsg=document.getElementById('md-done-msg');
-      if(done){area.style.display='none';doneMsg.style.display='block';}
-      else{area.style.display='block';doneMsg.style.display='none';}
-      show('module-detail');
-    });
-    list.appendChild(card);
+    card.className='mod-card'+(unlocked?'':' mod-locked');
+    card.innerHTML=`<div><div class="mod-name">${m.name}</div><div style="color:var(--muted);font-size:.78rem;margin-top:.25rem;line-height:1.5">${m.body.substring(0,75)}...</div></div><div class="mod-right" style="flex-shrink:0;margin-left:.75rem"><span class="mod-pts">${done?'Done':'+ 10 pts'}</span><div class="dot ${done?'filled':''}"></div></div>`;
+    if(unlocked){
+      card.addEventListener('click',()=>{
+        currentModId=id;
+        document.getElementById('md-title').textContent=m.name;
+        document.getElementById('md-label').textContent=m.name;
+        document.getElementById('md-body').textContent=m.body;
+        document.getElementById('md-resp').value='';
+        document.getElementById('md-cc').textContent='0 / 50';
+        document.getElementById('md-media-lbl').textContent='';
+        document.querySelectorAll('#md-mb-audio,#md-mb-video').forEach(b=>b.classList.remove('on'));
+        const area=document.getElementById('md-submit-area');
+        const doneMsg=document.getElementById('md-done-msg');
+        if(done){area.style.display='none';doneMsg.style.display='block';}
+        else{area.style.display='block';doneMsg.style.display='none';}
+        show('module-detail');
+      });
+    }
+    cards.appendChild(card);
   });
+  b1.appendChild(cards);
+  list.appendChild(b1);
+
+  // Bundle 2: Erotic Energy Movement
+  const EE=[
+    {name:'Sensual Body Scan',dur:'10 min',body:'Lie down. Close your eyes. Bring your awareness to your feet. Slowly move it upward. Do not try to feel anything in particular. Only notice what is already there. Sensation is information. Let it speak.'},
+    {name:'Breath and Pleasure',dur:'5 min',body:'Inhale slowly to a count of 4. As you exhale, let the breath move through your pelvis. Repeat. Notice what shifts as you breathe into places you normally hold tension. Pleasure lives where tension is released.'},
+    {name:'Erotic Visualization',dur:'15 min',body:'Find a comfortable position. Close your eyes. Let an image of beauty arise. Not pornographic. Something that moves you. A memory, a colour, a quality of touch. Stay with it. Notice where in your body it lands.'},
+    {name:'Pelvic Awakening',dur:'8 min',body:'Sit or lie with your pelvis free. Begin slow circles. Find the movement that feels most natural. Add your breath. Let it gradually become more expressive. This is not performance. This is conversation with your own body.'},
+  ];
+  const b2=document.createElement('div');
+  b2.style.marginTop='1.75rem';
+  const b2Cards=EE.map(p=>`<div class="mod-card${unlocked?'':' mod-locked'}" style="${unlocked?'':'cursor:default'};flex-direction:column;align-items:flex-start"><div style="display:flex;justify-content:space-between;width:100%;align-items:baseline"><div class="mod-name">${p.name}</div><div style="font-size:.68rem;color:var(--secondary);opacity:.65;flex-shrink:0;margin-left:.5rem">${p.dur}</div></div><div style="color:var(--muted);font-size:.78rem;margin-top:.3rem;line-height:1.5">${p.body.substring(0,80)}...</div></div>`).join('');
+  b2.innerHTML=`<div class="prac-bundle-header"><div class="prac-corner tl"></div><div class="prac-corner tr"></div><div class="prac-bundle-title">Erotic Energy Movement</div><div class="prac-bundle-sub">Your body's own language</div><div class="prac-corner bl"></div><div class="prac-corner br"></div></div>${!unlocked?'<div class="prac-locked-banner">&#128274;&nbsp; Unlocks August 14</div>':''}${unlocked?b2Cards:`<div class="prac-grayed">${b2Cards}</div>`}`;
+  list.appendChild(b2);
+  const el=document.createElement('div');el.style.height='2rem';list.appendChild(el);
 }
 const mdResp=document.getElementById('md-resp'),mdCc=document.getElementById('md-cc');
 let mdUploads={};
@@ -1601,69 +1724,159 @@ document.querySelectorAll('.back-btn[data-back]').forEach(btn=>{
 });
 
 // ---- KNOW YOURSELF (Mirror) ----
+let kyMode='quick';
+function setKyMode(mode){
+  kyMode=mode;
+  document.getElementById('kymt-quick').classList.toggle('active',mode==='quick');
+  document.getElementById('kymt-full').classList.toggle('active',mode==='full');
+  document.querySelectorAll('.ky-body').forEach(b=>{b.classList.remove('open');b.innerHTML='';});
+  renderKyTests();
+}
 const KY_TESTS=[
   {
     id:'ds-spectrum',emoji:'⚖',title:'The Spectrum',sub:'Where do you naturally land on the D/s axis?',
-    questions:[
-      {q:'When things are uncertain, I prefer to...',opts:['Take charge and direct',-2],opts2:[['Take charge and direct',-2],['Read the room and adapt',0],['Follow someone else\'s lead',2]]},
-    ],
-    _q:[
-      {q:'When things are uncertain, I prefer to...',a:[['Take charge and direct',-2],['Read the room and adapt',0],['Follow someone else\'s lead',2]]},
+    _qQuick:[
+      {q:'When things are uncertain, I prefer to...',a:[['Take charge and direct',-2],['Read the room and adapt',0],["Follow someone else's lead",2]]},
       {q:'In intimate moments, the idea that excites me most is...',a:[['Being the one who decides what happens',-2],['Co-creating together equally',0],['Surrendering completely to someone I trust',2]]},
       {q:'Receiving explicit instructions from someone feels...',a:[['Limiting and frustrating',-2],['Depends entirely on who',0],['Deeply relaxing and freeing',2]]},
       {q:'The phrase that resonates most is...',a:[['I want to be the one holding the space',-2],['I want us both to feel free',0],['I want to be held completely',2]]},
-      {q:'When I imagine being physically restrained...',a:[['I\'d want to be the one doing the restraining',-2],['I\'m curious but unsure which side',0],['Something in me relaxes at the thought',2]]},
+      {q:'When I imagine being physically restrained...',a:[["I'd want to be the one doing the restraining",-2],["I'm curious but unsure which side",0],['Something in me relaxes at the thought',2]]},
       {q:'After an intense intimate experience, I feel most replenished by...',a:[['Knowing I held the other person well',-2],['The connection we created together',0],['The care I received while I let go',2]]},
+      {q:'When I feel emotionally raw or exposed, I find safety in...',a:[['Being the one holding space for someone else',-2],['Feeling held by mutual connection',0],['Being completely held and cared for by another',2]]},
+      {q:'The idea of being given a task by someone I trust...',a:[['Is not something I need or want',-2],['Intrigues me depending on the context',0],['Gets my immediate attention and interest',2]]},
+      {q:'When making decisions in a shared experience, I naturally...',a:[['Find myself steering toward a direction',-2],['Like to co-create with equal input',0],['Prefer when the other person takes the lead',2]]},
+      {q:'Someone quietly holding my gaze and simply deciding for us...',a:[['Makes me want to be the one deciding',-2],['Creates a charged and interesting tension',0],["Sends something through me I can't name",2]]},
     ],
-    score(answers){const total=answers.reduce((a,b)=>a+b,0);if(total<=-8)return{label:'Dominant',pct:5,interp:"You carry a strong natural pull toward holding space, directing energy, and being the one others can trust to lead. In intimacy, your deepest pleasure often comes from the other person's surrender. This is not about control for its own sake. It's about the profound responsibility of holding someone completely."};if(total<=-4)return{label:'Dominant-leaning',pct:25,interp:"You lean naturally toward taking the lead but you're not rigid about it. You enjoy being in charge when the chemistry is right, but you can move fluidly when the situation calls for it."};if(total<=2)return{label:'Switch',pct:50,interp:"You move between both poles with genuine pleasure. Depending on the person, the moment, or your own internal state, you can lead or surrender with equal authenticity."};if(total<=6)return{label:'Submissive-leaning',pct:75,interp:"You have a natural draw toward surrendering, toward being guided, held, and cared for. Your work is learning to ask for the conditions that make your surrender feel safe."};return{label:'Submissive',pct:95,interp:"Your deepest pleasure lives in full surrender to someone you completely trust. This takes enormous strength and self-knowledge."};},
+    _qMore:[
+      {q:'The kind of trust that moves me most is...',a:[['Knowing someone trusts me to hold them completely',-2],['The feeling of mutual trust in both directions',0],['Being trusted enough to fully let go',2]]},
+      {q:'When I imagine the ideal intimate dynamic, I am...',a:[['The one who sets the frame',-2],['Part of a frame we build together',0],['Living inside a frame someone I trust created',2]]},
+      {q:'My body in intimate moments most naturally wants to...',a:[['Move forward, guide, initiate',-2],['Respond to what is between us',0],['Receive, yield, follow',2]]},
+      {q:'The most exciting thing to hear is...',a:[['Tell me what you want',-2],['What do you feel like?',0],["I'm going to take care of everything",2]]},
+      {q:'When a limit is approached in intimacy, I tend to...',a:[['Name it and redirect with authority',-2],['Discuss it openly with my partner',0],['Wait and see if they notice',2]]},
+      {q:'What I want most in an intimate experience is to feel...',a:[['Trusted with their experience',-2],['Equally present with someone',0],['Completely held by someone who knows',2]]},
+      {q:'If I could only keep one thing from an intimate experience, it would be...',a:[['The knowledge that I held them well',-2],['The connection we shared equally',0],['The feeling of complete surrender',2]]},
+      {q:'"Just tell me what you need" makes me feel...',a:[['Natural. I usually already know',-2],['Nice but I need more context',0],['Overwhelmed. I want them to sense it',2]]},
+      {q:'When someone seems uncertain in intimate space, my instinct is...',a:[['To step in and provide direction',-2],['To check in and navigate together',0],['To wait for someone else to take the lead',2]]},
+      {q:'In intimacy, what I secretly long for most is...',a:[['To be so trusted someone completely surrenders to me',-2],['A true equal who matches my full presence',0],['To trust someone so completely I can disappear',2]]},
+    ],
+    score(answers){const total=answers.reduce((a,b)=>a+b,0);const norm=total/answers.length;if(norm<=-1.33)return{label:'Dominant',pct:5,interp:"You carry a strong natural pull toward holding space, directing energy, and being the one others can trust to lead. In intimacy, your deepest pleasure often comes from the other person's surrender. This is not about control for its own sake. It's about the profound responsibility of holding someone completely."};if(norm<=-0.67)return{label:'Dominant-leaning',pct:25,interp:"You lean naturally toward taking the lead but you're not rigid about it. You enjoy being in charge when the chemistry is right, but you can move fluidly when the situation calls for it."};if(norm<=0.33)return{label:'Switch',pct:50,interp:"You move between both poles with genuine pleasure. Depending on the person, the moment, or your own internal state, you can lead or surrender with equal authenticity."};if(norm<=1.0)return{label:'Submissive-leaning',pct:75,interp:"You have a natural draw toward surrendering, toward being guided, held, and cared for. Your work is learning to ask for the conditions that make your surrender feel safe."};return{label:'Submissive',pct:95,interp:"Your deepest pleasure lives in full surrender to someone you completely trust. This takes enormous strength and self-knowledge."};},
     render(r){return`<div class="ky-spectrum-track"><div class="ky-spectrum-fill" style="left:${r.pct-7}%;width:14%"></div></div><div class="ky-spectrum-labels"><span>Dominant</span><span>Switch</span><span>Submissive</span></div><div class="ky-result-label">${r.label}</div><p class="ky-result-interp">${r.interp}</p>`}
   },
   {
     id:'ssk-orientation',emoji:'◈',title:'Your Desire Language',sub:'Sensual, Sexual, or Kink. What speaks to you?',
-    _q:[
+    _qQuick:[
       {q:'What I crave most in intimate connection is...',a:[['Skin, scent, warmth, presence. The full sensory immersion.','S'],['The pure physical intensity of bodies meeting','X'],['The psychology, the power, the edge of something slightly forbidden','K']]},
       {q:'The most arousing thing someone can do is...',a:[['Move incredibly slowly and pay total attention to every signal I give','S'],['Show me how much they want my body','X'],['Play with power in a way that makes my mind go quiet','K']]},
-      {q:'I feel most alive in intimacy when...',a:[['Every sense is engaged and time disappears','S'],['The physical pleasure is so intense I can\'t think','X'],['There is a dynamic at play that goes beyond bodies','K']]},
+      {q:'I feel most alive in intimacy when...',a:[['Every sense is engaged and time disappears','S'],["The physical pleasure is so intense I can't think",'X'],['There is a dynamic at play that goes beyond bodies','K']]},
       {q:'After an intense experience, what I remember most is...',a:[['The quality of touch, the warmth, how held I felt','S'],['The physical peak, the release, the intensity','X'],['The energy between us, the unspoken agreement, the psychology','K']]},
       {q:'The word that most resonates with what I want is...',a:[['Dissolve','S'],['Devour','X'],['Surrender (but with intention behind it)','K']]},
       {q:'Ritual appeals to me because...',a:[['It deepens presence and makes the ordinary sacred','S'],['It builds anticipation that makes the physical release more intense','X'],['It creates a container where roles and power can be clearly defined','K']]},
+      {q:'The detail I notice most when entering an intimate space is...',a:[['The quality of light, scent, and temperature','S'],["The other person's body language and energy",'X'],['The psychological charge and unspoken dynamic','K']]},
+      {q:'I feel most sensually awakened by...',a:[['Deep, unhurried attention to every part of my body','S'],['The heat and weight of another body close to mine','X'],['The charge that comes from a clear power differential','K']]},
+      {q:'If I could have one thing in every intimate experience...',a:[['Complete sensory immersion with nothing pulling me out','S'],['Pure physical intensity and full release','X'],['A frame where roles are agreed and held','K']]},
+      {q:'The experience I find most erotic is...',a:[['Slow undressing with full attention to every sensation','S'],['Bodies meeting with total hunger and nothing held back','X'],['A room where both people know exactly what they are there for','K']]},
+    ],
+    _qMore:[
+      {q:'When I close my eyes and imagine ideal intimacy, I sense...',a:[['Texture, warmth, slowness, full presence','S'],['The electric charge of physical energy between bodies','X'],['A psychological edge and a clearly held dynamic','K']]},
+      {q:'What I most want to carry from an intimate experience is...',a:[['A full sensory memory that lives in my skin','S'],['The satisfaction of complete physical release','X'],['The psychological depth of what we entered together','K']]},
+      {q:'Foreplay to me means...',a:[['Everything before touch even begins: atmosphere, presence, slowness','S'],['The physical escalation toward intensity and release','X'],['The establishing of a frame, a role, a dynamic','K']]},
+      {q:'If intimacy were a room, mine would feel...',a:[['Warm, textured, slow, and full of sensory detail','S'],['Electric, physical, and completely unrestrained','X'],['Defined, contained, and charged with clear intention','K']]},
+      {q:'The sound I find most arousing is...',a:[['Slow, present breathing and quiet body awareness','S'],['The sounds of bodies meeting in intensity','X'],['A voice with authority and clear, precise direction','K']]},
+      {q:'What gets under my skin most in intimacy is...',a:[["Someone's complete, unhurried sensory attention to me",'S'],['The direct, raw expression of physical desire','X'],['The way someone holds their power with confidence','K']]},
+      {q:'After intimacy, what I most want is...',a:[['To stay in the sensory field as long as possible','S'],['The deep satisfaction of complete physical release','X'],['To process the psychological depth of what we shared','K']]},
+      {q:'My deepest desire in an intimate encounter is to...',a:[['Dissolve into pure presence and sensation','S'],['Be fully, physically devoured','X'],['Enter a carefully held container of power and trust','K']]},
+      {q:'What would make an experience perfect is...',a:[['Being fully witnessed in my body, every sensation honored','S'],['Full physical abandon with nothing held back','X'],['A dynamic so well-held I can fully release into it','K']]},
+      {q:'The thing I secretly want more of in intimacy is...',a:[['More slowness, more presence, more sensory depth','S'],['More raw physical intensity and embodied release','X'],['More intentional dynamics and psychological depth','K']]},
     ],
     score(answers){const c={S:0,X:0,K:0};answers.forEach(a=>{if(c[a]!==undefined)c[a]++});const t=Object.values(c).reduce((a,b)=>a+b,0)||1;return{S:Math.round(c.S/t*100),X:Math.round(c.X/t*100),K:Math.round(c.K/t*100)};},
     render(r){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];const labels={S:'Sensual',X:'Sexual',K:'Kink-oriented'};const interps={S:"Your primary desire language is Sensual. You're deeply responsive to atmosphere, texture, slowness, and presence. For you, intimacy is a full-body immersion experience.",X:"Your primary desire language is Sexual. You're drawn to the raw physical intensity of bodies meeting, the energy of mutual desire, the pleasure of pure sensation.",K:"Your primary desire language is Kink-oriented. What moves you most isn't just physical. It's psychological. Power dynamics, the edge of transgression, the deliberate construction of a scene."};return`<div class="ky-result-label">${labels[top]}</div><div style="margin-bottom:.75rem">${Object.entries(labels).map(([k,l])=>`<div class="ky-bar-row"><span class="ky-bar-label">${l}</span><div class="ky-bar-track"><div class="ky-bar-fill" style="width:${r[k]}%"></div></div><span class="ky-bar-pct">${r[k]}%</span></div>`).join('')}</div><p class="ky-result-interp">${interps[top]}</p>`}
   },
   {
     id:'desire-driver',emoji:'◎',title:'What Drives Desire',sub:'The engine underneath your wanting.',
-    _q:[
-      {q:'I feel most turned on when...',a:[['I feel completely safe and truly seen','safety'],['The physical sensation is overwhelming','sensation'],['Something unexpected or new happens','novelty'],['There\'s a clear power differential in play','power'],['I\'m inside a fantasy world we\'ve both agreed to enter','fantasy']]},
+    _qQuick:[
+      {q:'I feel most turned on when...',a:[['I feel completely safe and truly seen','safety'],['The physical sensation is overwhelming','sensation'],['Something unexpected or new happens','novelty'],["There's a clear power differential in play",'power'],["I'm inside a fantasy world we've both agreed to enter",'fantasy']]},
       {q:'What kills desire for me faster than anything is...',a:[['Feeling emotionally unsafe or unseen','safety'],['Sensory disconnection or numbness','sensation'],['Routine and predictability','novelty'],['No clear direction or dynamic','power'],['Being pulled out of the imaginary space','fantasy']]},
-      {q:'My most memorable intimate experiences involved...',a:[['Deep emotional trust and vulnerability','safety'],['Extraordinary physical sensation','sensation'],['Something we\'d never done before','novelty'],['One of us clearly in charge','power'],['A story or role we were playing together','fantasy']]},
+      {q:'My most memorable intimate experiences involved...',a:[['Deep emotional trust and vulnerability','safety'],['Extraordinary physical sensation','sensation'],["Something we'd never done before",'novelty'],['One of us clearly in charge','power'],['A story or role we were playing together','fantasy']]},
       {q:'If I could design the perfect experience, it would start with...',a:[['A long, unhurried conversation that builds real connection','safety'],['Touch that gradually intensifies without agenda','sensation'],['A spontaneous invitation to do something unexpected','novelty'],['An explicit agreement about who leads','power'],['Setting up a scene or story together','fantasy']]},
+      {q:'The quickest way to open me up is...',a:[['Feeling genuinely emotionally seen and safe','safety'],['Touch that deliberately and slowly intensifies','sensation'],['Something completely unexpected','novelty'],['A clear direction or dynamic being established','power'],['A story or role we enter together','fantasy']]},
+      {q:'I feel most alive in intimacy when...',a:[['The emotional connection is truly profound','safety'],['Physical sensation becomes almost overwhelming','sensation'],["We go somewhere we've never been before",'novelty'],["There's a defined dynamic at play",'power'],["We're fully inside a shared imaginary world",'fantasy']]},
+      {q:'When I imagine ideal intimacy, what I see is...',a:[['Two people who feel completely safe with each other','safety'],['Extraordinary physical intensity and sensation','sensation'],['Something neither of us has experienced before','novelty'],['A clearly held dynamic between two people','power'],['A story or scenario we both fully inhabit','fantasy']]},
+      {q:'What makes me feel the most desired is...',a:[['Being truly seen and emotionally held','safety'],['Physical desire expressed through sensation and touch','sensation'],['Being someone who inspires something new','novelty'],['Being chosen to inhabit a specific role','power'],['Being part of a story that excites us both','fantasy']]},
+      {q:'When intimacy disappoints, it is usually because...',a:[["I didn't feel safe enough to open up",'safety'],['The physical connection was muted or absent','sensation'],['It felt predictable and exactly like before','novelty'],['There was no clear direction or frame','power'],["We couldn't quite enter the imaginary space",'fantasy']]},
+      {q:'The thing I return to when I want to feel aroused is...',a:[['A memory of feeling truly safe and seen','safety'],['A peak physical sensation I experienced','sensation'],['The memory of doing something I had never done','novelty'],['A moment where a dynamic was clear and held','power'],['A fantasy or scenario I love to revisit','fantasy']]},
+    ],
+    _qMore:[
+      {q:'The question I am most excited by in intimacy is...',a:[['How deeply can we truly see each other?','safety'],['How much sensation can my body hold?','sensation'],['What have I never experienced before?','novelty'],['Who holds the frame in this space?','power'],['What story are we telling together?','fantasy']]},
+      {q:'What turns me off fastest is...',a:[['Emotional unsafety or any trace of judgment','safety'],['Numbness or disconnection from the body','sensation'],['The same experience repeated the same way','novelty'],['No sense of direction or established frame','power'],['Being interrupted out of the imaginary space','fantasy']]},
+      {q:'What I want a partner to offer me most is...',a:[['Full emotional presence and unconditional safety','safety'],['Exceptional skill and attunement with sensation','sensation'],['A willingness to explore the unknown with me','novelty'],['The ability to hold a dynamic with confidence','power'],['A rich imagination and full willingness to play','fantasy']]},
+      {q:'In my body, desire feels like...',a:[['A slow melting when I feel genuinely safe','safety'],['A building intensity that reaches for release','sensation'],['A sharp spike of excitement at something new','novelty'],['A charge that ignites when a dynamic becomes clear','power'],['A drift into another world entirely','fantasy']]},
+      {q:'When I talk about what I want in intimacy, I mention...',a:[['Connection, trust, safety, being seen','safety'],['Touch, sensation, intensity, physical pleasure','sensation'],['New experiences, exploration, adventure','novelty'],['Dynamics, roles, power, clarity','power'],['Fantasy, story, character, imagination','fantasy']]},
+      {q:'After a deeply satisfying intimate experience, I feel...',a:[['Emotionally held, understood, and safe','safety'],['Physically complete, released, and satisfied','sensation'],['Expanded by what I discovered about myself','novelty'],['Clear and grounded in having held a good dynamic','power'],['Transported by the story we entered together','fantasy']]},
+      {q:'I am most able to fully let go in intimacy when...',a:[['I feel completely emotionally safe','safety'],['Physical sensation carries me completely away','sensation'],['Something unexpected surprises me open','novelty'],['The dynamic is clear, agreed, and trustworthy','power'],["I'm fully inside a shared story or fantasy",'fantasy']]},
+      {q:'The thing I need most before intimacy can really open is...',a:[['To feel genuinely emotionally safe','safety'],['Time for my body to awaken through sensation','sensation'],['Some sense of novelty or discovery ahead','novelty'],['A frame or dynamic to be established','power'],['To be drawn into an imaginary space','fantasy']]},
+      {q:'In my most memorable experiences, the common thread is...',a:[['I felt completely and unconditionally safe','safety'],['The physical intensity was extraordinary','sensation'],['It was something entirely new for me','novelty'],['There was a clear and well-held dynamic','power'],['We were fully inside a shared imaginary world','fantasy']]},
+      {q:'If I had to name my desire in one word, it would be...',a:[['Safety','safety'],['Sensation','sensation'],['Discovery','novelty'],['Dynamic','power'],['Story','fantasy']]},
     ],
     score(answers){const c={safety:0,sensation:0,novelty:0,power:0,fantasy:0};answers.forEach(a=>{if(c[a]!==undefined)c[a]++});return c;},
-    render(r){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];const labels={safety:'Safety',sensation:'Sensation',novelty:'Novelty',power:'Power',fantasy:'Fantasy'};const interps={safety:"Your desire is rooted in safety. You don't need wild or complex, you need real. When you feel genuinely seen and emotionally safe, your desire unlocks fully.",sensation:"Your desire lives in the body. Sensation is your primary doorway. You're deeply responsive to touch, temperature, pressure, and physical intensity.",novelty:"Novelty is your desire engine. New experiences, unexpected moments, the edge of the unknown. Routine dampens you; surprise awakens you.",power:"Power dynamics are your primary desire driver. The explicit negotiation of who leads and who follows, the clarity of a defined dynamic, the trust that makes that dynamic possible.",fantasy:"Your desire lives in imagination. You're aroused by story, by character, by the co-creation of a shared world."};return`<div class="ky-result-label">Your engine: ${labels[top]}</div><div style="margin-bottom:.75rem">${Object.entries(labels).map(([k,l])=>`<div class="ky-bar-row"><span class="ky-bar-label">${l}</span><div class="ky-bar-track"><div class="ky-bar-fill" style="width:${r[k]*25}%"></div></div></div>`).join('')}</div><p class="ky-result-interp">${interps[top]}</p>`}
+    render(r){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];const labels={safety:'Safety',sensation:'Sensation',novelty:'Novelty',power:'Power',fantasy:'Fantasy'};const interps={safety:"Your desire is rooted in safety. You don't need wild or complex, you need real. When you feel genuinely seen and emotionally safe, your desire unlocks fully.",sensation:"Your desire lives in the body. Sensation is your primary doorway. You're deeply responsive to touch, temperature, pressure, and physical intensity.",novelty:"Novelty is your desire engine. New experiences, unexpected moments, the edge of the unknown. Routine dampens you; surprise awakens you.",power:"Power dynamics are your primary desire driver. The explicit negotiation of who leads and who follows, the clarity of a defined dynamic, the trust that makes that dynamic possible.",fantasy:"Your desire lives in imagination. You're aroused by story, by character, by the co-creation of a shared world."};const tot=Object.values(r).reduce((a,b)=>a+b,0)||1;return`<div class="ky-result-label">Your engine: ${labels[top]}</div><div style="margin-bottom:.75rem">${Object.entries(labels).map(([k,l])=>`<div class="ky-bar-row"><span class="ky-bar-label">${l}</span><div class="ky-bar-track"><div class="ky-bar-fill" style="width:${Math.round(r[k]/tot*100)}%"></div></div></div>`).join('')}</div><p class="ky-result-interp">${interps[top]}</p>`}
   },
   {
     id:'communication-style',emoji:'◇',title:'How You Communicate',sub:'Your intimacy communication signature.',
-    _q:[
+    _qQuick:[
       {q:'When I want something in an intimate moment, I usually...',a:[['Say it directly and clearly','direct'],['Find a way to show rather than tell','nonverbal'],['Wait and hope they notice','silent'],['Turn it into a game or playful ask','playful']]},
-      {q:'When something doesn\'t feel right, I tend to...',a:[['Name it immediately','direct'],['Pull back physically and hope they read it','nonverbal'],['Push through without saying anything','silent'],['Redirect with humor or a different suggestion','playful']]},
-      {q:'My biggest challenge in asking for what I want is...',a:[['Nothing. I ask directly.','direct'],['Finding the right words when my body already knows','nonverbal'],['Fear of being too much or asking for too much','silent'],['Being taken seriously when I\'m being playful','playful']]},
-      {q:'After an experience, I process by...',a:[['Talking through what worked and what didn\'t','direct'],['Staying in physical closeness without words','nonverbal'],['Internalizing everything quietly','silent'],['Making it light, finding the funny in it','playful']]},
+      {q:"When something doesn't feel right, I tend to...",a:[['Name it immediately','direct'],['Pull back physically and hope they read it','nonverbal'],['Push through without saying anything','silent'],['Redirect with humor or a different suggestion','playful']]},
+      {q:'My biggest challenge in asking for what I want is...',a:[['Nothing. I ask directly.','direct'],['Finding the right words when my body already knows','nonverbal'],['Fear of being too much or asking for too much','silent'],["Being taken seriously when I'm being playful",'playful']]},
+      {q:'After an experience, I process by...',a:[['Talking through what worked and what did not','direct'],['Staying in physical closeness without words','nonverbal'],['Internalizing everything quietly','silent'],['Making it light, finding the funny in it','playful']]},
+      {q:'Before an intimate experience, I am most likely to...',a:[['State clearly what I want and what I need','direct'],['Use touch and body language to establish the tone','nonverbal'],['Wait and see what naturally unfolds','silent'],['Set the mood with something fun and light','playful']]},
+      {q:"When I need to slow something down, I...",a:[['Say so immediately and clearly','direct'],['Pull back physically and create space','nonverbal'],['Hope the other person senses the shift','silent'],['Introduce something playful to change the energy','playful']]},
+      {q:'The thing I find hardest to communicate in intimacy is...',a:[['Nothing much. I ask directly','direct'],["What my body feels but can't find words for",'nonverbal'],['What I need without feeling like too much','silent'],['When something matters deeply, without deflecting with humor','playful']]},
+      {q:'When I feel completely satisfied, I usually...',a:[['Tell them exactly what worked','direct'],['Hold them close without needing words','nonverbal'],['Sit quietly with the feeling','silent'],['Laugh together and make it a memory','playful']]},
+      {q:'When someone asks what I need in an intimate moment, I...',a:[['Answer immediately and specifically','direct'],['Show them rather than tell them','nonverbal'],['Feel flooded and take time to find the words','silent'],['Deflect with a question or turn it back to them','playful']]},
+      {q:'The feedback I most need to grow is...',a:[['Learning to soften my directness sometimes','direct'],['Building a verbal vocabulary to match what my body knows','nonverbal'],['Learning to ask for one thing per encounter','silent'],['Learning to drop into seriousness when it is called for','playful']]},
+    ],
+    _qMore:[
+      {q:'My preferred way to establish consent is...',a:[['A clear verbal agreement before we begin','direct'],['Reading and responding to physical signals','nonverbal'],['Trusting the implicit understanding between us','silent'],['Making it part of the play itself','playful']]},
+      {q:'When something unexpected happens in intimacy, I...',a:[['Address it directly in the moment','direct'],['Respond through body language and presence','nonverbal'],['Absorb it internally and adapt quietly','silent'],['Roll with it and bring some lightness','playful']]},
+      {q:'After an intense intimate experience, I most want...',a:[['To talk about what happened','direct'],['Physical closeness without words','nonverbal'],['Quiet space to integrate alone','silent'],['Something light to bring us back to everyday life','playful']]},
+      {q:'The communication style I am most drawn to in a partner is...',a:[['Clear, honest, direct expression','direct'],['Deep physical attunement and somatic sensitivity','nonverbal'],['Quiet presence and felt understanding','silent'],['Lightness, humor, and playful aliveness','playful']]},
+      {q:'When I am uncertain about something in intimacy, I...',a:[['Ask clearly what is happening','direct'],['Use my body to signal and wait for response','nonverbal'],['Hold the uncertainty quietly inside','silent'],['Introduce something playful to navigate the tension','playful']]},
+      {q:'Negotiating a new intimate experience for me looks like...',a:[['Explicit, clear conversation. I enjoy the clarity','direct'],['Gradual physical exploration and adjustment','nonverbal'],['Something I find difficult and tend to avoid naming','silent'],['Turning it into a game or adventure','playful']]},
+      {q:'When intimacy does not meet my needs, I typically...',a:[['Say so directly afterward','direct'],['Show dissatisfaction through my body','nonverbal'],['Internalize it and rarely mention it','silent'],['Find a gentle playful way to redirect','playful']]},
+      {q:'In an ideal intimate encounter, communication would feel...',a:[['Clear, honest, and explicitly mutual','direct'],['Wordless, felt, and somatically understood','nonverbal'],['Quiet and understood without being spoken','silent'],['Light, creative, and full of play','playful']]},
+      {q:'When a partner does something I love, I...',a:[['Tell them clearly and specifically','direct'],['Show them with my body','nonverbal'],['Hold it inside and hope they know','silent'],['Express it with laughter and energy','playful']]},
+      {q:'My relationship to explicit communication about desire is...',a:[['Natural. I initiate it easily','direct'],['I prefer to let body language lead','nonverbal'],['It feels vulnerable and hard to access','silent'],['It works best when wrapped in lightness','playful']]},
     ],
     score(answers){const c={direct:0,nonverbal:0,silent:0,playful:0};answers.forEach(a=>{if(c[a]!==undefined)c[a]++});return c;},
     render(r){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];const labels={direct:'Direct',nonverbal:'Somatic',silent:'Internal',playful:'Playful'};const interps={direct:"You communicate directly. Words are your preferred tool and you're generally comfortable naming what you want. Your growth edge is learning that not everyone receives direct communication the same way.",nonverbal:"Your body speaks before your words do. You're highly tuned to physical signals: touch, space, breath. Your growth edge is developing a verbal vocabulary that matches your somatic one.",silent:"You tend to process intimacy internally and may struggle to ask for what you need. Your growth edge is the practice of naming one want per encounter, even something tiny.",playful:"You use lightness and humor as your primary communication style. Your growth edge is learning to drop into something more serious when the moment calls for it."};return`<div class="ky-result-label">${labels[top]} Communicator</div><p class="ky-result-interp">${interps[top]}</p>`}
   },
   {
     id:'body-connection',emoji:'○',title:'Body Connection',sub:'How present are you in your own body?',
-    _q:[
+    _qQuick:[
       {q:'During intimate moments, I am usually...',a:[['Fully inside my body and sensations',3],['Mostly present with occasional mind-wandering',2],['About half and half, body and thoughts',1],['Mostly in my head, watching from above',0]]},
       {q:'I notice physical sensations in my body...',a:[['Immediately and clearly',3],['After a short delay',2],['Only when they become quite strong',1],['I sometimes miss them entirely',0]]},
-      {q:'When something doesn\'t feel right, my body...',a:[['Signals it immediately and I listen',3],['Signals it and I notice eventually',2],['Signals something but I override it',1],['I tend not to notice until much later',0]]},
+      {q:"When something doesn't feel right, my body...",a:[['Signals it immediately and I listen',3],['Signals it and I notice eventually',2],['Signals something but I override it',1],['I tend not to notice until much later',0]]},
       {q:'Taking a full conscious breath right now feels...',a:[['Natural and immediate',3],['Possible with a little effort',2],['I had to really try',1],['My breath is shallow most of the time',0]]},
       {q:'After a physical or sexual experience, I tend to...',a:[['Come back to my body naturally',3],['Take a few minutes to ground',2],['Feel floaty or disconnected for a while',1],['Often feel numb or strangely absent',0]]},
+      {q:'When I enter a room, I am aware of my body...',a:[['Immediately and continuously',3],['Most of the time',2],['Mainly when something draws my attention',1],['Rarely, unless I am in pain',0]]},
+      {q:'During pleasure, I tend to...',a:[['Stay fully present in the sensation as it builds',3],['Stay present most of the time with some drift',2],['Drift in and out of full presence',1],['Observe myself more than feel myself',0]]},
+      {q:'When I am touched, I...',a:[['Feel the sensation immediately and clearly',3],['Feel it after a brief settling moment',2],['Feel it mainly when it becomes intense',1],['Notice it intellectually more than somatically',0]]},
+      {q:'My relationship to my own physical pleasure is...',a:[['Comfortable, accessible, and well-mapped',3],['Generally positive with some uncertainty',2],['Somewhat unfamiliar or hard to track',1],['Largely unexplored or disconnected',0]]},
+      {q:'When I check in with my body right now, I notice...',a:[['Specific sensations clearly and easily',3],['Something vague but present',2],['It takes real effort to find anything',1],['Mostly mental noise, not body awareness',0]]},
     ],
-    score(answers){return answers.reduce((a,b)=>a+b,0);},
-    render(total){const pct=Math.round(total/15*100);const levels=[[0,40,'Developing Connection',"Your body and you are still getting acquainted. The practices in this experience are specifically designed for where you are. Somatic awareness is a skill, not a fixed trait."],[40,70,'Building Connection',"You have a real relationship with your body but there are moments when you lose the thread. Your work is building consistency, learning to return to your body faster when you drift."],[70,101,'Embodied',"You live in your body with a high degree of awareness. You notice sensations quickly, you trust your body's signals, and you come back naturally when you drift."]];const [,,label,interp]=levels.find(([min,max])=>pct>=min&&pct<max)||levels[0];return`<div class="ky-ring"><span>${pct}%</span></div><div class="ky-result-label">${label}</div><p class="ky-result-interp">${interp}</p>`}
+    _qMore:[
+      {q:'After a strong emotion, my body...',a:[['Returns to baseline relatively quickly',3],['Needs some time and gentleness to settle',2],['Stays activated for a long time',1],['I am often not sure what my body held',0]]},
+      {q:'I know I am nervous because...',a:[['I feel it immediately in specific parts of my body',3],['I notice the body signals eventually',2],['Someone else usually notices before I do',1],['I tend to intellectualize before I feel',0]]},
+      {q:'During sex or sensual touch, my mind...',a:[['Stays mostly present in my body',3],['Wanders sometimes but comes back',2],['Often drifts to thoughts or self-monitoring',1],['Is often somewhere else entirely',0]]},
+      {q:'My breath in intimate moments...',a:[['Deepens naturally and I move with it',3],['Stays present with some intention',2],['Tends to become shallow',1],['I often hold it without realizing',0]]},
+      {q:'When I want to feel more in my body, I can usually...',a:[['Find it within a few breaths',3],['Get there with intentional focus',2],['Struggle even when I want to',1],['Not know where to start',0]]},
+      {q:'The word that best describes my relationship with my body is...',a:[['Home',3],['Familiar',2],['Still getting to know each other',1],['Stranger',0]]},
+      {q:'Physical discomfort in an intimate experience...',a:[['I notice immediately and can name it clearly',3],['I notice but take a moment to process it',2],['I often push through without voicing it',1],['I sometimes realize only afterward',0]]},
+      {q:'After intimacy, my body feels...',a:[['Settled, full, and clearly located',3],['Pleasantly warm and mostly present',2],['Floaty or dispersed',1],['Absent or strangely numb',0]]},
+      {q:'Grounding practices like deep breathing or body scanning...',a:[['Come easily and feel effective',3],['Work with some intention',2],['Feel effortful or strange to me',1],['Do not seem to reach me',0]]},
+      {q:"My body's ability to experience pleasure...",a:[['Is accessible, responsive, and well understood',3],['Is mostly there, with some gaps',2],['Feels limited or hard to access',1],['Feels largely unfamiliar or shut down',0]]},
+    ],
+    score(answers){const total=answers.reduce((a,b)=>a+b,0);return{total,maxScore:answers.length*3};},
+    render(r){const total=typeof r==='number'?r:(r.total||0);const maxScore=typeof r==='number'?15:(r.maxScore||15);const pct=Math.round(total/maxScore*100);const levels=[[0,40,'Developing Connection',"Your body and you are still getting acquainted. The practices in this experience are specifically designed for where you are. Somatic awareness is a skill, not a fixed trait."],[40,70,'Building Connection',"You have a real relationship with your body but there are moments when you lose the thread. Your work is building consistency, learning to return to your body faster when you drift."],[70,101,'Embodied',"You live in your body with a high degree of awareness. You notice sensations quickly, you trust your body's signals, and you come back naturally when you drift."]];const [,,label,interp]=levels.find(([min,max])=>pct>=min&&pct<max)||levels[0];return`<div class="ky-ring"><span>${pct}%</span></div><div class="ky-result-label">${label}</div><p class="ky-result-interp">${interp}</p>`}
   },
   {
     id:'turn-on-map',emoji:'✦',title:'Turn-On Map',sub:'Select everything that resonates.',
@@ -1686,19 +1899,61 @@ const KY_TESTS=[
       {id:'body',l:'Pure physical sensation',d:'Bodies, intensity, pleasure'},
       {id:'fantasy',l:'Fantasy and role',d:'Story, character, imagination'},
     ],
+    catsFull:[
+      {id:'touch',l:'Quality of touch',d:'Slow, deliberate, attentive touch'},
+      {id:'words',l:'Words and voice',d:"What's said, how it's said, the tone"},
+      {id:'eye',l:'Eye contact',d:'Being truly seen'},
+      {id:'scent',l:'Scent',d:'Body, environment, specific smells'},
+      {id:'power',l:'Power differential',d:'Someone clearly in charge'},
+      {id:'surrender',l:'Full surrender',d:'Letting go completely'},
+      {id:'anticipation',l:'Anticipation',d:'The buildup before anything happens'},
+      {id:'risk',l:'The edge',d:'Slight risk, transgression, the almost-too-much'},
+      {id:'ritual',l:'Ritual',d:'Intentional setup, sacred atmosphere'},
+      {id:'play',l:'Playfulness',d:'Lightness, laughter, games'},
+      {id:'restraint',l:'Physical restraint',d:'Being held in place'},
+      {id:'witness',l:'Being witnessed',d:'Someone watching or knowing'},
+      {id:'novelty',l:'Novelty',d:'First times, new territory'},
+      {id:'depth',l:'Emotional depth',d:'Intimacy as emotional vulnerability'},
+      {id:'body',l:'Pure physical sensation',d:'Bodies, intensity, pleasure'},
+      {id:'fantasy',l:'Fantasy and role',d:'Story, character, imagination'},
+      {id:'breath',l:'Breath and sound',d:"The sound of desire in another person's breathing"},
+      {id:'mirror',l:'Being mirrored',d:'Someone fully tracking and responding to you'},
+      {id:'sacred',l:'Sacred frame',d:'When intimacy feels ceremonial or holy'},
+      {id:'instruction',l:'Receiving instruction',d:'Being directed with care and precision'},
+      {id:'worship',l:'Being worshipped',d:'Full devoted attention to your body and pleasure'},
+      {id:'threshold',l:'At the threshold',d:'The charged moment just before the leap'},
+      {id:'skin',l:'Skin to skin',d:'Extended full-body contact without agenda'},
+      {id:'darkness',l:'Darkness and shadow',d:'The parts of desire that live in the unseen'},
+    ],
   }
 ];
+
 
 let kyAnswers={};
 let kyResults={};
 
+function kyModeKey(id){return id+'_'+kyMode;}
+function kyGetQuestions(t){
+  if(kyMode==='quick') return t._qQuick||t._q||[];
+  return (t._qQuick||t._q||[]).concat(t._qMore||[]);
+}
+function kyGetCats(t){return kyMode==='quick'?t.cats:(t.catsFull||t.cats);}
+
 async function loadKnowYourself(){
   const container=document.getElementById('ky-tests');
   if(!container)return;
-  // Load saved profiles from API
   try{
     const r=await apiFetch('/profiles');
-    if(r.ok){const d=await r.json();const profs=Array.isArray(d)?d:(d.profiles||[]);profs.forEach(p=>{if(p.test_id)kyResults[p.test_id]=p.scores||{};})}
+    if(r.ok){
+      const d=await r.json();
+      const profs=Array.isArray(d)?d:(d.profiles||[]);
+      profs.forEach(p=>{
+        if(p.test_id){
+          const key=p.test_id.includes('_')?p.test_id:p.test_id+'_quick';
+          kyResults[key]=p.scores||{};
+        }
+      });
+    }
   }catch(e){}
   renderKyTests();
 }
@@ -1707,7 +1962,8 @@ function renderKyTests(){
   const container=document.getElementById('ky-tests');
   if(!container)return;
   container.innerHTML=KY_TESTS.map(t=>{
-    const done=!!kyResults[t.id];
+    const mKey=kyModeKey(t.id);
+    const done=!!kyResults[mKey];
     return`<div class="ky-card${done?' completed':''}" id="kyc-${t.id}">
       <div class="ky-card-header" onclick="toggleKyCard('${t.id}')">
         <div class="ky-emoji">${t.emoji}</div>
@@ -1723,57 +1979,59 @@ function toggleKyCard(id){
   const body=document.getElementById('kyb-'+id);
   if(!body)return;
   const isOpen=body.classList.contains('open');
-  // Close all
   document.querySelectorAll('.ky-body').forEach(b=>{b.classList.remove('open');b.innerHTML='';});
-  if(!isOpen){
-    body.classList.add('open');
-    renderKyTest(id,body);
-  }
+  if(!isOpen){body.classList.add('open');renderKyTest(id,body);}
 }
 
 function renderKyTest(id,body){
   const t=KY_TESTS.find(x=>x.id===id);
   if(!t)return;
-  if(!kyAnswers[id])kyAnswers[id]={};
-  // If already done, show result
-  if(kyResults[id]&&Object.keys(kyResults[id]).length>0){
-    body.innerHTML=`<div class="ky-result">${t.render?t.render(kyResults[id]):''}</div><button class="ky-submit-btn" style="margin-top:.85rem;background:transparent;border:1px solid rgba(155,127,166,.25);color:rgba(244,239,230,.45);font-size:.78rem" onclick="kyRetake('${id}')">Retake</button>`;
+  const mKey=kyModeKey(id);
+  if(!kyAnswers[mKey])kyAnswers[mKey]={};
+  if(kyResults[mKey]&&Object.keys(kyResults[mKey]).length>0){
+    body.innerHTML=`<div class="ky-result">${t.render?t.render(kyResults[mKey]):''}</div><button class="ky-submit-btn" style="margin-top:.85rem;background:transparent;border:1px solid rgba(155,127,166,.25);color:rgba(244,239,230,.45);font-size:.78rem" onclick="kyRetake('${id}')">Retake</button>`;
     return;
   }
   if(t.isMap){renderKyMap(t,body);return;}
-  // Q&A test
-  const qIdx=Object.keys(kyAnswers[id]).length;
-  if(qIdx>=t._q.length){
-    // All answered, compute and show result
-    const answers=t._q.map((_,i)=>kyAnswers[id][i]);
+  const qs=kyGetQuestions(t);
+  const qIdx=Object.keys(kyAnswers[mKey]).length;
+  if(qIdx>=qs.length){
+    const answers=qs.map((_,i)=>kyAnswers[mKey][i]);
     const result=t.score(answers);
     body.innerHTML=`<div class="ky-result">${t.render(result)}</div><button class="ky-submit-btn" onclick="kySubmit('${id}')" style="margin-top:.85rem">Save result</button>`;
     return;
   }
-  const q=t._q[qIdx];
-  body.innerHTML=`<div class="ky-progress">Question ${qIdx+1} of ${t._q.length}</div>
+  const q=qs[qIdx];
+  body.innerHTML=`<div class="ky-progress">Question ${qIdx+1} of ${qs.length}</div>
     <div class="ky-question">${q.q}</div>
     <div class="ky-options">${q.a.map((opt,i)=>`<button class="ky-opt" onclick="kyAnswer('${id}',${qIdx},${i})">${opt[0]}</button>`).join('')}</div>`;
 }
 
 function kyAnswer(id,qIdx,optIdx){
   const t=KY_TESTS.find(x=>x.id===id);
-  kyAnswers[id][qIdx]=t._q[qIdx].a[optIdx][1];
+  if(!t)return;
+  const mKey=kyModeKey(id);
+  const qs=kyGetQuestions(t);
+  if(!kyAnswers[mKey])kyAnswers[mKey]={};
+  kyAnswers[mKey][qIdx]=qs[qIdx].a[optIdx][1];
   const body=document.getElementById('kyb-'+id);
   if(body)renderKyTest(id,body);
 }
 
 function kyRetake(id){
-  delete kyAnswers[id];
-  delete kyResults[id];
+  const mKey=kyModeKey(id);
+  delete kyAnswers[mKey];
+  delete kyResults[mKey];
   const body=document.getElementById('kyb-'+id);
   if(body)renderKyTest(id,body);
 }
 
 function renderKyMap(t,body){
-  const saved=kyResults[t.id];
+  const mKey=kyModeKey(t.id);
+  const saved=kyResults[mKey];
   const selIds=saved&&saved.selected?saved.selected:[];
-  body.innerHTML=`<div class="ky-cloud">${t.cats.map(c=>`<button class="ky-chip${selIds.includes(c.id)?' sel':''}" onclick="toggleKyChip(this,'${t.id}','${c.id}')" title="${c.d}">${c.l}</button>`).join('')}</div>
+  const cats=kyGetCats(t);
+  body.innerHTML=`<div class="ky-cloud">${cats.map(c=>`<button class="ky-chip${selIds.includes(c.id)?' sel':''}" onclick="toggleKyChip(this,'${t.id}','${c.id}')" title="${c.d}">${c.l}</button>`).join('')}</div>
     <button class="ky-submit-btn" id="ky-map-save" onclick="kySubmitMap('${t.id}')">Save my map</button>`;
 }
 
@@ -1783,39 +2041,41 @@ function toggleKyChip(btn,testId,chipId){
 
 async function kySubmitMap(id){
   const body=document.getElementById('kyb-'+id);
+  const t=KY_TESTS.find(x=>x.id===id);
+  const cats=kyGetCats(t);
+  const mKey=kyModeKey(id);
   const selected=[];
   body.querySelectorAll('.ky-chip.sel').forEach(b=>{
-    const t=KY_TESTS.find(x=>x.id===id);
-    const cat=t.cats.find(c=>c.l===b.textContent);
+    const cat=cats.find(c=>c.l===b.textContent);
     if(cat)selected.push(cat.id);
   });
-  const scores={selected};
+  const scores={selected,mode:kyMode};
   await kySaveToApi(id,scores);
-  kyResults[id]=scores;
+  kyResults[mKey]=scores;
   renderKyTests();
   body.classList.add('open');
-  body.innerHTML=`<div class="ky-result"><div class="ky-result-label">Saved.</div><p class="ky-result-interp">${selected.length?'Your activation points: '+selected.map(s=>{const t2=KY_TESTS.find(x=>x.id===id);const c=t2.cats.find(x=>x.id===s);return c?c.l:s}).join(', ')+'.':"Select at least one to build your map."}</p></div>`;
+  body.innerHTML=`<div class="ky-result"><div class="ky-result-label">Saved.</div><p class="ky-result-interp">${selected.length?'Your activation points: '+selected.map(s=>{const c=cats.find(x=>x.id===s);return c?c.l:s}).join(', ')+'.':"Select at least one to build your map."}</p></div>`;
 }
 
 async function kySubmit(id){
   const t=KY_TESTS.find(x=>x.id===id);
-  const answers=t._q.map((_,i)=>kyAnswers[id]?kyAnswers[id][i]:undefined);
+  const mKey=kyModeKey(id);
+  const qs=kyGetQuestions(t);
+  const answers=qs.map((_,i)=>kyAnswers[mKey]?kyAnswers[mKey][i]:undefined);
   const result=t.score(answers);
   await kySaveToApi(id,result);
-  kyResults[id]=result;
+  kyResults[mKey]=result;
   renderKyTests();
   const body=document.getElementById('kyb-'+id);
-  if(body){
-    body.classList.add('open');
-    body.innerHTML=`<div class="ky-result">${t.render(result)}</div>`;
-  }
+  if(body){body.classList.add('open');body.innerHTML=`<div class="ky-result">${t.render(result)}</div>`;}
 }
 
 async function kySaveToApi(testId,scores){
   try{
-    await apiFetch('/profiles/submit',{method:'POST',body:JSON.stringify({test_id:testId,scores,version:'jouissance'})});
+    await apiFetch('/profiles/submit',{method:'POST',body:JSON.stringify({test_id:testId+'_'+kyMode,scores,version:'jouissance'})});
   }catch(e){}
 }
+
 
 document.getElementById('nav-mirror').addEventListener('click',()=>{loadKnowYourself();show('know-yourself');});
 
@@ -1862,6 +2122,7 @@ async function loadOngoingChallenges(){
 initWorkshop();
 document.getElementById('nav-modules').addEventListener('click',()=>{loadMods();show('modules')});
 document.getElementById('nav-rewards').addEventListener('click',()=>{loadRewards();show('rewards')});
+document.getElementById('nav-ranking').addEventListener('click',()=>{loadLeaderboard();show('leaderboard')});
 
 // ---- PWA INSTALL ----
 let _dip=null;
