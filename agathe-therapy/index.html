@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Therapy Reports | Agathe</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%239B8EC4' opacity='0.9'/><text x='50' y='68' font-family='sans-serif' font-size='55' font-weight='bold' fill='white' text-anchor='middle'>A</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #9B8EC4;
+      --purple-light: #B3A8D4;
+      --purple-dark: #7A6DAA;
+      --purple-faint: rgba(155,142,196,0.10);
+      --purple-border: rgba(155,142,196,0.22);
+      --charcoal: #2A2A35;
+      --text: #2A2A35;
+      --text-secondary: #5C5C72;
+      --text-muted: #8E8EA8;
+      --bg: #FAFAFA;
+      --bg-card: #FFFFFF;
+      --border: #E8E8F0;
+      --font-heading: 'Lora', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    /* LOCK SCREEN */
+    #lock-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      background: linear-gradient(135deg, #F5F3FB 0%, #FAFAFA 100%);
+    }
+
+    .lock-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 4px 32px rgba(155,142,196,0.10);
+      text-align: center;
+    }
+
+    .lock-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--purple-faint);
+      border: 2px solid var(--purple-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: var(--purple);
+    }
+
+    .lock-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .lock-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .lock-input {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      text-align: center;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .lock-input:focus { border-color: var(--purple); }
+
+    .lock-btn {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .lock-btn:hover { background: var(--purple-dark); }
+
+    .lock-error {
+      font-size: 0.82rem;
+      color: #C0392B;
+      margin-top: 0.6rem;
+      min-height: 1.2em;
+    }
+
+    /* PORTAL */
+    #portal { display: none; }
+
+    .site-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+      animation: fadeInUp 0.35s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .site-nav {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250,250,250,0.92);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-name {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .nav-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--purple-faint);
+      color: var(--purple);
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      border: 1px solid var(--purple-border);
+    }
+
+    .page-header { margin-bottom: 2rem; }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    .page-header p { font-size: 0.88rem; color: var(--text-muted); }
+
+    /* STATS */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      color: var(--purple);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      display: block;
+    }
+
+    /* SESSION CARDS */
+    .section-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sessions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .session-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      text-decoration: none;
+      color: var(--text);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .session-card:hover {
+      border-color: var(--purple);
+      transform: translateX(3px);
+    }
+
+    .session-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--purple-faint);
+      border: 1px solid var(--purple-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      color: var(--purple);
+      flex-shrink: 0;
+    }
+
+    .session-date {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .session-preview {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .session-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.4rem;
+    }
+
+    .session-tag {
+      font-size: 0.68rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 10px;
+      background: var(--purple-faint);
+      color: var(--purple-dark);
+      border: 1px solid var(--purple-border);
+    }
+
+    .session-arrow { font-size: 1.1rem; color: var(--text-muted); flex-shrink: 0; }
+
+    /* REPORT VIEW */
+    #report-view { display: none; }
+
+    .report-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--purple);
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+      padding: 0.4rem 0;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+    }
+
+    .report-back:hover { text-decoration: underline; }
+
+    .report-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .report-header h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .report-header-meta { font-size: 0.82rem; color: var(--text-muted); }
+
+    .report-section { margin-bottom: 1.75rem; }
+
+    .report-section-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--purple-dark);
+      margin-bottom: 0.6rem;
+    }
+
+    .report-section-body {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+
+    /* EMPTY + LOADING */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 480px) {
+      .lock-card { padding: 2rem 1.25rem; }
+      .page-header h1 { font-size: 1.5rem; }
+      .stats-strip { gap: 0.6rem; }
+      .stat-value { font-size: 1.3rem; }
+      .session-card { grid-template-columns: auto 1fr; }
+      .session-arrow { display: none; }
+      .report-header h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOCK SCREEN -->
+  <div id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-avatar">A</div>
+      <h1 class="lock-title">Therapy Reports</h1>
+      <p class="lock-subtitle">Private access for Judith</p>
+      <input
+        type="password"
+        id="pw-input"
+        class="lock-input"
+        placeholder="Enter access code"
+        autocomplete="current-password"
+        autofocus
+      >
+      <button class="lock-btn" id="pw-submit">Access Reports</button>
+      <p class="lock-error" id="pw-error"></p>
+    </div>
+  </div>
+
+  <!-- PORTAL -->
+  <div id="portal">
+    <div class="site-wrapper">
+
+      <nav class="site-nav">
+        <span class="nav-name">Agathe</span>
+        <span class="nav-badge">Private</span>
+      </nav>
+
+      <!-- LIST VIEW -->
+      <div id="list-view">
+        <div class="page-header">
+          <h1>Therapy Reports</h1>
+          <p id="portal-subtitle">Biweekly mental health reports</p>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-card">
+            <span class="stat-value" id="stat-total">0</span>
+            <span class="stat-label">Reports</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="stat-latest">--</span>
+            <span class="stat-label">Latest</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="stat-since">--</span>
+            <span class="stat-label">Since</span>
+          </div>
+        </div>
+
+        <div class="section-title">All sessions</div>
+        <div class="sessions-list" id="sessions-list">
+          <div class="empty-state">Loading reports...</div>
+        </div>
+      </div>
+
+      <!-- REPORT DETAIL VIEW -->
+      <div id="report-view">
+        <button class="report-back" id="back-btn">&#8592; Back to all reports</button>
+        <div class="report-header">
+          <h2 id="report-title"></h2>
+          <div class="report-header-meta" id="report-meta"></div>
+        </div>
+        <div id="report-sections"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var PASSWORD = 'judith2026';
+    var SESSION_KEY = 'agathe_auth_v1';
+
+    // AUTH
+
+    function unlock() {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('portal').style.display = 'block';
+      loadData();
+    }
+
+    document.getElementById('pw-submit').addEventListener('click', function () {
+      var val = document.getElementById('pw-input').value;
+      if (val === PASSWORD) {
+        document.getElementById('pw-error').textContent = '';
+        unlock();
+      } else {
+        document.getElementById('pw-error').textContent = 'Incorrect access code.';
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+      }
+    });
+
+    document.getElementById('pw-input').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') document.getElementById('pw-submit').click();
+    });
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('portal').style.display = 'block';
+      loadData();
+    }
+
+    // DATA
+
+    var allSessions = [];
+
+    function loadData() {
+      fetch('/agathe-therapy/data/sessions.json')
+        .then(function (res) {
+          if (!res.ok) throw new Error('no data');
+          return res.json();
+        })
+        .then(function (data) {
+          allSessions = data.sessions || (Array.isArray(data) ? data : []);
+          renderStats(allSessions);
+          renderList(allSessions);
+          var hash = window.location.hash.replace('#', '');
+          if (hash) {
+            var s = allSessions.find(function (x) { return x.date === hash || x.id === hash; });
+            if (s) { showReport(s); return; }
+          }
+          showListView();
+        })
+        .catch(function () {
+          allSessions = [];
+          renderStats([]);
+          renderList([]);
+          showListView();
+        });
+    }
+
+    // STATS
+
+    function renderStats(sessions) {
+      document.getElementById('stat-total').textContent = sessions.length;
+      if (sessions.length > 0) {
+        var sorted = sessions.slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
+        document.getElementById('stat-latest').textContent = fmtShort(sorted[0].date);
+        document.getElementById('stat-since').textContent = fmtMonth(sorted[sorted.length - 1].date);
+      }
+    }
+
+    // LIST
+
+    function renderList(sessions) {
+      var container = document.getElementById('sessions-list');
+      if (!sessions || sessions.length === 0) {
+        container.innerHTML = '<div class="empty-state">No reports have been generated yet. Reports will appear here after the first therapy cycle.</div>';
+        return;
+      }
+      var sorted = sessions.slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
+      container.innerHTML = sorted.map(function (s, idx) {
+        var num = sorted.length - idx;
+        var preview = s.preview ||
+          (s.sections && s.sections[0] && s.sections[0].text
+            ? s.sections[0].text.substring(0, 160) + '...'
+            : 'View full report.');
+        var tags = (s.tags || s.schemas || []).slice(0, 3)
+          .map(function (t) { return '<span class="session-tag">' + esc(t) + '</span>'; }).join('');
+        return '<div class="session-card" data-date="' + esc(s.date) + '">'
+          + '<div class="session-number">' + num + '</div>'
+          + '<div>'
+          + '<div class="session-date">' + fmtDate(s.date) + (s.period ? ' &middot; ' + esc(s.period) : '') + '</div>'
+          + '<div class="session-preview">' + esc(preview) + '</div>'
+          + (tags ? '<div class="session-tags">' + tags + '</div>' : '')
+          + '</div>'
+          + '<span class="session-arrow">&#8250;</span>'
+          + '</div>';
+      }).join('');
+
+      container.addEventListener('click', function (e) {
+        var card = e.target.closest('.session-card');
+        if (!card) return;
+        var date = card.dataset.date;
+        var s = allSessions.find(function (x) { return x.date === date || x.id === date; });
+        if (s) showReport(s);
+      });
+    }
+
+    // REPORT VIEW
+
+    var SECTION_LABELS = [
+      { key: 'emotional_baseline',    label: '1. Emotional Baseline' },
+      { key: 'core_stressors',        label: '2. Core Life Stressors' },
+      { key: 'relationship_dynamics', label: '3. Relationship Dynamics' },
+      { key: 'emotional_themes',      label: '4. Emotional Themes' },
+      { key: 'behavioral_patterns',   label: '5. Behavioral Patterns' },
+      { key: 'emerging_insights',     label: '6. Emerging Insights' },
+      { key: 'core_questions',        label: '7. Core Questions for Therapy' },
+    ];
+
+    function showReport(session) {
+      window.location.hash = session.date;
+      document.getElementById('list-view').style.display = 'none';
+      document.getElementById('report-view').style.display = 'block';
+
+      document.getElementById('report-title').textContent = 'Session ' + fmtDate(session.date);
+      document.getElementById('report-meta').textContent =
+        (session.period ? 'Period: ' + session.period + '  |  ' : '') + 'Generated ' + fmtDate(session.date);
+
+      var container = document.getElementById('report-sections');
+      var html = '';
+
+      if (session.sections && Array.isArray(session.sections)) {
+        html = session.sections.map(function (sec) {
+          return '<div class="report-section">'
+            + '<div class="report-section-title">' + esc(sec.title || '') + '</div>'
+            + '<div class="report-section-body">' + esc(sec.text || sec.body || '').replace(/\n/g, '<br>') + '</div>'
+            + '</div>';
+        }).join('');
+      } else {
+        html = SECTION_LABELS.map(function (def) {
+          var text = session[def.key];
+          if (!text) return '';
+          return '<div class="report-section">'
+            + '<div class="report-section-title">' + def.label + '</div>'
+            + '<div class="report-section-body">' + esc(text).replace(/\n/g, '<br>') + '</div>'
+            + '</div>';
+        }).join('');
+      }
+
+      container.innerHTML = html || '<div class="empty-state">Report content not yet available.</div>';
+      window.scrollTo(0, 0);
+    }
+
+    function showListView() {
+      window.location.hash = '';
+      document.getElementById('list-view').style.display = 'block';
+      document.getElementById('report-view').style.display = 'none';
+    }
+
+    document.getElementById('back-btn').addEventListener('click', showListView);
+
+    // UTILS
+
+    function fmtDate(d) {
+      if (!d) return '';
+      var dt = new Date(d + 'T12:00:00');
+      return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function fmtShort(d) {
+      if (!d) return '--';
+      var dt = new Date(d + 'T12:00:00');
+      return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    }
+
+    function fmtMonth(d) {
+      if (!d) return '--';
+      var dt = new Date(d + 'T12:00:00');
+      return dt.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    }
+
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+  }());
+  </script>
+</body>
+</html>
