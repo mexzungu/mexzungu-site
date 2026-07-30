@@ -314,6 +314,9 @@ textarea:focus{border-color:var(--accent)}
 .pwa-text{flex:1;font-size:.82rem;color:rgba(244,239,230,.68);line-height:1.45}
 .pwa-install-btn{background:var(--accent);border:none;border-radius:4px;color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.07em;padding:.55rem 1.1rem;cursor:pointer;white-space:nowrap}
 .pwa-dismiss{background:none;border:none;color:rgba(244,239,230,.32);font-size:1.1rem;cursor:pointer;padding:.4rem;flex-shrink:0}
+.theory-card{background:rgba(155,127,166,.06);border:1px solid rgba(155,127,166,.18);border-radius:8px;padding:1.2rem 1.1rem;margin-top:1.5rem}
+.theory-card-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--secondary);margin-bottom:.75rem}
+.theory-card-body{font-size:.88rem;color:rgba(244,239,230,.72);line-height:1.85;white-space:pre-wrap}
 </style>
 </head>
 <body>
@@ -633,6 +636,11 @@ textarea:focus{border-color:var(--accent)}
         <div class="chal-card-pts" id="h-chal-spicy-pts">+7 pts</div>
       </div>
     </div>
+    <div id="h-theory-section" class="theory-card" style="display:none">
+      <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">Today's Knowledge</div>
+      <div class="theory-card-title" id="theory-title"></div>
+      <div class="theory-card-body" id="theory-body"></div>
+    </div>
     <div class="no-chal" id="h-no-chal" style="display:none">Your space is waiting for you.</div>
     <div class="presence-line" id="h-presence"></div>
     <div id="notif-prompt" class="notif-prompt" style="display:none">
@@ -653,6 +661,7 @@ textarea:focus{border-color:var(--accent)}
     <button class="nav-btn" id="nav-rewards"><span class="nav-icon">♦</span>Rewards</button>
     <button class="nav-btn" id="nav-ranking" style="position:relative"><span class="nav-icon">△</span>Ranking<span class="msg-dot" id="msg-dot"></span></button>
     <button class="nav-btn" id="nav-resources" onclick="show('resources')"><span class="nav-icon">◈</span>Resources</button>
+    <button class="nav-btn" id="nav-knowledge" onclick="showKnowledge()"><span class="nav-icon">✦</span>Knowledge</button>
     <button class="nav-btn" id="nav-workshop" onclick="show('workshop')"><span class="nav-icon">✧</span>Workshop</button>
   </div>
 </div>
@@ -841,7 +850,7 @@ textarea:focus{border-color:var(--accent)}
     </a>
 
     <a href="https://www.amazon.com/dp/0060753641" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
-      <img src="https://covers.openlibrary.org/b/isbn/0060753641-M.jpg" alt="Mating in Captivity" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
+      <img src="https://covers.openlibrary.org/b/id/14558793-M.jpg" alt="Mating in Captivity" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
       <div style="min-width:0">
         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">Mating in Captivity</div>
         <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Esther Perel</div>
@@ -851,7 +860,7 @@ textarea:focus{border-color:var(--accent)}
     </a>
 
     <a href="https://www.amazon.com/dp/080414110X" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:2rem">
-      <img src="https://covers.openlibrary.org/b/isbn/080414110X-M.jpg" alt="The Surrender Experiment" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
+      <img src="https://covers.openlibrary.org/b/id/9178933-M.jpg" alt="The Surrender Experiment" style="width:52px;min-width:52px;height:72px;object-fit:cover;border-radius:3px;background:rgba(155,127,166,.15)">
       <div style="min-width:0">
         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">The Surrender Experiment</div>
         <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Michael A. Singer</div>
@@ -917,6 +926,32 @@ textarea:focus{border-color:var(--accent)}
       </div>
     </a>
 
+  </div>
+</div>
+
+<div class="screen" id="knowledge">
+  <div class="screen-header">
+    <button class="back-btn" onclick="show('home')">&#8592;</button>
+    <div class="screen-label">Knowledge</div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:1.75rem 1.5rem;max-width:480px;margin:0 auto;width:100%">
+    <div id="ks-loading" style="text-align:center;padding:3rem 0;color:rgba(244,239,230,.38);font-size:.88rem">Loading...</div>
+    <div id="ks-locked" style="display:none;text-align:center;padding:3rem 1rem">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:var(--secondary);margin-bottom:.75rem">Opens August 1</div>
+      <p style="font-size:.88rem;color:rgba(244,239,230,.5);line-height:1.75">The knowledge sets unlock one each day from August 1 through August 14. Return daily.</p>
+    </div>
+    <div id="ks-reader" style="display:none">
+      <div id="ks-back-btn" onclick="ksCloseReader()" style="cursor:pointer;font-size:.75rem;color:rgba(155,127,166,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.4rem">&#8592; All pieces</div>
+      <div id="ks-reader-set" style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,127,166,.5);margin-bottom:.4rem"></div>
+      <div id="ks-reader-title" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.75rem;color:var(--cream);margin-bottom:1.5rem;line-height:1.3"></div>
+      <div id="ks-reader-body" style="font-size:.92rem;color:rgba(244,239,230,.78);line-height:1.95;white-space:pre-wrap"></div>
+    </div>
+    <div id="ks-list" style="display:none">
+      <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.5rem" id="ks-progress-label"></div>
+      <p style="font-size:.85rem;color:rgba(244,239,230,.5);line-height:1.75;margin-bottom:1.5rem">One piece unlocks each day. Read them in order. Each one builds on the last.</p>
+      <div id="ks-cards"></div>
+      <div id="ks-locked-count" style="margin-top:.75rem;font-size:.78rem;color:rgba(244,239,230,.25);text-align:center"></div>
+    </div>
   </div>
 </div>
 
@@ -1391,6 +1426,13 @@ async function loadHome(){
     if(cr.ok){
       const data=await cr.json();
       challengesAll=data.challenges||{};
+      const theory=data.theory;
+      if(theory){
+        document.getElementById('theory-title').textContent=theory.title;
+        document.getElementById('theory-body').textContent=theory.body;
+        const ts=document.getElementById('h-theory-section');
+        if(ts)ts.style.display='';
+      }
       const completedToday=data.completed_today||false;
       const completedTodayDiff=data.completed_today_difficulty||null;
       // Daily Pepe message
@@ -2239,6 +2281,78 @@ initWorkshop();
 document.getElementById('nav-modules').addEventListener('click',()=>{loadMods();show('modules')});
 document.getElementById('nav-rewards').addEventListener('click',()=>{loadRewards();show('rewards')});
 document.getElementById('nav-ranking').addEventListener('click',()=>{loadLeaderboard();show('leaderboard')});
+
+// ---- Knowledge Sets ----
+let _ksData = null;
+let _ksReaderOpen = false;
+
+async function showKnowledge() {
+  show('knowledge');
+  if (_ksData) { _renderKsList(); return; }
+  document.getElementById('ks-loading').style.display = '';
+  document.getElementById('ks-list').style.display = 'none';
+  document.getElementById('ks-locked').style.display = 'none';
+  try {
+    const r = await apiFetch('/jouissance/knowledge-sets/unlocked');
+    if (!r.ok) throw new Error();
+    _ksData = await r.json();
+    document.getElementById('ks-loading').style.display = 'none';
+    if (_ksData.total_unlocked === 0) {
+      document.getElementById('ks-locked').style.display = '';
+    } else {
+      _renderKsList();
+    }
+  } catch(e) {
+    document.getElementById('ks-loading').textContent = 'Could not load. Try again later.';
+  }
+}
+
+function _renderKsList() {
+  const data = _ksData;
+  document.getElementById('ks-list').style.display = '';
+  document.getElementById('ks-reader').style.display = 'none';
+  _ksReaderOpen = false;
+  const remaining = data.total - data.total_unlocked;
+  document.getElementById('ks-progress-label').textContent =
+    data.total_unlocked + ' of ' + data.total + ' pieces unlocked';
+  const cards = document.getElementById('ks-cards');
+  cards.innerHTML = '';
+  data.sets.forEach(ks => {
+    const card = document.createElement('div');
+    card.style.cssText = 'border:1px solid rgba(155,127,166,.22);border-radius:6px;padding:1.1rem 1.25rem;margin-bottom:.65rem;cursor:pointer;transition:border-color .3s,background .3s;' + (ks.is_today ? 'border-color:rgba(155,127,166,.6);background:rgba(155,127,166,.07);' : '');
+    card.innerHTML =
+      '<div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,127,166,.55);margin-bottom:.25rem">Set ' + ks.set + ' of 14' + (ks.is_today ? ' &nbsp;·&nbsp; Today' : '') + '</div>' +
+      '<div style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:1.15rem;color:var(--cream);margin-bottom:.35rem">' + ks.title + '</div>' +
+      '<div style="font-size:.78rem;color:rgba(244,239,230,.38);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.65">' + ks.body.slice(0, 120) + '...</div>';
+    card.addEventListener('click', () => _ksOpenReader(ks));
+    cards.appendChild(card);
+  });
+  if (remaining > 0) {
+    document.getElementById('ks-locked-count').textContent =
+      remaining + ' more piece' + (remaining > 1 ? 's' : '') + ' unlock over the coming days';
+  } else {
+    document.getElementById('ks-locked-count').textContent = '';
+  }
+}
+
+function _ksOpenReader(ks) {
+  document.getElementById('ks-list').style.display = 'none';
+  const reader = document.getElementById('ks-reader');
+  reader.style.display = '';
+  document.getElementById('ks-reader-set').textContent = 'Knowledge Set ' + ks.set + ' of 14';
+  document.getElementById('ks-reader-title').textContent = ks.title;
+  document.getElementById('ks-reader-body').textContent = ks.body;
+  _ksReaderOpen = true;
+  document.querySelector('#knowledge .screen-header .back-btn').onclick = () => {
+    _renderKsList();
+    document.querySelector('#knowledge .screen-header .back-btn').onclick = () => show('home');
+  };
+}
+
+function ksCloseReader() {
+  _renderKsList();
+  document.querySelector('#knowledge .screen-header .back-btn').onclick = () => show('home');
+}
 
 // ---- PWA INSTALL ----
 let _dip=null;
