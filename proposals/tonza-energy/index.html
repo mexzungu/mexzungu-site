@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Tonza Energy: Mexzungu Group Proposal</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --bg-primary:     #0d0d0d;
+            --bg-card:        #1a1a1a;
+            --text-primary:   #fafafa;
+            --text-secondary: #9a8f88;
+            --text-muted:     #6b5e57;
+            --text-accent:    #e86fa0;
+            --border:         #2a2a2a;
+            --border-hover:   #e14b87;
+            --card-bg:        #1a1a1a;
+            --card-border:    #2a2a2a;
+            --nav-bg:         rgba(13, 13, 13, 0.92);
+        }
+
+        /* PASSWORD GATE */
+        #pw-gate {
+            position: fixed; inset: 0;
+            background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a;
+            border-radius: 12px; padding: 3rem 2.5rem;
+            max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.6rem; color: #fafafa; margin-bottom: 0.6rem; line-height: 1.2; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem;
+            background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-size: 1rem;
+            letter-spacing: 0.05em; margin-bottom: 0; text-align: center;
+            transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .pw-input:focus { outline: none; border-color: #e14b87; box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem; margin-top: 1rem;
+            background-color: #e14b87;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pw-btn:hover { background-color: #e86fa0; transform: scale(1.02); }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+        .pw-footer-note { font-size: 0.75rem; color: #4a4a4a; margin-top: 2rem; }
+
+        /* PROPOSAL */
+        #proposal-content { display: none; }
+        #proposal-content.visible { display: block; }
+
+        .proposal-hero {
+            min-height: 60vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 10rem 2rem 5rem; max-width: 1100px; margin: 0 auto;
+        }
+        .hero-tag {
+            font-family: 'Rock Salt', cursive; font-size: 0.75rem;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: #e14b87; margin-bottom: 1.5rem; opacity: 0.85;
+        }
+        .proposal-hero h1 {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(2.6rem, 5.5vw, 4.4rem); font-weight: 400;
+            line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 1.2rem; color: #fafafa;
+        }
+        .valid-note { font-size: 0.85rem; color: #6b5e57; letter-spacing: 0.05em; }
+
+        .prop-section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+        .prop-section + .prop-section { border-top: 1px solid #1e1e1e; }
+
+        .prop-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .prop-heading {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 400;
+            color: #fafafa; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 1.5rem;
+        }
+        .prop-copy { font-size: 1.05rem; color: #9a8f88; line-height: 1.85; max-width: 680px; }
+        .prop-copy strong { color: #c8c0bb; font-weight: 600; }
+
+        .bolt-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+        .bolt-list li {
+            font-size: 0.92rem; color: #6b5e57; padding: 0.65rem 0;
+            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.8rem; line-height: 1.6;
+        }
+        .bolt-list li:last-child { border: none; }
+        .bolt-list li::before {
+            content: '';
+            display: inline-block;
+            width: 10px; height: 16px; flex-shrink: 0; margin-top: 0.1rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .bolt-list.gold li::before { background-color: #d4a039; }
+        .bolt-list.muted li::before { background-color: #3a3a3a; }
+
+        .ws-overview {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+        }
+        @media (max-width: 640px) { .ws-overview { grid-template-columns: 1fr; } }
+        .ws-track {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 1.8rem; position: relative; overflow: hidden;
+        }
+        .ws-track.ws1 { border-top: 3px solid #e14b87; }
+        .ws-track.ws2 { border-top: 3px solid #d4a039; }
+        .ws-track-badge {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 20px;
+            display: inline-block; margin-bottom: 1rem;
+        }
+        .ws1 .ws-track-badge { background: rgba(225,75,135,0.12); color: #e14b87; }
+        .ws2 .ws-track-badge { background: rgba(212,160,57,0.12); color: #d4a039; }
+        .ws-track-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.15rem; color: #fafafa; margin-bottom: 0.6rem;
+        }
+        .ws-track-desc { font-size: 0.85rem; color: #6b5e57; line-height: 1.65; margin-bottom: 1.2rem; }
+        .ws-track-outcome {
+            font-size: 0.8rem; color: #9a8f88;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .ws-track-outcome::before {
+            content: '';
+            display: inline-block; width: 8px; height: 13px; flex-shrink: 0;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .ws2 .ws-track-outcome::before { background-color: #d4a039; }
+        .ws-independent-note {
+            margin-top: 1.5rem; text-align: center;
+            font-size: 0.82rem; color: #4a4a4a; letter-spacing: 0.05em;
+        }
+
+        .diagram-wrap {
+            margin: 2.5rem 0; background: #0f0f0f; border: 1px solid #1e1e1e;
+            border-radius: 14px; padding: 2.5rem 2rem; overflow-x: auto;
+        }
+        .diagram-label {
+            font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: #4a4a4a; font-weight: 600; margin-bottom: 2rem; text-align: center;
+        }
+        .journey-flow {
+            display: flex; align-items: flex-start; justify-content: center;
+            gap: 0; flex-wrap: nowrap; min-width: 560px;
+        }
+        .journey-step {
+            display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+            min-width: 120px; flex: 1; max-width: 150px;
+        }
+        .journey-node {
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 700;
+        }
+        .journey-node.ws1 { background: rgba(225,75,135,0.15); border: 1.5px solid #e14b87; color: #e14b87; }
+        .journey-node.ws2 { background: rgba(212,160,57,0.15); border: 1.5px solid #d4a039; color: #d4a039; }
+        .journey-node.done { background: rgba(107,94,87,0.1); border: 1.5px solid #3a3a3a; color: #6b5e57; }
+        .journey-step-label {
+            font-size: 0.72rem; color: #6b5e57; text-align: center; line-height: 1.4;
+        }
+        .journey-step-label strong { color: #9a8f88; display: block; margin-bottom: 0.2rem; }
+        .journey-connector {
+            height: 2px; flex: 0.5; background: #2a2a2a; align-self: flex-start; margin-top: 23px;
+        }
+        .journey-connector.pink { background: linear-gradient(90deg, #e14b87, #d4a039); }
+
+        .fee-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2rem; }
+        @media (max-width: 700px) { .fee-grid { grid-template-columns: 1fr; } }
+        .fee-card {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 2rem 1.5rem; position: relative; transition: border-color 0.2s;
+        }
+        .fee-card:hover { border-color: #e14b87; }
+        .fee-card-label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; color: #e14b87; margin-bottom: 0.8rem;
+        }
+        .fee-card-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.1rem; color: #fafafa; margin-bottom: 0.5rem; line-height: 1.2;
+        }
+        .fee-card-best { font-size: 0.78rem; color: #6b5e57; margin-bottom: 1.5rem; line-height: 1.5; }
+        .fee-amount {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700;
+            color: #e14b87; line-height: 1; margin-bottom: 0.3rem;
+        }
+        .fee-amount-sub { font-size: 0.78rem; color: #6b5e57; margin-bottom: 1.5rem; line-height: 1.5; }
+        .fee-items { list-style: none; padding: 0; margin: 0; }
+        .fee-items li {
+            font-size: 0.82rem; color: #6b5e57; padding: 0.4rem 0;
+            border-bottom: 1px solid #1a1a1a; display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5;
+        }
+        .fee-items li:last-child { border: none; }
+        .fee-items li::before {
+            content: '';
+            display: inline-block; width: 7px; height: 11px; flex-shrink: 0; margin-top: 0.15rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+
+        .equity-note {
+            background: rgba(225,75,135,0.06); border: 1px solid rgba(225,75,135,0.2);
+            border-radius: 8px; padding: 1.2rem 1.5rem; margin-top: 2rem;
+        }
+        .equity-note p { font-size: 0.85rem; color: #9a8f88; line-height: 1.7; margin: 0; }
+        .equity-note strong { color: #e14b87; }
+
+        .payment-row {
+            display: flex; gap: 1rem; align-items: flex-start;
+            padding: 1rem 0; border-bottom: 1px solid #1e1e1e; flex-wrap: wrap;
+        }
+        .payment-row:last-child { border: none; }
+        .payment-method {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: #e14b87; min-width: 90px; padding-top: 0.1rem;
+        }
+        .payment-detail { font-size: 0.88rem; color: #6b5e57; line-height: 1.6; }
+        .payment-detail code {
+            font-family: monospace; font-size: 0.82rem; color: #9a8f88;
+            background: #1a1a1a; padding: 0.1rem 0.4rem; border-radius: 4px;
+        }
+
+        .terms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 1.5rem; }
+        @media (max-width: 560px) { .terms-grid { grid-template-columns: 1fr; } }
+        .term-item {
+            background: #111; border: 1px solid #1e1e1e; border-radius: 10px; padding: 1.2rem;
+        }
+        .term-item-label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+            color: #4a4a4a; margin-bottom: 0.5rem;
+        }
+        .term-item-val { font-size: 0.85rem; color: #6b5e57; line-height: 1.55; }
+
+        .disclaimer-box {
+            background: rgba(212,160,57,0.05); border: 1px solid rgba(212,160,57,0.22);
+            border-radius: 8px; padding: 1.2rem 1.5rem; margin-top: 2rem;
+        }
+        .disclaimer-box p { font-size: 0.82rem; color: #6b5e57; line-height: 1.65; margin: 0; }
+        .disclaimer-box strong { color: #9a8f88; }
+
+        .cta-section {
+            padding: 6rem 2rem; text-align: center; max-width: 700px; margin: 0 auto;
+            border-top: 1px solid #1e1e1e;
+        }
+        .cta-section .prop-heading { margin-bottom: 1rem; }
+        .cta-section .prop-copy { margin: 0 auto 2.5rem; }
+        .cta-btn {
+            display: inline-block; padding: 1rem 2.5rem;
+            background-color: #e14b87; color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem;
+            border-radius: 8px; text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .cta-btn:hover { background-color: #e86fa0; transform: translateY(-2px); }
+        .cta-note { font-size: 0.8rem; color: #4a4a4a; margin-top: 1.2rem; }
+
+        body { background: #0d0d0d; }
+
+        /* WS3 + MODULE HEADERS + ALL-IN */
+        .ws3 .ws-track-badge { background: rgba(91,138,247,0.12); color: #5b8af7; }
+        .ws-track.ws3 { border-top: 3px solid #5b8af7; }
+        .ws3 .ws-track-outcome::before { background-color: #5b8af7; }
+        .journey-node.ws3 { background: rgba(91,138,247,0.15); border: 1.5px solid #5b8af7; color: #5b8af7; }
+        .bolt-list.blue li::before { background-color: #5b8af7; }
+
+        .module-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-top: 3.5rem; margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem; border-bottom: 1px solid #1e1e1e;
+        }
+        .module-badge {
+            font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; padding: 0.25rem 0.8rem; border-radius: 20px;
+            display: inline-block; flex-shrink: 0;
+        }
+        .module-badge.ws1 { background: rgba(225,75,135,0.12); color: #e14b87; }
+        .module-badge.ws2 { background: rgba(212,160,57,0.12); color: #d4a039; }
+        .module-badge.ws3 { background: rgba(91,138,247,0.12); color: #5b8af7; }
+        .module-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.05rem; color: #fafafa;
+        }
+        .allin-block {
+            margin-top: 1.5rem;
+            background: #0f0f14; border-radius: 14px; padding: 2.5rem 2rem;
+            border: 1px solid #2a2a2a; position: relative; overflow: hidden;
+        }
+        .allin-block::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #e14b87, #d4a039, #5b8af7);
+        }
+        .allin-block-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        @media (max-width: 640px) { .allin-block-inner { grid-template-columns: 1fr; } }
+        .allin-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #9a8f88; margin-bottom: 0.6rem; }
+        .allin-name { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.3rem; color: #fafafa; margin-bottom: 0.5rem; }
+        .allin-desc-text { font-size: 0.85rem; color: #6b5e57; line-height: 1.65; margin-bottom: 1.5rem; }
+        .allin-amount { font-family: 'Space Grotesk', sans-serif; font-size: 2.4rem; font-weight: 700; color: #fafafa; line-height: 1; }
+        .allin-amount-sub { font-size: 0.78rem; color: #6b5e57; margin-top: 0.4rem; }
+    </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" class="pw-logo" onerror="this.style.display='none'">
+        <p class="pw-label">Confidential proposal</p>
+        <h2 class="pw-heading">Tonza Energy</h2>
+        <p class="pw-sub">This proposal is private. Enter the access code to continue.</p>
+        <div class="pw-field">
+            <input type="password" class="pw-input" id="pw-input" placeholder="Access code" autocomplete="off">
+            <button class="pw-toggle" onclick="togglePw()" title="Show/hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+            </button>
+        </div>
+        <button class="pw-btn" onclick="checkPw()">Open proposal</button>
+        <p class="pw-error" id="pw-error"></p>
+        <p class="pw-footer-note">Mexzungu Group Ltd. Confidential. Not for distribution.</p>
+    </div>
+</div>
+
+<!-- PROPOSAL CONTENT -->
+<div id="proposal-content">
+
+    <!-- NAV -->
+    <nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid #1a1a1a;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" style="height:32px;" onerror="this.style.display='none'">
+        <a href="/sign/tonza-energy" style="font-family:'Space Grotesk',sans-serif;font-size:0.82rem;font-weight:700;color:#e14b87;text-decoration:none;letter-spacing:0.05em;">Sign the EL &rarr;</a>
+    </nav>
+
+    <!-- HERO -->
+    <div class="proposal-hero">
+        <p class="hero-tag">Mexzungu Group: Engagement Proposal</p>
+        <h1>Replacing charcoal with solar is a product insight. Scaling it is a company-building problem.</h1>
+        <p class="valid-note">Prepared for Stephen Khan / Tonza Energy. July 2026. Valid 30 days.</p>
+    </div>
+
+    <!-- SECTION 1: SITUATION -->
+    <div class="prop-section">
+        <p class="prop-label">The Situation</p>
+        <h2 class="prop-heading">The problem you are solving is real. The window to capture it is not unlimited.</h2>
+        <p class="prop-copy">
+            Stephen, charcoal kills slowly. It empties household budgets, fills lungs with smoke, and runs on a supply chain that deforests the continent. A solar cart that eliminates it at the point of use is a structural substitute for a billion-dollar informal market, and that is a genuinely compelling position to be building from.
+        </p>
+        <p class="prop-copy" style="margin-top:1.2rem;">
+            You are now at the inflection point where product validation ends and company building begins. You need <strong>$50K for prototyping and $250K for deployment</strong>. You are pivoting to smart products, which means IP must be locked in before a single line of code is shared with a hardware partner or a new hire. And you need the legal foundation to approach impact investors and DFIs without a question mark over your structure.
+        </p>
+        <p class="prop-copy" style="margin-top:1.2rem;">
+            Kenya's clean cooking market is moving fast. The government has committed to universal clean cooking access by 2030. Verified carbon credits from clean cooking are among the highest-generating in sub-Saharan Africa. <strong>The capital exists for the right operator. This engagement gets you ready to be that operator.</strong>
+        </p>
+    </div>
+
+    <!-- SECTION 2: WORKSTREAMS -->
+    <div class="prop-section">
+        <p class="prop-label">What We Will Do</p>
+        <h2 class="prop-heading">Three workstreams. Each independent. Each with its own pricing.</h2>
+
+        <div class="ws-overview">
+            <div class="ws-track ws1">
+                <span class="ws-track-badge">Workstream 1</span>
+                <div class="ws-track-title">Venture Architecture</div>
+                <div class="ws-track-desc">Build the legal and governance foundation before the first external capital comes in. Cap table clean, IP locked, smart product structure protected, investor-ready.</div>
+                <div class="ws-track-outcome">Legal architecture ready for investor due diligence</div>
+            </div>
+            <div class="ws-track ws2">
+                <span class="ws-track-badge">Workstream 2</span>
+                <div class="ws-track-title">Capital Closing</div>
+                <div class="ws-track-desc">Map the right impact investors and DFIs for clean cooking Kenya, sharpen the pitch, open the network, and close the round at terms that protect the founders.</div>
+                <div class="ws-track-outcome">$300K round closed, documented, founders protected</div>
+            </div>
+            <div class="ws-track ws3">
+                <span class="ws-track-badge">Workstream 3</span>
+                <div class="ws-track-title">Ops Advisory</div>
+                <div class="ws-track-desc">Operational guidance as the company builds. Kenya ops lead sourcing, co-founder governance, hiring frameworks, and the strategic decisions that sit between legal and execution.</div>
+                <div class="ws-track-outcome" style="color:#9a8f88;">Ops infrastructure ready to deploy capital when the round closes</div>
+            </div>
+            <div class="ws-track" style="border-top:3px solid transparent;border-image:linear-gradient(90deg,#e14b87,#d4a039,#5b8af7)1;background:linear-gradient(135deg,#111 0%,#0f0f14 100%);">
+                <span class="ws-track-badge" style="background:rgba(154,143,136,0.1);color:#9a8f88;">All-In</span>
+                <div class="ws-track-title">Founder Retainer</div>
+                <div class="ws-track-desc">All three modules under one monthly fee. Limited bandwidth (5 hrs/week). One relationship, one invoice. Plus equity upside on the cap table.</div>
+                <div class="ws-track-outcome" style="color:#9a8f88;">$3,000/mo + 2% success + 0.5% equity</div>
+            </div>
+        </div>
+        <p class="ws-independent-note">All workstreams can be engaged separately or combined. WS1 makes WS2 easier. WS3 makes the capital useful when it lands.</p>
+
+        <!-- JOURNEY DIAGRAM -->
+        <div class="diagram-wrap">
+            <p class="diagram-label">Tonza Energy: From Prototype to Funded Deployment</p>
+            <div class="journey-flow">
+                <div class="journey-step">
+                    <div class="journey-node done">Now</div>
+                    <div class="journey-step-label"><strong>Prototype Stage</strong>Product validated, legal not fundraise-ready</div>
+                </div>
+                <div class="journey-connector"></div>
+                <div class="journey-step">
+                    <div class="journey-node ws1">WS1</div>
+                    <div class="journey-step-label"><strong>Legal Foundation</strong>Cap table, IP locked, SAFE, governance</div>
+                </div>
+                <div class="journey-connector pink"></div>
+                <div class="journey-step">
+                    <div class="journey-node ws2">WS2</div>
+                    <div class="journey-step-label"><strong>Fundraise</strong>Impact investors, pitch, warm intros, close</div>
+                </div>
+                <div class="journey-connector" style="background:linear-gradient(90deg,#d4a039,#5b8af7);"></div>
+                <div class="journey-step">
+                    <div class="journey-node ws3">WS3</div>
+                    <div class="journey-step-label"><strong>Ops Build</strong>Kenya ops lead, governance, deployment prep</div>
+                </div>
+                <div class="journey-connector"></div>
+                <div class="journey-step">
+                    <div class="journey-node done">Live</div>
+                    <div class="journey-step-label"><strong>Funded + Operational</strong>$300K in, team in place, deployment begins</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WS1 DELIVERABLES -->
+        <p class="prop-label" style="margin-top:2.5rem;">Workstream 1 deliverables</p>
+        <ul class="bolt-list">
+            <li><strong>Entity review and structuring:</strong> Audit of existing Kenyan entity (or incorporation guidance if pending). Confirm the right structure for an impact fundraising round, including foreign investor compatibility and any holding company layer needed.</li>
+            <li><strong>Cap table architecture:</strong> Founder allocation, vesting schedule, option pool sizing for future hires and advisors, pre-money structure ready for the first SAFE or priced seed round.</li>
+            <li><strong>Founder and shareholder agreements:</strong> Founder rights, drag-along and tag-along, right of first refusal, anti-dilution framework, consent matters. Built for Kenya but legible to international impact investors.</li>
+            <li><strong>IP assignment and smart product framework:</strong> All current and future IP (technology, firmware, sensor data, brand, designs) formally assigned from founders to the company. This is the first thing any serious investor checks on the smart product pivot. It must be done before hardware partner conversations begin.</li>
+            <li><strong>SAFE template:</strong> Investor-ready Simple Agreement for Future Equity, calibrated to your raise size and valuation cap. Reduces legal cost on first close to near zero and keeps terms clean for subsequent rounds.</li>
+            <li><strong>Governance framework:</strong> Board composition and decision rights for the seed stage, consent thresholds, officer roles, annual meeting requirements. Gives investors the assurance they need without giving up founder control prematurely.</li>
+        </ul>
+
+        <!-- WS2 DELIVERABLES -->
+        <p class="prop-label" style="margin-top:2.5rem;">Workstream 2 deliverables</p>
+        <ul class="bolt-list gold">
+            <li><strong>Fundraising strategy memo:</strong> How much to raise, in what structure (SAFE vs grant vs DFI debt vs blended finance), from whom, and in what sequence. Clean cooking in Kenya has a specific capital map. We know it.</li>
+            <li><strong>Impact investor and DFI targeting list:</strong> Curated shortlist of active funders: SunFunder, CrossBoundary Energy Access, Energy Catalyst (Innovate UK/FCDO), Africa Enterprise Challenge Fund, Clean Cooking Alliance Fund, SE4All Efficiency for Access, and relevant climate DFI lines active in Kenya.</li>
+            <li><strong>Carbon credit pathway assessment:</strong> Clean cooking generates high-quality verified carbon credits under Gold Standard and Verra methodologies. If applicable to your product design, this changes your unit economics significantly. We assess the pathway and can connect you to a registered project developer.</li>
+            <li><strong>Pitch materials review and narrative sharpening:</strong> Your pitch needs to lead with the Kenya market gap, the smart product differentiation, and the carbon angle. We refine the story so it lands with impact-first investors who see five decks a day.</li>
+            <li><strong>Warm introductions:</strong> Pepe's East Africa network includes fund managers, DFI program officers, and operators who can make a warm intro worth ten cold emails. You approve every introduction before it goes out.</li>
+            <li><strong>Term sheet review and negotiation advisory:</strong> When an investor comes with terms, we read it, tell you what is standard and what is not, and advise on what to push back on. Impact fund terms have specific patterns. We know them.</li>
+            <li><strong>Closing coordination:</strong> SAFE or priced round documentation, investor onboarding agreements, closing checklist, executed documents filed and stored. Clean close, no loose ends.</li>
+        </ul>
+
+        <!-- WS3 DELIVERABLES -->
+        <p class="prop-label" style="margin-top:2.5rem;">Workstream 3 deliverables</p>
+        <ul class="bolt-list blue">
+            <li><strong>Kenya operations lead search:</strong> Profile design, sourcing brief, and network introductions for a Kenya-based operations lead. The right person in Nairobi changes the deployment timeline by months. We help you define the role and open the network.</li>
+            <li><strong>Co-founder governance protocol:</strong> Decision rights framework for the founding team. Who decides what, how disputes are resolved, what requires unanimous consent. Written before it is needed, so it is not drafted under pressure.</li>
+            <li><strong>Hiring framework and first 3 hires:</strong> Role definitions, compensation benchmarks for Nairobi market, offer structure, and equity for early employees. Keeps the cap table clean as the team grows.</li>
+            <li><strong>Strategic priority memos:</strong> Monthly one-page memos on the most important operational question Tonza is facing, written as a concrete recommendation with a specific decision attached.</li>
+            <li><strong>Investor reporting setup:</strong> Template and cadence for post-close investor updates. Keeps your cap table warm, reduces noise, and positions you well for follow-on rounds.</li>
+            <li><strong>Systems and processes:</strong> Mapping the operational workflows that need to exist before you scale, identifying the gaps, and building the lightweight internal systems that let a small team move fast without creating chaos. Efficiency before headcount.</li>
+        </ul>
+    </div>
+
+    <!-- SECTION 3: OUT OF SCOPE -->
+    <div class="prop-section">
+        <p class="prop-label">Scope Boundaries</p>
+        <h2 class="prop-heading">Scope clarity protects both sides.</h2>
+        <ul class="bolt-list muted">
+            <li>We will not provide Kenyan domestic legal advice. Pepe Carrillo is not licensed to practice law in Kenya. This engagement provides deal structuring, governance design, and fundraising advisory. For local filings, regulatory submissions, and Kenya-specific compliance, we work alongside a Kenyan-licensed law firm. We make those introductions at no additional cost.</li>
+            <li>We will not engage directly with the Kenya Revenue Authority, Companies Registry, or other government bodies on your behalf without separate written authorization.</li>
+            <li>We will not make investor introductions without your prior approval of each target. You control who gets access to your company and your story.</li>
+            <li>Operations lead sourcing is advisory. We can advise on the profile, compensation structure, and offer terms for a Kenya operations lead, and make introductions from our East Africa network. Hiring decisions remain entirely with you.</li>
+        </ul>
+    </div>
+
+    <!-- SECTION 4: FEE OPTIONS -->
+    <div class="prop-section">
+        <p class="prop-label">Engagement Structure</p>
+        <h2 class="prop-heading">Three workstreams, three ways to price each. Or take all three under one fee.</h2>
+        <p class="prop-copy">Pick one, two, or all three workstreams. Within each workstream, choose the fee structure that matches your cashflow. Or skip the decisions entirely with the Founder Retainer.</p>
+
+        <!-- MODULE 1: VA -->
+        <div class="module-header">
+            <span class="module-badge ws1">Workstream 1</span>
+            <span class="module-title">Venture Architecture</span>
+        </div>
+        <div class="fee-grid">
+            <div class="fee-card">
+                <p class="fee-card-label">Option A</p>
+                <h3 class="fee-card-title">Upfront Fixed</h3>
+                <p class="fee-card-best">Best value for full scope. Commit once, no further invoices for VA work. Slight discount versus milestone pricing.</p>
+                <div class="fee-amount">$2,500</div>
+                <p class="fee-amount-sub">flat, covers full Workstream 1 scope</p>
+                <ul class="fee-items">
+                    <li>All deliverables included, no hourly tracking</li>
+                    <li>Single invoice at signing</li>
+                    <li>Up to 30% convertible to equity</li>
+                </ul>
+            </div>
+            <div class="fee-card">
+                <p class="fee-card-label">Option B</p>
+                <h3 class="fee-card-title">Signing + Deliverables</h3>
+                <p class="fee-card-best">Pay as value lands. Each invoice tied to a specific output. You see the work before the next payment.</p>
+                <div class="fee-amount">$2,500</div>
+                <p class="fee-amount-sub">total, paid across 4 milestones from signing to final delivery</p>
+                <ul class="fee-items">
+                    <li>$1,000 at engagement signing</li>
+                    <li>$500 on IP risk memo delivery</li>
+                    <li>$500 on shareholders agreement delivery</li>
+                    <li>$500 on governance framework delivery</li>
+                </ul>
+            </div>
+            <div class="fee-card">
+                <p class="fee-card-label">Option C</p>
+                <h3 class="fee-card-title">Hour Bank</h3>
+                <p class="fee-card-best">Maximum flexibility. Pre-purchase a block of hours and consume as work is performed. Top up when depleted.</p>
+                <div class="fee-amount">$150/hr</div>
+                <p class="fee-amount-sub">on pre-purchased blocks of 10+ hours. Standard rate $250/hr. Minimum block 10 hours, top-ups at same rate.</p>
+                <ul class="fee-items">
+                    <li>Hours tracked and reported per invoice</li>
+                    <li>Full deliverable scope available, no ceiling</li>
+                    <li>Unused hours roll forward, never expire</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MODULE 2: CAPITAL CLOSING -->
+        <div class="module-header">
+            <span class="module-badge ws2">Workstream 2</span>
+            <span class="module-title">Capital Closing</span>
+        </div>
+        <div class="fee-grid">
+            <div class="fee-card">
+                <p class="fee-card-label">Option A</p>
+                <h3 class="fee-card-title">Upfront + Success</h3>
+                <p class="fee-card-best">Cap the advisory cost upfront. Flat fee for the closing work, success fee when capital is confirmed received.</p>
+                <div class="fee-amount">$1,500</div>
+                <p class="fee-amount-sub">upfront + 2% equity / 1% debt on close</p>
+                <ul class="fee-items">
+                    <li>Full Workstream 2 scope, no hourly tracking</li>
+                    <li>Success fee payable within 14 days of wire</li>
+                    <li>Up to 30% of any fee convertible to equity</li>
+                </ul>
+            </div>
+            <div class="fee-card">
+                <p class="fee-card-label">Option B</p>
+                <h3 class="fee-card-title">Signing + Milestones</h3>
+                <p class="fee-card-best">Tie fees to deal progression. Low entry, pay as the round advances toward close.</p>
+                <div class="fee-amount">$1,500 + 2%</div>
+                <p class="fee-amount-sub">total cash across 3 milestones, plus success fee on close</p>
+                <ul class="fee-items">
+                    <li>$500 at signing</li>
+                    <li>$500 on first investor term sheet agreed</li>
+                    <li>$500 on round close</li>
+                    <li>2% on equity closed / 1% on debt closed</li>
+                    <li>Up to 30% of cash fees convertible to equity</li>
+                </ul>
+            </div>
+            <div class="fee-card">
+                <p class="fee-card-label">Option C</p>
+                <h3 class="fee-card-title">Hour Bank + Success</h3>
+                <p class="fee-card-best">Best if deal complexity is uncertain. Pay for advisory hours as they happen, plus outcome-aligned success fee.</p>
+                <div class="fee-amount">$150/hr</div>
+                <p class="fee-amount-sub">on pre-purchased blocks of 10+ hours (standard $250/hr) + 2% equity / 1% debt on close</p>
+                <ul class="fee-items">
+                    <li>Hours consumed as deal work is performed</li>
+                    <li>Success fee payable within 14 days of wire</li>
+                    <li>Up to 30% of success fee convertible to equity</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MODULE 3: OPS ADVISORY -->
+        <div class="module-header">
+            <span class="module-badge ws3">Workstream 3</span>
+            <span class="module-title">Ops Advisory</span>
+        </div>
+        <div class="fee-grid">
+            <div class="fee-card">
+                <p class="fee-card-label">Option A</p>
+                <h3 class="fee-card-title">Hour Bank</h3>
+                <p class="fee-card-best">Best if ops needs are ad hoc. Burn hours as questions arise. No commitment beyond the block.</p>
+                <div class="fee-amount">$150/hr</div>
+                <p class="fee-amount-sub">on pre-purchased blocks of 5+ hours (standard $250/hr). Top-ups at same rate.</p>
+                <ul class="fee-items">
+                    <li>Hours consumed on demand</li>
+                    <li>Kenya ops, hiring, governance, strategic Q&A</li>
+                    <li>No retainer, no monthly commitment</li>
+                </ul>
+            </div>
+            <div class="fee-card">
+                <p class="fee-card-label">Option B</p>
+                <h3 class="fee-card-title">Project-Based</h3>
+                <p class="fee-card-best">Specific deliverables, priced and scoped upfront before work starts. No surprises.</p>
+                <div class="fee-amount">Per scope</div>
+                <p class="fee-amount-sub">fixed per deliverable, agreed before work begins</p>
+                <ul class="fee-items">
+                    <li>Kenya ops lead search and profile design: $800</li>
+                    <li>Co-founder governance protocol: $500</li>
+                    <li>Impact investor intro memo: $400</li>
+                    <li>Additional deliverables scoped on request</li>
+                </ul>
+            </div>
+            <div class="fee-card">
+                <p class="fee-card-label">Option C</p>
+                <h3 class="fee-card-title">Monthly Retainer</h3>
+                <p class="fee-card-best">Consistent advisory presence through the build phase. One call a week, one priority memo a month.</p>
+                <div class="fee-amount">$900/mo</div>
+                <p class="fee-amount-sub">3-month minimum, then month-to-month</p>
+                <ul class="fee-items">
+                    <li>1 structured call per week</li>
+                    <li>Monthly strategic priority memo</li>
+                    <li>Async support via WhatsApp and email</li>
+                    <li>One urgent deliverable per month included</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ALL-IN -->
+        <div class="module-header">
+            <span class="module-badge" style="background:rgba(154,143,136,0.1);color:#9a8f88;">All-In</span>
+            <span class="module-title">Founder Retainer</span>
+        </div>
+        <div class="allin-block">
+            <div class="allin-block-inner">
+                <div>
+                    <p class="allin-label">Founder Retainer</p>
+                    <h3 class="allin-name">All three modules. One monthly fee.</h3>
+                    <p class="allin-desc-text">Covers Venture Architecture, Capital Closing, and Ops Advisory under a single engagement. Limited bandwidth of 5 hours per week across all three areas. One relationship, one invoice, equity on the cap table.</p>
+                    <div class="allin-amount">$3,000<span style="font-size:1.2rem;color:#6b5e57;">/mo</span></div>
+                    <p class="allin-amount-sub">3-month minimum, then month-to-month</p>
+                </div>
+                <div>
+                    <ul class="fee-items" style="margin-top:0.5rem;">
+                        <li>Full scope across all three workstreams</li>
+                        <li>5 hrs/week maximum, allocated across areas by priority</li>
+                        <li>2% success fee on equity closed / 1% on debt closed</li>
+                        <li>0.5% equity stake in Tonza Energy at pre-money valuation set by first investor</li>
+                        <li>Up to 30% of monthly fees convertible to equity instead of cash</li>
+                        <li>Success fee payable within 14 days of confirmed wire</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- EQUITY NOTE -->
+        <div class="equity-note" style="margin-top:2rem;">
+            <p><strong>Equity in lieu of cash:</strong> On any workstream or the Founder Retainer, up to 30% of Mexzungu's cash fee can be structured as equity in Tonza Energy instead of a cash payment. Equity is priced at the pre-money valuation agreed with your first investor. Must be agreed in writing before the engagement letter is signed.</p>
+        </div>
+    </div>
+
+    <!-- SECTION 5: PAYMENT AND TERMS -->
+    <div class="prop-section">
+        <p class="prop-label">Payment and Terms</p>
+        <h2 class="prop-heading">Three payment rails. Your choice.</h2>
+
+        <div class="payment-row">
+            <span class="payment-method">Wire</span>
+            <span class="payment-detail">USD wire to MCB (Mauritius Commercial Bank). SWIFT details provided on invoice. Preferred for amounts over $500.</span>
+        </div>
+        <div class="payment-row">
+            <span class="payment-method">Payoneer</span>
+            <span class="payment-detail">Invoice sent via Payoneer. ACH, card, or local transfer depending on your location. Works well for Kenya-based payments.</span>
+        </div>
+        <div class="payment-row">
+            <span class="payment-method">USDC</span>
+            <span class="payment-detail">Solana network. <code>Address on request.</code> Settles same day, zero friction.</span>
+        </div>
+
+        <div class="terms-grid" style="margin-top:2.5rem;">
+            <div class="term-item">
+                <p class="term-item-label">Engagement duration</p>
+                <p class="term-item-val">WS1 typically 4 to 6 weeks. WS2 runs until close, typically 3 to 6 months from kick-off depending on investor pipeline velocity. WS3 retainer is month-to-month with a 3-month minimum; hour bank and project-based engagements have no fixed duration.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Success fee trigger</p>
+                <p class="term-item-val">Payable within 14 days of confirmed capital receipt. Applies to all closes sourced or materially supported by Mexzungu during the engagement plus 12 months after termination.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Governing law</p>
+                <p class="term-item-val">Mauritius law. Mexzungu Group Ltd is incorporated in Mauritius. Disputes by arbitration under LCIA rules, London seat.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Termination</p>
+                <p class="term-item-val">Either party may terminate with 30 days written notice. Fees paid are non-refundable. Success fee survives termination for 12 months on investments introduced during the engagement period.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Follow-on fundraising</p>
+                <p class="term-item-val">Mexzungu has a right of first offer to advise on any subsequent fundraising round at agreed terms. To be exercised within 14 days of Tonza Energy notifying of a planned raise.</p>
+            </div>
+        </div>
+
+        <div class="disclaimer-box">
+            <p><strong>Kenya law disclaimer.</strong> Pepe Carrillo is qualified as a corporate and commercial lawyer but is not licensed to practice law in Kenya. This engagement provides deal structuring, governance advisory, and fundraising support, not regulated legal advice under Kenyan law. For entity filings, regulatory submissions, and local compliance, Mexzungu works alongside a Kenyan-licensed law firm and will make introductions where required at no additional cost to Tonza Energy.</p>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+        <p class="prop-label">Ready to move</p>
+        <h2 class="prop-heading">The structure question should not slow down the product question.</h2>
+        <p class="prop-copy">Pick an option, sign the engagement letter, and we start this week. First deliverable is a 60-minute kick-off call where we map WS1 priorities and identify the three most important investor targets for WS2.</p>
+        <a href="/sign/tonza-energy" class="cta-btn">Sign the Engagement Letter</a>
+        <p class="cta-note">Questions? Message Pepe directly on WhatsApp or at pepe@mexzungu.com.</p>
+    </div>
+
+</div>
+
+<script>
+    const CORRECT = 'tonza-2026';
+    const MASTER_PW = 'Outlaw-Master-2026';
+
+    function checkPw() {
+        const val = document.getElementById('pw-input').value.trim();
+        if (val.toLowerCase() === CORRECT || val === MASTER_PW) {
+            document.getElementById('pw-gate').classList.add('hidden');
+            document.getElementById('proposal-content').classList.add('visible');
+            sessionStorage.setItem('tonza_pw', '1');
+        } else {
+            const inp = document.getElementById('pw-input');
+            inp.classList.add('error');
+            document.getElementById('pw-error').textContent = 'Incorrect access code. Try again.';
+            setTimeout(() => inp.classList.remove('error'), 400);
+        }
+    }
+
+    function togglePw() {
+        const inp = document.getElementById('pw-input');
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPw();
+    });
+
+    if (sessionStorage.getItem('tonza_pw') === '1') {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('proposal-content').classList.add('visible');
+    }
+</script>
+</body>
+</html>

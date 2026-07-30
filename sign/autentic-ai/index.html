@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta de Encargo — Autentic.ai x Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink:       #e14b87;
+      --pink-dark:  #b83a6b;
+      --navy:       #1a1a2e;
+      --black:      #0d0d0d;
+      --white:      #fafafa;
+      --ash:        #e8e3df;
+      --stone:      #6b5e57;
+      --mist:       #9a8f88;
+      --charcoal:   #3d3533;
+      --success:    #2d8f5e;
+      --heading:    'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:       'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: #f0ece8;
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .site-header {
+      background: var(--navy);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    .site-header .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .site-header img {
+      height: 36px;
+      width: auto;
+    }
+
+    .header-meta {
+      text-align: right;
+    }
+
+    .header-meta h1 {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: #fafafa;
+      font-weight: 700;
+    }
+
+    .header-meta p {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 2px;
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar-wrap {
+      background: var(--charcoal);
+      padding: 0.65rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .progress-steps {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .step.done { color: #2dce89; }
+    .step.pending { color: rgba(255,255,255,0.65); }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .step-sep {
+      color: rgba(255,255,255,0.25);
+      font-size: 0.8rem;
+    }
+
+    .progress-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .progress-label strong { color: #2dce89; }
+
+    /* PAGE */
+    .page-wrap {
+      max-width: 820px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    .doc-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    }
+
+    .doc-top-stripe {
+      height: 5px;
+      background: linear-gradient(90deg, var(--pink) 0%, #f97316 100%);
+    }
+
+    .doc-inner {
+      padding: 2.5rem 2.5rem 2rem;
+    }
+
+    /* WORDMARK */
+    .doc-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .doc-wordmark img { height: 40px; width: auto; }
+
+    .doc-wordmark-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .doc-wordmark-text span:first-child {
+      font-family: var(--heading);
+      font-size: 0.9rem;
+      color: var(--navy);
+    }
+
+    .doc-wordmark-text span:last-child {
+      font-size: 0.72rem;
+      color: var(--mist);
+    }
+
+    /* TITLE */
+    .doc-title {
+      font-family: var(--heading);
+      font-size: 1.7rem;
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+    }
+
+    .doc-subtitle {
+      font-size: 0.82rem;
+      color: var(--mist);
+      margin-bottom: 2rem;
+    }
+
+    /* PARTIES */
+    .parties-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .party-block {
+      background: #f8f5f2;
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+    }
+
+    .party-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mist);
+      margin-bottom: 0.35rem;
+    }
+
+    .party-name {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+    }
+
+    .party-detail {
+      font-size: 0.78rem;
+      color: var(--stone);
+      line-height: 1.5;
+    }
+
+    .doc-date-line {
+      font-size: 0.82rem;
+      color: var(--mist);
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    /* BODY */
+    .doc-body h2 {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin: 1.8rem 0 0.6rem;
+    }
+
+    .doc-body p {
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      line-height: 1.7;
+      margin-bottom: 0.8rem;
+    }
+
+    .intro-q {
+      font-style: italic;
+      color: var(--mist) !important;
+      font-size: 0.82rem !important;
+      margin-bottom: 0.3rem !important;
+    }
+
+    .sub-item {
+      font-size: 0.85rem;
+      color: var(--charcoal);
+      line-height: 1.65;
+      padding: 0.6rem 0 0.6rem 1.2rem;
+      border-left: 2px solid var(--ash);
+      margin-bottom: 0.5rem;
+    }
+
+    .sub-item strong { color: var(--navy); }
+
+    /* BANK BLOCK */
+    .bank-block {
+      background: #f8f5f2;
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      margin: 0.8rem 0 1.2rem;
+    }
+
+    .bank-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 0.82rem;
+    }
+
+    .bank-row:last-child { border-bottom: none; }
+
+    .bank-label {
+      color: var(--mist);
+      font-size: 0.8rem;
+    }
+
+    .bank-val {
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    /* SIGNATURE SECTION */
+    .sig-section {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 2px solid var(--ash);
+    }
+
+    .sig-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .sig-section-header h3 {
+      font-family: var(--heading);
+      font-size: 1.1rem;
+      color: var(--navy);
+    }
+
+    .sig-section-note {
+      font-size: 0.78rem;
+      color: var(--mist);
+    }
+
+    /* 3-signer layout: provider full-width, then clients 2-up */
+    .sig-grid-single {
+      margin-bottom: 1.5rem;
+    }
+
+    .sig-grid-double {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .sig-block {
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fdfdfd;
+    }
+
+    .sig-block.signed {
+      border-color: rgba(45, 143, 94, 0.35);
+      background: rgba(45, 143, 94, 0.02);
+    }
+
+    .sig-block-head {
+      background: var(--navy);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sig-block.signed .sig-block-head {
+      background: var(--success);
+    }
+
+    .sig-block-head .signer-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fafafa;
+    }
+
+    .sig-block-head .signer-title {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.65);
+      margin-top: 1px;
+    }
+
+    .signed-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      color: #fafafa;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 0.2rem 0.55rem;
+    }
+
+    .signed-badge svg { flex-shrink: 0; }
+
+    .sig-block-body {
+      padding: 1rem;
+    }
+
+    .sig-display {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(45, 143, 94, 0.3);
+      border-radius: 6px;
+      background: rgba(45, 143, 94, 0.03);
+      margin-bottom: 0.75rem;
+    }
+
+    .sig-cursive {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+
+    .sig-meta {
+      font-size: 0.72rem;
+      color: var(--mist);
+    }
+
+    .sig-canvas-wrap {
+      position: relative;
+      margin-bottom: 0.75rem;
+    }
+
+    canvas.sig-pad {
+      display: block;
+      width: 100%;
+      height: 100px;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      background: #fafafa;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .sig-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.75rem;
+      color: #d0cac6;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .sig-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .sig-clear-btn {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      color: var(--mist);
+      cursor: pointer;
+      text-align: right;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    .sig-clear-btn:hover { color: var(--stone); }
+
+    .sig-email-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sig-email-wrap label {
+      font-size: 0.72rem;
+      color: var(--mist);
+      white-space: nowrap;
+    }
+
+    .sig-email-wrap input {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      color: var(--navy);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sig-date-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sig-date-wrap label {
+      font-size: 0.72rem;
+      color: var(--mist);
+      white-space: nowrap;
+    }
+
+    .sig-date-wrap input {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      color: var(--navy);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sig-agree-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .sig-agree-wrap input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--pink);
+      flex-shrink: 0;
+    }
+
+    .sig-agree-wrap label {
+      font-size: 0.72rem;
+      color: var(--stone);
+      line-height: 1.4;
+    }
+
+    .sig-apply-btn {
+      width: 100%;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .sig-apply-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .sig-apply-btn:not(:disabled):hover {
+      background: var(--pink-dark);
+    }
+
+    .sig-block.applied canvas {
+      border-color: rgba(45, 143, 94, 0.4);
+      background: rgba(45, 143, 94, 0.02);
+      cursor: default;
+    }
+
+    .sig-applied-note {
+      display: none;
+      font-size: 0.72rem;
+      color: var(--success);
+      font-weight: 600;
+      text-align: center;
+      padding: 0.4rem 0;
+    }
+
+    .sig-block.applied .sig-applied-note { display: block; }
+    .sig-block.applied .sig-agree-wrap,
+    .sig-block.applied .sig-apply-btn,
+    .sig-block.applied .sig-clear-btn { display: none; }
+
+    /* COMPLETION */
+    .completion-wrap {
+      display: none;
+      margin-top: 2.5rem;
+      background: linear-gradient(135deg, rgba(45,143,94,0.06) 0%, rgba(45,143,94,0.02) 100%);
+      border: 1px solid rgba(45, 143, 94, 0.3);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .completion-wrap.visible { display: block; }
+
+    .completion-wrap h3 {
+      font-family: var(--heading);
+      font-size: 1.15rem;
+      color: var(--success);
+      margin-bottom: 0.5rem;
+    }
+
+    .completion-wrap p {
+      font-size: 0.88rem;
+      color: var(--stone);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.8rem 2rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin-bottom: 1rem;
+    }
+
+    .btn-download:hover { background: var(--pink-dark); }
+
+    .btn-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: none;
+      color: var(--navy);
+      border: 1.5px solid var(--ash);
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.65rem 1.5rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s ease;
+      margin-left: 0.75rem;
+    }
+
+    .btn-email:hover { border-color: var(--navy); }
+
+    /* FOOTER */
+    .doc-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--ash);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .doc-footer p {
+      font-size: 0.75rem;
+      color: var(--mist);
+    }
+
+    .doc-footer a { color: var(--pink); text-decoration: none; }
+    .doc-footer a:hover { text-decoration: underline; }
+
+    /* WORKSTREAM ACTIVATION */
+    .ws-activate-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: #f8f5f2;
+      border: 1px solid var(--ash);
+      border-radius: 14px;
+    }
+
+    .ws-activate-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .ws-activate-header h3 {
+      font-family: var(--heading);
+      font-size: 1.05rem;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+    }
+
+    .ws-activate-header p {
+      font-size: 0.8rem;
+      color: var(--mist);
+      margin: 0;
+    }
+
+    .ws-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .ws-card {
+      border: 2px solid var(--ash);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .ws-card:hover {
+      border-color: rgba(225,75,135,0.4);
+    }
+
+    .ws-card.active {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(225,75,135,0.1);
+    }
+
+    .ws-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+
+    .ws-card-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mist);
+      margin-bottom: 0.2rem;
+    }
+
+    .ws-card-name {
+      font-family: var(--heading);
+      font-size: 0.9rem;
+      color: var(--navy);
+    }
+
+    .ws-toggle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--ash);
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .ws-card.active .ws-toggle {
+      border-color: var(--pink);
+      background: var(--pink);
+    }
+
+    .ws-toggle svg { display: none; }
+    .ws-card.active .ws-toggle svg { display: block; }
+
+    .ws-card-desc {
+      font-size: 0.78rem;
+      color: var(--stone);
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+
+    .ws-card-fee {
+      font-family: var(--heading);
+      font-size: 1rem;
+      color: var(--pink);
+    }
+
+    .ws-card-fee-sub {
+      font-size: 0.7rem;
+      color: var(--mist);
+      margin-top: 2px;
+    }
+
+    .ws-admin-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px solid var(--ash);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+    }
+
+    .ws-admin-label {
+      color: var(--stone);
+    }
+
+    .ws-admin-label strong { color: var(--navy); }
+
+    .ws-admin-fee {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: var(--navy);
+      transition: color 0.2s ease;
+    }
+
+    .ws-admin-fee.active { color: var(--pink); }
+
+    .ws-none-warning {
+      display: none;
+      font-size: 0.75rem;
+      color: #c0392b;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    .ws-none-warning.visible { display: block; }
+
+    @media (max-width: 700px) {
+      .doc-inner { padding: 1.5rem; }
+      .sig-grid-double { grid-template-columns: 1fr; }
+      .parties-grid { grid-template-columns: 1fr; }
+      .ws-grid { grid-template-columns: 1fr; }
+      .site-header { padding: 0.75rem 1rem; }
+      .progress-bar-wrap { padding: 0.5rem 1rem; }
+      .progress-steps { gap: 0.3rem; font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- STICKY HEADER -->
+<header class="site-header">
+  <a href="https://mexzungu.com" class="logo-wrap">
+    <img src="/logo-v3.png" alt="Mexzungu Group">
+  </a>
+  <div class="header-meta">
+    <h1>Carta de Encargo</h1>
+    <p>Autentic.ai x Mexzungu Group &nbsp;|&nbsp; 2026</p>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="step done" id="step-pepe">
+      <span class="step-dot"></span>
+      <span>Pepe Carrillo</span>
+    </div>
+    <span class="step-sep">›</span>
+    <div class="step pending" id="step-dani">
+      <span class="step-dot"></span>
+      <span>Dani Diestre</span>
+    </div>
+    <span class="step-sep">›</span>
+    <div class="step pending" id="step-aniol">
+      <span class="step-dot"></span>
+      <span>Aniol Carreras</span>
+    </div>
+  </div>
+  <div class="progress-label" id="progress-label"><strong>1</strong> de 3 firmas recogidas</div>
+</div>
+
+<!-- MAIN PAGE -->
+<div class="page-wrap">
+  <div class="doc-card" id="document-root">
+    <div class="doc-top-stripe"></div>
+    <div class="doc-inner">
+
+      <!-- Wordmark -->
+      <div class="doc-wordmark">
+        <img src="/logo-v3.png" alt="Mexzungu Group">
+        <div class="doc-wordmark-text">
+          <span>Mexzungu Venture Architecture</span>
+          <span>Outlaw Studio. El caos crea empresas. La estructura las construye.</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="doc-title">Carta de Encargo — Autentic.ai</h1>
+      <p class="doc-subtitle">Fechada el <span id="el-date">3 de mayo de 2026</span></p>
+
+      <!-- Parties -->
+      <div class="parties-grid">
+        <div class="party-block">
+          <div class="party-label">El Cliente</div>
+          <div class="party-name">Autentic.ai</div>
+          <div class="party-detail">
+            Representado por Dani Diestre (Co-Fundador) y Aniol Carreras (Co-Fundador).<br>
+            <a href="mailto:dani@autentic.ai" style="color:var(--pink);text-decoration:none;">dani@autentic.ai</a> &nbsp;·&nbsp; <a href="mailto:aniol@autentic.ai" style="color:var(--pink);text-decoration:none;">aniol@autentic.ai</a>
+          </div>
+        </div>
+        <div class="party-block">
+          <div class="party-label">El Estudio</div>
+          <div class="party-name">Mexzungu Group Ltd</div>
+          <div class="party-detail">Sociedad mauriciana. Royal Road, Henrietta, 73120, Mauricio.<br>Firma a través de Pepe Carrillo (Chief Disruption Officer).<br><a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a></div>
+        </div>
+      </div>
+
+      <div class="doc-date-line">Fecha: <span id="el-date2">3 de mayo de 2026</span></div>
+
+      <!-- BODY -->
+      <div class="doc-body">
+
+        <p class="intro-q">¿Por qué existe esta carta?</p>
+        <p>Porque los acuerdos de palabra son hermosos y las cartas de encargo son como el universo los recuerda. Hablamos de la arquitectura, nos gustó lo que vimos, y acordamos la forma del trabajo. Esta carta recoge esa forma: qué hacemos, qué no hacemos, cuánto cuesta y cómo nos tratamos si algo se complica. Léela, fírmala y a trabajar.</p>
+
+        <h2>¿Dónde está el Estudio, geográfica y legalmente?</h2>
+        <p>El Estudio es una sociedad domiciliada en Mauricio. Trabajamos desde nuestra oficina registrada en la isla y entregamos desde allí a donde Autentic.ai opere. Pepe firma como Chief Disruption Officer del Estudio. Nada de lo que sigue significa que hemos abierto una sucursal, una oficina o un despacho en España ni en ningún otro lugar. Somos los arquitectos visitantes, no los abogados locales.</p>
+
+        <h2>1. ¿Qué estamos construyendo juntos?</h2>
+        <p>Autentic.ai está preparando el terreno para su primera ronda de inversión externa. Antes de entrar al mercado, la estructura interna necesita estar lista: la tabla de capitalización, la formalización del tercer socio, los instrumentos para el equipo y los advisors, la clase de acciones para inversores, y la documentación base de la ronda. Eso es lo que cierra el Workstream 1. Cuando la estructura esté alineada, el Workstream 2 entra en juego: Mexzungu Group acompaña el cierre de la ronda.</p>
+        <p>Este encargo cubre dos líneas de trabajo. Activan las que necesiten. Ambas se definen a continuación. Las que firman se confirman en la sección de activación antes de su firma.</p>
+
+        <div class="sub-item"><strong>Workstream 1: Arquitectura Pre-Ronda.</strong> Revisión y preparación completa de la estructura societaria y documental antes de iniciar el proceso de captación. Seis entregables dentro de las 6 semanas siguientes al inicio del encargo.</div>
+        <div class="sub-item"><strong>Workstream 2: Cierre de Ronda.</strong> Soporte activo durante el proceso de cierre con inversores. Mexzungu Group está con ustedes desde la primera llamada hasta que el capital entra en cuenta. Disponibilidad en 48 horas para cualquier cosa que surja antes del cierre.</div>
+
+        <h2>2. ¿Qué reciben exactamente?</h2>
+        <p style="font-size:0.82rem;color:var(--mist);margin-bottom:0.8rem;">Workstream 1 únicamente. Cada entregable es un documento listo para decidir, no una presentación.</p>
+        <div class="sub-item"><strong>Auditoría de la tabla de capitalización.</strong> Revisión del cap table actual, identificación de inconsistencias o huecos, plan de limpieza y recomendaciones de estructura para el momento pre-ronda.</div>
+        <div class="sub-item"><strong>Formalización del tercer socio.</strong> Estructura de incorporación formal, borrador del pacto de socios actualizado con la participación del 15%, condiciones de entrada y protecciones estándar para todas las partes.</div>
+        <div class="sub-item"><strong>Plan ESOP.</strong> Diseño del pool de opciones sobre acciones, porcentaje recomendado sobre el cap table post-ronda, modelo de vesting estándar (cliff + lineal), documentos marco para su implementación y comunicación al equipo.</div>
+        <div class="sub-item"><strong>Clase de acciones sin voto.</strong> Diseño de la nueva clase de acciones destinada a inversores de la ronda. Derechos económicos completos, derechos políticos limitados. Simplifica la gobernanza conforme el cap table crece.</div>
+        <div class="sub-item"><strong>Marco de advisors.</strong> Modelo de acuerdo estándar para advisors. Estructuras de compensación en equity (opciones o participaciones), condiciones habituales de mercado, cláusulas de vesting y terminación. Evita negociaciones ad hoc caso por caso.</div>
+        <div class="sub-item"><strong>Documentación de soporte para la ronda.</strong> Resumen ejecutivo de estructura para inversores, term sheet de referencia con los parámetros de la ronda, lista de comprobación de diligencia debida básica que un VC de seed solicitará en la primera reunión.</div>
+
+        <h2>3. ¿Con qué premisas partimos?</h2>
+        <p>Construimos este encargo sobre las siguientes asunciones de trabajo. Si algo cambia materialmente, lo hablamos y ajustamos.</p>
+        <div class="sub-item"><strong>(a) La estructura está incompleta o pendiente de actualización.</strong> Asumimos que el tercer socio, el ESOP y la clase de acciones para inversores no están aún formalizados ante notario ni reflejados íntegramente en los documentos societarios vigentes. El Workstream 1 mapea lo que existe y cierra los huecos.</div>
+        <div class="sub-item"><strong>(b) Lo que necesitamos de su parte.</strong> Cuando solicitemos documentos existentes, estatutos, pacto de socios, notas convertibles u otra documentación societaria, los necesitamos en un plazo de 5 días hábiles. Si la documentación llega tarde, los plazos se ajustan en consecuencia.</div>
+        <div class="sub-item"><strong>(c) Entidad contratante.</strong> Este encargo se celebra entre Mexzungu Group Ltd y Dani Diestre y Aniol Carreras, en representación de Autentic.ai, en tanto la sociedad de explotación no esté en condiciones de suscribirlo directamente.</div>
+
+        <h2>4. ¿Qué no hacemos?</h2>
+        <div class="sub-item">(a) Presentar ningún documento ante ningún registro, tribunal, notaría o administración pública en España ni en ninguna otra jurisdicción.</div>
+        <div class="sub-item">(b) Ser sus abogados de referencia en España ni en ningún otro país.</div>
+        <div class="sub-item">(c) Representarles ante inversores o terceros salvo que nos otorguen un mandato escrito expreso para ello.</div>
+        <div class="sub-item">(d) Sustituir a sus abogados locales. Para la ejecución ante notario o en cualquier registro, necesitarán asesoramiento jurídico local cualificado. Podemos recomendar buenos profesionales.</div>
+        <div class="sub-item">(e) Nada que no esté en los apartados 1 y 2 anteriores.</div>
+
+        <h2>5. ¿Es esto asesoramiento jurídico?</h2>
+        <p>No. Esto es consultoría de venture architecture. Les damos la arquitectura, los riesgos y el plan de acción. No presentamos escrituras, no emitimos dictámenes jurídicos ni comparecemos ante ningún órgano. Piensen en nosotros como el amigo que ha cerrado varios miles de millones en operaciones en distintos países y se sienta a su lado en la mesa para decirles qué vigilar y cómo estructurarlo antes de que lleguen los inversores.</p>
+
+        <h2>6. ¿Cuánto cuesta?</h2>
+        <div class="sub-item"><strong>Workstream 1 — Arquitectura Pre-Ronda: honorario fijo de €7.500.</strong> El 50% se factura al firmar esta carta (€3.750). El 50% restante se factura en el momento de la entrega de los seis documentos. Sin sorpresas.</div>
+        <div class="sub-item"><strong>Tarifa de administración mensual — facturada mensualmente mientras haya workstreams abiertos.</strong> €400 al mes por un workstream activo. €700 al mes por dos workstreams activos. No es un retainer discrecional. Es cómo se administra y factura el encargo. Se detiene el día en que se cierra el último workstream activo.</div>
+        <div class="sub-item"><strong>Workstream 2 — Cierre de Ronda: honorario de éxito del 1,5% sobre el capital captado.</strong> Pagadero en los 14 días siguientes a la entrada del capital en cuenta. La tarifa mensual corre en paralelo desde el día uno. Aplica al capital captado dentro de los 12 meses siguientes al inicio del encargo. Si el encargo termina antes y la operación se cierra dentro de los 6 meses siguientes con una parte con la que hayamos trabajado durante el encargo, el honorario de éxito sigue siendo aplicable.</div>
+
+        <h2>7. ¿Cómo se paga?</h2>
+        <p>Transferencia bancaria a:</p>
+        <div class="bank-block">
+          <div class="bank-row"><span class="bank-label">Beneficiario</span><span class="bank-val">Mexzungu Group Ltd</span></div>
+          <div class="bank-row"><span class="bank-label">Banco</span><span class="bank-val">Mauritius Commercial Bank (MCB)</span></div>
+          <div class="bank-row"><span class="bank-label">Número de cuenta</span><span class="bank-val">000448521954</span></div>
+          <div class="bank-row"><span class="bank-label">IBAN</span><span class="bank-val">MU49MCBL0901000448521954000USD</span></div>
+          <div class="bank-row"><span class="bank-label">SWIFT / BIC</span><span class="bank-val">MCBLMUMU</span></div>
+          <div class="bank-row"><span class="bank-label">Dirección del banco</span><span class="bank-val">Sir William Newton Street, Port Louis, Mauricio</span></div>
+        </div>
+        <p>Facturamos en cada hito. Tienen 30 días desde la fecha de la factura para pagar.</p>
+
+        <h2>8. ¿Qué ocurre si algo sale mal?</h2>
+        <p>Si algo se tuerce y vienen a por nosotros, lo máximo que podemos deber es el importe que hayan pagado efectivamente hasta ese momento. No honorarios futuros hipotéticos, no daños consecuentes. Las dos cosas que no podemos limitar contractualmente son el fraude y la conducta dolosa. No planeamos incurrir en ninguna de las dos.</p>
+
+        <h2>9. ¿Quién ve lo que hablamos?</h2>
+        <p>Nadie. Lo que pase en este encargo se queda en este encargo. Ustedes no comparten nuestros análisis, documentos ni reflexiones fuera del encargo sin nuestro permiso. Nosotros no compartimos su negocio, estructura ni estrategia con nadie. Este compromiso no expira cuando termina el encargo.</p>
+
+        <h2>10. ¿Puede el Estudio hablar de este trabajo más adelante?</h2>
+        <p>Sí, en términos generales. Cuando todo sea público o esté cerrado, podríamos decir algo como "ayudamos a una startup española de IA a preparar la arquitectura de su primera ronda y acompañar el cierre con inversores." Nunca mencionaremos Autentic.ai por su nombre, compartiremos sus documentos ni diremos nada específico sin su permiso escrito.</p>
+
+        <h2>11. ¿Cuánto dura esto?</h2>
+        <p>Comenzamos en la fecha de la cabecera y seguimos hasta que ocurra primero uno de estos supuestos: (a) Todos los workstreams activos estén completados y todos los honorarios liquidados. (b) Hayan transcurrido doce meses. (c) Cualquiera de las partes comunique por escrito a la otra que da por terminado el encargo, por cualquier motivo o sin motivo, con 14 días de preaviso. Los workstreams individuales pueden cerrarse de forma independiente por acuerdo escrito sin poner fin al encargo completo. Si paramos antes, todo lo entregado permanece entregado. Todo lo devengado permanece devengado. La confidencialidad sobrevive.</p>
+
+        <h2>12. ¿Qué ley aplica si discrepamos?</h2>
+        <p>Ley de Mauricio. Si no podemos resolverlo entre nosotros, el asunto irá al Tribunal Supremo de Mauricio (División Comercial). No esperamos llegar ahí. Está aquí para que ninguna de las partes tenga que preguntarse qué pasaría.</p>
+
+      </div>
+
+      <!-- WORKSTREAM ACTIVATION -->
+      <div class="ws-activate-section">
+        <div class="ws-activate-header">
+          <h3>Activar workstreams</h3>
+          <p>Seleccionen los workstreams que contratan. Deben activar al menos uno para continuar.</p>
+        </div>
+        <div class="ws-grid">
+
+          <div class="ws-card" id="ws-card-1" onclick="toggleWS(1)">
+            <div class="ws-card-top">
+              <div>
+                <div class="ws-card-label">Workstream 1</div>
+                <div class="ws-card-name">Arquitectura Pre-Ronda</div>
+              </div>
+              <div class="ws-toggle" id="ws-toggle-1">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <p class="ws-card-desc">Auditoría del cap table, formalización del tercer socio, plan ESOP, clase de acciones sin voto, marco de advisors y documentación base de ronda. Seis entregables en 6 semanas.</p>
+            <div class="ws-card-fee">€7.500</div>
+            <div class="ws-card-fee-sub">Honorario fijo. 50% al firmar (€3.750), 50% en entrega.</div>
+          </div>
+
+          <div class="ws-card" id="ws-card-2" onclick="toggleWS(2)">
+            <div class="ws-card-top">
+              <div>
+                <div class="ws-card-label">Workstream 2</div>
+                <div class="ws-card-name">Cierre de Ronda</div>
+              </div>
+              <div class="ws-toggle" id="ws-toggle-2">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <p class="ws-card-desc">Mexzungu Group acompaña el proceso desde la primera llamada con inversores hasta el cierre. Primera llamada, negociación del term sheet y llamada de cierre, siempre presentes. Disponibilidad en 48 horas durante toda la ronda.</p>
+            <div class="ws-card-fee">1,5% del capital captado</div>
+            <div class="ws-card-fee-sub">Honorario de éxito cuando el capital entra en cuenta. La tarifa mensual corre desde el día uno.</div>
+          </div>
+
+        </div>
+
+        <div class="ws-admin-bar">
+          <span class="ws-admin-label"><strong>Tarifa de administración mensual</strong> — facturada mientras los workstreams estén abiertos, se detiene cuando cierran</span>
+          <span class="ws-admin-fee" id="ws-admin-fee-display">Selecciona un workstream</span>
+        </div>
+        <div class="ws-none-warning" id="ws-none-warning">Por favor, activen al menos un workstream antes de firmar.</div>
+      </div>
+
+      <!-- SIGNATURE SECTION -->
+      <div class="sig-section" id="sig-section">
+        <div class="sig-section-header">
+          <h3>Firmas</h3>
+          <span class="sig-section-note">Las tres partes deben firmar para completar el acuerdo.</span>
+        </div>
+
+        <!-- PEPE — pre-signed, full width -->
+        <div class="sig-grid-single">
+          <div class="sig-block signed" id="block-pepe">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Pepe Carrillo</div>
+                <div class="signer-title">Chief Disruption Officer, Mexzungu Group Ltd</div>
+              </div>
+              <div class="signed-badge">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Firmado
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-display">
+                <span class="sig-cursive">Pepe Carrillo</span>
+              </div>
+              <div class="sig-meta">Firmado: <span id="pepe-sign-date">3 de mayo de 2026</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DANI + ANIOL — 2 columns -->
+        <div class="sig-grid-double">
+
+          <!-- DANI DIESTRE -->
+          <div class="sig-block" id="block-dani">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Dani Diestre</div>
+                <div class="signer-title">Co-Fundador, Autentic.ai</div>
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-canvas-wrap">
+                <canvas class="sig-pad" id="canvas-dani"></canvas>
+                <span class="sig-watermark" id="wm-dani">Firma aquí</span>
+              </div>
+              <div class="sig-controls">
+                <button class="sig-clear-btn" onclick="clearSig('dani')">Borrar</button>
+                <div class="sig-email-wrap">
+                  <label for="email-dani">Correo</label>
+                  <input type="email" id="email-dani" placeholder="tu@email.com" oninput="updateApplyBtn('dani')">
+                </div>
+                <div class="sig-date-wrap">
+                  <label for="date-dani">Fecha</label>
+                  <input type="date" id="date-dani">
+                </div>
+                <div class="sig-agree-wrap">
+                  <input type="checkbox" id="agree-dani" onchange="updateApplyBtn('dani')">
+                  <label for="agree-dani">He leído y acepto todos los términos anteriores.</label>
+                </div>
+                <button class="sig-apply-btn" id="apply-dani" disabled onclick="applySig('dani')">Aplicar Firma</button>
+              </div>
+              <div class="sig-applied-note">Firma aplicada.</div>
+            </div>
+          </div>
+
+          <!-- ANIOL CARRERAS -->
+          <div class="sig-block" id="block-aniol">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Aniol Carreras</div>
+                <div class="signer-title">Co-Fundador, Autentic.ai</div>
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-canvas-wrap">
+                <canvas class="sig-pad" id="canvas-aniol"></canvas>
+                <span class="sig-watermark" id="wm-aniol">Firma aquí</span>
+              </div>
+              <div class="sig-controls">
+                <button class="sig-clear-btn" onclick="clearSig('aniol')">Borrar</button>
+                <div class="sig-email-wrap">
+                  <label for="email-aniol">Correo</label>
+                  <input type="email" id="email-aniol" placeholder="tu@email.com" oninput="updateApplyBtn('aniol')">
+                </div>
+                <div class="sig-date-wrap">
+                  <label for="date-aniol">Fecha</label>
+                  <input type="date" id="date-aniol">
+                </div>
+                <div class="sig-agree-wrap">
+                  <input type="checkbox" id="agree-aniol" onchange="updateApplyBtn('aniol')">
+                  <label for="agree-aniol">He leído y acepto todos los términos anteriores.</label>
+                </div>
+                <button class="sig-apply-btn" id="apply-aniol" disabled onclick="applySig('aniol')">Aplicar Firma</button>
+              </div>
+              <div class="sig-applied-note">Firma aplicada.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COMPLETION PANEL -->
+        <div class="completion-wrap" id="completion-panel">
+          <h3>Carta de encargo firmada.</h3>
+          <p id="server-submit-status" style="font-size:0.85rem;color:var(--stone);margin-bottom:0.5rem;">Enviando copia firmada a Pepe...</p>
+          <p style="font-size:0.78rem;color:var(--mist);margin-bottom:1.25rem;">Descarguen su copia para sus registros.</p>
+          <button class="btn-download" onclick="downloadPDF()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Descargar PDF Firmado
+          </button>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="doc-footer">
+        <p>Mexzungu Group Ltd &nbsp;|&nbsp; Royal Road, Henrietta, 73120, Mauricio</p>
+        <p><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> &nbsp;|&nbsp; <a href="https://mexzungu.com">mexzungu.com</a></p>
+      </div>
+
+    </div><!-- /doc-inner -->
+  </div><!-- /doc-card -->
+</div><!-- /page-wrap -->
+
+<script>
+  // ── CONFIG ──
+  var DOC_ID = 'autentic-ai-el';
+  var DOC_TITLE = 'Carta de Encargo — Autentic.ai x Mexzungu Group';
+  var DOC_TYPE = 'Carta de Encargo';
+  var DOC_PARTIES = ['Autentic.ai', 'Mexzungu Group Ltd'];
+  var SIGNERS = ['dani', 'aniol'];
+  var SIGNER_META = {
+    dani:  { name: 'Dani Diestre',    role: 'Co-Fundador, Autentic.ai' },
+    aniol: { name: 'Aniol Carreras',  role: 'Co-Fundador, Autentic.ai' }
+  };
+  var PRE_SIGNED = [{ name: 'Pepe Carrillo', role: 'Chief Disruption Officer, Mexzungu Group Ltd', signed_at: '3 de mayo de 2026' }];
+  var API_BASE = 'https://api.mexzungu.com';
+
+  // ── STATE ──
+  var signed = { dani: false, aniol: false };
+  var pads = {};
+
+  // ── INIT DATE FIELDS ──
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('date-dani').value = today;
+  document.getElementById('date-aniol').value = today;
+  (function() {
+    var d = new Date();
+    var opts = { year: 'numeric', month: 'long', day: 'numeric' };
+    var dateStr = d.toLocaleDateString('es-ES', opts);
+    document.getElementById('el-date').textContent = dateStr;
+    document.getElementById('el-date2').textContent = dateStr;
+    document.getElementById('pepe-sign-date').textContent = dateStr;
+  })();
+
+  // ── WORKSTREAM ACTIVATION ──
+  var wsActive = { 1: false, 2: false };
+  var adminFees = { 0: null, 1: '€400 / mes', 2: '€700 / mes' };
+
+  function toggleWS(n) {
+    wsActive[n] = !wsActive[n];
+    var card = document.getElementById('ws-card-' + n);
+    card.classList.toggle('active', wsActive[n]);
+    updateAdminFee();
+    updateApplyBtn('dani');
+    updateApplyBtn('aniol');
+    document.getElementById('ws-none-warning').classList.remove('visible');
+  }
+
+  function activeCount() {
+    return (wsActive[1] ? 1 : 0) + (wsActive[2] ? 1 : 0);
+  }
+
+  function updateAdminFee() {
+    var n = activeCount();
+    var display = document.getElementById('ws-admin-fee-display');
+    if (n === 0) {
+      display.textContent = 'Selecciona un workstream';
+      display.classList.remove('active');
+    } else {
+      display.textContent = adminFees[n];
+      display.classList.add('active');
+    }
+  }
+
+  // ── INIT SIGNATURE PADS ──
+  function initPad(id) {
+    var canvas = document.getElementById('canvas-' + id);
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    var pad = new SignaturePad(canvas, { minWidth: 1, maxWidth: 2.5, penColor: '#1a1a2e' });
+    pad.addEventListener('beginStroke', function() {
+      document.getElementById('wm-' + id).style.display = 'none';
+    });
+    pad.addEventListener('afterUpdateStroke', function() { updateApplyBtn(id); });
+    pads[id] = pad;
+  }
+
+  initPad('dani');
+  initPad('aniol');
+
+  function clearSig(id) {
+    pads[id].clear();
+    document.getElementById('wm-' + id).style.display = '';
+    updateApplyBtn(id);
+  }
+
+  function updateApplyBtn(id) {
+    if (signed[id]) return;
+    var agreed = document.getElementById('agree-' + id).checked;
+    var hasStroke = !pads[id].isEmpty();
+    var hasEmail = document.getElementById('email-' + id).value.includes('@');
+    document.getElementById('apply-' + id).disabled = !(agreed && hasStroke && hasEmail && activeCount() > 0);
+  }
+
+  function updateProgressBar() {
+    var count = 1 + (signed.dani ? 1 : 0) + (signed.aniol ? 1 : 0);
+    document.getElementById('progress-label').innerHTML = '<strong>' + count + '</strong> de 3 firmas recogidas';
+  }
+
+  function markBlockSigned(id, dateStr) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Firmado';
+      head.appendChild(badge);
+    }
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+    updateProgressBar();
+  }
+
+  function markBlockPreviouslySigned(id, sigData) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied', 'signed');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Firmado';
+      head.appendChild(badge);
+    }
+    var body = block.querySelector('.sig-block-body');
+    body.innerHTML = '<div class="sig-display"><span class="sig-cursive">' + (sigData.name || SIGNER_META[id].name) + '</span></div>' +
+      '<div class="sig-meta">Firmado: ' + (sigData.signed_at || '') + '</div>';
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+  }
+
+  async function applySig(id) {
+    if (activeCount() === 0) {
+      document.getElementById('ws-none-warning').classList.add('visible');
+      document.querySelector('.ws-activate-section').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    if (pads[id].isEmpty()) return;
+    var email = document.getElementById('email-' + id).value.trim();
+    if (!email) return;
+
+    var btn = document.getElementById('apply-' + id);
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
+
+    markBlockSigned(id, document.getElementById('date-' + id).value);
+
+    var activeWS = [];
+    if (wsActive[1]) activeWS.push('WS1: Arquitectura Pre-Ronda');
+    if (wsActive[2]) activeWS.push('WS2: Cierre de Ronda');
+
+    var payload = {
+      document_id: DOC_ID,
+      signer_id: id,
+      signer_name: SIGNER_META[id].name,
+      signer_role: SIGNER_META[id].role,
+      signer_email: email,
+      image_data: pads[id].toDataURL('image/png'),
+      signed_at: document.getElementById('date-' + id).value,
+      title: DOC_TITLE,
+      document_type: DOC_TYPE,
+      parties: DOC_PARTIES,
+      required_signers: SIGNERS,
+      pre_signed: PRE_SIGNED,
+      extra_meta: { active_workstreams: activeWS, admin_fee: adminFees[activeCount()] }
+    };
+
+    try {
+      var resp = await fetch(API_BASE + '/signing/partial-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await resp.json();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; Firmado. PDF enviado a todas las partes.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+        setTimeout(function() {
+          document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    } catch (err) {
+      console.error('Partial save failed:', err);
+    }
+
+    if (signed.dani && signed.aniol) {
+      document.getElementById('completion-panel').classList.add('visible');
+      setTimeout(function() {
+        document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    }
+  }
+
+  async function loadSigningStatus() {
+    try {
+      var resp = await fetch(API_BASE + '/signing/status/' + DOC_ID);
+      var data = await resp.json();
+      for (var sid in data.signatures) {
+        if (SIGNERS.indexOf(sid) !== -1 && !signed[sid]) {
+          markBlockPreviouslySigned(sid, data.signatures[sid]);
+        }
+      }
+      updateProgressBar();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; Firmado. PDF enviado a todas las partes.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+      }
+    } catch (err) {
+      console.warn('Could not load signing status:', err);
+    }
+  }
+
+  loadSigningStatus();
+
+  async function downloadPDF() {
+    var btn = document.querySelector('.btn-download');
+    btn.textContent = 'Generando...';
+    btn.disabled = true;
+    try {
+      var el = document.getElementById('document-root');
+      var canvas = await html2canvas(el, { scale: 1.5, useCORS: true, logging: false, backgroundColor: '#ffffff' });
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+      var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
+      var pageW = pdf.internal.pageSize.getWidth();
+      var pageH = pdf.internal.pageSize.getHeight();
+      var ratio = pageW / canvas.width;
+      var scaledH = canvas.height * ratio;
+      var y = 0;
+      while (y < scaledH) {
+        if (y > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, -y, pageW, scaledH);
+        y += pageH;
+      }
+      var dateStr = new Date().toISOString().split('T')[0];
+      pdf.save('Autentic_MexzunguGroup_CartaEncargo_Firmada_' + dateStr + '.pdf');
+    } catch (e) {
+      console.error(e);
+      alert('Error al generar el PDF. Por favor, haz una captura de pantalla.');
+    }
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Descargar PDF Firmado';
+    btn.disabled = false;
+  }
+</script>
+
+</body>
+</html>

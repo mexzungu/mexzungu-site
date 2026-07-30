@@ -1,3 +1,4 @@
+
 # Redirect old URLs to new branded paths
 /consulting /venture-architecture 301
 /consulting/ /venture-architecture/ 301
@@ -36,6 +37,16 @@
 /es/talk_to_pepe /es/lets-jam 301
 /es/talk_to_pepe/ /es/lets-jam/ 301
 
+# Cockpit renamed to Confluence — now lives on societas
+/cockpit https://societas.mexzungu.com/confluence 301
+/cockpit/ https://societas.mexzungu.com/confluence 301
+/confluence https://societas.mexzungu.com/confluence 301
+/confluence/* https://societas.mexzungu.com/confluence/:splat 301
+
 # ES Data Privacy — redirect to EN until translation is ready
 /es/data-privacy /data-privacy 302
 /es/data-privacy/ /data-privacy/ 302
+
+# Arte redirected to Juego de las Mijagas
+/arte /juegodemijagas 301
+/arte/ /juegodemijagas/ 301

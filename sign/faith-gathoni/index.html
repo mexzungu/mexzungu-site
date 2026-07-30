@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Advisor Collaboration Letter - Faith Gathoni x Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink:       #e14b87;
+      --pink-dark:  #b83a6b;
+      --navy:       #1a1a2e;
+      --black:      #0d0d0d;
+      --white:      #fafafa;
+      --ash:        #e8e3df;
+      --stone:      #6b5e57;
+      --mist:       #9a8f88;
+      --charcoal:   #3d3533;
+      --success:    #2d8f5e;
+      --heading:    'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:       'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body { font-family: var(--sans); background: #f0ece8; color: var(--black); min-height: 100vh; }
+
+    .site-header {
+      background: var(--navy); padding: 1rem 2rem; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .site-header .logo-wrap { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .site-header img { height: 36px; width: auto; }
+    .header-meta { text-align: right; }
+    .header-meta h1 { font-family: var(--heading); font-size: 0.95rem; color: #fafafa; font-weight: 700; }
+    .header-meta p { font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
+    .progress-bar-wrap {
+      background: var(--charcoal); padding: 0.65rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .progress-steps { display: flex; align-items: center; gap: 0.5rem; }
+    .step { display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: rgba(255,255,255,0.45); }
+    .step.done { color: #2dce89; }
+    .step.pending { color: rgba(255,255,255,0.65); }
+    .step-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .step-sep { color: rgba(255,255,255,0.25); font-size: 0.8rem; }
+    .progress-label { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+    .progress-label strong { color: #2dce89; }
+
+    .page-wrap { max-width: 820px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; }
+
+    .doc-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.08); }
+    .doc-top-stripe { height: 5px; background: linear-gradient(90deg, var(--pink) 0%, #f97316 100%); }
+    .doc-inner { padding: 2.5rem 2.5rem 2rem; }
+
+    .doc-wordmark { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--ash); }
+    .doc-wordmark img { height: 40px; width: auto; }
+    .doc-wordmark-text { display: flex; flex-direction: column; gap: 2px; }
+    .doc-wordmark-text span:first-child { font-family: var(--heading); font-size: 0.9rem; color: var(--navy); }
+    .doc-wordmark-text span:last-child { font-size: 0.72rem; color: var(--mist); }
+
+    .doc-title { font-family: var(--heading); font-size: 1.7rem; color: var(--navy); line-height: 1.15; margin-bottom: 0.4rem; }
+    .doc-subtitle { font-size: 0.82rem; color: var(--mist); margin-bottom: 2rem; }
+
+    .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .party-block { background: #f8f5f2; border: 1px solid var(--ash); border-radius: 10px; padding: 1.1rem 1.25rem; }
+    .party-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); margin-bottom: 0.35rem; }
+    .party-name { font-family: var(--heading); font-size: 0.95rem; color: var(--navy); margin-bottom: 0.35rem; }
+    .party-detail { font-size: 0.78rem; color: var(--stone); line-height: 1.5; }
+
+    .doc-date-line { font-size: 0.82rem; color: var(--mist); margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--ash); }
+
+    .doc-body h2 { font-family: var(--heading); font-size: 0.95rem; color: var(--navy); margin: 1.8rem 0 0.6rem; }
+    .doc-body p { font-size: 0.88rem; color: var(--charcoal); line-height: 1.7; margin-bottom: 0.8rem; }
+    .intro-q { font-style: italic; color: var(--mist) !important; font-size: 0.82rem !important; margin-bottom: 0.3rem !important; }
+
+    .sub-item { font-size: 0.85rem; color: var(--charcoal); line-height: 1.65; padding: 0.6rem 0 0.6rem 1.2rem; border-left: 2px solid var(--ash); margin-bottom: 0.5rem; }
+    .sub-item strong { color: var(--navy); }
+
+    .fee-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.84rem; }
+    .fee-table th { text-align: left; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); padding: 0.5rem 0.75rem; background: #f8f5f2; border-bottom: 1px solid var(--ash); }
+    .fee-table th:not(:first-child) { text-align: right; }
+    .fee-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(232,227,223,0.6); color: var(--charcoal); }
+    .fee-table td:not(:first-child) { text-align: right; white-space: nowrap; }
+    .fee-table td.take { color: var(--pink); font-weight: 600; }
+    .fee-table tr.highlight td { background: rgba(225,75,135,0.04); }
+    .fee-table tr:last-child td { border-bottom: none; }
+    .fee-note { font-size: 0.75rem; color: var(--mist); margin-top: 0.3rem; padding: 0.5rem 0.75rem; background: #f8f5f2; border-radius: 6px; line-height: 1.6; }
+
+    .path-section { margin-top: 2rem; padding: 1.75rem; background: #f8f5f2; border: 1px solid var(--ash); border-radius: 14px; }
+    .path-section-header { margin-bottom: 1.25rem; }
+    .path-section-header h3 { font-family: var(--heading); font-size: 1.05rem; color: var(--navy); margin-bottom: 0.3rem; }
+    .path-section-header p { font-size: 0.8rem; color: var(--mist); margin: 0; }
+
+    .path-grid { display: grid; gap: 0.85rem; }
+    .path-card { border: 2px solid var(--ash); border-radius: 10px; padding: 1.1rem 1.2rem; background: #fff; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; user-select: none; }
+    .path-card:hover { border-color: rgba(225,75,135,0.4); }
+    .path-card.active { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(225,75,135,0.1); }
+    .path-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.5rem; }
+    .path-card-name { font-family: var(--heading); font-size: 0.92rem; color: var(--navy); }
+    .path-toggle { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--ash); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, background 0.15s; }
+    .path-card.active .path-toggle { border-color: var(--pink); background: var(--pink); }
+    .path-toggle svg { display: none; }
+    .path-card.active .path-toggle svg { display: block; }
+    .path-card-desc { font-size: 0.78rem; color: var(--stone); line-height: 1.55; }
+    .path-none-warning { display: none; font-size: 0.75rem; color: #c0392b; margin-top: 0.6rem; text-align: center; }
+    .path-none-warning.visible { display: block; }
+
+    .sig-section { margin-top: 3rem; padding-top: 2.5rem; border-top: 2px solid var(--ash); }
+    .sig-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .sig-section-header h3 { font-family: var(--heading); font-size: 1.1rem; color: var(--navy); }
+    .sig-section-note { font-size: 0.78rem; color: var(--mist); }
+
+    .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .sig-block { border: 1px solid var(--ash); border-radius: 10px; overflow: hidden; background: #fdfdfd; }
+    .sig-block.signed { border-color: rgba(45,143,94,0.35); background: rgba(45,143,94,0.02); }
+    .sig-block-head { background: var(--navy); padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .sig-block.signed .sig-block-head { background: var(--success); }
+    .sig-block-head .signer-name { font-size: 0.8rem; font-weight: 600; color: #fafafa; }
+    .sig-block-head .signer-title { font-size: 0.68rem; color: rgba(255,255,255,0.65); margin-top: 1px; }
+    .signed-badge { display: flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; color: #fafafa; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 0.2rem 0.55rem; }
+    .signed-badge svg { flex-shrink: 0; }
+
+    .sig-block-body { padding: 1rem; }
+    .sig-display { height: 90px; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(45,143,94,0.3); border-radius: 6px; background: rgba(45,143,94,0.03); margin-bottom: 0.75rem; }
+    .sig-cursive { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 1.6rem; color: var(--navy); letter-spacing: -0.02em; }
+    .sig-meta { font-size: 0.72rem; color: var(--mist); }
+
+    .sig-canvas-wrap { position: relative; margin-bottom: 0.75rem; }
+    canvas.sig-pad { display: block; width: 100%; height: 100px; border: 1px dashed #ccc; border-radius: 6px; background: #fafafa; cursor: crosshair; touch-action: none; }
+    .sig-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 0.75rem; color: #d0cac6; pointer-events: none; user-select: none; white-space: nowrap; }
+
+    .sig-controls { display: flex; flex-direction: column; gap: 0.5rem; }
+    .sig-clear-btn { background: none; border: none; font-family: var(--sans); font-size: 0.72rem; color: var(--mist); cursor: pointer; text-align: right; padding: 0; text-decoration: underline; }
+    .sig-clear-btn:hover { color: var(--stone); }
+    .sig-email-wrap, .sig-date-wrap { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem; }
+    .sig-email-wrap label, .sig-date-wrap label { font-size: 0.72rem; color: var(--mist); white-space: nowrap; }
+    .sig-email-wrap input, .sig-date-wrap input { font-family: var(--sans); font-size: 0.78rem; border: 1px solid var(--ash); border-radius: 4px; padding: 0.25rem 0.5rem; color: var(--navy); flex: 1; min-width: 0; }
+    .sig-agree-wrap { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.6rem; }
+    .sig-agree-wrap input[type="checkbox"] { margin-top: 2px; accent-color: var(--pink); flex-shrink: 0; }
+    .sig-agree-wrap label { font-size: 0.72rem; color: var(--stone); line-height: 1.4; }
+    .sig-apply-btn { width: 100%; background: var(--pink); color: #fff; border: none; border-radius: 6px; font-family: var(--sans); font-size: 0.82rem; font-weight: 600; padding: 0.55rem 1rem; cursor: pointer; transition: background 0.2s, opacity 0.2s; }
+    .sig-apply-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .sig-apply-btn:not(:disabled):hover { background: var(--pink-dark); }
+    .sig-block.applied canvas { border-color: rgba(45,143,94,0.4); background: rgba(45,143,94,0.02); cursor: default; }
+    .sig-applied-note { display: none; font-size: 0.72rem; color: var(--success); font-weight: 600; text-align: center; padding: 0.4rem 0; }
+    .sig-block.applied .sig-applied-note { display: block; }
+    .sig-block.applied .sig-agree-wrap, .sig-block.applied .sig-apply-btn, .sig-block.applied .sig-clear-btn { display: none; }
+
+    .completion-wrap { display: none; margin-top: 2.5rem; background: linear-gradient(135deg, rgba(45,143,94,0.06) 0%, rgba(45,143,94,0.02) 100%); border: 1px solid rgba(45,143,94,0.3); border-radius: 12px; padding: 2rem; text-align: center; }
+    .completion-wrap.visible { display: block; }
+    .completion-wrap h3 { font-family: var(--heading); font-size: 1.15rem; color: var(--success); margin-bottom: 0.5rem; }
+    .completion-wrap p { font-size: 0.88rem; color: var(--stone); margin-bottom: 1.5rem; }
+    .btn-download { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--pink); color: #fff; border: none; border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600; padding: 0.8rem 2rem; cursor: pointer; transition: background 0.2s; margin-bottom: 1rem; }
+    .btn-download:hover { background: var(--pink-dark); }
+
+    .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--ash); display: flex; align-items: center; justify-content: space-between; }
+    .doc-footer p { font-size: 0.75rem; color: var(--mist); }
+    .doc-footer a { color: var(--pink); text-decoration: none; }
+    .doc-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .doc-inner { padding: 1.5rem; }
+      .sig-grid { grid-template-columns: 1fr; }
+      .parties-grid { grid-template-columns: 1fr; }
+      .site-header { padding: 0.75rem 1rem; }
+      .progress-bar-wrap { padding: 0.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://mexzungu.com" class="logo-wrap">
+    <img src="/logo-v3.png" alt="Mexzungu Group">
+  </a>
+  <div class="header-meta">
+    <h1>Advisor Collaboration Letter</h1>
+    <p>Faith Gathoni x Mexzungu Group &nbsp;|&nbsp; 2026</p>
+  </div>
+</header>
+
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="step done" id="step-pepe">
+      <span class="step-dot"></span>
+      <span>Pepe Carrillo</span>
+    </div>
+    <span class="step-sep">›</span>
+    <div class="step pending" id="step-faith">
+      <span class="step-dot"></span>
+      <span>Faith Gathoni</span>
+    </div>
+  </div>
+  <div class="progress-label" id="progress-label"><strong>1</strong> of 2 signatures collected</div>
+</div>
+
+<div class="page-wrap">
+  <div class="doc-card" id="document-root">
+    <div class="doc-top-stripe"></div>
+    <div class="doc-inner">
+
+      <div class="doc-wordmark">
+        <img src="/logo-v3.png" alt="Mexzungu Group">
+        <div class="doc-wordmark-text">
+          <span>Mexzungu Venture Architecture</span>
+          <span>Outlaw Studio. Chaos starts companies. Structure builds them.</span>
+        </div>
+      </div>
+
+      <h1 class="doc-title">Advisor Collaboration Letter</h1>
+      <p class="doc-subtitle">Dated <span id="el-date">July 2026</span></p>
+
+      <div class="parties-grid">
+        <div class="party-block">
+          <div class="party-label">The Advisor</div>
+          <div class="party-name">Faith Gathoni</div>
+          <div class="party-detail">Independent governance and founder development advisor. Nairobi, Kenya.<br><a href="mailto:faith88.wanjau@gmail.com" style="color:var(--pink);text-decoration:none;">faith88.wanjau@gmail.com</a></div>
+        </div>
+        <div class="party-block">
+          <div class="party-label">The Studio</div>
+          <div class="party-name">Mexzungu Group Ltd</div>
+          <div class="party-detail">A Mauritius company. Royal Road, Henrietta, 73120, Mauritius.<br>Represented by Pepe Carrillo (Chief Disruption Officer).<br><a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a></div>
+        </div>
+      </div>
+
+      <div class="doc-date-line">Dated: <span id="el-date2">July 2026</span></div>
+
+      <div class="doc-body">
+
+        <p class="intro-q">Why does this letter exist?</p>
+        <p>Because a good working relationship deserves a clear written foundation. We talked about the kind of work each of us does, liked what we saw, and agreed to explore whether we can source and deliver governance and founder development mandates together. This letter captures the framework for that collaboration: what it means to work together, how fees flow, what we each own, and how to exit cleanly if it stops making sense.</p>
+
+        <h2>1. What kind of relationship is this?</h2>
+        <p>Faith is an independent advisor, not an employee of Mexzungu Group Ltd. Nothing in this letter creates an employment relationship, a partnership, or a joint venture. Faith chooses which mandates to accept, sets the methodology for delivery, and operates her own practice independently. Mexzungu provides the platform, the pipeline, and the infrastructure. Faith provides the expertise.</p>
+
+        <h2>2. What Faith brings to the collaboration</h2>
+        <div class="sub-item"><strong>Governance and founder development expertise.</strong> Faith brings her full practice: governance architecture, founder development facilitation, and the Sacred Work Series across the wellness and apothecary space. She sets the methodology, the approach, and the delivery standards.</div>
+        <div class="sub-item"><strong>Her own client relationships.</strong> Faith retains full ownership of existing client relationships and any practice she has built independently. Mexzungu makes no claim over those.</div>
+        <div class="sub-item"><strong>Professional judgment.</strong> Faith decides whether a referred mandate is a good fit and has the right to decline any mandate without explanation.</div>
+
+        <h2>3. What Mexzungu provides</h2>
+        <div class="sub-item"><strong>Client sourcing and BD.</strong> Mexzungu will use commercially reasonable efforts to identify and introduce governance and founder development mandates that fit Faith's practice. There is no guaranteed volume or minimum number of referrals. Pipeline development takes time and depends on market conditions, network activity, and client needs.</div>
+        <div class="sub-item"><strong>Platform and legal infrastructure.</strong> Access to the Mexzungu platform for proposals, contracts, and billing. The Studio manages client onboarding, engagement letters, and invoice administration.</div>
+        <div class="sub-item"><strong>Operational support.</strong> Access to Mexzungu's operational layer, including scheduling, communications infrastructure, and coordination support where relevant to a shared mandate.</div>
+
+        <h2>4. How fees work</h2>
+        <p>Revenue on mandates sourced through the Mexzungu platform is split 80/20. Faith keeps 80% of all fees billed on mandates she delivers. Mexzungu retains 20% to cover client sourcing, business development, legal infrastructure, and operational support.</p>
+        <p>Faith's published fee schedule at the time of signing is set out below. Fees on any given mandate are agreed in writing before delivery begins and are subject to client negotiation. The schedule is a reference framework, not a guarantee of the fees that will be achieved on any specific mandate.</p>
+
+        <table class="fee-table">
+          <thead>
+            <tr>
+              <th>Engagement type</th>
+              <th>Published fee</th>
+              <th>Faith keeps (80%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Discovery Call</td>
+              <td>$350</td>
+              <td class="take">$280</td>
+            </tr>
+            <tr>
+              <td>Founder Development Intensive</td>
+              <td>$3,500</td>
+              <td class="take">$2,800</td>
+            </tr>
+            <tr>
+              <td>Governance Architecture</td>
+              <td>$6,500 to $9,500</td>
+              <td class="take">$5,200 to $7,600</td>
+            </tr>
+            <tr class="highlight">
+              <td>Monthly Retainer</td>
+              <td>$2,500 / mo</td>
+              <td class="take">$2,000 / mo</td>
+            </tr>
+            <tr>
+              <td>Sacred Work Series event</td>
+              <td>from $1,500</td>
+              <td class="take">from $1,200</td>
+            </tr>
+            <tr>
+              <td>Full Stack bundle</td>
+              <td>$11,500</td>
+              <td class="take">$9,200</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="fee-note">The 80/20 split applies to all mandates sourced through Mexzungu regardless of engagement type. For mandates Faith sources independently through her own practice, no fee share applies unless she explicitly routes them through the platform. Fee schedule may be updated by written agreement between the parties.</p>
+
+        <h2>5. Payment and invoicing</h2>
+        <p>Mexzungu issues the client invoice and collects payment. Faith's 80% is remitted within 14 days of cleared client payment. Mexzungu is not required to remit Faith's share before client payment clears. If a client does not pay, no fee is owed to Faith for that mandate.</p>
+
+        <h2>6. What Mexzungu is not doing</h2>
+        <div class="sub-item">(a) Guaranteeing any volume of mandates, referrals, or income at any level.</div>
+        <div class="sub-item">(b) Employing Faith or creating any right to benefits, holiday pay, or employment protections.</div>
+        <div class="sub-item">(c) Restricting Faith from working independently or with other platforms and clients.</div>
+        <div class="sub-item">(d) Taking responsibility for the quality, accuracy, or outcomes of Faith's advisory work.</div>
+
+        <h2>7. Intellectual property</h2>
+        <p>Faith retains full ownership of all methodologies, frameworks, tools, and materials she has developed independently, including the Sacred Work Series, her governance frameworks, and any pre-existing materials. Where a mandate results in new joint materials specifically developed for a client, ownership is addressed in the specific engagement letter for that mandate.</p>
+
+        <h2>8. Confidentiality</h2>
+        <p>Both parties treat each other's business information, client details, methodologies, and pricing as confidential. Neither party shares the other's materials, client names, or internal information without written permission. This obligation survives the end of this letter.</p>
+
+        <h2>9. How long does this last?</h2>
+        <p>This framework is open-ended. Either party may end it at any time with 30 days written notice. Any mandate already in progress continues until completed, and the 80/20 split applies to fees collected from that mandate. Confidentiality survives termination.</p>
+
+        <h2>10. Governing law</h2>
+        <p>Mauritius law. Any disputes that cannot be resolved between the parties go to the Supreme Court of Mauritius (Commercial Division). We are not expecting to need this.</p>
+
+      </div>
+
+      <!-- PATH SELECTION -->
+      <div class="path-section">
+        <div class="path-section-header">
+          <h3>Where would you like to start?</h3>
+          <p>Select the engagement model that fits where you are right now. You can adjust this at any time by written agreement.</p>
+        </div>
+        <div class="path-grid">
+
+          <div class="path-card" id="path-card-1" onclick="selectPath(1)">
+            <div class="path-card-top">
+              <div class="path-card-name">Embedded Governance Advisor</div>
+              <div class="path-toggle" id="path-toggle-1">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <p class="path-card-desc">Join specific Mexzungu client engagements mandate by mandate, as the governance and founder development expert. No obligation between projects. Fastest path to a first mandate.</p>
+          </div>
+
+          <div class="path-card" id="path-card-2" onclick="selectPath(2)">
+            <div class="path-card-top">
+              <div class="path-card-name">Governance Practice Build</div>
+              <div class="path-toggle" id="path-toggle-2">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <p class="path-card-desc">Build a dedicated governance and founder development vertical within Mexzungu under your name. Shared BD and co-originated mandates. Joint development of the practice.</p>
+          </div>
+
+          <div class="path-card" id="path-card-3" onclick="selectPath(3)">
+            <div class="path-card-top">
+              <div class="path-card-name">Network Referral Partner</div>
+              <div class="path-toggle" id="path-toggle-3">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <p class="path-card-desc">Route governance, legal documentation, and deal structuring needs from your network to Mexzungu. Earn a referral fee on every conversion. Minimum time commitment, maximum leverage on your ecosystem.</p>
+          </div>
+
+        </div>
+        <div class="path-none-warning" id="path-none-warning">Please select a starting path before signing.</div>
+      </div>
+
+      <!-- SIGNATURE SECTION -->
+      <div class="sig-section" id="sig-section">
+        <div class="sig-section-header">
+          <h3>Signatures</h3>
+          <span class="sig-section-note">Both parties must sign to complete the letter.</span>
+        </div>
+
+        <div class="sig-grid">
+
+          <div class="sig-block signed" id="block-pepe">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Pepe Carrillo</div>
+                <div class="signer-title">Chief Disruption Officer, Mexzungu Group Ltd</div>
+              </div>
+              <div class="signed-badge">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Signed
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-display">
+                <span class="sig-cursive">Pepe Carrillo</span>
+              </div>
+              <div class="sig-meta">Signed: <span id="pepe-sign-date">July 2026</span></div>
+            </div>
+          </div>
+
+          <div class="sig-block" id="block-faith">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Faith Gathoni</div>
+                <div class="signer-title">Independent Governance Advisor</div>
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-canvas-wrap">
+                <canvas class="sig-pad" id="canvas-faith"></canvas>
+                <span class="sig-watermark" id="wm-faith">Sign here</span>
+              </div>
+              <div class="sig-controls">
+                <button class="sig-clear-btn" onclick="clearSig('faith')">Clear</button>
+                <div class="sig-email-wrap">
+                  <label for="email-faith">Email</label>
+                  <input type="email" id="email-faith" placeholder="your@email.com" oninput="updateApplyBtn('faith')">
+                </div>
+                <div class="sig-date-wrap">
+                  <label for="date-faith">Date</label>
+                  <input type="date" id="date-faith">
+                </div>
+                <div class="sig-agree-wrap">
+                  <input type="checkbox" id="agree-faith" onchange="updateApplyBtn('faith')">
+                  <label for="agree-faith">I have read and agree to all terms above.</label>
+                </div>
+                <button class="sig-apply-btn" id="apply-faith" disabled onclick="applySig('faith')">Apply Signature</button>
+              </div>
+              <div class="sig-applied-note">Signature applied.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="completion-wrap" id="completion-panel">
+          <h3>Collaboration letter signed.</h3>
+          <p id="server-submit-status" style="font-size:0.85rem;color:var(--stone);margin-bottom:0.5rem;">Sending signed copy to Pepe...</p>
+          <p style="font-size:0.78rem;color:var(--mist);margin-bottom:1.25rem;">Download your copy for your records.</p>
+          <button class="btn-download" onclick="downloadPDF()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download Signed PDF
+          </button>
+        </div>
+
+      </div>
+
+      <div class="doc-footer">
+        <p>Mexzungu Group Ltd &nbsp;|&nbsp; Royal Road, Henrietta, 73120, Mauritius</p>
+        <p><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> &nbsp;|&nbsp; <a href="https://mexzungu.com">mexzungu.com</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var DOC_ID = 'faith-gathoni-advisor';
+  var DOC_TITLE = 'Advisor Collaboration Letter - Faith Gathoni x Mexzungu Group';
+  var DOC_TYPE = 'Advisor Collaboration Letter';
+  var DOC_PARTIES = ['Faith Gathoni', 'Mexzungu Group Ltd'];
+  var SIGNERS = ['faith'];
+  var SIGNER_META = { faith: { name: 'Faith Gathoni', role: 'Independent Governance Advisor' } };
+  var PRE_SIGNED = [{ name: 'Pepe Carrillo', role: 'Chief Disruption Officer, Mexzungu Group Ltd', signed_at: 'July 2026' }];
+  var API_BASE = 'https://api.mexzungu.com';
+
+  var signed = { faith: false };
+  var pads = {};
+  var selectedPath = 0;
+  var PATH_NAMES = { 1: 'Embedded Governance Advisor', 2: 'Governance Practice Build', 3: 'Network Referral Partner' };
+
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('date-faith').value = today;
+  (function() {
+    var d = new Date();
+    var opts = { year: 'numeric', month: 'long', day: 'numeric' };
+    var dateStr = d.toLocaleDateString('en-GB', opts);
+    document.getElementById('el-date').textContent = dateStr;
+    document.getElementById('el-date2').textContent = dateStr;
+    document.getElementById('pepe-sign-date').textContent = dateStr;
+  })();
+
+  function selectPath(n) {
+    selectedPath = n;
+    [1,2,3].forEach(function(i) {
+      document.getElementById('path-card-' + i).classList.toggle('active', i === n);
+    });
+    document.getElementById('path-none-warning').classList.remove('visible');
+    updateApplyBtn('faith');
+  }
+
+  function initPad(id) {
+    var canvas = document.getElementById('canvas-' + id);
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    var pad = new SignaturePad(canvas, { minWidth: 1, maxWidth: 2.5, penColor: '#1a1a2e' });
+    pad.addEventListener('beginStroke', function() { document.getElementById('wm-' + id).style.display = 'none'; });
+    pad.addEventListener('afterUpdateStroke', function() { updateApplyBtn(id); });
+    pads[id] = pad;
+  }
+
+  initPad('faith');
+
+  function clearSig(id) {
+    pads[id].clear();
+    document.getElementById('wm-' + id).style.display = '';
+    updateApplyBtn(id);
+  }
+
+  function updateApplyBtn(id) {
+    if (signed[id]) return;
+    var agreed = document.getElementById('agree-' + id).checked;
+    var hasStroke = !pads[id].isEmpty();
+    var hasEmail = document.getElementById('email-' + id).value.includes('@');
+    document.getElementById('apply-' + id).disabled = !(agreed && hasStroke && hasEmail && selectedPath > 0);
+  }
+
+  function markBlockSigned(id, dateStr) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var step = document.getElementById('step-faith');
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+    document.getElementById('progress-label').innerHTML = '<strong>2</strong> of 2 signatures collected';
+  }
+
+  function markBlockPreviouslySigned(id, sigData) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied', 'signed');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var body = block.querySelector('.sig-block-body');
+    body.innerHTML = '<div class="sig-display"><span class="sig-cursive">' + (sigData.name || SIGNER_META[id].name) + '</span></div>' +
+      '<div class="sig-meta">Signed: ' + (sigData.signed_at || '') + '</div>';
+    var step = document.getElementById('step-faith');
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+  }
+
+  async function applySig(id) {
+    if (selectedPath === 0) {
+      document.getElementById('path-none-warning').classList.add('visible');
+      document.querySelector('.path-section').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    if (pads[id].isEmpty()) return;
+    var email = document.getElementById('email-' + id).value.trim();
+    if (!email) return;
+
+    var btn = document.getElementById('apply-' + id);
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+
+    markBlockSigned(id, document.getElementById('date-' + id).value);
+
+    var payload = {
+      document_id: DOC_ID,
+      signer_id: id,
+      signer_name: SIGNER_META[id].name,
+      signer_role: SIGNER_META[id].role,
+      signer_email: email,
+      image_data: pads[id].toDataURL('image/png'),
+      signed_at: document.getElementById('date-' + id).value,
+      title: DOC_TITLE,
+      document_type: DOC_TYPE,
+      parties: DOC_PARTIES,
+      required_signers: SIGNERS,
+      pre_signed: PRE_SIGNED,
+      extra_meta: { starting_path: PATH_NAMES[selectedPath] }
+    };
+
+    try {
+      var resp = await fetch(API_BASE + '/signing/partial-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await resp.json();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+      }
+    } catch (err) {
+      console.error('Partial save failed:', err);
+    }
+
+    document.getElementById('completion-panel').classList.add('visible');
+    setTimeout(function() {
+      document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  }
+
+  async function loadSigningStatus() {
+    try {
+      var resp = await fetch(API_BASE + '/signing/status/' + DOC_ID);
+      var data = await resp.json();
+      for (var sid in data.signatures) {
+        if (SIGNERS.indexOf(sid) !== -1 && !signed[sid]) {
+          markBlockPreviouslySigned(sid, data.signatures[sid]);
+        }
+      }
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+      }
+    } catch (err) {
+      console.warn('Could not load signing status:', err);
+    }
+  }
+
+  loadSigningStatus();
+
+  async function downloadPDF() {
+    var btn = document.querySelector('.btn-download');
+    btn.textContent = 'Generating...';
+    btn.disabled = true;
+    try {
+      var el = document.getElementById('document-root');
+      var canvas = await html2canvas(el, { scale: 1.5, useCORS: true, logging: false, backgroundColor: '#ffffff' });
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+      var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
+      var pageW = pdf.internal.pageSize.getWidth();
+      var pageH = pdf.internal.pageSize.getHeight();
+      var ratio = pageW / canvas.width;
+      var scaledH = canvas.height * ratio;
+      var y = 0;
+      while (y < scaledH) {
+        if (y > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, -y, pageW, scaledH);
+        y += pageH;
+      }
+      var dateStr = new Date().toISOString().split('T')[0];
+      pdf.save('FaithGathoni_MexzunguGroup_AdvisorLetter_Signed_' + dateStr + '.pdf');
+    } catch (e) {
+      console.error(e);
+      alert('PDF generation failed. Please screenshot the page manually.');
+    }
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download Signed PDF';
+    btn.disabled = false;
+  }
+</script>
+
+</body>
+</html>

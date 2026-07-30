@@ -66,9 +66,18 @@
       }
     ],
     "payment_methods": [
-      { "method": "Wire Transfer", "detail": "MCB Bank, Mauritius. Request details from Pepe." },
-      { "method": "Payoneer", "detail": "ACH or SEPA. Request details from Pepe." },
-      { "method": "USDC (Solana)", "detail": "CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A" }
+      {
+        "method": "Wire Transfer",
+        "detail": "MCB Bank, Mauritius. Request details from Pepe."
+      },
+      {
+        "method": "Payoneer",
+        "detail": "ACH or SEPA. Request details from Pepe."
+      },
+      {
+        "method": "USDC (Solana)",
+        "detail": "CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A"
+      }
     ]
   },
   "fundraising_data": {
@@ -194,6 +203,22 @@
       "decisions": [],
       "next": "Finalize round target, instrument, and close timeline. Advance investor pipeline.",
       "current": true
+    }
+  ],
+  "client_uploads": [
+    {
+      "title": "HavenPay Tracker-4.xlsx",
+      "date": "2026-06-12",
+      "type": "File",
+      "link": "https://docs.google.com/spreadsheets/d/1LZggc8hVrQSfeod8f8QW_SwZFtTETxUA/edit?usp=drivesdk&ouid=101736581292696691720&rtpof=true&sd=true",
+      "uploaded_by": "yoeal"
+    },
+    {
+      "title": "Haven Pay Partnership Deck.pdf",
+      "date": "2026-06-12",
+      "type": "File",
+      "link": "https://drive.google.com/file/d/1PXwDDMi7GMFefnwUiEVEa5Zc1NIs0YHj/view?usp=drivesdk",
+      "uploaded_by": "yoeal"
     }
   ]
 }

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work | Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink:       #e14b87;
+      --pink-dark:  #b83a6b;
+      --pink-light: #e86fa0;
+      --black:      #0d0d0d;
+      --white:      #fafafa;
+      --ash:        #e8e3df;
+      --stone:      #6b5e57;
+      --mist:       #9a8f88;
+      --charcoal:   #3d3533;
+      --copper:     #b8734a;
+      --gold:       #d4a039;
+      --heading:    'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:       'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body { font-family: var(--sans); background: #f0ece8; color: var(--black); min-height: 100vh; }
+
+    /* HEADER */
+    .site-header {
+      background: var(--black); padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .site-header .logo-wrap { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .site-header img { height: 36px; width: auto; }
+    .header-meta { text-align: right; }
+    .header-meta h1 { font-family: var(--heading); font-size: 1rem; color: #fafafa; letter-spacing: 0.03em; }
+    .header-meta p { font-size: 0.78rem; color: var(--mist); margin-top: 2px; }
+
+    /* LAYOUT */
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+    /* HERO */
+    .hero { margin-bottom: 3rem; }
+    .hero-eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pink-dark); margin-bottom: 0.75rem; }
+    .hero h2 { font-family: var(--heading); font-size: 2.2rem; color: var(--black); line-height: 1.2; margin-bottom: 0.75rem; }
+    .hero p { font-size: 1rem; color: var(--stone); max-width: 560px; line-height: 1.7; }
+
+    /* SLICERS */
+    .slicers { display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 2.5rem; align-items: flex-start; }
+    .slicer-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .slicer-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); }
+    .slicer-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .chip {
+      font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.85rem;
+      border-radius: 999px; border: 1.5px solid var(--ash);
+      background: #fff; color: var(--stone); cursor: pointer;
+      transition: all 0.15s ease; user-select: none;
+    }
+    .chip:hover { border-color: var(--pink-light); color: var(--pink-dark); }
+    .chip.active { background: var(--pink); border-color: var(--pink); color: #fff; }
+
+    /* RESULTS COUNT */
+    .results-bar { font-size: 0.82rem; color: var(--mist); margin-bottom: 1.5rem; }
+    .results-bar strong { color: var(--black); }
+
+    /* DEAL GRID */
+    .deal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    /* DEAL CARD */
+    .deal-card {
+      background: #fff; border-radius: 12px;
+      border: 1px solid var(--ash);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+    }
+    .deal-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.10); }
+    .deal-card.hidden { display: none; }
+
+    .deal-card-stripe { height: 4px; background: var(--pink); }
+    .deal-card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .deal-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .deal-tag {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 0.2rem 0.55rem; border-radius: 4px;
+    }
+    .deal-tag.geo { background: #fef0f6; color: var(--pink-dark); }
+    .deal-tag.type { background: #f0ece8; color: var(--charcoal); }
+
+    .deal-name { font-family: var(--heading); font-size: 1.05rem; color: var(--black); line-height: 1.3; }
+    .deal-summary { font-size: 0.88rem; line-height: 1.65; color: var(--stone); flex: 1; }
+
+    .deal-meta { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--ash); }
+    .deal-value { font-size: 0.95rem; font-weight: 700; color: var(--black); }
+    .deal-year { font-size: 0.75rem; color: var(--mist); }
+
+    /* EMPTY STATE */
+    .empty-state { display: none; grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--mist); }
+    .empty-state.visible { display: block; }
+
+    /* FOOTER */
+    .page-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--ash); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .page-footer p { font-size: 0.78rem; color: var(--mist); }
+    .page-footer a { color: var(--pink); text-decoration: none; }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .deal-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .deal-grid { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 1.6rem; }
+      .site-header { padding: 0.75rem 1rem; }
+      .page-wrap { padding: 2rem 1rem 4rem; }
+      .slicers { gap: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo-wrap">
+      <img src="/logo.png" alt="Mexzungu Group">
+    </a>
+    <div class="header-meta">
+      <h1>Selected Work</h1>
+      <p>Mexzungu Group</p>
+    </div>
+  </header>
+
+  <div class="page-wrap">
+
+    <div class="hero">
+      <div class="hero-eyebrow">Track record</div>
+      <h2>Deals closed.<br>Structures built.</h2>
+      <p>A selection of engagements across corporate structuring, M&A, fundraising, and deal advisory. Emerging markets, cross-border complexity, no template answers.</p>
+    </div>
+
+    <div class="slicers">
+      <div class="slicer-group">
+        <div class="slicer-label">Geography</div>
+        <div class="slicer-chips" id="geo-chips">
+          <div class="chip active" data-filter="geo" data-value="all">All</div>
+          <div class="chip" data-filter="geo" data-value="east-africa">East Africa</div>
+          <div class="chip" data-filter="geo" data-value="west-africa">West Africa</div>
+          <div class="chip" data-filter="geo" data-value="latam">Latin America</div>
+          <div class="chip" data-filter="geo" data-value="europe">Europe</div>
+        </div>
+      </div>
+      <div class="slicer-group">
+        <div class="slicer-label">Deal type</div>
+        <div class="slicer-chips" id="type-chips">
+          <div class="chip active" data-filter="type" data-value="all">All</div>
+          <div class="chip" data-filter="type" data-value="corporate-structure">Corporate Structure</div>
+          <div class="chip" data-filter="type" data-value="ma">M&amp;A</div>
+          <div class="chip" data-filter="type" data-value="fundraising">Fundraising</div>
+          <div class="chip" data-filter="type" data-value="advisory">Deal Advisory</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-bar">Showing <strong id="count">4</strong> engagements</div>
+
+    <div class="deal-grid" id="deal-grid">
+
+      <!-- DUARA EDUCATION -->
+      <div class="deal-card"
+           data-geo="east-africa"
+           data-type="corporate-structure fundraising">
+        <div class="deal-card-stripe"></div>
+        <div class="deal-card-body">
+          <div class="deal-tags">
+            <span class="deal-tag geo">East Africa</span>
+            <span class="deal-tag type">Corporate Structure</span>
+            <span class="deal-tag type">Fundraising</span>
+          </div>
+          <div class="deal-name">Duara Education</div>
+          <div class="deal-summary">Delaware C-Corp formation, board governance, and SAFE documentation for a Kenya-based school network scaling from 4 to 40 schools. Built the full SE ownership framework: IC to SEWO in five stages. Ongoing GC role and board seat.</div>
+          <div class="deal-meta">
+            <span class="deal-value">$625k raised</span>
+            <span class="deal-year">2024, ongoing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KABISA -->
+      <div class="deal-card"
+           data-geo="east-africa"
+           data-type="fundraising advisory">
+        <div class="deal-card-stripe"></div>
+        <div class="deal-card-body">
+          <div class="deal-tags">
+            <span class="deal-tag geo">East Africa</span>
+            <span class="deal-tag type">Fundraising</span>
+            <span class="deal-tag type">Deal Advisory</span>
+          </div>
+          <div class="deal-name">Kabisa</div>
+          <div class="deal-summary">Term sheet negotiation and SPV architecture for a Rwanda-based EV company raising a $3M equity round. Advised on liquidation preference positioning, no-shop mechanics, and advisory equity structure for a pipeline of parallel SPV investors.</div>
+          <div class="deal-meta">
+            <span class="deal-value">$3M equity round</span>
+            <span class="deal-year">2026</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HAVENPAY -->
+      <div class="deal-card"
+           data-geo="east-africa"
+           data-type="corporate-structure fundraising">
+        <div class="deal-card-stripe"></div>
+        <div class="deal-card-body">
+          <div class="deal-tags">
+            <span class="deal-tag geo">East Africa</span>
+            <span class="deal-tag type">Corporate Structure</span>
+            <span class="deal-tag type">Fundraising</span>
+          </div>
+          <div class="deal-name">HavenPay</div>
+          <div class="deal-summary">Dual-entity architecture for a refugee-focused fintech: a grant-receiving Foundation (DFIs, UNHCR) separated cleanly from a Technologies HoldCo holding the platform IP, the BaaS relationship, and the cap table. IP licensing framework built to satisfy grant compliance and Series A investors simultaneously.</div>
+          <div class="deal-meta">
+            <span class="deal-value">Venture Architecture</span>
+            <span class="deal-year">2026</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LADX -->
+      <div class="deal-card"
+           data-geo="west-africa east-africa"
+           data-type="advisory">
+        <div class="deal-card-stripe"></div>
+        <div class="deal-card-body">
+          <div class="deal-tags">
+            <span class="deal-tag geo">West Africa</span>
+            <span class="deal-tag geo">East Africa</span>
+            <span class="deal-tag type">Deal Advisory</span>
+          </div>
+          <div class="deal-name">LADx</div>
+          <div class="deal-summary">General corporate and commercial counsel for a cross-border freight startup connecting Lagos, Accra, and Kigali. 4 hours/month retainer in exchange for equity. Scope covers corporate governance, commercial contracts, and strategic advisory as the business scales its Sub-Saharan route network.</div>
+          <div class="deal-meta">
+            <span class="deal-value">Equity retainer</span>
+            <span class="deal-year">2026, ongoing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" id="empty-state">No engagements match the selected filters.</div>
+
+    </div>
+
+    <footer class="page-footer">
+      <p>Mexzungu Group &middot; Deal advisory for founders building outside the lines.</p>
+      <a href="/">mexzungu.com</a>
+    </footer>
+
+  </div>
+
+  <script>
+    var activeGeo = 'all';
+    var activeType = 'all';
+
+    function applyFilters() {
+      var cards = document.querySelectorAll('.deal-card[data-geo]');
+      var visible = 0;
+
+      cards.forEach(function(card) {
+        var geoMatch = activeGeo === 'all' || card.dataset.geo.split(' ').indexOf(activeGeo) !== -1;
+        var typeMatch = activeType === 'all' || card.dataset.type.indexOf(activeType) !== -1;
+
+        if (geoMatch && typeMatch) {
+          card.classList.remove('hidden');
+          visible++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('count').textContent = visible;
+      var empty = document.getElementById('empty-state');
+      if (visible === 0) {
+        empty.classList.add('visible');
+      } else {
+        empty.classList.remove('visible');
+      }
+    }
+
+    document.querySelectorAll('.chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        var filter = chip.dataset.filter;
+        var value = chip.dataset.value;
+
+        document.querySelectorAll('.chip[data-filter="' + filter + '"]').forEach(function(c) {
+          c.classList.remove('active');
+        });
+        chip.classList.add('active');
+
+        if (filter === 'geo') activeGeo = value;
+        if (filter === 'type') activeType = value;
+
+        applyFilters();
+      });
+    });
+  </script>
+
+</body>
+</html>

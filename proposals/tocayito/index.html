@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mexzungu x Jose Ruiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:        #0d0d0d;
+      --bg-2:      #141414;
+      --bg-3:      #1c1c1c;
+      --pink:      #e14b87;
+      --pink-dark: #b8346e;
+      --pink-dim:  rgba(225,75,135,0.12);
+      --pink-glow: rgba(225,75,135,0.22);
+      --gold:      #d4a039;
+      --gold-dim:  rgba(212,160,57,0.12);
+      --ink:       #f0f0f0;
+      --muted:     #888;
+      --faint:     rgba(255,255,255,0.05);
+      --border:    rgba(255,255,255,0.08);
+      --r:         12px;
+      --display:   'RocknRoll One', sans-serif;
+      --body:      'Space Grotesk', sans-serif;
+      --stamp:     'Rock Salt', cursive;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---- NAV ---- */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,13,13,0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      height: 58px; display: flex; align-items: center;
+    }
+    .nav-inner {
+      max-width: 760px; margin: 0 auto; padding: 0 24px;
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo img { height: 34px; width: auto; display: block; }
+    .nav-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    }
+    .nav-label span { color: var(--pink); }
+
+    /* ---- LEOPARD ---- */
+    .lp { position: relative; overflow: hidden; }
+    .lp > * { position: relative; z-index: 1; }
+    .lp.dense::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.10;
+      background-image:
+        radial-gradient(ellipse 20px 16px at 8%  15%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at 25%  8%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 18px at 42% 22%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 14px at 65% 12%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 14px 20px at 82% 20%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 15% 40%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 22px at 35% 45%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 16px at 55% 38%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 20px at 75% 42%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 14px at 92% 35%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at  5% 65%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 18px at 22% 70%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 22px at 48% 62%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 68% 68%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 18px at 88% 60%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 12% 88%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 20px at 38% 85%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 16px at 58% 90%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at 78% 82%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 18px at 95% 88%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+    .lp.light::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.06;
+      background-image:
+        radial-gradient(ellipse 20px 16px at 12% 25%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at 45% 15%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 18px at 78% 30%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 14px at 25% 65%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 14px 20px at 58% 72%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 85% 80%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+    .lp-divider {
+      height: 3px; border: none;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--pink) 0px, var(--pink) 8px,
+        transparent 8px, transparent 14px,
+        var(--pink-dark) 14px, var(--pink-dark) 20px,
+        transparent 20px, transparent 28px
+      );
+      opacity: 0.28;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 108px 0 92px; text-align: center;
+      background: linear-gradient(180deg, #111 0%, var(--bg) 100%);
+      position: relative; overflow: hidden;
+    }
+    #hero-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: var(--stamp); font-size: 11px;
+      color: var(--pink); opacity: 0.75;
+      margin-bottom: 52px; display: block;
+      letter-spacing: 0.04em;
+    }
+    .hero-name {
+      font-family: var(--display);
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      line-height: 1; color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .hero-name span { color: var(--pink); }
+    .hero-line {
+      font-size: clamp(1rem, 2.4vw, 1.3rem);
+      color: var(--muted); line-height: 1.75;
+      max-width: 500px; margin: 0 auto;
+    }
+    .hero-line strong { color: var(--ink); font-weight: 600; }
+    .hero-rule { width: 40px; height: 2px; background: var(--pink); margin: 32px auto; opacity: 0.5; }
+
+    /* ---- SECTIONS ---- */
+    section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    .s-tag {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--pink); margin-bottom: 14px; display: block;
+    }
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(1.55rem, 3.8vw, 2.4rem);
+      line-height: 1.16; text-wrap: balance; margin-bottom: 18px;
+    }
+    .s-intro {
+      color: var(--muted); font-size: 1rem;
+      max-width: 580px; line-height: 1.75; margin-bottom: 48px;
+    }
+
+    /* ---- RECOGNITION BLOCK ---- */
+    .recog {
+      background: var(--bg-2);
+      border: 1px solid rgba(225,75,135,0.28);
+      border-radius: var(--r);
+      padding: 40px 44px;
+      box-shadow: 0 0 48px rgba(225,75,135,0.07);
+    }
+    .recog-from {
+      font-family: var(--stamp); font-size: 11px;
+      color: var(--pink); margin-bottom: 24px; opacity: 0.75;
+    }
+    .recog-body { font-size: 1.05rem; color: rgba(240,240,240,0.9); line-height: 1.85; }
+    .recog-body p { margin-bottom: 18px; }
+    .recog-body p:last-child { margin-bottom: 0; }
+    .recog-body strong { color: var(--ink); }
+    .recog-sig { margin-top: 28px; font-family: var(--stamp); font-size: 15px; color: var(--pink); }
+
+    /* ---- WHAT IS MEXZUNGU ---- */
+    .mx-intro {
+      font-size: 1rem; color: var(--muted);
+      line-height: 1.75; margin-bottom: 36px; max-width: 600px;
+    }
+    .mx-arms {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; border-radius: var(--r); overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .mx-arm { background: var(--bg-2); padding: 22px 22px; }
+    .mx-arm-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--pink); margin-bottom: 7px;
+    }
+    .mx-arm-name { font-family: var(--display); font-size: 1rem; margin-bottom: 6px; }
+    .mx-arm-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .creds { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .cred {
+      font-size: 12px; font-weight: 500;
+      padding: 5px 14px; border-radius: 20px;
+      background: var(--faint); border: 1px solid var(--border); color: var(--muted);
+    }
+
+    /* ---- WHAT HE BUILT ---- */
+    .built-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .built-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 28px 24px;
+    }
+    .built-card.lit { border-color: var(--pink); }
+    .built-card.dim { opacity: 0.35; }
+    .bc-chip {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+    }
+    .built-card.lit .bc-chip { color: var(--pink); }
+    .bc-title { font-family: var(--display); font-size: 1.3rem; margin-bottom: 10px; line-height: 1.2; }
+    .bc-detail { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+    .bc-detail li { list-style: none; padding: 4px 0; }
+    .bc-detail li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--pink); margin-right: 10px; opacity: 0.7; vertical-align: middle; }
+
+    /* ---- CARD TIMELINE ---- */
+    .phase-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px; opacity: 0.7;
+    }
+    .built-card.lit .phase-label { color: var(--pink); opacity: 1; }
+    .built-card.blurred { filter: blur(1.5px); opacity: 0.22; pointer-events: none; }
+    .built-card-q {
+      background: transparent; border: 1.5px solid var(--pink);
+      border-radius: var(--r); padding: 28px 20px;
+      box-shadow: 0 0 40px rgba(225,75,135,0.15);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; min-height: 180px;
+    }
+    .built-card-q .phase-label { color: rgba(225,75,135,0.8); opacity: 1; margin-bottom: 6px; }
+    .q-mark {
+      font-family: var(--display); font-size: 5rem;
+      color: var(--gold); line-height: 1; margin: 8px 0;
+      text-shadow: 0 0 40px rgba(212,160,57,0.6);
+    }
+    .q-card-title { font-family: var(--display); font-size: 0.95rem; color: var(--pink); margin-bottom: 6px; }
+    .q-sub { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-top: 6px; }
+
+    /* ---- LATAM VISUAL ---- */
+    .latam-vis { margin-top: 24px; border-radius: 8px; overflow: hidden; }
+    .latam-svg { display: block; width: 100%; height: 142px; }
+
+    /* ---- SYNERGY PILLS ---- */
+    .synergy-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted); margin-top: 24px; margin-bottom: 10px;
+    }
+
+    /* ---- STAT ROW ---- */
+    .stat-row {
+      display: flex; gap: 24px; margin-top: 48px;
+    }
+    .stat { flex: 1; text-align: center; }
+    .stat-num {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      color: var(--pink); line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-top: 6px; display: block;
+    }
+
+    /* ---- QUIZ ---- */
+    .qblock { margin-bottom: 44px; }
+    .qtxt {
+      font-weight: 600; font-size: 1rem; margin-bottom: 16px;
+      display: flex; align-items: flex-start; gap: 14px; line-height: 1.5;
+    }
+    .qnum {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--pink-dim); border: 1px solid var(--pink);
+      color: var(--pink); font-size: 12px; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .qopts { display: flex; flex-wrap: wrap; gap: 10px; margin-left: 42px; }
+    .qbtn {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 11px 18px; color: var(--ink);
+      font-family: var(--body); font-size: 0.88rem; cursor: pointer;
+      transition: border-color .15s, background .15s, color .15s; line-height: 1.45;
+    }
+    .qbtn:hover { border-color: var(--pink); color: var(--pink); }
+    .qbtn.on  { background: var(--pink-dim); border-color: var(--pink); color: var(--pink); }
+
+    #rbox {
+      display: none; margin-top: 52px;
+      background: var(--bg-2); border: 1px solid var(--pink);
+      border-radius: var(--r); padding: 40px 36px;
+      box-shadow: 0 0 52px var(--pink-glow);
+    }
+    #rbox.show { display: block; }
+    .r-chip {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+    }
+    .r-title { font-family: var(--display); font-size: 1.55rem; margin-bottom: 14px; }
+    .r-desc  { color: var(--muted); line-height: 1.8; margin-bottom: 30px; }
+    .rgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ri { background: var(--bg-3); border-radius: 8px; padding: 18px; }
+    .ri-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
+    }
+    .ri-val { font-size: 0.88rem; font-weight: 500; line-height: 1.55; }
+
+    /* ---- CALCULATOR ---- */
+    .sl-row { margin-bottom: 36px; }
+    .sl-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+    .sl-label { font-weight: 500; font-size: 0.95rem; }
+    .sl-val { font-family: var(--display); font-size: 1.5rem; color: var(--pink); }
+    input[type="range"] { width: 100%; height: 4px; accent-color: var(--pink); cursor: pointer; }
+    .calc-out { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 44px; }
+    .co { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 24px; }
+    .co.hot { border-color: var(--pink); background: var(--pink-dim); }
+    .co-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+    .co.hot .co-label { color: var(--pink); }
+    .co-val { font-family: var(--display); font-size: 2.2rem; line-height: 1; margin-bottom: 8px; }
+    .co-sub { font-size: 0.82rem; color: var(--muted); }
+    .calc-note {
+      margin-top: 18px; font-size: 0.84rem; color: var(--muted);
+      line-height: 1.7; padding: 18px; background: var(--faint); border-radius: 8px;
+    }
+
+    /* ---- REVENUE CHART ---- */
+    .rev-chart-wrap {
+      margin-top: 32px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px 20px 14px;
+      height: 260px;
+    }
+    .rev-chart-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+    }
+
+    /* ---- NETWORK CANVAS ---- */
+    #net-canvas {
+      display: block; width: 100%; height: 300px;
+      margin-top: 32px; border-radius: var(--r);
+      background: var(--bg-2); border: 1px solid var(--border);
+    }
+
+    /* ---- PATHS ---- */
+    .paths { display: grid; gap: 12px; }
+    .pcard {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 32px 28px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .pcard:hover { border-color: rgba(225,75,135,.4); box-shadow: 0 0 28px rgba(225,75,135,.07); }
+    .pcard.featured { border-color: rgba(225,75,135,.35); }
+    .p-rec {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--pink); margin-bottom: 8px;
+    }
+    .p-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 16px; margin-bottom: 14px;
+    }
+    .p-name { font-family: var(--display); font-size: 1.18rem; }
+    .p-badge {
+      font-size: 11px; font-weight: 700; padding: 5px 13px;
+      border-radius: 20px; background: var(--gold-dim);
+      border: 1px solid var(--gold); color: var(--gold);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .p-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.72; margin-bottom: 20px; }
+    .p-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ptag {
+      font-size: 12px; padding: 4px 12px; border-radius: 20px;
+      background: var(--bg-3); border: 1px solid var(--border); color: var(--muted);
+    }
+
+    /* ---- TIMELINE BAR ---- */
+    .timeline-bar {
+      height: 3px; background: var(--border); border-radius: 2px; margin-top: 20px;
+      overflow: hidden;
+    }
+    .timeline-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink), var(--gold));
+      border-radius: 2px;
+      width: 0;
+      animation: grow 1.2s ease-out forwards;
+    }
+    @keyframes grow {
+      from { width: 0; }
+    }
+    .timeline-label {
+      font-size: 11px; color: var(--muted); margin-top: 6px;
+    }
+
+    /* ---- CTA ---- */
+    .cta { text-align: center; padding: 100px 0; }
+    .cta h2 { margin-bottom: 18px; }
+    .cta p { color: var(--muted); font-size: 1.05rem; max-width: 440px; margin: 0 auto 44px; line-height: 1.75; }
+    .btnp {
+      display: inline-block; background: var(--pink); color: #fff;
+      font-family: var(--body); font-size: 1rem; font-weight: 600;
+      padding: 17px 44px; border-radius: 8px; text-decoration: none;
+      transition: opacity .15s, transform .15s;
+    }
+    .btnp:hover { opacity: .88; transform: translateY(-1px); }
+    .btng {
+      display: inline-block; border: 1px solid var(--border); color: var(--muted);
+      font-family: var(--body); font-size: .9rem;
+      padding: 14px 28px; border-radius: 8px; text-decoration: none; margin-left: 14px;
+      transition: border-color .15s, color .15s;
+    }
+    .btng:hover { border-color: var(--pink); color: var(--pink); }
+
+    /* ---- FOOTER ---- */
+    .foot {
+      padding: 36px 0;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .foot img { height: 28px; width: auto; opacity: 0.65; }
+    .foot-tag { font-family: var(--stamp); font-size: 10px; color: var(--muted); opacity: 0.5; }
+
+    /* ---- SCROLL REVEAL ---- */
+    section {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    section.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .built-grid, .calc-out, .rgrid, .mx-arms { grid-template-columns: 1fr; }
+      #net-canvas { height: 380px; }
+      .qopts { margin-left: 0; }
+      section { padding: 60px 0; }
+      .hero { padding: 72px 0 60px; }
+      .btng { margin-left: 0; margin-top: 12px; display: block; }
+      #rbox { padding: 26px 20px; }
+      .recog { padding: 28px 24px; }
+      .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+      #net-canvas { height: 160px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; animation: none !important; }
+      section { opacity: 1 !important; transform: none !important; }
+      .timeline-fill { animation: none !important; }
+    }
+
+    /* ---- PRIVATE BAR ---- */
+    .private-bar {
+      background: rgba(225,75,135,0.05);
+      border-bottom: 1px solid rgba(225,75,135,0.12);
+      padding: 9px 0; text-align: center;
+      font-size: 11px; letter-spacing: 0.08em; color: var(--muted);
+    }
+    .private-bar strong { color: rgba(225,75,135,0.7); font-weight: 600; }
+
+    /* ---- VALIDATION ---- */
+    .validation {
+      background: var(--bg-2); border: 1px solid rgba(212,160,57,0.2);
+      border-radius: var(--r); padding: 28px 32px; margin-top: 40px;
+    }
+    .val-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+    }
+    .val-body { font-size: 0.95rem; color: rgba(240,240,240,0.85); line-height: 1.85; }
+
+    /* ---- QUIZ RESULT ROLE OFFER ---- */
+    .r-identity {
+      font-size: 12px; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 5px;
+    }
+    .r-role-title {
+      font-family: var(--display); font-size: clamp(1.7rem, 4vw, 2.5rem);
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    .chapter { margin: 30px 0; }
+    .chapter-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+    }
+    .chapter-steps { display: flex; flex-direction: column; gap: 10px; }
+    .chapter-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 14px 16px; background: var(--bg-3); border-radius: 8px;
+    }
+    .cs-time {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--pink);
+      white-space: nowrap; padding-top: 2px; min-width: 58px;
+    }
+    .cs-text { font-size: 0.87rem; line-height: 1.6; color: var(--muted); }
+    .r-rev-line {
+      margin: 20px 0 0; font-size: 0.9rem; color: var(--ink); font-weight: 500;
+      padding: 14px 16px; background: var(--pink-dim);
+      border: 1px solid rgba(225,75,135,0.22); border-radius: 8px;
+    }
+    .r-permission {
+      font-size: 12px; color: var(--muted); letter-spacing: 0.04em;
+      text-align: center; padding-top: 18px; margin-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 600px) {
+      .chapter-step { flex-direction: column; gap: 4px; }
+      .cs-time { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <span class="nav-label">Private / <span>Jose Ruiz</span></span>
+  </div>
+</nav>
+<div class="private-bar">
+  This page was built for you. It is <strong>not public</strong>, not indexed, and not shared with anyone else.
+</div>
+
+<!-- HERO -->
+<section class="hero lp dense">
+  <canvas id="hero-canvas"></canvas>
+  <div class="wrap">
+    <span class="hero-eyebrow">A personal note from Mexzungu Group</span>
+    <div class="hero-name">Tocayito<span>!</span></div>
+    <div class="hero-rule"></div>
+    <p class="hero-line">
+      Pepe read The Work. <strong>All of it.</strong><br>
+      This page is his answer.
+    </p>
+  </div>
+</section>
+
+<hr class="lp-divider">
+
+<!-- BEAT 1: I KNOW WHO YOU ARE -->
+<section>
+  <div class="wrap">
+    <span class="s-tag">I know who you are</span>
+    <h2>Not the resume. The actual thing.</h2>
+
+    <div class="recog">
+      <div class="recog-from">Pepe Carrillo, Mexzungu Group</div>
+      <div class="recog-body">
+        <p>You spent twenty years at the institution that decides whether a water treatment plant on the US-Mexico border gets built or not. You know how NADBank's credit committees think, what BECC certification actually requires, and what it takes to move a cross-border infrastructure project from feasibility to funded. You have done that 326 times.</p>
+        <p>I also read the rage map. The part about bureaucracy that blocks good projects. Skills sitting underutilized. The distance between what you know and what the role actually asks of you. And I read the stress test: five years from now, would this satisfy me? You answered that one honestly.</p>
+        <p><strong>You are not looking for a job. You are looking for the right platform for chapter three.</strong> I think I have it.</p>
+        <p>And one more thing. I think we would have a lot of fun doing this. Real infrastructure that gets built. Border communities that benefit from it. Good work with someone you actually want in the room. That combination does not come along often. I would not be reaching out if I did not already know the answer to that question.</p>
+      </div>
+      <div class="recog-sig">Pepe</div>
+    </div>
+  </div>
+</section>
+
+<!-- BEAT 2: I'VE SEEN WHAT YOU CAN DO -->
+<section>
+  <div class="wrap">
+    <span class="s-tag">I've seen what you can do</span>
+    <h2>Twenty years of deal work that doesn't exist anywhere else.</h2>
+    <p class="s-intro">Most advisors have the theory. You have the track record, the credibility, and the network that took two decades to build.</p>
+
+    <div class="built-grid">
+
+      <!-- Where you started -->
+      <div class="built-card blurred">
+        <div class="phase-label">Where you started</div>
+        <div class="bc-title">Sow Good Inc.</div>
+        <ul class="bc-detail">
+          <li>NASDAQ: SOWG. Market cap ~$30M</li>
+          <li>Director, Co-Manufacturing and LatAm</li>
+          <li>Freeze-dried snacks. Supply chain.</li>
+          <li>Your LatAm network: sitting idle</li>
+          <li>Your deal expertise: sitting idle</li>
+        </ul>
+      </div>
+
+      <!-- Where you learned -->
+      <div class="built-card lit">
+        <div class="phase-label">Where you learned</div>
+        <div class="bc-title">NADBank.</div>
+        <ul class="bc-detail">
+          <li>Cross-border infrastructure at the deal table</li>
+          <li>US-Mexico binational regulatory navigation</li>
+          <li>Environmental project finance: water, wastewater, energy</li>
+          <li>A network that took two decades to build</li>
+          <li>Institutional credibility no advisor can fake</li>
+        </ul>
+      </div>
+
+      <!-- Where you thrive -->
+      <div class="built-card-q">
+        <div class="phase-label">Where you thrive</div>
+        <div class="q-mark">?</div>
+        <div class="q-card-title">Chapter Three</div>
+        <div class="q-sub">Your track record and network finally working at full capacity. The platform that matches your actual caliber.</div>
+      </div>
+
+    </div>
+
+    <!-- STAT COUNTERS -->
+    <div class="stat-row" id="stat-row">
+      <div class="stat">
+        <span class="stat-num" id="stat-projects">0</span>
+        <span class="stat-label">Projects financed at NADBank</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-years">0</span>
+        <span class="stat-label">Years at the deal table</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-invested">$0</span>
+        <span class="stat-label">Invested in border infrastructure</span>
+      </div>
+    </div>
+
+    <div class="validation">
+      <div class="val-label">Why this moment</div>
+      <div class="val-body">The US-Mexico border is entering a second wave of private environmental infrastructure investment. NADBank will finance the projects that qualify. The rest need advisors who understand how NADBank evaluates deals from the inside and can help private developers cross the threshold. That advisor does not exist at scale yet. That is the gap this collaboration closes.</div>
+    </div>
+
+    <!-- BORDER INVESTMENT CHART -->
+    <div class="latam-vis">
+      <svg viewBox="0 0 400 142" xmlns="http://www.w3.org/2000/svg" class="latam-svg" aria-label="US-Mexico border infrastructure investment by sector">
+        <defs>
+          <linearGradient id="lc-pk" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(225,75,135,0.85)"/>
+            <stop offset="100%" stop-color="rgba(225,75,135,0.28)"/>
+          </linearGradient>
+          <linearGradient id="lc-mx" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(225,75,135,0.85)"/>
+            <stop offset="100%" stop-color="rgba(212,160,57,0.55)"/>
+          </linearGradient>
+          <linearGradient id="lc-gd" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(212,160,57,0.85)"/>
+            <stop offset="100%" stop-color="rgba(212,160,57,0.28)"/>
+          </linearGradient>
+          <linearGradient id="lc-dm" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0.05)"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="142" fill="rgba(225,75,135,0.025)" rx="8"/>
+        <text x="200" y="14" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-family="Space Grotesk, sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.13em">US-MEXICO BORDER: WHERE THE INVESTMENT IS GOING</text>
+        <text x="200" y="22" text-anchor="middle" fill="rgba(255,255,255,0.09)" font-family="Space Grotesk, sans-serif" font-size="6.5" letter-spacing="0.07em">ACTIVE DEAL VOLUME BY SECTOR. 2024-2025</text>
+        <line x1="20" y1="27" x2="380" y2="27" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="110" y1="30" x2="110" y2="126" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+
+        <!-- Water / Wastewater -->
+        <text x="106" y="42" text-anchor="end" fill="rgba(255,255,255,0.5)" font-family="Space Grotesk, sans-serif" font-size="8.5">Water / Wastewater</text>
+        <rect x="110" y="32" width="0" height="11" fill="url(#lc-pk)" rx="2">
+          <animate attributeName="width" from="0" to="152" dur="0.8s" fill="freeze" begin="0.1s"/>
+        </rect>
+        <text x="268" y="42" fill="rgba(225,75,135,0.85)" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="600">$3.8B</text>
+        <text x="300" y="42" fill="rgba(225,75,135,0.38)" font-family="Space Grotesk, sans-serif" font-size="7">NADBank core</text>
+
+        <!-- Clean Energy -->
+        <text x="106" y="68" text-anchor="end" fill="rgba(255,255,255,0.5)" font-family="Space Grotesk, sans-serif" font-size="8.5">Clean Energy</text>
+        <rect x="110" y="58" width="0" height="11" fill="url(#lc-mx)" rx="2">
+          <animate attributeName="width" from="0" to="172" dur="0.8s" fill="freeze" begin="0.2s"/>
+        </rect>
+        <text x="288" y="68" fill="rgba(212,160,57,0.95)" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="600">$4.2B</text>
+        <text x="318" y="68" fill="rgba(212,160,57,0.65)" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="700">&#x2191;</text>
+        <text x="330" y="68" fill="rgba(212,160,57,0.38)" font-family="Space Grotesk, sans-serif" font-size="7">fastest growth</text>
+
+        <!-- Nearshoring / Mfg -->
+        <text x="106" y="94" text-anchor="end" fill="rgba(255,255,255,0.5)" font-family="Space Grotesk, sans-serif" font-size="8.5">Nearshoring / Mfg.</text>
+        <rect x="110" y="84" width="0" height="11" fill="url(#lc-gd)" rx="2">
+          <animate attributeName="width" from="0" to="119" dur="0.8s" fill="freeze" begin="0.3s"/>
+        </rect>
+        <text x="235" y="94" fill="rgba(212,160,57,0.8)" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="600">$2.9B</text>
+        <text x="265" y="94" fill="rgba(212,160,57,0.55)" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="700">&#x2191;</text>
+        <text x="277" y="94" fill="rgba(212,160,57,0.35)" font-family="Space Grotesk, sans-serif" font-size="7">USMCA wave</text>
+
+        <!-- Transportation -->
+        <text x="106" y="120" text-anchor="end" fill="rgba(255,255,255,0.5)" font-family="Space Grotesk, sans-serif" font-size="8.5">Transportation</text>
+        <rect x="110" y="110" width="0" height="11" fill="url(#lc-dm)" rx="2">
+          <animate attributeName="width" from="0" to="86" dur="0.8s" fill="freeze" begin="0.4s"/>
+        </rect>
+        <text x="202" y="120" fill="rgba(255,255,255,0.28)" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="600">$2.1B</text>
+
+        <line x1="20" y1="130" x2="380" y2="130" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+        <text x="200" y="139" text-anchor="middle" fill="rgba(255,255,255,0.09)" font-family="Space Grotesk, sans-serif" font-size="6" letter-spacing="0.05em">Sources: NADBank Annual Report 2024 · BECC · Inter-American Development Bank</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- BEAT 3: I WOULD LOVE TO WORK TOGETHER -->
+<section class="lp light">
+  <div class="wrap">
+    <span class="s-tag">I would love to work together</span>
+    <h2>What Mexzungu is. And why it matters for you.</h2>
+    <p class="mx-intro">Mexzungu Group is a boutique outlaw studio working across legal strategy, venture architecture, and deal advisory in Africa, Latin America, and Europe. Four practice areas, one platform, built for the kind of cross-border work most firms walk away from.</p>
+
+    <div class="mx-arms">
+      <div class="mx-arm">
+        <div class="mx-arm-tag">Design</div>
+        <div class="mx-arm-name">Venture Architecture</div>
+        <div class="mx-arm-desc">Entity design, cap tables, deal structure. The legal scaffolding founders get wrong.</div>
+      </div>
+      <div class="mx-arm">
+        <div class="mx-arm-tag">Advisory</div>
+        <div class="mx-arm-name">Deal Closing</div>
+        <div class="mx-arm-desc">Cross-border transactions and closings. The practice where your track record fits directly.</div>
+      </div>
+      <div class="mx-arm">
+        <div class="mx-arm-tag">Operations</div>
+        <div class="mx-arm-name">AI Ninja Factory</div>
+        <div class="mx-arm-desc">Expert operators placed on specific mandates, backed by a full AI operations engine. You set the rate and choose your mandates. We handle everything else. You keep 80%. Scale without limits or overhead.</div>
+      </div>
+      <div class="mx-arm">
+        <div class="mx-arm-tag">Investments</div>
+        <div class="mx-arm-name">Rebel Capital</div>
+        <div class="mx-arm-desc">Seed-stage co-investment in deals that don't fit conventional boxes. Selective, high-conviction. Small bets, serious partners.</div>
+      </div>
+    </div>
+
+    <!-- NETWORK CANVAS -->
+    <canvas id="net-canvas" height="300"></canvas>
+
+    <div class="synergy-label">Where this gets interesting</div>
+    <div class="creds" style="margin-top:0;">
+      <span class="cred">Cross-border project finance</span>
+      <span class="cred">AI operations powerhouse</span>
+      <span class="cred">LatAm + Africa + Europe</span>
+      <span class="cred">Environmental finance + legal</span>
+      <span class="cred">NADBank credibility at scale</span>
+      <span class="cred">Lean team, unlimited reach</span>
+    </div>
+  </div>
+</section>
+
+<!-- BEAT 4: HERE'S HOW WE DO IT. QUIZ -->
+<section>
+  <div class="wrap">
+    <span class="s-tag">Here's how we do it</span>
+    <h2>Three questions to find the right starting point.</h2>
+    <p class="s-intro">There are three concrete ways your expertise and network plug into Mexzungu. The right one depends on how you want to work. Answer honestly and we'll show you the match.</p>
+
+    <div class="qblock">
+      <div class="qtxt"><span class="qnum">1</span>When you imagine your best work: what is the setting?</div>
+      <div class="qopts">
+        <button class="qbtn" data-q="1" data-v="deals">Closing cross-border deals</button>
+        <button class="qbtn" data-q="1" data-v="build">Building something from scratch</button>
+        <button class="qbtn" data-q="1" data-v="advise">Advising operators who need real domain expertise</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qtxt"><span class="qnum">2</span>What do you have that almost nobody in your network has?</div>
+      <div class="qopts">
+        <button class="qbtn" data-q="2" data-v="finance">Environmental project finance at the deal table</button>
+        <button class="qbtn" data-q="2" data-v="network">A LatAm network that took 20 years to build</button>
+        <button class="qbtn" data-q="2" data-v="structure">The ability to make complex cross-border deals closeable</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qtxt"><span class="qnum">3</span>What is non-negotiable for chapter three?</div>
+      <div class="qopts">
+        <button class="qbtn" data-q="3" data-v="flex">Flexibility. I own my time. Project-based only.</button>
+        <button class="qbtn" data-q="3" data-v="impact">Impact. Work that actually moves things.</button>
+        <button class="qbtn" data-q="3" data-v="income">Income. My expertise should pay what it is worth.</button>
+      </div>
+    </div>
+
+    <div id="rbox">
+      <div class="r-chip">Your role at Mexzungu</div>
+      <div class="r-identity">You are a</div>
+      <div class="r-role-title" id="r-title"></div>
+      <div class="r-desc" id="r-desc"></div>
+
+      <div class="chapter">
+        <div class="chapter-label">First 90 days</div>
+        <div class="chapter-steps">
+          <div class="chapter-step">
+            <span class="cs-time" id="r-c1-time"></span>
+            <span class="cs-text" id="r-c1"></span>
+          </div>
+          <div class="chapter-step">
+            <span class="cs-time" id="r-c2-time"></span>
+            <span class="cs-text" id="r-c2"></span>
+          </div>
+          <div class="chapter-step">
+            <span class="cs-time" id="r-c3-time"></span>
+            <span class="cs-text" id="r-c3"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rgrid">
+        <div class="ri"><div class="ri-label">You bring</div><div class="ri-val" id="r-bring"></div></div>
+        <div class="ri"><div class="ri-label">Mexzungu provides</div><div class="ri-val" id="r-gives"></div></div>
+      </div>
+
+      <div class="r-rev-line" id="r-rev"></div>
+      <div class="r-permission">No equity. No exclusivity. No fixed schedule.</div>
+    </div>
+  </div>
+</section>
+
+<!-- THE MATH -->
+<section class="lp light">
+  <div class="wrap">
+    <span class="s-tag">The math</span>
+    <h2>Set your number. See what it looks like.</h2>
+    <p class="s-intro">Senior infrastructure finance advisors with a bilateral institutional track record bill $300-800/hr in the US market. This is your number to set. Run the calculator.</p>
+
+    <div class="sl-row">
+      <div class="sl-meta">
+        <span class="sl-label">Advisory hours per month</span>
+        <span class="sl-val" id="d-hrs">20 hrs</span>
+      </div>
+      <input type="range" id="sl-hrs" min="5" max="40" step="5" value="20" oninput="calc()">
+    </div>
+
+    <div class="sl-row">
+      <div class="sl-meta">
+        <span class="sl-label">Your hourly rate</span>
+        <span class="sl-val" id="d-rate">$450/hr</span>
+      </div>
+      <input type="range" id="sl-rate" min="200" max="1000" step="50" value="450" oninput="calc()">
+    </div>
+
+    <div class="calc-out">
+      <div class="co">
+        <div class="co-label">Your monthly income</div>
+        <div class="co-val" id="o-mo">$7,200</div>
+        <div class="co-sub">80% of billed revenue comes to you</div>
+      </div>
+      <div class="co hot">
+        <div class="co-label">Annualized</div>
+        <div class="co-val" id="o-yr">$86,400</div>
+        <div class="co-sub">Scale with more mandates. There is no cap.</div>
+      </div>
+    </div>
+
+    <!-- CHART.JS REVENUE CHART -->
+    <div class="rev-chart-wrap">
+      <div class="rev-chart-label">Income by rate (at current hours)</div>
+      <canvas id="rev-chart" height="180"></canvas>
+    </div>
+
+    <div class="calc-note">
+      In the Mexzungu model: you keep 80%. We take 20% for client sourcing, business development, and engagement management. Your schedule, your rate, and your choice of mandates remain entirely yours.
+    </div>
+  </div>
+</section>
+
+<!-- THREE PATHS -->
+<section>
+  <div class="wrap">
+    <span class="s-tag">Three paths</span>
+    <h2>Pick where to start. There is no wrong answer.</h2>
+
+    <div class="paths">
+      <div class="pcard featured">
+        <div class="p-rec">Recommended starting point</div>
+        <div class="p-top">
+          <div class="p-name">Seconded LatAm Advisor</div>
+          <div class="p-badge">35 days to first dollar</div>
+        </div>
+        <div class="p-desc">
+          You join specific Mexzungu engagements as the LatAm deal expert on a mandate-by-mandate basis, with no obligation between projects. Pepe handles client relationships and business development. You deliver the domain expertise nobody else in the room has, and 80% of what you bill comes directly to you. This is the AI Ninja Factory model, already running with other operators in the network.
+        </div>
+        <div class="p-tags">
+          <span class="ptag">Project finance</span>
+          <span class="ptag">Deal advisory</span>
+          <span class="ptag">80% to you</span>
+          <span class="ptag">No fixed hours</span>
+          <span class="ptag">Fastest to revenue</span>
+        </div>
+        <div class="timeline-bar"><div class="timeline-fill" style="width:35%"></div></div>
+        <div class="timeline-label">35 days to first dollar</div>
+      </div>
+
+      <div class="pcard">
+        <div class="p-top">
+          <div class="p-name">Environmental Finance Co-Venture</div>
+          <div class="p-badge">75 days to first dollar</div>
+        </div>
+        <div class="p-desc">
+          We build a joint advisory product: environmental project finance structuring for US-Mexico border companies. You bring NADBank credibility and twenty years of project relationships. Pepe brings legal structure and deal closing. Revenue splits 50/50 on co-originated engagements. This is how a new vertical gets built together.
+        </div>
+        <div class="p-tags">
+          <span class="ptag">NADBank expertise</span>
+          <span class="ptag">50/50 split</span>
+          <span class="ptag">New vertical together</span>
+          <span class="ptag">$5k-25k per engagement</span>
+        </div>
+        <div class="timeline-bar"><div class="timeline-fill" style="width:75%"></div></div>
+        <div class="timeline-label">75 days to first dollar</div>
+      </div>
+
+      <div class="pcard">
+        <div class="p-top">
+          <div class="p-name">LatAm Deal Sourcing</div>
+          <div class="p-badge">60 days to first dollar</div>
+        </div>
+        <div class="p-desc">
+          You surface infrastructure and environmental projects in your network that need deal structuring or legal advisory. Mexzungu closes the engagement. You earn a referral fee on every conversion. Lowest time commitment. Maximum leverage on a network that took two decades to build.
+        </div>
+        <div class="p-tags">
+          <span class="ptag">Network leverage</span>
+          <span class="ptag">10-15% referral fee</span>
+          <span class="ptag">Zero overhead</span>
+          <span class="ptag">Lowest commitment</span>
+        </div>
+        <div class="timeline-bar"><div class="timeline-fill" style="width:60%"></div></div>
+        <div class="timeline-label">60 days to first dollar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta lp dense">
+  <div class="wrap">
+    <h2>One call. Just Pepe.</h2>
+    <p>Tell him what resonates. Or book 30 minutes directly. No agenda, no pitch deck, no team. Just a conversation between two people who have both closed hard deals.</p>
+    <a href="mailto:pepe@mexzungu.com?subject=Tocayito" class="btnp">Tell Pepe what resonates</a>
+    <a href="https://mexzungu.com/talk_to_pepe" class="btng">Book 30 minutes</a>
+  </div>
+</section>
+
+<hr class="lp-divider">
+
+<div class="wrap">
+  <div class="foot">
+    <a href="/"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <span class="foot-tag">Chaos starts companies. Structure builds them.</span>
+  </div>
+</div>
+
+<script>
+  /* ===== QUIZ ===== */
+  var sel = {};
+  document.querySelectorAll('.qbtn').forEach(function(b) {
+    b.addEventListener('click', function() {
+      var q = this.dataset.q;
+      document.querySelectorAll('.qbtn[data-q="'+q+'"]').forEach(function(x){ x.classList.remove('on'); });
+      this.classList.add('on');
+      sel[q] = this.dataset.v;
+      if (Object.keys(sel).length === 3) reveal();
+    });
+  });
+
+  var PATHS = {
+    finance: {
+      title:    'Environmental Finance Partner',
+      desc:     'Your NADBank deal-table experience is the rarest thing in this space. Most advisors have the theory. You have 326 financed projects and two decades of counterparty relationships. The co-venture puts that at the center. Mexzungu handles legal structure. You handle what only you can do.',
+      bring:    'NADBank credibility, deal-table experience, US-Mexico border project network',
+      gives:    'Legal structure, client relationships, deal closing, the Mexzungu platform',
+      rev:      '$5k-25k per engagement. 50/50 split on co-originated deals.',
+      c1_time:  'Week 1-2',
+      c1:       'Joint scoping session. One target project from your NADBank network. Co-pitch strategy defined.',
+      c2_time:  'Day 30',
+      c2:       'First joint client meeting. Your institutional credibility opens the door. Pepe closes the structure.',
+      c3_time:  'Day 90',
+      c3:       'First co-originated engagement scoped. Revenue split agreed. Partnership template set.'
+    },
+    network: {
+      title:    'LatAm Deal Flow Advisor',
+      desc:     'A twenty-year LatAm network is the hardest thing in advisory to build. You cannot buy it or fake it. You surface the projects, Mexzungu closes the work, and you earn on every conversion. Maximum leverage on what you already have.',
+      bring:    'LatAm deal flow, warm introductions, institutional credibility from NADBank',
+      gives:    'Legal expertise, deal structuring, full engagement management',
+      rev:      '10-15% referral fee on each converted engagement. No cap.',
+      c1_time:  'Week 1-2',
+      c1:       'One conversation: who in your NADBank network is currently raising, structuring, or stuck on a deal?',
+      c2_time:  'Day 30',
+      c2:       'First warm introduction made. Mexzungu in active conversation with the prospect.',
+      c3_time:  'Day 90',
+      c3:       'First referral converted. Your fee in the bank. The model is proven.'
+    },
+    structure: {
+      title:    'Infrastructure Finance Principal',
+      desc:     'You know how to make complex cross-border deals simple enough to close. That is the role. Join specific Mexzungu mandates as the LatAm subject matter expert. Pepe sources the clients and handles the relationships. You deliver the expertise that nobody else in the room has.',
+      bring:    'Deal structuring expertise, LatAm market knowledge, counterparty credibility',
+      gives:    'Client relationships, mandate sourcing, admin. You focus entirely on delivery.',
+      rev:      'You set your rate. You keep 80%. No commitment between mandates.',
+      c1_time:  'Week 1-2',
+      c1:       'Pepe briefs you on one active client mandate in the corridor. One call to assess fit.',
+      c2_time:  'Day 30',
+      c2:       'First engagement scoped. You deliver the infrastructure finance expertise. Invoice issued.',
+      c3_time:  'Day 90',
+      c3:       'Revenue in your account. Second mandate in conversation. The model is working.'
+    }
+  };
+
+  function reveal() {
+    var key = sel['2'] || 'structure';
+    var p = PATHS[key] || PATHS['structure'];
+    document.getElementById('r-title').textContent    = p.title;
+    document.getElementById('r-desc').textContent     = p.desc;
+    document.getElementById('r-bring').textContent    = p.bring;
+    document.getElementById('r-gives').textContent    = p.gives;
+    document.getElementById('r-rev').textContent      = p.rev;
+    document.getElementById('r-c1-time').textContent  = p.c1_time;
+    document.getElementById('r-c1').textContent       = p.c1;
+    document.getElementById('r-c2-time').textContent  = p.c2_time;
+    document.getElementById('r-c2').textContent       = p.c2;
+    document.getElementById('r-c3-time').textContent  = p.c3_time;
+    document.getElementById('r-c3').textContent       = p.c3;
+    var box = document.getElementById('rbox');
+    box.classList.add('show');
+    setTimeout(function(){ box.scrollIntoView({ behavior:'smooth', block:'nearest' }); }, 80);
+  }
+
+  /* ===== CALCULATOR ===== */
+  var revChart = null;
+
+  function calc() {
+    var h = parseInt(document.getElementById('sl-hrs').value, 10);
+    var r = parseInt(document.getElementById('sl-rate').value, 10);
+    document.getElementById('d-hrs').textContent  = h + ' hrs';
+    document.getElementById('d-rate').textContent = '$' + r + '/hr';
+    var mo = h * r * 0.80;
+    document.getElementById('o-mo').textContent = '$' + Math.round(mo).toLocaleString();
+    document.getElementById('o-yr').textContent = '$' + Math.round(mo * 12).toLocaleString();
+    updateRevChart(h, r);
+  }
+
+  function updateRevChart(hours, currentRate) {
+    if (typeof Chart === 'undefined') return;
+    var rates = [200, 300, 400, 500, 600, 800, 1000];
+    var labels = rates.map(function(r){ return '$' + r + '/hr'; });
+    var data = rates.map(function(r){ return Math.round(hours * r * 0.80); });
+    var colors = rates.map(function(r){
+      return r === currentRate ? 'rgba(225,75,135,1)' : 'rgba(225,75,135,0.28)';
+    });
+
+    if (!revChart) {
+      var ctx = document.getElementById('rev-chart');
+      if (!ctx) return;
+      revChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: colors,
+            borderRadius: 4,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return ' $' + ctx.raw.toLocaleString() + '/mo';
+                }
+              },
+              backgroundColor: 'rgba(20,20,20,0.95)',
+              borderColor: 'rgba(225,75,135,0.3)',
+              borderWidth: 1,
+              titleColor: '#e14b87',
+              bodyColor: '#f0f0f0'
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255,255,255,0.06)' },
+              ticks: {
+                color: '#666',
+                font: { size: 11, family: "'Space Grotesk', sans-serif" },
+                callback: function(v){ return '$' + (v/1000).toFixed(0) + 'k'; }
+              },
+              border: { color: 'rgba(255,255,255,0.08)' }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#888', font: { size: 11, family: "'Space Grotesk', sans-serif" } },
+              border: { color: 'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    } else {
+      revChart.data.datasets[0].data = data;
+      revChart.data.datasets[0].backgroundColor = colors;
+      revChart.update('none');
+    }
+  }
+
+  calc();
+
+  /* ===== HERO PARTICLE CANVAS ===== */
+  (function() {
+    var canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var dots = [];
+    var NUM = 60;
+    var CONNECT_DIST = 120;
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (var i = 0; i < NUM; i++) {
+      dots.push({
+        x:  Math.random() * canvas.width,
+        y:  Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r:  Math.random() * 2 + 1.2
+      });
+    }
+
+    function draw() {
+      if (!canvas.offsetParent && canvas.offsetParent !== null) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      /* update positions */
+      dots.forEach(function(d) {
+        d.x += d.vx;
+        d.y += d.vy;
+        if (d.x < 0 || d.x > canvas.width)  d.vx *= -1;
+        if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
+      });
+
+      /* connections */
+      for (var i = 0; i < dots.length; i++) {
+        for (var j = i + 1; j < dots.length; j++) {
+          var dx = dots[i].x - dots[j].x;
+          var dy = dots[i].y - dots[j].y;
+          var dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < CONNECT_DIST) {
+            var alpha = (1 - dist / CONNECT_DIST) * 0.35;
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(225,75,135,' + alpha + ')';
+            ctx.lineWidth = 0.8;
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      /* dots */
+      dots.forEach(function(d) {
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(225,75,135,0.65)';
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+
+  /* ===== STAT COUNTERS ===== */
+  (function() {
+    var statsAnimated = false;
+    var stats = [
+      { el: document.getElementById('stat-projects'), target: 326, prefix: '', suffix: '', decimals: 0 },
+      { el: document.getElementById('stat-years'),    target: 20,  prefix: '', suffix: '', decimals: 0 },
+      { el: document.getElementById('stat-invested'), target: 3.6, prefix: '$', suffix: 'B', decimals: 1 }
+    ];
+
+    function animateStat(stat) {
+      var start = null;
+      var duration = 1200;
+      function step(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var ease = 1 - Math.pow(1 - progress, 3);
+        var val = stat.target * ease;
+        var display = stat.prefix + (stat.decimals === 0 ? Math.round(val) : val.toFixed(stat.decimals)) + stat.suffix;
+        if (stat.el) stat.el.textContent = display;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !statsAnimated) {
+          statsAnimated = true;
+          stats.forEach(function(s) { animateStat(s); });
+        }
+      });
+    }, { threshold: 0.15 });
+
+    var statRow = document.getElementById('stat-row');
+    if (statRow) observer.observe(statRow);
+  })();
+
+  /* ===== OPERATOR NETWORK CANVAS ===== */
+  (function() {
+    var canvas = document.getElementById('net-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H, t = 0, intro = 0;
+
+    function resize() {
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight || 300;
+      canvas.width  = W;
+      canvas.height = H;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function pA(a) { return 'rgba(225,75,135,' + a + ')'; }
+    function gA(a) { return 'rgba(212,160,57,' + a + ')'; }
+    function easeOut(x) { return 1 - Math.pow(1 - Math.min(x, 1), 3); }
+
+    /* Pepe's universe: client types he brings to the table */
+    var pepeSats = [
+      { label: 'EV Startup',     base: 0 },
+      { label: 'VC Fund',        base: Math.PI * 2/7 },
+      { label: 'Infra Co.',      base: Math.PI * 4/7 },
+      { label: 'Africa Network', base: Math.PI * 6/7 },
+      { label: 'Scale-up',       base: Math.PI * 8/7 },
+      { label: 'Impact Fund',    base: Math.PI * 10/7 },
+      { label: 'NGOs',           base: Math.PI * 12/7 }
+    ];
+
+    /* Tocayito's universe: his network, expertise, credentials */
+    var tocaSats = [
+      { label: 'LatAm Network', base: Math.PI },
+      { label: 'NADBank Cred.', base: Math.PI * 0.5 },
+      { label: '326 Deals',     base: 0 },
+      { label: 'Border Intel.', base: Math.PI * 1.5 }
+    ];
+
+    /* Deal types that live in the intersection */
+    var dealLabels = ['M&A', 'Project Finance', 'Fundraising', 'Green Bond'];
+
+    function drawFrame() {
+      ctx.clearRect(0, 0, W, H);
+      t += 0.015;
+      if (intro < 100) intro += 1;
+      var p = easeOut(intro / 70);
+
+      var pepeX = W * 0.27;
+      var cy    = H * 0.5;
+      var orb   = Math.min(W * 0.19, 80);
+      var tocaX = W * 0.73;
+      var tocaA = W + 80 - (W + 80 - tocaX) * p;
+      var midX  = (pepeX + tocaA) * 0.5;
+
+      /* orbit rings */
+      ctx.save();
+      ctx.setLineDash([3, 7]);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = pA(0.1);
+      ctx.beginPath(); ctx.arc(pepeX, cy, orb, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = p;
+      ctx.strokeStyle = gA(0.1);
+      ctx.beginPath(); ctx.arc(tocaA, cy, orb, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.restore();
+
+      /* deal intersection nodes */
+      var dealYs = [cy - H * 0.28, cy - H * 0.09, cy + H * 0.09, cy + H * 0.28];
+      dealYs.forEach(function(dy, i) {
+        var dash = t * 12;
+        ctx.save();
+        ctx.setLineDash([4, 6]); ctx.lineDashOffset = -dash;
+        ctx.strokeStyle = pA(0.2); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(pepeX, cy); ctx.lineTo(midX, dy); ctx.stroke();
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalAlpha = p;
+        ctx.setLineDash([4, 6]); ctx.lineDashOffset = -dash;
+        ctx.strokeStyle = gA(0.2); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(tocaA, cy); ctx.lineTo(midX, dy); ctx.stroke();
+        ctx.restore();
+
+        var gr = ctx.createRadialGradient(midX, dy, 0, midX, dy, 9);
+        gr.addColorStop(0, pA(0.8)); gr.addColorStop(1, gA(0.25));
+        ctx.beginPath(); ctx.arc(midX, dy, 6, 0, Math.PI * 2);
+        ctx.fillStyle = gr; ctx.fill();
+
+        ctx.font = '500 9px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(180,180,180,0.85)';
+        ctx.fillText(dealLabels[i], midX, dy + 18);
+      });
+
+      /* Pepe's orbiting satellites */
+      pepeSats.forEach(function(s) {
+        var angle = s.base + t * 0.5;
+        var sx = pepeX + orb * Math.cos(angle);
+        var sy = cy    + orb * Math.sin(angle);
+        ctx.strokeStyle = pA(0.12); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(pepeX, cy); ctx.lineTo(sx, sy); ctx.stroke();
+        ctx.beginPath(); ctx.arc(sx, sy, 5, 0, Math.PI * 2);
+        ctx.fillStyle = pA(0.55); ctx.fill();
+        ctx.strokeStyle = pA(0.4); ctx.lineWidth = 1; ctx.stroke();
+        ctx.font = '500 9px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#777';
+        ctx.fillText(s.label, sx, sy + 16);
+      });
+
+      /* Tocayito's orbiting satellites */
+      ctx.globalAlpha = p;
+      tocaSats.forEach(function(s) {
+        var angle = s.base - t * 0.45;
+        var sx = tocaA + orb * Math.cos(angle);
+        var sy = cy    + orb * Math.sin(angle);
+        ctx.strokeStyle = gA(0.12); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(tocaA, cy); ctx.lineTo(sx, sy); ctx.stroke();
+        ctx.beginPath(); ctx.arc(sx, sy, 5, 0, Math.PI * 2);
+        ctx.fillStyle = gA(0.55); ctx.fill();
+        ctx.strokeStyle = gA(0.4); ctx.lineWidth = 1; ctx.stroke();
+        ctx.font = '500 9px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#777';
+        ctx.fillText(s.label, sx, sy + 16);
+      });
+      ctx.globalAlpha = 1;
+
+      /* animated connector between the two universes */
+      ctx.save();
+      ctx.globalAlpha = p;
+      ctx.setLineDash([6, 5]);
+      ctx.lineDashOffset = -(t * 18);
+      ctx.strokeStyle = gA(0.28 + 0.14 * Math.sin(t * 2));
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(pepeX, cy); ctx.lineTo(tocaA, cy); ctx.stroke();
+      ctx.restore();
+
+      /* Pepe glow + node */
+      var pp = 1 + 0.2 * Math.sin(t * 1.8);
+      var grP = ctx.createRadialGradient(pepeX, cy, 0, pepeX, cy, 22 * pp);
+      grP.addColorStop(0, pA(0.35)); grP.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(pepeX, cy, 22 * pp, 0, Math.PI * 2);
+      ctx.fillStyle = grP; ctx.fill();
+      ctx.beginPath(); ctx.arc(pepeX, cy, 13, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(225,75,135,1)'; ctx.fill();
+      ctx.strokeStyle = pA(0.8); ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.font = 'bold 10px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#f0f0f0';
+      ctx.fillText('Pepe', pepeX, cy + 27);
+
+      /* Tocayito glow + node */
+      ctx.globalAlpha = p;
+      var pt = 1 + 0.25 * Math.sin(t * 2.2 + 1);
+      var grT = ctx.createRadialGradient(tocaA, cy, 0, tocaA, cy, 22 * pt);
+      grT.addColorStop(0, gA(0.4)); grT.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(tocaA, cy, 22 * pt, 0, Math.PI * 2);
+      ctx.fillStyle = grT; ctx.fill();
+      ctx.beginPath(); ctx.arc(tocaA, cy, 12, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(212,160,57,1)'; ctx.fill();
+      ctx.strokeStyle = gA(0.8); ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.font = 'bold 10px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#f0f0f0';
+      ctx.fillText('Tocayito', tocaA, cy + 27);
+      ctx.globalAlpha = 1;
+
+      requestAnimationFrame(drawFrame);
+    }
+
+    drawFrame();
+  })();
+
+  /* ===== SCROLL REVEAL ===== */
+  (function() {
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) return;
+
+    var sections = document.querySelectorAll('section');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    sections.forEach(function(s) {
+      if (s.classList.contains('hero')) {
+        s.classList.add('revealed');
+      } else {
+        observer.observe(s);
+      }
+    });
+  })();
+</script>
+</body>
+</html>

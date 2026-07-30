@@ -1,0 +1,219 @@
+{
+  "generated": "2026-07-23",
+  "note": "BB data available Jun-Jul 2026 only. Earlier months estimated from accounting.db + invoice tracker.",
+  "monthly": [
+    {
+      "m": "2025-07",
+      "invoiced": 7500,
+      "received": 0,
+      "expenses": 1500,
+      "src": "estimated"
+    },
+    {
+      "m": "2025-08",
+      "invoiced": 7500,
+      "received": 3720,
+      "expenses": 1800,
+      "src": "estimated"
+    },
+    {
+      "m": "2025-09",
+      "invoiced": 0,
+      "received": 0,
+      "expenses": 1500,
+      "src": "estimated"
+    },
+    {
+      "m": "2025-10",
+      "invoiced": 7500,
+      "received": 0,
+      "expenses": 2500,
+      "src": "accounting.db"
+    },
+    {
+      "m": "2025-11",
+      "invoiced": 2300,
+      "received": 0,
+      "expenses": 11500,
+      "src": "accounting.db"
+    },
+    {
+      "m": "2025-12",
+      "invoiced": 10770,
+      "received": 0,
+      "expenses": 3200,
+      "src": "accounting.db"
+    },
+    {
+      "m": "2026-01",
+      "invoiced": 0,
+      "received": 0,
+      "expenses": 3600,
+      "src": "accounting.db"
+    },
+    {
+      "m": "2026-02",
+      "invoiced": 10862,
+      "received": 0,
+      "expenses": 9100,
+      "src": "accounting.db"
+    },
+    {
+      "m": "2026-03",
+      "invoiced": 4218,
+      "received": 0,
+      "expenses": 4200,
+      "src": "accounting.db"
+    },
+    {
+      "m": "2026-04",
+      "invoiced": 7500,
+      "received": 0,
+      "expenses": 6300,
+      "src": "accounting.db"
+    },
+    {
+      "m": "2026-05",
+      "invoiced": 0,
+      "received": 0,
+      "expenses": 5000,
+      "src": "bb-partial"
+    },
+    {
+      "m": "2026-06",
+      "invoiced": 7500,
+      "received": 0,
+      "expenses": 4900,
+      "src": "bb-full"
+    },
+    {
+      "m": "2026-07",
+      "invoiced": 0,
+      "received": 0,
+      "expenses": 15200,
+      "src": "bb-partial"
+    }
+  ],
+  "categories_jun": {
+    "Rent": 600,
+    "Social Meals": 769,
+    "Subscriptions": 1008,
+    "Wellness": 403,
+    "Clothes/Beauty": 245,
+    "Weekend Trips": 307,
+    "Home & Decor": 429,
+    "Groceries": 121,
+    "Eating Out (solo)": 88,
+    "Transport": 34,
+    "Advisory/Tax": 319,
+    "Tech/Toys": 105,
+    "Events": 20,
+    "Team & Ops": 21,
+    "Other": 431
+  },
+  "categories_jul": {
+    "Real Estate/Property": 7896,
+    "Charges & Fees (incl AMEX annual)": 4799,
+    "Social Meals": 465,
+    "Eating Out (solo)": 275,
+    "Transport": 292,
+    "Clothes/Beauty": 156,
+    "Weekend Trips": 175,
+    "Tech/Toys": 325,
+    "Education": 175,
+    "Wellness": 79,
+    "Groceries": 61,
+    "Home & Decor": 65,
+    "Events": 42,
+    "Rent": 600,
+    "Subscriptions": 12
+  },
+  "overdue": [
+    {
+      "client": "Duara",
+      "invoice": "009-25",
+      "amount": 2130,
+      "currency": "USD",
+      "days": 250
+    },
+    {
+      "client": "Duara",
+      "invoice": "011-25",
+      "amount": 3270,
+      "currency": "USD",
+      "days": 217
+    },
+    {
+      "client": "Duara",
+      "invoice": "012-25",
+      "amount": 2952,
+      "currency": "USD",
+      "days": 171
+    },
+    {
+      "client": "Duara",
+      "invoice": "002-26",
+      "amount": 3906,
+      "currency": "USD",
+      "days": 121
+    }
+  ],
+  "targets": {
+    "Rent": 900,
+    "Groceries": 400,
+    "Eating Out (solo)": 250,
+    "Clothes/Beauty": 100,
+    "Events": 50,
+    "Subscriptions": 300,
+    "Wellness": 325,
+    "Health": 175,
+    "Transport": 50,
+    "Buffer": 175,
+    "Social Meals": 100,
+    "Weekend Trips": 150
+  },
+  "recommendations": [
+    {
+      "label": "Chase Duara invoices NOW",
+      "impact": 12258,
+      "type": "income",
+      "detail": "$12,258 overdue \u2014 oldest invoice 250 days old. This is 4 months of spending money sitting uncollected.",
+      "priority": 1
+    },
+    {
+      "label": "Cut Social Meals",
+      "impact": 469,
+      "type": "expense",
+      "detail": "Jun: $769 vs $100 target = 7.7x over. This is the biggest behavioral overspend after fixed costs.",
+      "priority": 2
+    },
+    {
+      "label": "Review AMEX Platinum value",
+      "impact": 895,
+      "type": "expense",
+      "detail": "$895/year renewal fee just hit (Jul 2026). Annual burn: $895. Worth auditing if benefits outweigh cost at current income level.",
+      "priority": 3
+    },
+    {
+      "label": "Clarify Real Estate charges",
+      "impact": 7896,
+      "type": "review",
+      "detail": "$7,896 in Jul 2026 under 'Real Estate'. Likely Cape Bay-related MGL costs \u2014 but confirm. If personal, that's a monthly equivalent of $790 on top of rent.",
+      "priority": 4
+    },
+    {
+      "label": "Cut Subscriptions to essentials",
+      "impact": 200,
+      "type": "expense",
+      "detail": "Jun hit $1,008 (vs $300 target) \u2014 likely annual renewals lumped in one month. Audit for zombie subscriptions.",
+      "priority": 5
+    },
+    {
+      "label": "Fix aut\u00f3nomo invoice tracking in Odoo",
+      "impact": 45000,
+      "type": "visibility",
+      "detail": "All aut\u00f3nomo invoices show 'not_paid' in Odoo despite some being settled. Zero visibility on actual cash received vs billed.",
+      "priority": 6
+    }
+  ]
+}

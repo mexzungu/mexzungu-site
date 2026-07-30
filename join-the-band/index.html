@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Join the Band | Mexzungu Group</title>
+  <meta name="description" content="Most good lawyers go independent. A few of them find this. A tight network of sharp operators, deal flow you can't generate alone, and infrastructure built for frontier markets.">
+  <meta property="og:title" content="Join the Band | Mexzungu Group">
+  <meta property="og:description" content="Most good lawyers go independent. A few of them find this.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mexzungu.com/join-the-band">
+  <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://mexzungu.com/join-the-band">
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/style.css?v=10">
+  <style>
+
+    /* ── BEFORE/AFTER VISUAL ──────────────────── */
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0;
+      margin-top: 2.5rem;
+      align-items: stretch;
+    }
+    @media (max-width: 640px) {
+      .before-after { grid-template-columns: 1fr; }
+      .ba-divider { display: none; }
+    }
+    .ba-col {
+      background: #131313;
+      border: 1px solid #1f1f1f;
+      border-radius: 12px;
+      padding: 2rem 1.75rem;
+    }
+    .ba-col.ba-after {
+      border-color: rgba(225,75,135,0.3);
+      background: linear-gradient(160deg, #131313 0%, #1a0d12 100%);
+    }
+    .ba-label {
+      font-family: var(--mono, monospace);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .ba-label.before { color: #484038; }
+    .ba-label.after  { color: #e14b87; }
+    .ba-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 0.83rem;
+      color: #b8b0aa;
+      line-height: 1.5;
+    }
+    .ba-item:last-child { border-bottom: none; }
+    .ba-item .ba-icon { flex-shrink: 0; font-size: 0.9rem; margin-top: 0.1rem; color: #484038; }
+    .ba-col.ba-after .ba-item .ba-icon { color: #e14b87; }
+    .ba-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1rem;
+      font-size: 1.4rem;
+      color: #e14b87;
+    }
+
+    /* ── FEE CALCULATOR ────────────────────────── */
+    .calc-value-row {
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+    .calc-value-row .calc-field {
+      width: 340px;
+      text-align: center;
+    }
+    .calc-value-row .field-hint {
+      text-align: center;
+    }
+    .c-value-input {
+      font-size: 2rem !important;
+      font-weight: 700 !important;
+      font-family: var(--mono, monospace) !important;
+      color: #e14b87 !important;
+      padding: 0.6rem 1rem !important;
+      letter-spacing: -0.02em;
+    }
+    .calc-wrap {
+      margin-top: 2.5rem;
+      background: #131313;
+      border: 1px solid rgba(225,75,135,0.25);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .calc-tabs {
+      display: flex;
+      border-bottom: 1px solid #1f1f1f;
+    }
+    .calc-tab {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      text-align: center;
+      font-family: var(--mono, monospace);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #484038;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .calc-tab:hover { color: #b8b0aa; }
+    .calc-tab.active {
+      color: #e14b87;
+      border-bottom-color: #e14b87;
+      background: rgba(225,75,135,0.05);
+    }
+    .calc-body {
+      padding: 2rem;
+    }
+    @media (max-width: 640px) { .calc-body { padding: 1.25rem; } }
+    .calc-scenario { display: none; }
+    .calc-scenario.active { display: block; }
+    .calc-scenario-label {
+      font-size: 0.78rem;
+      color: #7a7068;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+    .calc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 540px) { .calc-row { grid-template-columns: 1fr; } }
+    .calc-field label {
+      display: block;
+      font-family: var(--mono, monospace);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7a7068;
+      margin-bottom: 0.6rem;
+    }
+    .calc-field select,
+    .calc-field input[type="number"] {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      color: #f0ebe7;
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .calc-field select:focus,
+    .calc-field input[type="number"]:focus { border-color: rgba(225,75,135,0.5); }
+    .calc-field .field-hint {
+      font-size: 0.68rem;
+      color: #484038;
+      margin-top: 0.4rem;
+      line-height: 1.5;
+    }
+    .calc-result {
+      background: #0d0d0d;
+      border: 1px solid #1f1f1f;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .calc-result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 480px) { .calc-result-grid { grid-template-columns: 1fr 1fr; } }
+    .result-box {
+      text-align: center;
+    }
+    .result-box .result-label {
+      font-family: var(--mono, monospace);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #484038;
+      margin-bottom: 0.4rem;
+    }
+    .result-box .result-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f0ebe7;
+      font-family: var(--mono, monospace);
+    }
+    .result-box.highlight .result-value { color: #e14b87; }
+    .result-box .result-pct {
+      font-size: 0.7rem;
+      color: #484038;
+      margin-top: 0.15rem;
+    }
+    .calc-bar-wrap {
+      margin-top: 1rem;
+    }
+    .calc-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono, monospace);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .calc-bar-labels .cbl-you { color: #e14b87; }
+    .calc-bar-labels .cbl-ref { color: #c98f1a; }
+    .calc-bar-labels .cbl-mxz { color: #484038; }
+    .calc-bar-track {
+      height: 8px;
+      border-radius: 99px;
+      background: #1f1f1f;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+    }
+    .calc-bar-you { height: 100%; background: linear-gradient(90deg, #e14b87, #b83a6b); transition: width 0.4s ease; }
+    .calc-bar-ref { height: 100%; background: #c98f1a; transition: width 0.4s ease; }
+    .calc-bar-mxz { height: 100%; background: #2a2a2a; flex: 1; }
+    .calc-note {
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      color: #484038;
+      line-height: 1.55;
+    }
+    .calc-note strong { color: #7a7068; }
+    .calc-ceiling-warn {
+      display: none;
+      margin-top: 0.75rem;
+      padding: 0.6rem 0.9rem;
+      background: rgba(225,75,135,0.08);
+      border: 1px solid rgba(225,75,135,0.2);
+      border-radius: 6px;
+      font-size: 0.72rem;
+      color: #e14b87;
+      line-height: 1.5;
+    }
+
+    /* ── COMPARISON CHART ─────────────────────── */
+    .chart-compare {
+      margin-top: 2.5rem;
+      background: #0d0d0d;
+      border: 1px solid #1f1f1f;
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+    }
+    .chart-compare-title {
+      font-family: var(--mono, monospace);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #484038;
+      margin-bottom: 1.5rem;
+    }
+    .chart-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+    .chart-row:last-child { margin-bottom: 0; }
+    @media (max-width: 560px) {
+      .chart-row { grid-template-columns: 1fr; gap: 0.35rem; }
+    }
+    .chart-row-lbl {
+      font-size: 0.73rem;
+      color: #7a7068;
+      line-height: 1.4;
+    }
+    .chart-row-lbl strong { color: #b8b0aa; font-weight: 500; }
+    .chart-bars {
+      display: flex;
+      height: 30px;
+      border-radius: 6px;
+      overflow: hidden;
+      gap: 2px;
+      background: #131313;
+    }
+    .chart-seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono, monospace);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .seg-you { background: #e14b87; color: #fff; }
+    .seg-op  { background: #6b5040; color: #d4b8a8; }
+    .seg-mgl { background: #222; color: #484038; }
+    .chart-legend {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.68rem;
+      color: #7a7068;
+    }
+    .chart-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ── CLIENT PRICING ───────────────────────── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 440px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .pricing-card {
+      background: #131313;
+      border: 1px solid #1f1f1f;
+      border-radius: 10px;
+      padding: 1.4rem 1.25rem;
+    }
+    .pricing-card-type {
+      font-family: var(--mono, monospace);
+      font-size: 0.56rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #e14b87;
+      margin-bottom: 0.5rem;
+    }
+    .pricing-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f0ebe7;
+      margin-bottom: 0.5rem;
+    }
+    .pricing-card-desc {
+      font-size: 0.78rem;
+      color: #7a7068;
+      line-height: 1.65;
+    }
+    .pricing-rule {
+      margin-top: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(225,75,135,0.05);
+      border: 1px solid rgba(225,75,135,0.15);
+      border-left: 3px solid #e14b87;
+      border-radius: 0 10px 10px 0;
+      font-size: 0.83rem;
+      color: #b8b0aa;
+      line-height: 1.7;
+    }
+    .pricing-rule strong { color: #f0ebe7; }
+
+    /* ── ECON DIAL CALLOUT ─────────────────────── */
+    .dial-callout {
+      margin-top: 2.5rem;
+      padding: 1.5rem 1.75rem;
+      background: #0d0d0d;
+      border: 1px solid #1f1f1f;
+      border-left: 3px solid #e14b87;
+      border-radius: 0 10px 10px 0;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    .dial-callout-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .dial-callout-text {
+      font-size: 0.83rem;
+      color: #b8b0aa;
+      line-height: 1.7;
+    }
+    .dial-callout-text strong { color: #f0ebe7; }
+
+    /* ── PERKS GRID ───────────────────────────── */
+    .perks-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 780px) { .perks-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .perks-grid { grid-template-columns: 1fr; } }
+
+    .perk-card {
+      background: #131313;
+      border: 1px solid #1f1f1f;
+      border-radius: 10px;
+      padding: 1.4rem 1.25rem;
+    }
+    .perk-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.6rem;
+    }
+    .perk-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #f0ebe7;
+      margin-bottom: 0.4rem;
+    }
+    .perk-desc {
+      font-size: 0.78rem;
+      color: #7a7068;
+      line-height: 1.6;
+    }
+
+    /* ── RULES TABLE ──────────────────────────── */
+    .rules-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 640px) { .rules-cols { grid-template-columns: 1fr; } }
+
+    .rules-col-title {
+      font-family: var(--mono, monospace);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .rules-col-title.green { color: #28a856; }
+    .rules-col-title.red   { color: #e14b87; }
+
+    .rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 0.83rem;
+      color: #b8b0aa;
+      line-height: 1.55;
+    }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-tick { flex-shrink: 0; font-size: 0.9rem; margin-top: 0.1rem; }
+
+    /* ── PROCESS STEPS ────────────────────────── */
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 2rem;
+      position: relative;
+    }
+    .process-step {
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 2rem;
+      position: relative;
+    }
+    .process-step:last-child { padding-bottom: 0; }
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(225,75,135,0.12);
+      border: 1px solid rgba(225,75,135,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono, monospace);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #e14b87;
+      flex-shrink: 0;
+    }
+    .step-line {
+      width: 1px;
+      flex: 1;
+      background: #1f1f1f;
+      margin-top: 0.4rem;
+    }
+    .process-step:last-child .step-line { display: none; }
+    .step-right { padding-top: 0.3rem; }
+    .step-title {
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: #f0ebe7;
+      margin-bottom: 0.3rem;
+    }
+    .step-desc {
+      font-size: 0.82rem;
+      color: #7a7068;
+      line-height: 1.6;
+    }
+
+    /* ── TIER CARDS ───────────────────────────── */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 780px) { .tier-grid { grid-template-columns: 1fr; } }
+
+    .tier-card {
+      background: #131313;
+      border: 1px solid #1f1f1f;
+      border-radius: 12px;
+      padding: 1.75rem 1.5rem;
+    }
+    .tier-card.active-tier {
+      border-color: rgba(225,75,135,0.3);
+    }
+    .tier-badge {
+      display: inline-block;
+      font-family: var(--mono, monospace);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.9rem;
+    }
+    .tier-badge.operator  { background: rgba(201,143,26,0.12); color: #c98f1a; border: 1px solid rgba(201,143,26,0.25); }
+    .tier-badge.principal { background: rgba(225,75,135,0.12); color: #e14b87; border: 1px solid rgba(225,75,135,0.25); }
+    .tier-title { font-size: 1.1rem; font-weight: 700; color: #f0ebe7; margin-bottom: 0.4rem; }
+    .tier-sub   { font-size: 0.8rem; color: #7a7068; margin-bottom: 1.1rem; line-height: 1.5; }
+    .tier-list  { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+    .tier-list li { font-size: 0.8rem; color: #b8b0aa; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+    .tier-list li::before { content: "·"; color: #e14b87; flex-shrink: 0; }
+
+    /* ── WHO SECTION ──────────────────────────── */
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 640px) { .criteria-grid { grid-template-columns: 1fr; } }
+
+    .criteria-card {
+      background: #131313;
+      border: 1px solid #1f1f1f;
+      border-radius: 10px;
+      padding: 1.4rem 1.25rem;
+    }
+    .criteria-label {
+      font-family: var(--mono, monospace);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e14b87;
+      margin-bottom: 0.5rem;
+    }
+    .criteria-text {
+      font-size: 0.85rem;
+      color: #b8b0aa;
+      line-height: 1.65;
+    }
+
+    /* ── CTA BLOCK ────────────────────────────── */
+    .join-cta {
+      text-align: center;
+      padding: 4rem 2rem;
+      border-top: 1px solid #1f1f1f;
+      margin-top: 4rem;
+    }
+    .join-cta h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: 1rem;
+    }
+    .join-cta p {
+      font-size: 0.95rem;
+      color: #b8b0aa;
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    /* ── QUOTE BLOCK ──────────────────────────── */
+    .founder-quote {
+      margin: 3rem 0;
+      padding: 2rem 2rem 2rem 2.5rem;
+      border-left: 3px solid #e14b87;
+      background: #131313;
+      border-radius: 0 10px 10px 0;
+    }
+    .founder-quote blockquote {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: #f0ebe7;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .founder-quote cite {
+      font-family: var(--mono, monospace);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7a7068;
+      font-style: normal;
+    }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+  <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li class="nav-dropdown">
+      <a href="/#pillars">What We Do</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="/venture-architecture">Venture Architecture</a></li>
+        <li><a href="/data-privacy">Data Privacy</a></li>
+        <li><a href="/rebel-capital">Rebel Capital</a></li>
+        <li><a href="/ai-ninja-factory">AI Ninja Factory</a></li>
+      </ul>
+    </li>
+    <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+    <li><a href="/meet-the-band">Meet the Band</a></li>
+    <li><a href="/lets-jam" class="nav-cta"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Let's Jam</a></li>
+  </ul>
+</nav>
+
+<main id="main">
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<div class="page-hero leopard-dense">
+  <div class="section-label">Join the Band</div>
+  <h1>Most good lawyers go independent. <span class="highlight">A few of them find each other.</span></h1>
+  <p>You left the machine. You were right to. The work is better outside it. The clients respect you more. The money is yours. The only thing you didn't expect was the ceiling.</p>
+  <p class="hero-accent">This is what comes after the ceiling.</p>
+  <div style="display:flex;gap:2.5rem;flex-wrap:wrap;margin-top:2.5rem;justify-content:center;">
+    <div style="text-align:center;">
+      <div style="font-family:var(--mono,monospace);font-size:1.8rem;font-weight:700;color:#e14b87;">25</div>
+      <div style="font-family:var(--mono,monospace);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:#484038;margin-top:0.3rem;">Countries</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--mono,monospace);font-size:1.8rem;font-weight:700;color:#e14b87;">2x</div>
+      <div style="font-family:var(--mono,monospace);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:#484038;margin-top:0.3rem;">Legal 500 GC Powerlist</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--mono,monospace);font-size:1.8rem;font-weight:700;color:#e14b87;">$6B+</div>
+      <div style="font-family:var(--mono,monospace);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:#484038;margin-top:0.3rem;">Deals closed</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--mono,monospace);font-size:1.8rem;font-weight:700;color:#e14b87;">Network only</div>
+      <div style="font-family:var(--mono,monospace);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:#484038;margin-top:0.3rem;">No open applications</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── THE PITCH ─────────────────────────────────────────────── -->
+<section>
+  <div class="section-label">What This Is</div>
+  <div class="section-title">Not a job. Not a franchise. A band.</div>
+  <p class="section-text">I built this because I kept bumping into operators who were brilliant, independent, and quietly losing deals to firms with worse work but better brand. That is a structural problem with a structural fix.</p>
+
+  <div class="before-after">
+    <div class="ba-col ba-before">
+      <div class="ba-label before">Solo. Before.</div>
+      <div class="ba-item"><span class="ba-icon">✗</span>Losing bids to firms with weaker work but bigger logos</div>
+      <div class="ba-item"><span class="ba-icon">✗</span>Admin, billing, and proposals eating 30% of your week</div>
+      <div class="ba-item"><span class="ba-icon">✗</span>Deal flow capped by how many coffees you can take</div>
+      <div class="ba-item"><span class="ba-icon">✗</span>No one to call on a complex cross-border structure at 11pm</div>
+      <div class="ba-item"><span class="ba-icon">✗</span>The intellectual isolation nobody admits to</div>
+      <div class="ba-item"><span class="ba-icon">✗</span>Starting every proposal from a blank document</div>
+    </div>
+    <div class="ba-divider">→</div>
+    <div class="ba-col ba-after">
+      <div class="ba-label after">In the band. After.</div>
+      <div class="ba-item"><span class="ba-icon">✓</span>A brand that opens rooms you couldn't get into alone</div>
+      <div class="ba-item"><span class="ba-icon">✓</span>Janis handles the ops. You handle the work.</div>
+      <div class="ba-item"><span class="ba-icon">✓</span>Deal flow from Pepe's network, two directions</div>
+      <div class="ba-item"><span class="ba-icon">✓</span>A network of specialists one message away</div>
+      <div class="ba-item"><span class="ba-icon">✓</span>People who think like you do, operating at the same level</div>
+      <div class="ba-item"><span class="ba-icon">✓</span>Templates built across 25 countries. Never start from zero.</div>
+    </div>
+  </div>
+
+  <div class="founder-quote" style="margin-top:2.5rem;">
+    <blockquote>"I spent years at Big Law, then a decade as GC closing deals nobody else would touch in markets nobody else would enter. Then I quit and built something better. I kept meeting people like me. Sharp, a little crazy, done with the traditional path. Operating alone when they didn't have to. This is for them."</blockquote>
+    <cite>Pepe Carrillo, Founder, Mexzungu Group. Legal 500 East Africa GC Powerlist 2024 &amp; 2025. Yale. 25 countries.</cite>
+  </div>
+</section>
+
+<!-- ── WHO WE'RE LOOKING FOR ─────────────────────────────────── -->
+<section>
+  <div class="section-label">The Filter</div>
+  <div class="section-title">This is probably not for you. Unless it is.</div>
+  <p class="section-text">There is no job board here. No open application form. Mexzungu runs on network-only intake. If you are reading this, someone sent you here or you found your way on your own. Either way, there are four things that have to be true.</p>
+
+  <div class="criteria-grid">
+    <div class="criteria-card">
+      <div class="criteria-label">Real track record</div>
+      <div class="criteria-text">You have closed deals, advised founders, or built structures in the actual wild. Not in a simulation. Emerging markets experience is a strong plus. You know what it feels like to operate without the safety net and you chose it anyway.</div>
+    </div>
+    <div class="criteria-card">
+      <div class="criteria-label">Narrow and deep</div>
+      <div class="criteria-text">You have a specialty sharp enough to be the best person in the room for a specific problem. Generalists who can "do a bit of everything" are not useful here. Mexzungu can already do a bit of everything. What we need is someone who owns one thing completely.</div>
+    </div>
+    <div class="criteria-card">
+      <div class="criteria-label">Commercial instinct</div>
+      <div class="criteria-text">You can have a business conversation without being managed through it. You know how to price yourself, read a room, and handle a difficult client moment without a playbook. This gets tested in a 45-minute conversation. No deck needed.</div>
+    </div>
+    <div class="criteria-card">
+      <div class="criteria-label">You get it</div>
+      <div class="criteria-text">High output. Low ceremony. Informal but precise. If you need weekly check-ins, structured onboarding, and a process for every edge case, genuinely this is not the right fit and I'd rather we both know that before we start. If you write 40-page memos nobody reads, same deal.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT YOU GET ───────────────────────────────────────────── -->
+<section>
+  <div class="section-label">The Platform</div>
+  <div class="section-title">What goes behind you when you join.</div>
+  <p class="section-text">Not a logo. An operating system. The things that eat your time solo, admin, billing, contracts, proposals, the infrastructure work that produces zero revenue, become someone else's problem. Yours is the work.</p>
+
+  <div class="perks-grid">
+    <div class="perk-card">
+      <div class="perk-icon">🎸</div>
+      <div class="perk-title">A brand that opens doors</div>
+      <div class="perk-desc">Two-time Legal 500 GC Powerlist (East Africa, 2024 and 2025). Recognized across the markets we work in. You walk into rooms with credibility that took years to build. It's already built.</div>
+    </div>
+    <div class="perk-card">
+      <div class="perk-icon">🤖</div>
+      <div class="perk-title">Janis: your AI Chief of Staff</div>
+      <div class="perk-desc">Full access to the Mexzungu AI system. Email triage. Document drafting. Client hubs. CRM. Billing automation. Drive architecture. The ops infrastructure a solo operator can't afford to build and shouldn't have to.</div>
+    </div>
+    <div class="perk-card">
+      <div class="perk-icon">📡</div>
+      <div class="perk-title">Deal flow you can't generate alone</div>
+      <div class="perk-desc">When Pepe's clients need something you specialize in, you get the referral. When your clients need something you don't do, the network handles it. The machine works both directions. This is what the solo path structurally cannot give you.</div>
+    </div>
+    <div class="perk-card">
+      <div class="perk-icon">📋</div>
+      <div class="perk-title">Templates that took 25 countries to build</div>
+      <div class="perk-desc">Entity structures. Investment instruments. Founder agreements. Engagement letters. Board governance. Cross-border employment. Battle-tested across Africa, Latin America, and Europe. You don't start from scratch.</div>
+    </div>
+    <div class="perk-card">
+      <div class="perk-icon">🛠</div>
+      <div class="perk-title">Billing and client infrastructure</div>
+      <div class="perk-desc">Invoicing through a Mauritius entity with international payment rails. Branded client portals. Document management. Invoice tracking. Your clients get a professional experience. You stop chasing payments.</div>
+    </div>
+    <div class="perk-card">
+      <div class="perk-icon">🌍</div>
+      <div class="perk-title">The room you couldn't find alone</div>
+      <div class="perk-desc">Operators, founders, investors, and co-counsel across East Africa, West Africa, Latin America, and Europe who are as sharp and unconventional as you. The intellectual community the solo path quietly costs you.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MISFIT LAB ─────────────────────────────────────────────── -->
+<section>
+  <div class="section-label">The Misfit Lab</div>
+  <div class="section-title">A place for people who never quite fit the firm.</div>
+  <p class="section-text">When you join the band, you join the Misfit Lab. Not a Slack group. Not a newsletter. A working room for operators who build in the places most firms won't touch, price the way they want, and treat the law as a tool for getting things done rather than a reason nothing gets done.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;">
+    <div style="background:#131313;border:1px solid #1f1f1f;border-radius:10px;padding:1.4rem 1.25rem;">
+      <div style="font-size:1.2rem;margin-bottom:0.6rem;">🧪</div>
+      <div style="font-size:0.88rem;font-weight:600;color:#f0ebe7;margin-bottom:0.4rem;">Working sessions</div>
+      <div style="font-size:0.78rem;color:#7a7068;line-height:1.6;">Joint problem-solving on live mandates. Cross-border structures. Tricky governance situations. The stuff you normally think through alone.</div>
+    </div>
+    <div style="background:#131313;border:1px solid #1f1f1f;border-radius:10px;padding:1.4rem 1.25rem;">
+      <div style="font-size:1.2rem;margin-bottom:0.6rem;">📬</div>
+      <div style="font-size:0.88rem;font-weight:600;color:#f0ebe7;margin-bottom:0.4rem;">Deal routing</div>
+      <div style="font-size:0.78rem;color:#7a7068;line-height:1.6;">When something lands on your desk that is not your specialty, you put it in the Lab. Someone who owns that problem picks it up. Everyone earns from it.</div>
+    </div>
+    <div style="background:#131313;border:1px solid #1f1f1f;border-radius:10px;padding:1.4rem 1.25rem;">
+      <div style="font-size:1.2rem;margin-bottom:0.6rem;">🔥</div>
+      <div style="font-size:0.88rem;font-weight:600;color:#f0ebe7;margin-bottom:0.4rem;">Honest conversation</div>
+      <div style="font-size:0.78rem;color:#7a7068;line-height:1.6;">Pricing questions. Client dynamics. Market reads. The conversations that solo operators have nowhere to take. The Lab is where they go.</div>
+    </div>
+  </div>
+
+  <div class="dial-callout" style="margin-top:2rem;">
+    <div class="dial-callout-icon">🧬</div>
+    <div class="dial-callout-text">
+      The Misfit Lab is not a perk. It is the reason the network works. The economics are fair. The culture is the actual product. And the Lab is where the culture lives.
+    </div>
+  </div>
+</section>
+
+<!-- ── TIERS ─────────────────────────────────────────────────── -->
+<section>
+  <div class="section-label">Network Tiers</div>
+  <div class="section-title">Two ways to be in the band.</div>
+  <p class="section-text">Everyone enters as an Operator. You become a Principal when Pepe says so. No application, no checklist, no timeline. It is based on how you show up and how you route.</p>
+
+  <div class="tier-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="tier-card active-tier">
+      <div class="tier-badge operator">Operator</div>
+      <div class="tier-title">Operator</div>
+      <div class="tier-sub">Where everyone starts. Full platform access from day one. Real work, real clients, both sides building trust.</div>
+      <ul class="tier-list">
+        <li>Brand access and full template library</li>
+        <li>Client hub and billing infrastructure</li>
+        <li>Full Janis integration across all tools</li>
+        <li>Active placement in cross-sell pipeline</li>
+        <li>Listed on mexzungu.com and client materials</li>
+        <li>Co-authored content and brand presence eligible</li>
+      </ul>
+    </div>
+    <div class="tier-card">
+      <div class="tier-badge principal">Principal</div>
+      <div class="tier-title">Principal</div>
+      <div class="tier-sub">Earned. You originate, you hold relationships, you are at the table when deals are structured. Rare. Pepe's call.</div>
+      <ul class="tier-list">
+        <li>Everything in Operator, plus:</li>
+        <li>Joint pitch and co-delivery on major mandates</li>
+        <li>Bespoke economics negotiated directly with Pepe</li>
+        <li>Input on platform direction and key commercial decisions</li>
+        <li>Co-branding on select engagements</li>
+        <li>No application process. You will know when it happens.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── ECONOMICS ─────────────────────────────────────────────── -->
+<section>
+  <div class="section-label">The Economics</div>
+  <div class="section-title">Run the numbers yourself.</div>
+  <p class="section-text">Every engagement maps to two questions: who sourced the client, and who delivers the work. Pick your scenario below, enter the engagement value, and see exactly what you take home. All splits on gross revenue. Agreed before work starts. No surprises.</p>
+
+  <div class="calc-wrap">
+    <div class="calc-body">
+
+      <!-- Row 1: engagement value -->
+      <div class="calc-value-row">
+        <div class="calc-field">
+          <label>Engagement value (USD)</label>
+          <input type="number" id="c-value" class="c-value-input" value="50000" min="1000" step="5000" oninput="calc()">
+          <div class="field-hint">Gross fees billed to client</div>
+        </div>
+      </div>
+
+      <!-- Row 2: three dropdowns on one line -->
+      <div class="calc-row" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="calc-field">
+          <label>Who sources?</label>
+          <select id="c-source" onchange="calc()">
+            <option value="you">You</option>
+            <option value="operator">Another operator</option>
+            <option value="mgl">MGL / Pepe</option>
+          </select>
+          <div class="field-hint">Who originated the client relationship</div>
+        </div>
+        <div class="calc-field">
+          <label>Who delivers?</label>
+          <select id="c-deliver" onchange="calc()">
+            <option value="you">You</option>
+            <option value="operator">Another operator</option>
+          </select>
+          <div class="field-hint">Who does the billable work</div>
+        </div>
+        <div class="calc-field" id="c-mgl-field">
+          <label>Pepe involvement</label>
+          <select id="c-mgl" onchange="calc()">
+            <option value="0">None</option>
+            <option value="1">Senior calls + oversight</option>
+          </select>
+          <div class="field-hint">Affects platform fee. Agreed before work starts.</div>
+        </div>
+      </div>
+
+      <!-- Row 3: conditional referral involvement -->
+      <div id="c-extra-row" style="display:none;">
+        <div class="calc-field" id="c-ref-field">
+          <label>Your referral involvement</label>
+          <select id="c-ref" onchange="calc()">
+            <option value="15">Clean intro (15%). Refer and step back.</option>
+            <option value="25">Active management (25%). You run the relationship.</option>
+            <option value="35">Relationship owner (35%). Long-term, enabled expansion.</option>
+          </select>
+          <div class="field-hint">Level agreed upfront, not assessed after</div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="calc-result" id="c-result">
+        <div class="calc-result-grid" id="c-boxes">
+          <!-- populated by JS -->
+        </div>
+        <div class="calc-bar-wrap">
+          <div class="calc-bar-labels" id="c-bar-labels"></div>
+          <div class="calc-bar-track" id="c-bar-track"></div>
+        </div>
+        <div class="calc-ceiling-warn" id="c-warn"></div>
+        <div class="calc-note" id="c-note"></div>
+      </div>
+
+    </div><!-- /calc-body -->
+  </div><!-- /calc-wrap -->
+
+  <p class="section-text" style="margin-top:2rem;font-size:0.83rem;color:#7a7068;">All splits on gross fees collected, not invoiced. Payment within 7 days of client payment. Success fees on deal-closing mandates agreed per engagement before work starts. Principals negotiate bespoke terms directly with Pepe.</p>
+
+  <div class="chart-compare">
+    <div class="chart-compare-title">All scenarios at a glance</div>
+
+    <div class="chart-row">
+      <div class="chart-row-lbl"><strong>You source + deliver</strong><br>No Pepe involvement</div>
+      <div class="chart-bars">
+        <div class="chart-seg seg-you" style="width:80%">You 80%</div>
+        <div class="chart-seg seg-mgl" style="width:20%">20%</div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-row-lbl"><strong>You source + deliver</strong><br>Pepe on senior calls</div>
+      <div class="chart-bars">
+        <div class="chart-seg seg-you" style="width:75%">You 75%</div>
+        <div class="chart-seg seg-mgl" style="width:25%">25%</div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-row-lbl"><strong>Network sourced, you deliver</strong><br>No Pepe involvement</div>
+      <div class="chart-bars">
+        <div class="chart-seg seg-you" style="width:50%">You 50%</div>
+        <div class="chart-seg seg-mgl" style="width:50%">50%</div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-row-lbl"><strong>You source, delegate delivery</strong><br>Active management (25%)</div>
+      <div class="chart-bars">
+        <div class="chart-seg seg-you" style="width:25%">You 25%</div>
+        <div class="chart-seg seg-op"  style="width:50%">Operator 50%</div>
+        <div class="chart-seg seg-mgl" style="width:25%">25%</div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-row-lbl"><strong>You source, delegate delivery</strong><br>Relationship owner (35%)</div>
+      <div class="chart-bars">
+        <div class="chart-seg seg-you" style="width:35%">You 35%</div>
+        <div class="chart-seg seg-op"  style="width:50%">Operator 50%</div>
+        <div class="chart-seg seg-mgl" style="width:15%">15%</div>
+      </div>
+    </div>
+
+    <div class="chart-legend">
+      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#e14b87;"></div>Your take</div>
+      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#6b5040;"></div>Delivering operator</div>
+      <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#222;"></div>Network fee (MGL)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLIENT PRICING ─────────────────────────────────────────── -->
+<section>
+  <div class="section-label">How We Charge Clients</div>
+  <div class="section-title">Two components. Both agreed upfront. No surprises.</div>
+  <p class="section-text">Mexzungu does not quote hourly rates. Hourly billing turns every client relationship into a negotiation about time. The client watches the clock, the operator watches the meter, and neither is thinking about the outcome. Every Mexzungu engagement is structured around two components: an admin fee that covers the work, and a success fee that rewards the result.</p>
+
+  <div class="pricing-grid" style="grid-template-columns: 1fr 1fr;">
+    <div class="pricing-card">
+      <div class="pricing-card-type">Admin fee</div>
+      <div class="pricing-card-title">The work, covered.</div>
+      <div class="pricing-card-desc">A fixed fee agreed before the engagement starts. Covers the operator's time, scope, and deliverables regardless of outcome. The client knows what they are paying. The operator knows what they will earn. Paid in stages tied to milestones, not hours logged.</div>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-card-type">Success fee</div>
+      <div class="pricing-card-title">The outcome, rewarded.</div>
+      <div class="pricing-card-desc">A percentage of deal value, triggered when the result is achieved. Transaction closes, round is raised, approval is granted. Agreed before work starts, paid on close. Aligns the operator's upside with the client's result. Neither party is guessing what success is worth.</div>
+    </div>
+  </div>
+
+  <div class="pricing-rule">
+    <strong>Why this model:</strong> the admin fee protects the operator's time if the deal does not close. The success fee ensures the operator is genuinely motivated to get the client to the finish line. The client pays for work done and for results delivered. Both sides know what the other is getting before anyone signs anything. That clarity is part of what they are paying for.
+  </div>
+
+  <div class="pricing-rule" style="margin-top:1rem;">
+    <strong>The rule operators follow:</strong> never quote hourly, never agree to scope without a number attached, and never discount to win a client. The brand supports premium rates. If a client pushes hard on price, the question is whether they are the right client. Some are not, and that is fine.
+  </div>
+</section>
+
+<!-- ── THE CULTURE ────────────────────────────────────────────── -->
+<section>
+  <div class="section-label">The Thing the Agreement Can't Say</div>
+  <div class="section-title">The operators who become Principals are not the ones who billed the most.</div>
+  <p class="section-text">They are the ones who routed best.</p>
+  <p class="section-text">Routing well means this: when you had a client who needed something outside your specialty, you brought it through the network rather than calling a friend outside it. When you could have taken a piece of work and ground through it, you passed it to the person who was genuinely better suited. When a deal you seeded grew into something bigger than you could handle alone, you kept it in the room instead of taking it private.</p>
+  <p class="section-text">That behaviour cannot be captured in a percentage point. It is noticed by Pepe. It is visible to everyone else in the network. It is the thing that earns the Principal title, which is the thing that actually matters.</p>
+
+  <div class="founder-quote" style="margin-top:2.5rem;">
+    <blockquote>"The networks I've seen break all broke the same way. Everyone optimised for their own cut and stopped thinking about the room. The ones that work are the ones where people route to the best person for the work, every time, even when it costs them something. That's the culture I'm building. If that's not how you think, this probably isn't for you."</blockquote>
+    <cite>Pepe Carrillo, Managing Director, Mexzungu Group</cite>
+  </div>
+</section>
+
+<!-- ── DO'S AND DON'TS ────────────────────────────────────────── -->
+<section>
+  <div class="section-label">The Rules</div>
+  <div class="section-title">What's yours. What's not.</div>
+  <p class="section-text">The brand is the moat. It took years to build and it's what makes the economics work for everyone in the network. These rules protect it. They are not negotiable, but they are also not complicated.</p>
+
+  <div class="rules-cols">
+    <div>
+      <div class="rules-col-title green">What you can do</div>
+      <div class="rule-item"><span class="rule-tick">✓</span>Introduce yourself as a Mexzungu operator in client-facing contexts</div>
+      <div class="rule-item"><span class="rule-tick">✓</span>Use all Mexzungu templates, playbooks, and materials on your engagements</div>
+      <div class="rule-item"><span class="rule-tick">✓</span>List the Mexzungu affiliation on your LinkedIn and professional profiles</div>
+      <div class="rule-item"><span class="rule-tick">✓</span>Co-pitch with Pepe or other operators on qualifying mandates</div>
+      <div class="rule-item"><span class="rule-tick">✓</span>Refer clients into the network and earn your cut on whatever gets closed</div>
+      <div class="rule-item"><span class="rule-tick">✓</span>Set your own rates within the brand's positioning tier</div>
+      <div class="rule-item"><span class="rule-tick">✓</span>Keep your own clients. They are yours when you came in and yours when you leave.</div>
+    </div>
+    <div>
+      <div class="rules-col-title red">What you can't do</div>
+      <div class="rule-item"><span class="rule-tick" style="color:#e14b87;">✗</span>Make commitments on behalf of Mexzungu or Pepe without explicit sign-off</div>
+      <div class="rule-item"><span class="rule-tick" style="color:#e14b87;">✗</span>Use the brand for work outside the agreed scope without approval</div>
+      <div class="rule-item"><span class="rule-tick" style="color:#e14b87;">✗</span>Take a Mexzungu-originated client direct after you exit. Client ownership rules apply and they are clear.</div>
+      <div class="rule-item"><span class="rule-tick" style="color:#e14b87;">✗</span>Sub-contract work under the Mexzungu name to third parties without approval</div>
+      <div class="rule-item"><span class="rule-tick" style="color:#e14b87;">✗</span>Undercut Mexzungu rates in overlapping client relationships</div>
+      <div class="rule-item"><span class="rule-tick" style="color:#e14b87;">✗</span>Represent Mexzungu in legal or regulatory proceedings without authorization</div>
+      <div class="rule-item"><span class="rule-tick" style="color:#e14b87;">✗</span>Do something that would embarrass the brand. You know what this means.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE PROCESS ────────────────────────────────────────────── -->
+<section>
+  <div class="section-label">The Process</div>
+  <div class="section-title">Fast for the right people. Four steps.</div>
+  <p class="section-text">This is a small network. Every addition is deliberate. If the fit is there, we move quickly. If it isn't, we'll both know in 20 minutes and part as friends.</p>
+
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-left">
+        <div class="step-num">01</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-right">
+        <div class="step-title">The conversation</div>
+        <div class="step-desc">45 minutes with Pepe. No deck, no formal pitch. You tell him what you do, who you do it for, and why you're here. He decides quickly. Most people know within the first ten minutes.</div>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-left">
+        <div class="step-num">02</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-right">
+        <div class="step-title">The pilot</div>
+        <div class="step-desc">A first engagement. Real work, real clients, real feedback. This is where trust gets built on both sides. Most Operators are fully integrated within the first engagement.</div>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-left">
+        <div class="step-num">03</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-right">
+        <div class="step-title">The agreement</div>
+        <div class="step-desc">Operator Agreement signed. Short, plain language, no surprises. Covers brand usage, the split, client ownership, and exit terms. If you have practiced law, you will read it in 20 minutes and have no questions.</div>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-left">
+        <div class="step-num">04</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-right">
+        <div class="step-title">You're in</div>
+        <div class="step-desc">Full platform access: Janis, templates, client hub infrastructure, billing, and the network. You are operational within a week. From that point you operate exactly as you did before, just with a lot more behind you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────────── -->
+<div class="join-cta">
+  <div class="section-label" style="text-align:center;">The next move</div>
+  <h2>If you got this far, <span class="highlight">you already know.</span></h2>
+  <p>One conversation with Pepe. Tell him what you do and who you do it for. One paragraph is enough. If the fit is there, we move fast. If it isn't, no hard feelings and probably a useful conversation anyway.</p>
+  <a href="/lets-jam" class="btn-primary">Start the conversation</a>
+</div>
+
+</main>
+
+<script>
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function calc() {
+  var v    = parseFloat(document.getElementById('c-value').value) || 0;
+  var src  = document.getElementById('c-source').value;   // you | mgl | operator
+  var del  = document.getElementById('c-deliver').value;  // you | operator
+  var pepe = document.getElementById('c-mgl').value;      // 0 | 1
+  var refP = parseFloat(document.getElementById('c-ref').value) || 15;
+
+  // Show referral involvement only when you source and someone else delivers
+  var needRef = (src === 'you' && del === 'operator');
+  document.getElementById('c-extra-row').style.display = needRef ? 'block' : 'none';
+
+  // Compute splits
+  var youPct = 0, opPct = 0, mglPct = 0;
+  var youLbl = 'Your take', opLbl = '', note = '', ceiling = false;
+
+  if (src === 'you' && del === 'you') {
+    youPct = pepe === '1' ? 75 : 80;
+    mglPct = 100 - youPct;
+    note = 'You sourced and you deliver. Platform fee covers brand, infrastructure, and billing.';
+
+  } else if (del === 'you') {
+    // MGL or another operator sourced, you deliver only
+    youPct = pepe === '1' ? 45 : 50;
+    mglPct = 100 - youPct;
+    note = src === 'mgl'
+      ? 'MGL sourced this client. Delivery rate is 50% because origination earns a premium. Source your own clients and keep 80%.'
+      : 'Another operator sourced this client. Delivery rate is 50%. Source your own clients and keep 80%.';
+
+  } else {
+    // You source, another operator delivers
+    youLbl = 'Your referral fee';
+    opLbl  = 'Delivering operator';
+    var baseD = pepe === '1' ? 45 : 50;
+    if (refP + baseD > 85) { baseD = 85 - refP; ceiling = true; }
+    youPct = refP;
+    opPct  = baseD;
+    mglPct = 100 - youPct - opPct;
+    note = ceiling
+      ? '85% ceiling applies. Delivery adjusted to ' + baseD + '% to maintain the 15% platform floor.'
+      : 'Delivery rate is 50% because the operator did not source the client. Your referral comes from platform margin.';
+  }
+
+  // Result boxes
+  var boxHtml = '';
+  if (opLbl) {
+    boxHtml += rbox(youLbl,        fmt(v * youPct / 100), youPct + '%', true);
+    boxHtml += rbox(opLbl,         fmt(v * opPct  / 100), opPct  + '%', false);
+    boxHtml += rbox('Network fee', fmt(v * mglPct / 100), mglPct + '%', false);
+  } else {
+    boxHtml += rbox(youLbl,        fmt(v * youPct / 100), youPct + '%', true);
+    boxHtml += rbox('Network fee', fmt(v * mglPct / 100), mglPct + '%', false);
+    boxHtml += rbox('Gross value', fmt(v),                '100%',       false);
+  }
+  document.getElementById('c-boxes').innerHTML = boxHtml;
+
+  // Bar chart
+  var labHtml = '', barHtml = '';
+  if (opLbl) {
+    labHtml = '<span class="cbl-you">You: ' + youPct + '%</span>'
+            + '<span class="cbl-ref">Operator: ' + opPct + '%</span>'
+            + '<span class="cbl-mxz">Platform: ' + mglPct + '%</span>';
+    barHtml = '<div class="calc-bar-you" style="width:' + youPct + '%;"></div>'
+            + '<div class="calc-bar-ref" style="width:' + opPct + '%;"></div>'
+            + '<div class="calc-bar-mxz" style="flex:none;width:' + mglPct + '%;"></div>';
+  } else {
+    labHtml = '<span class="cbl-you">You: ' + youPct + '%</span>'
+            + '<span class="cbl-mxz">Platform: ' + mglPct + '%</span>';
+    barHtml = '<div class="calc-bar-you" style="width:' + youPct + '%;"></div>'
+            + '<div class="calc-bar-mxz" style="flex:none;width:' + mglPct + '%;"></div>';
+  }
+  document.getElementById('c-bar-labels').innerHTML = labHtml;
+  document.getElementById('c-bar-track').innerHTML  = barHtml;
+
+  // Ceiling warning
+  var warnEl = document.getElementById('c-warn');
+  warnEl.style.display = ceiling ? 'block' : 'none';
+  if (ceiling) warnEl.textContent = '85% ceiling rule: referral (' + youPct + '%) + delivery (' + opPct + '%) = 85%. Platform keeps its minimum 15%.';
+
+  // Explanatory note
+  document.getElementById('c-note').textContent = note;
+}
+
+function rbox(lbl, val, pct, hi) {
+  return '<div class="result-box' + (hi ? ' highlight' : '') + '">'
+       + '<div class="result-label">' + lbl + '</div>'
+       + '<div class="result-value">' + val + '</div>'
+       + '<div class="result-pct">' + pct + '</div></div>';
+}
+
+// init
+calc();
+</script>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/"><img src="/logo-v3.png" alt="Mexzungu Group" style="height:28px;opacity:0.7;"></a>
+      <p>Chaos starts companies. Structure builds them.</p>
+    </div>
+    <div class="footer-links">
+      <a href="/venture-architecture">Venture Architecture</a>
+      <a href="/meet-the-band">Meet the Band</a>
+      <a href="/outlaw-chronicles">Outlaw Chronicles</a>
+      <a href="/lets-jam">Let's Jam</a>
+    </div>
+  </div>
+</footer>
+
+</main>
+</body>
+</html>

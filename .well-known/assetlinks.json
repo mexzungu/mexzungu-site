@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.mexzungu.jouissance",
+    "sha256_cert_fingerprints": [
+      "C3:94:36:76:79:2D:7B:BA:6B:89:E6:C1:A9:4F:3B:55:B4:21:41:35:09:D1:48:94:1F:32:46:2C:56:53:C0:48"
+    ]
+  }
+}]

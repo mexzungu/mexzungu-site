@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Hub | Mexzungu Group</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --surface:  #111111;
+      --hover:    #1a1a1a;
+      --pink:     #E14B87;
+      --pink-dim: #b83a6b;
+      --white:    #ffffff;
+      --muted:    #888888;
+      --border:   #222222;
+      --font:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font);
+      min-height: 100vh;
+    }
+
+    /* ============================================
+       GATE STATE
+    ============================================ */
+    #gate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    #gate .logo-mark {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    #gate h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    #gate .tagline {
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    #gate .accent {
+      color: var(--pink);
+    }
+
+    #gate-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    #gate-form input[type="password"] {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 1rem;
+      padding: 0.85rem 1.1rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+      width: 100%;
+    }
+
+    #gate-form input[type="password"]:focus {
+      border-color: var(--pink);
+    }
+
+    #gate-form input[type="password"]::placeholder {
+      color: var(--muted);
+    }
+
+    #gate-form button {
+      background: var(--pink);
+      border: none;
+      border-radius: 8px;
+      color: var(--white);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.85rem 1.5rem;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    #gate-form button:hover {
+      background: var(--pink-dim);
+    }
+
+    #gate-form button:active {
+      transform: scale(0.98);
+    }
+
+    #gate-error {
+      color: var(--pink);
+      font-size: 0.85rem;
+      text-align: center;
+      min-height: 1.2em;
+      margin-top: -0.25rem;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-8px); }
+      40%       { transform: translateX(8px); }
+      60%       { transform: translateX(-6px); }
+      80%       { transform: translateX(6px); }
+    }
+
+    .shake { animation: shake 0.4s ease; }
+
+    /* ============================================
+       HUB STATE
+    ============================================ */
+    #hub { display: none; }
+
+    .hub-header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hub-header .brand {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .hub-header .brand:hover { color: var(--white); }
+
+    .hub-title-block {
+      text-align: center;
+      padding: 3rem 2rem 2rem;
+    }
+
+    .hub-title-block h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .hub-title-block h1 span { color: var(--pink); }
+
+    .hub-title-block .badge {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.9rem;
+      text-transform: uppercase;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      padding: 0 2rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 0.4rem 1rem;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--pink);
+      border-color: var(--pink);
+      color: var(--white);
+    }
+
+    /* Card grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    @media (max-width: 900px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .hub-header { padding: 1rem 1.25rem; }
+      .card-grid { padding: 0 1.25rem 3rem; }
+    }
+
+    .report-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      text-decoration: none;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    }
+
+    .report-card:hover {
+      background: var(--hover);
+      border-color: var(--pink);
+      transform: translateY(-2px);
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .cat-tag {
+      background: rgba(225, 75, 135, 0.15);
+      border: 1px solid rgba(225, 75, 135, 0.3);
+      border-radius: 4px;
+      color: var(--pink);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.55rem;
+      text-transform: uppercase;
+    }
+
+    .card-date {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .report-card h3 {
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-read {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- GATE STATE -->
+<div id="gate">
+  <div class="logo-mark">Mexzungu Group</div>
+  <h1>Research <span class="accent">Hub</span></h1>
+  <p class="tagline">Internal. Confidential.</p>
+  <form id="gate-form" onsubmit="handleSubmit(event)">
+    <input type="password" id="pwd-input" placeholder="Enter access password" autocomplete="current-password" autofocus>
+    <p id="gate-error"></p>
+    <button type="submit">Access Hub</button>
+  </form>
+</div>
+
+<!-- HUB STATE -->
+<div id="hub">
+  <header class="hub-header">
+    <a href="/" class="brand">Mexzungu</a>
+    <span style="color:var(--muted);font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;">Internal Research</span>
+  </header>
+
+  <div class="hub-title-block">
+    <h1>Research <span>Hub</span></h1>
+    <span class="badge">Internal. Confidential.</span>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
+    <button class="filter-btn" onclick="filterCards('business', this)">Business</button>
+    <button class="filter-btn" onclick="filterCards('tech', this)">Tech</button>
+    <button class="filter-btn" onclick="filterCards('personal', this)">Personal Research</button>
+  </div>
+
+  <div class="card-grid" id="card-grid">
+
+    <a href="/research/ibl/" class="report-card" data-cat="business">
+      <div class="card-meta">
+        <span class="cat-tag">Business</span>
+        <span class="card-date">Apr 2026</span>
+      </div>
+      <h3>Intent-Based Leadership</h3>
+      <p class="card-desc">How Marquet's USS Santa Fe framework applies to human-AI teams, autonomous agents, and distributed decision-making.</p>
+      <p class="card-read">8 sources · 12 min read</p>
+    </a>
+
+    <a href="/research/outlaw-market/" class="report-card" data-cat="business">
+      <div class="card-meta">
+        <span class="cat-tag">Business</span>
+        <span class="card-date">Apr 2026</span>
+      </div>
+      <h3>Newsletter Market Research</h3>
+      <p class="card-desc">Competitive gap analysis for The Outlaw Chronicles. Founder pain points, open lanes, and the content nobody is writing.</p>
+      <p class="card-read">15 sources · 18 min read</p>
+    </a>
+
+    <a href="/research/proposal-structure/" class="report-card" data-cat="business">
+      <div class="card-meta">
+        <span class="cat-tag">Business</span>
+        <span class="card-date">Apr 2026</span>
+      </div>
+      <h3>The Mexzungu Proposal Structure</h3>
+      <p class="card-desc">Research-backed 8-moment buyer journey, section-by-section rationale from SPIN, Challenger Sale, and Prospect Theory.</p>
+      <p class="card-read">6 sources · 10 min read</p>
+    </a>
+
+    <a href="/research/client-hub/" class="report-card" data-cat="business">
+      <div class="card-meta">
+        <span class="cat-tag">Business</span>
+        <span class="card-date">Apr 2026</span>
+      </div>
+      <h3>Client Hub Design Research</h3>
+      <p class="card-desc">What the best client portals get right. Feature set, visual direction, static vs. dynamic architecture, and the HavenPay pilot recommendation.</p>
+      <p class="card-read">7 sources · 8 min read</p>
+    </a>
+
+    <a href="/research/studio-network/" class="report-card" data-cat="business">
+      <div class="card-meta">
+        <span class="cat-tag">Business</span>
+        <span class="card-date">May 2026</span>
+      </div>
+      <h3>The Studio Network Model</h3>
+      <p class="card-desc">PhD-level research on boutique consulting collectives. Eden McCallum economics, platform take rates, what drives consultants to join, and the full MGL Studio Network system design.</p>
+      <p class="card-read">22 sources · 30 min read</p>
+    </a>
+
+    <a href="/research/waha/" class="report-card" data-cat="tech">
+      <div class="card-meta">
+        <span class="cat-tag">Tech</span>
+        <span class="card-date">Apr 2026</span>
+      </div>
+      <h3>WhatsApp Group Access: WAHA Scope</h3>
+      <p class="card-desc">Architecture, cost, reliability, and feature set for replacing Baileys with WAHA for persistent WhatsApp group connectivity.</p>
+      <p class="card-read">5 sources · 10 min read</p>
+    </a>
+
+    <a href="/research/janis-optimization/" class="report-card" data-cat="tech">
+      <div class="card-meta">
+        <span class="cat-tag">Tech</span>
+        <span class="card-date">May 2026</span>
+      </div>
+      <h3>Janis Optimization</h3>
+      <p class="card-desc">Brain, memory, and proactive capabilities. Hooks system, context architecture, memory lifecycle, mistake prevention, and API cost optimization.</p>
+      <p class="card-read">12 sources · 25 min read</p>
+    </a>
+
+    <a href="/research/ms-dynamics/" class="report-card" data-cat="personal">
+      <div class="card-meta">
+        <span class="cat-tag">Personal Research</span>
+        <span class="card-date">May 2026</span>
+      </div>
+      <h3>Master/Slave Dynamics: A PhD-Level Synthesis</h3>
+      <p class="card-desc">Comprehensive research across neuroscience, depth psychology, attachment theory, philosophy, and spirituality. The definitive map for building a conscious M/s dynamic.</p>
+      <p class="card-read">34 sources · 35 min read</p>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  // Auth constants (inlined - no ES module imports)
+  const RESEARCH_PASSWORD_HASH = "e57d542aab100cbe0fbad00a6e50aaca50a1d7634e80115a3b54ea44333317a4";
+  const STORAGE_KEY = "mexzungu_research_auth";
+
+  async function sha256(message) {
+    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(message));
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function checkAuth() {
+    return localStorage.getItem(STORAGE_KEY) === 'true';
+  }
+
+  function setAuth() {
+    localStorage.setItem(STORAGE_KEY, 'true');
+  }
+
+  function showHub() {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('hub').style.display = 'block';
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const input = document.getElementById('pwd-input');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value);
+    if (hash === RESEARCH_PASSWORD_HASH) {
+      setAuth();
+      showHub();
+    } else {
+      errorEl.textContent = 'Incorrect password.';
+      const form = document.getElementById('gate-form');
+      form.classList.remove('shake');
+      void form.offsetWidth; // reflow to restart animation
+      form.classList.add('shake');
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  function filterCards(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.report-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // On load: check auth
+  if (checkAuth()) {
+    showHub();
+  }
+</script>
+</body>
+</html>

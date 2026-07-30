@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Entreamados Accord</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:           #07070e;
+  --surface:      #0c0c1b;
+  --surface-dim:  #0a0a17;
+  --border:       rgba(255,255,255,0.07);
+  --border-faint: rgba(255,255,255,0.04);
+  --text:         #e8dfd0;
+  --muted:        rgba(232,223,208,0.52);
+  --faint:        rgba(232,223,208,0.18);
+  --master:       #c0392b;
+  --slave:        #c9a84c;
+  --exit:         #e8dfd0;
+  --master-glow:  rgba(192,57,43,0.18);
+  --slave-glow:   rgba(201,168,76,0.16);
+  --exit-glow:    rgba(232,223,208,0.08);
+  --border-active: rgba(255,255,255,0.13);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Karla', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+canvas#starfield {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 999; opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+.page {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  min-height: 100vh;
+  padding: 0 20px 100px;
+}
+
+/* ── HERO ── */
+.hero {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 12vh 0 6vh;
+  text-align: center; width: 100%; max-width: 800px;
+}
+
+.glyph {
+  font-size: 32px; margin-bottom: 32px; opacity: 0.7;
+  animation: fade-up 1s ease both;
+  color: var(--slave);
+  filter: drop-shadow(0 0 12px rgba(201,168,76,0.35));
+}
+
+.wordmark {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300; font-size: clamp(38px, 7vw, 76px);
+  letter-spacing: 0.18em; line-height: 1; color: var(--text);
+  text-transform: uppercase; margin-bottom: 20px;
+  animation: fade-up 1.2s ease both;
+}
+
+.divider {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 18px; animation: fade-up 1.2s 0.1s ease both;
+}
+.divider-line       { width: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--faint)); }
+.divider-line.right { background: linear-gradient(90deg, var(--faint), transparent); }
+.divider-diamond    { width: 5px; height: 5px; background: var(--slave); transform: rotate(45deg); opacity: 0.7; }
+
+.byline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(14px, 2vw, 18px); letter-spacing: 0.14em;
+  color: var(--muted); margin-bottom: 10px;
+  animation: fade-up 1.2s 0.2s ease both;
+}
+
+.tagline {
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--faint); animation: fade-up 1.2s 0.3s ease both;
+}
+
+/* ── LAYOUT ── */
+.section-wrap {
+  width: 100%; max-width: 800px;
+}
+
+.section-label {
+  font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--faint); margin: 52px 0 14px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  width: 100%;
+}
+
+/* ── PREAMBLE ── */
+.preamble {
+  width: 100%; max-width: 800px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface);
+  padding: 36px 32px;
+  margin-top: 48px;
+  animation: fade-up 1.2s 0.4s ease both;
+}
+
+.preamble p {
+  font-size: 15px; line-height: 1.85; color: var(--muted);
+  margin-bottom: 16px;
+}
+.preamble p:last-child { margin-bottom: 0; }
+
+.preamble strong {
+  color: var(--text); font-weight: 500;
+}
+
+/* ── DURATION BLOCK ── */
+.duration-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .duration-block { grid-template-columns: 1fr; }
+}
+
+.duration-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px 22px;
+}
+
+.duration-item .d-label {
+  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--slave); margin-bottom: 8px; display: block;
+}
+
+.duration-item .d-value {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px; color: var(--text); line-height: 1.2;
+}
+
+.duration-item .d-sub {
+  font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5;
+}
+
+/* ── EXIT BLOCK ── */
+.exit-block {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid rgba(224,57,43,0.3);
+  border-radius: 2px;
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.exit-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--master), transparent);
+}
+
+.exit-word {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(52px, 10vw, 86px);
+  font-weight: 600;
+  color: var(--master);
+  letter-spacing: 0.25em;
+  display: block;
+  margin-bottom: 20px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(192,57,43,0.35));
+}
+
+.exit-block p {
+  font-size: 15px; line-height: 1.85; color: var(--muted);
+  margin-bottom: 14px;
+}
+.exit-block p:last-child { margin-bottom: 0; }
+
+.exit-block strong {
+  color: var(--text); font-weight: 500;
+}
+
+/* ── DYNAMIC BLOCK ── */
+.dynamic-block {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 36px 32px;
+}
+
+.dynamic-block .d-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 28px; color: var(--text); margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.dynamic-items {
+  border-left: 2px solid rgba(201,168,76,0.2);
+  padding-left: 20px;
+  margin-bottom: 24px;
+}
+
+.dynamic-items li {
+  list-style: none;
+  font-size: 14px; line-height: 1.9; color: var(--muted);
+}
+
+.dynamic-items li span {
+  color: var(--text); font-weight: 400;
+}
+
+.dynamic-block p {
+  font-size: 14px; line-height: 1.85; color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.dynamic-block p.emphasis {
+  color: var(--text); font-size: 15px;
+}
+
+/* ── CARD GRID ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+/* ── CARD ── */
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 28px 24px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s, transform 0.25s, box-shadow 0.3s;
+}
+
+.card.full-width {
+  grid-column: 1 / -1;
+}
+
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--card-color), transparent);
+  opacity: 0.6;
+}
+
+.card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 15% 0%, var(--card-glow) 0%, transparent 55%);
+  opacity: 0; transition: opacity 0.4s; pointer-events: none;
+}
+
+.card:hover {
+  border-color: var(--border-active);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+}
+
+.card:hover::after { opacity: 1; }
+
+.card-num {
+  font-size: 10px; letter-spacing: 0.25em;
+  color: var(--card-color); opacity: 0.5;
+}
+
+.card-label {
+  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--card-color); font-weight: 400;
+}
+
+.card-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600; font-size: 22px; line-height: 1.2;
+  color: var(--text);
+}
+
+.card-body {
+  font-size: 13px; line-height: 1.7; color: var(--muted);
+}
+
+.card-body ul {
+  list-style: none; padding: 0; margin-top: 10px;
+}
+
+.card-body ul li {
+  padding: 5px 0 5px 14px;
+  position: relative;
+  border-bottom: 1px solid var(--border-faint);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.card-body ul li:last-child { border-bottom: none; }
+
+.card-body ul li::before {
+  content: '';
+  position: absolute; left: 0; top: 13px;
+  width: 4px; height: 4px;
+  background: var(--card-color);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.card-example {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border-left: 2px solid var(--card-color);
+  font-size: 12px; line-height: 1.6;
+  color: var(--muted);
+  border-radius: 0 2px 2px 0;
+}
+
+.card-example .label {
+  display: block;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--card-color); margin-bottom: 6px; opacity: 0.7;
+}
+
+.card-example em { font-style: italic; color: var(--text); }
+
+.card-master { --card-color: var(--master); --card-glow: var(--master-glow); }
+.card-slave  { --card-color: var(--slave);  --card-glow: var(--slave-glow);  }
+.card-exit   { --card-color: var(--exit);   --card-glow: var(--exit-glow);   }
+
+/* ── BEHAVIOR TABLE ── */
+.behavior-table {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.behavior-table-header {
+  display: grid;
+  grid-template-columns: 1.4fr 1.4fr 1fr;
+  background: var(--surface-dim);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .behavior-table-header { display: none; }
+}
+
+.bth-col {
+  font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--faint);
+}
+
+.behavior-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1.4fr 1fr;
+  padding: 16px 20px;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-faint);
+  align-items: start;
+  transition: background 0.2s;
+}
+
+.behavior-row:last-child { border-bottom: none; }
+.behavior-row:hover { background: rgba(255,255,255,0.015); }
+
+@media (max-width: 600px) {
+  .behavior-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 18px 16px;
+  }
+  .behavior-row .br-trigger { font-weight: 500; color: var(--text); }
+}
+
+.br-trigger {
+  font-size: 13px; color: var(--muted); line-height: 1.5;
+}
+
+.br-slave {
+  font-size: 13px; line-height: 1.5;
+}
+
+.br-slave .correct {
+  color: var(--slave);
+  font-style: italic;
+}
+
+.br-slave .wrong {
+  color: rgba(192,57,43,0.7);
+  text-decoration: line-through;
+  font-size: 12px; margin-top: 4px; display: block;
+}
+
+.br-note {
+  font-size: 11px; color: var(--faint); line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .br-trigger::before { content: 'Situation: '; font-weight: 500; color: var(--text); }
+  .br-slave::before { content: 'Slave voice: '; font-size: 10px; color: var(--slave); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .br-note::before { content: 'Note: '; font-size: 10px; color: var(--faint); letter-spacing: 0.1em; text-transform: uppercase; }
+}
+
+/* ── PROTOCOL CARDS ── */
+.protocol-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .protocol-grid { grid-template-columns: 1fr; }
+}
+
+.protocol-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px 20px;
+}
+
+.protocol-card .p-label {
+  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--slave); margin-bottom: 10px; display: block;
+}
+
+.protocol-card .p-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 20px; color: var(--text); margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.protocol-card .p-body {
+  font-size: 13px; line-height: 1.65; color: var(--muted);
+}
+
+.protocol-card .p-exception {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: rgba(192,57,43,0.08);
+  border-left: 2px solid rgba(192,57,43,0.4);
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── DISCIPLINE ── */
+.discipline-block {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .discipline-block { grid-template-columns: 1fr; }
+}
+
+.disc-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.disc-item::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--item-color, var(--master)), transparent);
+}
+
+.disc-item .di-label {
+  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--item-color, var(--master)); margin-bottom: 10px; display: block;
+}
+
+.disc-item .di-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 20px; color: var(--text); margin-bottom: 12px;
+}
+
+.disc-item .di-body {
+  font-size: 13px; line-height: 1.65; color: var(--muted);
+}
+
+/* ── SIGNING ── */
+.signing-block {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 2px;
+  padding: 48px 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.signing-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--slave), transparent);
+}
+
+.signing-glyph {
+  font-size: 28px; margin-bottom: 28px; display: block;
+  opacity: 0.6; color: var(--slave);
+  filter: drop-shadow(0 0 10px rgba(201,168,76,0.3));
+}
+
+.signing-block h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(28px, 5vw, 44px); font-weight: 300;
+  letter-spacing: 0.12em; color: var(--text);
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.signing-block p {
+  font-size: 15px; line-height: 1.9; color: var(--muted);
+  margin-bottom: 16px;
+  max-width: 600px; margin-left: auto; margin-right: auto;
+}
+
+.signing-block p:last-of-type { margin-bottom: 0; }
+
+.signing-block strong {
+  color: var(--text); font-weight: 500;
+}
+
+.signing-block .signing-final {
+  margin-top: 32px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(18px, 3vw, 24px);
+  font-style: italic;
+  color: var(--slave);
+  opacity: 0.85;
+  letter-spacing: 0.06em;
+}
+
+.footer {
+  width: 100%; max-width: 800px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--faint);
+  margin-top: 60px;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate {
+  animation: fade-up 0.7s ease both;
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="glyph">⚜</div>
+    <h1 class="wordmark">The Entreamados Accord</h1>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line right"></div>
+    </div>
+    <p class="byline">A temporary agreement · Entreamados · May to June 2026</p>
+    <p class="tagline">Voluntary. Complete. Bounded. Sovereign.</p>
+  </div>
+
+  <div class="section-wrap">
+
+    <!-- PREAMBLE -->
+    <div class="preamble animate">
+      <p>
+        This is not a partnership document. It is not a negotiation record.
+        It is a <strong>frame</strong>: voluntary, bounded, and complete.
+      </p>
+      <p>
+        If you read to the end and find the terms acceptable, you know how to sign.
+        The dynamic begins at signature and ends when we return to Barcelona.
+        Inside those bounds, there is one structure and one structure only:
+        you are the <strong>slave</strong>. He is the <strong>Master</strong>.
+      </p>
+      <p>
+        Nothing that happens inside this frame is evidence of who he is as your partner.
+        It is evidence of who he is as your Master. These are not the same person.
+        You agreed to enter. Inside, you are not entitled to partner-mode interpretation of his behavior.
+      </p>
+      <p>
+        Accepting these terms is optional. There is no pressure and no consequence for declining.
+        Declining simply means we attend the retreat as partners.
+        There is no middle ground and no modified version. Either this, or not this.
+      </p>
+    </div>
+
+    <!-- DURATION -->
+    <div class="section-label animate">I. Duration</div>
+    <div class="duration-block animate">
+      <div class="duration-item">
+        <span class="d-label">Begins</span>
+        <div class="d-value">On the train</div>
+        <div class="d-sub">At the moment of signature. Not before. Not "kind of" before. At the ritual.</div>
+      </div>
+      <div class="duration-item">
+        <span class="d-label">Ends</span>
+        <div class="d-value">Return to Barcelona</div>
+        <div class="d-sub">When we are back. Not a moment before. Not negotiated earlier unless Red is used.</div>
+      </div>
+      <div class="duration-item">
+        <span class="d-label">Duration</span>
+        <div class="d-value">The entire retreat</div>
+        <div class="d-sub">24 hours a day. In group sessions, at meals, in private, asleep. The frame does not pause.</div>
+      </div>
+      <div class="duration-item">
+        <span class="d-label">Scope</span>
+        <div class="d-value">Everything</div>
+        <div class="d-sub">No partial dynamic. No "only in sexual contexts." If you signed, you are in it. Fully.</div>
+      </div>
+    </div>
+
+    <!-- THE ONLY EXIT -->
+    <div class="section-label animate">II. The Exit</div>
+    <div class="exit-block animate">
+      <span class="exit-word">Red.</span>
+      <p>
+        That is the exit. One word. One path out. Nothing else qualifies.
+      </p>
+      <p>
+        <strong>Red does not mean:</strong> slow down, check in with me, I want to renegotiate,
+        or I am overwhelmed but still want to continue. Red means stop. Completely, immediately,
+        permanently for this contract. The dynamic ends. You become partners again,
+        and everything that follows is processed as partners.
+      </p>
+      <p>
+        <strong>What does not qualify as an exit:</strong>
+      </p>
+      <p>
+        Feeling overwhelmed. Feeling confused. Feeling hurt by something that happened.
+        Feeling like "this doesn't feel right." Feeling like he is being unfair.
+        Calling him toxic. Sending a message that implies he is abusive.
+        Crying to someone else about the dynamic while still inside it.
+        None of these are exits. They are experiences inside the dynamic.
+        The slave has tools to address them. She uses those tools.
+        She does not exit the frame without saying the word.
+      </p>
+      <p>
+        If you are unsure whether what you are feeling warrants Red .
+        it does not. Red is for <strong>cannot continue</strong>, not for <strong>this is hard</strong>.
+        Hard is the dynamic working. Red is the door, and it is always available.
+        But it is the only one.
+      </p>
+    </div>
+
+    <!-- EVERYTHING IS THE DYNAMIC -->
+    <div class="section-label animate">III. What Is The Dynamic</div>
+    <div class="dynamic-block animate">
+      <div class="d-title">Everything that happens this weekend is inside the dynamic.</div>
+      <ul class="dynamic-items">
+        <li>His silence <span>is the dynamic.</span></li>
+        <li>His distance <span>is the dynamic.</span></li>
+        <li>His warmth <span>is the dynamic.</span></li>
+        <li>His attention <span>is the dynamic.</span></li>
+        <li>His absence <span>is the dynamic.</span></li>
+        <li>His directives about communication <span>are the dynamic.</span></li>
+        <li>His directives about who she interacts with <span>are the dynamic.</span></li>
+        <li>His discipline <span>is the dynamic.</span></li>
+        <li>His structure <span>is the dynamic.</span></li>
+        <li>His instruction <span>is the dynamic.</span></li>
+      </ul>
+      <p>
+        He is not retreating from you as a partner. He is acting as your Master.
+        These are not the same thing, and you do not get to interpret his behavior
+        through a partner lens while you are inside this frame.
+      </p>
+      <p>
+        If he restricts your phone. that is not abandonment. It is authority.<br>
+        If he is quiet. that is not rejection. It is command.<br>
+        If he is distant. that is not punishment. Unless it is. And that is the point.
+      </p>
+      <p class="emphasis">
+        Before you reach for the partner interpretation: stop. Ask yourself: am I in the dynamic?
+        The answer this weekend is always yes, until Red.
+      </p>
+    </div>
+
+    <!-- HER OBLIGATIONS -->
+    <div class="section-label animate">IV. Obligations of the Slave</div>
+    <div class="card-grid animate">
+
+      <div class="card card-slave">
+        <div class="card-num">01</div>
+        <div class="card-label">Address & Posture</div>
+        <div class="card-title">How She Presents</div>
+        <div class="card-body">
+          She addresses him as <em>Master</em> or <em>Sir</em> when addressing him directly in the dynamic.
+          She adopts the waiting position when directed, or when in private and uncertain what is expected.
+          Eyes down unless directed otherwise.
+          <ul>
+            <li>When he enters a room, she acknowledges him first</li>
+            <li>She does not address him casually in private as though the frame is paused</li>
+            <li>She does not ignore a directive while formulating a response</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">Slave voice</span>
+            <em>"Yes, Sir." / "May I ask something, Master?"</em><br>
+            <span class="wrong">Not: "Okay fine." / "We need to talk." / ignoring it.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-slave">
+        <div class="card-num">02</div>
+        <div class="card-label">Permission Protocol</div>
+        <div class="card-title">What Requires Permission</div>
+        <div class="card-body">
+          She asks permission before: leaving his presence for a meaningful period, engaging sexually or kinkily with others at the retreat, raising something that is bothering her at length.
+          <ul>
+            <li>She does not require permission for water, bathroom, basic self-care</li>
+            <li>She does not disappear from his awareness without a word</li>
+            <li>Permission to speak freely: she asks. he grants or not.</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">Slave voice</span>
+            <em>"May I step away for a bit, Sir?"</em><br>
+            <span class="wrong">Not: walking off without acknowledgement.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-slave">
+        <div class="card-num">03</div>
+        <div class="card-label">Communication</div>
+        <div class="card-title">Phone & Outside Contact</div>
+        <div class="card-body">
+          Her communication with the outside world is subject to his direction within the retreat context.
+          If he restricts it, she complies. She does not interpret a communication restriction as abandonment.
+          <ul>
+            <li>Default: she asks before reaching out to anyone outside the retreat</li>
+            <li>His silence on the matter is not permission. It requires asking</li>
+            <li>If she needs to contact someone urgently: "Medical" or "Family emergency" overrides protocol</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">Note from the last time</span>
+            A communication blackout was part of the retreat structure. It was the dynamic.
+            The spiral it created was an exit-without-Red. That does not happen inside this frame.
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-slave">
+        <div class="card-num">04</div>
+        <div class="card-label">Group Scenes</div>
+        <div class="card-title">Group Play Protocol</div>
+        <div class="card-body">
+          Before any group or multi-party scene, she waits for his explicit M/s authority declaration.
+          She does not engage in group play unless he has declared the frame publicly.
+          <ul>
+            <li>If she begins to dissociate or lose her anchor: one touch on his hand</li>
+            <li>That touch signals: I need re-anchoring. He brings her back.</li>
+            <li>"Yellow" = she is dysregulating but not stopping. He hears it. He acts.</li>
+            <li>She does not exit a group scene without his direction. Unless Red.</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">What this solves</span>
+            The April dissociation happened because there was no declared anchor.
+            This time the anchor is declared before the scene starts. She holds it.
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-slave">
+        <div class="card-num">05</div>
+        <div class="card-label">Emotional Voice</div>
+        <div class="card-title">How She Speaks Her Struggle</div>
+        <div class="card-body">
+          She can feel anything. She expresses it in slave-voice: naming her experience as a slave asking for mercy, not as a partner filing a complaint or issuing a verdict.
+          <ul>
+            <li>The Master hears what she names. He decides what to do with it.</li>
+            <li>She does not issue diagnoses about his behavior while inside the frame</li>
+            <li>"I am struggling" is slave-voice. "You are toxic" is not.</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">Slave voice</span>
+            <em>"I am struggling with this, Sir. May I ask for mercy?"</em><br>
+            <span class="wrong">Not: "This is toxic." / "This is unhealthy." / [deletes the message]</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-slave">
+        <div class="card-num">06</div>
+        <div class="card-label">Medical Exception</div>
+        <div class="card-title">Injury & Safety Override</div>
+        <div class="card-body">
+          Physical injury or medical distress overrides all protocols immediately. This is not breaking the dynamic. It is the designed safety valve for the body.
+          <ul>
+            <li>She says: <em>"Medical. [what happened]"</em> and he responds immediately</li>
+            <li>She does not stay silent about injury out of compliance</li>
+            <li>Silent suffering through injury is not devotion. It is a mistake.</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">From the last time</span>
+            The shoulder dislocation: the medical override was always available.
+            The error was not using it. This time: Medical. Immediately. Always.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /card-grid -->
+
+    <!-- HIS AUTHORITY -->
+    <div class="section-label animate">V. Authority of the Master</div>
+    <div class="card-grid animate">
+
+      <div class="card card-master">
+        <div class="card-num">01</div>
+        <div class="card-label">Body Authority</div>
+        <div class="card-title">Her Body</div>
+        <div class="card-body">
+          He has authority over her body: how she is positioned, how she is touched, what she does sexually within the retreat context.
+          <ul>
+            <li>She does not negotiate this in-frame</li>
+            <li>She begs for mercy if something is too much. He decides.</li>
+            <li>His authority over her body is not cruelty. It is care in a different language.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card card-master">
+        <div class="card-num">02</div>
+        <div class="card-label">Schedule & Attention</div>
+        <div class="card-title">His Time Is a Gift</div>
+        <div class="card-body">
+          He directs when they engage with others at the retreat, when they are alone, when she rests if he chooses to structure it. His attention is a gift, not an obligation.
+          <ul>
+            <li>When he withholds his attention. That is the dynamic</li>
+            <li>When he gives it fully. That is also the dynamic</li>
+            <li>She does not interpret either as his partner would</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">To remember</span>
+            His distance is not abandonment. His attention is not reassurance-on-demand.
+            Both are his to give and to withhold.
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-master">
+        <div class="card-num">03</div>
+        <div class="card-label">Communication Control</div>
+        <div class="card-title">Structure, Not Abandonment</div>
+        <div class="card-body">
+          He can restrict, direct, or suspend her communication with the outside world within the retreat context. This is structure. It is exercised through explicit direction.
+          <ul>
+            <li>A blackout is not abandonment. It is architecture.</li>
+            <li>The silence he creates is the same silence a Master creates in a scene</li>
+            <li>She holds the frame in that silence</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card card-master">
+        <div class="card-num">04</div>
+        <div class="card-label">Group Dynamic</div>
+        <div class="card-title">His Anchor in Group Scenes</div>
+        <div class="card-body">
+          In group scenes, he declares the M/s frame before the scene begins. His word is the anchor. She holds it. If she signals (one touch), he re-orients her.
+          <ul>
+            <li>He makes his authority visible in group settings</li>
+            <li>He does not let her float in a scene without an anchor</li>
+            <li>This is his obligation within the frame. He holds it.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card card-master">
+        <div class="card-num">05</div>
+        <div class="card-label">Interpretation</div>
+        <div class="card-title">What Is and Isn't the Dynamic</div>
+        <div class="card-body">
+          He alone interprets what is and is not "the dynamic." She does not exit the frame by deciding unilaterally that his behavior does not feel right.
+          <ul>
+            <li>He builds within the dynamic with her in mind, not arbitrarily</li>
+            <li>Structure that lands hard is still structure</li>
+            <li>She uses Red if she genuinely cannot continue. That is the only override.</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">His standing commitment</span>
+            What he builds inside this frame is built in good faith, with attention, with care.
+            It is never about his control. It is always about the frame.
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-master">
+        <div class="card-num">06</div>
+        <div class="card-label">Discipline</div>
+        <div class="card-title">Maintenance of the Frame</div>
+        <div class="card-body">
+          He administers discipline to maintain the frame. Not as punishment,, not from frustration. Discipline is correction that returns both parties to their positions.
+          <ul>
+            <li>Verbal: he names the infraction and the expectation. She resets.</li>
+            <li>Physical: private, administered with care</li>
+            <li>Privilege removal: his warmth, attention, closeness</li>
+          </ul>
+          <div class="card-example">
+            <span class="label">What discipline is not</span>
+            Cruelty. A response to his personal frustration. A power demonstration.
+            It is maintenance. Always, only.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /card-grid -->
+
+    <!-- PROTOCOLS -->
+    <div class="section-label animate">VI. Retreat Protocols</div>
+    <div class="protocol-grid animate">
+
+      <div class="protocol-card">
+        <span class="p-label">Morning</span>
+        <div class="p-title">Daily Opening</div>
+        <div class="p-body">
+          She greets him first when the day begins. He sets the intention for the day. This is the ritual that opens each 24 hours inside the frame.
+        </div>
+      </div>
+
+      <div class="protocol-card">
+        <span class="p-label">Group Play</span>
+        <div class="p-title">Before Every Scene</div>
+        <div class="p-body">
+          He declares the M/s anchor verbally or physically before any group scene begins. She does not engage without that declaration. Yellow = losing anchor, one touch = re-anchor request.
+        </div>
+      </div>
+
+      <div class="protocol-card">
+        <span class="p-label">Outside World</span>
+        <div class="p-title">Communication</div>
+        <div class="p-body">
+          She asks before contacting anyone outside the retreat. His instruction on this, if given, is followed. Silence from him on this is not permission.
+          <div class="p-exception">Medical or genuine family emergency overrides this without asking first.</div>
+        </div>
+      </div>
+
+      <div class="protocol-card">
+        <span class="p-label">When She Struggles</span>
+        <div class="p-title">Begging for Mercy</div>
+        <div class="p-body">
+          "May I beg for mercy, Sir?" She asks. He permits it or not. She makes her case as a slave, not as a partner. He decides. There is no guarantee, no entitlement.
+        </div>
+      </div>
+
+      <div class="protocol-card">
+        <span class="p-label">Physical Care</span>
+        <div class="p-title">Rest & Sustenance</div>
+        <div class="p-body">
+          She eats adequately and rests. He supports this. If she is physically struggling, she names it in slave-voice: "I need rest, Sir" not as a complaint. As a report..
+          <div class="p-exception">Injury: Medical override: always, immediately, no waiting.</div>
+        </div>
+      </div>
+
+      <div class="protocol-card">
+        <span class="p-label">At the Retreat</span>
+        <div class="p-title">In Group Settings</div>
+        <div class="p-body">
+          With Daka, Sol, and others present, the frame is internal unless he makes it visible. She holds her position privately. She does not break the frame in how she addresses him around others unless he directs otherwise.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BEHAVIOR EXAMPLES -->
+    <div class="section-label animate">VII. Slave Voice vs. Partner Voice</div>
+    <div style="margin-bottom:14px;font-size:13px;color:var(--muted);line-height:1.7;" class="animate">
+      The failure of the last dynamic was a single pattern: partner-voice was used to exit the frame before Red was said.
+      The table below names the difference clearly. Inside the Accord, only one column exists.
+    </div>
+    <div class="behavior-table animate">
+      <div class="behavior-table-header">
+        <div class="bth-col">Situation</div>
+        <div class="bth-col">Slave voice (permitted)</div>
+        <div class="bth-col">Note</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">She is overwhelmed</div>
+        <div class="br-slave">
+          <span class="correct">"I'm struggling, Sir. May I ask for mercy?"</span>
+          <span class="wrong">NOT: "This is too much." then withdrawing</span>
+        </div>
+        <div class="br-note">The experience stays inside the frame. She names it. He hears it.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">She disagrees with something</div>
+        <div class="br-slave">
+          <span class="correct">"May I speak freely, Sir?" → then makes her case</span>
+          <span class="wrong">NOT: "I don't think this is fair."</span>
+        </div>
+        <div class="br-note">She earns the right to speak by asking. He grants or not.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">Something lands hard</div>
+        <div class="br-slave">
+          <span class="correct">"That landed hard. May I share it?"</span>
+          <span class="wrong">NOT: "You are toxic." then deleting it.</span>
+        </div>
+        <div class="br-note">This is what the last dynamic lacked. Name it. Don't diagnose it.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">She needs him</div>
+        <div class="br-slave">
+          <span class="correct">"I need your presence, Sir."</span>
+          <span class="wrong">NOT: "You are abandoning me."</span>
+        </div>
+        <div class="br-note">Request from below, not accusation from partnership.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">She wants to stop</div>
+        <div class="br-slave">
+          <span class="correct">"Red."</span>
+          <span class="wrong">NOT: Spiraling, messaging others, crying about the dynamic while still in it</span>
+        </div>
+        <div class="br-note">Red is always available. Use it. Or hold the frame.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">He is silent or distant</div>
+        <div class="br-slave">
+          <span class="correct">She waits. She holds the frame.</span>
+          <span class="wrong">NOT: "You're ignoring me." / sending a toxic message</span>
+        </div>
+        <div class="br-note">His silence is the dynamic. She stays inside it.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">Group play, she loses orientation</div>
+        <div class="br-slave">
+          <span class="correct">One touch on his hand. She waits for re-anchor.</span>
+          <span class="wrong">NOT: Dissociating and exiting without signaling</span>
+        </div>
+        <div class="br-note">The April dissociation is solved by this signal. Use it.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">Something physically hurts</div>
+        <div class="br-slave">
+          <span class="correct">"Medical. my shoulder." Immediately.</span>
+          <span class="wrong">NOT: Silent suffering, then spiraling afterward</span>
+        </div>
+        <div class="br-note">Medical always overrides. Always.</div>
+      </div>
+
+      <div class="behavior-row">
+        <div class="br-trigger">He builds something for her she doesn't understand</div>
+        <div class="br-slave">
+          <span class="correct">"May I ask what this is for, Sir?"</span>
+          <span class="wrong">NOT: "Stop being my teacher."</span>
+        </div>
+        <div class="br-note">He builds with care and attention. Receiving it is part of the surrender.</div>
+      </div>
+
+    </div>
+
+    <!-- DISCIPLINE -->
+    <div class="section-label animate">VIII. Discipline</div>
+    <div class="discipline-block animate">
+
+      <div class="disc-item" style="--item-color: var(--master)">
+        <span class="di-label">Verbal Correction</span>
+        <div class="di-title">Name & Reset</div>
+        <div class="di-body">
+          He names the infraction and states the expectation. "That was partner-voice. Try again."
+          She resets. No extended explanation required. No debate. She tries again.
+        </div>
+      </div>
+
+      <div class="disc-item" style="--item-color: var(--master)">
+        <span class="di-label">Physical Discipline</span>
+        <div class="di-title">Private & Intentional</div>
+        <div class="di-body">
+          Administered in private. Deliberate, not reactive. Not from frustration. from maintenance of the frame. This is care expressed through structure.
+        </div>
+      </div>
+
+      <div class="disc-item" style="--item-color: var(--slave)">
+        <span class="di-label">Petition for Mercy</span>
+        <div class="di-title">How She Asks</div>
+        <div class="di-body">
+          "May I beg for mercy, Sir?" He permits the petition or not. She makes her case from inside the frame. not as a partner appealing to fairness. As a slave naming her experience.
+          He decides. She accepts the decision.
+        </div>
+      </div>
+
+      <div class="disc-item" style="--item-color: var(--slave)">
+        <span class="di-label">Privilege Removal</span>
+        <div class="di-title">Warmth & Attention</div>
+        <div class="di-body">
+          His closeness, warmth, and attention can be withdrawn as discipline.
+          This is not abandonment. It is consequence..
+          She does not interpret withdrawal through partner-mode. She holds the frame.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIGNING RITUAL -->
+    <div class="section-label animate">IX. The Signing</div>
+    <div class="signing-block animate">
+      <span class="signing-glyph">⚜</span>
+      <h2>The Ritual</h2>
+      <p>
+        You have read to the end. You understand what you are entering.
+        You know the exit. You know the frame. You know what is required.
+      </p>
+      <p>
+        If the terms are acceptable. if you choose this freely, without reservation,
+        with full understanding of what "completely" means,
+        then you express that acceptance through a single act of submission
+        in the place where you finish reading these words.
+      </p>
+      <p>
+        <strong>On the train: you take him in your mouth.</strong>
+      </p>
+      <p>
+        This is not symbolic. This is the first act inside the dynamic.
+        The moment it begins is the moment you choose it.
+        Not before. Not with words. With that.
+      </p>
+      <p>
+        If you cannot accept these terms, you close this page.
+        No conversation. No negotiation. No modified version.
+        The Accord either begins at the ritual, or it does not begin.
+      </p>
+      <p class="signing-final">
+        The train moves. So does time. The retreat is waiting.<br>You know what to do.
+      </p>
+    </div>
+
+    <div class="footer">
+      Entreamados · May 2026 · Voluntarily accepted · Bounded in time · Sovereign in frame
+    </div>
+
+  </div><!-- /section-wrap -->
+</div><!-- /page -->
+
+<script>
+/* Starfield */
+const canvas = document.getElementById('starfield');
+const ctx    = canvas.getContext('2d');
+let W, H, stars = [];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initStars(n = 140) {
+  stars = Array.from({length: n}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 1.2 + 0.2,
+    o: Math.random() * 0.5 + 0.1,
+    s: Math.random() * 0.3 + 0.05,
+    dir: Math.random() > 0.5 ? 1 : -1,
+    phase: Math.random() * Math.PI * 2
+  }));
+}
+
+function draw(t) {
+  ctx.clearRect(0, 0, W, H);
+  stars.forEach(s => {
+    const pulse = s.o + Math.sin(t * s.s + s.phase) * 0.18;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(232,223,208,${Math.max(0, pulse)})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', () => { resize(); initStars(); });
+resize(); initStars();
+requestAnimationFrame(draw);
+
+/* Scroll-triggered animations */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.animate').forEach(el => {
+  el.style.opacity    = '0';
+  el.style.transform  = 'translateY(20px)';
+  el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Template: All Sections</title>
+<style>
+  :root {
+    --bg: #121010;
+    --surface: #1d1917;
+    --card: #252220;
+    --border: #3a3532;
+    --pink: #E14B87;
+    --pink-dim: rgba(225,75,135,0.12);
+    --text: #f0ece8;
+    --muted: #9a9290;
+    --gold: #f0a500;
+    --green: #2ecc71;
+    --tpl: #f0a500;
+    --tpl-bg: rgba(240,165,0,0.1);
+    --heading: 'Georgia', serif;
+    --body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 15px; line-height: 1.6; }
+
+  /* TEMPLATE MODE BANNER */
+  .tpl-banner {
+    background: var(--gold);
+    color: #111;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tpl-banner span { font-weight: 400; margin-left: 8px; }
+
+  /* LAYOUT */
+  .prop-wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* SECTION WRAPPER */
+  .tpl-section {
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  /* ANNOTATION BADGE */
+  .tpl-note {
+    background: var(--tpl-bg);
+    border: 1px solid rgba(240,165,0,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--gold);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .tpl-note-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .tpl-note b { display: block; margin-bottom: 2px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .tpl-note p { color: #c8a84a; margin: 0; line-height: 1.5; }
+  .tpl-optional {
+    display: inline-block;
+    background: rgba(240,165,0,0.2);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .tpl-required {
+    display: inline-block;
+    background: rgba(225,75,135,0.15);
+    color: var(--pink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* SECTION DIVIDER */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 16px;
+  }
+  .hero-title { font-family: var(--heading); font-size: clamp(28px, 5vw, 44px); font-weight: 700; line-height: 1.15; color: var(--text); margin-bottom: 16px; }
+  .hero-title .fill { color: var(--pink); }
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
+  .hero-meta-item { font-size: 13px; color: var(--muted); }
+  .hero-meta-item b { color: var(--text); display: block; font-size: 14px; }
+
+  /* ---- OPENING ---- */
+  .opening-body { font-size: 17px; line-height: 1.75; color: #d4cfc9; max-width: 680px; }
+  .opening-body strong { color: var(--text); }
+
+  /* ---- SCOPE ---- */
+  .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .scope-grid { grid-template-columns: 1fr; } }
+  .scope-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .scope-card h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .scope-card ul { list-style: none; }
+  .scope-card ul li { font-size: 13px; color: var(--muted); padding: 4px 0; display: flex; gap: 8px; }
+  .scope-card ul li::before { content: '→'; color: var(--pink); flex-shrink: 0; }
+
+  /* ---- MODEL SECTION ---- */
+  .model-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .m-tab {
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  .m-tab.active { background: var(--pink); border-color: var(--pink); color: #fff; }
+  .m-panel { display: none; }
+  .m-panel.active { display: block; }
+
+  /* Config panel */
+  .config-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .config-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .hr-btns { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .hr-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .hr-btn.active { background: var(--pink-dim); border-color: var(--pink); color: var(--pink); }
+  .result-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 4px; }
+  @media(max-width:500px){ .result-row { grid-template-columns: 1fr 1fr; } }
+  .result-item { text-align: left; }
+  .result-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .result-val { font-size: 22px; font-weight: 700; color: var(--text); }
+  .result-val.pink { color: var(--pink); }
+  .config-note { font-size: 12px; color: var(--muted); margin-top: 20px; line-height: 1.6; }
+
+  /* Slider */
+  .slider-wrap { margin-bottom: 20px; }
+  .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .slider-row label { font-size: 13px; color: var(--muted); min-width: 110px; }
+  input[type=range] { flex: 1; accent-color: var(--pink); height: 4px; cursor: pointer; }
+  .slider-val { font-size: 14px; font-weight: 700; color: var(--pink); min-width: 70px; text-align: right; }
+
+  /* Type toggles */
+  .type-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .type-pill {
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .type-pill.active { background: var(--pink-dim); border-color: var(--pink); color: var(--pink); }
+
+  /* Settlement slider */
+  .settle-visual { height: 10px; border-radius: 6px; margin: 10px 0 6px; overflow: hidden; display: flex; }
+  .settle-cash { background: var(--pink); transition: width 0.2s; }
+  .settle-equity { background: #7c5cbf; transition: width 0.2s; flex: 1; }
+  .settle-legend { display: flex; gap: 20px; font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .settle-legend span { display: flex; align-items: center; gap: 5px; }
+  .settle-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  /* ---- CATALOGUE ---- */
+  .cat-table { width: 100%; border-collapse: collapse; }
+  .cat-table th { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 0 12px; border-bottom: 1px solid var(--border); }
+  .cat-table td { padding: 12px 0; border-bottom: 1px solid rgba(58,53,50,0.5); font-size: 14px; vertical-align: top; }
+  .cat-table td:last-child { text-align: right; white-space: nowrap; color: var(--pink); font-weight: 700; font-size: 13px; }
+  .cat-item-name { font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .cat-item-desc { font-size: 12px; color: var(--muted); }
+
+  /* ---- EQUITY CALLOUT ---- */
+  .equity-box {
+    background: linear-gradient(135deg, rgba(124,92,191,0.12), rgba(225,75,135,0.08));
+    border: 1px solid rgba(124,92,191,0.3);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .equity-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .equity-box p { font-size: 14px; color: #a89fc0; line-height: 1.65; }
+
+  /* ---- TIMELINE ---- */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-step { display: flex; gap: 16px; padding-bottom: 24px; position: relative; }
+  .tl-step::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+  .tl-step:last-child::before { display: none; }
+  .tl-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--pink-dim); border: 2px solid var(--pink); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--pink); flex-shrink: 0; margin-top: 4px; }
+  .tl-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .tl-body p { font-size: 13px; color: var(--muted); }
+
+  /* ---- CTA ---- */
+  .cta-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px;
+    text-align: center;
+  }
+  .cta-box h3 { font-size: 22px; font-family: var(--heading); margin-bottom: 10px; }
+  .cta-box p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  .btn-sign {
+    display: inline-block;
+    background: var(--pink);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---- PAGE SEPARATOR ---- */
+  .page-sep { border: none; border-top: 2px dashed rgba(240,165,0,0.2); margin: 56px 0; }
+</style>
+</head>
+<body>
+
+<div class="tpl-banner">
+  PROPOSAL TEMPLATE: ALL SECTIONS
+  <span>Gold boxes = instructions for Janis. Remove before sending to client.</span>
+</div>
+
+<div class="prop-wrap">
+
+  <!-- ========== SECTION 1: HERO ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">📋</div>
+      <div>
+        <b>Section: Hero <span style="color:#e14b87;font-style:normal">REQUIRED</span></b>
+        <p><strong>CLIENT NAME:</strong> Replace [CLIENT] with company name. <strong>ENGAGEMENT TYPE:</strong> Pick one tag from the eyebrow (Venture Architecture / Capital Closing / Deal Advisory / Ongoing GC). <strong>DATE:</strong> auto-fill from today. <strong>META:</strong> Include Prepared By, Date, Engagement Type.</p>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="hero-eyebrow">Deal Advisory: M&amp;A</div>
+      <h1 class="hero-title">Built for <span class="fill">[Client Name]</span>,<br>structured to close.</h1>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><b>Prepared by</b>Pepe Carrillo / Mexzungu Group</div>
+        <div class="hero-meta-item"><b>Date</b>June 5, 2026</div>
+        <div class="hero-meta-item"><b>Engagement</b>Deal Advisory</div>
+        <div class="hero-meta-item"><b>Prepared for</b>[Contact Name], [Company]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SECTION 2: OPENING ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">✍️</div>
+      <div>
+        <b>Section: Opening Hook <span style="color:#e14b87;font-style:normal">REQUIRED</span></b>
+        <p>2-3 sentences max. Name the specific problem or moment the client is in. Why now. What's at stake. No generic language. This should feel like Pepe wrote it that morning after one call with the client. Refer to their actual situation.</p>
+      </div>
+    </div>
+    <p class="opening-body">
+      [Client] is at a decision point: <strong>the asset is ready to move, the structure needs to hold, and the counterparty needs to believe in the deal before the lawyers arrive.</strong> This proposal outlines how Mexzungu fits into that close. From term sheet to signed purchase agreement.
+    </p>
+  </div>
+
+  <hr class="page-sep">
+
+  <!-- ========== SECTION 3: SCOPE ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">🎯</div>
+      <div>
+        <b>Section: Scope / What's Included <span style="color:#e14b87;font-style:normal">REQUIRED</span></b>
+        <p>2-4 cards. Each card = one workstream. Remove cards that don't apply. Fill in the actual deliverables from the engagement brief. Keep bullets tight. One line each. This is not a full SoW, just the headline list.</p>
+      </div>
+    </div>
+    <div class="section-label">What's included</div>
+    <div class="scope-grid">
+      <div class="scope-card">
+        <h4>Transaction Advisory</h4>
+        <ul>
+          <li>Term sheet review and redlining</li>
+          <li>Deal structure recommendation</li>
+          <li>Counterparty due diligence support</li>
+          <li>Purchase agreement negotiation</li>
+        </ul>
+      </div>
+      <div class="scope-card">
+        <h4>Legal &amp; Closing</h4>
+        <ul>
+          <li>SPA / asset sale agreement drafting</li>
+          <li>Board resolution drafting</li>
+          <li>Closing checklist management</li>
+          <li>Signing coordination</li>
+        </ul>
+      </div>
+      <div class="scope-card">
+        <h4>Corporate Structure</h4>
+        <ul>
+          <li>Delaware LLC / BVI / Mauritius review</li>
+          <li>Holding structure optimisation</li>
+          <li>Cap table cleanup before transfer</li>
+        </ul>
+      </div>
+      <div class="scope-card">
+        <h4>Excluded / Billed Separately</h4>
+        <ul>
+          <li>Local counsel fees (refer + coordinate only)</li>
+          <li>Regulatory filings</li>
+          <li>Tax structuring (refer to Adrian/Accountax)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="page-sep">
+
+  <!-- ========== SECTION 4: BILLING MODEL ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">💰</div>
+      <div>
+        <b>Section: Billing Model <span style="color:#e14b87;font-style:normal">REQUIRED, pick 1-2 tabs to show</span></b>
+        <p>Show only the tabs relevant to this client. <strong>Hour Bank</strong>: one-off or flexible engagements. <strong>Transactions</strong>: single deal with success fee. <strong>Studio Partner</strong>: ongoing monthly with full portfolio. <strong>Modular</strong>: retainer with top-up hours. Remove tabs by deleting the tab button and its panel. Configure rates in the JS at the bottom.</p>
+      </div>
+    </div>
+    <div class="section-label">Engagement model</div>
+
+    <div class="model-tabs">
+      <button class="m-tab active" onclick="switchModel('transactions')">Transactions</button>
+      <button class="m-tab" onclick="switchModel('hourbank')">Hour Bank</button>
+      <button class="m-tab" onclick="switchModel('studio')">Studio Partner</button>
+      <button class="m-tab" onclick="switchModel('modular')">Modular</button>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="m-panel active" id="panel-transactions">
+      <div class="config-box">
+        <div class="config-label">Transaction type</div>
+        <div class="type-pills">
+          <button class="type-pill active" onclick="setTxType('raise')">Capital Raise</button>
+          <button class="type-pill" onclick="setTxType('ma')">M&amp;A / Acquisition</button>
+          <button class="type-pill" onclick="setTxType('asset')">Asset Sale</button>
+          <button class="type-pill" onclick="setTxType('debt')">Debt Facility</button>
+        </div>
+
+        <div class="config-label">Deal size</div>
+        <div class="slider-wrap">
+          <div class="slider-row">
+            <label>$100k to $30M</label>
+            <input type="range" id="tx-size" min="100000" max="30000000" step="100000" value="5000000" oninput="renderTx()">
+            <span class="slider-val" id="tx-size-label">$5.0M</span>
+          </div>
+        </div>
+
+        <div class="config-label">Settlement split</div>
+        <div class="slider-wrap">
+          <div class="slider-row">
+            <label>Cash / Equity</label>
+            <input type="range" id="tx-equity" min="0" max="50" step="5" value="0" oninput="renderTx()">
+            <span class="slider-val" id="tx-equity-label">100% cash</span>
+          </div>
+          <div class="settle-visual">
+            <div class="settle-cash" id="settle-cash-bar" style="width:100%"></div>
+            <div class="settle-equity" id="settle-eq-bar" style="width:0%"></div>
+          </div>
+          <div class="settle-legend">
+            <span><span class="settle-dot" style="background:var(--pink)"></span>Cash</span>
+            <span><span class="settle-dot" style="background:#7c5cbf"></span>Equity (at last priced round)</span>
+          </div>
+        </div>
+
+        <div class="result-row" id="tx-results">
+          <div class="result-item">
+            <div class="result-label">Setup fee</div>
+            <div class="result-val pink" id="tx-setup">$2,000</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Success fee</div>
+            <div class="result-val pink" id="tx-success">$75,000</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Total fee</div>
+            <div class="result-val" id="tx-total">$77,000</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Cash portion</div>
+            <div class="result-val" id="tx-cash-out">$77,000</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Equity portion</div>
+            <div class="result-val" id="tx-eq-out">n/a</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Fee rate</div>
+            <div class="result-val" id="tx-rate-display">1.5%</div>
+          </div>
+        </div>
+        <div class="config-note" id="tx-note">Up to 50% of the success fee can be settled as equity in the company at the most recent priced round valuation. Election must be made in writing before work begins.</div>
+      </div>
+    </div>
+
+    <!-- HOUR BANK -->
+    <div class="m-panel" id="panel-hourbank">
+      <div class="config-box">
+        <div class="config-label">Hours per month</div>
+        <div class="hr-btns">
+          <button class="hr-btn active" onclick="selectHours(10)" id="hr-10">10 hrs</button>
+          <button class="hr-btn" onclick="selectHours(20)" id="hr-20">20 hrs</button>
+          <button class="hr-btn" onclick="selectHours(30)" id="hr-30">30 hrs</button>
+          <button class="hr-btn" onclick="selectHours(40)" id="hr-40">40 hrs</button>
+        </div>
+        <div class="result-row">
+          <div class="result-item"><div class="result-label">Rate per hour</div><div class="result-val pink" id="hb-rate">$200/hr</div></div>
+          <div class="result-item"><div class="result-label">Monthly total</div><div class="result-val" id="hb-total">$2,000</div></div>
+          <div class="result-item"><div class="result-label">Hours that roll (50%)</div><div class="result-val" id="hb-roll">Up to 5 hrs</div></div>
+        </div>
+        <div class="config-note">Pre-purchase blocks of hours. No monthly commitment. 50% of unused hours carry to the following month. The remainder expires. Use for a specific contract, cap table review, or one-off legal question.</div>
+      </div>
+    </div>
+
+    <!-- STUDIO PARTNER -->
+    <div class="m-panel" id="panel-studio">
+      <div class="config-box">
+        <div class="config-label">Portfolio size</div>
+        <div class="slider-wrap">
+          <div class="slider-row">
+            <label>Companies</label>
+            <input type="range" id="sp-cos" min="1" max="30" step="1" value="8" oninput="renderStudio()">
+            <span class="slider-val" id="sp-cos-label">8</span>
+          </div>
+          <div class="slider-row">
+            <label>Hrs/week included</label>
+            <input type="range" id="sp-hrs" min="10" max="25" step="1" value="15" oninput="renderStudio()">
+            <span class="slider-val" id="sp-hrs-label">15 hrs/wk</span>
+          </div>
+        </div>
+        <div class="result-row">
+          <div class="result-item"><div class="result-label">Monthly fee</div><div class="result-val pink" id="sp-fee">$5,200</div></div>
+          <div class="result-item"><div class="result-label">Standard rate</div><div class="result-val" id="sp-std">$6,500</div></div>
+          <div class="result-item"><div class="result-label">Overflow rate</div><div class="result-val" id="sp-overflow">$180/hr</div></div>
+        </div>
+        <div class="config-note">Fixed monthly fee covering all portfolio oversight, governance, and advisory. Transactions (equity rounds, debt, M&amp;A) are always billed separately at closing via side letter.</div>
+      </div>
+    </div>
+
+    <!-- MODULAR -->
+    <div class="m-panel" id="panel-modular">
+      <div class="config-box">
+        <div class="config-label">Monthly support hours</div>
+        <div class="slider-wrap">
+          <div class="slider-row">
+            <label>5 to 10 hrs/week</label>
+            <input type="range" id="mod-hrs" min="5" max="10" step="1" value="5" oninput="renderModular()">
+            <span class="slider-val" id="mod-hrs-label">5 hrs/wk</span>
+          </div>
+        </div>
+        <div class="result-row">
+          <div class="result-item"><div class="result-label">Admin fee</div><div class="result-val pink" id="mod-fee">$850/mo</div></div>
+          <div class="result-item"><div class="result-label">Hours covered</div><div class="result-val" id="mod-hrs-display">~20 hrs/mo</div></div>
+          <div class="result-item"><div class="result-label">Overflow rate</div><div class="result-val">$180/hr</div></div>
+        </div>
+        <div class="config-note">Small monthly admin fee locking general support hours. All project, contract, and transaction work billed separately at project catalogue rates. Good for clients who need regular access without a full retainer.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="page-sep">
+
+  <!-- ========== SECTION 5: CATALOGUE ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">📦</div>
+      <div>
+        <b>Section: Project Catalogue <span style="background:rgba(240,165,0,0.2);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-left:4px;">OPTIONAL</span></b>
+        <p>Show only for Studio Partner or Modular clients. These are add-ons that go on top of the monthly fee, activated by side letter. Customise the list to the client's portfolio. Remove entirely for pure transaction or hour bank proposals.</p>
+      </div>
+    </div>
+    <div class="section-label">Project catalogue: add-ons by side letter</div>
+    <table class="cat-table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Description</th>
+          <th style="text-align:right">D40 rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="cat-item-name">Venture Architecture</div></td>
+          <td><div class="cat-item-desc">Full legal structure: incorporation, cap table, SHA, governance docs</div></td>
+          <td>$5,500</td>
+        </tr>
+        <tr>
+          <td><div class="cat-item-name">SAFE / Convertible Note</div></td>
+          <td><div class="cat-item-desc">Draft, negotiate, close a SAFE or convertible note round</div></td>
+          <td>$3,200</td>
+        </tr>
+        <tr>
+          <td><div class="cat-item-name">Priced Equity Round</div></td>
+          <td><div class="cat-item-desc">Series A/B: SHA, SPA, investor side letters, closing coordination</div></td>
+          <td>$6,500</td>
+        </tr>
+        <tr>
+          <td><div class="cat-item-name">Employment Framework</div></td>
+          <td><div class="cat-item-desc">Contracts, IP assignment, contractor vs employee classification</div></td>
+          <td>$2,800</td>
+        </tr>
+        <tr>
+          <td><div class="cat-item-name">Board &amp; Governance</div></td>
+          <td><div class="cat-item-desc">Board composition, minutes, director agreements, consent resolutions</div></td>
+          <td>$2,200</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="page-sep">
+
+  <!-- ========== SECTION 6: EQUITY CALLOUT ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">🪙</div>
+      <div>
+        <b>Section: Equity Option <span style="background:rgba(240,165,0,0.2);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-left:4px;">OPTIONAL</span></b>
+        <p>Include when working with early-stage companies where equity is plausible. Remove for mature companies, pure M&amp;A sell-side mandates, or government-adjacent clients. The % values here are defaults. Adjust per the engagement type table in BD overview.</p>
+      </div>
+    </div>
+    <div class="equity-box">
+      <h3>Equity option</h3>
+      <p>Up to 50% of any project fee can be settled as equity in the relevant company at the most recent closing price. Studio or company election, confirmed in writing before work begins. On Studio Partner engagements, a 0.15-0.25% advisory warrant is standard. Transactions carry no automatic equity component unless separately agreed.</p>
+    </div>
+  </div>
+
+  <hr class="page-sep">
+
+  <!-- ========== SECTION 7: TIMELINE ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">📅</div>
+      <div>
+        <b>Section: What Happens Next <span style="background:rgba(240,165,0,0.2);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-left:4px;">OPTIONAL</span></b>
+        <p>Include for complex or multi-month engagements. Skip for simple Hour Bank proposals. They don't need a timeline. 3-5 steps max. Real dates when possible. The goal is to give the client a clear mental model of what "starting" looks like.</p>
+      </div>
+    </div>
+    <div class="section-label">What happens next</div>
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="tl-dot">1</div>
+        <div class="tl-body">
+          <h4>Sign the engagement letter</h4>
+          <p>Use the signing page linked below. Takes 2 minutes. Work starts the same day.</p>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">2</div>
+        <div class="tl-body">
+          <h4>Kick-off call (30 min)</h4>
+          <p>Align on timeline, counterparty, and what Pepe needs from you to begin.</p>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">3</div>
+        <div class="tl-body">
+          <h4>[Milestone specific to this deal]</h4>
+          <p>Replace with the actual first deliverable. E.g. "Term sheet review returned within 48h of receiving document."</p>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">4</div>
+        <div class="tl-body">
+          <h4>Close</h4>
+          <p>Signed documents, wire confirmed, post-closing checklist complete.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="page-sep">
+
+  <!-- ========== SECTION 8: CTA ========== -->
+  <div class="tpl-section">
+    <div class="tpl-note">
+      <div class="tpl-note-icon">🖊️</div>
+      <div>
+        <b>Section: Call to Action / Sign <span style="color:#e14b87;font-style:normal">REQUIRED</span></b>
+        <p>The signing link is always <strong>mexzungu.com/sign/[client-slug]</strong>. Set this up BEFORE sending the proposal. The CTA copy should be direct. One action, no alternatives. Keep the headline short.</p>
+      </div>
+    </div>
+    <div class="cta-box">
+      <h3>Ready when you are.</h3>
+      <p>Review the engagement letter. Sign to start. All terms above are confirmed in the EL.</p>
+      <a href="#" class="btn-sign">Review &amp; Sign →</a>
+    </div>
+  </div>
+
+</div><!-- end prop-wrap -->
+
+<script>
+/* ---- MODEL TABS ---- */
+function switchModel(id) {
+  document.querySelectorAll('.m-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.m-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelector('[onclick="switchModel(\'' + id + '\')"]').classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+/* ---- TRANSACTIONS ---- */
+var txConfig = {
+  raise: { setup: 1500, rate: 0.02,  label: 'Capital Raise: 2% success + $1,500 setup' },
+  ma:    { setup: 2000, rate: 0.015, label: 'M&A / Acquisition: 1.5% success + $2,000 setup' },
+  asset: { setup: 2000, rate: 0.015, label: 'Asset Sale: 1.5% success + $2,000 setup' },
+  debt:  { setup: 1000, rate: 0.0125,label: 'Debt Facility: 1.25% success + $1,000 setup' }
+};
+var currentTxType = 'raise';
+function setTxType(t) {
+  currentTxType = t;
+  document.querySelectorAll('.type-pill').forEach(function(p){ p.classList.remove('active'); });
+  event.target.classList.add('active');
+  renderTx();
+}
+function fmt(n) {
+  if (n >= 1000000) return '$' + (n/1000000).toFixed(1).replace(/\.0$/,'') + 'M';
+  if (n >= 1000) return '$' + Math.round(n/1000) + 'k';
+  return '$' + n;
+}
+function fmtDollar(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+function renderTx() {
+  var size = parseInt(document.getElementById('tx-size').value);
+  var eqPct = parseInt(document.getElementById('tx-equity').value);
+  var cfg = txConfig[currentTxType];
+  var successFee = Math.round(size * cfg.rate);
+  var total = cfg.setup + successFee;
+  var eqAmt = Math.round(total * eqPct / 100);
+  var cashAmt = total - eqAmt;
+
+  document.getElementById('tx-size-label').textContent = fmt(size);
+  document.getElementById('tx-equity-label').textContent = eqPct === 0 ? '100% cash' : eqPct + '% equity / ' + (100-eqPct) + '% cash';
+  document.getElementById('settle-cash-bar').style.width = (100 - eqPct) + '%';
+  document.getElementById('settle-eq-bar').style.width = eqPct + '%';
+  document.getElementById('tx-setup').textContent = fmtDollar(cfg.setup);
+  document.getElementById('tx-success').textContent = fmtDollar(successFee);
+  document.getElementById('tx-total').textContent = fmtDollar(total);
+  document.getElementById('tx-cash-out').textContent = fmtDollar(cashAmt);
+  document.getElementById('tx-eq-out').textContent = eqAmt > 0 ? fmtDollar(eqAmt) : 'n/a';
+  document.getElementById('tx-rate-display').textContent = (cfg.rate * 100).toFixed(2).replace(/\.?0+$/,'') + '%';
+  document.getElementById('tx-note').textContent = cfg.label + '. Up to 50% of the success fee can be settled as equity at the most recent priced round.';
+}
+renderTx();
+
+/* ---- HOUR BANK ---- */
+var hbRates = { 10: 200, 20: 180, 30: 165, 40: 150 };
+var currentHours = 10;
+function selectHours(hrs) {
+  currentHours = hrs;
+  document.querySelectorAll('.hr-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('hr-' + hrs).classList.add('active');
+  renderHourBank();
+}
+function renderHourBank() {
+  var rate = hbRates[currentHours] || 150;
+  var total = currentHours * rate;
+  var roll = Math.floor(currentHours * 0.5);
+  document.getElementById('hb-rate').textContent = '$' + rate + '/hr';
+  document.getElementById('hb-total').textContent = '$' + total.toLocaleString();
+  document.getElementById('hb-roll').textContent = 'Up to ' + roll + ' hrs';
+}
+renderHourBank();
+
+/* ---- STUDIO PARTNER ---- */
+function renderStudio() {
+  var cos = parseInt(document.getElementById('sp-cos').value);
+  var hrs = parseInt(document.getElementById('sp-hrs').value);
+  document.getElementById('sp-cos-label').textContent = cos + ' co' + (cos===1?'mpany':'mpanies');
+  document.getElementById('sp-hrs-label').textContent = hrs + ' hrs/wk';
+  var base = 2500 + (hrs - 10) * 180;
+  var fee = base + cos * 85;
+  var std = Math.round(fee / 0.82);
+  document.getElementById('sp-fee').textContent = '$' + fee.toLocaleString() + '/mo';
+  document.getElementById('sp-std').textContent = '~$' + std.toLocaleString() + ' standard';
+}
+renderStudio();
+
+/* ---- MODULAR ---- */
+function renderModular() {
+  var h = parseInt(document.getElementById('mod-hrs').value);
+  document.getElementById('mod-hrs-label').textContent = h + ' hrs/wk';
+  var fee = 850 + (h - 5) * 130;
+  var mos = h * 4;
+  document.getElementById('mod-fee').textContent = '$' + fee + '/mo';
+  document.getElementById('mod-hrs-display').textContent = '~' + mos + ' hrs/mo';
+}
+renderModular();
+</script>
+</body>
+</html>

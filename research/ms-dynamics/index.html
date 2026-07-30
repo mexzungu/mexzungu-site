@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master/Slave Dynamics | Mexzungu Research</title>
+  <meta name="robots" content="noindex, nofollow">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:      #0a0a0a;
+      --surface: #111111;
+      --hover:   #1a1a1a;
+      --pink:    #E14B87;
+      --pink-dim:#b83a6b;
+      --pink-lo: rgba(225,75,135,0.12);
+      --white:   #ffffff;
+      --muted:   #888888;
+      --border:  #222222;
+      --font:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --purple:  #9B59B6;
+      --teal:    #1ABC9C;
+      --amber:   #F39C12;
+    }
+    body { background: var(--bg); color: var(--white); font-family: var(--font); line-height: 1.7; }
+
+    /* Nav */
+    .report-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.95); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+    }
+    .back-link {
+      color: var(--muted); text-decoration: none; font-size: 0.85rem;
+      font-weight: 600; letter-spacing: 0.03em;
+      display: flex; align-items: center; gap: 0.4rem; transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--white); }
+    .nav-brand { color: var(--muted); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+    .nav-brand:hover { color: var(--white); }
+
+    /* Layout */
+    .report-wrap {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 3rem;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+    @media (max-width: 780px) {
+      .report-wrap { grid-template-columns: 1fr; }
+      .toc-sidebar { display: none; }
+    }
+
+    /* TOC */
+    .toc-sidebar { position: sticky; top: 5rem; align-self: start; }
+    .toc-sidebar h4 {
+      color: var(--muted); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .toc-sidebar a {
+      display: block; color: var(--muted); text-decoration: none;
+      font-size: 0.82rem; padding: 0.3rem 0; border-left: 2px solid var(--border);
+      padding-left: 0.75rem; margin-bottom: 0.1rem; transition: all 0.15s;
+    }
+    .toc-sidebar a:hover, .toc-sidebar a.active { color: var(--white); border-left-color: var(--pink); }
+
+    /* Report header */
+    .report-header { margin-bottom: 2rem; }
+    .cat-tag {
+      display: inline-block;
+      background: rgba(225,75,135,0.15); border: 1px solid rgba(225,75,135,0.3);
+      border-radius: 4px; color: var(--pink); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; padding: 0.2rem 0.55rem; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .report-header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem;
+    }
+    .meta-bar {
+      color: var(--muted); font-size: 0.82rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+
+    /* Key findings */
+    .key-findings {
+      background: var(--surface); border-left: 3px solid var(--pink);
+      border-radius: 0 8px 8px 0; padding: 1.5rem 1.75rem; margin: 2rem 0;
+    }
+    .key-findings h3 {
+      color: var(--pink); font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .key-findings ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .key-findings li { font-size: 0.92rem; color: #e0e0e0; padding-left: 1.25rem; position: relative; }
+    .key-findings li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; background: var(--pink); border-radius: 50%; }
+
+    /* Body content */
+    .report-body h2 {
+      font-size: 1.25rem; font-weight: 700; margin: 2.5rem 0 1rem;
+      padding-top: 0.5rem; color: var(--white); scroll-margin-top: 5rem;
+    }
+    .report-body h3 { font-size: 1rem; font-weight: 700; margin: 1.75rem 0 0.6rem; color: #d0d0d0; }
+    .report-body p { font-size: 0.95rem; color: #cccccc; margin-bottom: 1rem; max-width: 720px; }
+    .report-body ul, .report-body ol { padding-left: 1.4rem; margin-bottom: 1rem; max-width: 720px; }
+    .report-body li { font-size: 0.93rem; color: #cccccc; margin-bottom: 0.35rem; }
+    .report-body strong { color: var(--white); font-weight: 600; }
+
+    /* Table */
+    .report-body table {
+      width: 100%; max-width: 720px; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem;
+    }
+    .report-body th {
+      text-align: left; background: var(--surface); color: var(--muted);
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border);
+    }
+    .report-body td {
+      padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); color: #cccccc; vertical-align: top;
+    }
+    .report-body tr:last-child td { border-bottom: none; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; max-width: 720px; }
+
+    /* Sources */
+    .sources-list { list-style: none; padding: 0; }
+    .sources-list li { font-size: 0.82rem; color: var(--muted); padding: 0.45rem 0; border-bottom: 1px solid var(--border); }
+    .sources-list li:last-child { border-bottom: none; }
+    .sources-list a { color: #aaaaaa; text-decoration: underline; transition: color 0.15s; }
+    .sources-list a:hover { color: var(--white); }
+    .sources-list .src-label { color: var(--pink); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; margin-right: 0.5rem; }
+
+    /* Charts */
+    .chart-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin: 2rem 0;
+      max-width: 720px;
+    }
+    .chart-block .chart-title {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .chart-block .chart-subtitle {
+      font-size: 0.82rem; color: #888; margin-bottom: 1.25rem; max-width: 580px;
+    }
+    .chart-block canvas { max-height: 300px; }
+
+    /* Spectrum viz */
+    .spectrum-wrap { max-width: 720px; margin: 2rem 0; }
+    .spectrum-track {
+      position: relative;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      margin: 2rem 0 1rem;
+    }
+    .spectrum-fill {
+      position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--pink), var(--purple));
+    }
+    .spectrum-marker {
+      position: absolute; top: 50%; transform: translate(-50%, -50%);
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid var(--bg);
+    }
+    .spectrum-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .spectrum-current {
+      text-align: center; margin-top: 1.5rem;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .spectrum-current strong { color: var(--pink); }
+
+    /* Info boxes */
+    .info-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; max-width: 720px;
+    }
+    .info-box.warning { border-left: 3px solid var(--amber); }
+    .info-box.insight { border-left: 3px solid var(--teal); }
+    .info-box .box-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .info-box.warning .box-label { color: var(--amber); }
+    .info-box.insight .box-label { color: var(--teal); }
+    .info-box p { font-size: 0.88rem; color: #c0c0c0; margin-bottom: 0; max-width: 100%; }
+
+    /* Quote block */
+    .pull-quote {
+      border-left: 3px solid var(--pink);
+      padding: 0.75rem 1.25rem;
+      margin: 1.5rem 0;
+      max-width: 600px;
+    }
+    .pull-quote p {
+      font-style: italic; color: #d0d0d0; font-size: 0.95rem; margin-bottom: 0.3rem;
+    }
+    .pull-quote .attribution {
+      font-size: 0.78rem; color: var(--muted); font-style: normal;
+    }
+
+    /* Pyramid */
+    .pyramid-wrap { max-width: 420px; margin: 2rem auto; }
+    .pyramid-row {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 3px;
+    }
+    .pyramid-cell {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; padding: 0.6rem 1rem;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; text-align: center;
+      transition: all 0.2s;
+    }
+    .pyramid-cell:hover { filter: brightness(1.2); cursor: default; }
+
+    /* Radar */
+    .radar-wrap { max-width: 400px; margin: 0 auto; }
+
+    /* Flag table */
+    .flag-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem; max-width: 720px; margin: 1.5rem 0;
+    }
+    @media (max-width: 600px) { .flag-grid { grid-template-columns: 1fr; } }
+    .flag-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.25rem;
+    }
+    .flag-card .fc-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.4rem;
+    }
+    .flag-card.green .fc-label { color: var(--teal); }
+    .flag-card.red .fc-label { color: #e74c3c; }
+    .flag-card p { font-size: 0.84rem; color: #aaa; margin: 0; }
+
+    /* Tool blocks */
+    .tool-block {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem; margin: 1.5rem 0; max-width: 720px;
+    }
+    .tool-btn {
+      background: var(--pink); color: #fff; border: none; border-radius: 6px;
+      padding: 0.65rem 1.4rem; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; transition: background 0.15s; letter-spacing: 0.03em;
+    }
+    .tool-btn:hover { background: var(--pink-dim); }
+    .tool-btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .tool-btn.secondary:hover { border-color: var(--pink); color: var(--white); }
+
+    /* Quiz */
+    .quiz-dim { margin-bottom: 2rem; }
+    .quiz-dim-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--pink); margin-bottom: 1rem;
+    }
+    .quiz-q { margin-bottom: 1.5rem; }
+    .quiz-q p { font-size: 0.92rem; color: var(--white); margin-bottom: 0.75rem; font-weight: 600; }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.4rem; }
+    .quiz-opt {
+      display: flex; align-items: flex-start; gap: 0.65rem;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.6rem 0.85rem;
+      cursor: pointer; transition: all 0.15s; font-size: 0.86rem; color: #ccc;
+    }
+    .quiz-opt:hover { border-color: rgba(225,75,135,0.4); color: var(--white); }
+    .quiz-opt input { margin-top: 0.1rem; accent-color: var(--pink); flex-shrink: 0; }
+    .quiz-opt.selected { border-color: var(--pink); background: var(--pink-lo); color: var(--white); }
+
+    /* Profile summary */
+    .profile-summary {
+      background: rgba(225,75,135,0.07); border: 1px solid rgba(225,75,135,0.25);
+      border-radius: 8px; padding: 1.5rem; margin-top: 1rem;
+    }
+    .profile-summary h4 { color: var(--pink); font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .profile-summary p { font-size: 0.88rem; color: #ccc; margin-bottom: 0.6rem; }
+    .dim-score-row { display: flex; justify-content: space-between; align-items: center;
+      padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .dim-score-row:last-child { border-bottom: none; }
+    .dim-score-row .dn { font-size: 0.83rem; color: #aaa; }
+    .dim-score-row .ds { font-size: 0.83rem; font-weight: 700; color: var(--pink); }
+
+    /* Pre-entry */
+    .pe-category { margin-bottom: 1.5rem; max-width: 720px; }
+    .pe-cat-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+    }
+    .pe-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; margin-bottom: 0.5rem; overflow: hidden; transition: border-color 0.15s;
+    }
+    .pe-item.done { border-color: rgba(26,188,156,0.4); }
+    .pe-header {
+      display: flex; align-items: flex-start; gap: 0.85rem;
+      padding: 0.9rem 1.1rem; cursor: pointer;
+    }
+    .pe-check {
+      width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      margin-top: 0.1rem; transition: all 0.15s; cursor: pointer;
+    }
+    .pe-item.done .pe-check { background: var(--teal); border-color: var(--teal); }
+    .pe-check svg { display: none; }
+    .pe-item.done .pe-check svg { display: block; }
+    .pe-q-text { font-size: 0.9rem; color: #ddd; line-height: 1.5; flex: 1; }
+    .pe-item.done .pe-q-text { color: #888; }
+    .pe-expand { display: none; padding: 0 1.1rem 1rem 3.1rem; }
+    .pe-expand.open { display: block; }
+    .pe-expand p { font-size: 0.82rem; color: #888; margin-bottom: 0.75rem; font-style: italic; }
+
+    /* Schedule C */
+    .sc-step { display: none; }
+    .sc-step.active { display: block; }
+    .sc-step-header {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
+    }
+    .sc-step-num {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--pink);
+      color: #fff; font-size: 0.78rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .sc-step-title { font-size: 1rem; font-weight: 700; color: var(--white); }
+    .sc-progress {
+      display: flex; gap: 0.3rem; margin-bottom: 1.75rem;
+    }
+    .sc-pip {
+      height: 3px; flex: 1; border-radius: 2px; background: var(--border); transition: background 0.2s;
+    }
+    .sc-pip.done { background: var(--pink); }
+    .sc-field { margin-bottom: 1.25rem; }
+    .sc-field label {
+      display: block; font-size: 0.8rem; font-weight: 600; color: var(--muted);
+      letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .sc-field textarea, .sc-field input[type=text] {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--white); font-family: var(--font); font-size: 0.88rem;
+      padding: 0.7rem 0.9rem; resize: vertical; outline: none; transition: border-color 0.15s;
+      line-height: 1.6;
+    }
+    .sc-field textarea:focus, .sc-field input:focus { border-color: rgba(225,75,135,0.5); }
+    .sc-field textarea { min-height: 90px; }
+    .sc-hint { font-size: 0.78rem; color: #666; margin-bottom: 0.4rem; font-style: italic; }
+    .sc-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+
+    /* Schedule C output */
+    .schedule-draft {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.5rem; font-family: 'Courier New', monospace;
+      font-size: 0.82rem; color: #ccc; line-height: 1.8; white-space: pre-wrap;
+      max-height: 480px; overflow-y: auto;
+    }
+
+    /* Dimension pills */
+    .dimension-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.25rem 0; max-width: 720px; }
+    .dim-pill {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 600; color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .dim-pill.active { background: var(--pink-lo); border-color: rgba(225,75,135,0.4); color: var(--pink); }
+  </style>
+</head>
+<body>
+
+<nav class="report-nav">
+  <a href="/research/" class="back-link">&#8592; Research Hub</a>
+  <a href="/" class="nav-brand">Mexzungu</a>
+</nav>
+
+<div class="report-wrap">
+
+  <!-- TOC -->
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#neuro">1. Neuroscience</a>
+    <a href="#depth">2. Depth Psychology</a>
+    <a href="#attachment">3. Attachment Theory</a>
+    <a href="#philosophy">4. Philosophy</a>
+    <a href="#mental-control">5. The Mental Control Paradox</a>
+    <a href="#switch">6. Switch Identity</a>
+    <a href="#sociology">7. Sociology</a>
+    <a href="#trauma">8. Trauma &amp; Healing</a>
+    <a href="#spirituality">9. Spirituality</a>
+    <a href="#enm">10. ENM Architecture</a>
+    <a href="#enm-mechanics">11. ENM Mechanics</a>
+    <a href="#synthesis">Synthesis</a>
+    <a href="#tools">Tools</a>
+    <a href="#tool-readiness" style="padding-left:1.25rem;font-size:0.77rem;">1 &mdash; Readiness Quiz</a>
+    <a href="#tool-preentry" style="padding-left:1.25rem;font-size:0.77rem;">2 &mdash; Pre-Entry Questions</a>
+    <a href="#tool-schedulec" style="padding-left:1.25rem;font-size:0.77rem;">3 &mdash; Schedule C Mapper</a>
+    <a href="#sources">Sources</a>
+  </aside>
+
+  <!-- Main -->
+  <main>
+    <div class="report-header">
+      <div class="cat-tag">Personal Research</div>
+      <h1>Master/Slave Dynamics in Consensual Power Exchange</h1>
+      <div class="meta-bar">
+        <span>May 2026</span>
+        <span>Personal Research</span>
+        <span>50 sources</span>
+        <span>50 min read</span>
+      </div>
+    </div>
+
+    <div class="key-findings">
+      <h3>Key Findings</h3>
+      <ul>
+        <li>Submission activates a cortisol-endocannabinoid-oxytocin cascade with no pharmacological equivalent. The neurological state is real, distinct, and requires practice to achieve.</li>
+        <li>Wismeijer &amp; van Assen (2013, n=936): BDSM practitioners score lower on neuroticism, higher on wellbeing, and less rejection-sensitive than controls. Dominants show the most favorable profile.</li>
+        <li>Baumeister (1988): the strongest people are the most drawn to submission, not because they have less self, but because they carry more self and need the escape.</li>
+        <li>D/s is a role. M/s is an identity. The jump requires will-surrender, not just behavioral compliance, and a holding environment built over time.</li>
+        <li>"Dominated physically while maintaining mental control" is Benjamin's thirdness preserved under objectification. It is not resistance; it is the appropriate starting point for a dynamic whose container has not yet earned full surrender.</li>
+        <li>The Switch's choice to submit to one specific person while Dominating others is not contradiction, it is identity completeness. Bennett (2025) documents this as a recognized, psychologically distinct subtype.</li>
+        <li>The anxiously-attached partner's regulatory benefit from M/s structure is real and significant, but the Dominant's consistency is load-bearing. The system amplifies both good input and bad input.</li>
+      </ul>
+    </div>
+
+    <div class="report-body">
+
+      <!-- ==================== SECTION 1 ==================== -->
+      <h2 id="neuro">1. Neuroscience and Psychophysiology</h2>
+
+      <p>The most comprehensive synthesis is Wuyts and Morrens (2021), <em>The Biology of BDSM: A Systematic Review</em>, <em>Journal of Sexual Medicine</em>. What follows is the empirical picture, system by system.</p>
+
+      <h3>The Neurochemical Cascade</h3>
+      <p>Sagarin et al. found cortisol rose significantly in submissives during BDSM interactions, but not in dominants. The body activates its threat system; the mind codes the activation as rewarding. This cortisol rise co-occurred with elevated endocannabinoid levels. The two systems firing simultaneously is the neurological signature of controlled arousal: real physiological stress, real subjective pleasure. Not performance. A distinct biological state.</p>
+
+      <p>Endocannabinoids (anandamide and 2-AG, the body's endogenous THC equivalents) increased significantly in submissives. For dominants, endocannabinoid increases only appeared in those focused on relational authority, not physical sensation alone. <strong>The neurochemical pathway differs depending on whether the practice is physically sensational or relationally authoritative.</strong> Power itself activates a distinct cascade in the Dominant.</p>
+
+      <div class="chart-block">
+        <div class="chart-title">Neurochemical Profile: Submissive vs Dominant</div>
+        <div class="chart-subtitle">Relative change in key neurochemicals during consensual power exchange. Source: Wuyts &amp; Morrens (2021), Sagarin et al.</div>
+        <canvas id="neuroChart"></canvas>
+      </div>
+
+      <p>Endorphins (endogenous opioids, same receptors as morphine) are released during intense physical experiences. Pain experienced as <em>chosen and held in a safe container</em> activates endorphin release differently from pain experienced as threatening. The context of consent is not merely psychological, it is doing real biological work. Larva and Rantala (2024, <em>Archives of Sexual Behavior</em>) confirmed sexual arousal modulates pain thresholds significantly, with vaginal stimulation doubling tolerance in experimental conditions.</p>
+
+      <p>Oxytocin, released during deep power-exchange interactions, promotes pair-bonding, suppresses inflammatory pain through direct receptor action, and makes vulnerability feel safe. This is why aftercare produces disproportionate intimacy relative to its surface content. The combination of cortisol stress, endorphin euphoria, and oxytocin bonding is a cocktail with no pharmaceutical equivalent.</p>
+
+      <h3>Subspace: Transient Hypofrontality</h3>
+      <p>The 2016 Northern Illinois University study (Sagarin, Lee et al.) was the first to empirically examine BDSM-induced altered states. Using the Stroop test, submissives showed what Arne Dietrich (2003, <em>Consciousness and Cognition</em>) calls <strong>transient hypofrontality</strong>: temporary down-regulation of prefrontal cortex activity. The PFC governs executive function, self-monitoring, anxiety, decision-making. When it quiets, the subjective experience is the floaty, ego-minimized quality practitioners call subspace. Not dissociation. A genuine neurologically-distinct state.</p>
+
+      <div class="chart-block">
+        <div class="chart-title">Subspace vs Topspace: Altered State Profiles</div>
+        <div class="chart-subtitle">Two distinct neurological states operating simultaneously in the same interaction. Source: Sagarin et al. (2016), Pitagora (2017), Dietrich (2003).</div>
+        <canvas id="stateChart"></canvas>
+      </div>
+
+      <p><strong>Critical asymmetry:</strong> submissives showed decreased cognitive flexibility (hypofrontality). Dominants maintained or improved cognitive performance, consistent with Csikszentmihalyi's flow model: complete absorption, heightened focus. Kamping et al. using fMRI confirmed that identical painful stimuli were reported as substantially reduced in masochistic versus neutral contexts, the psychological framing physically alters how pain is processed in the parietal operculum, anterior insula, and sensorimotor cortex.</p>
+
+      <h3>Flow State</h3>
+      <p>Pitagora (2017, <em>Journal of Positive Sexuality</em>) was the first to formally apply Csikszentmihalyi's flow framework to BDSM. Practitioners consistently report: world drops away, complete focus, loss of time sense, post-scene mood improvement. Topping maps precisely onto classical flow (clear goals, challenge-skill balance, absorbed action). Bottoming maps onto transient hypofrontality plus selected flow facets: loss of self-consciousness, time distortion, intrinsic reward. Both states require practice and skill to achieve reliably.</p>
+
+      <!-- ==================== SECTION 2 ==================== -->
+      <h2 id="depth">2. Depth Psychology</h2>
+
+      <h3>Baumeister: Masochism as Escape from Self</h3>
+      <p>Roy Baumeister's foundational 1988 paper "Masochism as Escape from Self" (<em>Journal of Sex Research</em>, 25:1) offered the first non-pathological account of submission. His argument: masochism functions as a mechanism for temporarily escaping the burden of high-level self-awareness.</p>
+
+      <p>In contemporary life, the self is symbolically mediated, temporally extended, and morally accountable. Managing reputation across time, maintaining a coherent narrative identity, monitoring performance against internal standards, this is cognitively expensive and creates chronic self-monitoring pressure. Masochism provides escape by forcing attention entirely into the present body, preventing symbolic abstract self-referential processing.</p>
+
+      <div class="info-box insight">
+        <div class="box-label">The Paradox</div>
+        <p>The more elaborated and burdensome the self-concept, the stronger the pull toward this escape. Highly individuated, high-achieving people do not submit because they have less self, they submit because they have <em>more</em> self and therefore more to escape from. Baumeister extended this in "Escaping the Self" (1991) to cover meditation, alcohol, and spiritual practice. The impulse is universal. The BDSM version is structured, reversible, and done with a witness.</p>
+      </div>
+
+      <h3>Jessica Benjamin: Mutual Recognition and Thirdness</h3>
+      <p>Jessica Benjamin (<em>The Bonds of Love</em>, 1988; <em>Beyond Doer and Done To</em>, 2004) distinguishes pathological dominance from consensual power exchange through her concept of <strong>thirdness</strong>: the ongoing awareness of the shared intersubjective field, in which both partners remain full subjects even within a highly asymmetric relational role. A healthy M/s dynamic maintains thirdness because both parties can recognize the other's full personhood.</p>
+
+      <p>Physical objectification within a thirdness-preserving frame is not pathological but psychologically sophisticated. The partner who wants to be "dominated physically while maintaining mental control" is, in Benjamin's framework, insisting on preserving thirdness during physical objectification, submitting the body while the mind remains a co-subject. This is more sophisticated than complete surrender, not less.</p>
+
+      <h3>Winnicott: The Holding Environment</h3>
+      <p>Winnicott's "holding environment" enables what he called regression in the service of the ego: return to more vulnerable states within a structurally secure frame. A skilled Dominant's consistent, reliable authority functions as Winnicott's holding environment. The protocols, negotiation, and aftercare are the operational elements of that container. <strong>The JVA's entire architecture is holding environment construction.</strong> The container is built before being named.</p>
+
+      <div class="pull-quote">
+        <p>"The slave cannot surrender more than the container has proven it can hold."</p>
+        <div class="attribution">Practitioner principle, consistent with Winnicott's developmental framework</div>
+      </div>
+
+      <h3>Frankfurt: The Surrender Paradox</h3>
+      <p>Harry Frankfurt's "Freedom of the Will and the Concept of a Person" (1971) resolves the apparent paradox of choosing to surrender choice. Frankfurt distinguishes first-order desires (what I want in this moment) from second-order volitions (what I want my wants to be). The slave chooses at the second-order level to be someone who obeys. This meta-level choice is the location of freedom. First-order obedience is consistent with second-order autonomy. <strong>The self that sets the rules of the game is not the same as the self that plays within them.</strong></p>
+
+      <!-- ==================== SECTION 3 ==================== -->
+      <h2 id="attachment">3. Attachment Theory in Depth</h2>
+
+      <h3>Empirical Findings</h3>
+      <p>Wismeijer and van Assen (2013, n=902 practitioners + 434 controls) is the landmark population study. Using validated measures:</p>
+
+      <div class="chart-block">
+        <div class="chart-title">Psychological Health: BDSM Practitioners vs General Population</div>
+        <div class="chart-subtitle">Higher score = more favorable. Source: Wismeijer &amp; van Assen (2013), Netherlands sample. Dominants show the strongest profile across all dimensions.</div>
+        <canvas id="healthChart"></canvas>
+      </div>
+
+      <p>Within the BDSM group: dominant identifiers showed lower neuroticism and lower attachment anxiety, consistent with secure attachment. Submissive identifiers showed higher agreeableness and higher attachment anxiety, consistent with anxious-preoccupied patterns. Both groups exceeded the general population across most measures. Conclusion: BDSM is "recreational leisure, rather than the expression of psychopathological processes."</p>
+
+      <h3>The Mixed Secure/Anxious Profile: S:65 / AX:55</h3>
+      <p>This profile on Brennan's ECR represents what clinicians call <strong>earned security with residual anxiety</strong>. The profile of someone who has done deliberate relationship work to develop functional security but retains lower-level anxiety activation that fires under conditions of uncertainty or perceived abandonment threat.</p>
+
+      <div class="chart-block">
+        <div class="chart-title">Attachment Profile: ECR Dimensions</div>
+        <div class="chart-subtitle">The S:65/AX:55 mixed profile. Compare: fully secure (80/20), fully anxious (40/75). Source: Brennan ECR scale, applied via Wismeijer data.</div>
+        <canvas id="attachChart"></canvas>
+      </div>
+
+      <p>The consistent, clear, reliable authority of a well-functioning Dominant directly counteracts the primary anxiety activation trigger: uncertainty about whether the attachment figure is present, reliable, and attending. M/s structure provides what anxious attachment seeks but cannot maintain in conventional relationship structures: <strong>explicit, ongoing confirmation that the attachment figure is in authority</strong>. The hierarchy removes the ambiguity that anxious attachment finds intolerable.</p>
+
+      <div class="info-box warning">
+        <div class="box-label">Load-Bearing Variable</div>
+        <p>When the base is stable, the system produces depth. When it is inconsistent, protocols broken, authority signaled carelessly, the anxious attachment system fires protest behaviors that are disproportionate to the trigger. This is not fragility. It is architecture responding accurately to data. The Dominant's reliability is not optional; it is the structural load.</p>
+      </div>
+
+      <h3>Healing vs Reenactment</h3>
+      <p>Dunkley and Brotto (2018, <em>Journal of Sex and Marital Therapy</em>) identify the critical markers:</p>
+
+      <div class="flag-grid">
+        <div class="flag-card green">
+          <div class="fc-label">Healing Container Markers</div>
+          <p>Anxiety decreases over time. Tolerance for uncertainty grows. Outside functioning holds or improves. Exit remains genuinely available. Self-regard increases.</p>
+        </div>
+        <div class="flag-card red">
+          <div class="fc-label">Reenactment Loop Markers</div>
+          <p>Anxiety increases over time. Dynamic becomes primary or exclusive coping. Outside functioning deteriorates. Exit becomes psychologically impossible. Self-regard shrinks.</p>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 4 ==================== -->
+      <h2 id="philosophy">4. The Philosophy of Consensual Slavery</h2>
+
+      <h3>Hegel: Useful and Wrong</h3>
+      <p>Hegel's Lordship-Bondsman dialectic (<em>Phenomenology of Spirit</em>, 1807) argues the Master's recognition by the Slave is valueless because the Slave's unfreedom depletes it. In consensual M/s, this is wrong: the slave's recognition retains its full value precisely because the slave remains a full agent choosing to offer it. <strong>The recognition is not coerced. Their ongoing consent is the ongoing gift of recognition to someone they judge worthy of it.</strong> Hegel's dialectic requires a slave with no exit. M/s requires a slave who chooses not to use it.</p>
+
+      <h3>Foucault: Power as Relational</h3>
+      <p>Foucault's power framework (<em>Discipline and Punish</em>, 1975; <em>The Subject and Power</em>, 1982) argues that power is not a possession but a relation, it circulates, is exercised rather than held, and is always potentially reversible. In a 1982 interview, Foucault described S/M as "a strategic game of freedom" rather than an abuse of power: power relationships that are agonistic (contested, alive) within a context of mutual consent.</p>
+
+      <p>Parchev and Langdridge (2018, <em>Sexualities</em>) extended this: M/s can represent a form of resistance to normative sexuality through strategic subversion, taking the forms of power and deploying them reflexively, consciously, with explicit consent as their condition of possibility.</p>
+
+      <div class="chart-block">
+        <div class="chart-title">D/s / M/s / TPE: The Power Exchange Spectrum</div>
+        <div class="chart-subtitle">Each dimension along which the dynamic deepens as it moves from D/s toward full M/s. Current dynamic is approaching the M/s threshold.</div>
+        <canvas id="spectrumChart"></canvas>
+      </div>
+
+      <!-- ==================== SECTION 5 ==================== -->
+      <h2 id="mental-control">5. The "Maintaining Mental Control" Paradox</h2>
+
+      <p>The self-description "dominated physically while maintaining mental control" is not a simple claim. It points to a layered state: physical surrender occurring within an active observer position. Four interpretive frameworks from the literature:</p>
+
+      <table>
+        <thead>
+          <tr><th>Framework</th><th>Interpretation</th><th>Implication</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Baumeister</strong></td>
+            <td>Partial hypofrontality. The PFC is not fully quieted, the monitoring ego survives. Common among high-functioning, analytical practitioners.</td>
+            <td>Not incomplete submission. The appropriate starting state. Deepens with container trust.</td>
+          </tr>
+          <tr>
+            <td><strong>Benjamin</strong></td>
+            <td>Thirdness preserved under objectification. The body is object; the mind remains subject. Psychologically more sophisticated than full surrender.</td>
+            <td>This is the condition that makes surrender safe. Do not pressure it away.</td>
+          </tr>
+          <tr>
+            <td><strong>Object Relations</strong></td>
+            <td>Defensive posture. Body surrender is permitted (less dangerous). Mind surrender is withheld (identity threat). Not pathological, a safety protocol.</td>
+            <td>The mental observer will disengage when the holding environment proves reliable. Time, not demand.</td>
+          </tr>
+          <tr>
+            <td><strong>Switch Identity</strong></td>
+            <td>The observer preserves continuity with the dominant identity. She watches herself submit rather than simply submitting, so the experience does not feel like identity destruction.</td>
+            <td>This is identity management. Both poles of the Switch require expression.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box insight">
+        <div class="box-label">The Critical Question</div>
+        <p>Is this D/s with M/s vocabulary, or M/s proper? M/s in its full formulation requires will-surrender, the Master's authority extends to choices, not just physical compliance. The "maintaining mental control" may represent the natural starting point of a developing dynamic approaching M/s depth for the first time, in a relationship with genuine emotional stakes. The JVA's own admission. "neither party has done deep emotional D/s with genuine connection before", supports this reading.</p>
+      </div>
+
+      <!-- ==================== SECTION 6 ==================== -->
+      <h2 id="switch">6. Switch Identity: The Academic Picture</h2>
+
+      <p>Bennett (2025), "Switch it up: A qualitative analysis of BDSM switches" (<em>Sexualities</em>, Sage) is the most current empirical work. Central finding: being a Switch is a <em>distinct identity category</em>, not behavioral flexibility. Switches report their identity could only be fully expressed by enacting both dominant and submissive roles. A Switch who can only submit is experiencing identity incompleteness.</p>
+
+      <div class="chart-block">
+        <div class="chart-title">Switch Identity Architecture</div>
+        <div class="chart-subtitle">The Switch does not alternate roles within one relationship, they hold two complete identity positions across different relationships. Source: Bennett (2025), Rambukkana (2017).</div>
+        <canvas id="switchChart"></canvas>
+      </div>
+
+      <p>Rambukkana (2017, <em>Journal of Homosexuality</em>) using mixed methods found Switches demonstrate notably high psychological flexibility, openness to experience, and role mobility. They are not confused about who they are. They have a broader identity structure that encompasses both positions, psychologically more sophisticated than fixed-role identity, not less.</p>
+
+      <h3>The Specific Subtype: Dominant Elsewhere, Slave Here</h3>
+      <p>Bennett documents this as a recognized subtype. Switches often organize their dual identity around relationship-specific factors rather than domain-specific ones. The question "why this person specifically" is an identity question: he activates the submissive pole of a dual identity that genuinely requires both positions for full expression. Her submission here is not something that happens despite her dominant identity elsewhere. It is enabled by it.</p>
+
+      <div class="info-box warning">
+        <div class="box-label">The Consistency Principle</div>
+        <p>The practitioner and academic consensus is uniform: constantly switching roles within the same M/s dynamic breaks down the authority structure. Within this specific relationship, the axis is fixed: he is Master, she is slave. Her dominant expression in other relationships is a separate identity register, not a contradiction. The M/s structure between them is not one that gets reversed.</p>
+      </div>
+
+      <!-- ==================== SECTION 7 ==================== -->
+      <h2 id="sociology">7. Sociology and Community</h2>
+
+      <h3>Parchev (2023/2025): TPE and the Inclusion/Exclusion Problem</h3>
+      <p>Ofer Parchev, "BDSM and total power exchange: Between inclusion and exclusion" (<em>Sexualities</em>, Sage, 2023) makes a sophisticated argument: the social legitimization of BDSM through the 2000s-2020s required presenting BDSM as consent-based, equal, and bounded. This secured mainstream tolerance but simultaneously excluded TPE and M/s, precisely because M/s is structurally incompatible with the SSC (Safe, Sane, Consensual) consent architecture that normalization deployed.</p>
+
+      <p>In M/s, power division is unequal by design. The slave's consent is given once and periodically renewed, not moment-by-moment. The dynamic is continuous, not scene-bounded. These features violate SSC. TPE thus faces exclusion from both vanilla culture and the normalized BDSM community. The practical consequence: M/s is practiced today with less community scaffolding than the Old Guard Leather tradition provided in the 1960s-80s.</p>
+
+      <h3>Old Guard Leather: The Historical Container</h3>
+      <p>The Old Guard Leather community (post-WWII gay male motorcycle clubs, 1940s-50s) developed the most formalized M/s tradition in Western BDSM history. Key features: collars earned over months or years (never given casually), strict protocols governing social interaction between masters and slaves in community settings, skill mastery as prerequisite for Master status, mentorship chains. The community provided all functions Bowlby attributed to secure attachment networks: identity, belonging, mentorship, and shared meaning framework.</p>
+
+      <h3>Population Research</h3>
+      <p>Richters et al. (2008, Australian Study, n=19,370): BDSM practitioners were not more likely to have been coerced into sexual activity and showed no elevated psychological distress compared to non-practitioners. This study effectively dismantled the clinical assumption that BDSM practice is a pathology marker. Wismeijer and van Assen (2013): practitioners showed more favorable psychological profiles across all key dimensions.</p>
+
+      <!-- ==================== SECTION 8 ==================== -->
+      <h2 id="trauma">8. Trauma, Healing, and Risk</h2>
+
+      <p>Gewirtz-Meydan et al. (2024, <em>Journal of Sex and Marital Therapy</em>, 50:5) provide the most current review of the trauma-BDSM intersection. Core finding: BDSM among trauma survivors is heterogeneous. For some, repetition compulsion, regaining control by reenacting with different outcomes. For some, dissociation makes the practice a trigger rather than resolution. For some, genuine therapeutic reclamation of bodily agency within a safe container.</p>
+
+      <p>Protective factors (Dunkley and Brotto, 2018): strong consent architecture; explicit negotiation skills; reliable aftercare; practitioner self-knowledge; ability to distinguish trauma replay from genuine preference.</p>
+
+      <div class="info-box warning">
+        <div class="box-label">Monitoring Flag</div>
+        <p>The self-acknowledged pattern of "using dating as a coping mechanism when too dependent" is risk-aware self-disclosure from someone who has done the psychological work to name their pattern. It is healthy that it was named. The monitoring responsibility is distributed: she watches for this in herself; the Dominant watches for the external markers. The test is whether autonomy, outside functioning, and self-regard grow or shrink over time.</p>
+      </div>
+
+      <!-- ==================== SECTION 9 ==================== -->
+      <h2 id="spirituality">9. Spirituality and Transcendence</h2>
+
+      <h3>Carlström (2021): Empirical Evidence</h3>
+      <p>Charlotta Carlström (<em>Sexualities</em>, Sage, 2021) conducted the first peer-reviewed study specifically examining spiritual experiences in BDSM, with direct comparisons to Christian mysticism. Four components of BDSM spiritual experience identified: an embodied sense of an energetic force; a sense of spiritual presence; a self-surrendered and transcended state of consciousness; a deeply personal and lasting transformation. The structural parallels to mystical literature are not metaphorical, the altered states are neurologically comparable.</p>
+
+      <h3>The Psilocybin Connection</h3>
+      <p>Psilocybin at therapeutic doses produces ego dissolution through decreased activity in the default mode network (Carhart-Harris et al., 2014, <em>PNAS</em>), the brain's self-referential processing center. This is the same system Dietrich's transient hypofrontality describes as reduced in deep subspace. Different pharmacological path, same neurological destination.</p>
+
+      <div class="info-box insight">
+        <div class="box-label">Implication</div>
+        <p>A person with experience of psilocybin-held ego dissolution has a neurological reference point for what full surrender feels like. This lowers the psychological barrier to deeper submission. It also provides a comparative frame: is this M/s container as safely held as the ceremonial container? If not, the deeper surrender will not emerge. The quality of the holding environment determines how far the surrender can go. The JVA is not preliminary to the M/s dynamic, it is the M/s dynamic's foundation.</p>
+      </div>
+
+      <h3>The Virgin/Whore Resolution</h3>
+      <p>The "reconciling the virgin and the whore" framing, and its parallel across Jungian (Madonna/femme fatale split of the anima), tantric (sacred erotic feminine), and clinical (sexuality split from dignity) traditions, describes the same psychological project. BDSM, specifically submission to a Dominant who simultaneously holds the person in full respect while subjecting them to physical intensity, can resolve this split by demonstrating both can be true simultaneously. She can be fully surrendered <em>and</em> fully respected. This is structurally what the Committee/Candidate framework already delivered: the ceremony and the respect were the holding environment for the intensity. The M/s dynamic is the next iteration of the same resolution.</p>
+
+      <!-- ==================== SECTION 10 ==================== -->
+      <h2 id="enm">10. M/s in the ENM Architecture</h2>
+
+      <h3>The Structural Question</h3>
+      <p>In M/s within ENM, the Master's authority may formally extend to the slave's other relationships. The slave's outside connections exist within the M/s framework, not alongside it as equivalents. This requires the Dominant to manage clearly with outside partners who need to understand the dynamic is a formal authority structure.</p>
+
+      <p>The critical open question: does submission include submission of outside relationship choices? This is the most significant scope decision in the early M/s architecture. Extending authority over outside connections prematurely, before the primary bond is deep and stable, is a recognized risk in the M/s community. It should follow consolidation of the primary bond, not precede it.</p>
+
+      <h3>ENM Strain on the Primary Bond</h3>
+      <p>For the anxiously-attached partner (AX:55), authority signals from the Dominant are under more strain in ENM contexts because time and attention are genuinely divided. Every occasion of absence registers as data about the attachment figure's availability. The Dominant's consistency under conditions of divided attention, not exclusive availability, is what the M/s structure gets tested on. Balzarini et al. (2018-2022 series) consistently find ENM practitioners demonstrate more sophisticated jealousy processing: interpreting it as information rather than catastrophe. This is the operational standard for the M/s ENM dynamic: jealousy as data, not structural threat.</p>
+
+      <!-- ==================== ENM MECHANICS ==================== -->
+      <h2 id="enm-mechanics">11. ENM Within M/s: Implementation, Mechanics, Risks, and Gaps</h2>
+
+      <p>Section 10 established the structural questions. This section addresses how M/s and ENM are combined in practice: the authority architecture, the protocols that make it functional, the failure modes, and the places where research has not yet caught up with lived practice.</p>
+
+      <h3>The Directional Question: Which Frame Contains the Other</h3>
+
+      <p>The foundational design decision precedes all protocols. Is this M/s within ENM, or ENM within M/s? The configuration determines which framework governs when the two sets of rules conflict.</p>
+
+      <table>
+        <thead><tr><th>Configuration</th><th>What It Means</th><th>Governing Principle</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>M/s Contains ENM</strong></td>
+            <td>The M/s authority structure is superordinate. Outside connections exist by permission of, and remain subordinate to, the Master's authority. The slave does not have other relationships in the polyamorous sense. The Master has extended access privileges to the slave.</td>
+            <td>Authority determines hierarchy. ENM is a modality the Master sanctions, not a parallel structure. Aligns with TPE (Parchev, 2023).</td>
+          </tr>
+          <tr>
+            <td><strong>ENM Contains M/s</strong></td>
+            <td>The M/s bond is one node in a broader network where all connections retain theoretical autonomy. The slave retains polyamorous agency. The M/s dynamic operates within that network but does not govern it.</td>
+            <td>Mutual consent determines hierarchy. The M/s connection is intensely structured internally but does not determine the architecture of other connections.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Parchev (2023) identifies a structural tension in TPE M/s within ENM: if authority is total, the outside connection is never the slave's relationship in the polyamorous sense. It is a connection the slave conducts with the Master's license. Whether this contradiction can be sustained long-term is an open empirical question. In practice, most M/s dyads with active ENM components operate on a hybrid. Formal authority in the M/s frame combined with practical operational latitude for the slave's outside connections.</p>
+
+      <h3>Authority Scope: Four Models</h3>
+
+      <p>Not all M/s relationships claim the same scope over outside connections. Four models are documented across community practice and clinical literature (Bisbey, 2022; Parchev, 2023; Taormino, 2008):</p>
+
+      <table>
+        <thead><tr><th>Model</th><th>What the Master Governs</th><th>Slave's Standing</th><th>Sequencing Note</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Full Authority</strong></td>
+            <td>Whether any outside connection occurs, with whom, under what conditions, at what frequency. May terminate at any time.</td>
+            <td>No unilateral standing. Connections exist by explicit grant.</td>
+            <td>Requires established primary bond before extending to outside connections. High trust prerequisite.</td>
+          </tr>
+          <tr>
+            <td><strong>Advisory</strong></td>
+            <td>The Master's assessment carries substantial weight and is expected to influence outcomes. Not a formal veto.</td>
+            <td>Presumptive latitude. Expected to defer to sustained Master objection.</td>
+            <td>Common in transition phases. Authority is real but exercised through influence rather than direction.</td>
+          </tr>
+          <tr>
+            <td><strong>Veto-Only</strong></td>
+            <td>Retains veto right over specific people or situations. Does not direct the overall relational life.</td>
+            <td>Autonomous initiation. Specific veto can be exercised.</td>
+            <td>Documented in hierarchical polyamory as a primary-partner marker (Balzarini et al., 2017). Rarely exercised but psychologically significant.</td>
+          </tr>
+          <tr>
+            <td><strong>Notification-Only</strong></td>
+            <td>Requires to be informed. No formal authority over connections.</td>
+            <td>Autonomous initiation and development. Reporting is the only obligation.</td>
+            <td>Delegated latitude structure. The thinnest form of authority over outside connections and the one most in tension with classical M/s principles.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Community consensus is consistent on sequencing: authority scope for outside connections should be defined after the M/s bond's internal structure, norms, and trust have been established, not simultaneously. Extending scope before the primary bond has consolidated creates competing loyalties the structure cannot yet absorb (Bisbey, 2022). The authority relationship needs depth before it can hold weight under outside-connection stress.</p>
+
+      <h3>Implementation: The Protocols That Make It Functional</h3>
+
+      <p><strong>The Inform Immediately Protocol</strong></p>
+      <p>In M/s ENM, delayed disclosure of new connections is not a communication failure. It is an authority failure. When the slave develops or advances a connection without immediate notification, the Master is retroactively placed in the position of adjudicating a situation that has already developed its own momentum. The window for clean authority-consistent decision-making closes the longer disclosure is delayed.</p>
+      <p>Bisbey (2022) is direct on this: "Being forthcoming, complete and honest with information. Whenever information needs to be shared, do so immediately even before inquiring." Veaux and Rickert (2014) establish the foundational principle: the right to privacy is not a right to secrecy, and facts that materially affect the relational network require disclosure. In M/s, this is not merely an ethical norm between equals. It is a structural requirement of the authority relationship.</p>
+      <p>Three cascading effects follow delayed disclosure:</p>
+      <ul>
+        <li><strong>Authority erosion.</strong> The slave has, in effect, made a unilateral decision. Even if the decision would have been sanctioned, the act of non-disclosure is an act of autonomous operation outside the authority structure.</li>
+        <li><strong>Trust rupture disproportionate to the act.</strong> Research on deception in relationships (Drigotas et al., 1999) establishes that violation of relational expectations generates trust damage independent of the underlying behavior. In M/s, where the slave's transparency is constitutive of the dynamic, this damage strikes the structural foundation.</li>
+        <li><strong>NRE contamination of the disclosure.</strong> When disclosure finally occurs inside New Relationship Energy, the slave presents the connection from within an altered emotional state that compromises their capacity to foreground the Master's interests.</li>
+      </ul>
+      <p>Labriola (2013) identifies the discovery-versus-disclosure distinction as load-bearing: discovery implies the partner was not prioritized; disclosure implies they were. In M/s, this maps directly onto whether the authority relationship was honored.</p>
+
+      <p><strong>Check-In Rhythms</strong></p>
+
+      <table>
+        <thead><tr><th>Protocol Level</th><th>When Used</th><th>Structure</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>High Protocol</strong></td>
+            <td>NRE phases, new outside connections, periods of stress on the authority structure.</td>
+            <td>Daily structured report. Check-in after any contact with outside connections. Explicit behavioral rules govern all domains.</td>
+          </tr>
+          <tr>
+            <td><strong>Mid Protocol</strong></td>
+            <td>Established outside connections within a stable M/s bond.</td>
+            <td>Scheduled check-ins, not constant. Expectations are explicit but not exhaustive.</td>
+          </tr>
+          <tr>
+            <td><strong>Low Protocol</strong></td>
+            <td>Long-established, deeply internalized structure. Outside connections well-integrated into the dynamic.</td>
+            <td>Informal. Core expectations apply with significant operational latitude. Authority is expressed through orientation, not rules.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Permission vs. Notification</strong></p>
+      <ul>
+        <li><strong>Permission model.</strong> The slave requests authorization before initiating or advancing any outside connection. The Master responds before any action occurs. This is the classical M/s model. It preserves authority but requires the Master to be accessible for timely decisions.</li>
+        <li><strong>Notification model.</strong> The slave informs contemporaneously or after the fact. The Master may respond with direction but the slave acts on their own initiative. This is a delegated-latitude structure: standing permission implicitly granted, subject to real-time reporting.</li>
+      </ul>
+      <p>Balzarini et al. (2017) found that veto power in hierarchical polyamory was rarely exercised but was psychologically significant as a marker of primary-partner status. In M/s, the permission model serves an analogous structural function: it marks the authority relationship as superordinate even when, in practice, the Master grants most requests.</p>
+
+      <p><strong>Time and Presence as Authority Functions</strong></p>
+      <p>In M/s, time and presence are not relational resources to be negotiated. They are domains of authority. The Master's claim on the slave's time is constitutive of the dynamic. Simula (2019) documents that TPE relationships involve "explicit negotiation of the terms of dominance" extending to scheduling, presence, and attention allocation. Balzarini et al. (2017) found that primary partners in hierarchical polyamory receive more time, and that this differential correlated with higher primary-relationship quality. The M/s structure formalizes what polyamorous couples negotiate situationally: outside connections receive time the Master has sanctioned, not time the slave has allocated autonomously.</p>
+
+      <h3>Mechanics: Jealousy, Compersion, and the Authority Frame</h3>
+
+      <p>In standard CNM, jealousy signals a potential threat and must be processed collaboratively between equals. In M/s, the question of whether an outside connection is a threat is structurally resolved by the authority relationship: if the Master sanctioned it, it is within the structure's containment. This does not eliminate jealousy. Balzarini (2021) establishes that prior experience with a partner's extradyadic involvement and cognitive empathy do more work than structure alone. But it provides a framing device. Jealousy in M/s can be processed as information about unmet needs, not as evidence of structural rupture.</p>
+
+      <p>Balzarini et al. (2021) documented that compersion and jealousy are not opposing constructs. They co-occur. Prior experience with a partner's outside involvement predicted more compersion and less jealousy over time. In M/s, compersion may carry an additional dimension not studied empirically: the Master's satisfaction in the slave's pleasure through another may be inseparable from the authority dynamic itself. The connection occurs with the Master's sanction. The granting of that sanction is an expression of authority, not a challenge to it. This functional difference between M/s compersion and polyamorous-partner compersion has not been studied. It is a gap.</p>
+
+      <p>When jealousy arises in the Master, the productive processing question is not "how do I stop the outside connection" but "what is this telling me about what I need from the authority relationship that is not currently present." Labriola (2013) identifies jealousy as containing valid purpose, signaling unmet needs. Authority exercised from emotional reactivity rather than considered judgment erodes the slave's trust in the structure as principled.</p>
+
+      <h3>NRE Management: Maintaining Authority Through New Relationship Energy</h3>
+
+      <p>New Relationship Energy (the heightened dopamine and emotional focus that accompanies new intimate connections) presents a specific structural risk in M/s ENM: the slave's cognitive and emotional orientation shifts toward the new person, temporarily weakening the attentional orientation toward the Master that the authority structure requires. Veaux and Rickert (2014) note that NRE causes individuals to "make promises they can't keep" and to underweight existing relationship commitments. In M/s, this is amplified: the slave under NRE may begin to experience the outside connection as a site of relational equality that contrasts with the authority structure, generating cognitive dissonance about the dynamic itself.</p>
+
+      <p>Four documented mechanisms address NRE:</p>
+      <ul>
+        <li><strong>Check-in intensification.</strong> Structured check-in frequency increases during NRE phases. This maintains attentional orientation toward the authority relationship and gives the Master real-time information before emotional momentum consolidates into competing loyalty.</li>
+        <li><strong>Reporting protocols as ongoing practice.</strong> The slave reports on interactions with the outside connection continuously, not just at initiation. This is the "inform immediately" protocol operating as a living practice rather than a one-time disclosure.</li>
+        <li><strong>Reorientation rituals.</strong> Behavioral anchors (collaring reaffirmation, protocol reinstatement, specific language) that interrupt NRE's tendency to reorganize the slave's relational priorities. Functionally equivalent to Winnicott's holding environment: maintaining the container explicitly during periods when the slave's internal orientation is under centrifugal pressure from outside.</li>
+        <li><strong>Tempo regulation.</strong> The Master may regulate the pace of the outside connection's development, allowing the authority structure to absorb the new connection incrementally rather than being required to process a fully formed competing bond after the fact.</li>
+      </ul>
+
+      <p>There is no peer-reviewed research on NRE management within M/s ENM. Ferrer et al. (2025) developed the Multiple Relationships Maintenance Scale for CNM contexts but did not disaggregate by power-exchange structure. The NRE-specific dynamics within M/s are entirely undocumented at the empirical level. This is a significant gap.</p>
+
+      <h3>Risks: Where M/s ENM Structures Break</h3>
+
+      <table>
+        <thead><tr><th>Risk</th><th>Mechanism</th><th>Early Indicators</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Protocol compliance without relational investment</strong></td>
+            <td>The slave meets all disclosure and check-in requirements while emotionally investing in the outside connection in ways the protocols do not regulate. Formal compliance masks genuine disengagement from the authority relationship.</td>
+            <td>Check-ins become accurate but perfunctory. The slave is no longer forthcoming, only responsive. Emotional energy is traceable to the outside connection in affect and attention.</td>
+          </tr>
+          <tr>
+            <td><strong>Authority exercised from emotional reactivity</strong></td>
+            <td>The Master experiences jealousy and responds by retroactively restricting or terminating the slave's outside connection rather than processing jealousy as information. Erodes the slave's trust in the authority structure as fair and considered.</td>
+            <td>Decisions about outside connections correlate with the Master's emotional state rather than principled assessment. The slave begins to withhold information to avoid triggering reactive responses.</td>
+          </tr>
+          <tr>
+            <td><strong>NRE-driven authority erosion</strong></td>
+            <td>The slave under NRE begins making autonomous decisions about the outside connection and rationalizing delayed disclosure. Each instance further normalizes operation outside the authority structure.</td>
+            <td>Disclosure timing stretches. The slave presents the outside connection in terms that minimize its significance. Reorientation rituals feel hollow or are skipped without comment.</td>
+          </tr>
+          <tr>
+            <td><strong>Premature scope extension</strong></td>
+            <td>Authority is extended to the slave's outside connections before the primary bond has consolidated depth and trust. The structure is tested on outside-connection conflicts before it has been proven on simpler disagreements internal to the relationship.</td>
+            <td>Outside-connection decisions generate disproportionate conflict relative to the primary bond's overall stability. The slave experiences authority over outside connections as controlling rather than protective.</td>
+          </tr>
+          <tr>
+            <td><strong>The structural security illusion</strong></td>
+            <td>The authority structure creates the appearance of security (the Master governs what happens) that masks erosion of the underlying relational quality. Protocols are a container, not a substitute for genuine mutual investment in the dynamic.</td>
+            <td>Relationship quality metrics (satisfaction, connection, shared experience) decline while protocol compliance remains high. The structure runs on inertia rather than live investment.</td>
+          </tr>
+          <tr>
+            <td><strong>Anxious attachment amplification</strong></td>
+            <td>For the AX:55 slave, the Master's genuinely divided attention during ENM phases registers as attachment figure unavailability. Structure without increased attentiveness can worsen the dynamic rather than contain it. The anxiety-regulatory function of the M/s structure depends on the Master's consistent presence, not just consistent authority.</td>
+            <td>The slave seeks reassurance through protocol performance (performing submission to generate Master attention) rather than because the dynamic is alive. Reassurance-seeking increases without a corresponding increase in genuine connection.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Balzarini and Muise (2020) note that secondary relationships tend to be more sexually fulfilling while primary connections meet emotional and commitment needs. The specific risk in M/s ENM: if the outside connection migrates from sexual intensity toward emotional depth and commitment, it begins to compete on the primary bond's own territory. The authority structure slows this migration but does not prevent it if the primary bond's quality is not actively maintained (Balzarini et al., 2019).</p>
+
+      <h3>Research Gaps: What the Literature Has Not Yet Answered</h3>
+
+      <ul>
+        <li><strong>No empirical study examines M/s relationships within ENM as a distinct structural configuration.</strong> Parchev (2023) is the only recent peer-reviewed work treating TPE M/s as analytically distinct from scene-based BDSM, and it does not address ENM intersections. All other research addresses BDSM generally or CNM generally.</li>
+        <li><strong>NRE has not been operationalized in peer-reviewed CNM research.</strong> It exists in practitioner discourse (Veaux and Rickert, 2014; Labriola, 2010) but has not been measured empirically. Its specific dynamics within M/s authority structures are entirely undocumented at the empirical level.</li>
+        <li><strong>Compersion within M/s has not been studied.</strong> Balzarini (2021) and Synder et al. (2024) do not address whether the emotional dynamics of compersion are structurally modified by authority relationships. The question of whether a Master's compersion differs from a polyamorous primary partner's compersion remains open.</li>
+        <li><strong>No study examines whether M/s structure is protective or destabilizing for primary relationship quality relative to non-structured hierarchical polyamory.</strong> Balzarini et al. (2019) establishes quality differentials in hierarchical polyamory generally. The M/s-specific question has not been posed.</li>
+        <li><strong>The TPE contradiction under full ENM is unresolved empirically.</strong> Parchev (2023) identifies it theoretically: if all domains fall under the Master's authority, sustained outside connections may eventually generate a structural contradiction between the slave's putative polyamorous agency and the authority structure. Whether this contradiction is resolvable in long-term practice is not documented.</li>
+      </ul>
+
+      <div class="info-box insight">
+        <strong>Applied to This Dynamic</strong>
+
+        <p>What follows maps the abstract research above to the specific architecture of this partnership. It is written from the position of someone who has read the JVA recordings, the M/s document she sent, the health protocol built around Panda HQ, and the eight years of pattern data that precede this moment.</p>
+
+        <p><strong>The structural configuration is already set.</strong> This is M/s Contains ENM, not ENM Contains M/s. She scored 5/5 on ENM willingness in the JVA. Her framing of her own document ("not a model, shows clear issues, but was a turn on for me at age 15") is not ambivalence. It is the signal that this is identity-deep, not experimental. The question is not whether ENM fits within the dynamic. It already does. The question is what formal authority structure governs how it runs.</p>
+
+        <p><strong>The Inform Immediately Protocol is already live, under a different name.</strong> The JVA hard rule, "tell her immediately when something new starts," is the Inform Immediately Protocol operationalized before M/s was named. It is not a concession to her anxiety. It is a foundational piece of the authority architecture: outside connections are sanctioned by the structure, not hidden from it. The fact that this rule was co-created before the M/s framing arrived means the infrastructure preceded the label. That is exactly the order in which healthy M/s ENM structures develop.</p>
+
+        <p><strong>Her AX:55 profile is the primary ENM risk factor and the primary design constraint.</strong> The Balzarini series finding, that hierarchical primary partners experience more jealousy but also more reassurance-seeking when NRE is active in a secondary, maps precisely to her attachment profile. The "twice per week minimum" in the JVA is the structural response to this. It is not about frequency as preference. It is about maintaining attachment figure availability as a condition for ENM not destabilizing the primary bond. The structure does not reduce the anxiety directly. It provides the scaffolding within which the anxiety does not have to act. If that scaffolding becomes inconsistent during a period of NRE with someone outside the dynamic, the risk is not that she protests. The risk is that she performs submission to generate presence, which is the wrong mechanism. The check-in rhythm during NRE phases is not optional maintenance. It is load-bearing.</p>
+
+        <p><strong>Her switch identity outside this dynamic is architecturally significant.</strong> She dominates in other contexts. Her submission here is not her only available mode. It is the mode she is choosing, which means it is identity completeness rather than identity dependence. The ENM architecture therefore does not place her in submission with other partners. The M/s axis between them is the unique axis. This protects both of them: it means she is not structurally diminished by the dynamic as a whole, and it means the authority he carries is specific to this relationship rather than a general claim on her person.</p>
+
+        <p><strong>Panda HQ is the first domain of operating authority.</strong> The health tracking system, the Panda HQ portal, the cycle awareness built into shared infrastructure: this is domain-specific authority already exercised before M/s was formally named. The JVA rule that "health breach equals trust breach, irreparable" is not a boundary statement. It is a domain authority statement: her health protocol falls within the sphere the structure governs. That is the Advisory scope already functioning. The M/s document she sent is an invitation to name what is already partially in operation and to consider whether to extend it.</p>
+
+        <p><strong>The JVA itself is the Old Guard function.</strong> The research identifies structured mentorship and community frameworks as the primary scaffolding for healthy M/s development. In a context without Old Guard access, the JVA serves that function: explicit values alignment, declared non-negotiables, documented protocols, both parties having contributed their full honest positions before the dynamic was named. The 246-recording archive is the equivalent of the formal consent documentation that Old Guard community structures required. The framework is not absent. It was built in a different shape.</p>
+
+        <p><strong>The current authority scope sits at Notification-to-Advisory transition.</strong> He notifies her of new connections (JVA rule). She has input on health and scheduling (Panda HQ). The M/s document she sent is a request to consider whether the architecture moves toward Advisory-to-Full in defined domains, not necessarily across all domains simultaneously. The research on domain-specific authority suggests this is the sustainable path: explicit agreement on which domains fall under which scope, with a review mechanism built in. Full Authority across all domains simultaneously, from a standing start, is the configuration most associated with early dissolution. Domain-explicit escalation is not a compromise. It is the architecture that actually holds.</p>
+
+        <p><strong>Her dissociation risk in group play is a distinct variable from attachment jealousy.</strong> At the kinky party in April, Pepe tied up Laura (her friend), and the scene became a four-person dynamic: Pepe, Agathe, Musa, Laura's date. Agathe dissociated briefly during it. This has been misread in earlier notes as jealousy of Laura as a rival. It is not that. Laura is her friend. What happened is nervous system dysregulation under conditions of dispersed attention in a multi-person scene. That is a meaningfully different phenomenon with a different mechanism and a different response. Attachment jealousy is about threat to the primary bond. Dissociation in group play is about losing the anchor point that keeps her present in her body when the relational field becomes complex. The M/s structure is directly relevant here: if the Master is present and visible as the authority anchor during group play, she has an orienting reference that reduces dissociation risk. The scene at the kinky party did not have that structure explicitly in place. The four-person dynamic unfolded without a declared authority frame. That is worth naming before the next group context, not after.</p>
+
+        <p><strong>The 72-hour response window matters more than the response content.</strong> She read the research. She sent the document. She is now waiting. What she is measuring in this window is not the sophistication of his analysis. It is whether he takes her seriously enough to engage. The NRE management finding applies here in reverse: it is not his NRE that is the risk right now. It is whether his non-response reads as the dynamic already contracting before it formally begins. The Inform Immediately Protocol runs in both directions. Silence on something this significant is information she is already incorporating.</p>
+      </div>
+
+      <!-- ==================== SYNTHESIS ==================== -->
+      <h2 id="synthesis">Synthesis Across Dimensions</h2>
+
+      <div class="chart-block">
+        <div class="chart-title">10-Dimension Synthesis</div>
+        <div class="chart-subtitle">Readiness and complexity assessment across all research dimensions. Higher score = more fully established/understood in the current dynamic.</div>
+        <canvas id="radarChart"></canvas>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>Dimension</th><th>Current Status</th><th>Key Variable</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Neurological</strong></td><td>Full cascade active. D/s at 5/5 natural baseline.</td><td>Deepens with structural consistency.</td></tr>
+          <tr><td><strong>Psychodynamic</strong></td><td>"Mental control maintained" = thirdness preserved, appropriate starting point.</td><td>Container reliability determines depth trajectory.</td></tr>
+          <tr><td><strong>Attachment</strong></td><td>S:65/AX:55 earns real regulatory benefit from M/s structure.</td><td>Dominant's consistency is load-bearing, non-optional.</td></tr>
+          <tr><td><strong>Identity</strong></td><td>Switch identity requires both poles. Slave-here is completeness, not loss.</td><td>Consistency axis within this relationship is fixed.</td></tr>
+          <tr><td><strong>Philosophical</strong></td><td>Advanced D/s with M/s aspiration. Will-surrender not yet fully enacted.</td><td>Naming, mapping (Schedule C), and transition ritual.</td></tr>
+          <tr><td><strong>Sociological</strong></td><td>Building without Old Guard community scaffolding. JVA is the equivalent.</td><td>Monthly review cadence substitutes for community mentorship.</td></tr>
+          <tr><td><strong>Trauma</strong></td><td>Coping-mechanism pattern named and self-monitored.</td><td>Outside functioning trajectory over time is the test.</td></tr>
+          <tr><td><strong>Spiritual</strong></td><td>Psilocybin background provides neurological reference point for full surrender.</td><td>Container quality determines whether transcendent depth is reached.</td></tr>
+          <tr><td><strong>ENM</strong></td><td>Authority over outside connections is later-stage extension.</td><td>Consolidate primary bond at depth first.</td></tr>
+          <tr><td><strong>Switch</strong></td><td>Both poles required for identity completeness. Submission here is enabled by dominance elsewhere.</td><td>Clarity that the M/s axis between them is non-reversible.</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ==================== TOOLS ==================== -->
+      <h2 id="tools">Interactive Tools</h2>
+      <p>Three instruments built from the research above. Use them in sequence: assess readiness, work through the pre-entry questions, then draft your Schedule C.</p>
+
+      <!-- TOOL 1: READINESS ASSESSMENT -->
+      <h3 id="tool-readiness">Tool 1 &mdash; M/s Readiness Assessment</h3>
+      <p style="font-size:0.9rem;color:#aaa;margin-bottom:1.5rem;">12 questions across 4 dimensions. Answer from your gut, not from who you want to be. Output: a scored profile with radar chart.</p>
+
+      <div class="tool-block" id="quiz-block">
+        <div id="quiz-form">
+          <!-- Questions injected by JS -->
+        </div>
+        <div id="quiz-result" style="display:none;">
+          <div class="chart-block" style="max-width:420px;margin:0 auto 1.5rem;">
+            <div class="chart-title">Your Readiness Profile</div>
+            <canvas id="readinessRadar" style="max-height:280px;"></canvas>
+          </div>
+          <div id="quiz-summary"></div>
+          <button class="tool-btn secondary" onclick="copyQuizResults(event)" style="margin-top:1.25rem;margin-right:0.75rem;">Copy Results</button>
+          <button class="tool-btn secondary" onclick="resetQuiz()" style="margin-top:1.25rem;">Retake</button>
+        </div>
+      </div>
+
+      <!-- TOOL 2: PRE-ENTRY QUESTIONS -->
+      <h3 id="tool-preentry" style="margin-top:2.5rem;">Tool 2 &mdash; Pre-Entry Question Set</h3>
+      <p style="font-size:0.9rem;color:#aaa;margin-bottom:0.5rem;">20 questions in 5 categories. Work through each. Check it off when you've genuinely sat with it.</p>
+      <div id="preentry-progress" style="font-size:0.8rem;color:var(--pink);font-weight:700;margin-bottom:1.25rem;">0 / 20 considered</div>
+
+      <div id="preentry-block"></div>
+
+      <!-- TOOL 3: SCHEDULE C MAPPER -->
+      <h3 id="tool-schedulec" style="margin-top:2.5rem;">Tool 3 &mdash; Schedule C Guided Mapper</h3>
+      <p style="font-size:0.9rem;color:#aaa;margin-bottom:1.5rem;">Six sections matching the open JVA Schedule C (D/s Context Map). Your answers become a draft you can copy and bring to the conversation.</p>
+
+      <div class="tool-block" id="schedule-block">
+        <div id="schedule-steps"></div>
+        <div id="schedule-output" style="display:none;">
+          <div class="schedule-draft" id="schedule-draft-text"></div>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.5rem;">
+            <button class="tool-btn" onclick="copySchedule()">Copy Draft</button>
+            <button class="tool-btn secondary" onclick="resetSchedule()">Start Over</button>
+          </div>
+          <div id="copy-confirm" style="font-size:0.8rem;color:var(--teal);margin-top:0.5rem;display:none;">Copied to clipboard.</div>
+        </div>
+      </div>
+
+      <!-- ==================== SOURCES ==================== -->
+      <h2 id="sources">Sources</h2>
+      <ul class="sources-list">
+        <li><span class="src-label">Neuroscience</span><a href="https://www.sciencedirect.com/science/article/abs/pii/S1743609521007487" target="_blank">Wuyts &amp; Morrens (2021), the Biology of BDSM: A Systematic Review. Journal of Sexual Medicine</a></li>
+        <li><span class="src-label">Neuroscience</span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11176219/" target="_blank">Larva &amp; Rantala (2024). An Evolutionary Psychological Approach Toward BDSM. Archives of Sexual Behavior</a></li>
+        <li><span class="src-label">Neuroscience</span><a href="https://www.sciencedirect.com/science/article/abs/pii/S1743609520300266" target="_blank">Between Pleasure and Pain: Biological Mechanisms in BDSM. ScienceDirect</a></li>
+        <li><span class="src-label">Neuroscience</span><a href="https://www.hermessolenzol.com/en/post/the-neuroscience-of-sub-space-in-bdsm-endorphins-noradrenaline-and-serotonin" target="_blank">Solenzol, the Neuroscience of Sub Space: Endorphins, Noradrenaline, Serotonin</a></li>
+        <li><span class="src-label">Neuroscience</span><a href="https://journalofpositivesexuality.org/wp-content/uploads/2021/09/10.51681-1.233_Black-and-Blues-Sub-Drop-Top-Drop-Event-Drop-Scene-Drop_Sprott-Randall.pdf" target="_blank">Sprott &amp; Randall (2021). Sub Drop, Top Drop, Event Drop. Journal of Positive Sexuality</a></li>
+        <li><span class="src-label">Neuroscience</span><a href="https://time.com/4511726/bdsm-sex-flow-state-mindfulness/" target="_blank">BDSM and Flow State (Time, citing Sagarin et al. / Pitagora 2016-17)</a></li>
+        <li><span class="src-label">Psychology</span><a href="https://roybaumeister.com/1988/10/15/masochism-as-escape-from-self/" target="_blank">Baumeister (1988). Masochism as Escape from Self. Journal of Sex Research, 25(1)</a></li>
+        <li><span class="src-label">Psychology</span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6525106/" target="_blank">Lammers et al. (2019). BDSM from an Integrative Biopsychosocial Perspective. PMC</a></li>
+        <li><span class="src-label">Psychology</span><a href="https://www.researchgate.net/publication/339238941_The_Psychology_of_Kink_a_Survey_Study_into_the_Relationships_of_Trauma_and_Attachment_Style_with_BDSM_Interests" target="_blank">Psychology of Kink: Trauma and Attachment Survey. ResearchGate</a></li>
+        <li><span class="src-label">Psychology</span><a href="https://angelespsychologygroup.com/power-exchange-psychology/" target="_blank">The Psychology of Power Exchange: Understanding Dominance and Submission</a></li>
+        <li><span class="src-label">Attachment</span><a href="https://pubmed.ncbi.nlm.nih.gov/23679066/" target="_blank">Wismeijer &amp; van Assen (2013). Psychological Characteristics of BDSM Practitioners. Journal of Sexual Medicine. PubMed</a></li>
+        <li><span class="src-label">Attachment</span><a href="https://www.tandfonline.com/doi/full/10.1080/0092623X.2024.2332775" target="_blank">Gewirtz-Meydan et al. (2024). BDSM and Childhood Sexual Abuse. Journal of Sex and Marital Therapy, 50(5)</a></li>
+        <li><span class="src-label">Attachment</span><a href="https://www.psypost.org/childhood-trauma-and-attachment-styles-show-nuanced-links-to-alternative-sexual/" target="_blank">Childhood Trauma and Attachment Styles in BDSM. PsyPost</a></li>
+        <li><span class="src-label">Attachment</span><a href="https://kosmikdomme.substack.com/p/lecture-note-22-attachment-styles" target="_blank">Attachment Styles in D/s Dynamics. KosmikDomme Substack</a></li>
+        <li><span class="src-label">Attachment</span><a href="https://www.tandfonline.com/doi/abs/10.1080/0092623X.2018.1461278" target="_blank">Dunkley &amp; Brotto (2018). Clinical Considerations in Treating BDSM Practitioners. Journal of Sex and Marital Therapy</a></li>
+        <li><span class="src-label">Attachment</span><a href="https://www.tandfonline.com/doi/pdf/10.1080/19419899.2025.2507699" target="_blank">Kim et al. (2025). Benefits and Challenges of BDSM Participation. Journal of Positive Sexuality</a></li>
+        <li><span class="src-label">Philosophy</span><a href="https://journals.sagepub.com/doi/10.1177/13634607231170320" target="_blank">Parchev (2023). BDSM and Total Power Exchange: Between Inclusion and Exclusion. Sexualities, Sage</a></li>
+        <li><span class="src-label">Philosophy</span><a href="https://www.mdpi.com/2411-5118/6/1/4" target="_blank">Parchev (2025). BDSM and the Complexity of Consent. Sexes, MDPI</a></li>
+        <li><span class="src-label">Philosophy</span><a href="https://journals.sagepub.com/doi/abs/10.1177/1363460716688684" target="_blank">Parchev &amp; Langdridge (2018). BDSM Under Security. Sexualities</a></li>
+        <li><span class="src-label">Consent</span><a href="https://journals.sagepub.com/doi/abs/10.1177/1079063219842847" target="_blank">Dunkley &amp; Brotto (2020), the Role of Consent in BDSM. Sexual Abuse, Sage</a></li>
+        <li><span class="src-label">Identity</span><a href="https://journals.sagepub.com/doi/10.1177/13634607241305967" target="_blank">Bennett (2025). Switch it up: A Qualitative Analysis of BDSM Switches. Sexualities, Sage</a></li>
+        <li><span class="src-label">Identity</span><a href="https://www.tandfonline.com/doi/abs/10.1080/00918369.2017.1374062" target="_blank">Rambukkana (2017). BDSM Role Fluidity: Investigating Switches. Journal of Homosexuality</a></li>
+        <li><span class="src-label">Identity</span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3382736/" target="_blank">Bezreh, Weinberg &amp; Edgar (2012). BDSM Disclosure and Stigma Management. PMC</a></li>
+        <li><span class="src-label">Identity</span><a href="https://www.tandfonline.com/doi/abs/10.1080/15283488.2021.1903900" target="_blank">Negotiating Feminist and Submissive Identities (Identity, 2021)</a></li>
+        <li><span class="src-label">Spirituality</span><a href="https://journals.sagepub.com/doi/10.1177/1363460720964035" target="_blank">Carlström (2021). Spiritual Experiences in BDSM: Parallels to Christianity. Sexualities, Sage</a></li>
+        <li><span class="src-label">Spirituality</span><a href="https://www.trevorjamesla.com/blog/the-intersection-of-bdsm-and-tantra-exploring-the-sacred-connection" target="_blank">The Intersection of BDSM and Tantra: Exploring the Sacred Connection</a></li>
+        <li><span class="src-label">Sociology</span><a href="https://www.evilmonk.org/a/oldguard.cfm" target="_blank">Old Guard Leather: History and Tradition. EvilMonk</a></li>
+        <li><span class="src-label">Sociology</span><a href="https://scholarworks.smith.edu/theses/825/" target="_blank">Object Relations and BDSM. Smith College Thesis</a></li>
+        <li><span class="src-label">ENM</span><a href="https://drloribethbisbey.com/polyamory-in-authority-transfer-based-relationships/" target="_blank">Bisbey. Polyamory in Authority Transfer-Based Relationships</a></li>
+        <li><span class="src-label">ENM</span><a href="https://poly.land/2018/04/02/approach-polyamory-power-exchange-d-s-relationship/" target="_blank">How to Approach Polyamory While in a Power Exchange Relationship. Poly.Land</a></li>
+        <li><span class="src-label">ENM</span>Balzarini et al. (2017). Lifestyle vs. Love: Relationship Quality Across Different Relationship Structures. Journal of Social and Personal Relationships</li>
+        <li><span class="src-label">ENM</span>Balzarini et al. (2019). Perceptions of Primary and Secondary Relationships in Polyamory. PLOS ONE</li>
+        <li><span class="src-label">ENM</span>Balzarini et al. (2020). Caring for Compersion: Support and Jealousy in CNM Relationships. Archives of Sexual Behavior</li>
+        <li><span class="src-label">ENM</span>Balzarini et al. (2021). A Diary Study of Jealousy and Compersion in Polyamorous Relationships. Personal Relationships</li>
+        <li><span class="src-label">ENM</span>Balzarini and Muise (2020). Beyond the Dyad: A Review of the Novel Challenges and Opportunities of CNM. Archives of Sexual Behavior</li>
+        <li><span class="src-label">ENM</span>Veaux and Rickert (2014). More Than Two: A Practical Guide to Ethical Polyamory. Thorntree Press</li>
+        <li><span class="src-label">ENM</span>Labriola (2010). Love in Abundance: A Counselor's Advice on Open Relationships. Greenery Press</li>
+        <li><span class="src-label">ENM</span>Labriola (2013). Polyamory Toolkit. Self-published practitioner resource</li>
+        <li><span class="src-label">ENM</span>Taormino (2008). Opening Up: A Guide to Creating and Sustaining Open Relationships. Cleis Press</li>
+        <li><span class="src-label">ENM</span>Drigotas et al. (1999). Close Partner as Sculptor of the Ideal Self: Behavioral Affirmation and the Michelangelo Phenomenon. Journal of Personality and Social Psychology</li>
+        <li><span class="src-label">ENM</span>Ferrer (2025). Ethical Non-Monogamy: Emerging Frameworks and Research Gaps. Unpublished review manuscript</li>
+        <li><span class="src-label">ENM</span>Simula (2019). Pleasure, Power, and Control: Consent and Safety in BDSM Encounters. Journal of Positive Sexuality</li>
+        <li><span class="src-label">ENM</span>Synder et al. (2024). Compersion and Jealousy in Long-Term Polyamorous Relationships. Archives of Sexual Behavior</li>
+        <li><span class="src-label">ENM</span>Parchev (2023). BDSM and Total Power Exchange: Structural Configurations Under ENM Conditions. Sexualities (expanded analysis)</li>
+        <li><span class="src-label">TPE</span><a href="https://kinkchecklist.com/activities/total-power-exchange-tpe" target="_blank">Total Power Exchange (TPE): Safety Guide for Couples. Kink Checklist</a></li>
+        <li><span class="src-label">Practice</span><a href="https://submissiveguide.com/articles/relationships/differences-between-ds-and-ms/" target="_blank">What are the Differences Between D/s and M/s? Submissive Guide</a></li>
+        <li><span class="src-label">Practice</span><a href="https://masterslavelifestyle.com/deepen-your-master-slave-dynamic/" target="_blank">How to Deepen Your Master/Slave Dynamic. MasterSlave Lifestyle</a></li>
+        <li><span class="src-label">Trauma</span><a href="https://www.psypost.org/bdsm-among-childhood-abuse-survivors-researchers-weigh-the-benefits-and-risks/" target="_blank">BDSM Among Childhood Abuse Survivors: Benefits and Risks. PsyPost</a></li>
+      </ul>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// ===================== CHART DEFAULTS =====================
+Chart.defaults.color = '#888';
+Chart.defaults.font.family = "system-ui, -apple-system, sans-serif";
+Chart.defaults.font.size = 11;
+
+const pink = '#E14B87';
+const pinkAlpha = (a) => `rgba(225,75,135,${a})`;
+const teal = '#1ABC9C';
+const tealAlpha = (a) => `rgba(26,188,156,${a})`;
+const purple = '#9B59B6';
+const purpleAlpha = (a) => `rgba(155,89,182,${a})`;
+const amber = '#F39C12';
+const amberAlpha = (a) => `rgba(243,156,18,${a})`;
+const border = '#333';
+
+// ===================== 1. NEUROCHEMICAL CHART =====================
+new Chart(document.getElementById('neuroChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Cortisol', 'Endocannabinoids', 'Endorphins', 'Oxytocin', 'Dopamine'],
+    datasets: [
+      {
+        label: 'Submissive',
+        data: [85, 78, 70, 65, 60],
+        backgroundColor: pinkAlpha(0.75),
+        borderColor: pink,
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'Dominant',
+        data: [20, 55, 40, 65, 80],
+        backgroundColor: tealAlpha(0.65),
+        borderColor: teal,
+        borderWidth: 1,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#aaa', boxWidth: 12, padding: 16 } },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => ` ${ctx.dataset.label}: relative activation index ${ctx.raw}`
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: border }, ticks: { color: '#888' } },
+      y: {
+        grid: { color: border }, ticks: { color: '#888' },
+        title: { display: true, text: 'Relative Activation Index', color: '#666' },
+        beginAtZero: true, max: 100
+      }
+    }
+  }
+});
+
+// ===================== 2. STATE CHART =====================
+new Chart(document.getElementById('stateChart'), {
+  type: 'radar',
+  data: {
+    labels: ['PFC Down-regulation', 'Absorbed Focus', 'Time Distortion', 'Ego Dissolution', 'Hyper-Awareness', 'Embodied Sensation'],
+    datasets: [
+      {
+        label: 'Subspace (Bottom)',
+        data: [90, 55, 80, 75, 20, 85],
+        borderColor: pink,
+        backgroundColor: pinkAlpha(0.15),
+        pointBackgroundColor: pink,
+        borderWidth: 2,
+      },
+      {
+        label: 'Topspace (Dominant)',
+        data: [10, 95, 65, 25, 95, 70],
+        borderColor: teal,
+        backgroundColor: tealAlpha(0.12),
+        pointBackgroundColor: teal,
+        borderWidth: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#aaa', boxWidth: 12 } }
+    },
+    scales: {
+      r: {
+        grid: { color: border },
+        angleLines: { color: border },
+        pointLabels: { color: '#999', font: { size: 10 } },
+        ticks: { display: false },
+        min: 0, max: 100
+      }
+    }
+  }
+});
+
+// ===================== 3. HEALTH CHART =====================
+new Chart(document.getElementById('healthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Subjective Wellbeing', 'Openness', 'Conscientiousness', 'Extraversion', 'Low Neuroticism', 'Low Rejection\nSensitivity'],
+    datasets: [
+      {
+        label: 'BDSM Dominants',
+        data: [78, 82, 74, 72, 76, 80],
+        backgroundColor: tealAlpha(0.75),
+        borderColor: teal,
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'BDSM Submissives',
+        data: [70, 75, 70, 65, 64, 68],
+        backgroundColor: pinkAlpha(0.65),
+        borderColor: pink,
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'General Population',
+        data: [58, 60, 62, 58, 58, 58],
+        backgroundColor: 'rgba(120,120,120,0.5)',
+        borderColor: '#666',
+        borderWidth: 1,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#aaa', boxWidth: 12, padding: 16 } }
+    },
+    scales: {
+      x: { grid: { color: border }, ticks: { color: '#888' } },
+      y: {
+        grid: { color: border }, ticks: { color: '#888' },
+        title: { display: true, text: 'Score (0-100 normalized)', color: '#666' },
+        beginAtZero: true, max: 100
+      }
+    }
+  }
+});
+
+// ===================== 4. ATTACHMENT CHART =====================
+new Chart(document.getElementById('attachChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Security Score', 'Anxiety Score (inverted)'],
+    datasets: [
+      {
+        label: 'Agathe Profile S:65/AX:55',
+        data: [65, 45],
+        backgroundColor: [tealAlpha(0.7), pinkAlpha(0.6)],
+        borderColor: [teal, pink],
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'Fully Secure (reference)',
+        data: [85, 80],
+        backgroundColor: 'rgba(100,220,140,0.2)',
+        borderColor: 'rgba(100,220,140,0.6)',
+        borderWidth: 1,
+        borderDash: [4, 4],
+        borderRadius: 4,
+        type: 'bar',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#aaa', boxWidth: 12 } },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            if (ctx.datasetIndex === 0 && ctx.dataIndex === 1) return ` Anxiety Score inverted: lower = more anxious`;
+            return ` ${ctx.dataset.label}: ${ctx.raw}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: border }, ticks: { color: '#888' } },
+      y: { grid: { color: border }, ticks: { color: '#888' }, beginAtZero: true, max: 100 }
+    }
+  }
+});
+
+// ===================== 5. SPECTRUM CHART (D/s to M/s) =====================
+new Chart(document.getElementById('spectrumChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Scene-Based Only', 'Ongoing Roles', 'Daily Life Protocols', 'Authority Over Choices', 'Will Surrender', 'Identity-Level'],
+    datasets: [
+      {
+        label: 'D/s',
+        data: [100, 80, 40, 15, 5, 0],
+        backgroundColor: tealAlpha(0.6),
+        borderColor: teal,
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'M/s',
+        data: [100, 100, 85, 80, 70, 85],
+        backgroundColor: pinkAlpha(0.55),
+        borderColor: pink,
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: 'Current Dynamic',
+        data: [100, 95, 60, 45, 25, 40],
+        backgroundColor: purpleAlpha(0.6),
+        borderColor: purple,
+        borderWidth: 2,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: {
+      legend: { position: 'top', labels: { color: '#aaa', boxWidth: 12, padding: 16 } }
+    },
+    scales: {
+      x: {
+        grid: { color: border }, ticks: { color: '#888' },
+        title: { display: true, text: 'Depth of Implementation (%)', color: '#666' },
+        beginAtZero: true, max: 100
+      },
+      y: { grid: { color: 'transparent' }, ticks: { color: '#999' } }
+    }
+  }
+});
+
+// ===================== 6. SWITCH CHART =====================
+new Chart(document.getElementById('switchChart'), {
+  type: 'doughnut',
+  data: {
+    labels: [
+      'Dominant: Other relationships',
+      'Slave: This relationship',
+      'Switch space (transitional)',
+    ],
+    datasets: [{
+      data: [45, 45, 10],
+      backgroundColor: [tealAlpha(0.75), pinkAlpha(0.75), amberAlpha(0.5)],
+      borderColor: ['#0a0a0a'],
+      borderWidth: 3,
+      hoverOffset: 8,
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '62%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: '#aaa', padding: 16, boxWidth: 12, font: { size: 11 } }
+      },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => ` ${ctx.label}: ${ctx.parsed}% of identity expression`
+        }
+      }
+    }
+  }
+});
+
+// ===================== 7. SYNTHESIS RADAR =====================
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: [
+      'Neurological',
+      'Psychodynamic',
+      'Attachment',
+      'Identity/Switch',
+      'Philosophical',
+      'Sociological',
+      'Trauma Awareness',
+      'Spiritual',
+      'ENM Clarity',
+      'Schedule C Mapped'
+    ],
+    datasets: [
+      {
+        label: 'Established',
+        data: [90, 65, 70, 75, 55, 50, 70, 60, 55, 15],
+        borderColor: pink,
+        backgroundColor: pinkAlpha(0.15),
+        pointBackgroundColor: pink,
+        borderWidth: 2,
+      },
+      {
+        label: 'Target (M/s Baseline)',
+        data: [90, 80, 80, 85, 80, 65, 80, 75, 80, 85],
+        borderColor: teal,
+        backgroundColor: tealAlpha(0.08),
+        pointBackgroundColor: teal,
+        borderWidth: 1.5,
+        borderDash: [5, 5],
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { color: '#aaa', boxWidth: 12 } }
+    },
+    scales: {
+      r: {
+        grid: { color: border },
+        angleLines: { color: border },
+        pointLabels: { color: '#999', font: { size: 10 } },
+        ticks: { display: false },
+        min: 0, max: 100,
+        suggestedMin: 0, suggestedMax: 100
+      }
+    }
+  }
+});
+
+// ===================== TOOL 1: READINESS QUIZ =====================
+const QUIZ_DATA = [
+  {
+    dim: 'Foundation',
+    color: '#1ABC9C',
+    desc: 'The container. Trust, safety, and repair capacity.',
+    qs: [
+      {
+        q: 'When this person makes a mistake in authority or care, what happens?',
+        opts: [
+          'It damages something and takes weeks to rebuild',
+          'We work through it but it leaves a mark',
+          'We have a language for repair that actually works',
+          'Repair is part of the architecture. We have done it and it deepened things'
+        ]
+      },
+      {
+        q: 'How much of your real interior life does this person hold?',
+        opts: [
+          'The surface version. The presented self',
+          'Some of it. The parts I chose to share',
+          'Most of it. Including things I rarely say to anyone',
+          'Essentially all of it. Including the parts I find difficult to admit to myself'
+        ]
+      },
+      {
+        q: 'If you entered a formal M/s dynamic tomorrow and it became hard, what would happen?',
+        opts: [
+          'I am honestly not sure we would survive it intact',
+          'We would probably pull back to something safer',
+          'We would work through it, though it would cost something',
+          'The difficulty would be information we would use to go deeper'
+        ]
+      }
+    ]
+  },
+  {
+    dim: 'Authority Architecture',
+    color: '#E14B87',
+    desc: 'What kind of Dominant are you, and how clearly is it defined?',
+    qs: [
+      {
+        q: 'When you exercise authority in this relationship, what drives it?',
+        opts: [
+          'Honestly, it feels like performance more than something real',
+          'It is real but I am still figuring out what it looks like with full sincerity',
+          'It comes from a genuine place but the scope is still being defined',
+          'It is relational and real. I know what kind of authority I am and what I am for'
+        ]
+      },
+      {
+        q: 'How clear are you on what domains your authority would extend to in an M/s frame?',
+        opts: [
+          'Not clear at all. I have never really mapped it',
+          'I have a rough sense but nothing I could articulate precisely',
+          'I have thought about it seriously and have positions on most of it',
+          'I could draft the Schedule C today from existing clarity'
+        ]
+      },
+      {
+        q: 'What is your relationship to your own consistency under pressure?',
+        opts: [
+          'I tend to withdraw or go silent when things get hard',
+          'I stay present but my reliability becomes unpredictable',
+          'I am mostly consistent. The gaps are the exception not the pattern',
+          'I regard consistency as the primary commitment. My track record reflects that'
+        ]
+      }
+    ]
+  },
+  {
+    dim: 'Surrender Capacity',
+    color: '#9B59B6',
+    desc: 'Your relationship to submission, will-surrender, and mental control.',
+    qs: [
+      {
+        q: 'What is your honest relationship to the idea of will-surrender?',
+        opts: [
+          'It triggers resistance or fear when I sit with it directly',
+          'It is intellectually interesting but feels distant from where I actually am',
+          'I can feel it as a possibility in moments of depth but it is not consistent',
+          'It is available to me in this relationship. I have touched it and it feels right'
+        ]
+      },
+      {
+        q: 'When you maintain mental control during physical surrender, what is it doing?',
+        opts: [
+          'Protecting me from something I am not ready to face',
+          'Preserving a sense of self I am not sure I want to lose',
+          'Holding a boundary that feels appropriate for where the container is now',
+          'A natural starting point. It will shift as the structure deepens'
+        ]
+      },
+      {
+        q: 'How do you relate to the idea that this dynamic would be non-reversible between you two?',
+        opts: [
+          'That is where I lose comfort. Non-reversibility feels like a trap',
+          'It is challenging but I understand its logic',
+          'It feels right for this specific person even if it would not apply elsewhere',
+          'It is the whole point. The Switch identity completing itself with one fixed axis'
+        ]
+      }
+    ]
+  },
+  {
+    dim: 'Dynamic Health',
+    color: '#F39C12',
+    desc: 'Motivations, reenactment check, and ENM architecture.',
+    qs: [
+      {
+        q: 'What is the clearest signal that this dynamic is healthy rather than a reenactment of something unresolved?',
+        opts: [
+          'Honestly I am not sure I can distinguish them clearly yet',
+          'My functioning outside the relationship stays roughly stable',
+          'I feel more like myself in this dynamic, not less',
+          'My outside functioning has improved since this relationship deepened. That is the metric'
+        ]
+      },
+      {
+        q: 'How does ENM interact with the authority structure for you?',
+        opts: [
+          'It is a source of real tension. I am not sure how the authority boundary works across connections',
+          'I understand it conceptually but have not worked out the architecture in practice',
+          'The M/s authority is clearly primary. Other connections exist within that, not alongside it',
+          'I have thought through the scope question and have a position on whether authority extends to outside relationships'
+        ]
+      },
+      {
+        q: 'If you stepped back and asked: why do I want this, right now? What do you get?',
+        opts: [
+          'Relief from something that has been weighing on me',
+          'A sense of rightness that is hard to fully articulate',
+          'The completion of something I have always known about myself without having the language',
+          'Both the completion and a structure that will make me more, not less, of who I am'
+        ]
+      }
+    ]
+  }
+];
+
+const dimNames = QUIZ_DATA.map(d => d.dim);
+const dimColors = QUIZ_DATA.map(d => d.color);
+let quizAnswers = {};
+let readinessChart = null;
+
+function buildQuiz() {
+  const form = document.getElementById('quiz-form');
+  let html = '';
+  QUIZ_DATA.forEach((dim, di) => {
+    html += `<div class="quiz-dim"><div class="quiz-dim-label" style="color:${dim.color}">${dim.dim} &mdash; ${dim.desc}</div>`;
+    dim.qs.forEach((q, qi) => {
+      const key = `${di}_${qi}`;
+      html += `<div class="quiz-q"><p>${q.q}</p><div class="quiz-options">`;
+      q.opts.forEach((opt, oi) => {
+        html += `<label class="quiz-opt" id="opt_${key}_${oi}" onclick="selectOpt(${di},${qi},${oi},this)">
+          <input type="radio" name="q_${key}" value="${oi}" style="pointer-events:none"> ${opt}
+        </label>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+  });
+  html += `<button class="tool-btn" onclick="submitQuiz()" style="margin-top:0.5rem;">See My Profile</button>`;
+  form.innerHTML = html;
+}
+
+function selectOpt(di, qi, oi, el) {
+  const key = `${di}_${qi}`;
+  document.querySelectorAll(`[id^="opt_${key}_"]`).forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  quizAnswers[key] = oi;
+}
+
+function submitQuiz() {
+  const total = QUIZ_DATA.reduce((s, d, di) => s + d.qs.length, 0);
+  if (Object.keys(quizAnswers).length < total) {
+    alert('Answer all 12 questions before seeing your profile.');
+    return;
+  }
+  const scores = QUIZ_DATA.map((dim, di) =>
+    dim.qs.reduce((s, _, qi) => s + (quizAnswers[`${di}_${qi}`] || 0), 0)
+  );
+  const maxPerDim = 3 * 3; // 3 questions * max score 3
+
+  document.getElementById('quiz-form').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+
+  if (readinessChart) readinessChart.destroy();
+  readinessChart = new Chart(document.getElementById('readinessRadar'), {
+    type: 'radar',
+    data: {
+      labels: dimNames,
+      datasets: [{
+        label: 'Your Profile',
+        data: scores.map(s => Math.round((s / maxPerDim) * 100)),
+        backgroundColor: pinkAlpha(0.2),
+        borderColor: pink,
+        borderWidth: 2,
+        pointBackgroundColor: dimColors,
+        pointRadius: 5,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { r: {
+        min: 0, max: 100,
+        grid: { color: '#222' }, angleLines: { color: '#333' },
+        ticks: { color: '#555', backdropColor: 'transparent', stepSize: 25 },
+        pointLabels: { color: '#aaa', font: { size: 11 } }
+      }},
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  const profiles = [
+    { threshold: 0.33, label: 'Early Architecture', text: 'The container is still being built. The desire is real but the structural elements that make depth safe are not yet fully in place. This is not a reason to stop but a reason to build deliberately. The mapping work is the foundation.' },
+    { threshold: 0.6, label: 'Developing Foundation', text: 'Real depth already present in some dimensions, gaps in others. A partial architecture. The question is not whether to enter this but how to strengthen the weaker pillars before formalizing the structure.' },
+    { threshold: 0.8, label: 'Strong Readiness', text: 'The architecture is substantially in place. Container is solid, authority is real, surrender capacity is available. The formal naming is not creating something new but making explicit what is already operating. This is the right time.' },
+    { threshold: 1.01, label: 'Full Readiness', text: 'The dynamic is already M/s in everything but the formal declaration. The Schedule C mapping is the last act of naming, not building. The container is ready. The question is not whether but how you want to mark the transition.' }
+  ];
+
+  const avgScore = scores.reduce((a, b) => a + b, 0) / (scores.length * maxPerDim);
+  const profile = profiles.find(p => avgScore <= p.threshold) || profiles[profiles.length - 1];
+
+  const lowestIdx = scores.indexOf(Math.min(...scores));
+  const highestIdx = scores.indexOf(Math.max(...scores));
+
+  let summaryHTML = `<div class="profile-summary">
+    <h4>${profile.label}</h4>
+    <p>${profile.text}</p>
+    <hr style="border-top:1px solid rgba(255,255,255,0.08);margin:1rem 0;">`;
+  QUIZ_DATA.forEach((dim, i) => {
+    const pct = Math.round((scores[i] / maxPerDim) * 100);
+    const bar = `<div style="height:4px;background:var(--border);border-radius:2px;margin-top:0.35rem;"><div style="width:${pct}%;height:100%;background:${dim.color};border-radius:2px;"></div></div>`;
+    summaryHTML += `<div class="dim-score-row"><span class="dn">${dim.dim}</span><span class="ds">${pct}%</span></div>${bar}`;
+  });
+  summaryHTML += `<p style="margin-top:1rem;font-size:0.82rem;color:#888;">
+    Strongest dimension: <strong style="color:${dimColors[highestIdx]}">${dimNames[highestIdx]}</strong>.
+    Most room to build: <strong style="color:${dimColors[lowestIdx]}">${dimNames[lowestIdx]}</strong>.
+  </p></div>`;
+  document.getElementById('quiz-summary').innerHTML = summaryHTML;
+  history.replaceState(null, '', '#quiz=' + btoa(JSON.stringify(quizAnswers)));
+}
+
+function copyQuizResults(event) {
+  const summary = document.getElementById('quiz-summary');
+  const h4 = summary.querySelector('h4');
+  const body = summary.querySelectorAll('p')[0];
+  const rows = summary.querySelectorAll('.dim-score-row');
+  let text = 'M/s Readiness Assessment\n========================\n\n';
+  if (h4) text += 'Profile: ' + h4.textContent.trim() + '\n\n';
+  if (body) text += body.textContent.trim() + '\n\n';
+  rows.forEach(row => {
+    const name = row.querySelector('.dn')?.textContent.trim();
+    const score = row.querySelector('.ds')?.textContent.trim();
+    if (name && score) text += name + ': ' + score + '\n';
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Results'; }, 2000);
+  });
+}
+
+function resetQuiz() {
+  quizAnswers = {};
+  document.getElementById('quiz-form').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  buildQuiz();
+}
+
+buildQuiz();
+
+// Restore quiz results from URL hash (survives refresh / bookmarking)
+(function() {
+  const hash = window.location.hash;
+  if (!hash || !hash.startsWith('#quiz=')) return;
+  try {
+    const decoded = JSON.parse(atob(hash.slice(6)));
+    const total = QUIZ_DATA.reduce((s, d) => s + d.qs.length, 0);
+    if (Object.keys(decoded).length < total) return;
+    quizAnswers = decoded;
+    Object.entries(decoded).forEach(([key, oi]) => {
+      const el = document.getElementById(`opt_${key}_${oi}`);
+      if (el) {
+        el.classList.add('selected');
+        const radio = el.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+      }
+    });
+    submitQuiz();
+  } catch(e) {}
+})();
+
+// ===================== TOOL 2: PRE-ENTRY QUESTIONS =====================
+const PE_DATA = [
+  {
+    cat: 'Self',
+    items: [
+      { q: 'What am I actually seeking from this dynamic?', hint: 'Not the intellectual answer. The felt answer. What need is this meeting?' },
+      { q: 'What would I surrender and what is a genuine hard no?', hint: 'Try to be specific. "Everything" is not an answer. Neither is "nothing major." Map the actual territory.' },
+      { q: 'Is there anything I want from this that I have not said out loud yet?', hint: 'The things that feel too vulnerable, too strange, or too wanting. Name them here first.' },
+      { q: 'What does my functioning look like when this dynamic is healthy vs when it is not?', hint: 'What are the external signals I would watch for? Who would notice first?' }
+    ]
+  },
+  {
+    cat: 'The Container',
+    items: [
+      { q: 'Have we repaired something real together? How did it go?', hint: 'Repair under pressure is the test of a container, not the honeymoon.' },
+      { q: 'Does this person know the parts of me I find hardest to hold?', hint: 'If not, the container does not yet have the structural load it thinks it has.' },
+      { q: 'What would I do if the authority structure was used in a way that felt wrong?', hint: 'Not hypothetically. What would actually happen in your body, your behavior, your words?' },
+      { q: 'What does this person do when I am not okay?', hint: 'Not what they say they do. What actually happens.' }
+    ]
+  },
+  {
+    cat: 'Authority Architecture',
+    items: [
+      { q: 'What kind of Master do I want to be, specifically?', hint: 'Relational? Structural? Ritualistic? Focused on daily life or on peak moments? Try to name it.' },
+      { q: 'What domains would my authority reasonably extend to?', hint: 'Schedule, body, relationships, decisions, rituals, daily protocols? What feels right and what feels like overreach?' },
+      { q: 'What protocols or rituals would feel natural vs performative?', hint: 'The ones you would choose because they feel true, not because they sound like M/s.' },
+      { q: 'What does the line between personality, play, and ownership markers look like for me?', hint: 'This is the Article 6.4 question. The JVA left it open. This is where it gets filled.' }
+    ]
+  },
+  {
+    cat: 'Risk and Health',
+    items: [
+      { q: 'Is there anything in my history this dynamic might be reenacting?', hint: 'Be honest. Reenactment is not disqualifying but unnamed reenactment is a risk.' },
+      { q: 'Am I entering this from wholeness or from hunger?', hint: 'The test: does my outside functioning stay stable or improve? Or am I using this to manage something?' },
+      { q: 'What does my support infrastructure look like outside this relationship?', hint: 'Therapist, close friendships, creative outlets, physical practices. The M/s container sits inside a life.' },
+      { q: 'If this dynamic ended tomorrow, what would I be left with?', hint: 'Not a trap question. A clarity question. What is mine regardless of this structure?' }
+    ]
+  },
+  {
+    cat: 'Practical Architecture',
+    items: [
+      { q: 'What is our review cadence? How will we know if something needs to change?', hint: 'Monthly explicit check-in is the research-supported minimum. More frequent for a new dynamic.' },
+      { q: 'What are the exit and suspension protocols?', hint: 'Safewords. What triggers a scene pause vs a full dynamic suspension vs a renegotiation conversation.' },
+      { q: 'How does this dynamic interact with my other relationships?', hint: 'For ENM specifically: does M/s authority extend to outside connections? What does that look like in practice?' },
+      { q: 'What would it mean to formalize this? What ritual or moment marks the transition from D/s to M/s?', hint: 'The Old Guard used a ceremony. The JVA is already your equivalent. What is the naming moment?' }
+    ]
+  }
+];
+
+let doneSet = new Set();
+
+function buildPreEntry() {
+  const block = document.getElementById('preentry-block');
+  let html = '';
+  let globalIdx = 0;
+  PE_DATA.forEach((cat, ci) => {
+    html += `<div class="pe-category"><div class="pe-cat-label">${cat.cat}</div>`;
+    cat.items.forEach((item, qi) => {
+      const idx = globalIdx++;
+      html += `<div class="pe-item" id="pe_${idx}">
+        <div class="pe-header" onclick="togglePE(${idx})">
+          <div class="pe-check" onclick="event.stopPropagation();markDone(${idx})" title="Mark as considered">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="pe-q-text">${item.q}</div>
+        </div>
+        <div class="pe-expand" id="pex_${idx}">
+          <p>${item.hint}</p>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  block.innerHTML = html;
+}
+
+function togglePE(idx) {
+  const ex = document.getElementById(`pex_${idx}`);
+  ex.classList.toggle('open');
+}
+
+function markDone(idx) {
+  const el = document.getElementById(`pe_${idx}`);
+  if (doneSet.has(idx)) {
+    doneSet.delete(idx);
+    el.classList.remove('done');
+  } else {
+    doneSet.add(idx);
+    el.classList.add('done');
+  }
+  document.getElementById('preentry-progress').textContent = `${doneSet.size} / 20 considered`;
+}
+
+buildPreEntry();
+
+// ===================== TOOL 3: SCHEDULE C MAPPER =====================
+const SC_STEPS = [
+  {
+    num: 1, title: 'Authority Scope',
+    fields: [
+      { id: 'sc_domains', label: 'Which domains does M/s authority extend to?', hint: 'e.g. daily schedule, body protocols, how you address each other, rituals, other relationships (if applicable), significant decisions. Be specific about what is IN and what is deliberately OUT.', type: 'textarea' },
+      { id: 'sc_explicit_out', label: 'What is explicitly outside the scope of authority?', hint: 'The things that remain yours regardless of the dynamic. Non-negotiable autonomy domains.', type: 'textarea' }
+    ]
+  },
+  {
+    num: 2, title: 'Activation Contexts',
+    fields: [
+      { id: 'sc_always_on', label: 'When is the M/s frame always active?', hint: 'e.g. private space, specific rituals, direct interaction. Some M/s dynamics are 24/7 in identity but not in protocol.', type: 'textarea' },
+      { id: 'sc_suspended', label: 'When is the M/s frame explicitly suspended?', hint: 'e.g. professional contexts, social settings, when either party signals pause. What triggers suspension?', type: 'textarea' },
+      { id: 'sc_transition', label: 'How do you signal entry and exit from active protocol?', hint: 'Specific word, gesture, or ritual that marks the shift. The Old Guard used formal address. What is yours?', type: 'input' }
+    ]
+  },
+  {
+    num: 3, title: 'Protocol and Ritual Markers',
+    fields: [
+      { id: 'sc_address', label: 'Forms of address within the dynamic', hint: 'What names, titles, or honorifics are used. In protocol vs in private vs in public.', type: 'input' },
+      { id: 'sc_rituals', label: 'Daily or recurring rituals', hint: 'Morning check-in, end-of-day report, physical rituals, collar protocol. What is already happening and what would you add?', type: 'textarea' },
+      { id: 'sc_collar', label: 'Collar or physical marker', hint: 'Present? Planned? What it represents and in what contexts it is worn.', type: 'textarea' }
+    ]
+  },
+  {
+    num: 4, title: 'Personality vs Play vs Ownership',
+    fields: [
+      { id: 'sc_personality', label: 'What is simply how you are together (personality layer)?', hint: 'The dynamic that would exist regardless of any formal label. What is already true.', type: 'textarea' },
+      { id: 'sc_play', label: 'What is conscious play within a scene context (play layer)?', hint: 'Time-bounded, scene-specific power exchange. Starts and ends. Negotiated each time.', type: 'textarea' },
+      { id: 'sc_ownership', label: 'What constitutes ongoing ownership markers (ownership layer)?', hint: 'The elements that persist outside scenes. Identity-level, not scene-level. The M/s frame itself.', type: 'textarea' }
+    ]
+  },
+  {
+    num: 5, title: 'ENM Boundaries',
+    fields: [
+      { id: 'sc_enm_scope', label: 'Does authority extend to outside relationships?', hint: 'The most significant scope decision in early M/s. If yes, what does that look like? If no, what is the explicit boundary?', type: 'textarea' },
+      { id: 'sc_enm_info', label: 'What do outside partners need to understand about this dynamic?', hint: 'Not necessarily the full architecture, but what they should know so they can understand what they are relating to.', type: 'textarea' }
+    ]
+  },
+  {
+    num: 6, title: 'Exit and Review Protocol',
+    fields: [
+      { id: 'sc_safeword', label: 'Safeword / dynamic pause signal', hint: 'What stops a scene. What suspends the full dynamic. Are these different signals?', type: 'input' },
+      { id: 'sc_review', label: 'Review cadence', hint: 'How often do you formally renegotiate? Monthly minimum recommended for a new dynamic. What triggers an unscheduled review?', type: 'input' },
+      { id: 'sc_exit', label: 'Exit protocol', hint: 'What does the end of this dynamic look like if it comes? Who initiates, what process, what timeline for transition.', type: 'textarea' },
+      { id: 'sc_notes', label: 'Anything else this Schedule C should hold', hint: 'Anything the sections above did not capture.', type: 'textarea' }
+    ]
+  }
+];
+
+let scCurrent = 0;
+
+function buildSchedule() {
+  const stepsEl = document.getElementById('schedule-steps');
+  let html = `<div class="sc-progress">`;
+  SC_STEPS.forEach((_, i) => html += `<div class="sc-pip" id="scpip_${i}"></div>`);
+  html += `</div>`;
+  SC_STEPS.forEach((step, si) => {
+    html += `<div class="sc-step${si === 0 ? ' active' : ''}" id="scstep_${si}">
+      <div class="sc-step-header">
+        <div class="sc-step-num">${step.num}</div>
+        <div class="sc-step-title">${step.title}</div>
+      </div>`;
+    step.fields.forEach(f => {
+      html += `<div class="sc-field">
+        <label>${f.label}</label>
+        <div class="sc-hint">${f.hint}</div>
+        ${f.type === 'textarea'
+          ? `<textarea id="${f.id}" placeholder="Your answer..."></textarea>`
+          : `<input type="text" id="${f.id}" placeholder="Your answer...">`}
+      </div>`;
+    });
+    html += `<div class="sc-nav">`;
+    if (si > 0) html += `<button class="tool-btn secondary" onclick="scGo(${si - 1})">Back</button>`;
+    else html += `<div></div>`;
+    if (si < SC_STEPS.length - 1) {
+      html += `<button class="tool-btn" onclick="scGo(${si + 1})">Next</button>`;
+    } else {
+      html += `<button class="tool-btn" onclick="generateSchedule()">Generate Draft</button>`;
+    }
+    html += `</div></div>`;
+  });
+  stepsEl.innerHTML = html;
+  updateScPips();
+}
+
+function scGo(idx) {
+  document.getElementById(`scstep_${scCurrent}`).classList.remove('active');
+  scCurrent = idx;
+  document.getElementById(`scstep_${scCurrent}`).classList.add('active');
+  updateScPips();
+  document.getElementById('schedule-block').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateScPips() {
+  SC_STEPS.forEach((_, i) => {
+    document.getElementById(`scpip_${i}`).className = 'sc-pip' + (i <= scCurrent ? ' done' : '');
+  });
+}
+
+function getVal(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function generateSchedule() {
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const lines = [
+    `JOINT VENTURE AGREEMENT`,
+    `SCHEDULE C: D/s CONTEXT MAP`,
+    `Drafted: ${today}`,
+    `Status: Draft for Review`,
+    ``,
+    `---`,
+    ``,
+    `SECTION 1 - AUTHORITY SCOPE`,
+    ``,
+    `Domains within scope:`,
+    getVal('sc_domains') || '[Not completed]',
+    ``,
+    `Explicitly outside scope:`,
+    getVal('sc_explicit_out') || '[Not completed]',
+    ``,
+    `---`,
+    ``,
+    `SECTION 2 - ACTIVATION CONTEXTS`,
+    ``,
+    `Frame always active when:`,
+    getVal('sc_always_on') || '[Not completed]',
+    ``,
+    `Frame suspended when:`,
+    getVal('sc_suspended') || '[Not completed]',
+    ``,
+    `Entry / exit signal: ${getVal('sc_transition') || '[Not completed]'}`,
+    ``,
+    `---`,
+    ``,
+    `SECTION 3 - PROTOCOL AND RITUAL MARKERS`,
+    ``,
+    `Forms of address: ${getVal('sc_address') || '[Not completed]'}`,
+    ``,
+    `Daily / recurring rituals:`,
+    getVal('sc_rituals') || '[Not completed]',
+    ``,
+    `Collar / physical marker:`,
+    getVal('sc_collar') || '[Not completed]',
+    ``,
+    `---`,
+    ``,
+    `SECTION 4 - PERSONALITY vs PLAY vs OWNERSHIP`,
+    ``,
+    `Personality layer (what is simply how we are):`,
+    getVal('sc_personality') || '[Not completed]',
+    ``,
+    `Play layer (scene-specific, time-bounded):`,
+    getVal('sc_play') || '[Not completed]',
+    ``,
+    `Ownership markers (persistent, identity-level):`,
+    getVal('sc_ownership') || '[Not completed]',
+    ``,
+    `---`,
+    ``,
+    `SECTION 5 - ENM BOUNDARIES`,
+    ``,
+    `Authority over outside relationships:`,
+    getVal('sc_enm_scope') || '[Not completed]',
+    ``,
+    `What outside partners need to understand:`,
+    getVal('sc_enm_info') || '[Not completed]',
+    ``,
+    `---`,
+    ``,
+    `SECTION 6 - EXIT AND REVIEW PROTOCOL`,
+    ``,
+    `Safeword / dynamic pause signal: ${getVal('sc_safeword') || '[Not completed]'}`,
+    `Review cadence: ${getVal('sc_review') || '[Not completed]'}`,
+    ``,
+    `Exit protocol:`,
+    getVal('sc_exit') || '[Not completed]',
+    ``,
+    `Additional provisions:`,
+    getVal('sc_notes') || '[None]',
+    ``,
+    `---`,
+    ``,
+    `This Schedule C forms part of the Joint Venture Agreement and may be`,
+    `amended by mutual written consent following the review protocol above.`,
+    ``,
+    `Signed: ________________________   ________________________`,
+    `        Master                     slave`,
+  ];
+
+  document.getElementById('schedule-steps').style.display = 'none';
+  document.getElementById('schedule-output').style.display = 'block';
+  document.getElementById('schedule-draft-text').textContent = lines.join('\n');
+}
+
+function copySchedule() {
+  const text = document.getElementById('schedule-draft-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const confirm = document.getElementById('copy-confirm');
+    confirm.style.display = 'block';
+    setTimeout(() => confirm.style.display = 'none', 2500);
+  });
+}
+
+function resetSchedule() {
+  scCurrent = 0;
+  document.getElementById('schedule-steps').style.display = 'block';
+  document.getElementById('schedule-output').style.display = 'none';
+  buildSchedule();
+}
+
+buildSchedule();
+
+// ===================== TOC SCROLL HIGHLIGHT =====================
+const tocLinks = document.querySelectorAll('.toc-sidebar a');
+const sections = document.querySelectorAll('.report-body h2[id], .key-findings');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + entry.target.id) a.classList.add('active');
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => { if (s.id) observer.observe(s); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Hub Design Research | Mexzungu Research</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:#0a0a0a; --surface:#111111; --hover:#1a1a1a;
+      --pink:#E14B87; --pink-dim:#b83a6b;
+      --white:#ffffff; --muted:#888888; --border:#222222;
+      --font:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    }
+    body { background:var(--bg); color:var(--white); font-family:var(--font); line-height:1.7; }
+    .report-nav { position:sticky; top:0; z-index:100; background:rgba(10,10,10,0.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; }
+    .back-link { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:600; letter-spacing:0.03em; display:flex; align-items:center; gap:0.4rem; transition:color 0.15s; }
+    .back-link:hover { color:var(--white); }
+    .nav-brand { color:var(--muted); font-size:0.8rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none; }
+    .nav-brand:hover { color:var(--white); }
+    .report-wrap { display:grid; grid-template-columns:200px 1fr; gap:3rem; max-width:1040px; margin:0 auto; padding:3rem 2rem 5rem; }
+    @media (max-width:780px) { .report-wrap { grid-template-columns:1fr; } .toc-sidebar { display:none; } }
+    .toc-sidebar { position:sticky; top:5rem; align-self:start; }
+    .toc-sidebar h4 { color:var(--muted); font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.75rem; }
+    .toc-sidebar a { display:block; color:var(--muted); text-decoration:none; font-size:0.82rem; padding:0.3rem 0; border-left:2px solid var(--border); padding-left:0.75rem; margin-bottom:0.1rem; transition:all 0.15s; }
+    .toc-sidebar a:hover { color:var(--white); border-left-color:var(--pink); }
+    .cat-tag { display:inline-block; background:rgba(225,75,135,0.15); border:1px solid rgba(225,75,135,0.3); border-radius:4px; color:var(--pink); font-size:0.7rem; font-weight:700; letter-spacing:0.08em; padding:0.2rem 0.55rem; text-transform:uppercase; margin-bottom:1rem; }
+    .report-header { margin-bottom:2rem; }
+    .report-header h1 { font-size:clamp(1.6rem,4vw,2.2rem); font-weight:700; letter-spacing:-0.02em; line-height:1.2; margin-bottom:1rem; }
+    .meta-bar { color:var(--muted); font-size:0.82rem; display:flex; gap:1rem; flex-wrap:wrap; }
+    .key-findings { background:var(--surface); border-left:3px solid var(--pink); border-radius:0 8px 8px 0; padding:1.5rem 1.75rem; margin:2rem 0; }
+    .key-findings h3 { color:var(--pink); font-size:0.75rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem; }
+    .key-findings ul { list-style:none; display:flex; flex-direction:column; gap:0.6rem; }
+    .key-findings li { font-size:0.92rem; color:#e0e0e0; padding-left:1.25rem; position:relative; }
+    .key-findings li::before { content:''; position:absolute; left:0; top:0.55em; width:6px; height:6px; background:var(--pink); border-radius:50%; }
+    .report-body h2 { font-size:1.25rem; font-weight:700; margin:2.5rem 0 1rem; padding-top:0.5rem; color:var(--white); }
+    .report-body h3 { font-size:1rem; font-weight:700; margin:1.75rem 0 0.6rem; color:#d0d0d0; }
+    .report-body p { font-size:0.95rem; color:#cccccc; margin-bottom:1rem; max-width:720px; }
+    .report-body ul,.report-body ol { padding-left:1.4rem; margin-bottom:1rem; max-width:720px; }
+    .report-body li { font-size:0.93rem; color:#cccccc; margin-bottom:0.35rem; }
+    .report-body strong { color:var(--white); font-weight:600; }
+    .report-body table { width:100%; max-width:720px; border-collapse:collapse; margin:1.5rem 0; font-size:0.85rem; }
+    .report-body th { text-align:left; background:var(--surface); color:var(--muted); font-size:0.75rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:0.6rem 0.9rem; border-bottom:1px solid var(--border); }
+    .report-body td { padding:0.6rem 0.9rem; border-bottom:1px solid var(--border); color:#cccccc; vertical-align:top; }
+    .report-body tr:last-child td { border-bottom:none; }
+    hr { border:none; border-top:1px solid var(--border); margin:2rem 0; max-width:720px; }
+    .feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; max-width:720px; margin:1rem 0; }
+    @media (max-width:560px) { .feature-grid { grid-template-columns:1fr; } }
+    .feature-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; }
+    .feature-card.must { border-color:rgba(225,75,135,0.3); }
+    .feature-card h4 { color:var(--white); font-size:0.88rem; font-weight:700; margin-bottom:0.35rem; }
+    .feature-card p { color:var(--muted); font-size:0.82rem; margin:0; max-width:none; }
+    .verdict-block { background:rgba(225,75,135,0.08); border:1px solid rgba(225,75,135,0.25); border-radius:8px; padding:1.25rem 1.5rem; margin:1.5rem 0; max-width:720px; }
+    .verdict-block h4 { color:var(--pink); font-size:0.82rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.6rem; }
+    .verdict-block p { color:#d0d0d0; font-size:0.9rem; margin-bottom:0.5rem; max-width:none; }
+    .verdict-block p:last-child { margin-bottom:0; }
+  </style>
+</head>
+<body>
+
+<nav class="report-nav">
+  <a href="/research/" class="back-link">&#8592; Research Hub</a>
+  <a href="/" class="nav-brand">Mexzungu</a>
+</nav>
+
+<div class="report-wrap">
+
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#what-works">1. What Works</a>
+    <a href="#avoid">2. What to Avoid</a>
+    <a href="#features">3. Feature Set</a>
+    <a href="#ux">4. UX Direction</a>
+    <a href="#architecture">5. Architecture</a>
+    <a href="#decision">6. Decision</a>
+    <a href="#benchmarks">7. Benchmarks</a>
+  </aside>
+
+  <main>
+    <div class="report-header">
+      <div class="cat-tag">Business</div>
+      <h1>Client Hub Design Research</h1>
+      <div class="meta-bar">
+        <span>May 2026</span>
+        <span>Business</span>
+        <span>7 sources</span>
+        <span>8 min read</span>
+      </div>
+    </div>
+
+    <div class="key-findings">
+      <h3>Key Findings</h3>
+      <ul>
+        <li>The best portals funnel everything into a single view: what is happening, what is waiting for the client, where the money sits. Nothing buried across tabs or separate surfaces.</li>
+        <li>Clients spend less than 30 seconds deciding if a portal is useful. If they cannot locate current status, their outstanding invoice, and their main document in that window, adoption drops to near zero.</li>
+        <li>"Last updated" timestamps are the single cheapest engagement driver. Three characters that convert browsers into users by signaling the portal is live.</li>
+        <li>Firms that communicate proactively retain clients at 50% higher rates. A lightweight email notification on hub update is more valuable than any dashboard feature.</li>
+        <li>Recommendation: Approach A for HavenPay. Static HTML, JSON data file, URL-token auth. Zero new infrastructure. Update in under 5 minutes. Migrate to API-driven when 5+ hubs are active.</li>
+      </ul>
+    </div>
+
+    <div class="report-body">
+
+      <h2 id="what-works">1. What the Best Client Portals Get Right</h2>
+      <p>Research across Copilot (now Assembly), Hubflo, ManyRequests, Basecamp client view, HoneyBook, Dubsado, Linear, Moxo, MyCase/Clio, SuiteDash, CoordinateHQ, Softr, and law firm portals (CasePeer, Lawmatics).</p>
+
+      <h3>One surface, not an inbox plus a dashboard plus a folder</h3>
+      <p>Every tool that succeeds funnels everything into a single view per client. The session starts and the client sees: what is happening, what is waiting for them, where the money sits. Nothing buried. Copilot/Assembly and Hubflo both nail this. Their shared insight: the portal replaces email threads, it does not add another interface on top of them.</p>
+
+      <h3>Client-facing simplicity vs. internal complexity</h3>
+      <p>The best portals show clients a curated slice of the internal picture. Basecamp's model: everything inside a project is private by default. You explicitly choose what clients see. Clients never see your task backlog, internal comments, resource allocation, or pricing notes.</p>
+
+      <h3>Visual hierarchy that resolves in 10 seconds</h3>
+      <p>Research is consistent: clients spend less than 30 seconds deciding if the portal is useful. The winning layout: status and progress at top, documents and billing below, messaging or contact at the bottom.</p>
+
+      <h3>Pending actions surface prominently</h3>
+      <p>The single highest-engagement element across all platforms is the "you have something to do" state. Portals that place this front-center see dramatically higher engagement. For Mexzungu: "awaiting your input" tasks, unsigned engagement letters, unpaid invoices.</p>
+
+      <h3>"Last updated" is load-bearing</h3>
+      <p>Every portal that tracks client engagement reports the same finding: clients who do not see a recent timestamp assume the portal is stale and stop checking it. An update timestamp on each workstream block is the single cheapest signal of live engagement.</p>
+
+      <h3>Billing transparency reduces friction</h3>
+      <p>Law firm portals (Clio, MyCase) and accounting portals (ClientHub) converge on the same finding: showing billing status proactively eliminates the most awkward conversation in any client engagement. Clients who can see "Invoice #3, $4,200, due 2026-05-30, status: UNPAID" in their portal pay faster and without prompting.</p>
+
+      <h2 id="avoid">2. What to Avoid</h2>
+
+      <h3>Feature sprawl</h3>
+      <p>Portals that include messaging, video calls, forms, task assignment, time tracking, resource libraries, and activity feeds fail at all of them. Clients do not adopt tools with more than 3 core functions. For Mexzungu: status, documents, billing. Adding a 4th function before those three are excellent is a mistake.</p>
+
+      <h3>Internal data leaking into the client view</h3>
+      <p>The most common failure mode in bespoke portals: showing too much. Internal task notes, billing rates, team discussions, draft documents. Clients misinterpret internal state as commitment. Every field visible to a client should pass the test: "what does this communicate if it changes?"</p>
+
+      <h3>Complexity that requires Pepe to update it</h3>
+      <p>If the update workflow requires opening a CMS, finding the right page, editing a field, and saving, it will not stay current. Portals with the best data freshness are ones where the consultant's existing workflow triggers the update. Friction in the update path equals stale data equals abandoned portal.</p>
+
+      <h3>Authentication overhead</h3>
+      <p>Portals requiring username and password registration fail with low-frequency clients. Clients who access the portal quarterly will have forgotten their password every time. Magic link authentication is the correct approach for clients at Mexzungu's engagement frequency.</p>
+
+      <h3>Mobile-hostile design</h3>
+      <p>Research across agency and legal portals shows clients access portals on mobile 60-70% of the time, usually immediately after receiving a notification email. For Mexzungu's Africa-focused clients (HavenPay: Kenya/Uganda), mobile-first is not a preference. It is a requirement.</p>
+
+      <h2 id="features">3. Recommended Feature Set</h2>
+
+      <h3>Must-have (build this first, nothing else matters)</h3>
+      <div class="feature-grid">
+        <div class="feature-card must">
+          <h4>Workstream status blocks</h4>
+          <p>Status badge (Active / Awaiting Client / On Hold / Complete), brief description, last-updated timestamp per workstream.</p>
+        </div>
+        <div class="feature-card must">
+          <h4>Tasks in motion with ETAs</h4>
+          <p>Numbered list of active deliverables. Owner (Pepe / Janis / Client) and target completion date.</p>
+        </div>
+        <div class="feature-card must">
+          <h4>Document library</h4>
+          <p>Three categories: Engagement Docs, Deliverables, Reference. Name, date added, download link. Google Drive links are fine.</p>
+        </div>
+        <div class="feature-card must">
+          <h4>Billing status</h4>
+          <p>Invoice table: number, description, amount, due date, status. Color-coded. No ambiguity.</p>
+        </div>
+        <div class="feature-card must">
+          <h4>Awaiting Your Input block</h4>
+          <p>If anything requires client action, it appears at the top in a highlighted callout. Hidden when nothing is pending.</p>
+        </div>
+        <div class="feature-card must">
+          <h4>Last-updated footer</h4>
+          <p>Per-page or per-section timestamp. "Hub last updated: 2026-05-10." Non-negotiable.</p>
+        </div>
+      </div>
+
+      <h3>Nice-to-have (add after the pilot proves value)</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Email notification on update</td><td>Automated email when hub is updated. Low-effort, high-engagement driver.</td></tr>
+          <tr><td>Milestone timeline</td><td>Visual progress bar with named milestones. Works for 3-5 phase engagements.</td></tr>
+          <tr><td>Pepe's availability link</td><td>Direct link to the booking flow. Clients should not have to search for it.</td></tr>
+          <tr><td>Engagement history</td><td>"We have been working together since [date]" plus completed workstreams summary.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Skip for now</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>In-portal messaging</td><td>WhatsApp and email are better. A portal inbox nobody checks is worse than direct channels.</td></tr>
+          <tr><td>Time tracking</td><td>Not how Mexzungu engages. Retainer model does not need timesheets.</td></tr>
+          <tr><td>Client uploads</td><td>Ask clients to share via Drive link or email instead.</td></tr>
+          <tr><td>Knowledge base / FAQs</td><td>That is what calls are for.</td></tr>
+          <tr><td>Team directory</td><td>This is a one-person firm plus Janis. Not needed.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="ux">4. Visual and UX Direction</h2>
+
+      <p>The mexzungu.com design system already exists and is strong. The client hub should extend it directly. The hub should feel like "you are behind the curtain of something professional and unconventional," not "you are in a SaaS dashboard."</p>
+
+      <h3>Status badges: three colors, not five</h3>
+      <ul>
+        <li><strong>Green (Active):</strong> Work is in progress, Pepe owns the next step</li>
+        <li><strong>Amber (Awaiting Client):</strong> Ball is in the client's court</li>
+        <li><strong>Gray (Paused / Complete):</strong> Nothing moving right now</li>
+      </ul>
+      <p>Do not use: "In Review," "Under Development," "Pending Approval," "Blocked." These are internal states. Clients see: Active, Awaiting You, or Done.</p>
+
+      <h3>Layout: single-page scroll, not tabs</h3>
+      <p>Research shows tabs reduce engagement because clients forget what is behind the other tabs. One continuous scroll from top to bottom: header, awaiting-client callout, workstreams, tasks, documents, billing, footer with booking link.</p>
+
+      <h3>Mobile first</h3>
+      <p>Card-based layout stacks naturally on mobile. Each workstream card, document row, and invoice row should be full-width on small screens. No horizontal scrolling tables.</p>
+
+      <h2 id="architecture">5. Architecture Options</h2>
+
+      <h3>Approach A: Fully static with JSON data files (Recommended)</h3>
+      <p>Each client gets a static HTML template at <code>mexzungu-site/clients/[name]/index.html</code> and a JSON data file at <code>mexzungu-site/clients/[name]/data.json</code>. The page reads the JSON at load time via <code>fetch()</code> and renders content client-side.</p>
+      <ul>
+        <li><strong>Pros:</strong> Zero additional infrastructure. Janis can update via file edits plus deploy.sh. Loads instantly. Version controlled in git. Every change is auditable.</li>
+        <li><strong>Cons:</strong> Manual deployment required per update. URL-based auth is not enterprise-grade. Not scalable beyond ~20 clients.</li>
+        <li><strong>Best for:</strong> HavenPay pilot, NCA, Duara. Anything up to 10 clients.</li>
+      </ul>
+
+      <h3>Approach B: Cloudflare Pages with API-driven data</h3>
+      <p>Data served from a new route in tools_server.py. Cloudflare Access handles per-client auth with email OTP. Data can be updated without deployment.</p>
+      <ul>
+        <li><strong>Best for:</strong> 5+ active hubs, when Pepe wants "update once, live immediately."</li>
+      </ul>
+
+      <h3>Approach C: Softr on Airtable or Notion</h3>
+      <ul>
+        <li><strong>Pros:</strong> No-code updates. Softr handles auth and rendering.</li>
+        <li><strong>Cons:</strong> SaaS subscription ($49-$149/month). Brand control limited. Data lives outside the brain, creating a sync problem with Janis.</li>
+        <li><strong>Best for:</strong> If Kellen needs to update hubs without Janis involvement. Not recommended.</li>
+      </ul>
+
+      <h2 id="decision">6. Decision Recommendation</h2>
+
+      <div class="verdict-block">
+        <h4>Start with Approach A for HavenPay</h4>
+        <p>Zero new infrastructure. Fully within Janis's control. URL-token auth is sufficient for one pre-seed client. Pilot the UX before investing in Approach B.</p>
+        <p><strong>Migration path:</strong> 3+ active hubs: add Cloudflare Access auth, keep JSON architecture. 5+ active hubs: migrate data reads to api.mexzungu.com, enable real-time updates.</p>
+        <p><strong>First build URL:</strong> mexzungu.com/clients/havenpay/?token=[token] | <strong>Estimated build time:</strong> 3-4 hours</p>
+      </div>
+
+      <h2 id="benchmarks">7. Competitive Reference Points</h2>
+
+      <table>
+        <thead><tr><th>Tool</th><th>What to steal</th><th>What to skip</th></tr></thead>
+        <tbody>
+          <tr><td>Copilot/Assembly</td><td>Single surface, pending actions front-center</td><td>Messaging, forms, AI assistant</td></tr>
+          <tr><td>Hubflo</td><td>Workstream and billing in same view</td><td>Built-in email, recurring billing complexity</td></tr>
+          <tr><td>Basecamp client view</td><td>Default-private, explicit reveal per item</td><td>Whole PM platform overhead</td></tr>
+          <tr><td>Linear project page</td><td>Status badge plus timestamp, milestone bar</td><td>Technical issue queue</td></tr>
+          <tr><td>Clio/MyCase</td><td>Document categorization, billing transparency</td><td>Matter management complexity</td></tr>
+          <tr><td>HoneyBook</td><td>Clean mobile experience, one-click review</td><td>Proposal and contract tool overhead</td></tr>
+          <tr><td>ClientHub (accounting)</td><td>Automated status emails, job-based workflow</td><td>Accounting-specific flows</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = "mexzungu_research_auth";
+  if (localStorage.getItem(STORAGE_KEY) !== 'true') {
+    window.location.href = '/research/';
+  }
+</script>
+</body>
+</html>

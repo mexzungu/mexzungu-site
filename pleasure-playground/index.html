@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pleasure Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #08050c;
+    --plum: #1a0d26;
+    --plum-mid: #2d1540;
+    --rose-dark: #7a3050;
+    --rose-mid: #b05070;
+    --rose-light: #e8a0b8;
+    --gold: #b8864a;
+    --gold-light: #d4a870;
+    --cream: #f0e8e0;
+    --mist: rgba(240,232,224,0.6);
+    --mist-thin: rgba(240,232,224,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* GATE */
+  #gate {
+    position: fixed; inset: 0;
+    background: var(--void);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+  #gate.hidden { display: none; }
+  #gate h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--rose-light);
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+  #gate p {
+    color: var(--mist);
+    text-align: center;
+    max-width: 380px;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+  }
+  .gate-tabs {
+    display: flex; gap: 0;
+    border: 1px solid var(--plum-mid);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .gate-tab {
+    background: none;
+    border: none;
+    color: var(--mist);
+    padding: 0.5rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .gate-tab.active { background: var(--plum-mid); color: var(--cream); }
+  .gate-form {
+    display: flex; flex-direction: column; gap: 0.8rem;
+    width: 100%; max-width: 300px;
+  }
+  #gate input {
+    background: var(--mist-thin);
+    border: 1px solid var(--rose-dark);
+    color: var(--cream);
+    padding: 0.9rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    border-radius: 2px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  #gate input:focus { border-color: var(--rose-mid); }
+  #gate input::placeholder { color: rgba(240,232,224,0.3); }
+  #gate .gate-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.8rem 2.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.3s, color 0.3s;
+    width: 100%;
+  }
+  #gate .gate-btn:hover { background: var(--gold); color: var(--void); }
+  #gate .gate-error {
+    color: var(--rose-mid);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    min-height: 1.2em;
+    text-align: center;
+  }
+  .gate-loading { color: var(--mist); font-size: 0.8rem; letter-spacing: 0.05em; text-align: center; }
+  #register-form { width: 100%; max-width: 380px; }
+  #reg-step-1, #reg-step-2 { width: 100%; }
+  #reg-step-2 { overflow-y: auto; max-height: 80vh; padding: 0.5rem 0; }
+  .tag-btn {
+    background: rgba(240,232,224,0.06);
+    border: 1px solid rgba(240,232,224,0.2);
+    color: rgba(240,232,224,0.55);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .tag-btn.active {
+    background: rgba(225,75,135,0.2);
+    border-color: var(--rose-mid);
+    color: var(--rose-light);
+  }
+
+  /* PROFILE TESTS */
+  .test-card {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .test-card:hover { border-color: var(--rose-dark); }
+  .test-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .test-emoji { font-size: 1.8rem; flex-shrink: 0; }
+  .test-meta { flex: 1; }
+  .test-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--rose-light);
+    letter-spacing: 0.03em;
+  }
+  .test-sub {
+    font-size: 0.75rem;
+    color: var(--mist);
+    letter-spacing: 0.04em;
+    margin-top: 0.15rem;
+  }
+  .test-status {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+  .test-status.done { background: rgba(184,134,74,0.2); color: var(--gold-light); border: 1px solid var(--gold); }
+  .test-status.open { background: rgba(176,80,112,0.15); color: var(--rose-light); border: 1px solid var(--rose-dark); }
+  .test-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--plum-mid);
+  }
+  .test-body.visible { display: block; }
+  .test-q {
+    font-size: 0.88rem;
+    color: var(--cream);
+    margin: 1.2rem 0 0.6rem;
+    font-style: italic;
+  }
+  .test-answers { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .answer-btn {
+    background: rgba(240,232,224,0.05);
+    border: 1px solid rgba(240,232,224,0.18);
+    color: rgba(240,232,224,0.6);
+    padding: 0.4rem 0.9rem;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .answer-btn:hover { border-color: var(--rose-mid); color: var(--cream); }
+  .answer-btn.selected {
+    background: rgba(176,80,112,0.25);
+    border-color: var(--rose-mid);
+    color: var(--rose-light);
+  }
+  /* Spectrum (DS) */
+  .spectrum-bar {
+    height: 8px;
+    background: linear-gradient(90deg, var(--rose-mid), var(--gold));
+    border-radius: 4px;
+    margin: 1rem 0 0.3rem;
+    position: relative;
+  }
+  .spectrum-fill {
+    position: absolute; top: -3px;
+    width: 14px; height: 14px;
+    background: var(--cream);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 6px rgba(176,80,112,0.7);
+    transition: left 0.4s ease;
+  }
+  .spectrum-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.68rem; color: var(--mist); letter-spacing: 0.05em;
+  }
+  /* Bar charts (SSK) */
+  .ssk-bars { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.8rem; }
+  .ssk-row { display: flex; align-items: center; gap: 0.8rem; }
+  .ssk-row label { font-size: 0.75rem; color: var(--mist); width: 90px; flex-shrink: 0; }
+  .ssk-track { flex: 1; height: 6px; background: var(--plum-mid); border-radius: 3px; overflow: hidden; }
+  .ssk-fill { height: 100%; background: linear-gradient(90deg, var(--rose-dark), var(--rose-light)); border-radius: 3px; transition: width 0.5s ease; }
+  /* Ring (body-connection) */
+  .body-score-ring {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: conic-gradient(var(--rose-mid) 0%, var(--gold) var(--pct,50%), var(--plum-mid) var(--pct,50%));
+    display: flex; align-items: center; justify-content: center;
+    margin: 1rem auto;
+    box-shadow: 0 0 20px rgba(176,80,112,0.3);
+  }
+  .body-score-ring span {
+    width: 70px; height: 70px;
+    background: var(--plum);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--rose-light);
+  }
+  /* Turn-on map */
+  .map-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+  .map-item {
+    background: rgba(240,232,224,0.05);
+    border: 1px solid rgba(240,232,224,0.15);
+    color: rgba(240,232,224,0.55);
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.73rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .map-item.active {
+    background: rgba(184,134,74,0.2);
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+  /* Tag cloud for desire-driver */
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+  .tag-selected {
+    background: rgba(176,80,112,0.2);
+    border: 1px solid var(--rose-mid);
+    color: var(--rose-light);
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+  }
+  /* Result display */
+  .test-result {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    background: rgba(26,13,38,0.8);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    text-align: center;
+  }
+  .result-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  .result-interp {
+    font-size: 0.82rem;
+    color: var(--mist);
+    line-height: 1.7;
+    text-align: left;
+  }
+  .test-submit {
+    margin-top: 1.2rem;
+    background: linear-gradient(135deg, var(--rose-dark), var(--rose-mid));
+    border: none;
+    color: var(--cream);
+    padding: 0.7rem 1.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    display: block;
+    width: 100%;
+    transition: opacity 0.2s;
+  }
+  .test-submit:hover { opacity: 0.85; }
+
+  /* REWARDS */
+  .reward-card {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    display: flex; align-items: flex-start; gap: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .reward-card:hover { border-color: var(--gold); }
+  .reward-card.claimed { border-color: var(--gold); opacity: 0.75; }
+  .reward-card.sold-out { opacity: 0.45; }
+  .reward-emoji { font-size: 2rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .reward-body { flex: 1; }
+  .reward-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--rose-light);
+    margin-bottom: 0.2rem;
+  }
+  .reward-desc { font-size: 0.8rem; color: var(--mist); line-height: 1.6; margin-bottom: 0.7rem; }
+  .reward-meta { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+  .reward-cost {
+    font-size: 0.75rem;
+    color: var(--gold-light);
+    letter-spacing: 0.06em;
+    border: 1px solid var(--gold);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+  }
+  .reward-stock { font-size: 0.7rem; color: var(--mist); letter-spacing: 0.05em; }
+  .reward-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border: none;
+    color: var(--void);
+    padding: 0.4rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .reward-btn:hover { opacity: 0.85; }
+  .reward-btn:disabled { background: var(--plum-mid); color: var(--mist); cursor: not-allowed; opacity: 1; }
+  .reward-claimed-chip {
+    font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold-light); border: 1px solid var(--gold);
+    padding: 0.2rem 0.6rem; border-radius: 20px;
+  }
+  .claimed-row {
+    display: flex; align-items: center; gap: 0.8rem;
+    padding: 0.7rem 0; border-bottom: 1px solid var(--plum-mid);
+    font-size: 0.82rem; color: var(--mist);
+  }
+  .claimed-row .cr-emoji { font-size: 1.2rem; }
+  .claimed-row .cr-title { color: var(--cream); flex: 1; }
+  .claimed-row .cr-status {
+    font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem; border-radius: 20px;
+  }
+  .cr-status.pending { border: 1px solid var(--rose-dark); color: var(--rose-light); }
+  .cr-status.done { border: 1px solid var(--gold); color: var(--gold-light); background: rgba(184,134,74,0.15); }
+
+  .nav-user { display: flex; align-items: center; gap: 0.8rem; }
+  .nav-user-name { font-size: 0.75rem; color: var(--mist); letter-spacing: 0.05em; }
+  .nav-logout {
+    background: none;
+    border: 1px solid var(--mist-thin);
+    color: var(--mist);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .nav-logout:hover { border-color: var(--rose-mid); color: var(--cream); }
+
+  /* PROGRESS BAR */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--plum-mid);
+    z-index: 100;
+  }
+  #progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose-mid), var(--gold));
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 3px; left: 0; right: 0;
+    background: rgba(8,5,12,0.92);
+    backdrop-filter: blur(12px);
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 99;
+    border-bottom: 1px solid var(--mist-thin);
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--rose-light);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    color: var(--mist);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cream); }
+  @media (max-width: 600px) {
+    nav { padding: 0.7rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
+    .nav-links {
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      width: 100%;
+      order: 3;
+      padding-bottom: 0.2rem;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { font-size: 0.65rem; padding: 0.2rem 0.6rem; white-space: nowrap; }
+    .nav-user { order: 2; }
+    section { padding: 7rem 1.2rem 4rem; }
+    .gate-form { max-width: 100%; }
+    #gate { padding: 1.5rem 1.2rem; }
+    #register-form { max-width: 100%; }
+    .test-header { padding: 1rem; }
+    .test-body { padding: 0 1rem 1rem; }
+    .reward-card { padding: 1rem; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* SECTIONS */
+  section { padding: 8rem 2rem 5rem; max-width: 760px; margin: 0 auto; }
+  section:first-of-type { padding-top: 6rem; }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .italic { font-style: italic; color: var(--rose-light); }
+  .gold { color: var(--gold); }
+  p { color: var(--mist); margin-bottom: 1rem; font-size: 0.95rem; }
+  .divider {
+    width: 60px; height: 1px;
+    background: linear-gradient(90deg, var(--rose-mid), transparent);
+    margin: 2rem 0;
+  }
+
+  /* HOME SECTION */
+  .hero-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.5;
+    margin: 2rem 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--rose-mid);
+  }
+  .progress-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+  .progress-card {
+    background: var(--mist-thin);
+    border: 1px solid var(--mist-thin);
+    border-radius: 4px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .progress-card .count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: var(--rose-light);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .progress-card .label {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  /* MODULE TABS */
+  .module-card {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 6px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  .module-header {
+    padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--plum-mid);
+    transition: background 0.2s;
+  }
+  .module-header:hover { background: var(--plum-mid); }
+  .module-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--rose-dark);
+    line-height: 1;
+    width: 2.5rem;
+    flex-shrink: 0;
+  }
+  .module-meta h3 { margin: 0; color: var(--cream); }
+  .module-meta span { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.08em; }
+  .module-badge {
+    margin-left: auto;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--plum-mid);
+    border: 1px solid var(--rose-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    color: var(--mist);
+    transition: background 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
+  }
+  .module-badge.done { background: var(--rose-dark); border-color: var(--rose-mid); color: var(--cream); }
+  .module-content { display: none; }
+  .module-content.open { display: block; }
+
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--plum-mid);
+  }
+  .tab {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab:hover { color: var(--cream); }
+  .tab.active { color: var(--rose-light); border-bottom-color: var(--rose-mid); }
+  .tab-panel { padding: 2rem; display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SLIDER GAME */
+  .slider-game { margin: 1.5rem 0; }
+  .slider-item {
+    margin-bottom: 2rem;
+  }
+  .slider-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; color: var(--mist);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 3px;
+    background: var(--plum-mid);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--rose-mid);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .slider-val {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--rose-light);
+    margin-top: 0.3rem;
+  }
+
+  /* QUIZ */
+  .quiz-q { margin-bottom: 2rem; }
+  .quiz-q p { color: var(--cream); margin-bottom: 0.8rem; font-size: 1rem; }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-option {
+    background: var(--plum-mid);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--mist);
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+  }
+  .quiz-option:hover { border-color: var(--rose-dark); color: var(--cream); }
+  .quiz-option.selected { border-color: var(--rose-mid); color: var(--rose-light); background: rgba(176,80,112,0.15); }
+  .quiz-option.correct { border-color: var(--gold); color: var(--gold); background: rgba(184,134,74,0.1); }
+  .quiz-option.wrong { border-color: var(--rose-dark); opacity: 0.5; }
+  .quiz-reveal {
+    margin-top: 0.8rem;
+    padding: 1rem;
+    background: rgba(8,5,12,0.5);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--mist);
+    display: none;
+  }
+  .quiz-reveal.show { display: block; }
+  .quiz-reveal strong { color: var(--gold); }
+
+  /* TEXTAREA */
+  textarea {
+    width: 100%;
+    background: var(--mist-thin);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    padding: 1rem;
+    resize: vertical;
+    min-height: 120px;
+    outline: none;
+    transition: border-color 0.3s;
+    line-height: 1.7;
+  }
+  textarea:focus { border-color: var(--rose-mid); }
+  textarea::placeholder { color: rgba(240,232,224,0.25); }
+
+  /* BUTTON */
+  .btn {
+    background: transparent;
+    border: 1px solid var(--rose-mid);
+    color: var(--rose-light);
+    padding: 0.75rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
+    margin-top: 1rem;
+  }
+  .btn:hover { background: var(--rose-dark); color: var(--cream); }
+  .btn.gold {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .btn.gold:hover { background: var(--gold); color: var(--void); }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* DEFIS */
+  .defi-list { margin: 1.5rem 0; }
+  .defi-item {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 0.8rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
+  }
+  .defi-item.done {
+    border-color: var(--rose-dark);
+    background: rgba(176,80,112,0.08);
+  }
+  .defi-item.locked { opacity: 0.4; }
+  .defi-check {
+    width: 22px; height: 22px;
+    border: 1px solid var(--rose-dark);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    color: transparent;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
+  }
+  .defi-item.done .defi-check {
+    background: var(--rose-dark);
+    color: var(--cream);
+    border-color: var(--rose-mid);
+  }
+  .defi-text h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+    color: var(--cream);
+  }
+  .defi-text p { font-size: 0.85rem; margin: 0; color: var(--mist); }
+  .defi-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--rose-dark);
+    line-height: 1;
+    width: 1.8rem;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  /* CARTE DU DESIR */
+  .carte-q { margin-bottom: 2rem; }
+  .carte-q label {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 0.8rem;
+  }
+  .carte-q .hint { font-size: 0.8rem; color: var(--mist); font-style: normal; margin-bottom: 0.8rem; display: block; font-family: 'DM Sans', sans-serif; }
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .opt-btn {
+    background: var(--plum-mid);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    padding: 0.6rem 0.8rem;
+    color: var(--mist);
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+  }
+  .opt-btn:hover { border-color: var(--rose-dark); color: var(--cream); }
+  .opt-btn.active { border-color: var(--rose-mid); color: var(--rose-light); background: rgba(176,80,112,0.15); }
+
+  .safe-word-box {
+    background: var(--plum);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  .safe-word-box h3 { color: var(--gold); margin-bottom: 0.5rem; }
+  .safe-word-box p { font-size: 0.85rem; }
+  .safe-word-box input {
+    width: 100%;
+    background: var(--mist-thin);
+    border: 1px solid var(--gold);
+    color: var(--cream);
+    padding: 0.8rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    outline: none;
+    margin-top: 0.8rem;
+    text-align: center;
+  }
+
+  .submitted-msg {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+  .submitted-msg.show { display: block; }
+  .submitted-msg h2 { color: var(--rose-light); margin-bottom: 1rem; }
+
+  /* LAB */
+  .lab-note { margin-bottom: 2rem; }
+  .lab-note label {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: rgba(240,232,224,0.2);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    border-top: 1px solid var(--mist-thin);
+    margin-top: 4rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate">
+  <h1>Pleasure Playground</h1>
+  <p id="gate-subtitle">Your private space to explore and learn.</p>
+
+  <div class="gate-tabs">
+    <button class="gate-tab active" id="tab-login" onclick="showGateTab('login')">Enter</button>
+    <button class="gate-tab" id="tab-register" onclick="showGateTab('register')">Create Account</button>
+  </div>
+
+  <div class="gate-form" id="login-form">
+    <input type="text" id="login-username" placeholder="username" autocomplete="username">
+    <input type="password" id="login-password" placeholder="password" autocomplete="current-password">
+    <div class="gate-error" id="login-error"></div>
+    <button class="gate-btn" onclick="doLogin()">Enter</button>
+  </div>
+
+  <div id="register-form" style="display:none">
+    <div class="gate-form" id="reg-step-1">
+      <p style="font-size:0.8rem;color:rgba(240,232,224,0.5);text-align:center;margin-bottom:0.5rem;letter-spacing:0.08em;">Step 1 of 2</p>
+      <input type="text" id="reg-display-name" placeholder="your name">
+      <input type="text" id="reg-username" placeholder="choose a username">
+      <input type="password" id="reg-password" placeholder="choose a password (min 8 chars)">
+      <input type="text" id="reg-invite" placeholder="invite code (PP-XXXX-XXXX)">
+      <div class="gate-error" id="reg-error"></div>
+      <button class="gate-btn" onclick="goToIntake()">Next</button>
+    </div>
+
+    <div id="reg-step-2" style="display:none">
+      <p style="font-size:0.8rem;color:rgba(240,232,224,0.5);text-align:center;margin-bottom:1rem;letter-spacing:0.08em;">Step 2 of 2 - A little about you</p>
+      <p style="font-size:0.8rem;color:rgba(240,232,224,0.35);text-align:center;margin-bottom:1.5rem;">These answers are private. They help Agathe understand where you are.</p>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,232,224,0.4);display:block;margin-bottom:0.4rem;">What brings you here?</label>
+        <textarea id="intake-brings" placeholder="Curiosity, a desire to understand myself better, a recommendation..." style="width:100%;background:rgba(240,232,224,0.05);border:1px solid rgba(240,232,224,0.15);color:var(--cream);padding:0.8rem;border-radius:4px;font-family:inherit;font-size:0.9rem;resize:vertical;min-height:70px;box-sizing:border-box;"></textarea>
+      </div>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,232,224,0.4);display:block;margin-bottom:0.4rem;">What do you most want to explore?</label>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">My body</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">Surrender</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">Communication</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">Boundaries</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">Desire</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">Power dynamics</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">Sensuality</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">Safety in intimacy</button>
+          <button type="button" class="tag-btn" onclick="toggleTag(this)">My edges</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,232,224,0.4);display:block;margin-bottom:0.4rem;">My biggest challenge in intimacy</label>
+        <textarea id="intake-challenge" placeholder="Asking for what I want, feeling present in my body, trusting someone, saying no..." style="width:100%;background:rgba(240,232,224,0.05);border:1px solid rgba(240,232,224,0.15);color:var(--cream);padding:0.8rem;border-radius:4px;font-family:inherit;font-size:0.9rem;resize:vertical;min-height:60px;box-sizing:border-box;"></textarea>
+      </div>
+
+      <div style="margin-bottom:1.2rem;">
+        <label style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,232,224,0.4);display:block;margin-bottom:0.4rem;">My experience with intentional intimacy</label>
+        <select id="intake-experience" style="width:100%;background:#1a0f1e;border:1px solid rgba(240,232,224,0.15);color:var(--cream);padding:0.8rem;border-radius:4px;font-size:0.9rem;font-family:inherit;">
+          <option value="">Select...</option>
+          <option value="new">New to all of this</option>
+          <option value="some">Some experience, mostly self-guided</option>
+          <option value="workshops">Done some workshops or sessions</option>
+          <option value="practiced">Regular practice, looking to go deeper</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <label style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,232,224,0.4);display:block;margin-bottom:0.4rem;">One word that describes where I am right now</label>
+        <input type="text" id="intake-word" placeholder="Curious / Scared / Ready / Open / Searching..." style="width:100%;background:rgba(240,232,224,0.05);border:1px solid rgba(240,232,224,0.15);color:var(--cream);padding:0.8rem;border-radius:4px;font-family:inherit;font-size:0.9rem;box-sizing:border-box;">
+      </div>
+
+      <div class="gate-error" id="reg-step2-error"></div>
+      <button class="gate-btn" onclick="doRegister()">Enter the Playground</button>
+      <button type="button" onclick="goToIntake(false)" style="background:none;border:none;color:rgba(240,232,224,0.3);font-size:0.75rem;cursor:pointer;margin-top:0.5rem;display:block;width:100%;text-align:center;">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-brand">Pleasure Playground</a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#voyage">Modules</a></li>
+    <li><a href="#defis">Challenges</a></li>
+    <li><a href="#discover">Discover</a></li>
+    <li><a href="#rewards">Rewards</a></li>
+    <li><a href="#lab">Notes</a></li>
+  </ul>
+  <div class="nav-user" id="nav-user" style="display:none">
+    <span class="nav-user-name" id="nav-user-name"></span>
+    <button class="nav-logout" onclick="logout()">Exit</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <p class="gold" style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Bienvenue</p>
+  <h1>Le voyage commence <span class="italic">avant</span> le workshop.</h1>
+  <div class="divider"></div>
+  <blockquote class="hero-quote">
+    "L'orgasme n'est pas dans ton corps. Il est dans ton systeme nerveux. Et c'est la reddition qui l'allume vraiment."
+  </blockquote>
+  <p>Ce que tu vas explorer ici n'est pas de la theorie. C'est une preparation du systeme nerveux. Joue les jeux. Fais les defis. Reponds aux questions. Tu arriveras deja differente.</p>
+
+  <div class="progress-cards">
+    <div class="progress-card">
+      <div class="count" id="cnt-modules">0/4</div>
+      <div class="label">Modules</div>
+    </div>
+    <div class="progress-card">
+      <div class="count" id="cnt-defis">0/7</div>
+      <div class="label">Defis</div>
+    </div>
+    <div class="progress-card">
+      <div class="count" id="cnt-carte">Non</div>
+      <div class="label">Ma Carte</div>
+    </div>
+  </div>
+  <p style="font-size:0.8rem;color:rgba(240,232,224,0.3);">Tes reponses restent sur cet appareil. Personne d'autre ne les voit... jusqu'a ce que tu decides de partager ta Carte du Desir.</p>
+</section>
+
+<!-- LE VOYAGE -->
+<section id="voyage">
+  <p class="gold" style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Parcours</p>
+  <h2>Le Voyage</h2>
+  <p>Quatre modules. Chacun ouvre une couche. Commence par le premier.</p>
+  <div class="divider"></div>
+
+  <!-- MODULE 1 -->
+  <div class="module-card" id="mod-1">
+    <div class="module-header" onclick="toggleModule(1)">
+      <div class="module-num">1</div>
+      <div class="module-meta">
+        <h3>La Carte du Spectre</h3>
+        <span>Ou est-ce que je me situe?</span>
+      </div>
+      <div class="module-badge" id="badge-1">○</div>
+    </div>
+    <div class="module-content" id="mc-1">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(1,'regarder')">Regarder</button>
+        <button class="tab" onclick="switchTab(1,'jouer')">Jouer</button>
+        <button class="tab" onclick="switchTab(1,'apprendre')">Apprendre</button>
+      </div>
+      <div class="tab-panel active" id="tp-1-regarder">
+        <p>La dynamique Dominance/Soumission n'est pas une question de genre ou d'orientation. C'est un <strong style="color:var(--cream)">spectre de preference</strong> qui existe independamment de la personnalite dans la vie quotidienne.</p>
+        <p>Certaines personnes tres controlantes au travail decouvrent qu'elles veulent profondement lacher prise dans l'intimite. L'inverse est aussi vrai.</p>
+        <p>Il n'y a pas de bonne reponse. Il y a seulement <em style="color:var(--rose-light)">ta reponse</em>.</p>
+      </div>
+      <div class="tab-panel" id="tp-1-jouer">
+        <p style="font-size:0.85rem;margin-bottom:1.5rem;">Pour chaque dimension, place-toi sur le spectre. Laisse ton corps repondre avant ta tete.</p>
+        <div class="slider-game">
+
+          <div class="slider-item">
+            <div class="slider-labels"><span>Je veux tout controler</span><span>Je veux tout lacher</span></div>
+            <input type="range" min="0" max="100" value="50" id="sl-1" oninput="updateSlider(1)">
+            <div class="slider-val" id="sv-1">50</div>
+          </div>
+
+          <div class="slider-item">
+            <div class="slider-labels"><span>Je prefere initier</span><span>Je prefere recevoir</span></div>
+            <input type="range" min="0" max="100" value="50" id="sl-2" oninput="updateSlider(2)">
+            <div class="slider-val" id="sv-2">50</div>
+          </div>
+
+          <div class="slider-item">
+            <div class="slider-labels"><span>Le verbal m'excite</span><span>Le silence m'excite</span></div>
+            <input type="range" min="0" max="100" value="50" id="sl-3" oninput="updateSlider(3)">
+            <div class="slider-val" id="sv-3">50</div>
+          </div>
+
+          <div class="slider-item">
+            <div class="slider-labels"><span>J'aime la douceur</span><span>J'aime l'intensite</span></div>
+            <input type="range" min="0" max="100" value="50" id="sl-4" oninput="updateSlider(4)">
+            <div class="slider-val" id="sv-4">50</div>
+          </div>
+
+          <div class="slider-item">
+            <div class="slider-labels"><span>Le mental d'abord</span><span>Le corps d'abord</span></div>
+            <input type="range" min="0" max="100" value="50" id="sl-5" oninput="updateSlider(5)">
+            <div class="slider-val" id="sv-5">50</div>
+          </div>
+
+        </div>
+        <button class="btn" onclick="saveSliders()">Sauvegarder ma carte</button>
+      </div>
+      <div class="tab-panel" id="tp-1-apprendre">
+        <p>Ce jeu de curseurs est inspire du <strong style="color:var(--cream)">Wheel of Consent</strong> de Betty Martin: la distinction fondamentale entre faire quelque chose <em>pour toi</em> et le faire <em>pour moi</em>.</p>
+        <p>La soumission n'est pas de la passivite. C'est une des positions les plus actives qui existent. Choisir de lacher prise demande plus de confiance et d'intentionnalite que de controler.</p>
+        <p style="color:var(--gold);">La personne qui dit le mot de securite a le veto absolu. C'est un pouvoir enorme.</p>
+        <button class="btn" onclick="completeModule(1)">Marquer comme fait</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 2 -->
+  <div class="module-card" id="mod-2">
+    <div class="module-header" onclick="toggleModule(2)">
+      <div class="module-num">2</div>
+      <div class="module-meta">
+        <h3>Le Corps Parle</h3>
+        <span>Reconnaitre les signaux</span>
+      </div>
+      <div class="module-badge" id="badge-2">○</div>
+    </div>
+    <div class="module-content" id="mc-2">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(2,'regarder')">Regarder</button>
+        <button class="tab" onclick="switchTab(2,'jouer')">Jouer</button>
+        <button class="tab" onclick="switchTab(2,'apprendre')">Apprendre</button>
+      </div>
+      <div class="tab-panel active" id="tp-2-regarder">
+        <p>Ton corps signale l'entree dans un etat altere bien avant que ton cerveau conscient le remarque. Apprendre a lire ces signaux, c'est apprendre a surfer la vague au lieu d'en avoir peur.</p>
+        <p>Ces signaux ne sont pas des metaphores. Ce sont des evenements physiologiques mesurables.</p>
+      </div>
+      <div class="tab-panel" id="tp-2-jouer">
+        <p style="font-size:0.85rem;margin-bottom:1.5rem;">Quand tu te sens vraiment presente et dans ton corps, qu'est-ce qui se passe en toi? Selectionne tout ce qui s'applique.</p>
+        <div class="quiz-options" id="body-quiz">
+          <button class="quiz-option" onclick="toggleBodySign(this)">Ma machoire se detend</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Mes epaules descendent</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Ma respiration ralentit</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Je perds la notion du temps</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Mon regard se brouille legerement</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Je deviens silencieuse</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Je sens une chaleur dans le bassin</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Je me sens plus lourde</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Je commence a trembler legerement</button>
+          <button class="quiz-option" onclick="toggleBodySign(this)">Mon mental s'arrete de commenter</button>
+        </div>
+        <textarea id="body-other" placeholder="D'autres signaux qui ne sont pas dans la liste..." style="margin-top:1rem;"></textarea>
+        <button class="btn" onclick="saveBodySigns()">Sauvegarder mes signaux</button>
+      </div>
+      <div class="tab-panel" id="tp-2-apprendre">
+        <p>Les signaux que tu as identifies sont les marqueurs d'entree dans un <strong style="color:var(--cream)">etat de conscience altere</strong>. La science les appelle les signaux d'entree precoce dans le "subspace".</p>
+        <p>Quand le cortex prefrontal commence a se calmer (la partie qui surveille, juge et commente), ces signaux apparaissent. C'est ton systeme nerveux qui dit: <em style="color:var(--rose-light)">"Je commence a faire confiance."</em></p>
+        <button class="btn" onclick="completeModule(2)">Marquer comme fait</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 3 -->
+  <div class="module-card" id="mod-3">
+    <div class="module-header" onclick="toggleModule(3)">
+      <div class="module-num">3</div>
+      <div class="module-meta">
+        <h3>Les Etats Alteres</h3>
+        <span>Vrai ou mythe?</span>
+      </div>
+      <div class="module-badge" id="badge-3">○</div>
+    </div>
+    <div class="module-content" id="mc-3">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(3,'regarder')">Regarder</button>
+        <button class="tab" onclick="switchTab(3,'jouer')">Jouer</button>
+        <button class="tab" onclick="switchTab(3,'apprendre')">Apprendre</button>
+      </div>
+      <div class="tab-panel active" id="tp-3-regarder">
+        <p>Le "subspace" n'est pas de la legende urbaine BDSM. C'est un etat de conscience altere documente empiriquement, avec des correlats neurologiques mesurables.</p>
+        <p>Une etude de Brad Sagarin a utilise le test de Stroop (mesure directe de la fonction executive) et a confirme une alteration cognitive significative chez les soumis.ses apres une scene. Les dominant.es ont montre l'effet inverse.</p>
+      </div>
+      <div class="tab-panel" id="tp-3-jouer">
+        <p style="font-size:0.85rem;margin-bottom:1.5rem;">Vrai ou Mythe? Fais tes meilleurs choix.</p>
+
+        <div class="quiz-q" id="qq-1">
+          <p>L'orgasme feminin est principalement un phenomene genital.</p>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="answerVM(1,'mythe',this)">Vrai</button>
+            <button class="quiz-option" onclick="answerVM(1,'vrai',this)">Mythe</button>
+          </div>
+          <div class="quiz-reveal" id="qr-1">
+            <strong>Mythe.</strong> Lors d'un orgasme profond, plus de 30 regions du cerveau sont actives. Le cortex moteur et le cervelet sont impliques, ce qui explique pourquoi les jambes peuvent ne plus tenir. Ce n'est pas genital. C'est neurologique.
+          </div>
+        </div>
+
+        <div class="quiz-q" id="qq-2">
+          <p>Se sentir absorbee dans l'instant aide les femmes a atteindre l'orgasme.</p>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="answerVM(2,'vrai',this)">Vrai</button>
+            <button class="quiz-option" onclick="answerVM(2,'mythe',this)">Mythe</button>
+          </div>
+          <div class="quiz-reveal" id="qr-2">
+            <strong>Vrai.</strong> Une etude sur 116 sujets a trouve que l'orgasme feminin est correlee a une conscience corporelle elevee (r=.62) et une conscience temporelle reduite (r=-.48). Ces correlations sont significativement plus fortes chez les femmes que chez les hommes.
+          </div>
+        </div>
+
+        <div class="quiz-q" id="qq-3">
+          <p>Les endorphines liberees pendant une scene intense sont similaires a celles du "runner's high".</p>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="answerVM(3,'vrai',this)">Vrai</button>
+            <button class="quiz-option" onclick="answerVM(3,'mythe',this)">Mythe</button>
+          </div>
+          <div class="quiz-reveal" id="qr-3">
+            <strong>Vrai.</strong> Le meme mecanisme: hypofrontalite transitoire d'Arne Dietrich (2003). Le cerveau a des ressources metaboliques limitees. Quand l'intensite physique prend de la place, le cortex prefrontal se met en veille. Le critique interieur disparait avec lui.
+          </div>
+        </div>
+
+        <div class="quiz-q" id="qq-4">
+          <p>Apres une session intense, on peut se sentir triste ou vide 2 a 3 jours plus tard.</p>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="answerVM(4,'vrai',this)">Vrai</button>
+            <button class="quiz-option" onclick="answerVM(4,'mythe',this)">Mythe</button>
+          </div>
+          <div class="quiz-reveal" id="qr-4">
+            <strong>Vrai.</strong> C'est le "drop" differe. Similaire a la depletion de serotonine apres l'MDMA. Un sentiment plat, triste ou anxieux peut apparaitre 24-72 heures apres, meme si tu te sentais bien immediatement apres. C'est physiologique, pas psychologique. Et ca passe.
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" id="tp-3-apprendre">
+        <p>Le mecanisme central: <strong style="color:var(--cream)">la deactivation du cortex orbitofrontal gauche</strong>. C'est la region qui gouverne l'auto-controle, le jugement social et l'inhibition.</p>
+        <p>A l'orgasme, fMRI montre une deactivation significative de cette zone. C'est la signature neurale la plus distinctive de l'orgasme. Quand la vraie reddition est presente, cette deactivation se produit plus completement et plus rapidement.</p>
+        <p style="color:var(--gold);">Le cerveau ne peut pas atteindre le climax s'il est en train de se surveiller lui-meme.</p>
+        <button class="btn" onclick="completeModule(3)">Marquer comme fait</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 4 -->
+  <div class="module-card" id="mod-4">
+    <div class="module-header" onclick="toggleModule(4)">
+      <div class="module-num">4</div>
+      <div class="module-meta">
+        <h3>L'Intention</h3>
+        <span>Ce que je veux apporter</span>
+      </div>
+      <div class="module-badge" id="badge-4">○</div>
+    </div>
+    <div class="module-content" id="mc-4">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(4,'regarder')">Regarder</button>
+        <button class="tab" onclick="switchTab(4,'jouer')">Jouer</button>
+        <button class="tab" onclick="switchTab(4,'apprendre')">Apprendre</button>
+      </div>
+      <div class="tab-panel active" id="tp-4-regarder">
+        <p>Le workshop n'est pas un evenement qui t'arrive. C'est une chose que tu co-crees. Ton intention est le premier acte de la dynamique.</p>
+        <p>Tu n'as pas besoin d'avoir des reponses. Tu as besoin d'avoir des questions.</p>
+      </div>
+      <div class="tab-panel" id="tp-4-jouer">
+        <p style="font-size:0.85rem;margin-bottom:1.5rem;">Ecris une lettre a la version de toi qui sortira du workshop dans 4 heures. Qu'est-ce que tu veux qu'elle ait decouvert?</p>
+        <textarea id="intention-text" rows="8" placeholder="Chere moi de demain..."></textarea>
+        <button class="btn" onclick="saveIntention()">Sauvegarder mon intention</button>
+      </div>
+      <div class="tab-panel" id="tp-4-apprendre">
+        <p>L'intention n'est pas un objectif de performance. C'est une direction de curiosite. La difference est totale: un objectif cree de la surveillance, une direction ouvre la perception.</p>
+        <p style="color:var(--rose-light);">La surveillance mecanique previent l'orgasme. L'ouverture le rend possible.</p>
+        <button class="btn" onclick="completeModule(4)">Marquer comme fait</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEFIS -->
+<section id="defis">
+  <p class="gold" style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Practice</p>
+  <h2>Challenges</h2>
+  <p>One challenge per day. Short. Not insignificant. Each response earns 5 points.</p>
+  <div class="divider"></div>
+
+  <div id="streak-display" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;">
+    <div style="text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--rose-light);line-height:1;" id="streak-current">0</div>
+      <div style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mist);">day streak</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--gold-light);line-height:1;" id="streak-total">0</div>
+      <div style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mist);">completed</div>
+    </div>
+  </div>
+
+  <div id="challenge-container">
+    <div style="color:var(--mist);font-size:0.85rem;">Loading today's challenge...</div>
+  </div>
+</section>
+
+<!-- CARTE DU DESIR -->
+<section id="carte">
+  <p class="gold" style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Exploration</p>
+  <h2>Ma Carte du Desir</h2>
+  <p>Ce formulaire n'est pas obligatoire. Si tu le completes, tu peux choisir de le partager avec le facilitateur avant le workshop.</p>
+  <div class="divider"></div>
+
+  <div id="carte-form">
+
+    <div class="carte-q">
+      <label>1. Qu'est-ce qui t'a amene ici?</label>
+      <span class="hint">Ce qui t'interesse vraiment dans cette exploration.</span>
+      <textarea id="cq-1" rows="3" placeholder="Je suis curieuse de..."></textarea>
+    </div>
+
+    <div class="carte-q">
+      <label>2. Qu'est-ce qui t'allume le plus facilement?</label>
+      <span class="hint">Selectionne tout ce qui resonne, ajoute le tien.</span>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="toggleOpt(this)">Les mots</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Le regard</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Le toucher lent</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">L'intensite</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Le silence</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">La voix</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">La tension</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Etre vue</button>
+      </div>
+      <textarea id="cq-2" rows="2" placeholder="Autre chose..."></textarea>
+    </div>
+
+    <div class="carte-q">
+      <label>3. Qu'est-ce que tu n'as jamais explore mais qui t'intrigue?</label>
+      <textarea id="cq-3" rows="3" placeholder="Je n'ai jamais..."></textarea>
+    </div>
+
+    <div class="carte-q">
+      <label>4. Y a-t-il quelque chose que tu ne veux absolument pas?</label>
+      <span class="hint">Pas de jugement. Tes limites sont de l'information, pas des freins.</span>
+      <textarea id="cq-4" rows="3" placeholder="Je ne veux pas..."></textarea>
+    </div>
+
+    <div class="carte-q">
+      <label>5. Comment tu sais que tu es vraiment dans ton corps?</label>
+      <span class="hint">Ce qui te signale que tu es presente et absorbee.</span>
+      <textarea id="cq-5" rows="3" placeholder="Je suis dans mon corps quand..."></textarea>
+    </div>
+
+    <div class="carte-q">
+      <label>6. Qu'est-ce que tu veux ressentir en sortant du workshop?</label>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="toggleOpt(this)">Liberee</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Ancree</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Curieuse</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Ouverte</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Courageuse</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Silencieuse</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">En feu</button>
+        <button class="opt-btn" onclick="toggleOpt(this)">Douce</button>
+      </div>
+    </div>
+
+    <div class="safe-word-box">
+      <h3>Mon mot de securite</h3>
+      <p>Ce mot signifie "stop complet". Rouge (stop), Jaune (ralentis), Vert (plus). Quel est ton rouge?</p>
+      <input type="text" id="safe-word" placeholder="MON MOT">
+    </div>
+
+    <button class="btn gold" onclick="submitCarte()">Sauvegarder ma carte</button>
+    <p style="font-size:0.75rem;margin-top:0.5rem;color:rgba(240,232,224,0.3);">Tes reponses sont sauvegardees localement. Tu peux choisir de les partager lors du workshop.</p>
+  </div>
+
+  <div class="submitted-msg" id="carte-done">
+    <h2>Ta carte est complete.</h2>
+    <p>Tu peux la modifier a tout moment en revenant sur cette page.</p>
+    <button class="btn" onclick="editCarte()">Modifier mes reponses</button>
+  </div>
+</section>
+
+<!-- MON LABORATOIRE -->
+<section id="lab">
+  <p class="gold" style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Reflexion</p>
+  <h2>Mon Laboratoire</h2>
+  <p>Un espace pour noter ce qui remonte. Personnel. Reste ici.</p>
+  <div class="divider"></div>
+
+  <div class="lab-note">
+    <label>Ce que j'observe dans mon corps en ce moment</label>
+    <textarea id="lab-body" rows="5" placeholder="Chaleur, tension, legerete, vide..."></textarea>
+  </div>
+
+  <div class="lab-note">
+    <label>Ce qui me resiste et ce qui m'attire</label>
+    <textarea id="lab-resist" rows="5" placeholder="Ca me resiste: ... / Ca m'attire: ..."></textarea>
+  </div>
+
+  <div class="lab-note">
+    <label>Notes libres</label>
+    <textarea id="lab-free" rows="8" placeholder="Tout ce qui veut sortir..."></textarea>
+  </div>
+
+  <button class="btn" onclick="saveLab()">Sauvegarder mes notes</button>
+</section>
+
+<!-- DISCOVER -->
+<section id="discover">
+  <p class="gold" style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Know Yourself</p>
+  <h2>Discover</h2>
+  <p>Six explorations. Each one reveals something about how you move through desire, connection, and your body. Take them in any order. Save your results and revisit them after the workshop.</p>
+  <div class="divider"></div>
+
+  <div id="profile-tests-container">
+    <!-- Tests rendered by JS -->
+  </div>
+</section>
+
+<!-- REWARDS -->
+<section id="rewards">
+  <p class="gold" style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Your Points</p>
+  <h2>Rewards</h2>
+  <p>Every module completed and every challenge answered earns you points. Spend them on experiences before, during, and after the workshop.</p>
+  <div class="divider"></div>
+  <div id="rewards-points-bar" style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem;">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--gold-light)" id="rewards-pts-display">0</span>
+    <span style="font-size:0.75rem;color:var(--mist);letter-spacing:0.08em;text-transform:uppercase;">points available</span>
+  </div>
+  <div id="rewards-catalog-container"></div>
+  <div id="rewards-claimed-wrap" style="margin-top:3rem;display:none">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--rose-light);margin-bottom:1rem;">Your Claimed Rewards</h3>
+    <div id="rewards-claimed-container"></div>
+  </div>
+</section>
+
+<footer>
+  Pleasure Playground. Private. For you.
+</footer>
+
+<script>
+const KEY = 'pp_data_v1';
+const PP_TOKEN_KEY = 'pp_jwt';
+
+function getData() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { return {}; }
+}
+function saveData(d) {
+  localStorage.setItem(KEY, JSON.stringify(d));
+  updateProgress();
+}
+
+// AUTH
+async function ppApi(method, path, body) {
+  const token = localStorage.getItem(PP_TOKEN_KEY);
+  const headers = {'Content-Type': 'application/json'};
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const opts = {method, headers};
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch('/api/pp-auth' + path, opts);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.detail || 'Request failed');
+  return data;
+}
+
+function showGateTab(tab) {
+  document.getElementById('login-form').style.display = tab === 'login' ? 'flex' : 'none';
+  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+}
+
+function toggleTag(btn) {
+  btn.classList.toggle('active');
+}
+
+function goToIntake(forward = true) {
+  document.getElementById('reg-step-1').style.display = forward ? 'none' : 'flex';
+  document.getElementById('reg-step-2').style.display = forward ? 'block' : 'none';
+  if (forward) {
+    const display_name = document.getElementById('reg-display-name').value.trim();
+    const username = document.getElementById('reg-username').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const invite_code = document.getElementById('reg-invite').value.trim().toUpperCase();
+    document.getElementById('reg-error').textContent = '';
+    if (!display_name || !username || !password || !invite_code) {
+      document.getElementById('reg-error').textContent = 'All fields required.';
+      document.getElementById('reg-step-1').style.display = 'flex';
+      document.getElementById('reg-step-2').style.display = 'none';
+      return;
+    }
+    if (password.length < 8) {
+      document.getElementById('reg-error').textContent = 'Password must be at least 8 characters.';
+      document.getElementById('reg-step-1').style.display = 'flex';
+      document.getElementById('reg-step-2').style.display = 'none';
+      return;
+    }
+  }
+}
+
+async function doLogin() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  document.getElementById('login-error').textContent = '';
+  try {
+    const res = await ppApi('POST', '/auth/login', {username, password});
+    localStorage.setItem(PP_TOKEN_KEY, res.token);
+    unlockPortal(res);
+  } catch(e) {
+    document.getElementById('login-error').textContent = e.message;
+  }
+}
+
+async function doRegister() {
+  const display_name = document.getElementById('reg-display-name').value.trim();
+  const username = document.getElementById('reg-username').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const invite_code = document.getElementById('reg-invite').value.trim().toUpperCase();
+  document.getElementById('reg-step2-error').textContent = '';
+  try {
+    const res = await ppApi('POST', '/auth/register', {display_name, username, password, invite_code});
+    localStorage.setItem(PP_TOKEN_KEY, res.token);
+    // Post intake data (fire-and-forget)
+    const explores = [...document.querySelectorAll('.tag-btn.active')].map(b => b.textContent).join(', ');
+    ppApi('POST', '/intake', {
+      brings_you_here: document.getElementById('intake-brings').value.trim() || null,
+      want_to_explore: explores || null,
+      biggest_challenge: document.getElementById('intake-challenge').value.trim() || null,
+      experience_level: document.getElementById('intake-experience').value || null,
+      one_word: document.getElementById('intake-word').value.trim() || null,
+    }).catch(() => {});
+    unlockPortal(res);
+  } catch(e) {
+    document.getElementById('reg-step2-error').textContent = e.message;
+  }
+}
+
+function unlockPortal(user) {
+  document.getElementById('gate').classList.add('hidden');
+  const nameEl = document.getElementById('nav-user-name');
+  if (nameEl) nameEl.textContent = user.display_name || user.username || '';
+  const navUser = document.getElementById('nav-user');
+  if (navUser) navUser.style.display = 'flex';
+  loadAll();
+}
+
+function logout() {
+  localStorage.removeItem(PP_TOKEN_KEY);
+  location.reload();
+}
+
+// Auto-login: validate stored JWT on load
+(async function() {
+  const token = localStorage.getItem(PP_TOKEN_KEY);
+  if (token) {
+    try {
+      const user = await ppApi('GET', '/auth/me');
+      unlockPortal(user);
+    } catch(e) {
+      localStorage.removeItem(PP_TOKEN_KEY);
+    }
+  }
+})();
+
+document.getElementById('login-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function loadAll() {
+  const d = getData();
+  d.unlocked = true;
+  saveData(d);
+  loadSliders(d);
+  loadBodySigns(d);
+  loadModuleBadges(d);
+  loadCarte(d);
+  loadLab(d);
+  updateProgress();
+  autoSaveInterval();
+  renderTests();
+  loadDefis();
+  loadRewards();
+  loadModuleBadgesFromApi();
+}
+
+// PROGRESS
+function updateProgress() {
+  const d = getData();
+  let mDone = 0;
+  for (let i=1;i<=4;i++) if (d['module_'+i+'_done']) mDone++;
+  let defDone = 0;
+  for (let i=1;i<=7;i++) if (d['defi_'+i+'_done']) defDone++;
+  const carte = d.carte_submitted ? 'Oui' : 'Non';
+
+  const el = id => document.getElementById(id);
+  if(el('cnt-modules')) el('cnt-modules').textContent = mDone+'/4';
+  if(el('cnt-defis')) el('cnt-defis').textContent = defDone+'/7';
+  if(el('cnt-carte')) el('cnt-carte').textContent = carte;
+
+  const total = mDone + defDone + (d.carte_submitted ? 3 : 0);
+  const max = 4 + 7 + 3;
+  const pct = Math.round((total / max) * 100);
+  if(el('progress-fill')) el('progress-fill').style.transform = 'scaleX(' + (pct/100) + ')';
+}
+
+// MODULES
+function toggleModule(n) {
+  const mc = document.getElementById('mc-'+n);
+  mc.classList.toggle('open');
+}
+
+function switchTab(mod, name) {
+  const panels = document.querySelectorAll('#mc-'+mod+' .tab-panel');
+  const tabs = document.querySelectorAll('#mc-'+mod+' .tab');
+  panels.forEach(p => p.classList.remove('active'));
+  tabs.forEach(t => t.classList.remove('active'));
+  document.getElementById('tp-'+mod+'-'+name).classList.add('active');
+  const idx = ['regarder','jouer','apprendre'].indexOf(name);
+  if (tabs[idx]) tabs[idx].classList.add('active');
+}
+
+async function completeModule(n) {
+  const badge = document.getElementById('badge-'+n);
+  if (badge) { badge.classList.add('done'); badge.textContent = '✓'; }
+  try {
+    const result = await ppApi('POST', '/modules/'+n+'/complete');
+    if (result.total_points !== undefined) {
+      const ptsEl = document.getElementById('rewards-pts-display');
+      if (ptsEl) ptsEl.textContent = result.total_points;
+    }
+    const d = getData();
+    d['module_'+n+'_done'] = true;
+    saveData(d);
+    loadModuleBadgesFromApi();
+  } catch(e) {
+    const d = getData();
+    d['module_'+n+'_done'] = true;
+    saveData(d);
+  }
+}
+
+function loadModuleBadges(d) {
+  for (let i=1;i<=4;i++) {
+    if (d['module_'+i+'_done']) {
+      const badge = document.getElementById('badge-'+i);
+      if (badge) { badge.classList.add('done'); badge.textContent = '✓'; }
+    }
+  }
+}
+
+async function loadModuleBadgesFromApi() {
+  try {
+    const mods = await ppApi('GET', '/modules');
+    const mDone = mods.filter(m => m.completed).length;
+    const d = getData();
+    mods.forEach(m => {
+      if (m.completed) {
+        d['module_'+m.id+'_done'] = true;
+        const badge = document.getElementById('badge-'+m.id);
+        if (badge) { badge.classList.add('done'); badge.textContent = '✓'; }
+      }
+    });
+    localStorage.setItem(KEY, JSON.stringify(d));
+    if (document.getElementById('cnt-modules')) {
+      const visible = document.querySelectorAll('[id^="badge-"]').length || mods.length;
+      document.getElementById('cnt-modules').textContent = mDone+'/'+visible;
+    }
+  } catch(e) {}
+}
+
+// SLIDERS
+function updateSlider(n) {
+  const val = document.getElementById('sl-'+n).value;
+  document.getElementById('sv-'+n).textContent = val;
+}
+function saveSliders() {
+  const d = getData();
+  for (let i=1;i<=5;i++) {
+    d['slider_val-'+i] = document.getElementById('sl-'+i).value;
+  }
+  saveData(d);
+  alert('Carte sauvegardee.');
+}
+function loadSliders(d) {
+  for (let i=1;i<=5;i++) {
+    if (d['slider_val-'+i] !== undefined) {
+      const el = document.getElementById('sl-'+i);
+      if (el) {
+        el.value = d['slider_val-'+i];
+        document.getElementById('sv-'+i).textContent = d['slider_val-'+i];
+      }
+    }
+  }
+}
+
+// BODY SIGNS
+function toggleBodySign(btn) {
+  btn.classList.toggle('selected');
+}
+function saveBodySigns() {
+  const d = getData();
+  const selected = [];
+  document.querySelectorAll('#body-quiz .quiz-option.selected').forEach(b => selected.push(b.textContent));
+  d.body_signs = selected;
+  d.body_signs_other = document.getElementById('body-other').value;
+  saveData(d);
+  alert('Signaux sauvegardes.');
+}
+function loadBodySigns(d) {
+  if (d.body_signs) {
+    document.querySelectorAll('#body-quiz .quiz-option').forEach(b => {
+      if (d.body_signs.includes(b.textContent)) b.classList.add('selected');
+    });
+  }
+  if (d.body_signs_other) {
+    const el = document.getElementById('body-other');
+    if (el) el.value = d.body_signs_other;
+  }
+}
+
+// VRAI/MYTHE QUIZ
+const correctVM = { 1:'mythe', 2:'vrai', 3:'vrai', 4:'vrai' };
+function answerVM(n, answer, btn) {
+  const container = document.getElementById('qq-'+n);
+  const opts = container.querySelectorAll('.quiz-option');
+  opts.forEach(o => {
+    o.disabled = true;
+    o.classList.remove('selected','correct','wrong');
+  });
+  const reveal = document.getElementById('qr-'+n);
+  if (answer === correctVM[n]) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    opts.forEach(o => {
+      if (!o.disabled || o === btn) return;
+      // find correct one
+    });
+  }
+  if (reveal) reveal.classList.add('show');
+}
+
+// DEFIS (API-driven)
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+async function loadDefis() {
+  try {
+    const [todayData, streakData] = await Promise.all([
+      ppApi('GET', '/challenges/today'),
+      ppApi('GET', '/challenges/streak'),
+    ]);
+    if (document.getElementById('streak-current')) document.getElementById('streak-current').textContent = streakData.current_streak;
+    if (document.getElementById('streak-total')) document.getElementById('streak-total').textContent = streakData.total_completed;
+    if (document.getElementById('cnt-defis')) document.getElementById('cnt-defis').textContent = streakData.total_completed;
+    const container = document.getElementById('challenge-container');
+    if (!container) return;
+    if (todayData.already_completed) {
+      container.innerHTML = `<div style="background:rgba(74,138,90,0.1);border:1px solid rgba(74,138,90,0.3);border-radius:4px;padding:1.5rem;text-align:center;"><div style="font-size:1.6rem;margin-bottom:0.5rem;">&#10003;</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--rose-light);">Today's challenge complete.</div><div style="font-size:0.8rem;color:var(--mist);margin-top:0.5rem;">Come back tomorrow for the next one.</div></div>`;
+      return;
+    }
+    const c = todayData.challenge;
+    container.innerHTML = `<div style="background:var(--plum);border:1px solid var(--plum-mid);border-radius:4px;padding:1.5rem;"><div style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Day ${c.day_number||''}</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--rose-light);margin-bottom:0.8rem;">${esc(c.title)}</div><div style="font-size:0.88rem;color:var(--mist);margin-bottom:1.5rem;line-height:1.7;">${esc(c.description)}</div><div style="font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--mist);margin-bottom:0.4rem;">Your reflection <span style="color:rgba(240,232,224,0.3)">(min 50 chars)</span></div><textarea id="challenge-response" placeholder="Write here..." style="width:100%;background:rgba(8,5,12,0.4);border:1px solid var(--plum-mid);color:var(--cream);padding:0.8rem;border-radius:4px;font-family:inherit;font-size:0.88rem;resize:vertical;min-height:100px;outline:none;transition:border-color 0.2s;box-sizing:border-box;" oninput="this.style.borderColor=this.value.length>=50?'var(--rose-mid)':'var(--plum-mid)'"></textarea><button onclick="submitChallenge(${c.id})" style="margin-top:0.8rem;background:linear-gradient(135deg,var(--rose-dark),var(--rose-mid));border:none;color:var(--cream);padding:0.7rem 1.8rem;font-family:'DM Sans',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:opacity 0.2s;">Submit (+5 pts)</button><div id="challenge-err" style="margin-top:0.5rem;font-size:0.78rem;color:var(--rose-mid);min-height:1em;"></div></div>`;
+  } catch(e) {
+    const c = document.getElementById('challenge-container');
+    if (c) c.innerHTML = '<div style="color:var(--mist);font-size:0.85rem;">Challenges start August 1st. Check back then.</div>';
+  }
+}
+
+async function submitChallenge(challengeId) {
+  const resp = document.getElementById('challenge-response').value.trim();
+  const errEl = document.getElementById('challenge-err');
+  if (resp.length < 50) { errEl.textContent = 'Response must be at least 50 characters.'; return; }
+  errEl.textContent = '';
+  try {
+    await ppApi('POST', '/challenges/' + challengeId + '/complete', { response: resp });
+    await loadDefis();
+  } catch(e) {
+    const e2 = document.getElementById('challenge-err');
+    if (e2) e2.textContent = 'Could not submit. Try again.';
+  }
+}
+
+// CARTE
+function toggleOpt(btn) { btn.classList.toggle('active'); }
+function getSelectedOpts(container) {
+  const opts = [];
+  container.querySelectorAll('.opt-btn.active').forEach(b => opts.push(b.textContent));
+  return opts;
+}
+
+function submitCarte() {
+  const d = getData();
+  d['carte_q1'] = document.getElementById('cq-1').value;
+  d['carte_q2_opts'] = getSelectedOpts(document.querySelectorAll('#carte .carte-q')[1]);
+  d['carte_q2_text'] = document.getElementById('cq-2').value;
+  d['carte_q3'] = document.getElementById('cq-3').value;
+  d['carte_q4'] = document.getElementById('cq-4').value;
+  d['carte_q5'] = document.getElementById('cq-5').value;
+  d['carte_q6_opts'] = getSelectedOpts(document.querySelectorAll('#carte .carte-q')[5]);
+  d['carte_safeword'] = document.getElementById('safe-word').value;
+  d.carte_submitted = true;
+  d.carte_submitted_at = new Date().toISOString();
+  saveData(d);
+
+  document.getElementById('carte-form').style.display = 'none';
+  document.getElementById('carte-done').classList.add('show');
+}
+
+function editCarte() {
+  document.getElementById('carte-form').style.display = 'block';
+  document.getElementById('carte-done').classList.remove('show');
+}
+
+function loadCarte(d) {
+  if (d.carte_submitted) {
+    if (document.getElementById('cq-1')) document.getElementById('cq-1').value = d.carte_q1 || '';
+    if (document.getElementById('cq-2')) document.getElementById('cq-2').value = d.carte_q2_text || '';
+    if (document.getElementById('cq-3')) document.getElementById('cq-3').value = d.carte_q3 || '';
+    if (document.getElementById('cq-4')) document.getElementById('cq-4').value = d.carte_q4 || '';
+    if (document.getElementById('cq-5')) document.getElementById('cq-5').value = d.carte_q5 || '';
+    if (document.getElementById('safe-word')) document.getElementById('safe-word').value = d.carte_safeword || '';
+    document.getElementById('carte-form').style.display = 'none';
+    document.getElementById('carte-done').classList.add('show');
+  }
+}
+
+// SAVE INTENTION
+function saveIntention() {
+  const d = getData();
+  d.reflect_m4 = document.getElementById('intention-text').value;
+  saveData(d);
+  alert('Intention sauvegardee.');
+}
+
+// LAB
+// ---- PROFILE TESTS ----
+const TESTS = [
+  {
+    id: 'ds-spectrum',
+    title: 'The Spectrum',
+    subtitle: 'Where do you naturally land on the D/s axis?',
+    emoji: '⚖',
+    questions: [
+      { q: 'When things are uncertain, I prefer to...', a: [['Take charge and direct', -2], ['Read the room and adapt', 0], ['Follow someone else\'s lead', 2]] },
+      { q: 'In intimate moments, the idea that excites me most is...', a: [['Being the one who decides what happens', -2], ['Co-creating together equally', 0], ['Surrendering completely to someone I trust', 2]] },
+      { q: 'Receiving explicit instructions from someone feels...', a: [['Limiting and frustrating', -2], ['Depends entirely on who', 0], ['Deeply relaxing and freeing', 2]] },
+      { q: 'The phrase that resonates most is...', a: [['I want to be the one holding the space', -2], ['I want us both to feel free', 0], ['I want to be held completely', 2]] },
+      { q: 'When I imagine being physically restrained...', a: [['I\'d want to be the one doing the restraining', -2], ['I\'m curious but unsure which side', 0], ['Something in me relaxes at the thought', 2]] },
+      { q: 'After an intense intimate experience, I feel most replenished by...', a: [['Knowing I held the other person well', -2], ['The connection we created together', 0], ['The care I received while I let go', 2]] },
+    ],
+    score: (total) => {
+      const val = Math.round(total);
+      if (val <= -8) return { label: 'Dominant', pct: 5, interp: 'You carry a strong natural pull toward holding space, directing energy, and being the one others can trust to lead. In intimacy, your deepest pleasure often comes from the other person\'s surrender. This is not about control for its own sake. It\'s about the profound responsibility of holding someone completely.' };
+      if (val <= -4) return { label: 'Dominant-leaning', pct: 25, interp: 'You lean naturally toward taking the lead but you\'re not rigid about it. You enjoy being in charge when the chemistry is right, but you can move fluidly when the situation calls for it. Your edge lives in learning to hold more intentionally.' };
+      if (val <= 2) return { label: 'Switch', pct: 50, interp: 'You move between both poles with genuine pleasure. Depending on the person, the moment, or your own internal state, you can lead or surrender with equal authenticity. This is one of the most complex positions to inhabit, and one of the richest.' };
+      if (val <= 6) return { label: 'Submissive-leaning', pct: 75, interp: 'You have a natural draw toward surrendering, toward being guided, held, and cared for. You don\'t give this easily, which means when you do, it\'s profound. Your work is learning to ask for the conditions that make your surrender feel safe.' };
+      return { label: 'Submissive', pct: 95, interp: 'Your deepest pleasure lives in full surrender to someone you completely trust. This is not passivity. It takes enormous strength and self-knowledge to surrender well. Your gift is the depth of trust you offer when the right container holds you.' };
+    },
+    renderResult: (r) => `<div class="test-result"><div class="spectrum-bar"><div class="spectrum-fill" style="left:${r.pct-8}%;width:16%"></div><div class="spectrum-labels"><span>Dominant</span><span>Switch</span><span>Submissive</span></div></div><div class="result-label">${r.label}</div><p class="result-interp">${r.interp}</p></div>`
+  },
+  {
+    id: 'ssk-orientation',
+    title: 'Your Desire Language',
+    subtitle: 'Sensual, Sexual, or Kink - what speaks to you?',
+    emoji: '◈',
+    questions: [
+      { q: 'What I crave most in intimate connection is...', a: [['Skin, scent, warmth, presence - the full sensory immersion', 'S'], ['The pure physical intensity of bodies meeting', 'X'], ['The psychology, the power, the edge of something slightly forbidden', 'K']] },
+      { q: 'The most arousing thing someone can do is...', a: [['Move incredibly slowly and pay total attention to every signal I give', 'S'], ['Show me how much they want my body', 'X'], ['Play with power in a way that makes my mind go quiet', 'K']] },
+      { q: 'I feel most alive in intimacy when...', a: [['Every sense is engaged and time disappears', 'S'], ['The physical pleasure is so intense I can\'t think', 'X'], ['There is a dynamic at play that goes beyond bodies', 'K']] },
+      { q: 'After an intense experience, what I remember most is...', a: [['The quality of touch, the warmth, how held I felt', 'S'], ['The physical peak, the release, the intensity', 'X'], ['The energy between us, the unspoken agreement, the psychology', 'K']] },
+      { q: 'The word that most resonates with what I want is...', a: [['Dissolve', 'S'], ['Devour', 'X'], ['Surrender (but with intention behind it)', 'K']] },
+      { q: 'Ritual appeals to me because...', a: [['It deepens presence and makes the ordinary sacred', 'S'], ['It builds anticipation that makes the physical release more intense', 'X'], ['It creates a container where roles and power can be clearly defined', 'K']] },
+    ],
+    score: (answers) => {
+      const counts = { S: 0, X: 0, K: 0 };
+      answers.forEach(a => { if (counts[a] !== undefined) counts[a]++; });
+      const total = Object.values(counts).reduce((a,b) => a+b, 0) || 1;
+      return { S: Math.round(counts.S/total*100), X: Math.round(counts.X/total*100), K: Math.round(counts.K/total*100) };
+    },
+    renderResult: (r) => {
+      const top = Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];
+      const labels = { S: 'Sensual', X: 'Sexual', K: 'Kink-oriented' };
+      const interps = {
+        S: 'Your primary desire language is Sensual. You\'re deeply responsive to atmosphere, texture, slowness, and presence. For you, intimacy is a full-body immersion experience where physical pleasure is inseparable from emotional connection. The quality of touch matters more than its intensity.',
+        X: 'Your primary desire language is Sexual. You\'re drawn to the raw physical intensity of bodies meeting, the energy of mutual desire, the pleasure of pure sensation. You don\'t need layers of complexity to feel satisfied. When the physical connection is real, everything else follows.',
+        K: 'Your primary desire language is Kink-oriented. What moves you most isn\'t just physical, it\'s psychological. Power dynamics, the edge of transgression, the deliberate construction of a scene, the trust required to play near a boundary. For you, the mind is the primary erogenous zone.',
+      };
+      return `<div class="test-result"><div class="ssk-bars">${Object.entries(labels).map(([k,l])=>`<div class="ssk-row"><span>${l}</span><div class="ssk-track"><div class="ssk-fill" style="width:${r[k]}%"></div></div><span>${r[k]}%</span></div>`).join('')}</div><div class="result-label">${labels[top]}</div><p class="result-interp">${interps[top]}</p></div>`;
+    }
+  },
+  {
+    id: 'desire-driver',
+    title: 'What Drives Desire',
+    subtitle: 'The engine underneath your wanting.',
+    emoji: '◎',
+    questions: [
+      { q: 'I feel most turned on when...', a: [['I feel completely safe and truly seen by someone', 'safety'], ['The physical sensation is overwhelming', 'sensation'], ['Something unexpected or new happens', 'novelty'], ['There\'s a clear power differential in play', 'power'], ['I\'m inside a fantasy world we\'ve both agreed to enter', 'fantasy']] },
+      { q: 'What kills desire for me faster than anything is...', a: [['Feeling emotionally unsafe or unseen', 'safety'], ['Sensory disconnection or numbness', 'sensation'], ['Routine and predictability', 'novelty'], ['No clear direction or dynamic', 'power'], ['Being pulled out of the imaginary space', 'fantasy']] },
+      { q: 'My most memorable intimate experiences involved...', a: [['Deep emotional trust and vulnerability', 'safety'], ['Extraordinary physical sensation', 'sensation'], ['Something we\'d never done before', 'novelty'], ['One of us clearly in charge', 'power'], ['A story or role we were playing together', 'fantasy']] },
+      { q: 'If I could design the perfect experience, it would start with...', a: [['A long, unhurried conversation that builds real connection', 'safety'], ['Touch that gradually intensifies without agenda', 'sensation'], ['A spontaneous invitation to do something unexpected', 'novelty'], ['An explicit agreement about who leads', 'power'], ['Setting up a scene or story together', 'fantasy']] },
+    ],
+    score: (answers) => {
+      const counts = { safety: 0, sensation: 0, novelty: 0, power: 0, fantasy: 0 };
+      answers.forEach(a => { if (counts[a] !== undefined) counts[a]++; });
+      return counts;
+    },
+    renderResult: (r) => {
+      const top = Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];
+      const labels = { safety: 'Safety', sensation: 'Sensation', novelty: 'Novelty', power: 'Power', fantasy: 'Fantasy' };
+      const interps = {
+        safety: 'Your desire is rooted in safety. You don\'t need wild or complex, you need real. When you feel genuinely seen and emotionally safe, your desire unlocks fully. Your work is not chasing more intensity, it\'s finding people who can hold space so you can actually arrive.',
+        sensation: 'Your desire lives in the body. Sensation is your primary doorway. You\'re deeply responsive to touch, temperature, pressure, rhythm, and physical intensity. Slowing down often amplifies everything for you. You don\'t need elaborate setup, you need presence and responsiveness.',
+        novelty: 'Novelty is your desire engine. New experiences, unexpected moments, the edge of the unknown. Routine dampens you; surprise awakens you. Your challenge is finding partners who can keep up with your need for freshness without that becoming pressure.',
+        power: 'Power dynamics are your primary desire driver. The explicit negotiation of who leads and who follows, the clarity of a defined dynamic, the trust that makes that dynamic possible. You\'re most alive in intimacy when the map is clear.',
+        fantasy: 'Your desire lives in imagination. You\'re aroused by story, by character, by the co-creation of a shared world. Fantasy isn\'t escapism for you, it\'s access. You may need partners willing to enter the imaginary space alongside you.',
+      };
+      const sorted = Object.entries(r).sort((a,b)=>b[1]-a[1]);
+      return `<div class="test-result"><div class="ssk-bars">${sorted.map(([k])=>`<div class="ssk-row"><span>${labels[k]}</span><div class="ssk-track"><div class="ssk-fill" style="width:${r[k]*25}%"></div></div></div>`).join('')}</div><div class="result-label">Your engine: ${labels[top]}</div><p class="result-interp">${interps[top]}</p></div>`;
+    }
+  },
+  {
+    id: 'communication-style',
+    title: 'How You Communicate',
+    subtitle: 'Your intimacy communication signature.',
+    emoji: '◇',
+    questions: [
+      { q: 'When I want something in an intimate moment, I usually...', a: [['Say it directly and clearly', 'direct'], ['Find a way to show rather than tell', 'nonverbal'], ['Wait and hope they notice', 'silent'], ['Turn it into a game or playful ask', 'playful']] },
+      { q: 'When something doesn\'t feel right, I tend to...', a: [['Name it immediately', 'direct'], ['Pull back physically and hope they read it', 'nonverbal'], ['Push through without saying anything', 'silent'], ['Redirect with humor or a different suggestion', 'playful']] },
+      { q: 'My biggest challenge in asking for what I want is...', a: [['Nothing - I ask directly', 'direct'], ['Finding the right words when my body already knows', 'nonverbal'], ['Fear of being too much or asking for too much', 'silent'], ['Being taken seriously when I\'m being playful', 'playful']] },
+      { q: 'After an experience, I process by...', a: [['Talking through what worked and what didn\'t', 'direct'], ['Staying in physical closeness without words', 'nonverbal'], ['Internalizing everything quietly', 'silent'], ['Making it light, finding the funny in it', 'playful']] },
+    ],
+    score: (answers) => {
+      const counts = { direct: 0, nonverbal: 0, silent: 0, playful: 0 };
+      answers.forEach(a => { if (counts[a] !== undefined) counts[a]++; });
+      return counts;
+    },
+    renderResult: (r) => {
+      const top = Object.entries(r).sort((a,b)=>b[1]-a[1])[0][0];
+      const labels = { direct: 'Direct', nonverbal: 'Somatic', silent: 'Internal', playful: 'Playful' };
+      const interps = {
+        direct: 'You communicate directly. Words are your preferred tool and you\'re generally comfortable naming what you want. Your growth edge is learning that not everyone receives direct communication the same way, and that sometimes slowing down into sensation before speaking creates more intimacy than the words themselves.',
+        nonverbal: 'Your body speaks before your words do. You\'re highly tuned to physical signals, touch, space, breath, and you communicate through these fluently. Your growth edge is developing a verbal vocabulary that matches your somatic one, so partners who aren\'t as body-literate can actually hear you.',
+        silent: 'You tend to process intimacy internally and may struggle to ask for what you need. This often comes from fear of rejection or of being too much. Your growth edge is the practice of naming one want per encounter, even something tiny. The muscle builds with repetition.',
+        playful: 'You use lightness and humor as your primary communication style. This creates warmth and lowers barriers. Your growth edge is learning to stay in the playful register while also being able to drop into something more serious when the moment calls for it.',
+      };
+      return `<div class="test-result"><div class="result-label">${labels[top]} Communicator</div><p class="result-interp">${interps[top]}</p></div>`;
+    }
+  },
+  {
+    id: 'body-connection',
+    title: 'Body Connection',
+    subtitle: 'How present are you in your own body?',
+    emoji: '○',
+    questions: [
+      { q: 'During intimate moments, I am usually...', a: [['Fully inside my body and sensations', 3], ['Mostly present with occasional mind-wandering', 2], ['About half and half, body and thoughts', 1], ['Mostly in my head, watching from above', 0]] },
+      { q: 'I notice physical sensations in my body...', a: [['Immediately and clearly', 3], ['After a short delay', 2], ['Only when they become quite strong', 1], ['I sometimes miss them entirely', 0]] },
+      { q: 'When something in an intimate context doesn\'t feel right, my body...', a: [['Signals it immediately and I listen', 3], ['Signals it and I notice eventually', 2], ['Signals something but I override it', 1], ['I tend not to notice until much later', 0]] },
+      { q: 'Taking a full conscious breath right now feels...', a: [['Natural and immediate', 3], ['Possible with a little effort', 2], ['I had to really try', 1], ['My breath is shallow most of the time', 0]] },
+      { q: 'After a physical or sexual experience, I tend to...', a: [['Come back to my body naturally', 3], ['Take a few minutes to ground', 2], ['Feel floaty or disconnected for a while', 1], ['Often feel numb or strangely absent', 0]] },
+    ],
+    score: (answers) => answers.reduce((a,b)=>a+b, 0),
+    renderResult: (total) => {
+      const pct = Math.round(total / 15 * 100);
+      const levels = [
+        [0, 40, 'Developing Connection', 'Your body and you are still getting acquainted. This is common, especially if you\'ve spent a lot of life in your head, or if experiences have made disconnection feel safer. The practices in this workshop are specifically designed for where you are. Somatic awareness is a skill, not a fixed trait.'],
+        [40, 70, 'Building Connection', 'You have a real relationship with your body but there are moments when you lose the thread, especially under intensity or stress. Your work is building consistency, learning to return to your body faster when you drift, and trusting what you feel when you\'re fully present.'],
+        [70, 101, 'Embodied', 'You live in your body with a high degree of awareness. You notice sensations quickly, you trust your body\'s signals, and you come back naturally when you drift. Your work is deepening this, accessing subtler layers, and helping others feel safe enough to find what you have.'],
+      ];
+      const [,, label, interp] = levels.find(([min, max]) => pct >= min && pct < max);
+      return `<div class="test-result"><div class="body-score-ring" style="--pct:${pct}"><span>${pct}%</span></div><div class="result-label">${label}</div><p class="result-interp">${interp}</p></div>`;
+    }
+  },
+  {
+    id: 'turn-on-map',
+    title: 'Turn-On Map',
+    subtitle: 'Select everything that resonates.',
+    emoji: '✦',
+    isMapping: true,
+    categories: [
+      { id: 'touch', label: 'Quality of touch', desc: 'Slow, deliberate, attentive touch' },
+      { id: 'words', label: 'Words and voice', desc: 'What\'s said, how it\'s said, the tone' },
+      { id: 'eye', label: 'Eye contact', desc: 'Being truly seen' },
+      { id: 'scent', label: 'Scent', desc: 'Body, environment, specific smells' },
+      { id: 'power', label: 'Power differential', desc: 'Someone clearly in charge' },
+      { id: 'surrender', label: 'Full surrender', desc: 'Letting go completely' },
+      { id: 'anticipation', label: 'Anticipation', desc: 'The buildup before anything happens' },
+      { id: 'risk', label: 'The edge', desc: 'Slight risk, transgression, the almost-too-much' },
+      { id: 'ritual', label: 'Ritual', desc: 'Intentional setup, sacred atmosphere' },
+      { id: 'play', label: 'Playfulness', desc: 'Lightness, laughter, games' },
+      { id: 'restraint', label: 'Physical restraint', desc: 'Being held in place' },
+      { id: 'audience', label: 'Being witnessed', desc: 'Someone watching or knowing' },
+      { id: 'novelty', label: 'Novelty', desc: 'First times, new territory' },
+      { id: 'depth', label: 'Emotional depth', desc: 'Intimacy as emotional vulnerability' },
+      { id: 'body', label: 'Pure physical sensation', desc: 'Bodies, intensity, pleasure' },
+      { id: 'fantasy', label: 'Fantasy and role', desc: 'Story, character, imagination' },
+    ],
+    renderResult: (selected) => {
+      if (!selected.length) return '<div class="test-result"><p class="result-interp">Select at least one to see your map.</p></div>';
+      return `<div class="test-result"><div class="tag-cloud">${selected.map(s => `<span class="tag-selected">${s}</span>`).join('')}</div><p class="result-interp">These are your primary activation points. Bringing them into an intimate context, naming them to a partner, or consciously including them in an experience will amplify your capacity for pleasure significantly.</p></div>`;
+    }
+  },
+];
+
+let testAnswers = {};
+let testSelections = {};
+
+function renderTests() {
+  const container = document.getElementById('profile-tests-container');
+  if (!container) return;
+  container.innerHTML = TESTS.map(t => `
+    <div class="test-card" id="test-card-${t.id}">
+      <div class="test-header" onclick="openTest('${t.id}')">
+        <div class="test-emoji">${t.emoji}</div>
+        <div class="test-meta">
+          <div class="test-title">${t.title}</div>
+          <div class="test-sub">${t.subtitle}</div>
+        </div>
+        <div class="test-status" id="test-status-${t.id}">Take it</div>
+      </div>
+      <div class="test-body" id="test-body-${t.id}" style="display:none">
+        <div id="test-questions-${t.id}"></div>
+        <div id="test-result-${t.id}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openTest(id) {
+  const body = document.getElementById('test-body-' + id);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) renderTestQuestions(id);
+}
+
+function renderTestQuestions(id) {
+  const test = TESTS.find(t => t.id === id);
+  const container = document.getElementById('test-questions-' + id);
+  if (!test || !container) return;
+
+  if (test.isMapping) {
+    container.innerHTML = `<div class="map-grid">${test.categories.map(c =>
+      `<button type="button" class="map-item${(testSelections[id]||[]).includes(c.label)?'active':''}" onclick="toggleMapItem('${id}','${c.label}',this)">
+        <strong>${c.label}</strong><span>${c.desc}</span>
+      </button>`).join('')}</div>
+      <button class="gate-btn" style="margin-top:1.5rem;" onclick="submitMapping('${id}')">Save my map</button>`;
+    return;
+  }
+
+  if (!testAnswers[id]) testAnswers[id] = {};
+  container.innerHTML = test.questions.map((q, qi) =>
+    `<div class="test-q" id="tq-${id}-${qi}">
+      <p>${q.q}</p>
+      <div class="test-answers">
+        ${q.a.map((a, ai) =>
+          `<button type="button" class="answer-btn${testAnswers[id][qi]===ai?' selected':''}" onclick="selectAnswer('${id}',${qi},${ai})">${a[0]}</button>`
+        ).join('')}
+      </div>
+    </div>`
+  ).join('') + `<button class="gate-btn" style="margin-top:1.5rem;" onclick="submitTest('${id}')">See my results</button>`;
+}
+
+function selectAnswer(id, qi, ai) {
+  if (!testAnswers[id]) testAnswers[id] = {};
+  testAnswers[id][qi] = ai;
+  document.querySelectorAll(`#tq-${id}-${qi} .answer-btn`).forEach((btn, i) => {
+    btn.classList.toggle('selected', i === ai);
+  });
+}
+
+function toggleMapItem(id, label, btn) {
+  if (!testSelections[id]) testSelections[id] = [];
+  const idx = testSelections[id].indexOf(label);
+  if (idx > -1) { testSelections[id].splice(idx, 1); btn.classList.remove('active'); }
+  else { testSelections[id].push(label); btn.classList.add('active'); }
+}
+
+function submitTest(id) {
+  const test = TESTS.find(t => t.id === id);
+  if (!test) return;
+  const answers = test.questions.map((q, qi) => {
+    const ai = testAnswers[id]?.[qi];
+    return ai !== undefined ? q.a[ai][1] : null;
+  }).filter(a => a !== null);
+  if (answers.length < test.questions.length) {
+    alert('Please answer all questions before continuing.');
+    return;
+  }
+  const scores = test.score(answers);
+  const html = test.renderResult(scores);
+  document.getElementById('test-result-' + id).innerHTML = html;
+  document.getElementById('test-questions-' + id).style.display = 'none';
+  document.getElementById('test-status-' + id).textContent = 'Done';
+  // Save to backend
+  ppApi('POST', '/profiles/submit', { test_id: id, scores: typeof scores === 'object' ? scores : { total: scores }, version: 'simplified' }).catch(()=>{});
+}
+
+function submitMapping(id) {
+  const selected = testSelections[id] || [];
+  const test = TESTS.find(t => t.id === id);
+  const html = test.renderResult(selected);
+  document.getElementById('test-result-' + id).innerHTML = html;
+  document.getElementById('test-questions-' + id).style.display = 'none';
+  document.getElementById('test-status-' + id).textContent = 'Done';
+  ppApi('POST', '/profiles/submit', { test_id: id, scores: { selected }, version: 'simplified' }).catch(()=>{});
+}
+
+// ── REWARDS ──────────────────────────────────────────────────────────────────
+
+async function loadRewards() {
+  try {
+    const data = await ppApi('GET', '/rewards');
+    document.getElementById('rewards-pts-display').textContent = data.points;
+    const catalog = document.getElementById('rewards-catalog-container');
+    catalog.innerHTML = '';
+    data.rewards.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'reward-card' + (r.already_claimed ? ' claimed' : '') + (r.sold_out ? ' sold-out' : '');
+      let actionHtml = '';
+      if (r.already_claimed) {
+        actionHtml = '<span class="reward-claimed-chip">Claimed</span>';
+      } else if (r.sold_out) {
+        actionHtml = '<button class="reward-btn" disabled>Sold Out</button>';
+      } else if (!r.can_afford) {
+        actionHtml = `<button class="reward-btn" disabled title="Need ${r.cost} pts">Need ${r.cost - data.points} more pts</button>`;
+      } else {
+        actionHtml = `<button class="reward-btn" onclick="redeemReward(${r.id})">Redeem</button>`;
+      }
+      const stockNote = r.limited && r.stock != null ? `<span class="reward-stock">${r.stock} left</span>` : '';
+      card.innerHTML = `
+        <div class="reward-emoji">${r.emoji}</div>
+        <div class="reward-body">
+          <div class="reward-title">${r.title}</div>
+          <div class="reward-desc">${r.description}</div>
+          <div class="reward-meta">
+            <span class="reward-cost">${r.cost} pts</span>
+            ${stockNote}
+            ${actionHtml}
+          </div>
+        </div>`;
+      catalog.appendChild(card);
+    });
+    // Load claimed rewards
+    const claimed = await ppApi('GET', '/rewards/redemptions');
+    const wrap = document.getElementById('rewards-claimed-wrap');
+    const claimedContainer = document.getElementById('rewards-claimed-container');
+    if (claimed.length > 0) {
+      wrap.style.display = 'block';
+      claimedContainer.innerHTML = claimed.map(c => `
+        <div class="claimed-row">
+          <span class="cr-emoji">${c.emoji}</span>
+          <span class="cr-title">${c.title}</span>
+          <span class="cr-status ${c.fulfilled ? 'done' : 'pending'}">${c.fulfilled ? 'Fulfilled' : 'Pending'}</span>
+        </div>`).join('');
+    }
+  } catch(e) { console.warn('Rewards load failed', e); }
+}
+
+async function redeemReward(id) {
+  try {
+    const res = await ppApi('POST', `/rewards/${id}/redeem`);
+    await loadRewards();
+    document.getElementById('rewards-pts-display').textContent = res.points_remaining;
+    alert(`Claimed: ${res.reward}. Agathe will reach out to arrange it.`);
+  } catch(e) {
+    alert(e.message || 'Could not redeem. Try again.');
+  }
+}
+
+function saveLab() {
+  const d = getData();
+  d.lab_body = document.getElementById('lab-body').value;
+  d.lab_resist = document.getElementById('lab-resist').value;
+  d.lab_free = document.getElementById('lab-free').value;
+  saveData(d);
+  alert('Notes sauvegardees.');
+}
+function loadLab(d) {
+  const f = (id, key) => { const el = document.getElementById(id); if(el && d[key]) el.value = d[key]; };
+  f('lab-body','lab_body');
+  f('lab-resist','lab_resist');
+  f('lab-free','lab_free');
+  f('intention-text','reflect_m4');
+}
+
+// AUTOSAVE
+function autoSaveInterval() {
+  setInterval(() => {
+    const d = getData();
+    const fields = ['lab-body','lab-resist','lab-free','intention-text','cq-1','cq-2','cq-3','cq-4','cq-5'];
+    const keys = ['lab_body','lab_resist','lab_free','reflect_m4','carte_q1','carte_q2_text','carte_q3','carte_q4','carte_q5'];
+    fields.forEach((id,i) => {
+      const el = document.getElementById(id);
+      if (el) d[keys[i]] = el.value;
+    });
+    const sw = document.getElementById('safe-word');
+    if (sw) d.carte_safeword = sw.value;
+    localStorage.setItem(KEY, JSON.stringify(d));
+  }, 10000);
+}
+</script>
+</body>
+</html>

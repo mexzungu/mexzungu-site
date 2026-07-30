@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Group Access: WAHA Scope | Mexzungu Research</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:#0a0a0a; --surface:#111111; --hover:#1a1a1a;
+      --pink:#E14B87; --pink-dim:#b83a6b;
+      --white:#ffffff; --muted:#888888; --border:#222222;
+      --font:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    }
+    body { background:var(--bg); color:var(--white); font-family:var(--font); line-height:1.7; }
+    .report-nav { position:sticky; top:0; z-index:100; background:rgba(10,10,10,0.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; }
+    .back-link { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:600; letter-spacing:0.03em; display:flex; align-items:center; gap:0.4rem; transition:color 0.15s; }
+    .back-link:hover { color:var(--white); }
+    .nav-brand { color:var(--muted); font-size:0.8rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none; }
+    .nav-brand:hover { color:var(--white); }
+    .report-wrap { display:grid; grid-template-columns:200px 1fr; gap:3rem; max-width:1040px; margin:0 auto; padding:3rem 2rem 5rem; }
+    @media (max-width:780px) { .report-wrap { grid-template-columns:1fr; } .toc-sidebar { display:none; } }
+    .toc-sidebar { position:sticky; top:5rem; align-self:start; }
+    .toc-sidebar h4 { color:var(--muted); font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.75rem; }
+    .toc-sidebar a { display:block; color:var(--muted); text-decoration:none; font-size:0.82rem; padding:0.3rem 0; border-left:2px solid var(--border); padding-left:0.75rem; margin-bottom:0.1rem; transition:all 0.15s; }
+    .toc-sidebar a:hover { color:var(--white); border-left-color:var(--pink); }
+    .cat-tag { display:inline-block; background:rgba(225,75,135,0.15); border:1px solid rgba(225,75,135,0.3); border-radius:4px; color:var(--pink); font-size:0.7rem; font-weight:700; letter-spacing:0.08em; padding:0.2rem 0.55rem; text-transform:uppercase; margin-bottom:1rem; }
+    .report-header { margin-bottom:2rem; }
+    .report-header h1 { font-size:clamp(1.6rem,4vw,2.2rem); font-weight:700; letter-spacing:-0.02em; line-height:1.2; margin-bottom:1rem; }
+    .meta-bar { color:var(--muted); font-size:0.82rem; display:flex; gap:1rem; flex-wrap:wrap; }
+    .key-findings { background:var(--surface); border-left:3px solid var(--pink); border-radius:0 8px 8px 0; padding:1.5rem 1.75rem; margin:2rem 0; }
+    .key-findings h3 { color:var(--pink); font-size:0.75rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem; }
+    .key-findings ul { list-style:none; display:flex; flex-direction:column; gap:0.6rem; }
+    .key-findings li { font-size:0.92rem; color:#e0e0e0; padding-left:1.25rem; position:relative; }
+    .key-findings li::before { content:''; position:absolute; left:0; top:0.55em; width:6px; height:6px; background:var(--pink); border-radius:50%; }
+    .report-body h2 { font-size:1.25rem; font-weight:700; margin:2.5rem 0 1rem; padding-top:0.5rem; color:var(--white); }
+    .report-body h3 { font-size:1rem; font-weight:700; margin:1.75rem 0 0.6rem; color:#d0d0d0; }
+    .report-body p { font-size:0.95rem; color:#cccccc; margin-bottom:1rem; max-width:720px; }
+    .report-body ul,.report-body ol { padding-left:1.4rem; margin-bottom:1rem; max-width:720px; }
+    .report-body li { font-size:0.93rem; color:#cccccc; margin-bottom:0.35rem; }
+    .report-body strong { color:var(--white); font-weight:600; }
+    .report-body table { width:100%; max-width:720px; border-collapse:collapse; margin:1.5rem 0; font-size:0.85rem; }
+    .report-body th { text-align:left; background:var(--surface); color:var(--muted); font-size:0.75rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:0.6rem 0.9rem; border-bottom:1px solid var(--border); }
+    .report-body td { padding:0.6rem 0.9rem; border-bottom:1px solid var(--border); color:#cccccc; vertical-align:top; }
+    .report-body tr:last-child td { border-bottom:none; }
+    hr { border:none; border-top:1px solid var(--border); margin:2rem 0; max-width:720px; }
+    .report-body pre { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.25rem; overflow-x:auto; margin:1.25rem 0; max-width:720px; }
+    .report-body code { font-family:'SF Mono','Fira Code',monospace; font-size:0.82rem; color:#a0e0c0; }
+    .verdict-block { background:rgba(225,75,135,0.08); border:1px solid rgba(225,75,135,0.25); border-radius:8px; padding:1.25rem 1.5rem; margin:1.5rem 0; max-width:720px; }
+    .verdict-block h4 { color:var(--pink); font-size:0.82rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.6rem; }
+    .verdict-block p { color:#d0d0d0; font-size:0.9rem; margin-bottom:0.5rem; max-width:none; }
+    .verdict-block p:last-child { margin-bottom:0; }
+    .status-row { display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0; border-bottom:1px solid var(--border); }
+    .status-row:last-child { border-bottom:none; }
+    .status-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .status-dot.green { background:#2d8f5e; }
+    .status-dot.amber { background:#d4a039; }
+    .status-dot.red { background:#c93545; }
+    .status-label { color:var(--white); font-size:0.88rem; font-weight:600; min-width:120px; }
+    .status-desc { color:var(--muted); font-size:0.84rem; }
+  </style>
+</head>
+<body>
+
+<nav class="report-nav">
+  <a href="/research/" class="back-link">&#8592; Research Hub</a>
+  <a href="/" class="nav-brand">Mexzungu</a>
+</nav>
+
+<div class="report-wrap">
+
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#problem">1. The Problem</a>
+    <a href="#what-is-waha">2. What is WAHA</a>
+    <a href="#architecture">3. Architecture</a>
+    <a href="#comparison">4. Comparison</a>
+    <a href="#cost">5. Cost and Risk</a>
+    <a href="#implementation">6. Implementation</a>
+    <a href="#decision">7. Decision</a>
+  </aside>
+
+  <main>
+    <div class="report-header">
+      <div class="cat-tag">Tech</div>
+      <h1>WhatsApp Group Access: WAHA Scope</h1>
+      <div class="meta-bar">
+        <span>Apr 2026</span>
+        <span>Tech</span>
+        <span>5 sources</span>
+        <span>10 min read</span>
+      </div>
+    </div>
+
+    <div class="key-findings">
+      <h3>Key Findings</h3>
+      <ul>
+        <li>The Meta Cloud API (current setup) handles 1:1 messaging only. WhatsApp groups require a separate solution. WAHA runs in parallel without touching the existing Cloud API setup.</li>
+        <li>WAHA (WhatsApp HTTP API) is a self-hosted Docker container that wraps the WhatsApp Web JS client. It exposes a REST API on localhost:3000. No external service dependency. No per-message cost.</li>
+        <li>Baileys (the previous approach) was unstable, undocumented, and maintained by the community. WAHA provides the same underlying access with a stable REST wrapper, persistent sessions, a dashboard UI, and webhook support.</li>
+        <li>The WAHA container is already deployed on the VPS at port 3000 with a persistent session store. The blocker is not infrastructure. It is phone number: WAHA needs a number that is not already registered on the Cloud API.</li>
+        <li>Risk is moderate: WhatsApp can detect and ban accounts using unofficial APIs. Mitigation is using the WEBJS engine (already configured), throttling send rates, and treating the WAHA number as disposable if needed.</li>
+      </ul>
+    </div>
+
+    <div class="report-body">
+
+      <h2 id="problem">1. The Problem: Cloud API Cannot Read Groups</h2>
+
+      <p>The current Janis WhatsApp setup uses the Meta WhatsApp Business Cloud API via a BSP (Business Solution Provider). This is the official, Meta-approved integration. It is reliable, compliant, and permanent.</p>
+
+      <p>Its hard limitation: it handles 1:1 messaging only. WhatsApp groups are not accessible via the Cloud API. There is no official Meta API for reading or sending group messages. This is not a configuration issue. It is an architectural constraint of the official API.</p>
+
+      <p>Pepe operates in WhatsApp groups that are relevant to his work: client groups, deal groups, NCA operational groups. Janis cannot see or participate in any of them. This is the gap WAHA fills.</p>
+
+      <h2 id="what-is-waha">2. What WAHA Is</h2>
+
+      <p>WAHA (WhatsApp HTTP API) is an open-source, self-hosted Docker image that wraps the WhatsApp Web JS (WEBJS) client in a REST API. It mimics the behavior of WhatsApp Web running in a browser, but exposes that functionality via HTTP endpoints.</p>
+
+      <p>Capabilities WAHA adds that the Cloud API does not have:</p>
+      <ul>
+        <li>Read and send messages in WhatsApp groups</li>
+        <li>Join groups via invite link</li>
+        <li>List all groups a number belongs to</li>
+        <li>Receive webhooks for group messages (same webhook structure as 1:1)</li>
+        <li>Read group participant lists</li>
+        <li>React to messages with emoji</li>
+        <li>Read message status (delivered, read)</li>
+      </ul>
+
+      <p>WAHA is not affiliated with Meta. It uses the WhatsApp Web reverse-engineered protocol. This puts it in the same category as Baileys, WPPConnect, and similar tools. The difference from Baileys is operational maturity: WAHA provides a stable REST API, a dashboard UI, persistent session management, and active maintenance.</p>
+
+      <h2 id="architecture">3. Architecture: Two Systems in Parallel</h2>
+
+      <pre><code>Cloud API (Meta)           WAHA (self-hosted)
+  Port: none (webhook)       Port: 3000 (localhost)
+  Number: business BSP       Number: second number (SIM or virtual)
+  Scope: 1:1 only            Scope: groups + 1:1
+  Webhook: /webhook          Webhook: /waha/webhook
+  Status: LIVE               Status: DEPLOYED, needs phone number</code></pre>
+
+      <p>The two systems run in parallel. Nothing about the Cloud API changes. WAHA sits alongside it on the same VPS, bound to localhost:3000. The tools server routes messages to the correct backend based on whether the target is a group or a 1:1 contact.</p>
+
+      <h3>Current deployment status</h3>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;max-width:720px;margin:1rem 0;">
+        <div class="status-row"><span class="status-dot green"></span><span class="status-label">Container</span><span class="status-desc">Running on port 3000, WEBJS engine, session persistence at /home/mexzungu/waha-sessions/</span></div>
+        <div class="status-row"><span class="status-dot green"></span><span class="status-label">API key</span><span class="status-desc">Configured in brain/.env as WAHA_API_KEY</span></div>
+        <div class="status-row"><span class="status-dot green"></span><span class="status-label">Webhook</span><span class="status-desc">Configured to POST to tools server at /waha/webhook</span></div>
+        <div class="status-row"><span class="status-dot green"></span><span class="status-label">Tools server</span><span class="status-desc">waha_client.py and WAHA tool routes already implemented</span></div>
+        <div class="status-row"><span class="status-dot amber"></span><span class="status-label">Phone number</span><span class="status-desc">Blocker. Needs a number not already registered on Cloud API.</span></div>
+        <div class="status-row"><span class="status-dot red"></span><span class="status-label">QR auth</span><span class="status-desc">Not yet scanned. Requires phone number first.</span></div>
+      </div>
+
+      <h2 id="comparison">4. WAHA vs. Baileys vs. Cloud API</h2>
+
+      <table>
+        <thead><tr><th>Dimension</th><th>Cloud API</th><th>Baileys (old)</th><th>WAHA (new)</th></tr></thead>
+        <tbody>
+          <tr><td>Group access</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Official / Meta-approved</td><td>Yes</td><td>No</td><td>No</td></tr>
+          <tr><td>Ban risk</td><td>None</td><td>High</td><td>Moderate</td></tr>
+          <tr><td>Session persistence</td><td>Always</td><td>Fragile</td><td>Persistent (file-based)</td></tr>
+          <tr><td>REST API</td><td>Yes</td><td>No (library only)</td><td>Yes</td></tr>
+          <tr><td>Dashboard UI</td><td>Meta console</td><td>None</td><td>Yes (Swagger + dashboard)</td></tr>
+          <tr><td>Webhook support</td><td>Yes</td><td>Partial</td><td>Yes</td></tr>
+          <tr><td>Per-message cost</td><td>Yes (Meta pricing)</td><td>None</td><td>None</td></tr>
+          <tr><td>Maintenance burden</td><td>Low</td><td>High</td><td>Low</td></tr>
+          <tr><td>Container restart survival</td><td>Always</td><td>No (re-scan required)</td><td>Yes (sessions persisted)</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="cost">5. Cost and Risk</h2>
+
+      <h3>Cost</h3>
+      <p>WAHA Community Edition (the version deployed) is free and open-source. The Docker image is maintained at devlikeapro/waha. No subscription, no per-message fee, no usage limits. WAHA Plus (paid tier) adds multi-device support and some enterprise features. Not needed for current scope.</p>
+      <p>Phone number cost: a virtual SIM or cheap eSIM costs approximately $5-15/month. A spare physical SIM on a prepaid plan can be as low as $3/month in Spain. One-time setup cost only if using a physical SIM.</p>
+
+      <h3>Risk profile</h3>
+      <p>WhatsApp detects automation via behavioral fingerprinting. Mitigation factors already in place:</p>
+      <ul>
+        <li>WEBJS engine is configured (more human-like than raw protocol)</li>
+        <li>The WAHA number should be a "warm" number with existing WhatsApp history, not fresh</li>
+        <li>Send rate should be throttled (no bulk blasts)</li>
+        <li>The WAHA number is separate from the Cloud API number. A ban affects only WAHA, not the main business number.</li>
+      </ul>
+      <p>Treat the WAHA number as semi-disposable. The Cloud API number is protected by Meta's compliance framework. WAHA can be rebuilt with a new number in under an hour if banned.</p>
+
+      <h2 id="implementation">6. Implementation Steps</h2>
+
+      <p>Infrastructure is done. The remaining steps are one-time setup:</p>
+
+      <ol>
+        <li><strong>Choose a phone number.</strong> Best option: a virtual number (Twilio, Vonage) or a cheap eSIM not already registered on WhatsApp Business API. The number must have an existing WhatsApp account or be registered fresh via the WAHA QR flow.</li>
+        <li><strong>Start the WAHA session</strong> via the API or Swagger UI at localhost:3000.</li>
+        <li><strong>Scan the QR code.</strong> SSH tunnel to localhost:3001, open browser, scan from the phone with the new number. One-time only. Session persists in /home/mexzungu/waha-sessions/.</li>
+        <li><strong>Add Janis to groups.</strong> Either join via invite link through the WAHA API or add the WAHA number to groups from Pepe's phone.</li>
+        <li><strong>Test send/receive.</strong> Send a test message via the tools server. Verify webhook fires on incoming group message.</li>
+      </ol>
+
+      <h3>Relevant files</h3>
+      <ul>
+        <li><code>/home/mexzungu/brain/janis/waha-setup.md</code> - Full setup guide with all curl commands</li>
+        <li><code>/home/mexzungu/brain/janis/waha_client.py</code> - Python client for WAHA API</li>
+        <li><code>/home/mexzungu/brain/.env</code> - WAHA_API_KEY and WAHA_BASE_URL already configured</li>
+      </ul>
+
+      <h2 id="decision">7. Decision</h2>
+
+      <div class="verdict-block">
+        <h4>Proceed with WAHA</h4>
+        <p>Infrastructure is deployed and tested. The only remaining blocker is obtaining a phone number for the WAHA session. This is a 30-minute task once Pepe confirms the number source.</p>
+        <p><strong>Recommended number source:</strong> A virtual number via Twilio or a cheap Spanish prepaid SIM. Cost: under 10 EUR/month.</p>
+        <p><strong>What this unlocks:</strong> Janis can read and participate in all WhatsApp groups Pepe adds the WAHA number to. Group messages route through /waha/webhook and are processed by the same Claude message handler as 1:1 messages.</p>
+        <p><strong>What this does not change:</strong> The Cloud API setup remains untouched. All existing 1:1 messaging, webhooks, and business number compliance are unaffected.</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = "mexzungu_research_auth";
+  if (localStorage.getItem(STORAGE_KEY) !== 'true') {
+    window.location.href = '/research/';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Network Models: Research Report | Mexzungu Research</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:      #0a0a0a;
+      --surface: #111111;
+      --hover:   #1a1a1a;
+      --pink:    #E14B87;
+      --pink-dim:#b83a6b;
+      --gold:    #d4a039;
+      --white:   #ffffff;
+      --muted:   #888888;
+      --border:  #222222;
+      --green:   #2d8f5e;
+      --red:     #c93545;
+      --font:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    body { background: var(--bg); color: var(--white); font-family: var(--font); line-height: 1.75; }
+
+    /* Nav */
+    .report-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.96); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+    }
+    .back-link {
+      color: var(--muted); text-decoration: none; font-size: 0.85rem;
+      font-weight: 600; letter-spacing: 0.03em;
+      display: flex; align-items: center; gap: 0.4rem; transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--white); }
+    .nav-brand { color: var(--muted); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+    .nav-brand:hover { color: var(--white); }
+
+    /* Layout */
+    .report-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 3rem;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+    @media (max-width: 800px) {
+      .report-wrap { grid-template-columns: 1fr; }
+      .toc-sidebar { display: none; }
+    }
+
+    /* TOC */
+    .toc-sidebar { position: sticky; top: 5rem; align-self: start; }
+    .toc-sidebar h4 {
+      color: var(--muted); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .toc-sidebar a {
+      display: block; color: var(--muted); text-decoration: none;
+      font-size: 0.8rem; padding: 0.28rem 0; border-left: 2px solid var(--border);
+      padding-left: 0.75rem; margin-bottom: 0.05rem; transition: all 0.15s;
+    }
+    .toc-sidebar a:hover { color: var(--white); border-left-color: var(--pink); }
+    .toc-sidebar a.sub { font-size: 0.74rem; padding-left: 1.25rem; opacity: 0.8; }
+
+    /* Report header */
+    .report-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .cat-tag {
+      display: inline-block;
+      background: rgba(225,75,135,0.12); border: 1px solid rgba(225,75,135,0.3);
+      border-radius: 4px; color: var(--pink); font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; padding: 0.2rem 0.55rem; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .report-header h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 800;
+      letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 1rem;
+    }
+    .report-header .subtitle {
+      font-size: 1.05rem; color: var(--muted); margin-bottom: 1.5rem; max-width: 600px;
+    }
+    .report-meta {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      font-size: 0.78rem; color: var(--muted); font-weight: 500;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 0.4rem; }
+
+    /* Sections */
+    .report-body section { margin-bottom: 3.5rem; }
+    .report-body h2 {
+      font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 1rem; color: var(--white);
+      padding-top: 0.5rem;
+    }
+    .report-body h3 {
+      font-size: 1.05rem; font-weight: 600; color: var(--pink-dim);
+      margin-top: 1.75rem; margin-bottom: 0.6rem; letter-spacing: -0.01em;
+    }
+    .report-body h4 {
+      font-size: 0.9rem; font-weight: 700; color: var(--gold);
+      margin-top: 1.25rem; margin-bottom: 0.4rem; text-transform: uppercase;
+      letter-spacing: 0.05em; font-size: 0.75rem;
+    }
+    .report-body p { margin-bottom: 1rem; color: #d0cdc9; font-size: 0.95rem; }
+    .report-body ul, .report-body ol {
+      margin: 0.75rem 0 1rem 1.2rem; color: #d0cdc9; font-size: 0.95rem;
+    }
+    .report-body li { margin-bottom: 0.45rem; }
+
+    /* Callout boxes */
+    .callout {
+      border-left: 3px solid var(--pink);
+      background: rgba(225,75,135,0.07);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+    .callout.gold { border-left-color: var(--gold); background: rgba(212,160,57,0.07); }
+    .callout.green { border-left-color: var(--green); background: rgba(45,143,94,0.07); }
+    .callout.red { border-left-color: var(--red); background: rgba(201,53,69,0.07); }
+    .callout strong { color: var(--white); display: block; margin-bottom: 0.35rem; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .callout p { color: #c8c4c0; margin-bottom: 0; font-size: 0.9rem; }
+
+    /* Data tables */
+    .data-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+    }
+    thead tr { border-bottom: 1px solid var(--pink); }
+    thead th {
+      text-align: left; padding: 0.6rem 0.85rem;
+      font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:hover { background: var(--hover); }
+    tbody td { padding: 0.65rem 0.85rem; color: #d0cdc9; vertical-align: top; }
+    tbody td:first-child { color: var(--white); font-weight: 600; }
+    .tag-pos { background: rgba(45,143,94,0.2); color: #5bbf8a; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .tag-neg { background: rgba(201,53,69,0.2); color: #e07080; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .tag-neu { background: rgba(136,136,136,0.2); color: var(--muted); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .highlight { color: var(--pink); font-weight: 700; }
+    .highlight-gold { color: var(--gold); font-weight: 700; }
+
+    /* Stat cards */
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem; margin: 1.5rem 0;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem 1rem;
+    }
+    .stat-card .stat-num {
+      font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em;
+      color: var(--pink); line-height: 1;
+    }
+    .stat-card .stat-num.gold { color: var(--gold); }
+    .stat-card .stat-num.green { color: var(--green); }
+    .stat-card .stat-label {
+      font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem;
+      line-height: 1.4; font-weight: 500;
+    }
+    .stat-card .stat-source {
+      font-size: 0.65rem; color: #555; margin-top: 0.6rem;
+    }
+
+    /* Section divider */
+    .section-rule {
+      border: none; border-top: 1px solid var(--border); margin: 3rem 0;
+    }
+
+    /* Citation */
+    .cite { color: var(--muted); font-size: 0.78rem; }
+    .footnote-block { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .footnote-block h4 { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .footnote-block p { font-size: 0.78rem; color: #666; margin-bottom: 0.3rem; }
+    .footnote-block a { color: #555; }
+
+    /* MGL implication block */
+    .mgl-block {
+      background: rgba(225,75,135,0.06);
+      border: 1px solid rgba(225,75,135,0.2);
+      border-radius: 10px; padding: 1.5rem;
+      margin: 1.75rem 0;
+    }
+    .mgl-block .mgl-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--pink); margin-bottom: 0.6rem;
+    }
+    .mgl-block p { color: #d0cdc9; font-size: 0.92rem; margin-bottom: 0.5rem; }
+    .mgl-block p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+
+<nav class="report-nav">
+  <a href="/research/" class="back-link">&#8592; Research Hub</a>
+  <a href="/" class="nav-brand">Mexzungu Group</a>
+</nav>
+
+<div class="report-wrap">
+
+  <!-- TOC -->
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#exec">Executive Summary</a>
+    <a href="#landscape">1. Market Landscape</a>
+    <a href="#models">2. Established Models</a>
+    <a class="sub" href="#eden">Eden McCallum</a>
+    <a class="sub" href="#expert-nets">Expert Networks</a>
+    <a class="sub" href="#marketplaces">Curated Marketplaces</a>
+    <a class="sub" href="#fractional">Fractional Networks</a>
+    <a href="#economics">3. Platform Economics</a>
+    <a class="sub" href="#take-rates">Take Rates</a>
+    <a class="sub" href="#network-effects">Network Effects</a>
+    <a href="#talent">4. What Drives Consultants</a>
+    <a class="sub" href="#join">Why They Join</a>
+    <a class="sub" href="#churn">Why They Leave</a>
+    <a href="#failures">5. Failure Modes</a>
+    <a href="#qc">6. Quality Control</a>
+    <a href="#creative">7. Creative Layer</a>
+    <a href="#mgl-design">8. MGL System Design</a>
+    <a href="#sources">Sources</a>
+  </aside>
+
+  <!-- Report body -->
+  <main class="report-body">
+
+    <div class="report-header">
+      <div class="cat-tag">Strategic Research</div>
+      <h1>Studio Network Models: How Consulting Collectives Actually Work</h1>
+      <p class="subtitle">An evidence-based analysis of how the most effective consulting studio networks are built, what makes consultants join and stay, and how to design a system that generates leveraged income for the founder.</p>
+      <div class="report-meta">
+        <span>May 2026</span>
+        <span>Mexzungu Group / Internal</span>
+        <span>Confidential</span>
+      </div>
+    </div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <section id="exec">
+      <h2>Executive Summary</h2>
+      <p>This report synthesizes evidence from verified case studies, financial filings, academic research, and platform economics literature on how consulting studio networks generate value for both founders and consultants. The central finding: <strong>no single "standard" model exists</strong>, but the data reveal clear clusters by design choice, and those design choices determine who benefits and by how much.</p>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num">54%</div>
+          <div class="stat-label">Eden McCallum gross margin, FY2024</div>
+          <div class="stat-source">Companies House filing</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num gold">26.6%</div>
+          <div class="stat-label">Eden McCallum operating margin, FY2024</div>
+          <div class="stat-source">Companies House filing</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">74%</div>
+          <div class="stat-label">Freelance consultants cite autonomy as primary motivator to join</div>
+          <div class="stat-source">Industry survey</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num gold">91%</div>
+          <div class="stat-label">Independent consultants report satisfaction with the model</div>
+          <div class="stat-source">Sector survey</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num green">$9,651</div>
+          <div class="stat-label">Average monthly retainer for fractional exec, 2024</div>
+          <div class="stat-source">Vendux data</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">72%</div>
+          <div class="stat-label">CEOs planning to increase use of fractional executives in next 12 months</div>
+          <div class="stat-source">Forbes survey</div>
+        </div>
+      </div>
+
+      <div class="callout gold">
+        <strong>Core finding</strong>
+        <p>The most profitable studio models separate BD (which stays with the founder or central team) from delivery (which belongs to the consultant). This is the Eden McCallum insight, and it is the primary mechanism that generates passive income for founders while giving consultants what they actually want: work without the hustle.</p>
+      </div>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- MARKET LANDSCAPE -->
+    <section id="landscape">
+      <h2>1. Market Landscape</h2>
+
+      <p>The global consulting market is projected to reach $900B+ by end of 2026. Within that, three structural trends are converging that make a studio network model viable right now in ways it was not five years ago:</p>
+
+      <h3>Trend 1: The fractional executive boom</h3>
+      <p>Average monthly retainers for fractional executives hit $9,651 in 2024, with billable hourly rates reaching $213 per hour, up 21% in a single year (Vendux). The CFO Centre alone reported 150% revenue growth since 2020. This is not a niche. 72% of CEOs surveyed by Forbes plan to increase fractional executive use in the next twelve months. Senior professionals are leaving full-time roles for portfolio careers at scale.</p>
+
+      <h3>Trend 2: Africa's freelance market exploding</h3>
+      <p>Kenya has seen online freelancing grow by more than 200% over five years. Nigeria 130%. Rwanda, Ghana, Egypt, and South Africa are all emerging as significant hubs. African professionals with global-quality skills are actively seeking brand association and infrastructure to compete with Western firms. The micro-agency model is gaining traction: a solo designer wins a $1k logo project; a branded collective wins a $15k brand overhaul. The multiplier on branding is 10-15x in emerging markets.</p>
+
+      <h3>Trend 3: Independent work satisfaction is high and rising</h3>
+      <p>91% of independent consultants report satisfaction. 61% intend to continue for five to ten more years. More than half of new freelance consultants under 40 report higher earnings as independents than in their prior employment. The supply of high-quality, willing talent is growing. The question is which platform they choose to affiliate with.</p>
+
+      <div class="mgl-block">
+        <div class="mgl-label">MGL Implication</div>
+        <p>The timing is optimal. Senior consultants are choosing independence in large numbers, the Africa market is ready for a credible brand to anchor around, and the infrastructure (Janis, canonical pricing, contracts, invoicing) already exists. The studio network is not a future play. It is a now play.</p>
+      </div>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- ESTABLISHED MODELS -->
+    <section id="models">
+      <h2>2. Established Models: What They Built and How It Works</h2>
+
+      <h3 id="eden">Eden McCallum: The Network Boutique</h3>
+      <p>Founded in 2000 by two ex-McKinsey partners. The thesis: senior consultants from top firms want to do the work without the politics, the pyramid, or the pressure to sell. Eden built the brand and the client relationships. The consultants delivered. No full-time analyst pyramid. No up-or-out culture.</p>
+
+      <h4>Verified Financials (FY2024, Companies House)</h4>
+      <div class="data-table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>Value</th><th>Implication</th></tr></thead>
+          <tbody>
+            <tr><td>Turnover</td><td>£22,761,552</td><td>Grown from zero in 2000 to ~$29M in 24 years</td></tr>
+            <tr><td>Gross Profit</td><td>£12,330,016</td><td>54% gross margin on a freelance model</td></tr>
+            <tr><td>Operating Profit</td><td>£6,054,609</td><td class="highlight">26.6% operating margin. This is the passive income number.</td></tr>
+            <tr><td>Repeat Business</td><td>85%</td><td>Platform stickiness. Clients return because quality is consistent.</td></tr>
+            <tr><td>Consultant pool</td><td>500+</td><td>All independent. None salaried. Fixed cost stays low.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <strong>The Eden McCallum model in plain language</strong>
+        <p>Partners bring the clients. Consultants deliver the work. Central office handles contracts, billing, ops. Consultants choose their engagements, work when they want, earn well. Clients pay brand rates and get senior delivery. The firm earns 26.6% operating margin on every pound that flows through. No consultant is on a salary. Fixed costs are minimal. This is the architecture.</p>
+      </div>
+
+      <h3 id="expert-nets">Expert Networks: The High-Margin Knowledge Play</h3>
+      <p>GLG (Gerson Lehrman Group) is the canonical example. Founded 1998. Revenue approximately $650M in 2021. The model: companies pay to access experts for short, high-value consultations. GLG acts as the matchmaker and takes a large cut of the spread between what clients pay and what experts receive.</p>
+
+      <div class="data-table-wrap">
+        <table>
+          <thead><tr><th>Player</th><th>Client Rate</th><th>Expert Pay</th><th>Studio Margin</th><th>Model</th></tr></thead>
+          <tbody>
+            <tr><td>GLG</td><td>$700-2,000/hr</td><td>~$250-300/hr</td><td class="highlight">~70% contribution</td><td>Subscription + per-call</td></tr>
+            <tr><td>AlphaSights</td><td>$500-1,500/hr</td><td>~$200-350/hr</td><td>~60-65%</td><td>Project-based</td></tr>
+            <tr><td>Third Bridge</td><td>$400-1,200/hr</td><td>~$150-300/hr</td><td>~55-65%</td><td>Project-based</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The critical insight from expert networks is not the margin percentage. It is the <strong>separation of expert time from expert compensation</strong>. Experts are paid per call. They do not need to do BD, write proposals, manage contracts, or invoice. They show up, share knowledge, get paid. The platform handles everything else and keeps 60-70% for the privilege.</p>
+
+      <div class="mgl-block">
+        <div class="mgl-label">MGL Implication</div>
+        <p>The expert network spread is extreme because the service is commoditized knowledge. Consulting work involves more craft, so the split needs to be more generous to attract and retain quality consultants. But the principle holds: the studio provides the infrastructure and captures margin from every engagement it enables, without being in the room.</p>
+      </div>
+
+      <h3 id="marketplaces">Curated Marketplaces: The Take-Rate Spectrum</h3>
+      <p>Different marketplace models extract different percentages from the transaction. The spectrum is wide:</p>
+
+      <div class="data-table-wrap">
+        <table>
+          <thead><tr><th>Platform</th><th>Model Type</th><th>Client Fee / Markup</th><th>Talent Gets</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Catalant</td><td>Curated marketplace</td><td class="highlight">25-30% markup on consultant rate</td><td>Base rate</td><td>33% hire fee if client recruits consultant directly</td></tr>
+            <tr><td>Upwork</td><td>Open marketplace</td><td>18.3% blended take rate</td><td>~82-90%</td><td>Based on Q1 SEC filing; includes both talent and client fees</td></tr>
+            <tr><td>Toptal</td><td>Elite curated</td><td>~15-20% markup</td><td>~80-85%</td><td>Multi-stage screening; top 3% claim; charges premium for curation value</td></tr>
+            <tr><td>Braintrust</td><td>DAO/cooperative</td><td class="tag-pos">15% client fee</td><td class="tag-pos">100%</td><td>Talent token holders own the platform; disruptive but early stage</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Catalant's 25-30% markup translates to roughly the same economics as MGL's proposed 40% studio share when you account for the value stack (brand, admin, Janis infrastructure, cross-sell pipeline). The key question is not whether the margin is justified, but whether consultants experience the margin as fair given what they receive in return.</p>
+
+      <h3 id="fractional">Fractional Executive Networks: The Recurring Revenue Play</h3>
+      <p>Networks like The CFO Centre and The Fractional Executive Network operate on a recurring retainer model. The studio places senior executives with companies on a part-time basis. The executive works two to four days per week for one to three clients. The studio earns a monthly fee from each client and pays the executive a share.</p>
+
+      <p>The CFO Centre's 150% revenue growth since 2020 is the most documented success case. The model works because: (1) recurring revenue is predictable, (2) clients commit to multi-month retainers, (3) the executive works multiple engagements simultaneously, and (4) the studio margin compounds on each placement without additional work per engagement.</p>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- PLATFORM ECONOMICS -->
+    <section id="economics">
+      <h2>3. Platform Economics: How Network Effects Work in Consulting</h2>
+
+      <h3 id="take-rates">The Take-Rate Question</h3>
+      <p>There is no single "standard" take rate. The data show clusters by model type, not a uniform standard. What determines the defensible take rate is the perceived value of what the platform provides above and beyond what the consultant could access alone.</p>
+
+      <div class="callout gold">
+        <strong>The value gap is the margin</strong>
+        <p>A consultant on Upwork keeps 82-90% because Upwork provides a commodity: access to buyers. A consultant on GLG keeps 15-25% because GLG provides something scarce: access to institutional clients paying $700-2,000/hr for expert time. The more unique and scarce the platform's value, the higher the defensible take rate. The studio's job is to make its value scarce and irreplaceable.</p>
+      </div>
+
+      <h3 id="network-effects">How Network Effects Activate</h3>
+      <p>Consulting platforms exhibit classic two-sided network effects: more engaged consultants improve selection and quality, attracting more clients; more clients increase monetization for consultants, attracting more talent. But these effects are not automatic. They activate only when specific operational metrics are healthy.</p>
+
+      <p>Research from a16z, NFX, and platform economics literature (HBS, 2021) identifies four leading indicators that predict whether network effects will activate:</p>
+
+      <ul>
+        <li><strong>Match rate:</strong> The percentage of client inquiries that result in a consultant match. Low match rates signal insufficient supply or quality mismatch. Eden McCallum's 85% repeat client rate is a proxy for high match quality.</li>
+        <li><strong>Time-to-first-transaction:</strong> How long it takes a newly onboarded consultant to complete their first paying engagement. Delays cause consultant churn before the network effect has a chance to generate value for them.</li>
+        <li><strong>Transaction liquidity:</strong> The conversion rate from project listing to closed engagement. Low liquidity means buyers are not finding sufficient value in the supply.</li>
+        <li><strong>GMV concentration:</strong> The percentage of revenue generated by the top 20% of consultants. High concentration is an early warning sign; it means the platform depends on a few superstars and the network effect is not distributing value widely enough to retain the full pool.</li>
+      </ul>
+
+      <div class="callout red">
+        <strong>The quality trap</strong>
+        <p>Platforms that grow supply too fast without quality enforcement produce a negative feedback loop: buyers encounter poor matches, churn, and reduce demand, which reduces monetization for good consultants, who then leave, further reducing quality. Toptal's "top 3% only" claim is marketing, but the underlying logic is correct: supply quality gates protect the network effect. MGL's network effect can only activate if every consultant in the pool is good enough that Pepe would put them in front of a client himself.</p>
+      </div>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- WHAT DRIVES CONSULTANTS -->
+    <section id="talent">
+      <h2>4. What Actually Drives Consultants: The Evidence</h2>
+
+      <h3 id="join">Why They Join (Ranked by Research Evidence)</h3>
+
+      <p>Survey evidence is consistent across multiple studies. The motivators are not primarily financial. They are structural:</p>
+
+      <div class="data-table-wrap">
+        <table>
+          <thead><tr><th>Motivator</th><th>% Citing</th><th>What It Means for Design</th></tr></thead>
+          <tbody>
+            <tr><td>Autonomy and control over schedule</td><td class="highlight">74%</td><td>Any model that restricts consultant freedom will fail to recruit. Exclusivity clauses are a red flag.</td></tr>
+            <tr><td>Professional variety and choice of engagements</td><td>67%</td><td>Consultants want to choose their clients. Forced placement kills motivation.</td></tr>
+            <tr><td>Higher earnings than employment</td><td>52%</td><td>Only among under-40 cohort. Seniors often earn more in employment; they are choosing independence for non-financial reasons.</td></tr>
+            <tr><td>Escape from internal politics</td><td>48%</td><td>They left firms to get away from bureaucracy. Any studio that recreates it loses them immediately.</td></tr>
+            <tr><td>Ability to do their best work</td><td>44%</td><td>Project-based work lets senior consultants focus. No hours wasted in internal meetings or performance management cycles.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The research also identifies what consultants report as <em>secondary</em> attractions: the brand association of a credible platform, administrative relief from contracts and invoicing, and access to a peer community that reduces the isolation of independent work.</p>
+
+      <div class="callout green">
+        <strong>The isolation problem</strong>
+        <p>Fractionals United grew from a Slack channel to 13,000+ members by early 2025. ExecThread aggregates 200,000+ executives. The demand for peer community among independent professionals is enormous and largely unmet. A private community for MGL Studio consultants costs nothing to build and addresses the single most consistent pain point of independent consulting life. It is also one of the strongest retention mechanisms available.</p>
+      </div>
+
+      <h3 id="churn">Why They Leave</h3>
+
+      <p>The causes of churn map directly to the failure modes of consulting engagements and platform design. From academic literature on consultant-client relationships (University of Munich, 2024) and platform economics research:</p>
+
+      <ul>
+        <li><strong>Restrictive contract terms:</strong> Broad exclusivity clauses, aggressive non-competes, and delayed payment (Net-60+ terms) are the most commonly cited contractual friction points. Consultants leave platforms where they feel locked in without upside.</li>
+        <li><strong>Poor project management support:</strong> When engagements go sideways and the platform provides no escalation support, consultants feel exposed. They did not join a platform to be alone in a bad client situation.</li>
+        <li><strong>Role mismatch:</strong> When consultants are matched with clients outside their genuine domain of expertise, they deliver poorly, the client is unhappy, and the consultant does not want to come back. Match quality is a retention driver, not just a client satisfaction driver.</li>
+        <li><strong>Payment delays:</strong> The B2B standard of Net-30 to Net-60 payment terms creates cash flow stress for independent consultants who have no salary buffer. Platforms that pay faster retain better. The Catalant 60-day payment window is explicitly cited in consultant reviews as a negative.</li>
+        <li><strong>Undercompensation relative to value delivered:</strong> When consultants perceive the platform's take as unfair given what they receive, they route clients around the platform directly. This is the death spiral for a studio model.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- FAILURE MODES -->
+    <section id="failures">
+      <h2>5. Failure Modes: What Kills These Models</h2>
+
+      <p>The research does not provide audited post-mortems of specific named studio failures. What it does provide is a consistent pattern of root causes observed across failed consulting practices and platforms:</p>
+
+      <h3>Failure Mode 1: Service proliferation</h3>
+      <p>Boutiques that expand beyond a narrow, proven specialty destroy their margins and their brand clarity simultaneously. A data privacy consultancy that starts offering executive coaching, supply chain optimization, and HR consulting is not a multi-practice firm. It is a confused one. The visible authority research shows this pattern repeatedly: service proliferation is the most common way boutique consultancies destroy themselves. Each new service line requires a different client base, different marketing, different delivery competencies. None of them reach scale.</p>
+
+      <div class="callout red">
+        <strong>The MGL risk</strong>
+        <p>Every time a new consultant with a new domain joins, there is pressure to add a new practice page, a new service line, a new pricing model. The discipline is to only add a practice arm when there is a clear ICP (Ideal Client Profile), proven demand, and at least one fully credentialed consultant to anchor it. Domains that do not meet all three criteria are not studio arms. They are experiments. Experiments do not get a page on the website.</p>
+      </div>
+
+      <h3>Failure Mode 2: Execution and governance collapse</h3>
+      <p>Academic research on consulting failures (Seidl and Mohe, University of Munich) identifies ineffective project management, unclear scopes, and poor client-consultant relationship management as the primary causes of failed engagements. When a studio has no governance over delivery quality and a consultant delivers badly, the entire brand absorbs the reputational damage. The client does not distinguish between "the consultant" and "the studio." They think: "Mexzungu delivered badly."</p>
+
+      <h3>Failure Mode 3: Founder dependency</h3>
+      <p>The most common failure mode in boutique professional services: the founder cannot be removed from the delivery chain without quality collapsing. Every client wants the founder. Every consultant needs the founder's approval. The studio is not a studio. It is a solo practitioner with subcontractors. Revenue stays capped at what the founder can personally supervise, which is not passive income. It is a different kind of job.</p>
+
+      <h3>Failure Mode 4: Critical mass failure</h3>
+      <p>Platform economics research (HBS, 2021) shows that two-sided platforms that fail to reach critical mass on both sides die quickly. If a studio has five consultants but no client referral pipeline to send them, consultants leave. If it has client demand but no consultant pool to fill it, clients go elsewhere. The flywheel requires both sides to activate simultaneously. Studios that try to build supply (recruit consultants) before demand (secure client pipeline) consistently fail to retain the consultants they recruit.</p>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- QUALITY CONTROL -->
+    <section id="qc">
+      <h2>6. Quality Control Without the Founder as Bottleneck</h2>
+
+      <p>The most operationally sophisticated platforms have solved this problem. The solution is not founder supervision. It is <strong>institutionalized standards</strong>.</p>
+
+      <h3>The Toptal approach: Screening as the quality gate</h3>
+      <p>Toptal's claim of accepting only the "top 3%" of applicants is primarily marketing, but the underlying multi-stage screening process is real. By investing heavily in vetting before any consultant joins the pool, Toptal offloads quality control to the onboarding stage rather than the delivery stage. The result: clients rarely need to raise quality concerns because the supply is pre-qualified. Toptal does not supervise every engagement. It does not need to.</p>
+
+      <h3>GLG's approach: Compliance as the quality framework</h3>
+      <p>Expert networks face a different quality problem: their experts might share material non-public information and create legal liability. GLG solved this by building a formal compliance program. Every expert completes training. Every consultation has a compliance protocol. The result: GLG's clients trust the platform not because GLG supervises every call, but because the compliance infrastructure is documented, auditable, and rigorous. Quality and trust are systemic, not personal.</p>
+
+      <h3>The productive metrics approach</h3>
+      <p>Marketplaces that have scaled quality use operational KPIs to detect problems before they become brand damage. The four metrics that matter:</p>
+      <ul>
+        <li><strong>Deliverable acceptance rate:</strong> What percentage of consultant deliverables are accepted by clients on first submission?</li>
+        <li><strong>Client re-engagement rate:</strong> Do clients come back for a second engagement? Eden McCallum's 85% repeat rate is the benchmark.</li>
+        <li><strong>Client satisfaction score per consultant:</strong> Tracked privately, not publicly. Aggregated over time. Any consultant consistently below threshold triggers a conversation.</li>
+        <li><strong>Escalation rate:</strong> What percentage of engagements require founder intervention? Should be decreasing over time. If it is not, the governance system is not working.</li>
+      </ul>
+
+      <div class="mgl-block">
+        <div class="mgl-label">MGL Design Principle</div>
+        <p>The first two deliverables of any new engagement get Pepe's eyes. After that, the consultant runs the client relationship independently. Janis sends a three-question client satisfaction pulse after each deliverable closes. Scores are logged, not shared with the consultant. If any score drops below threshold, Pepe gets a flag before the client escalates. The consultant never knows the mechanism exists. They just know they are trusted to deliver.</p>
+      </div>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- CREATIVE LAYER -->
+    <section id="creative">
+      <h2>7. The Creative Layer: Ideas That Do Not Yet Exist</h2>
+
+      <p>The research establishes what others have built. This section addresses what nobody has built yet, applied specifically to the MGL context.</p>
+
+      <h3>Idea 1: Janis as the structural moat</h3>
+      <p>No consulting studio network anywhere offers an AI chief of staff as part of the membership package. This is not an incremental advantage. It is a qualitative difference. A consultant who joins Mexzungu gets their first client deck drafted in hours, their first policy document templated, their first engagement letter written. Their effective hourly rate increases immediately because their output-per-hour improves. This is the unfair advantage that no competitor can replicate without the same infrastructure investment. It is also the most honest reason to pay the 40% studio margin: you are not paying for a logo, you are paying for a co-pilot.</p>
+
+      <h3>Idea 2: The platform flip</h3>
+      <p>Most consultant networks pitch: "Join us and we will build something together." The MGL pitch is different: "We built it. You are joining something that works." This is a fundamentally different value proposition for senior consultants who have no patience for experiments. The canonical pricing model exists. The brand exists. The invoicing infrastructure exists. Janis exists. The consultants are not founders of the network. They are members. The distinction matters for the type of person you attract.</p>
+
+      <h3>Idea 3: Geographic coverage as a positioning story</h3>
+      <p>Faith in Nairobi. Oana in Europe. The next consultant in a third city. Mexzungu does not have offices. It does not need them. But on the website, the brand can say: "Barcelona, Nairobi, [city]." In Africa specifically, a consultant affiliated with a Barcelona-headquartered firm with a global network commands a different rate than a solo practitioner. The brand arbitrage is real and measurable. Clients in Nairobi who want "international quality" pay a premium for it. Faith brings local knowledge. Mexzungu brings the frame that commands the premium.</p>
+
+      <h3>Idea 4: Thought leadership as dual-purpose infrastructure</h3>
+      <p>The Outlaw Chronicles becomes a co-authorship platform. Consultants who join can co-author issues under their name and the Mexzungu brand. This does two things simultaneously: it gives consultants a marketing channel they would not have alone, and it produces content for the studio without Pepe writing everything himself. The content engine is also the recruitment engine. A senior consultant in Lagos who reads a Outlaw Chronicles piece co-authored by a consultant in Nairobi and thinks "I want to be in that room" is a recruitment outcome that cost nothing to generate.</p>
+
+      <h3>Idea 5: The productized playbook as a passive asset</h3>
+      <p>The Braintrust model proved that platforms can return most of the financial value to talent while still extracting value through a different mechanism. For MGL, the analogous play is the productized playbook. Over time, each practice arm builds a documented methodology: the Mexzungu Venture Architecture Playbook, the Mexzungu Privacy Stack. These playbooks are studio IP. They are sold as standalone products (workshops, templates, diagnostic tools) and used to train incoming consultants. Pepe earns from selling the playbook even when no consultant is working. This is the purest passive income component in the system.</p>
+
+      <h3>Idea 6: The studio dividend</h3>
+      <p>For consultants who generate above $50k in billed revenue through the studio in a calendar year, a year-end studio dividend of 5% of the studio's margin on their work. Not equity. Not a salary. A one-time loyalty payment. At scale, this costs Pepe roughly 2% of total revenue from high-performing consultants. In return, it creates a reason to stay that is financial and symbolic. The consultants who generate $50k+ are the ones the studio cannot afford to lose to direct competitors or to independence. The dividend is the retention mechanism.</p>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- MGL SYSTEM DESIGN -->
+    <section id="mgl-design">
+      <h2>8. The MGL System Design: Synthesized</h2>
+
+      <p>Integrating the research findings with the MGL context, the following design emerges:</p>
+
+      <h3>The passive income math</h3>
+      <div class="data-table-wrap">
+        <table>
+          <thead><tr><th>Scenario</th><th>Consultants</th><th>Avg. Active Clients</th><th>Avg. Monthly Billing</th><th>Studio Gross (40%)</th><th>Studio Net (after dividend)</th></tr></thead>
+          <tbody>
+            <tr><td>Year 1 (launch)</td><td>3</td><td>1.5</td><td>$4,000</td><td>$7,200/mo</td><td>~$6,500/mo</td></tr>
+            <tr><td>Year 2 (growth)</td><td>6</td><td>2</td><td>$5,000</td><td>$24,000/mo</td><td>~$21,600/mo</td></tr>
+            <tr><td>Year 3 (scale)</td><td>10</td><td>2.5</td><td>$6,000</td><td>$60,000/mo</td><td>~$54,000/mo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Pepe's direct client work adds on top of these numbers. The studio margin is the passive layer. His direct work is the active layer. The two compound together.</p>
+
+      <h3>The collaboration matrix with verified economics</h3>
+      <div class="data-table-wrap">
+        <table>
+          <thead><tr><th>Model</th><th>Who Brings</th><th>Who Delivers</th><th>Consultant Share</th><th>Studio Share</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr><td>The Autonomous</td><td>Consultant</td><td>Consultant</td><td class="highlight">60%</td><td>40%</td><td>Default. Consistent with Catalant-range take for a curated platform with full infrastructure.</td></tr>
+            <tr><td>The Pass</td><td>Pepe</td><td>Consultant</td><td>55%</td><td>45%</td><td>Pepe did the BD. Studio takes more for the client relationship work.</td></tr>
+            <tr><td>The Joint</td><td>Pepe</td><td>Both</td><td>40%</td><td>60%</td><td>Both parties in the room. Studio captures more for Pepe's time.</td></tr>
+            <tr><td>The Reverse</td><td>Consultant</td><td>Pepe</td><td>15% referral</td><td>85%</td><td>One-time finder fee. Pepe delivers. GLG precedent: experts receive minority share when platform delivers the value.</td></tr>
+            <tr><td>The Lead</td><td>Consultant</td><td>Both</td><td>50%</td><td>50%</td><td>50/50 because the consultant brought the client AND co-delivers.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Cross-sell mechanics</h3>
+      <p>When Consultant A brings a client who later buys a different practice area (from Consultant B or from Pepe), Consultant A earns a 10% finder fee on the first engagement value from that cross-sell. Paid once, at close. No trailing royalty. This rewards hunters without creating an accounting nightmare. It is consistent with Freestyle Consulting's documented 10-15% referral commission model.</p>
+
+      <h3>The non-negotiable floor</h3>
+      <p>Canonical MGL pricing applies to all engagements. Consultants may discount up to 15% on their own authority. Beyond that requires approval. This is not about control. It is about brand protection: price disruption destroys the perceived value of every other consultant in the network simultaneously. One consultant who undersells repositions the entire studio in the client's mind.</p>
+
+      <h3>The quality system</h3>
+      <p>Three layers, no founder bottleneck: (1) Rigorous onboarding screening (not everyone gets in), (2) First-two-deliverable review on any new engagement, then full autonomy, (3) Janis-automated client satisfaction pulse after each deliverable. Any score below threshold triggers a private flag to Pepe only. No public ratings. No performance management culture. Clean, quiet, and protective of the brand without micromanagement.</p>
+
+      <h3>The growth path</h3>
+      <div class="data-table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>Trigger</th><th>What Changes</th></tr></thead>
+          <tbody>
+            <tr><td>Studio Consultant</td><td>Pepe says yes</td><td>Standard split, profile page, Janis access, community</td></tr>
+            <tr><td>Senior Consultant</td><td>3 closed engagements or 12 months active</td><td>Named practice lead on site, eligible to receive referrals from Pepe, split improves to 65% on Autonomous model</td></tr>
+            <tr><td>Studio Associate</td><td>Ongoing strong track record, Pepe's invitation</td><td>Co-branding rights, co-authorship on Outlaw Chronicles, joint pitching with Pepe, eligible for year-end dividend</td></tr>
+            <tr><td>Studio Partner</td><td>Pepe's decision, case-by-case</td><td>Negotiated. Still contractor legally. Economics and responsibilities defined individually.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout gold">
+        <strong>The flywheel</strong>
+        <p>Great consultants join because the platform is credible and the infrastructure is real. They bring clients. Those clients cross-sell to other consultants. Cross-sell revenue rewards the hunters. The brand gets stronger. Better consultants want to join. Pepe earns on every loop that does not require him. That is the passive income architecture.</p>
+      </div>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- SOURCES -->
+    <div class="footnote-block" id="sources">
+      <h4>Sources and References</h4>
+      <p>Eden McCallum FY2024 financials: Companies House filing (OC375785)</p>
+      <p>Eden McCallum model: London Business School case "Making the Firm Flexible" (2007) and company history documentation</p>
+      <p>Catalant take rates and contractual terms: Catalant Customer Terms of Use and Expert Terms of Use (public)</p>
+      <p>Catalant consultant rates: Eagle Rock CFO pricing summary and SideHusl independent analysis</p>
+      <p>GLG revenue and margin: Wikipedia, Net Interest newsletter, GLG expert opportunity reviews, CleverX industry analysis</p>
+      <p>Expert network compliance: Harvard Digital Platform submission on GLG</p>
+      <p>Upwork take rate: SEC Q1 filing (upwk-20250331) and Last10K analysis</p>
+      <p>Braintrust model: Braintrust FAQ and official blog</p>
+      <p>MBO Partners revenue: GetLatka, Growjo, and Preqin private market data (conflicting; ranges noted)</p>
+      <p>Fractional executive market data: Vendux 2024 compensation data, Forbes CEO survey, CFO Centre growth reporting</p>
+      <p>Freelance consultant motivation: Industry survey data reported in Consultancy.uk and IJRASET gig worker motivation study</p>
+      <p>Independent work data: McKinsey Global Institute "Independent Work: Choice, Necessity, and the Gig Economy" (2016, updated)</p>
+      <p>Consultant-client relationship failures: Seidl, D. and Mohe, M., "The Consultant-Client Relationship," University of Munich (epub.ub.uni-muenchen.de, 2024)</p>
+      <p>Platform economics and network effects: a16z "16 Ways to Measure Network Effects"; NFX Network Effects Manual; Brattle Group "Understanding the Economics of Platforms"; HBS platform competition working paper (2021)</p>
+      <p>Marketplace metrics: CS-Cart marketplace network effects analysis</p>
+      <p>Quality control and screening: Toptal Ultimate Freelancing Guide; Upwork skills certification program</p>
+      <p>Boutique failure modes: The Visible Authority (service proliferation case study); Business Tester (consulting business model failure)</p>
+      <p>Referral commission standards: Freestyle Consulting Collective referral program (10-15% commission, documented)</p>
+      <p>Africa freelance market: Crowdol "Companies Tapping Africa's Freelance Talent" (2026); Tech in Africa "From Solo to Squads" (micro-agency model)</p>
+      <p>Consulting collective models: Cooperatives First (Co+Host Collective, Align Consulting Co-op case studies)</p>
+      <p>Three emerging consulting business models: Sioo academic paper, Vrije Universiteit Amsterdam (2016)</p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = "mexzungu_research_auth";
+  if (localStorage.getItem(STORAGE_KEY) !== 'true') {
+    window.location.href = '/research/';
+  }
+</script>
+</body>
+</html>

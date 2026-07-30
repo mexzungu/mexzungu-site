@@ -515,8 +515,12 @@ section {
 .section-text {
     font-size: var(--text-md);
     color: var(--gray-light);
-    max-width: 600px;
     line-height: 1.8;
+    /* NO max-width here. Section intros should match the full section width
+       so they align with grids and cards that follow. If a specific layout
+       needs a narrow centered paragraph, override locally:
+         .my-section .section-text { max-width: 600px; margin: 0 auto; }
+       Only contact-section does this by default (see below). */
 }
 
 /* PILLAR CARDS */
@@ -730,7 +734,7 @@ section {
     max-width: 1200px;
     margin: 0 auto;
 }
-.contact-section .section-text { margin: 0 auto; }
+.contact-section .section-text { max-width: 600px; margin: 0 auto; }
 .contact-links {
     display: flex;
     justify-content: center;

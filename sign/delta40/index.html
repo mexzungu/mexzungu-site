@@ -1,278 +1,702 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0d0d0d">
-    <title>Delta40 x Mexzungu: Sign Agreement</title>
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/style.css?v=10">
-    <style>
-        :root {
-            --bg: #0d0d0d; --bg-card: #1a1a1a; --pink: #e14b87;
-            --pink-light: #e86fa0; --text: #fafafa; --muted: #9a8f88;
-            --faint: #6b5e57; --border: #2a2a2a;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engagement Letter: Delta40 x Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js">
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+    }
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink:       #e14b87;
+      --pink-dark:  #b83a6b;
+      --navy:       #1a1a2e;
+      --black:      #0d0d0d;
+      --white:      #fafafa;
+      --ash:        #e8e3df;
+      --stone:      #6b5e57;
+      --mist:       #9a8f88;
+      --charcoal:   #3d3533;
+      --success:    #2d8f5e;
+      --heading:    'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:       'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body { font-family: var(--sans); background: #f0ece8; color: var(--black); min-height: 100vh; }
+
+    /* PASSWORD GATE */
+    #pw-gate { position: fixed; inset: 0; background: #0a0a18; display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 2rem; transition: opacity 0.5s ease; }
+    #pw-gate.hidden { display: none; }
+    .pw-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 3rem 2.5rem; max-width: 400px; width: 100%; text-align: center; }
+    .pw-logo { height: 44px; margin-bottom: 1.5rem; }
+    .pw-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 0.75rem; }
+    .pw-heading { font-family: var(--heading); font-size: 1.4rem; font-weight: 400; color: #fafafa; margin-bottom: 0.5rem; }
+    .pw-sub { font-size: 0.85rem; color: #6b5e57; margin-bottom: 1.75rem; line-height: 1.6; }
+    .pw-input { width: 100%; padding: 0.9rem 1rem; background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px; color: #fafafa; font-family: var(--sans); font-size: 1rem; letter-spacing: 0.06em; margin-bottom: 0.9rem; text-align: center; transition: border-color 0.2s; }
+    .pw-input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
+    .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+    .pw-btn { width: 100%; padding: 0.9rem 2rem; background: var(--pink); color: #fafafa; font-family: var(--sans); font-weight: 700; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; }
+    .pw-btn:hover { background: var(--pink-dark); transform: scale(1.02); }
+    .pw-error { font-size: 0.82rem; color: #c93545; margin-top: 0.6rem; min-height: 1.2em; }
+
+    /* MAIN CONTENT */
+    #sign-content { display: none; }
+    #sign-content.visible { display: block; }
+
+    /* HEADER */
+    .site-header { background: var(--navy); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+    .site-header .logo-wrap { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .site-header img { height: 36px; width: auto; }
+    .header-meta { text-align: right; }
+    .header-meta h1 { font-family: var(--heading); font-size: 1rem; color: #fafafa; letter-spacing: 0.03em; }
+    .header-meta p { font-size: 0.78rem; color: var(--mist); margin-top: 2px; }
+
+    /* PROGRESS BAR */
+    .progress-bar-wrap { background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08); padding: 0.6rem 2rem; display: flex; align-items: center; gap: 1.5rem; }
+    .progress-steps { display: flex; align-items: center; gap: 0.5rem; }
+    .step { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--mist); }
+    .step.done { color: var(--success); }
+    .step.done .step-dot { background: var(--success); }
+    .step.pending .step-dot { background: var(--mist); }
+    .step-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .step-sep { color: var(--mist); font-size: 0.7rem; opacity: 0.4; }
+    .progress-label { margin-left: auto; font-size: 0.78rem; color: var(--mist); }
+    .progress-label strong { color: var(--pink); }
+
+    /* LAYOUT */
+    .page-wrap { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+    /* DOCUMENT CARD */
+    .doc-card { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+    .doc-top-stripe { background: var(--navy); height: 5px; }
+    .doc-inner { padding: 3rem 3.5rem; }
+
+    .doc-wordmark { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--ash); }
+    .doc-wordmark img { height: 40px; width: auto; }
+    .doc-wordmark-text { display: flex; flex-direction: column; }
+    .doc-wordmark-text span:first-child { font-family: var(--heading); font-size: 0.95rem; color: var(--navy); letter-spacing: 0.04em; text-transform: uppercase; }
+    .doc-wordmark-text span:last-child { font-size: 0.75rem; color: var(--mist); margin-top: 2px; }
+
+    .doc-title { font-family: var(--heading); font-size: 1.7rem; color: var(--navy); margin-bottom: 0.3rem; }
+    .doc-subtitle { font-size: 0.9rem; color: var(--stone); margin-bottom: 2.5rem; }
+
+    .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .party-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.1rem 1.25rem; }
+    .party-block .party-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); margin-bottom: 0.4rem; }
+    .party-block .party-name { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.25rem; }
+    .party-block .party-detail { font-size: 0.8rem; color: var(--stone); line-height: 1.5; }
+
+    .doc-date-line { font-size: 0.82rem; color: var(--mist); margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--ash); }
+
+    .doc-body { font-size: 0.95rem; line-height: 1.75; color: #2a2a2a; }
+    .doc-body h2 { font-family: var(--heading); font-size: 1rem; color: var(--navy); margin: 2rem 0 0.6rem; padding-top: 1.5rem; border-top: 1px solid var(--ash); }
+    .doc-body h2:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+    .doc-body p { margin-bottom: 1rem; }
+    .doc-body .intro-q { font-style: italic; color: var(--stone); margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .doc-body .sub-item { margin: 0.5rem 0 0.5rem 1.25rem; padding-left: 0.75rem; border-left: 2px solid var(--ash); font-size: 0.9rem; }
+    .doc-body .sub-item strong { color: var(--navy); }
+
+    .pricing-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0 1rem; font-size: 0.88rem; }
+    .pricing-table th { text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mist); padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--ash); }
+    .pricing-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--ash); color: #2a2a2a; vertical-align: top; }
+    .pricing-table td:first-child { color: var(--navy); font-weight: 500; }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table tr.active-tier td { background: rgba(225,75,135,0.04); }
+    .pricing-table .tier-badge { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; background: var(--pink); color: #fff; border-radius: 4px; padding: 0.15rem 0.45rem; margin-left: 0.5rem; vertical-align: middle; }
+
+    .bank-block { background: #f8f6f4; border: 1px solid var(--ash); border-radius: 8px; padding: 1.1rem 1.25rem; margin: 1rem 0; font-size: 0.88rem; line-height: 1.8; }
+    .bank-row { display: flex; gap: 1rem; }
+    .bank-label { color: var(--mist); min-width: 140px; font-size: 0.8rem; }
+    .bank-val { color: var(--navy); font-weight: 500; }
+
+    /* SIGNATURE SECTION */
+    .sig-section { margin-top: 3rem; padding-top: 2.5rem; border-top: 2px solid var(--ash); }
+    .sig-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .sig-section-header h3 { font-family: var(--heading); font-size: 1.1rem; color: var(--navy); }
+    .sig-section-note { font-size: 0.78rem; color: var(--mist); }
+
+    .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+    .sig-block { border: 1px solid var(--ash); border-radius: 10px; overflow: hidden; background: #fdfdfd; }
+    .sig-block.signed { border-color: rgba(45,143,94,0.35); background: rgba(45,143,94,0.02); }
+    .sig-block-head { background: var(--navy); padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .sig-block.signed .sig-block-head { background: var(--success); }
+    .sig-block-head .signer-name { font-size: 0.8rem; font-weight: 600; color: #fafafa; }
+    .sig-block-head .signer-title { font-size: 0.68rem; color: rgba(255,255,255,0.65); margin-top: 1px; }
+    .signed-badge { display: flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; color: #fafafa; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 0.2rem 0.55rem; }
+    .signed-badge svg { flex-shrink: 0; }
+
+    .sig-block-body { padding: 1rem; }
+
+    .sig-display { height: 90px; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(45,143,94,0.3); border-radius: 6px; background: rgba(45,143,94,0.03); margin-bottom: 0.75rem; }
+    .sig-cursive { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 1.6rem; color: var(--navy); letter-spacing: -0.02em; }
+    .sig-meta { font-size: 0.72rem; color: var(--mist); }
+
+    .sig-canvas-wrap { position: relative; margin-bottom: 0.75rem; }
+    canvas.sig-pad { display: block; width: 100%; height: 100px; border: 1px dashed #ccc; border-radius: 6px; background: #fafafa; cursor: crosshair; touch-action: none; }
+    .sig-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; color: #d0cac6; pointer-events: none; user-select: none; white-space: nowrap; }
+    .sig-controls { display: flex; flex-direction: column; gap: 0.5rem; }
+    .sig-clear-btn { background: none; border: none; font-family: var(--sans); font-size: 0.72rem; color: var(--mist); cursor: pointer; text-align: right; padding: 0; text-decoration: underline; }
+    .sig-clear-btn:hover { color: var(--stone); }
+
+    .sig-field-row { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem; }
+    .sig-field-row label { font-size: 0.72rem; color: var(--mist); white-space: nowrap; }
+    .sig-field-row input { font-family: var(--sans); font-size: 0.78rem; border: 1px solid var(--ash); border-radius: 4px; padding: 0.25rem 0.5rem; color: var(--navy); flex: 1; min-width: 0; }
+
+    .sig-agree-wrap { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.6rem; }
+    .sig-agree-wrap input[type="checkbox"] { margin-top: 2px; accent-color: var(--pink); flex-shrink: 0; }
+    .sig-agree-wrap label { font-size: 0.72rem; color: var(--stone); line-height: 1.4; }
+
+    .sig-apply-btn { width: 100%; background: var(--pink); color: #fff; border: none; border-radius: 6px; font-family: var(--sans); font-size: 0.82rem; font-weight: 600; padding: 0.55rem 1rem; cursor: pointer; transition: background 0.2s ease, opacity 0.2s ease; }
+    .sig-apply-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .sig-apply-btn:not(:disabled):hover { background: var(--pink-dark); }
+
+    .sig-block.applied canvas { border-color: rgba(45,143,94,0.4); background: rgba(45,143,94,0.02); cursor: default; }
+    .sig-applied-note { display: none; font-size: 0.72rem; color: var(--success); font-weight: 600; text-align: center; padding: 0.4rem 0; }
+    .sig-block.applied .sig-applied-note { display: block; }
+    .sig-block.applied .sig-agree-wrap,
+    .sig-block.applied .sig-apply-btn,
+    .sig-block.applied .sig-clear-btn { display: none; }
+
+    /* COMPLETION */
+    .completion-wrap { display: none; margin-top: 2.5rem; background: linear-gradient(135deg, rgba(45,143,94,0.06) 0%, rgba(45,143,94,0.02) 100%); border: 1px solid rgba(45,143,94,0.3); border-radius: 12px; padding: 2rem; text-align: center; }
+    .completion-wrap.visible { display: block; }
+    .completion-wrap h3 { font-family: var(--heading); font-size: 1.15rem; color: var(--success); margin-bottom: 0.5rem; }
+    .completion-wrap p { font-size: 0.88rem; color: var(--stone); margin-bottom: 1.5rem; }
+
+    .btn-download { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--pink); color: #fff; border: none; border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600; padding: 0.8rem 2rem; cursor: pointer; transition: background 0.2s ease; margin-bottom: 1rem; }
+    .btn-download:hover { background: var(--pink-dark); }
+
+    /* FOOTER */
+    .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--ash); display: flex; align-items: center; justify-content: space-between; }
+    .doc-footer p { font-size: 0.75rem; color: var(--mist); }
+    .doc-footer a { color: var(--pink); text-decoration: none; }
+    .doc-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .doc-inner { padding: 1.5rem; }
+      .sig-grid { grid-template-columns: 1fr; }
+      .parties-grid { grid-template-columns: 1fr; }
+      .site-header { padding: 0.75rem 1rem; }
+      .progress-bar-wrap { padding: 0.5rem 1rem; }
+    }
+  
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-field .pw-input { margin-bottom: 0; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; line-height: 1.6; min-height: 100vh; }
-
-        #pw-gate { position: fixed; inset: 0; background: #0d0d0d; display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 2rem; }
-        #pw-gate.hidden { display: none; }
-        .pw-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 3rem 2.5rem; max-width: 420px; width: 100%; text-align: center; }
-        .pw-logo { height: 48px; margin-bottom: 2rem; }
-        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
-        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 400; color: var(--text); margin-bottom: 0.6rem; }
-        .pw-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
-        .pw-input { width: 100%; padding: 0.9rem 1rem; background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 1rem; transition: border-color 0.2s; text-align: center; }
-        .pw-input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
-        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
-        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
-        .pw-btn { width: 100%; padding: 0.9rem 2rem; background-color: var(--pink); color: var(--text); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; }
-        .pw-btn:hover { background-color: var(--pink-light); transform: scale(1.02); }
-        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
-
-        #sign-content { display: none; }
-        #sign-content.visible { display: block; }
-
-        .sign-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,13,13,0.92); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(12px); }
-        .nav-logo img { height: 36px; }
-        .nav-back { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-        .nav-back:hover { color: var(--text); }
-
-        .sign-wrap { max-width: 680px; margin: 0 auto; padding: 9rem 2rem 5rem; }
-        .sign-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 0.8rem; }
-        .sign-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; line-height: 1.15; margin-bottom: 1rem; }
-        .sign-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.75; margin-bottom: 3rem; }
-
-        /* RETAINER SUMMARY CARD */
-        .retainer-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem 2rem; margin-bottom: 2.5rem; }
-        .retainer-card-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); font-weight: 700; margin-bottom: 0.75rem; }
-        .retainer-card-name { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.3rem; color: var(--text); margin-bottom: 0.5rem; }
-        .retainer-card-price { font-size: 1.6rem; font-weight: 700; color: var(--pink); margin-bottom: 0.25rem; }
-        .retainer-card-note { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.25rem; }
-        .retainer-tiers { display: flex; flex-direction: column; gap: 0.5rem; }
-        .retainer-tier { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; padding: 0.5rem 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
-        .retainer-tier.active { background: rgba(225,75,135,0.08); border-color: rgba(225,75,135,0.3); }
-        .retainer-tier-label { color: var(--muted); }
-        .retainer-tier.active .retainer-tier-label { color: var(--text); }
-        .retainer-tier-price { font-weight: 700; color: var(--muted); }
-        .retainer-tier.active .retainer-tier-price { color: var(--pink); }
-        .retainer-tier-badge { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: var(--pink); color: #fff; border-radius: 4px; padding: 0.15rem 0.45rem; margin-left: 0.5rem; }
-
-        /* FORM */
-        .form-section { margin-bottom: 2.5rem; }
-        .form-section-title { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1.2rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-        @media (max-width: 580px) { .form-row { grid-template-columns: 1fr; } }
-        .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-        .form-group.full { grid-column: 1 / -1; }
-        .form-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; }
-        .form-input, .form-textarea { width: 100%; padding: 0.8rem 1rem; background: #0d0d0d; border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; transition: border-color 0.2s; }
-        .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(225,75,135,0.1); }
-        .form-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-
-        /* CHECKBOXES */
-        .check-list { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 2rem; }
-        .check-item { display: flex; gap: 0.8rem; align-items: flex-start; }
-        .check-input { width: 18px; height: 18px; margin-top: 0.15rem; flex-shrink: 0; accent-color: var(--pink); cursor: pointer; }
-        .check-label { font-size: 0.86rem; color: var(--muted); line-height: 1.55; cursor: pointer; }
-        .check-label a { color: var(--pink); text-decoration: none; }
-        .check-label a:hover { text-decoration: underline; }
-
-        /* SUBMIT */
-        .submit-btn { width: 100%; padding: 1rem 2rem; background: var(--pink); color: white; border: none; border-radius: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.02em; transition: all 0.2s; box-shadow: 0 4px 18px rgba(225,75,135,0.35); }
-        .submit-btn:hover { background: var(--pink-light); box-shadow: 0 6px 24px rgba(225,75,135,0.45); transform: scale(1.01); }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .form-note { font-size: 0.78rem; color: var(--faint); text-align: center; margin-top: 1rem; line-height: 1.6; }
-
-        /* SUCCESS */
-        #success-screen { display: none; text-align: center; padding: 6rem 2rem; max-width: 580px; margin: 0 auto; }
-        #success-screen.visible { display: block; }
-        .success-icon { font-size: 3rem; margin-bottom: 1.5rem; }
-        .success-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 400; margin-bottom: 1rem; }
-        .success-body { font-size: 0.95rem; color: var(--muted); line-height: 1.75; }
+        .pw-toggle:hover { color: #9a8f88; }
     </style>
 </head>
 <body>
 
+<!-- PASSWORD GATE -->
 <div id="pw-gate">
-    <div class="pw-card">
-        <img src="/img/logo.png" alt="Mexzungu" class="pw-logo">
-        <div class="pw-label">Confidential</div>
-        <div class="pw-heading">Delta40 x Mexzungu</div>
-        <div class="pw-sub">Enter your access code to continue.</div>
-        <input type="password" id="pw-input" class="pw-input" placeholder="access code" autocomplete="off">
-        <button class="pw-btn" onclick="checkPw()">Enter</button>
-        <div class="pw-error" id="pw-error"></div>
-    </div>
+  <div class="pw-card">
+    <img src="/img/logo.png" alt="Mexzungu Group" class="pw-logo">
+    <div class="pw-label">Confidential</div>
+    <div class="pw-heading">Delta40 x Mexzungu</div>
+    <div class="pw-sub">Enter your access code to continue.</div>
+    <input type="password" id="pw-input" class="pw-input" placeholder="access code" autocomplete="off">
+    <button class="pw-btn" onclick="checkPw()">Enter</button>
+    <div class="pw-error" id="pw-error"></div>
+  </div>
 </div>
 
 <div id="sign-content">
-    <nav class="sign-nav">
-        <div class="nav-logo"><a href="/"><img src="/img/logo.png" alt="Mexzungu Group"></a></div>
-        <a href="/proposals/delta40/" class="nav-back">Back to proposal</a>
-    </nav>
 
-    <div class="sign-wrap">
-        <div id="form-screen">
-            <div class="sign-label">Studio Foundation Retainer</div>
-            <h1 class="sign-heading">Confirm intent.<br>We handle the rest.</h1>
-            <p class="sign-sub">Fill in your details below. Mexzungu will prepare and send the engagement letter within 24 hours. You are not signing anything here. This is your intent to proceed.</p>
+<!-- HEADER -->
+<header class="site-header">
+  <a href="https://mexzungu.com" class="logo-wrap">
+    <img src="/logo-v3.png" alt="Mexzungu Group">
+  </a>
+  <div class="header-meta">
+    <h1>Engagement Letter</h1>
+    <p>Delta40 x Mexzungu Group &nbsp;|&nbsp; June 2026</p>
+  </div>
+</header>
 
-            <!-- RETAINER SUMMARY -->
-            <div class="retainer-card">
-                <div class="retainer-card-label">Selected Structure</div>
-                <div class="retainer-card-name">Studio Foundation Retainer</div>
-                <div class="retainer-card-price">$5,500/mo</div>
-                <div class="retainer-card-note">Starting rate for up to 20 portfolio companies. Fund-level and portfolio-level coverage included. Scales automatically as the portfolio grows.</div>
-                <div class="retainer-tiers">
-                    <div class="retainer-tier active">
-                        <span class="retainer-tier-label">Up to 20 companies <span class="retainer-tier-badge">Current</span></span>
-                        <span class="retainer-tier-price">$5,500/mo</span>
-                    </div>
-                    <div class="retainer-tier">
-                        <span class="retainer-tier-label">21&ndash;35 companies</span>
-                        <span class="retainer-tier-price">$7,000/mo</span>
-                    </div>
-                    <div class="retainer-tier">
-                        <span class="retainer-tier-label">36+ companies</span>
-                        <span class="retainer-tier-price">$8,500/mo</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTACT DETAILS -->
-            <div class="form-section">
-                <div class="form-section-title">Your details</div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="f-name">Full name</label>
-                        <input type="text" id="f-name" class="form-input" placeholder="Nick Handler">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="f-title">Title</label>
-                        <input type="text" id="f-title" class="form-input" placeholder="COO">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="f-email">Email</label>
-                        <input type="email" id="f-email" class="form-input" placeholder="nhandler@gmail.com">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="f-start">Preferred start date</label>
-                        <input type="text" id="f-start" class="form-input" placeholder="e.g. June 1, 2026">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group full">
-                        <label class="form-label" for="f-notes">Anything to flag before the engagement letter? (optional)</label>
-                        <textarea id="f-notes" class="form-textarea" placeholder="Adjustments, questions, or notes for Pepe..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONFIRMATIONS -->
-            <div class="form-section">
-                <div class="form-section-title">Confirmations</div>
-                <div class="check-list">
-                    <div class="check-item">
-                        <input type="checkbox" id="chk-1" class="check-input">
-                        <label for="chk-1" class="check-label">I have read the full proposal at <a href="/proposals/delta40/">mexzungu.com/proposals/delta40</a> and understand the scope, pricing, and terms of the Studio Foundation Retainer.</label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="chk-2" class="check-input">
-                        <label for="chk-2" class="check-label">I understand this form records my intent to proceed. The formal engagement letter will be sent by Mexzungu within 24 hours and will require a separate signature.</label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="chk-3" class="check-input">
-                        <label for="chk-3" class="check-label">I confirm I am authorized to enter into commercial agreements on behalf of Delta40 Advisors Ltd.</label>
-                    </div>
-                </div>
-            </div>
-
-            <button class="submit-btn" id="submit-btn" onclick="submitForm()">Confirm intent and notify Mexzungu</button>
-            <p class="form-note">This does not charge your card or create a binding contract. It triggers the engagement letter preparation process.</p>
-        </div>
-
-        <div id="success-screen">
-            <div class="success-icon">&#10003;</div>
-            <div class="success-heading">Intent received.</div>
-            <p class="success-body">Pepe has been notified. The engagement letter for the Studio Foundation Retainer will arrive within 24 hours. If anything needs adjusting before you sign, just reply to that email.<br><br>Looking forward to building this together.</p>
-        </div>
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="step done" id="step-pepe">
+      <span class="step-dot"></span>
+      <span>Pepe Carrillo</span>
     </div>
+    <span class="step-sep">&#8250;</span>
+    <div class="step pending" id="step-nick">
+      <span class="step-dot"></span>
+      <span>Nick Handler</span>
+    </div>
+  </div>
+  <div class="progress-label" id="progress-label"><strong>1</strong> of 2 signatures collected</div>
 </div>
 
+<!-- DOCUMENT -->
+<div class="page-wrap">
+  <div class="doc-card" id="document-root">
+    <div class="doc-top-stripe"></div>
+    <div class="doc-inner">
+
+      <div class="doc-wordmark">
+        <img src="/logo-v3.png" alt="Mexzungu Group">
+        <div class="doc-wordmark-text">
+          <span>Mexzungu Venture Architecture</span>
+          <span>Outlaw Studio. Chaos starts companies. Structure builds them.</span>
+        </div>
+      </div>
+
+      <h1 class="doc-title">Engagement Letter: Delta40</h1>
+      <p class="doc-subtitle">Studio Foundation Retainer</p>
+
+      <div class="parties-grid">
+        <div class="party-block">
+          <div class="party-label">The Client</div>
+          <div class="party-name">Delta40 Advisors Ltd</div>
+          <div class="party-detail">A venture fund investing across 30+ African countries.<br>Represented by Nick Handler (COO).</div>
+        </div>
+        <div class="party-block">
+          <div class="party-label">The Studio</div>
+          <div class="party-name">Mexzungu Group Ltd</div>
+          <div class="party-detail">A Mauritius company. Royal Road, Henrietta, 73120, Mauritius.<br>Signing through Pepe Carrillo (Chief Disruption Officer).<br><a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a></div>
+        </div>
+      </div>
+
+      <div class="doc-date-line">Dated: June 2026</div>
+
+      <div class="doc-body">
+
+        <p class="intro-q">Why does this letter exist?</p>
+        <p>Because good work needs a clear foundation. You run a $20M fund across 30+ African countries with 16 portfolio companies and the structural and strategic complexity that comes with that. This letter sets out what we are doing together, what it costs, and how we operate. Read it, sign it, and let's get to work.</p>
+
+        <h2>Where does the Studio sit, legally and operationally?</h2>
+        <p>The Studio is a Mauritius outfit. We work from our registered office on the island and deliver across borders. None of what follows means we have opened a branch or started practising local law anywhere in Africa. We are capital and venture structuring consultants. The visiting architects, not the local lawyers.</p>
+
+        <h2>1. What are we working on together?</h2>
+        <p>The Studio Foundation Retainer gives Delta40 ongoing access to Mexzungu's venture architecture and capital structuring expertise across four pillars:</p>
+        <div class="sub-item"><strong>Fund governance and legal strategy.</strong> Term sheet reviews, LP agreement analysis, governance architecture, and structural decisions at fund level. You get a deal-seasoned eye on everything before it moves.</div>
+        <div class="sub-item"><strong>Portfolio company support.</strong> Term sheets, shareholder agreements, board governance, founder equity structures, and commercial contract reviews across the portfolio. Response within 48 hours on anything flagged as urgent.</div>
+        <div class="sub-item"><strong>Founder education and coaching.</strong> Workshops, deal clinics, and one-on-one sessions for portfolio founders on structuring, capital raises, and commercial fundamentals. We help your portfolio not make the mistakes that cost them later.</div>
+        <div class="sub-item"><strong>Transaction advisory.</strong> For portfolio companies in active capital raise or M&amp;A processes, we provide structuring and negotiation support through to close. Success fees apply when a deal closes (see Section 6).</div>
+
+        <h2>2. What do you actually walk away with?</h2>
+        <div class="sub-item">(a) Structured review and annotated positions on every material term sheet or agreement you send us, within 48 hours.</div>
+        <div class="sub-item">(b) A plain-language memo on what to hold, what to give, and where the walkaway is, for any deal where you ask for one.</div>
+        <div class="sub-item">(c) Access to Pepe's network across legal, capital, and institutional investor communities in Africa, Europe, and beyond.</div>
+        <div class="sub-item">(d) A direct line, not a ticketing queue. You reach Pepe. That is the deal.</div>
+
+        <h2>3. What are we not doing?</h2>
+        <div class="sub-item">(a) Filing anything with any court, registry, notary, or government office anywhere.</div>
+        <div class="sub-item">(b) Being the lawyer of record for Delta40 or any portfolio company in any jurisdiction.</div>
+        <div class="sub-item">(c) Regulatory compliance monitoring or filing coordination. This is not a law firm engagement.</div>
+        <div class="sub-item">(d) Replacing local counsel. For execution in specific jurisdictions, local qualified lawyers are required. We can point you toward good people.</div>
+        <div class="sub-item">(e) Anything not described in Section 1.</div>
+
+        <h2>4. Is this legal advice?</h2>
+        <p>No. This is legal consulting and venture architecture. We give you the structure, the risks, and the playbook. Think of us as the friend who has closed a few billion in deals across a dozen countries, sitting next to you at the table, telling you what to look out for and how to build things that hold.</p>
+
+        <h2>5. Assumptions</h2>
+        <div class="sub-item"><strong>(a) Coverage scope:</strong> The retainer covers Delta40 at fund level and all portfolio companies active as at the signing date, up to the tier limit below. New portfolio companies are included automatically within the same tier limit.</div>
+        <div class="sub-item"><strong>(b) If we part ways early:</strong> If either side ends the engagement and a transaction closes within 6 months with someone we introduced or worked with during the engagement, the applicable success fee still applies.</div>
+        <div class="sub-item"><strong>(c) What we need from you:</strong> When we ask for documents, term sheets, cap tables, or financials, we need them within 5 business days. If things come in late, timelines adjust accordingly.</div>
+
+        <h2>6. What does this cost?</h2>
+        <p>The retainer fee is structured by portfolio size and billed monthly:</p>
+
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Portfolio size</th>
+              <th>Monthly fee</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="active-tier">
+              <td>Up to 20 companies <span class="tier-badge">Current</span></td>
+              <td>$5,500/mo</td>
+              <td>Full fund-level and portfolio coverage</td>
+            </tr>
+            <tr>
+              <td>21 to 35 companies</td>
+              <td>$7,000/mo</td>
+              <td>Triggers automatically on portfolio growth</td>
+            </tr>
+            <tr>
+              <td>36+ companies</td>
+              <td>$8,500/mo</td>
+              <td>Cap; no further scaling above this</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Fees are exclusive of registration fees and local counsel fees (if any). Tier upgrades take effect on the first day of the month following the trigger event. Pepe will flag the trigger before invoicing.</p>
+
+        <div class="sub-item"><strong>Hour Bank.</strong> For work outside the retainer scope (specialist projects, extended transaction advisory, bespoke research), Delta40 may pre-purchase blocks of 20 hours at $200/hr. Unused hours carry forward to the following month. Standard rate outside blocks is $250/hr.</div>
+
+        <div class="sub-item"><strong>Transaction success fees.</strong> When a portfolio company closes a capital raise with Mexzungu in an active advisory role: equity closes at 1.5% of total equity raised, debt closes at 1% of total facility. Retainer clients receive a discount on the standard success fee rates. Success fees are payable within 14 days of capital clearing. Fees under the retainer credit mechanism reduce the first success fee invoice pro-rata for months of active coverage prior to close.</div>
+
+        <h2>7. How do you pay?</h2>
+        <p>Bank transfer to:</p>
+        <div class="bank-block">
+          <div class="bank-row"><span class="bank-label">Beneficiary</span><span class="bank-val">Mexzungu Group Ltd</span></div>
+          <div class="bank-row"><span class="bank-label">Bank</span><span class="bank-val">Mauritius Commercial Bank (MCB)</span></div>
+          <div class="bank-row"><span class="bank-label">Account Number</span><span class="bank-val">000448521954</span></div>
+          <div class="bank-row"><span class="bank-label">IBAN</span><span class="bank-val">MU49MCBL0901000448521954000USD</span></div>
+          <div class="bank-row"><span class="bank-label">SWIFT/BIC</span><span class="bank-val">MCBLMUMU</span></div>
+          <div class="bank-row"><span class="bank-label">Bank address</span><span class="bank-val">Sir William Newton Street, Port Louis, Mauritius</span></div>
+        </div>
+        <p>We invoice on the first of each month. Payment is due within 30 days of invoice date. If payment is more than 15 days late, work pauses until cleared.</p>
+
+        <h2>8. Liability</h2>
+        <p>If something goes wrong and you come after us, the most we are on the hook for is the retainer fees you have actually paid in the preceding 3 months. Not consequential losses, not advisory value foregone, not hypothetical future savings. Fraud and willful misconduct are not capped. We are not planning on either.</p>
+
+        <h2>9. Confidentiality</h2>
+        <p>What happens in this engagement stays in this engagement. You do not share our memos, analysis, or thinking outside this engagement without our permission. We do not share your fund strategy, portfolio details, or any company information with anyone. This commitment does not expire when the engagement does.</p>
+
+        <h2>10. Can the Studio reference this work later?</h2>
+        <p>Yes, in general terms only. We might say something like "we provide ongoing venture architecture support to an African-focused VC fund." We will never name Delta40, share your portfolio details, or say anything specific without your written permission. Your call whether to name us on the wall.</p>
+
+        <h2>11. Duration</h2>
+        <p>This engagement starts on the date at the top and continues until one of these happens: (a) Either side gives 30 days written notice of termination, for any reason. (b) Twelve months pass, at which point we agree a renewal or part ways cleanly. Everything delivered stays delivered. Everything earned stays earned. Confidentiality survives.</p>
+
+        <h2>12. Governing law</h2>
+        <p>Mauritius law. If we cannot sort it out between ourselves, it goes to the Supreme Court of Mauritius (Commercial Division). We are not expecting to need this.</p>
+
+      </div>
+
+      <!-- SIGNATURE SECTION -->
+      <div class="sig-section" id="sig-section">
+        <div class="sig-section-header">
+          <h3>Signatures</h3>
+          <span class="sig-section-note">Both parties must sign to complete the agreement.</span>
+        </div>
+
+        <div class="sig-grid">
+
+          <!-- PEPE - already signed -->
+          <div class="sig-block signed" id="block-pepe">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Pepe Carrillo</div>
+                <div class="signer-title">Chief Disruption Officer, Mexzungu Group Ltd</div>
+              </div>
+              <div class="signed-badge">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Signed
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-display">
+                <span class="sig-cursive">Pepe Carrillo</span>
+              </div>
+              <div class="sig-meta">Signed: June 2026</div>
+            </div>
+          </div>
+
+          <!-- NICK HANDLER -->
+          <div class="sig-block" id="block-nick">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Nick Handler</div>
+                <div class="signer-title">COO, Delta40 Advisors Ltd</div>
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-canvas-wrap">
+                <canvas class="sig-pad" id="canvas-nick"></canvas>
+                <span class="sig-watermark" id="wm-nick">Sign here</span>
+              </div>
+              <div class="sig-controls">
+                <button class="sig-clear-btn" onclick="clearSig('nick')">Clear</button>
+                <div class="sig-field-row">
+                  <label for="email-nick">Email</label>
+                  <input type="email" id="email-nick" placeholder="nick@delta40.com" oninput="updateApplyBtn('nick')">
+                </div>
+                <div class="sig-field-row">
+                  <label for="date-nick">Date</label>
+                  <input type="date" id="date-nick">
+                </div>
+                <div class="sig-agree-wrap">
+                  <input type="checkbox" id="agree-nick" onchange="updateApplyBtn('nick')">
+                  <label for="agree-nick">I have read and agree to all terms above.</label>
+                </div>
+                <button class="sig-apply-btn" id="apply-nick" disabled onclick="applySig('nick')">Apply Signature</button>
+              </div>
+              <div class="sig-applied-note">Signature applied.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COMPLETION PANEL -->
+        <div class="completion-wrap" id="completion-panel">
+          <h3>Agreement complete.</h3>
+          <p id="server-submit-status" style="font-size:0.85rem;color:var(--stone);margin-bottom:0.5rem;">Sending signed copy to both parties...</p>
+          <p style="font-size:0.78rem;color:var(--mist);margin-bottom:1.25rem;">Download your copy for your records. Welcome to the Studio.</p>
+          <button class="btn-download" onclick="downloadPDF()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download Signed PDF
+          </button>
+        </div>
+
+      </div>
+
+      <div class="doc-footer">
+        <p>Mexzungu Group Ltd &nbsp;|&nbsp; Royal Road, Henrietta, 73120, Mauritius</p>
+        <p><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> &nbsp;|&nbsp; <a href="https://mexzungu.com">mexzungu.com</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- /sign-content -->
+
 <script>
-    const SESSION_KEY = 'delta40_auth';
-    const PASS = 'delta40-outlaw-0526';
+  // CONFIG
+  var DOC_ID = 'delta40-retainer';
+  var DOC_TITLE = 'Engagement Letter: Delta40 x Mexzungu Group';
+  var DOC_TYPE = 'Engagement Letter';
+  var DOC_PARTIES = ['Delta40 Advisors Ltd', 'Mexzungu Group Ltd'];
+  var SIGNERS = ['nick'];
+  var SIGNER_META = {
+    nick: { name: 'Nick Handler', role: 'COO, Delta40 Advisors Ltd' }
+  };
+  var PRE_SIGNED = [{ name: 'Pepe Carrillo', role: 'Chief Disruption Officer, Mexzungu Group Ltd', signed_at: 'June 2026' }];
+  var API_BASE = 'https://api.mexzungu.com';
+  var SESSION_KEY = 'delta40_sign_auth';
+  var PASS = 'delta40-2026';
+  var MASTER_PW = 'Outlaw-Master-2026';
 
-    function checkPw() {
-        const val = document.getElementById('pw-input').value.trim().toLowerCase();
-        const inp = document.getElementById('pw-input');
-        const err = document.getElementById('pw-error');
-        if (val === PASS) {
-            sessionStorage.setItem(SESSION_KEY, '1');
-            document.getElementById('pw-gate').classList.add('hidden');
-            document.getElementById('sign-content').classList.add('visible');
-        } else {
-            inp.classList.add('error');
-            err.textContent = 'Incorrect access code.';
-            setTimeout(() => inp.classList.remove('error'), 400);
+  // PASSWORD GATE
+  function checkPw() {
+    var val = document.getElementById('pw-input').value.trim().toLowerCase();
+    var inp = document.getElementById('pw-input');
+    var err = document.getElementById('pw-error');
+    if (val === PASS || val === MASTER_PW) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      document.getElementById('pw-gate').classList.add('hidden');
+      document.getElementById('sign-content').classList.add('visible');
+    } else {
+      inp.classList.add('error');
+      err.textContent = 'Incorrect access code.';
+      setTimeout(function() { inp.classList.remove('error'); }, 400);
+    }
+  }
+  document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('sign-content').classList.add('visible');
+  }
+
+  // STATE
+  var signed = { nick: false };
+  var pads = {};
+
+  // INIT DATE
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('date-nick').value = today;
+
+  // INIT SIGNATURE PADS
+  function initPad(id) {
+    var canvas = document.getElementById('canvas-' + id);
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    var pad = new SignaturePad(canvas, { minWidth: 1, maxWidth: 2.5, penColor: '#1a1a2e' });
+    pad.addEventListener('beginStroke', function() {
+      document.getElementById('wm-' + id).style.display = 'none';
+    });
+    pad.addEventListener('afterUpdateStroke', function() { updateApplyBtn(id); });
+    pads[id] = pad;
+  }
+
+  initPad('nick');
+
+  // CLEAR
+  function clearSig(id) {
+    pads[id].clear();
+    document.getElementById('wm-' + id).style.display = '';
+    updateApplyBtn(id);
+  }
+
+  // ENABLE APPLY BUTTON
+  function updateApplyBtn(id) {
+    if (signed[id]) return;
+    var agreed = document.getElementById('agree-' + id).checked;
+    var hasStroke = !pads[id].isEmpty();
+    var hasEmail = document.getElementById('email-' + id).value.includes('@');
+    document.getElementById('apply-' + id).disabled = !(agreed && hasStroke && hasEmail);
+  }
+
+  // MARK SIGNED (visual)
+  function markBlockSigned(id) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+    updateProgressBar();
+  }
+
+  function markBlockPreviouslySigned(id, sigData) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied', 'signed');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var body = block.querySelector('.sig-block-body');
+    body.innerHTML = '<div class="sig-display"><span class="sig-cursive">' + (sigData.name || SIGNER_META[id].name) + '</span></div>' +
+      '<div class="sig-meta">Signed: ' + (sigData.signed_at || '') + '</div>';
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+  }
+
+  function updateProgressBar() {
+    var count = 1 + (signed.nick ? 1 : 0);
+    document.getElementById('progress-label').innerHTML = '<strong>' + count + '</strong> of 2 signatures collected';
+  }
+
+  // APPLY SIGNATURE
+  async function applySig(id) {
+    if (pads[id].isEmpty()) return;
+    var email = document.getElementById('email-' + id).value.trim();
+    if (!email) return;
+
+    var btn = document.getElementById('apply-' + id);
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+
+    markBlockSigned(id);
+
+    var payload = {
+      document_id: DOC_ID,
+      signer_id: id,
+      signer_name: SIGNER_META[id].name,
+      signer_role: SIGNER_META[id].role,
+      signer_email: email,
+      image_data: pads[id].toDataURL('image/png'),
+      signed_at: document.getElementById('date-' + id).value,
+      title: DOC_TITLE,
+      document_type: DOC_TYPE,
+      parties: DOC_PARTIES,
+      required_signers: SIGNERS,
+      pre_signed: PRE_SIGNED
+    };
+
+    try {
+      var resp = await fetch(API_BASE + '/signing/partial-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await resp.json();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; Agreement complete. Signed copy sent to both parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+        setTimeout(function() {
+          document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    } catch (err) {
+      console.error('Partial save failed:', err);
+    }
+
+    if (signed.nick) {
+      document.getElementById('completion-panel').classList.add('visible');
+      setTimeout(function() {
+        document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    }
+  }
+
+  // LOAD EXISTING SIGNATURES
+  async function loadSigningStatus() {
+    try {
+      var resp = await fetch(API_BASE + '/signing/status/' + DOC_ID);
+      var data = await resp.json();
+      for (var sid in data.signatures) {
+        if (SIGNERS.indexOf(sid) !== -1 && !signed[sid]) {
+          markBlockPreviouslySigned(sid, data.signatures[sid]);
         }
+      }
+      updateProgressBar();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; Agreement complete. Signed copy sent to both parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+      }
+    } catch (err) {
+      console.warn('Could not load signing status:', err);
     }
+  }
 
-    document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+  loadSigningStatus();
 
-    if (sessionStorage.getItem(SESSION_KEY) === '1') {
-        document.getElementById('pw-gate').classList.add('hidden');
-        document.getElementById('sign-content').classList.add('visible');
+  // PDF DOWNLOAD
+  async function downloadPDF() {
+    var btn = document.querySelector('.btn-download');
+    btn.textContent = 'Generating...';
+    btn.disabled = true;
+    try {
+      var el = document.getElementById('document-root');
+      var canvas = await html2canvas(el, { scale: 1.5, useCORS: true, logging: false, backgroundColor: '#ffffff' });
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+      var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
+      var pageW = pdf.internal.pageSize.getWidth();
+      var pageH = pdf.internal.pageSize.getHeight();
+      var ratio = pageW / canvas.width;
+      var scaledH = canvas.height * ratio;
+      var y = 0;
+      while (y < scaledH) {
+        if (y > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, -y, pageW, scaledH);
+        y += pageH;
+      }
+      var dateStr = new Date().toISOString().split('T')[0];
+      pdf.save('Delta40_MexzunguGroup_EL_Signed_' + dateStr + '.pdf');
+    } catch (e) {
+      console.error(e);
+      alert('PDF generation failed. Please screenshot the page manually.');
     }
-
-    function submitForm() {
-        const name = document.getElementById('f-name').value.trim();
-        const email = document.getElementById('f-email').value.trim();
-        const chk1 = document.getElementById('chk-1').checked;
-        const chk2 = document.getElementById('chk-2').checked;
-        const chk3 = document.getElementById('chk-3').checked;
-
-        if (!name || !email) { alert('Please fill in your name and email.'); return; }
-        if (!chk1 || !chk2 || !chk3) { alert('Please confirm all three checkboxes.'); return; }
-
-        const btn = document.getElementById('submit-btn');
-        btn.disabled = true;
-        btn.textContent = 'Sending...';
-
-        const payload = {
-            option: 'studio-foundation',
-            name: name,
-            title: document.getElementById('f-title').value.trim(),
-            email: email,
-            start: document.getElementById('f-start').value.trim(),
-            notes: document.getElementById('f-notes').value.trim(),
-            client: 'delta40',
-            timestamp: new Date().toISOString()
-        };
-
-        fetch('https://api.mexzungu.com/proposals/sign', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(r => r.ok ? r.json() : Promise.reject(r))
-        .then(() => {
-            document.getElementById('form-screen').style.display = 'none';
-            document.getElementById('success-screen').classList.add('visible');
-        })
-        .catch(() => {
-            btn.disabled = false;
-            btn.textContent = 'Confirm intent and notify Mexzungu';
-            alert('Something went wrong. Please email pepe@mexzungu.com directly.');
-        });
-    }
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download Signed PDF';
+    btn.disabled = false;
+  }
 </script>
-
 </body>
 </html>

@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mexzungu x Faith Gathoni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:        #0d0d0d;
+      --bg-2:      #141414;
+      --bg-3:      #1c1c1c;
+      --pink:      #e14b87;
+      --pink-dark: #b8346e;
+      --pink-dim:  rgba(225,75,135,0.12);
+      --pink-glow: rgba(225,75,135,0.22);
+      --gold:      #d4a039;
+      --gold-dim:  rgba(212,160,57,0.12);
+      --ink:       #f0f0f0;
+      --muted:     #888;
+      --faint:     rgba(255,255,255,0.05);
+      --border:    rgba(255,255,255,0.08);
+      --r:         12px;
+      --display:   'RocknRoll One', sans-serif;
+      --body:      'Space Grotesk', sans-serif;
+      --stamp:     'Rock Salt', cursive;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,13,13,0.94); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border); height: 58px; display: flex; align-items: center;
+    }
+    .nav-inner { max-width: 760px; margin: 0 auto; padding: 0 24px; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 34px; width: auto; display: block; }
+    .nav-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .nav-label span { color: var(--pink); }
+
+    .lp { position: relative; overflow: hidden; }
+    .lp > * { position: relative; z-index: 1; }
+    .lp.dense::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.10;
+      background-image:
+        radial-gradient(ellipse 20px 16px at 8%  15%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at 25%  8%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 18px at 42% 22%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 14px at 65% 12%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 14px 20px at 82% 20%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 15% 40%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 22px at 35% 45%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 16px at 55% 38%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 20px at 75% 42%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 14px at 92% 35%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at  5% 65%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 18px at 22% 70%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 22px at 48% 62%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 68% 68%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 18px at 88% 60%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 12% 88%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 20px at 38% 85%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 16px at 58% 90%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at 78% 82%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 18px at 95% 88%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+    .lp.light::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.06;
+      background-image:
+        radial-gradient(ellipse 20px 16px at 12% 25%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 16px 20px at 45% 15%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 22px 18px at 78% 30%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 18px 14px at 25% 65%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 14px 20px at 58% 72%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%),
+        radial-gradient(ellipse 20px 16px at 85% 80%, var(--pink-dark) 0%, var(--pink) 40%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .hero { padding: 96px 0 80px; }
+    .hero-eyebrow { font-family: var(--stamp); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(225,75,135,0.75); margin-bottom: 28px; display: block; }
+    .hero-name { font-family: var(--display); font-size: clamp(4rem, 11vw, 7rem); line-height: 0.92; letter-spacing: -0.02em; color: var(--ink); }
+    .hero-name span { color: var(--pink); }
+    .hero-rule { width: 64px; height: 3px; background: linear-gradient(90deg, var(--pink), var(--gold)); margin: 32px 0; }
+    .hero-line { font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: rgba(240,240,240,0.78); max-width: 520px; line-height: 1.75; }
+    .hero-line strong { color: var(--ink); }
+
+    .lp-divider { border: none; border-top: 1px solid rgba(225,75,135,0.12); }
+
+    .private-bar { background: rgba(225,75,135,0.05); border-bottom: 1px solid rgba(225,75,135,0.12); padding: 9px 0; text-align: center; font-size: 11px; letter-spacing: 0.08em; color: var(--muted); }
+    .private-bar strong { color: rgba(225,75,135,0.7); font-weight: 600; }
+
+    section { padding: 88px 0; }
+    .s-tag { font-family: var(--stamp); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pink); opacity: 0.8; display: block; margin-bottom: 16px; }
+    h2 { font-family: var(--display); font-size: clamp(1.7rem, 3.5vw, 2.4rem); line-height: 1.15; margin-bottom: 22px; font-weight: 400; }
+    .s-intro { color: var(--muted); font-size: 1.05rem; max-width: 620px; line-height: 1.75; margin-bottom: 48px; }
+
+    .recog { background: var(--bg-2); border: 1px solid rgba(225,75,135,0.18); border-radius: var(--r); padding: 36px 40px; margin-top: 36px; }
+    .recog-from { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); margin-bottom: 20px; }
+    .recog-body { color: rgba(240,240,240,0.82); line-height: 1.85; }
+    .recog-body p { margin-bottom: 16px; }
+    .recog-body p:last-child { margin-bottom: 0; }
+    .recog-sig { font-family: var(--stamp); font-size: 1.2rem; color: var(--pink); margin-top: 28px; }
+
+    .built-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 48px; }
+    .built-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 24px; }
+    .built-card.lit { border-color: var(--pink); }
+    .built-card.blurred { filter: blur(1.5px); opacity: 0.22; pointer-events: none; }
+    .phase-label { font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; opacity: 0.7; }
+    .built-card.lit .phase-label { color: var(--pink); opacity: 1; }
+    .bc-title { font-family: var(--display); font-size: 1.3rem; margin-bottom: 10px; line-height: 1.2; }
+    .bc-detail { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+    .bc-detail li { list-style: none; padding: 4px 0; }
+    .bc-detail li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--pink); margin-right: 10px; opacity: 0.7; vertical-align: middle; }
+    .built-card-q { background: transparent; border: 1.5px solid var(--pink); border-radius: var(--r); padding: 28px 20px; box-shadow: 0 0 40px rgba(225,75,135,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 180px; }
+    .built-card-q .phase-label { color: rgba(225,75,135,0.8); opacity: 1; margin-bottom: 6px; }
+    .q-mark { font-family: var(--display); font-size: 5rem; color: var(--gold); line-height: 1; margin: 8px 0; text-shadow: 0 0 40px rgba(212,160,57,0.6); }
+    .q-card-title { font-family: var(--display); font-size: 0.95rem; color: var(--pink); margin-bottom: 6px; }
+    .q-sub { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-top: 6px; }
+
+    .stat-row { display: flex; gap: 24px; margin-top: 48px; }
+    .stat { flex: 1; text-align: center; }
+    .stat-num { font-family: 'RocknRoll One', sans-serif; font-size: clamp(2.8rem, 6vw, 4.5rem); color: var(--pink); line-height: 1; display: block; }
+    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; display: block; }
+
+    .validation { background: var(--bg-2); border: 1px solid rgba(212,160,57,0.2); border-radius: var(--r); padding: 28px 32px; margin-top: 40px; }
+    .val-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .val-body { font-size: 0.95rem; color: rgba(240,240,240,0.85); line-height: 1.85; }
+    .wyn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+    .wyn-card { background: var(--bg-2); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--r); padding: 24px; }
+    .wyn-card canvas { display: block; width: 100%; }
+    .wyn-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; display: block; }
+    .wyn-src { color: rgba(255,255,255,0.25); font-weight: 400; margin-left: 6px; }
+    .wyn-insight { font-size: 0.82rem; color: var(--muted); line-height: 1.7; margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px; }
+
+    .mx-intro { color: var(--muted); line-height: 1.8; margin-bottom: 36px; font-size: 1rem; }
+    .mx-arms { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+    .mx-arm { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; }
+    .mx-arm.featured { border-color: rgba(225,75,135,0.35); }
+    .mx-arm-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); margin-bottom: 8px; }
+    .mx-arm-name { font-family: var(--display); font-size: 1.05rem; margin-bottom: 8px; }
+    .mx-arm-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+    .synergy-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 24px; margin-bottom: 10px; }
+    .creds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .cred { font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; background: var(--faint); border: 1px solid var(--border); color: var(--muted); }
+
+    .qblock { margin-bottom: 44px; }
+    .qtxt { font-weight: 600; font-size: 1rem; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 14px; line-height: 1.5; }
+    .qnum { width: 28px; height: 28px; border-radius: 50%; background: var(--pink-dim); border: 1px solid var(--pink); color: var(--pink); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .qopts { display: flex; flex-wrap: wrap; gap: 10px; margin-left: 42px; }
+    .qbtn { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 18px; color: var(--ink); font-family: var(--body); font-size: 0.88rem; cursor: pointer; transition: border-color .15s, background .15s, color .15s; line-height: 1.45; }
+    .qbtn:hover { border-color: var(--pink); color: var(--pink); }
+    .qbtn.on { background: var(--pink-dim); border-color: var(--pink); color: var(--pink); }
+
+    #rbox { display: none; margin-top: 52px; background: var(--bg-2); border: 1px solid var(--pink); border-radius: var(--r); padding: 40px 36px; box-shadow: 0 0 52px var(--pink-glow); }
+    #rbox.show { display: block; }
+    .r-chip { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .r-identity { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 5px; }
+    .r-role-title { font-family: var(--display); font-size: clamp(1.7rem, 4vw, 2.5rem); line-height: 1.1; margin-bottom: 20px; }
+    .r-desc { color: var(--muted); line-height: 1.8; margin-bottom: 30px; }
+    .chapter { margin: 30px 0; }
+    .chapter-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .chapter-steps { display: flex; flex-direction: column; gap: 10px; }
+    .chapter-step { display: flex; gap: 16px; align-items: flex-start; padding: 14px 16px; background: var(--bg-3); border-radius: 8px; }
+    .cs-time { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink); white-space: nowrap; padding-top: 2px; min-width: 58px; }
+    .cs-text { font-size: 0.87rem; line-height: 1.6; color: var(--muted); }
+    .rgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ri { background: var(--bg-3); border-radius: 8px; padding: 18px; }
+    .ri-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+    .ri-val { font-size: 0.88rem; font-weight: 500; line-height: 1.55; }
+    .r-rev-line { margin: 20px 0 0; font-size: 0.9rem; color: var(--ink); font-weight: 500; padding: 14px 16px; background: var(--pink-dim); border: 1px solid rgba(225,75,135,0.22); border-radius: 8px; }
+    .r-permission { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-align: center; padding-top: 18px; margin-top: 18px; border-top: 1px solid var(--border); }
+
+    .sl-row { margin-bottom: 36px; }
+    .sl-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+    .sl-label { font-weight: 500; font-size: 0.95rem; }
+    .sl-val { font-family: var(--display); font-size: 1.5rem; color: var(--pink); }
+    input[type="range"] { width: 100%; height: 4px; accent-color: var(--pink); cursor: pointer; }
+    .calc-out { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 44px; }
+    .co { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 24px; }
+    .co.hot { border-color: var(--pink); background: var(--pink-dim); }
+    .co-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .co.hot .co-label { color: var(--pink); }
+    .co-val { font-family: var(--display); font-size: 2.2rem; line-height: 1; margin-bottom: 8px; }
+    .co-sub { font-size: 0.82rem; color: var(--muted); }
+    .calc-note { margin-top: 18px; font-size: 0.84rem; color: var(--muted); line-height: 1.7; padding: 18px; background: var(--faint); border-radius: 8px; }
+    .rev-chart-wrap { margin-top: 32px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px 20px 14px; height: 260px; }
+    .rev-chart-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+    .fee-grid { display: grid; grid-template-columns: 1fr auto auto; margin-top: 36px; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .fee-head { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 12px 18px; background: var(--bg-3); }
+    .fee-head:nth-child(2), .fee-head:nth-child(3) { text-align: right; }
+    .fee-name { color: var(--ink); font-weight: 500; font-size: 0.88rem; padding: 13px 18px; border-top: 1px solid var(--border); }
+    .fee-price { color: var(--muted); font-size: 0.88rem; text-align: right; white-space: nowrap; padding: 13px 18px; border-top: 1px solid var(--border); }
+    .fee-take { color: var(--pink); font-weight: 600; font-size: 0.88rem; text-align: right; white-space: nowrap; padding: 13px 18px; border-top: 1px solid var(--border); }
+    .fee-take-gold { color: var(--gold); }
+    .fee-name.fee-featured, .fee-price.fee-featured, .fee-take.fee-featured { background: var(--pink-dim); }
+
+    .scenario-bar { display: flex; align-items: center; gap: 10px; margin-top: 36px; flex-wrap: wrap; }
+    .sc-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-right: 4px; flex-shrink: 0; }
+    .scbtn { font-family: var(--body); font-size: 13px; font-weight: 600; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+    .scbtn.active, .scbtn:hover { background: var(--pink); border-color: var(--pink); color: #fff; }
+    .sc-desc { font-size: 0.88rem; color: var(--muted); margin: 12px 0 0; line-height: 1.65; min-height: 2.4em; }
+
+    .paths { display: grid; gap: 12px; }
+    .pcard { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 32px 28px; transition: border-color .2s, box-shadow .2s; }
+    .pcard:hover { border-color: rgba(225,75,135,.4); box-shadow: 0 0 28px rgba(225,75,135,.07); }
+    .pcard.featured { border-color: rgba(225,75,135,.35); }
+    .p-rec { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pink); margin-bottom: 8px; }
+    .p-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+    .p-name { font-family: var(--display); font-size: 1.18rem; }
+    .p-badge { font-size: 11px; font-weight: 700; padding: 5px 13px; border-radius: 20px; background: var(--gold-dim); border: 1px solid var(--gold); color: var(--gold); white-space: nowrap; flex-shrink: 0; }
+    .p-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.72; margin-bottom: 20px; }
+    .p-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ptag { font-size: 12px; padding: 4px 12px; border-radius: 20px; background: var(--bg-3); border: 1px solid var(--border); color: var(--muted); }
+    .timeline-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 20px; overflow: hidden; }
+    .timeline-fill { height: 100%; background: linear-gradient(90deg, var(--pink), var(--gold)); border-radius: 2px; width: 0; animation: grow 1.2s ease-out forwards; }
+    @keyframes grow { from { width: 0; } }
+    .timeline-label { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+    .cta { text-align: center; padding: 100px 0; }
+    .cta h2 { margin-bottom: 18px; }
+    .cta p { color: var(--muted); font-size: 1.05rem; max-width: 440px; margin: 0 auto 44px; line-height: 1.75; }
+    .btnp { display: inline-block; background: var(--pink); color: #fff; font-family: var(--body); font-size: 1rem; font-weight: 600; padding: 17px 44px; border-radius: 8px; text-decoration: none; transition: opacity .15s, transform .15s; }
+    .btnp:hover { opacity: .88; transform: translateY(-1px); }
+    .btng { display: inline-block; border: 1px solid var(--border); color: var(--muted); font-family: var(--body); font-size: .9rem; padding: 14px 28px; border-radius: 8px; text-decoration: none; margin-left: 14px; transition: border-color .15s, color .15s; }
+    .btng:hover { border-color: var(--pink); color: var(--pink); }
+
+    .foot { padding: 36px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .foot img { height: 28px; width: auto; opacity: 0.65; }
+    .foot-tag { font-family: var(--stamp); font-size: 10px; color: var(--muted); opacity: 0.5; }
+
+    section { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    section.revealed { opacity: 1; transform: translateY(0); }
+    .hero { opacity: 1 !important; transform: none !important; }
+
+    @media (max-width: 600px) {
+      .built-grid, .calc-out, .rgrid, .mx-arms { grid-template-columns: 1fr; }
+      .qopts { margin-left: 0; }
+      section { padding: 60px 0; }
+      .hero { padding: 72px 0 60px; }
+      .btng { margin-left: 0; margin-top: 12px; display: block; }
+      #rbox { padding: 26px 20px; }
+      .recog { padding: 28px 24px; }
+      .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+      .wyn-grid { grid-template-columns: 1fr; }
+      .chapter-step { flex-direction: column; gap: 4px; }
+      .cs-time { min-width: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      section { opacity: 1 !important; transform: none !important; }
+      .timeline-fill { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <span class="nav-label">Private / <span>Faith Gathoni</span></span>
+  </div>
+</nav>
+<div class="private-bar">
+  This page was built for you. It is <strong>not public</strong>, not indexed, and not shared with anyone else.
+</div>
+
+<section class="hero lp dense">
+  <div class="wrap">
+    <span class="hero-eyebrow">A personal note from Mexzungu Group</span>
+    <div class="hero-name">Faith<span>.</span></div>
+    <div class="hero-rule"></div>
+    <p class="hero-line">
+      Pepe has been watching you grow since day one.<br>
+      This page is what he sees. And where he thinks this goes.
+    </p>
+  </div>
+</section>
+
+<hr class="lp-divider">
+
+<section>
+  <div class="wrap">
+    <span class="s-tag">I know who you are</span>
+    <h2>What Pepe actually knows about you.</h2>
+    <div class="recog">
+      <div class="recog-from">Pepe Carrillo, Mexzungu Group</div>
+      <div class="recog-body">
+        <p>I have known you since before you knew what you were capable of. You came in as an intern and I watched you figure it out in real time: how founders think, where governance breaks down, what it actually takes to help someone build something that lasts. You were not performing the job. You were learning it from the inside.</p>
+        <p>By the time you were an associate, I had already stopped thinking of you as someone I needed to develop. You had crossed into the category of people I wanted to build things with. There is a real difference. Most people never make that crossing.</p>
+        <p>Here is what I also know: you are not trying to become a conventional lawyer. You are building two things at once. One is the governance and founder development practice. The other is Wanjiru's Apothecary, the Sacred Work Series, and everything it is becoming. Workshops on vocational posture, sacred ambition, what it means to do work that does not deplete you. That is not a side project. That is the other half of your life's work.</p>
+        <p><strong>The question is not which one to pick. The question is whether you have a platform that gives you the freedom to build both without one cannibalizing the other.</strong> Mexzungu handles the client infrastructure, the legal scaffolding, the pipeline. You pick the mandates that fit. Your time and energy stay yours to protect and to pour into what only you can build.</p>
+      </div>
+      <div class="recog-sig">Pepe</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="s-tag">I've seen what you can do</span>
+    <h2>A career built inside the African founder ecosystem.</h2>
+    <p class="s-intro">Not theory. Real founders. Real governance conversations. The kind of institutional knowledge that takes years and cannot be faked in a pitch deck.</p>
+
+    <div class="built-grid">
+      <div class="built-card blurred">
+        <div class="phase-label">Where you started</div>
+        <div class="bc-title">Intern.</div>
+        <ul class="bc-detail">
+          <li>First exposure to deal rooms</li>
+          <li>Learning how institutions think</li>
+          <li>Watching governance fail and succeed</li>
+          <li>Your instincts forming fast</li>
+          <li>Potential: not yet fully deployed</li>
+        </ul>
+      </div>
+      <div class="built-card lit">
+        <div class="phase-label">Where you learned</div>
+        <div class="bc-title">ALX Africa.</div>
+        <ul class="bc-detail">
+          <li>Founder development at scale</li>
+          <li>Governance advisory across sectors</li>
+          <li>East African startup ecosystem depth</li>
+          <li>A network only insiders have</li>
+          <li>Credibility no certification replaces</li>
+        </ul>
+      </div>
+      <div class="built-card-q">
+        <div class="phase-label">Where you thrive</div>
+        <div class="q-mark">?</div>
+        <div class="q-card-title">Chapter Three</div>
+        <div class="q-sub">Your expertise at full capacity, on a platform calibrated to where you actually are, with room to grow into whatever comes next.</div>
+      </div>
+    </div>
+
+    <div class="stat-row" id="stat-row">
+      <div class="stat"><span class="stat-num" id="stat-founders">0</span><span class="stat-label">Founders in the room</span></div>
+      <div class="stat"><span class="stat-num" id="stat-years">0</span><span class="stat-label">Years inside the ecosystem</span></div>
+      <div class="stat"><span class="stat-num" id="stat-markets">0</span><span class="stat-label">East African markets</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="s-tag">Why this moment</span>
+    <h2>Two markets. Both peaking. You are positioned at both.</h2>
+    <p class="s-intro">East Africa's startup governance gap and the global rise of vocational wellness work are not separate trends. They are the two halves of what you are already building.</p>
+
+    <div class="wyn-grid">
+      <div class="wyn-card">
+        <div class="wyn-label">East African startup deals funded <span class="wyn-src">Partech Africa</span></div>
+        <canvas id="chart-ea" height="160"></canvas>
+        <div class="wyn-insight">3x growth since 2019. Governance infrastructure has not kept pace. Every new company needs what you know how to build.</div>
+      </div>
+      <div class="wyn-card">
+        <div class="wyn-label">Professional coaching &amp; wellness market <span class="wyn-src">GWI 2024, $B</span></div>
+        <canvas id="chart-wl" height="160"></canvas>
+        <div class="wyn-insight">Vocational meaning-making is the fastest-growing segment. Wanjiru's Apothecary is early in a market that is only beginning to name what it needs.</div>
+      </div>
+    </div>
+
+    <div class="validation">
+      <div class="val-label">The gap you fill</div>
+      <div class="val-body">East Africa's Series A and B boards are demanding independent directors who understand the operator's reality. Investors are requiring structures founders were never taught to build. And professionals everywhere are asking, for the first time seriously, whether their work is actually aligned with who they are. Both of those gaps need someone who holds the legal and the human side at once. That is a rare thing. You happen to have both.</div>
+    </div>
+  </div>
+</section>
+
+<section class="lp light">
+  <div class="wrap">
+    <span class="s-tag">I would love to work together</span>
+    <h2>What Mexzungu is. And why it's the right home for this.</h2>
+    <p class="mx-intro">Mexzungu Group is a boutique outlaw studio working across legal strategy, venture architecture, and deal advisory in Africa, Latin America, and Europe. Four practice arms. One platform. Built for the kind of cross-border work most firms walk away from.</p>
+
+    <div class="mx-arms">
+      <div class="mx-arm featured">
+        <div class="mx-arm-tag">Your home</div>
+        <div class="mx-arm-name">Venture Architecture</div>
+        <div class="mx-arm-desc">Entity design, cap tables, shareholder agreements, governance structures. Your advisory work lives here. You bring the founder relationship and the governance lens. Mexzungu turns it into signed documents.</div>
+      </div>
+      <div class="mx-arm">
+        <div class="mx-arm-tag">Operators</div>
+        <div class="mx-arm-name">AI Ninja Factory</div>
+        <div class="mx-arm-desc">Expert operators placed on specific mandates. When a client needs someone embedded on the ground, this is the model. You can work inside it as a mandate operator as well.</div>
+      </div>
+      <div class="mx-arm">
+        <div class="mx-arm-tag">Deals</div>
+        <div class="mx-arm-name">Deal Closing</div>
+        <div class="mx-arm-desc">Cross-border transactions across Africa, LatAm, and Europe. Your governance prep feeds directly into this pipeline.</div>
+      </div>
+      <div class="mx-arm">
+        <div class="mx-arm-tag">Investments</div>
+        <div class="mx-arm-name">Rebel Capital</div>
+        <div class="mx-arm-desc">Seed-stage co-investment in deals that don't fit conventional boxes. Companies you work with are companies we consider investing in.</div>
+      </div>
+    </div>
+
+    <div class="synergy-label">Where this gets interesting</div>
+    <div class="creds">
+      <span class="cred">Governance advisory → legal structure</span>
+      <span class="cred">Founder coaching → deal pipeline</span>
+      <span class="cred">East Africa depth + Mexzungu reach</span>
+      <span class="cred">Your expertise, the Mexzungu brand</span>
+      <span class="cred">Kellen as your ops layer</span>
+      <span class="cred">Lean team, no ceiling</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="s-tag">Here's how we do it</span>
+    <h2>Three questions to find the right starting point.</h2>
+    <p class="s-intro">There are three ways your expertise plugs into Mexzungu. The right one depends on how you want to work. Answer honestly.</p>
+
+    <div class="qblock">
+      <div class="qtxt"><span class="qnum">1</span>When you imagine your best work, what does the room look like?</div>
+      <div class="qopts">
+        <button class="qbtn" data-q="1" data-v="coaching">One-on-one with a founder working through something real</button>
+        <button class="qbtn" data-q="1" data-v="board">In front of a board helping them think more clearly</button>
+        <button class="qbtn" data-q="1" data-v="build">Building a program or practice from the ground up</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qtxt"><span class="qnum">2</span>What do you have that almost nobody else in the East African ecosystem has?</div>
+      <div class="qopts">
+        <button class="qbtn" data-q="2" data-v="trust">Founder trust earned over years inside the ecosystem, not bought</button>
+        <button class="qbtn" data-q="2" data-v="governance">A governance lens that is practical, not theoretical</button>
+        <button class="qbtn" data-q="2" data-v="pepe">I worked directly under Pepe. I know how this world actually works.</button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qtxt"><span class="qnum">3</span>What is non-negotiable for chapter three?</div>
+      <div class="qopts">
+        <button class="qbtn" data-q="3" data-v="flex">Flexibility. My own schedule. Project by project.</button>
+        <button class="qbtn" data-q="3" data-v="impact">Impact. Work that moves companies forward, not just advises them.</button>
+        <button class="qbtn" data-q="3" data-v="income">Income. What I know should finally pay what it is worth.</button>
+      </div>
+    </div>
+
+    <div id="rbox">
+      <div class="r-chip">Your role at Mexzungu</div>
+      <div class="r-identity">You are a</div>
+      <div class="r-role-title" id="r-title"></div>
+      <div class="r-desc" id="r-desc"></div>
+      <div class="chapter">
+        <div class="chapter-label">First 90 days</div>
+        <div class="chapter-steps">
+          <div class="chapter-step"><span class="cs-time" id="r-c1-time"></span><span class="cs-text" id="r-c1"></span></div>
+          <div class="chapter-step"><span class="cs-time" id="r-c2-time"></span><span class="cs-text" id="r-c2"></span></div>
+          <div class="chapter-step"><span class="cs-time" id="r-c3-time"></span><span class="cs-text" id="r-c3"></span></div>
+        </div>
+      </div>
+      <div class="rgrid">
+        <div class="ri"><div class="ri-label">You bring</div><div class="ri-val" id="r-bring"></div></div>
+        <div class="ri"><div class="ri-label">Mexzungu provides</div><div class="ri-val" id="r-gives"></div></div>
+      </div>
+      <div class="r-rev-line" id="r-rev"></div>
+      <div class="r-permission">Flexible hours, independent practice, zero equity ask.</div>
+    </div>
+  </div>
+</section>
+
+<section class="lp light">
+  <div class="wrap">
+    <span class="s-tag">The math</span>
+    <h2>Your fee schedule. Real numbers.</h2>
+    <p class="s-intro">You already have a practice with defined pricing. These are your fees, not a starting assumption. Mexzungu takes 20% for client sourcing, BD, legal infrastructure, and operational support. The rest is yours.</p>
+
+    <div class="fee-grid">
+      <div class="fee-head">Engagement</div>
+      <div class="fee-head">Your fee</div>
+      <div class="fee-head">You keep</div>
+
+      <div class="fee-name">Discovery Call</div>
+      <div class="fee-price">$350</div>
+      <div class="fee-take">$280</div>
+
+      <div class="fee-name">Founder Development Intensive</div>
+      <div class="fee-price">$3,500</div>
+      <div class="fee-take">$2,800</div>
+
+      <div class="fee-name">Governance Architecture</div>
+      <div class="fee-price">$6,500-$9,500</div>
+      <div class="fee-take">$5,200-$7,600</div>
+
+      <div class="fee-name fee-featured">Monthly Retainer</div>
+      <div class="fee-price fee-featured">$2,500/mo</div>
+      <div class="fee-take fee-featured fee-take-gold">$2,000/mo</div>
+
+      <div class="fee-name">Sacred Work Series event</div>
+      <div class="fee-price">from $1,500</div>
+      <div class="fee-take">from $1,200</div>
+
+      <div class="fee-name">Full Stack bundle</div>
+      <div class="fee-price">$11,500</div>
+      <div class="fee-take fee-take-gold">$9,200</div>
+    </div>
+
+    <div class="scenario-bar">
+      <span class="sc-label">Sample month:</span>
+      <button class="scbtn active" onclick="showScenario(0)">Starter</button>
+      <button class="scbtn" onclick="showScenario(1)">Building</button>
+      <button class="scbtn" onclick="showScenario(2)">Full capacity</button>
+    </div>
+    <div class="sc-desc" id="sc-desc">1 retainer client. One anchor relationship, recurring revenue from month one.</div>
+
+    <div class="calc-out">
+      <div class="co">
+        <div class="co-label">Your monthly income</div>
+        <div class="co-val" id="o-mo">$2,000</div>
+        <div class="co-sub" id="o-mo-sub">80% of 1 retainer ($2,500)</div>
+      </div>
+      <div class="co hot">
+        <div class="co-label">Annualized</div>
+        <div class="co-val" id="o-yr">$24,000</div>
+        <div class="co-sub">Scale up any time. No cap.</div>
+      </div>
+    </div>
+
+    <div class="rev-chart-wrap">
+      <div class="rev-chart-label">Monthly income across scenarios</div>
+      <canvas id="rev-chart" height="180"></canvas>
+    </div>
+
+    <div class="calc-note">
+      In the Mexzungu model: you keep 80%. We take 20% for client sourcing, business development, legal infrastructure, and operational support. Your schedule, your client mix, and your methodology remain entirely yours.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="s-tag">Three paths</span>
+    <h2>Pick where to start. There is no wrong answer.</h2>
+
+    <div class="paths">
+      <div class="pcard featured">
+        <div class="p-rec">Recommended starting point</div>
+        <div class="p-top">
+          <div class="p-name">Embedded Governance Advisor</div>
+          <div class="p-badge">30 days to first dollar</div>
+        </div>
+        <div class="p-desc">
+          You join specific Mexzungu client engagements as the governance and founder development expert, mandate by mandate. No obligation between projects. Pepe handles client relationships and business development. You deliver what only you can deliver, and 80% of what you bill comes directly to you. Venture Architecture is your home base. Every engagement you run feeds directly into it.
+        </div>
+        <div class="p-tags">
+          <span class="ptag">Founder development</span>
+          <span class="ptag">Governance advisory</span>
+          <span class="ptag">80% to you</span>
+          <span class="ptag">No fixed hours</span>
+          <span class="ptag">Fastest to revenue</span>
+        </div>
+        <div class="timeline-bar"><div class="timeline-fill" style="width:30%"></div></div>
+        <div class="timeline-label">30 days to first dollar</div>
+      </div>
+
+      <div class="pcard">
+        <div class="p-top">
+          <div class="p-name">Governance Practice Build</div>
+          <div class="p-badge">60 days to first dollar</div>
+        </div>
+        <div class="p-desc">
+          We build a dedicated Governance and Founder Development arm within Mexzungu under your name. You define the methodology and client scope. Pepe provides the legal backbone and client pipeline. Joint development, shared revenue on co-originated engagements. This is how a new vertical gets built from scratch, together.
+        </div>
+        <div class="p-tags">
+          <span class="ptag">Your own practice</span>
+          <span class="ptag">Mexzungu platform</span>
+          <span class="ptag">50/50 on co-originated</span>
+          <span class="ptag">East Africa focus</span>
+        </div>
+        <div class="timeline-bar"><div class="timeline-fill" style="width:60%"></div></div>
+        <div class="timeline-label">60 days to first dollar</div>
+      </div>
+
+      <div class="pcard">
+        <div class="p-top">
+          <div class="p-name">Network Referral Partner</div>
+          <div class="p-badge">45 days to first dollar</div>
+        </div>
+        <div class="p-desc">
+          You stay fully independent and route legal, governance documentation, and deal structuring needs from your network to Mexzungu. You earn a referral fee on every conversion. Minimum time commitment. Maximum leverage on an ecosystem network built over years. The cleanest entry if you want to test the model before committing.
+        </div>
+        <div class="p-tags">
+          <span class="ptag">Zero overhead</span>
+          <span class="ptag">10-15% referral fee</span>
+          <span class="ptag">Stay independent</span>
+          <span class="ptag">Lowest commitment</span>
+        </div>
+        <div class="timeline-bar"><div class="timeline-fill" style="width:45%"></div></div>
+        <div class="timeline-label">45 days to first dollar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta lp dense">
+  <div class="wrap">
+    <h2>You already know the call is the next step.</h2>
+    <p>Tell Pepe what resonates. Say which path feels right and we go from there. No formal process. Two people who have already worked together building something neither could do alone.</p>
+    <a href="mailto:pepe@mexzungu.com?subject=Faith%20x%20Mexzungu" class="btnp">Tell Pepe what resonates</a>
+    <a href="https://mexzungu.com/talk_to_pepe" class="btng">Book 30 minutes</a>
+    <a href="/sign/faith-gathoni" class="btng" style="margin-top:10px;display:inline-block;">Sign the advisor letter</a>
+  </div>
+</section>
+
+<hr class="lp-divider">
+<div class="wrap">
+  <div class="foot">
+    <a href="/"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <span class="foot-tag">Chaos starts companies. Structure builds them.</span>
+  </div>
+</div>
+
+<script>
+  var sel = {};
+  document.querySelectorAll('.qbtn').forEach(function(b) {
+    b.addEventListener('click', function() {
+      var q = this.dataset.q;
+      document.querySelectorAll('.qbtn[data-q="'+q+'"]').forEach(function(x){ x.classList.remove('on'); });
+      this.classList.add('on');
+      sel[q] = this.dataset.v;
+      if (Object.keys(sel).length === 3) reveal();
+    });
+  });
+
+  var PATHS = {
+    trust: {
+      title:    'Embedded Governance Lead',
+      desc:     'The trust you built over years inside the ALX ecosystem is the rarest currency in East African advisory. You cannot buy it or manufacture it on a LinkedIn post. You bring the relationships and the credibility. Mexzungu brings the legal structure to make your advice stick all the way to the signed document.',
+      bring:    'Founder trust, governance expertise, East African ecosystem depth, ALX network and credibility',
+      gives:    'Legal scaffolding, client relationships, deal pipeline, Kellen for ops support, the Mexzungu platform and brand',
+      rev:      'You set your rate. You keep 80%. No obligation between mandates. No ceiling.',
+      c1_time:  'Week 1-2',
+      c1:       'One active Mexzungu client briefing. You assess the governance fit. Pepe handles the introduction.',
+      c2_time:  'Day 30',
+      c2:       'First governance engagement scoped and delivered. Invoice issued under Mexzungu. Revenue in your account.',
+      c3_time:  'Day 90',
+      c3:       'Second and third mandates in conversation. The model is working. You own the governance practice.'
+    },
+    governance: {
+      title:    'Governance Practice Architect',
+      desc:     'A practical, non-theoretical governance lens is the hardest thing to find in the African ecosystem. Most advisors have frameworks. You have been inside the rooms where it worked and the rooms where it did not. That firsthand read is what we build the joint practice around.',
+      bring:    'Practical governance methodology, East Africa market knowledge, founder credibility, real deal experience',
+      gives:    'Legal structure for all governance docs, Mexzungu client pipeline, platform brand, full ops support',
+      rev:      '50/50 on co-originated engagements. 80% to you on your own mandates sourced through the platform.',
+      c1_time:  'Week 1-2',
+      c1:       'One conversation: define the governance package. What does a client receive? What does it cost? What does it produce?',
+      c2_time:  'Day 30',
+      c2:       'First joint client pitch. Your framework, Mexzungu\'s legal backbone, one unified offer.',
+      c3_time:  'Day 90',
+      c3:       'First co-originated engagement closed. Revenue split confirmed. The vertical is real and growing.'
+    },
+    pepe: {
+      title:    'Venture Development Partner',
+      desc:     'You know how this works from the inside. That is not something we have to build. You can move from day one because you already understand the operating logic, the client expectations, and what quality looks like in this context. That insider knowledge makes you the most deployable operator in the Mexzungu network.',
+      bring:    'Insider knowledge of how Mexzungu operates, governance and founder dev expertise, trust built over years',
+      gives:    'Upgraded mandate scope, premium client access, full legal infrastructure, Kellen ops support',
+      rev:      'You set your rate. You keep 80%. Pepe guarantees the first mandate briefing within the first two weeks.',
+      c1_time:  'Day 1',
+      c1:       'No ramp needed. Pepe briefs you on one active client. You know the playbook already.',
+      c2_time:  'Day 21',
+      c2:       'First engagement delivered. Fastest onboarding in the network because the relationship already exists.',
+      c3_time:  'Day 90',
+      c3:       'Three mandates completed. You own the governance practice. Revenue is consistent and growing.'
+    }
+  };
+
+  function reveal() {
+    var key = sel['2'] || 'trust';
+    var p = PATHS[key] || PATHS['trust'];
+    document.getElementById('r-title').textContent   = p.title;
+    document.getElementById('r-desc').textContent    = p.desc;
+    document.getElementById('r-bring').textContent   = p.bring;
+    document.getElementById('r-gives').textContent   = p.gives;
+    document.getElementById('r-rev').textContent     = p.rev;
+    document.getElementById('r-c1-time').textContent = p.c1_time;
+    document.getElementById('r-c1').textContent      = p.c1;
+    document.getElementById('r-c2-time').textContent = p.c2_time;
+    document.getElementById('r-c2').textContent      = p.c2;
+    document.getElementById('r-c3-time').textContent = p.c3_time;
+    document.getElementById('r-c3').textContent      = p.c3;
+    var box = document.getElementById('rbox');
+    box.classList.add('show');
+    setTimeout(function(){ box.scrollIntoView({ behavior:'smooth', block:'nearest' }); }, 80);
+  }
+
+  var SCENARIOS = [
+    { label: 'Starter',       mo: 2000,  yr: 24000,  sub: '80% of 1 retainer ($2,500/mo)', desc: '1 retainer client. One anchor relationship, recurring revenue from month one.' },
+    { label: 'Building',      mo: 4800,  yr: 57600,  sub: '1 retainer + 1 Founder Intensive', desc: '1 retainer anchors income. 1 project engagement grows it. A practice taking shape.' },
+    { label: 'Full capacity', mo: 9200,  yr: 110400, sub: '2 retainers + 1 Governance project', desc: '2 retainer clients, 1 governance mandate. Your practice. On your terms.' }
+  ];
+
+  var revChart = null;
+  function showScenario(idx) {
+    var s = SCENARIOS[idx];
+    document.getElementById('o-mo').textContent = '$' + s.mo.toLocaleString();
+    document.getElementById('o-yr').textContent = '$' + s.yr.toLocaleString();
+    document.getElementById('o-mo-sub').textContent = s.sub;
+    document.getElementById('sc-desc').textContent = s.desc;
+    document.querySelectorAll('.scbtn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    updateRevChart(idx);
+  }
+
+  function updateRevChart(activeIdx) {
+    if (typeof Chart === 'undefined') return;
+    var labels = SCENARIOS.map(function(s) { return s.label; });
+    var data   = SCENARIOS.map(function(s) { return s.mo; });
+    var colors = SCENARIOS.map(function(s, i) { return i === activeIdx ? 'rgba(225,75,135,1)' : 'rgba(225,75,135,0.28)'; });
+    if (!revChart) {
+      var ctx = document.getElementById('rev-chart');
+      if (!ctx) return;
+      revChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderRadius: 6, borderSkipped: false }] },
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(c) { return ' $' + c.raw.toLocaleString() + '/mo'; } }, backgroundColor: 'rgba(20,20,20,0.95)', borderColor: 'rgba(225,75,135,0.3)', borderWidth: 1, titleColor: '#e14b87', bodyColor: '#f0f0f0' }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#888', font: { size: 13, family: "'Space Grotesk', sans-serif" } }, border: { display: false } },
+            y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#666', font: { size: 11 }, callback: function(v) { return '$' + (v/1000).toFixed(0) + 'k'; } }, border: { display: false } }
+          }
+        }
+      });
+    } else {
+      revChart.data.datasets[0].backgroundColor = colors;
+      revChart.update('none');
+    }
+  }
+
+  function animateCount(el, target, suffix, duration) {
+    var start = 0; var step = target / (duration / 16);
+    var timer = setInterval(function() {
+      start = Math.min(start + step, target);
+      el.textContent = Math.floor(start) + suffix;
+      if (start >= target) clearInterval(timer);
+    }, 16);
+  }
+
+  var statsRun = false;
+  function maybeRunStats() {
+    if (statsRun) return;
+    var row = document.getElementById('stat-row');
+    if (!row) return;
+    if (row.getBoundingClientRect().top < window.innerHeight * 0.9) {
+      statsRun = true;
+      animateCount(document.getElementById('stat-founders'), 100, '+', 1200);
+      animateCount(document.getElementById('stat-years'),    3,   '+', 900);
+      animateCount(document.getElementById('stat-markets'),  6,   '',  800);
+    }
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e){ if (e.isIntersecting) e.target.classList.add('revealed'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('section').forEach(function(s){ observer.observe(s); });
+
+  window.addEventListener('scroll', maybeRunStats, { passive: true });
+  window.addEventListener('load', function(){
+    showScenario(0);
+    maybeRunStats();
+    initMarketCharts();
+  });
+
+  function initMarketCharts() {
+    if (typeof Chart === 'undefined') return;
+    var chartDefaults = {
+      animation: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#666', font: { size: 11 } }, border: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#666', font: { size: 11 } }, border: { display: false } }
+      }
+    };
+
+    var eaCtx = document.getElementById('chart-ea');
+    if (eaCtx) {
+      new Chart(eaCtx, {
+        type: 'bar',
+        data: {
+          labels: ['2019','2020','2021','2022','2023','2024'],
+          datasets: [{
+            data: [328, 481, 726, 902, 1048, 1200],
+            backgroundColor: ['rgba(225,75,135,0.2)','rgba(225,75,135,0.3)','rgba(225,75,135,0.45)','rgba(225,75,135,0.6)','rgba(225,75,135,0.8)','rgba(225,75,135,1)'],
+            borderRadius: 4, borderSkipped: false
+          }]
+        },
+        options: Object.assign({}, chartDefaults, { aspectRatio: 2.5 })
+      });
+    }
+
+    var wlCtx = document.getElementById('chart-wl');
+    if (wlCtx) {
+      new Chart(wlCtx, {
+        type: 'bar',
+        data: {
+          labels: ['2019','2020','2021','2022','2023','2024'],
+          datasets: [{
+            data: [14.2, 12.8, 16.1, 19.4, 22.8, 27.3],
+            backgroundColor: ['rgba(212,160,57,0.2)','rgba(212,160,57,0.2)','rgba(212,160,57,0.4)','rgba(212,160,57,0.6)','rgba(212,160,57,0.8)','rgba(212,160,57,1)'],
+            borderRadius: 4, borderSkipped: false
+          }]
+        },
+        options: Object.assign({}, chartDefaults, {
+          aspectRatio: 2.5,
+          scales: Object.assign({}, chartDefaults.scales, {
+            x: chartDefaults.scales.x,
+            y: Object.assign({}, chartDefaults.scales.y, {
+              ticks: Object.assign({}, chartDefaults.scales.y.ticks, {
+                callback: function(v){ return '$' + v + 'B'; }
+              })
+            })
+          })
+        })
+      });
+    }
+  }
+</script>
+</body>
+</html>

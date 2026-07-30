@@ -94,7 +94,7 @@
         <div class="section-title">¿En que te puedo ayudar?</div>
 
         <div class="type-options">
-            <div class="type-option" data-type="talk">
+            <div class="type-option" data-type="venting">
                 <div class="type-radio"></div>
                 <div class="type-content">
                     <h4>💬 Solo quiero platicar</h4>
@@ -281,8 +281,8 @@
 const API = window.location.hostname === 'localhost' ? 'http://localhost:8741' : 'https://api.mexzungu.com';
 let selectedZone = null, selectedType = null, selectedDuration = null, selectedSlot = null;
 
-const TYPE_LABELS = { 'talk':'💬 Platicar', 'brainstorm':'🧠 Thought partner', 'troubleshoot':'🔧 Resolver problema', 'other':'✨ Otra cosa' };
-const MSG_LABELS = { 'talk':'¿Que tienes en mente?', 'brainstorm':'¿Que estamos pensando?', 'troubleshoot':'¿Que se rompio?', 'other':'Cuentame mas' };
+const TYPE_LABELS = { 'venting':'💬 Platicar', 'brainstorm':'🧠 Thought partner', 'troubleshoot':'🔧 Resolver problema', 'other':'✨ Otra cosa' };
+const MSG_LABELS = { 'venting':'¿Que tienes en mente?', 'brainstorm':'¿Que estamos pensando?', 'troubleshoot':'¿Que se rompio?', 'other':'Cuentame mas' };
 
 document.getElementById('user-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 

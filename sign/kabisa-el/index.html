@@ -504,6 +504,30 @@
 
     .sig-clear-btn:hover { color: var(--stone); }
 
+    .sig-email-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sig-email-wrap label {
+      font-size: 0.72rem;
+      color: var(--mist);
+      white-space: nowrap;
+    }
+
+    .sig-email-wrap input {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      color: var(--navy);
+      flex: 1;
+      min-width: 0;
+    }
+
     .sig-date-wrap {
       display: flex;
       align-items: center;
@@ -904,6 +928,10 @@
               </div>
               <div class="sig-controls">
                 <button class="sig-clear-btn" onclick="clearSig('nick')">Clear</button>
+                <div class="sig-email-wrap">
+                  <label for="email-nick">Email</label>
+                  <input type="email" id="email-nick" placeholder="your@email.com" oninput="updateApplyBtn('nick')">
+                </div>
                 <div class="sig-date-wrap">
                   <label for="date-nick">Date</label>
                   <input type="date" id="date-nick">
@@ -933,6 +961,10 @@
               </div>
               <div class="sig-controls">
                 <button class="sig-clear-btn" onclick="clearSig('lukas')">Clear</button>
+                <div class="sig-email-wrap">
+                  <label for="email-lukas">Email</label>
+                  <input type="email" id="email-lukas" placeholder="your@email.com" oninput="updateApplyBtn('lukas')">
+                </div>
                 <div class="sig-date-wrap">
                   <label for="date-lukas">Date</label>
                   <input type="date" id="date-lukas">
@@ -952,15 +984,12 @@
         <!-- COMPLETION PANEL -->
         <div class="completion-wrap" id="completion-panel">
           <h3>All signatures collected.</h3>
-          <p>Download your signed copy below, then email it to Pepe to complete the record.</p>
+          <p id="server-submit-status" style="font-size:0.85rem;color:var(--stone);margin-bottom:0.5rem;">Sending signed copy to Pepe...</p>
+          <p style="font-size:0.78rem;color:var(--mist);margin-bottom:1.25rem;">Download your copy for your records.</p>
           <button class="btn-download" onclick="downloadPDF()">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Download Signed PDF
           </button>
-          <a class="btn-email" href="mailto:pepe@mexzungu.com?subject=Kabisa%20EL%20Signed&body=Hi%20Pepe%2C%20please%20find%20the%20signed%20engagement%20letter%20attached.">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="3" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 4.5l6.5 4.5L14 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            Email to Pepe
-          </a>
         </div>
 
       </div>
@@ -976,35 +1005,41 @@
 </div>
 
 <script>
+  // ── CONFIG ──
+  var DOC_ID = 'kabisa-el';
+  var DOC_TITLE = 'Engagement Letter — Kabisa x Mexzungu Group';
+  var DOC_TYPE = 'Engagement Letter';
+  var DOC_PARTIES = ['Kabisa Inc.', 'Mexzungu Group Ltd'];
+  var SIGNERS = ['nick', 'lukas'];
+  var SIGNER_META = {
+    nick:  { name: 'Nick Hu',           role: 'Co-Founder, Kabisa Inc.' },
+    lukas: { name: 'Lukas Lukoschek',   role: 'Co-Founder, Kabisa Inc.' }
+  };
+  var PRE_SIGNED = [{ name: 'Pepe Carrillo', role: 'Chief Disruption Officer, Mexzungu Group Ltd', signed_at: '29 April 2026' }];
+  var API_BASE = 'https://api.mexzungu.com';
+
   // ── STATE ──
-  const signed = { nick: false, lukas: false };
-  const pads = {};
+  var signed = { nick: false, lukas: false };
+  var pads = {};
 
   // ── INIT DATE FIELDS ──
-  const today = new Date().toISOString().split('T')[0];
+  var today = new Date().toISOString().split('T')[0];
   document.getElementById('date-nick').value = today;
   document.getElementById('date-lukas').value = today;
 
   // ── INIT SIGNATURE PADS ──
   function initPad(id) {
-    const canvas = document.getElementById('canvas-' + id);
-    const wrap = canvas.parentElement;
-    // Scale canvas for retina
-    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    var canvas = document.getElementById('canvas-' + id);
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext('2d').scale(ratio, ratio);
 
-    const pad = new SignaturePad(canvas, {
-      minWidth: 1,
-      maxWidth: 2.5,
-      penColor: '#1a1a2e',
-    });
-
-    pad.addEventListener('beginStroke', () => {
+    var pad = new SignaturePad(canvas, { minWidth: 1, maxWidth: 2.5, penColor: '#1a1a2e' });
+    pad.addEventListener('beginStroke', function() {
       document.getElementById('wm-' + id).style.display = 'none';
     });
-
+    pad.addEventListener('afterUpdateStroke', function() { updateApplyBtn(id); });
     pads[id] = pad;
   }
 
@@ -1020,98 +1055,161 @@
 
   // ── ENABLE APPLY BUTTON ──
   function updateApplyBtn(id) {
-    const agreed = document.getElementById('agree-' + id).checked;
-    const hasStroke = !pads[id].isEmpty();
-    document.getElementById('apply-' + id).disabled = !(agreed && hasStroke);
+    if (signed[id]) return;
+    var agreed = document.getElementById('agree-' + id).checked;
+    var hasStroke = !pads[id].isEmpty();
+    var hasEmail = document.getElementById('email-' + id).value.includes('@');
+    document.getElementById('apply-' + id).disabled = !(agreed && hasStroke && hasEmail);
   }
 
-  // Poll for strokes (signature_pad doesn't fire on empty check easily)
-  setInterval(() => {
-    ['nick', 'lukas'].forEach(id => {
-      if (!signed[id]) updateApplyBtn(id);
-    });
-  }, 400);
+  // ── MARK BLOCK AS SIGNED (visual) ──
+  function markBlockSigned(id, dateStr) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+    updateProgressBar();
+  }
+
+  // ── MARK BLOCK AS PREVIOUSLY SIGNED (loaded from server) ──
+  function markBlockPreviouslySigned(id, sigData) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied', 'signed');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var body = block.querySelector('.sig-block-body');
+    body.innerHTML = '<div class="sig-display"><span class="sig-cursive">' + (sigData.name || SIGNER_META[id].name) + '</span></div>' +
+      '<div class="sig-meta">Signed: ' + (sigData.signed_at || '') + '</div>';
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+  }
+
+  function updateProgressBar() {
+    var count = 1 + (signed.nick ? 1 : 0) + (signed.lukas ? 1 : 0);
+    document.getElementById('progress-label').innerHTML = '<strong>' + count + '</strong> of 3 signatures collected';
+  }
 
   // ── APPLY SIGNATURE ──
-  function applySig(id) {
+  async function applySig(id) {
     if (pads[id].isEmpty()) return;
-    signed[id] = true;
+    var email = document.getElementById('email-' + id).value.trim();
+    if (!email) return;
 
-    // Lock the block
-    const block = document.getElementById('block-' + id);
-    block.classList.add('applied');
+    var btn = document.getElementById('apply-' + id);
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
 
-    // Update block header
-    const head = block.querySelector('.sig-block-head');
-    head.style.background = 'var(--success)';
-    const badge = document.createElement('div');
-    badge.className = 'signed-badge';
-    badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
-    head.appendChild(badge);
+    markBlockSigned(id, document.getElementById('date-' + id).value);
 
-    // Update progress
-    const step = document.getElementById('step-' + id);
-    step.classList.remove('pending');
-    step.classList.add('done');
+    var payload = {
+      document_id: DOC_ID,
+      signer_id: id,
+      signer_name: SIGNER_META[id].name,
+      signer_role: SIGNER_META[id].role,
+      signer_email: email,
+      image_data: pads[id].toDataURL('image/png'),
+      signed_at: document.getElementById('date-' + id).value,
+      title: DOC_TITLE,
+      document_type: DOC_TYPE,
+      parties: DOC_PARTIES,
+      required_signers: SIGNERS,
+      pre_signed: PRE_SIGNED
+    };
 
-    const count = 1 + (signed.nick ? 1 : 0) + (signed.lukas ? 1 : 0);
-    document.getElementById('progress-label').innerHTML = '<strong>' + count + '</strong> of 3 signatures collected';
+    try {
+      var resp = await fetch(API_BASE + '/signing/partial-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await resp.json();
 
-    // Show completion if both signed
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+        setTimeout(function() {
+          document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    } catch (err) {
+      console.error('Partial save failed:', err);
+    }
+
+    // Check if all signed locally too
     if (signed.nick && signed.lukas) {
       document.getElementById('completion-panel').classList.add('visible');
-      setTimeout(() => {
+      setTimeout(function() {
         document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 200);
     }
   }
 
+  // ── LOAD EXISTING SIGNATURES ON PAGE LOAD ──
+  async function loadSigningStatus() {
+    try {
+      var resp = await fetch(API_BASE + '/signing/status/' + DOC_ID);
+      var data = await resp.json();
+      for (var sid in data.signatures) {
+        if (SIGNERS.indexOf(sid) !== -1 && !signed[sid]) {
+          markBlockPreviouslySigned(sid, data.signatures[sid]);
+        }
+      }
+      updateProgressBar();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+      }
+    } catch (err) {
+      console.warn('Could not load signing status:', err);
+    }
+  }
+
+  loadSigningStatus();
+
   // ── PDF GENERATION ──
   async function downloadPDF() {
-    const btn = document.querySelector('.btn-download');
+    var btn = document.querySelector('.btn-download');
     btn.textContent = 'Generating...';
     btn.disabled = true;
-
     try {
-      const el = document.getElementById('document-root');
-      const canvas = await html2canvas(el, {
-        scale: 1.5,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      });
-
-      const imgData = canvas.toDataURL('image/jpeg', 0.92);
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'px',
-        format: 'a4',
-      });
-
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-      const imgW = canvas.width;
-      const imgH = canvas.height;
-      const ratio = pageW / imgW;
-      const scaledH = imgH * ratio;
-
-      let y = 0;
-      let remaining = scaledH;
-
-      while (remaining > 0) {
+      var el = document.getElementById('document-root');
+      var canvas = await html2canvas(el, { scale: 1.5, useCORS: true, logging: false, backgroundColor: '#ffffff' });
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+      var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
+      var pageW = pdf.internal.pageSize.getWidth();
+      var pageH = pdf.internal.pageSize.getHeight();
+      var ratio = pageW / canvas.width;
+      var scaledH = canvas.height * ratio;
+      var y = 0;
+      while (y < scaledH) {
+        if (y > 0) pdf.addPage();
         pdf.addImage(imgData, 'JPEG', 0, -y, pageW, scaledH);
-        remaining -= pageH;
         y += pageH;
-        if (remaining > 0) pdf.addPage();
       }
-
-      pdf.save('Kabisa_MexzunguGroup_EL_Signed_2026-04-29.pdf');
+      var dateStr = new Date().toISOString().split('T')[0];
+      pdf.save('Kabisa_MexzunguGroup_EL_Signed_' + dateStr + '.pdf');
     } catch (e) {
       console.error(e);
       alert('PDF generation failed. Please screenshot the page manually.');
     }
-
     btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download Signed PDF';
     btn.disabled = false;
   }

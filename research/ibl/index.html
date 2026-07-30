@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intent-Based Leadership | Mexzungu Research</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:      #0a0a0a;
+      --surface: #111111;
+      --hover:   #1a1a1a;
+      --pink:    #E14B87;
+      --pink-dim:#b83a6b;
+      --white:   #ffffff;
+      --muted:   #888888;
+      --border:  #222222;
+      --font:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    body { background: var(--bg); color: var(--white); font-family: var(--font); line-height: 1.7; }
+
+    /* Nav */
+    .report-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.95); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+    }
+    .back-link {
+      color: var(--muted); text-decoration: none; font-size: 0.85rem;
+      font-weight: 600; letter-spacing: 0.03em;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--white); }
+    .nav-brand { color: var(--muted); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+    .nav-brand:hover { color: var(--white); }
+
+    /* Layout */
+    .report-wrap {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 3rem;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+    @media (max-width: 780px) {
+      .report-wrap { grid-template-columns: 1fr; }
+      .toc-sidebar { display: none; }
+    }
+
+    /* TOC */
+    .toc-sidebar { position: sticky; top: 5rem; align-self: start; }
+    .toc-sidebar h4 {
+      color: var(--muted); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .toc-sidebar a {
+      display: block; color: var(--muted); text-decoration: none;
+      font-size: 0.82rem; padding: 0.3rem 0; border-left: 2px solid var(--border);
+      padding-left: 0.75rem; margin-bottom: 0.1rem; transition: all 0.15s;
+    }
+    .toc-sidebar a:hover { color: var(--white); border-left-color: var(--pink); }
+
+    /* Report header */
+    .report-header { margin-bottom: 2rem; }
+    .cat-tag {
+      display: inline-block;
+      background: rgba(225,75,135,0.15); border: 1px solid rgba(225,75,135,0.3);
+      border-radius: 4px; color: var(--pink); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; padding: 0.2rem 0.55rem; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .report-header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem;
+    }
+    .meta-bar {
+      color: var(--muted); font-size: 0.82rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .meta-bar span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* Key findings */
+    .key-findings {
+      background: var(--surface); border-left: 3px solid var(--pink);
+      border-radius: 0 8px 8px 0; padding: 1.5rem 1.75rem; margin: 2rem 0;
+    }
+    .key-findings h3 {
+      color: var(--pink); font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .key-findings ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .key-findings li { font-size: 0.92rem; color: #e0e0e0; padding-left: 1.25rem; position: relative; }
+    .key-findings li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; background: var(--pink); border-radius: 50%; }
+
+    /* Body content */
+    .report-body h2 {
+      font-size: 1.25rem; font-weight: 700; margin: 2.5rem 0 1rem;
+      padding-top: 0.5rem; color: var(--white);
+    }
+    .report-body h3 { font-size: 1rem; font-weight: 700; margin: 1.75rem 0 0.6rem; color: #d0d0d0; }
+    .report-body p { font-size: 0.95rem; color: #cccccc; margin-bottom: 1rem; max-width: 720px; }
+    .report-body ul, .report-body ol { padding-left: 1.4rem; margin-bottom: 1rem; max-width: 720px; }
+    .report-body li { font-size: 0.93rem; color: #cccccc; margin-bottom: 0.35rem; }
+    .report-body strong { color: var(--white); font-weight: 600; }
+
+    /* Table */
+    .report-body table {
+      width: 100%; max-width: 720px; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem;
+    }
+    .report-body th {
+      text-align: left; background: var(--surface); color: var(--muted);
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border);
+    }
+    .report-body td {
+      padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); color: #cccccc; vertical-align: top;
+    }
+    .report-body tr:last-child td { border-bottom: none; }
+
+    /* Code block */
+    .report-body pre {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.25rem; overflow-x: auto; margin: 1.25rem 0; max-width: 720px;
+    }
+    .report-body code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.82rem; color: #a0e0c0; }
+
+    /* Divider */
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; max-width: 720px; }
+
+    /* Sources */
+    .sources-list { list-style: none; padding: 0; }
+    .sources-list li { font-size: 0.82rem; color: var(--muted); padding: 0.3rem 0; border-bottom: 1px solid var(--border); }
+    .sources-list li:last-child { border-bottom: none; }
+    .sources-list a { color: var(--muted); text-decoration: underline; }
+    .sources-list a:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+
+<nav class="report-nav">
+  <a href="/research/" class="back-link">&#8592; Research Hub</a>
+  <a href="/" class="nav-brand">Mexzungu</a>
+</nav>
+
+<div class="report-wrap">
+
+  <!-- TOC -->
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#origins">1. Origins</a>
+    <a href="#principles">2. Key Principles</a>
+    <a href="#framework">3. Framework</a>
+    <a href="#implementation">4. Implementation</a>
+    <a href="#examples">5. Real-World Examples</a>
+    <a href="#criticisms">6. Criticisms</a>
+    <a href="#ai">7. AI Parallels</a>
+    <a href="#sources">Sources</a>
+  </aside>
+
+  <!-- Main -->
+  <main>
+    <div class="report-header">
+      <div class="cat-tag">Business</div>
+      <h1>Intent-Based Leadership</h1>
+      <div class="meta-bar">
+        <span>Apr 2026</span>
+        <span>Business</span>
+        <span>8 sources</span>
+        <span>12 min read</span>
+      </div>
+    </div>
+
+    <div class="key-findings">
+      <h3>Key Findings</h3>
+      <ul>
+        <li>The USS Santa Fe went from worst to first in the U.S. Navy fleet within one year of applying IBL. Reenlistments jumped from 3 to 36. The performance held for 12+ years after Marquet's departure.</li>
+        <li>"I intend to..." is not a language trick. It structurally transfers decision ownership to the person with the information. The captain becomes a reviewer, not an order-giver.</li>
+        <li>IBL requires three pillars working together: Control (authority where the information is), Competence (knowledge to decide well), Clarity (everyone knows the goal). Remove any one and the system breaks.</li>
+        <li>The five levels of AI agent autonomy map directly onto Marquet's Ladder of Leadership. The framework anticipated human-AI collaboration by 25 years.</li>
+        <li>Instructed compliance is probabilistic. Structural enforcement (hooks, guardrails, exit codes) creates invariant constraints. This applies equally to human teams and AI agents.</li>
+      </ul>
+    </div>
+
+    <div class="report-body">
+
+      <h2 id="origins">1. Origins and Core Concept</h2>
+
+      <h3>The USS Santa Fe Story</h3>
+      <p>In 1999, Captain L. David Marquet was assigned to command the USS Santa Fe, a Los Angeles-class nuclear-powered attack submarine then ranked last in the U.S. Navy in both retention and operational standing. He had trained to command a different vessel entirely and was reassigned when the Santa Fe's captain unexpectedly quit.</p>
+      <p>Marquet arrived knowing almost nothing about the Santa Fe's specific systems. This created a crisis: the traditional model required the captain to be the expert who issued all orders. Since he could not credibly pretend to know every system, he was forced to invent something different.</p>
+
+      <h3>The Pivotal Moment</h3>
+      <p>Early in his command, Marquet gave an order that was technically impossible on the Santa Fe. His officer of the deck repeated the order anyway. When Marquet asked why, the officer said: "Because you told me to." This revealed the fundamental flaw of leader-follower: 135 people with one brain fully engaged and 134 on autopilot.</p>
+
+      <table>
+        <thead><tr><th>Leader-Follower</th><th>Leader-Leader</th></tr></thead>
+        <tbody>
+          <tr><td>"Permission to submerge the ship"</td><td>"I intend to submerge the ship"</td></tr>
+          <tr><td>Leader decides, followers execute</td><td>Everyone decides within their domain</td></tr>
+          <tr><td>One brain engaged, many on autopilot</td><td>All brains engaged</td></tr>
+          <tr><td>Performance depends on the leader</td><td>Performance survives leader changes</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Results</h3>
+      <ul>
+        <li>Within one year, the Santa Fe went from worst to first in fleet performance</li>
+        <li>Achieved the highest inspection rating inspectors had ever recorded</li>
+        <li>Reenlistments jumped from 3 to 36 in a single year</li>
+        <li>Produced an unusually high number of officers who became submarine commanders</li>
+        <li>Performance sustained for 12+ years after Marquet's departure</li>
+      </ul>
+      <p>Stephen R. Covey visited the Santa Fe and called it "the most empowering organization he'd ever seen," writing about it in <em>The 8th Habit</em>.</p>
+
+      <h2 id="principles">2. Key Principles</h2>
+
+      <h3>The "I Intend To..." Mechanism</h3>
+      <p>The signature practice. Instead of asking "Request permission to...", crew members say "I intend to..." The captain responds "Very well" if the plan makes sense, or redirects if not. This forces the crew member to think through the decision before stating it and shifts ownership of the plan to the person with the information.</p>
+      <p>Although it seems like a minor language change, it profoundly restructures who owns decisions. The person with hands-on knowledge becomes the decision-maker. The leader becomes a reviewer and coach rather than an order-giver.</p>
+
+      <h3>The Ladder of Leadership</h3>
+      <p>Marquet developed a 7-level graduated language-based approach to empowerment. <strong>"Strive for Five"</strong> is the motto. Level 5 is the target operating state for most organizations.</p>
+      <table>
+        <thead><tr><th>Level</th><th>Team Language</th><th>Mode</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>"Tell me what to do"</td><td>Directive</td></tr>
+          <tr><td>2</td><td>"I see..."</td><td>Awareness</td></tr>
+          <tr><td>3</td><td>"I think..."</td><td>Analysis</td></tr>
+          <tr><td>4</td><td>"I recommend..."</td><td>Recommendation</td></tr>
+          <tr><td><strong>5</strong></td><td><strong>"I intend to..."</strong></td><td><strong>Intent (target)</strong></td></tr>
+          <tr><td>6</td><td>"I've been doing..."</td><td>Trust</td></tr>
+          <tr><td>7</td><td>(Autonomous action, reporting after)</td><td>Full delegation</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Emancipation vs. Empowerment</h3>
+      <p>Marquet draws an important distinction. <strong>Empowerment</strong> implies the leader "gives" power to people and can take it back. <strong>Emancipation</strong> recognizes that people already have inherent genius, energy, and creativity. The leader's job is to stop suppressing it. Emancipated teams no longer need external power sources. They generate their own initiative.</p>
+
+      <h2 id="framework">3. The Control-Competence-Clarity Framework</h2>
+      <p>The three pillars form an interdependent system. Giving control alone leads to chaos.</p>
+
+      <h3>Control (Give authority, don't take it)</h3>
+      <p>The key insight: move authority to where the information is. Don't move information to where the authority is. Practices include rewriting decision-making authority from top-down to distributed, adopting "I intend to..." language, and eliminating hierarchical monitoring systems.</p>
+
+      <h3>Competence (Technical knowledge to make good decisions)</h3>
+      <p>If you give people additional responsibility without equipping them with required knowledge, things fall apart. Replace briefings with certifications. Don't just tell people things. Verify they know them. The calibration rule: empowerment must be tuned to competence level.</p>
+
+      <h3>Clarity (Organizational purpose and direction)</h3>
+      <p>As decision-making pushes down the chain, everyone must understand what the organization is trying to achieve and why. Establish guiding principles for decision criteria. Make the "why" behind every goal explicit. Use backbriefing to confirm alignment before execution.</p>
+
+      <h3>How They Interconnect</h3>
+      <ul>
+        <li><strong>Control without Competence</strong>: dangerous mistakes</li>
+        <li><strong>Control without Clarity</strong>: misaligned effort, people running fast in wrong directions</li>
+        <li><strong>Competence without Control</strong>: frustrated experts waiting for permission</li>
+        <li><strong>Clarity without Control</strong>: people who understand the goal but cannot act on it</li>
+        <li><strong>All three together</strong>: distributed, aligned, capable decision-making</li>
+      </ul>
+
+      <h2 id="implementation">4. Practical Implementation</h2>
+
+      <h3>Language Shifts</h3>
+      <p><strong>Eliminate:</strong> "Request permission to..." / "I'd like to..." / "What should I do about...?"</p>
+      <p><strong>Adopt:</strong> "I intend to..." / "I plan to... because..." / "I see [situation], I think [analysis], I intend to [action]"</p>
+
+      <h3>The Backbriefing Process</h3>
+      <ol>
+        <li>Leader communicates intent and context</li>
+        <li>Team members brief back what they understood in their own words</li>
+        <li>Gaps in understanding surface immediately</li>
+        <li>Alignment is confirmed before execution begins</li>
+      </ol>
+      <p>This replaces the false confidence of "Does everyone understand?" where nobody admits confusion.</p>
+
+      <h3>Six Implementation Principles</h3>
+      <ol>
+        <li>Progress over perfection: allow learning through mistakes within safe parameters</li>
+        <li>Calibrate control dynamically: adjust oversight based on demonstrated competency</li>
+        <li>Establish psychological safety: coach and support without abandonment</li>
+        <li>Distribute authority: empower information-holders to decide</li>
+        <li>Redesign systems: modify environments rather than replacing people</li>
+        <li>Learn through action: implement while developing strategy iteratively</li>
+      </ol>
+
+      <h2 id="examples">5. Real-World Examples</h2>
+
+      <h3>Netflix ("Context Not Control")</h3>
+      <p>Leaders provide strategic context. Teams make their own execution decisions. An "informed captain" is identified for every significant decision, responsible for judgment calls. Employees are assessed on outcomes, not process adherence.</p>
+
+      <h3>Spotify (Squad Model)</h3>
+      <p>Small cross-functional squads with clear ownership of specific features. Each squad has a product owner and tech lead. Teams determine their own working methods. Shared backlogs and regular sync-ups maintain alignment.</p>
+
+      <h3>Formula One</h3>
+      <p>At least one F1 team has implemented intent-based leadership. Real-time decision-making under extreme time pressure requires distributed authority. The race engineer cannot micromanage the driver in a corner at 200 mph.</p>
+
+      <h3>The Dolder Grand, Zurich</h3>
+      <p>Adopted IBL as their management concept for hotel operations. Frontline staff who interact directly with guests are given authority to resolve issues without escalating to management.</p>
+
+      <h2 id="criticisms">6. Criticisms and Limitations</h2>
+
+      <h3>Structural Constraints</h3>
+      <p>IBL can only be carried out when you are in a position of authority. If top leadership does not support it, implementation is "invariably doomed to failure." If your own boss operates in command-and-control, you can only implement IBL within your own team, creating friction at the boundary.</p>
+
+      <h3>Implementation Failure Modes</h3>
+      <ul>
+        <li><strong>The Competence Trap:</strong> Giving authority to people who lack the knowledge leads to bad decisions</li>
+        <li><strong>The Clarity Vacuum:</strong> Empowered people without clear strategic direction become "hamsters running in place"</li>
+        <li><strong>The Time Pressure Problem:</strong> Under deadline pressure, leaders revert to command-and-control, undermining the culture</li>
+        <li><strong>The Apathy Spiral:</strong> Assigning tasks without skills or clarity generates justified disengagement</li>
+      </ul>
+
+      <h3>Not One-Size-Fits-All</h3>
+      <p>Bell Labs, which invented transistors and lasers, used a hybrid: elite researchers had no deadlines and filed no progress reports, while development engineers worked in more traditional hierarchies but retained technical autonomy. The lesson: distributing authority involves choosing which types of authority to distribute, to whom, and under what conditions.</p>
+
+      <h2 id="ai">7. Application to AI and Autonomous Agents</h2>
+      <p>Intent-based leadership maps remarkably well onto the emerging human-AI collaboration paradigm.</p>
+
+      <table>
+        <thead><tr><th>IBL Concept</th><th>AI Agent Parallel</th></tr></thead>
+        <tbody>
+          <tr><td>"I intend to..."</td><td>Agent proposes actions, human approves or redirects</td></tr>
+          <tr><td>Control distribution</td><td>Levels of agent autonomy</td></tr>
+          <tr><td>Competence requirement</td><td>Agent capability and training</td></tr>
+          <tr><td>Clarity of purpose</td><td>System prompts, goal specifications, guardrails</td></tr>
+          <tr><td>Backbriefing</td><td>Agent explaining its reasoning before acting</td></tr>
+          <tr><td>Ladder of Leadership</td><td>Escalating autonomy levels</td></tr>
+          <tr><td>Deliberate action</td><td>Chain-of-thought reasoning before execution</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The Five Levels of AI Agent Autonomy</h3>
+      <table>
+        <thead><tr><th>Level</th><th>User Role</th><th>Description</th><th>IBL Parallel</th></tr></thead>
+        <tbody>
+          <tr><td>L1</td><td>Operator</td><td>Human has full control, AI is copilot</td><td>Level 1-2: Tell me / I see</td></tr>
+          <tr><td>L2</td><td>Collaborator</td><td>Both plan and execute in parallel</td><td>Level 3-4: I think / I recommend</td></tr>
+          <tr><td>L3</td><td>Consultant</td><td>Agent drives, human provides feedback</td><td>Level 5: I intend to</td></tr>
+          <tr><td>L4</td><td>Approver</td><td>Agent autonomous except at checkpoints</td><td>Level 6: I've been doing</td></tr>
+          <tr><td>L5</td><td>Observer</td><td>Fully autonomous, human monitors logs only</td><td>Level 7: Full delegation</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The Agent Manager Role (HBR, Feb 2026)</h3>
+      <p>Harvard Business Review describes a new leadership position: the agent manager, responsible for "orchestrating how AI agents learn, collaborate, perform, and work safely alongside humans." Key parallel: agent managers translate functional expertise into measurable AI performance. They don't dictate every action. They establish success metrics that agents learn to execute.</p>
+
+      <h3>The Structural Enforcement Gap</h3>
+      <p>A May 2026 paper (arxiv:2605.01771) proved mathematically that instructed rules are probabilistic tendencies. Only structural enforcement creates invariant constraints. This is Marquet's insight applied to AI: "Very well" is not enough. The system must structurally prevent the wrong action, not just be told not to take it.</p>
+
+      <hr>
+
+      <h2 id="sources">Sources</h2>
+      <ul class="sources-list">
+        <li><a href="https://davidmarquet.com/my-story/" target="_blank">David Marquet: My Story</a></li>
+        <li><a href="https://www.shortform.com/blog/leader-leader-model/" target="_blank">The Leader-Leader Model vs. the Leader-Follower Model (Shortform)</a></li>
+        <li><a href="https://www.andycleff.com/2018/01/implementing-intent-based-leadership/" target="_blank">Implementing Intent Based Leadership (Andy Cleff)</a></li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5635545/" target="_blank">Intent-Based Leadership in Graduate Medical Education (PMC/NIH)</a></li>
+        <li><a href="https://hbr.org/2026/02/to-thrive-in-the-ai-era-companies-need-agent-managers" target="_blank">To Thrive in the AI Era, Companies Need Agent Managers (HBR)</a></li>
+        <li><a href="https://knightcolumbia.org/content/levels-of-autonomy-for-ai-agents-1" target="_blank">Levels of Autonomy for AI Agents (Knight First Amendment Institute)</a></li>
+        <li><a href="https://sloanreview.mit.edu/projects/the-emerging-agentic-enterprise-how-leaders-must-navigate-a-new-age-of-ai/" target="_blank">The Emerging Agentic Enterprise (MIT Sloan)</a></li>
+        <li><a href="https://www.katonic.ai/blog/intent-revolution" target="_blank">Intent-Based Computing: From Doing to Orchestrating (Katonic AI)</a></li>
+      </ul>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const RESEARCH_PASSWORD_HASH = "e57d542aab100cbe0fbad00a6e50aaca50a1d7634e80115a3b54ea44333317a4";
+  const STORAGE_KEY = "mexzungu_research_auth";
+  if (localStorage.getItem(STORAGE_KEY) !== 'true') {
+    window.location.href = '/research/';
+  }
+</script>
+</body>
+</html>

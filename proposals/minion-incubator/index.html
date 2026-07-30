@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minion Incubator Ltd — Mexzungu Engagement Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pink: #E14B87;
+  --pink-soft: #ff6ba8;
+  --gold: #D4A853;
+  --dark: #0D0D0D;
+  --dark2: #151515;
+  --dark3: #1a1a1a;
+  --dark4: #222;
+  --mid: #2a2a2a;
+  --border: #333;
+  --text: #e8e8e8;
+  --muted: #888;
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* PASSWORD GATE */
+#pw-gate {
+  position: fixed; inset: 0;
+  background: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.gate-inner { text-align: center; max-width: 400px; padding: 2rem; }
+.gate-logo { margin-bottom: 2rem; }
+.gate-logo img { height: 48px; }
+.gate-inner h2 {
+  font-family: var(--font-head);
+  font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem;
+}
+.gate-inner p { color: var(--muted); font-size: 0.95rem; }
+#pw-input {
+  width: 100%; margin-top: 2rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 8px; color: #fff; font-size: 1rem;
+  font-family: var(--font-body); outline: none;
+  letter-spacing: 0.1em; text-align: center;
+}
+#pw-input:focus { border-color: var(--pink); }
+.gate-btn {
+  width: 100%; margin-top: 1rem; padding: 0.9rem;
+  background: var(--pink); color: #fff; font-size: 1rem; font-weight: 600;
+  font-family: var(--font-head); border: none; border-radius: 8px;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.gate-btn:hover { opacity: 0.88; }
+#pw-error { margin-top: 0.75rem; color: var(--pink); font-size: 0.875rem; display: none; }
+
+/* PROPOSAL CONTENT */
+#proposal-content { display: none; }
+#proposal-content.visible { display: block; }
+
+/* LAYOUT */
+.container { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+
+/* HERO */
+.hero {
+  background: linear-gradient(160deg, #111 0%, #0d0d0d 60%);
+  padding: 5rem 0 4rem; border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -80px; right: -80px;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(225,75,135,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-label {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(225,75,135,0.12); border: 1px solid rgba(225,75,135,0.3);
+  padding: 0.3rem 0.85rem; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--pink); margin-bottom: 1.75rem;
+}
+.hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+  line-height: 1.1; color: #fff; margin-bottom: 1rem;
+}
+.hero h1 span { color: var(--pink); }
+.hero-sub {
+  font-size: 1.05rem; color: var(--muted); max-width: 560px;
+  line-height: 1.7; margin-bottom: 2.5rem;
+}
+.hero-meta { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.hero-meta-item .label {
+  color: var(--muted); text-transform: uppercase;
+  font-size: 0.72rem; letter-spacing: 0.08em; margin-bottom: 0.2rem;
+}
+.hero-meta-item .value { font-weight: 600; color: #fff; font-size: 0.9rem; }
+.practice-lead-badge {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: var(--dark3); border: 1px solid var(--border);
+  padding: 0.6rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-top: 2rem;
+}
+.practice-lead-badge .dot {
+  width: 8px; height: 8px; background: #4ade80;
+  border-radius: 50%; flex-shrink: 0;
+}
+.practice-lead-badge strong { color: var(--pink); }
+
+/* SECTION HEADERS */
+.section-tag {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--pink); margin-bottom: 0.6rem;
+}
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem); font-weight: 700;
+  color: #fff; line-height: 1.2; margin-bottom: 1rem;
+}
+.section-lead { font-size: 1rem; color: var(--muted); max-width: 600px; line-height: 1.75; }
+
+/* HEARD CARDS */
+.heard-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; margin-top: 2.5rem;
+}
+@media (max-width: 600px) { .heard-grid { grid-template-columns: 1fr; } }
+.heard-card {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.5rem;
+}
+.heard-card .icon {
+  width: 36px; height: 36px; background: rgba(225,75,135,0.12);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.heard-card h4 {
+  font-family: var(--font-head); font-size: 1rem;
+  font-weight: 700; color: #fff; margin-bottom: 0.5rem;
+}
+.heard-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+/* WS TRACKS */
+.ws-overview {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; margin-top: 2.5rem; margin-bottom: 3rem;
+}
+@media (max-width: 640px) { .ws-overview { grid-template-columns: 1fr; } }
+.ws-track {
+  border-radius: 12px; border: 1px solid var(--border);
+  padding: 1.5rem; background: var(--dark3); border-top: 3px solid transparent;
+}
+.ws-track.ws1 { border-top-color: var(--pink); }
+.ws-track.ws2 { border-top-color: var(--gold); }
+.ws-track .ws-number {
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem;
+}
+.ws-track.ws1 .ws-number { color: var(--pink); }
+.ws-track.ws2 .ws-number { color: var(--gold); }
+.ws-track h3 {
+  font-family: var(--font-head); font-size: 1.05rem;
+  font-weight: 700; color: #fff; margin-bottom: 0.5rem;
+}
+.ws-track p { font-size: 0.85rem; color: var(--muted); }
+
+/* BOLT LIST */
+.bolt-list { list-style: none; margin-top: 0.75rem; }
+.bolt-list li {
+  position: relative; padding-left: 1.6rem;
+  margin-bottom: 0.7rem; font-size: 0.9rem;
+  color: var(--text); line-height: 1.55;
+}
+.bolt-list li::before {
+  content: ''; position: absolute; left: 0; top: 0.35em;
+  width: 10px; height: 14px; background: var(--pink);
+  clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+}
+.bolt-list.gold li::before { background: var(--gold); }
+.bolt-list li strong { color: #fff; }
+
+/* WS HEADER */
+.ws-section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+.ws-pill {
+  display: inline-block; padding: 0.3rem 0.8rem; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.ws-pill.ws1 { background: rgba(225,75,135,0.15); color: var(--pink); border: 1px solid rgba(225,75,135,0.3); }
+.ws-pill.ws2 { background: rgba(212,168,83,0.15); color: var(--gold); border: 1px solid rgba(212,168,83,0.3); }
+
+/* DIAGRAM */
+.diagram-wrap {
+  background: var(--dark2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 2rem; margin: 2.5rem 0; overflow-x: auto;
+}
+.diagram-title {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem;
+}
+
+/* CAROUSEL */
+.carousel-wrap { position: relative; overflow: hidden; margin: 2rem 0; }
+.carousel-track { display: flex; transition: transform 0.35s ease; }
+.carousel-slide {
+  min-width: 100%; background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.75rem;
+}
+.carousel-slide h4 {
+  font-family: var(--font-head); font-size: 1rem; font-weight: 700;
+  color: #fff; margin-bottom: 0.25rem;
+}
+.carousel-slide .slide-meta {
+  font-size: 0.75rem; color: var(--muted); margin-bottom: 1rem;
+  text-transform: uppercase; letter-spacing: 0.07em;
+}
+.carousel-nav { display: flex; align-items: center; gap: 0.75rem; margin-top: 1rem; }
+.carousel-btn {
+  background: var(--dark3); border: 1px solid var(--border); color: var(--text);
+  width: 36px; height: 36px; border-radius: 8px; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; transition: border-color 0.2s;
+}
+.carousel-btn:hover { border-color: var(--pink); }
+.carousel-dots { display: flex; gap: 0.4rem; }
+.carousel-dot {
+  width: 6px; height: 6px; background: var(--border);
+  border-radius: 50%; cursor: pointer; transition: background 0.2s;
+}
+.carousel-dot.active { background: var(--pink); }
+.carousel-count { font-size: 0.8rem; color: var(--muted); margin-left: auto; }
+
+/* PROCESS STEPS */
+.process-steps {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem;
+}
+@media (max-width: 640px) { .process-steps { grid-template-columns: 1fr 1fr; } }
+.process-step {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem; text-align: center;
+}
+.step-num {
+  font-family: var(--font-head); font-size: 1.5rem; font-weight: 800;
+  color: var(--pink); margin-bottom: 0.5rem;
+}
+.process-step h5 {
+  font-family: var(--font-head); font-size: 0.875rem;
+  font-weight: 700; color: #fff; margin-bottom: 0.3rem;
+}
+.process-step p { font-size: 0.75rem; color: var(--muted); }
+
+/* SLA GRID */
+.sla-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+@media (max-width: 600px) { .sla-grid { grid-template-columns: 1fr; } }
+.sla-card {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem; text-align: center;
+}
+.sla-val { font-family: var(--font-head); font-size: 1.6rem; font-weight: 800; color: var(--gold); }
+.sla-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+
+/* PRICING TABS */
+.price-tabs {
+  display: flex; gap: 0.5rem; background: var(--dark3);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.3rem; width: fit-content;
+}
+.price-tab {
+  padding: 0.5rem 1.25rem; border-radius: 7px; font-size: 0.85rem;
+  font-weight: 600; cursor: pointer; transition: all 0.2s; border: none;
+  background: transparent; color: var(--muted); font-family: var(--font-body);
+}
+.price-tab.active { background: var(--pink); color: #fff; }
+.price-panel { display: none; }
+.price-panel.active { display: block; }
+
+/* PRICING CARDS */
+.pricing-options {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 1.5rem;
+}
+@media (max-width: 700px) { .pricing-options { grid-template-columns: 1fr; } }
+.pricing-card {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.75rem; position: relative; transition: border-color 0.2s;
+}
+.pricing-card:hover { border-color: var(--pink); }
+.pricing-card.featured { border-color: var(--pink); }
+.featured-badge {
+  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  background: var(--pink); color: #fff; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.75rem;
+  border-radius: 999px; white-space: nowrap;
+}
+.option-letter {
+  width: 32px; height: 32px; background: rgba(225,75,135,0.15); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-weight: 800; font-size: 0.9rem;
+  color: var(--pink); margin-bottom: 1rem;
+}
+.pricing-card h4 {
+  font-family: var(--font-head); font-size: 1rem; font-weight: 700;
+  color: #fff; margin-bottom: 0.3rem;
+}
+.pricing-card .tagline { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem; }
+.pricing-card .price-line {
+  font-family: var(--font-head); font-size: 1.4rem; font-weight: 800;
+  color: #fff; margin-bottom: 0.25rem;
+}
+.pricing-card .price-line span { font-size: 0.85rem; font-weight: 400; color: var(--muted); }
+.pricing-card .price-sub { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.25rem; }
+.pricing-card hr { border: none; border-top: 1px solid var(--border); margin-bottom: 1.25rem; }
+.pricing-card .includes {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+}
+
+/* HOUR BANK */
+.hour-bank-options {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0;
+}
+@media (max-width: 600px) { .hour-bank-options { grid-template-columns: 1fr; } }
+.hb-card {
+  background: var(--dark3); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.25rem; text-align: center; cursor: pointer; transition: border-color 0.2s;
+}
+.hb-card.selected { border-color: var(--pink); }
+.hb-card .hb-hours {
+  font-family: var(--font-head); font-size: 1.4rem; font-weight: 800;
+  color: #fff; margin-bottom: 0.1rem;
+}
+.hb-card .hb-unit { font-size: 0.75rem; color: var(--muted); }
+.hb-card .hb-price { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--pink); margin-top: 0.5rem; }
+.hb-card .hb-per { font-size: 0.72rem; color: var(--muted); }
+.hb-note {
+  font-size: 0.82rem; color: var(--muted); background: var(--dark3);
+  border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1rem; margin-top: 1rem;
+}
+
+/* CTA */
+.cta-section {
+  background: linear-gradient(140deg, #1a0d12 0%, #0d0d0d 100%);
+  padding: 5rem 0; text-align: center; border-top: 1px solid var(--border);
+}
+.cta-section h2 {
+  font-family: var(--font-head); font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800; color: #fff; margin-bottom: 1rem;
+}
+.cta-section p { color: var(--muted); margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block; background: var(--pink); color: #fff; font-weight: 700;
+  font-family: var(--font-head); padding: 0.9rem 2rem; border-radius: 10px;
+  text-decoration: none; transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-outline {
+  display: inline-block; background: transparent; color: var(--text); font-weight: 600;
+  font-family: var(--font-head); padding: 0.9rem 2rem; border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none; transition: border-color 0.2s;
+}
+.btn-outline:hover { border-color: var(--pink); }
+
+/* FINE PRINT */
+.fine-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+@media (max-width: 580px) { .fine-grid { grid-template-columns: 1fr; } }
+.fine-block h4 {
+  font-family: var(--font-head); font-size: 0.875rem;
+  font-weight: 700; color: #fff; margin-bottom: 0.5rem;
+}
+.fine-block p, .fine-block li { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+
+/* NOTICE */
+.notice {
+  background: rgba(212,168,83,0.08); border: 1px solid rgba(212,168,83,0.25);
+  border-radius: 10px; padding: 1.1rem 1.25rem; font-size: 0.85rem;
+  color: var(--gold); margin-top: 2rem; line-height: 1.6;
+}
+
+/* NAV */
+.proposal-nav {
+  position: sticky; top: 0;
+  background: rgba(13,13,13,0.92); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border); z-index: 100; padding: 0.7rem 0;
+}
+.nav-inner {
+  max-width: 860px; margin: 0 auto; padding: 0 1.5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.nav-brand { font-family: var(--font-head); font-size: 0.85rem; font-weight: 700; color: #fff; }
+.nav-brand span { color: var(--pink); }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { font-size: 0.78rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--pink); }
+@media (max-width: 580px) { .nav-links { display: none; } }
+
+/* OUT OF SCOPE PILLS */
+.out-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+.out-pill {
+  background: var(--dark3); border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.4rem 1rem; font-size: 0.8rem; color: var(--muted);
+}
+
+/* FOOTER */
+.proposal-footer { padding: 2rem 0; border-top: 1px solid var(--border); text-align: center; }
+.proposal-footer p { font-size: 0.78rem; color: #444; }
+.proposal-footer a { color: #555; text-decoration: none; }
+.proposal-footer a:hover { color: var(--pink); }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+  <div class="gate-inner">
+    <div class="gate-logo">
+      <img src="https://mexzungu.com/img/logo-pink.png" alt="Mexzungu Group" onerror="this.style.display='none'">
+    </div>
+    <h2>Minion Incubator Ltd</h2>
+    <p>Governance Architecture + Legal Advisory</p>
+    <p style="margin-top:0.4rem;font-size:0.82rem;">Prepared by Mexzungu Group</p>
+    <input type="password" id="pw-input" placeholder="Enter access code" autocomplete="off">
+    <button class="gate-btn" onclick="checkPW()">Access Proposal</button>
+    <p id="pw-error">Incorrect code. Please try again.</p>
+  </div>
+</div>
+
+<!-- PROPOSAL CONTENT -->
+<div id="proposal-content">
+
+  <nav class="proposal-nav">
+    <div class="nav-inner">
+      <div class="nav-brand">Mexzungu <span>Group</span></div>
+      <div class="nav-links">
+        <a href="#heard">Situation</a>
+        <a href="#ws1">Governance</a>
+        <a href="#ws2">Advisory</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#fine">Fine Print</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="container">
+      <div class="hero-label">Engagement Proposal</div>
+      <h1>Governance <span>Architecture</span><br>+ Legal Advisory</h1>
+      <p class="hero-sub">A structured engagement for Minion Incubator Ltd to build governance foundations that protect the incubator, empower its founders, and create a replicable legal framework across the portfolio.</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <div class="label">Prepared for</div>
+          <div class="value">Minion Incubator Ltd</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="label">Date</div>
+          <div class="value">July 2026</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="label">Jurisdiction</div>
+          <div class="value">Kenya</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="label">Workstreams</div>
+          <div class="value">2</div>
+        </div>
+      </div>
+      <div class="practice-lead-badge">
+        <div class="dot"></div>
+        Practice Lead: <strong>Faith Gathoni</strong>, Governance + Founder Development
+      </div>
+    </div>
+  </div>
+
+  <!-- 01. WHAT WE HEARD -->
+  <section id="heard">
+    <div class="container">
+      <div class="section-tag">01. Situation</div>
+      <h2 class="section-title">What We Heard</h2>
+      <p class="section-lead">Minion Incubator Ltd is building a structured early-stage ecosystem in Kenya, with strong deal flow, a growing cohort model, and real traction. The governance layer has not kept pace with that growth.</p>
+      <div class="heard-grid">
+        <div class="heard-card">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E14B87" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          </div>
+          <h4>No formal board structure</h4>
+          <p>Decision-making is informal. Accountability gaps emerge as the portfolio grows and external investors begin asking harder questions.</p>
+        </div>
+        <div class="heard-card">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E14B87" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          </div>
+          <h4>Inconsistent founder agreements</h4>
+          <p>Each portfolio company has different terms, with no standard framework across IP ownership, equity vesting, or exit mechanics.</p>
+        </div>
+        <div class="heard-card">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E14B87" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h4>Regulatory blind spots</h4>
+          <p>Operating across multiple startup stages and sectors without systematic regulatory tracking for portfolio companies creates exposure.</p>
+        </div>
+        <div class="heard-card">
+          <div class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E14B87" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h4>Scaling faster than structure</h4>
+          <p>Cohort growth is outpacing documentation. Without replicable frameworks, each new intake creates ad hoc legal and governance overhead.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:2.5rem;">
+        <div class="section-tag">Our Read</div>
+        <p style="font-size:0.92rem;color:var(--muted);max-width:640px;margin-top:0.5rem;line-height:1.75;">Minion Incubator does not have a governance crisis. It has a governance gap that will become a crisis as it scales. The right move: close the gap now, with structure proportionate to current size but designed to handle the next two growth stages without rebuilding from scratch.</p>
+      </div>
+
+      <div style="margin-top:2.5rem;">
+        <div class="section-tag">Proposed Scope</div>
+        <div class="ws-overview">
+          <div class="ws-track ws1">
+            <div class="ws-number">WS1</div>
+            <h3>Governance Architecture</h3>
+            <p>One-time engagement. Board design, founder agreement templates, IP framework, governance handbook. Fixed scope, defined output.</p>
+          </div>
+          <div class="ws-track ws2">
+            <div class="ws-number">WS2</div>
+            <h3>Legal Advisory Retainer</h3>
+            <p>Ongoing monthly advisory. Contract review, regulatory guidance, portfolio company support, quarterly governance health check.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02. WS1 -->
+  <section id="ws1">
+    <div class="container">
+      <div class="ws-section-header">
+        <span class="ws-pill ws1">WS 01</span>
+        <span style="color:var(--muted);font-size:0.85rem;">One-Time Engagement</span>
+      </div>
+      <h2 class="section-title">Governance Architecture</h2>
+      <p class="section-lead">Build the governance layer your incubator needs: accountability without bureaucracy, protection across the portfolio, and credibility with the next round of investors.</p>
+
+      <div class="diagram-wrap">
+        <div class="diagram-title">Governance Structure: Target State</div>
+        <svg viewBox="0 0 760 300" width="100%" height="auto" style="max-height:300px;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="270" y="10" width="220" height="60" rx="10" fill="#1e0d14" stroke="#E14B87" stroke-width="1.5"/>
+          <text x="380" y="38" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="12" font-weight="700" fill="#fff">MINION INCUBATOR LTD</text>
+          <text x="380" y="56" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#E14B87">Corporate Entity (Kenya)</text>
+          <line x1="380" y1="70" x2="380" y2="110" stroke="#444" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <polygon points="376,108 384,108 380,116" fill="#444"/>
+          <rect x="250" y="116" width="260" height="55" rx="10" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+          <text x="380" y="142" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" font-weight="700" fill="#fff">Board of Directors</text>
+          <text x="380" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#888">Composition rules. Quorum. Conflict protocols.</text>
+          <line x1="285" y1="171" x2="140" y2="220" stroke="#333" stroke-width="1.5"/>
+          <line x1="380" y1="171" x2="380" y2="220" stroke="#333" stroke-width="1.5"/>
+          <line x1="475" y1="171" x2="620" y2="220" stroke="#333" stroke-width="1.5"/>
+          <rect x="60" y="220" width="160" height="52" rx="8" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+          <text x="140" y="244" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Portfolio Co. A</text>
+          <text x="140" y="261" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">Standard founder agreement</text>
+          <rect x="300" y="220" width="160" height="52" rx="8" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+          <text x="380" y="244" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Portfolio Co. B</text>
+          <text x="380" y="261" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">Standard founder agreement</text>
+          <rect x="540" y="220" width="160" height="52" rx="8" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+          <text x="620" y="244" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Portfolio Co. C</text>
+          <text x="620" y="261" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">Standard founder agreement</text>
+          <rect x="10" y="10" width="170" height="42" rx="8" fill="rgba(225,75,135,0.07)" stroke="rgba(225,75,135,0.2)" stroke-width="1"/>
+          <text x="95" y="29" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#E14B87" font-weight="600">PRACTICE LEAD</text>
+          <text x="95" y="45" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="700" fill="#fff">Faith Gathoni</text>
+        </svg>
+      </div>
+
+      <div class="section-tag" style="margin-top:2.5rem;">Deliverables</div>
+      <div style="margin-top:0.75rem;">
+        <div class="carousel-wrap">
+          <div class="carousel-track" id="ws1-track">
+
+            <div class="carousel-slide">
+              <div class="slide-meta">Deliverable 01 of 05</div>
+              <h4>Incubator Entity Governance Review</h4>
+              <ul class="bolt-list" style="margin-top:0.75rem;">
+                <li><strong>Current state audit</strong> of governance documents, founding agreements, and decision-making structure</li>
+                <li><strong>Board mandate definition</strong> covering roles, responsibilities, authority matrix</li>
+                <li><strong>Committee structure</strong> recommendation tailored to Minion Incubator's stage</li>
+                <li><strong>Gap analysis</strong> with prioritised remediation roadmap</li>
+              </ul>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="slide-meta">Deliverable 02 of 05</div>
+              <h4>Board Architecture Design</h4>
+              <ul class="bolt-list" style="margin-top:0.75rem;">
+                <li><strong>Board composition rules</strong>: independent directors, observer rights, investor seats</li>
+                <li><strong>Quorum and voting mechanics</strong>: reserved matters, supermajority thresholds</li>
+                <li><strong>Conflict of interest protocols</strong> for dual-hat situations common in incubator ecosystems</li>
+                <li><strong>Board charter</strong> ready for immediate adoption</li>
+              </ul>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="slide-meta">Deliverable 03 of 05</div>
+              <h4>Founder Agreement Templates</h4>
+              <ul class="bolt-list" style="margin-top:0.75rem;">
+                <li><strong>Three-stage template set</strong>: pre-cohort MOU, cohort participation agreement, post-program equity instrument</li>
+                <li><strong>Vesting schedules</strong> with cliff and acceleration provisions</li>
+                <li><strong>IP assignment clauses</strong> aligned with incubator economic rights</li>
+                <li><strong>Exit and buyback mechanics</strong> protecting the incubator on portfolio underperformance</li>
+              </ul>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="slide-meta">Deliverable 04 of 05</div>
+              <h4>IP Ownership Framework</h4>
+              <ul class="bolt-list" style="margin-top:0.75rem;">
+                <li><strong>Contribution policy</strong>: what founders bring in vs. what is created inside the program</li>
+                <li><strong>Ownership matrix</strong>: incubator vs. founder vs. joint IP categories</li>
+                <li><strong>Licensing framework</strong>: how portfolio companies use incubator IP and infrastructure</li>
+                <li><strong>Assignment process</strong>: clean handover templates on program exit</li>
+              </ul>
+            </div>
+
+            <div class="carousel-slide">
+              <div class="slide-meta">Deliverable 05 of 05</div>
+              <h4>Governance Handbook</h4>
+              <ul class="bolt-list" style="margin-top:0.75rem;">
+                <li><strong>Internal playbook</strong> covering all governance processes in plain language</li>
+                <li><strong>Board meeting cadence</strong> and agenda template</li>
+                <li><strong>Decision log protocol</strong> and document retention guidelines</li>
+                <li><strong>Onboarding pack</strong> for new board members and portfolio founders</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        <div class="carousel-nav">
+          <button class="carousel-btn" onclick="carouselPrev('ws1')">&#8592;</button>
+          <button class="carousel-btn" onclick="carouselNext('ws1')">&#8594;</button>
+          <div class="carousel-dots" id="ws1-dots"></div>
+          <div class="carousel-count" id="ws1-count"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:3rem;">
+        <div class="section-tag">How We Work</div>
+        <p style="font-size:0.88rem;color:var(--muted);margin-top:0.5rem;margin-bottom:1.5rem;">Four phases. Eight to twelve weeks depending on your team's availability for review rounds.</p>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">01</div><h5>Audit</h5><p>Review existing docs, board history, founder agreements on file</p></div>
+          <div class="process-step"><div class="step-num">02</div><h5>Design</h5><p>Build governance architecture, board charter, IP framework</p></div>
+          <div class="process-step"><div class="step-num">03</div><h5>Draft</h5><p>Produce all templates, handbook, and adoption-ready documents</p></div>
+          <div class="process-step"><div class="step-num">04</div><h5>Handover</h5><p>Walkthrough session with leadership, Q&amp;A, adoption support</p></div>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>Jurisdiction note:</strong> Mexzungu Group Ltd is not licensed to practice Kenyan law. All deliverables are advisory and structural. For matters requiring admitted Kenyan counsel (court filings, regulatory submissions, stamp duty compliance), Faith Gathoni will coordinate referrals to trusted local practitioners.
+      </div>
+    </div>
+  </section>
+
+  <!-- 03. WS2 -->
+  <section id="ws2">
+    <div class="container">
+      <div class="ws-section-header">
+        <span class="ws-pill ws2">WS 02</span>
+        <span style="color:var(--muted);font-size:0.85rem;">Monthly Retainer</span>
+      </div>
+      <h2 class="section-title">Legal Advisory Retainer</h2>
+      <p class="section-lead">Ongoing legal advisory for the incubator team and portfolio companies, through a single point of contact at a predictable monthly cost. Routine questions are covered under the retainer without separate invoices.</p>
+
+      <div class="diagram-wrap">
+        <div class="diagram-title">Monthly Retainer: What's Included</div>
+        <svg viewBox="0 0 720 200" width="100%" height="auto" style="max-height:200px;" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="360" cy="100" r="46" fill="#1e0d14" stroke="#E14B87" stroke-width="1.5"/>
+          <text x="360" y="97" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" font-weight="700" fill="#fff">Faith</text>
+          <text x="360" y="113" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#E14B87">Practice Lead</text>
+          <line x1="314" y1="100" x2="200" y2="60" stroke="#333" stroke-width="1.5"/>
+          <rect x="80" y="38" width="120" height="44" rx="8" fill="#1a1a1a" stroke="#2a2a2a"/>
+          <text x="140" y="58" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Contract Review</text>
+          <text x="140" y="73" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">Up to 3/month</text>
+          <line x1="330" y1="60" x2="280" y2="20" stroke="#333" stroke-width="1.5"/>
+          <rect x="200" y="2" width="130" height="36" rx="8" fill="#1a1a1a" stroke="#2a2a2a"/>
+          <text x="265" y="18" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Regulatory Guidance</text>
+          <text x="265" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">Kenya ecosystem</text>
+          <line x1="390" y1="60" x2="440" y2="20" stroke="#333" stroke-width="1.5"/>
+          <rect x="388" y="2" width="140" height="36" rx="8" fill="#1a1a1a" stroke="#2a2a2a"/>
+          <text x="458" y="18" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Portfolio Sessions</text>
+          <text x="458" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">2 x 60min/month</text>
+          <line x1="406" y1="100" x2="520" y2="60" stroke="#333" stroke-width="1.5"/>
+          <rect x="520" y="38" width="140" height="44" rx="8" fill="#1a1a1a" stroke="#2a2a2a"/>
+          <text x="590" y="58" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Quarterly Health Check</text>
+          <text x="590" y="73" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">Governance audit</text>
+          <line x1="340" y1="144" x2="260" y2="170" stroke="#333" stroke-width="1.5"/>
+          <rect x="140" y="155" width="120" height="36" rx="8" fill="#1a1a1a" stroke="#2a2a2a"/>
+          <text x="200" y="171" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">48h SLA</text>
+          <text x="200" y="185" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">Business day response</text>
+          <line x1="390" y1="144" x2="460" y2="170" stroke="#333" stroke-width="1.5"/>
+          <rect x="450" y="155" width="130" height="36" rx="8" fill="#1a1a1a" stroke="#2a2a2a"/>
+          <text x="515" y="171" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="600" fill="#ccc">Async Q&amp;A</text>
+          <text x="515" y="185" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#666">WhatsApp / email</text>
+        </svg>
+      </div>
+
+      <div class="sla-grid">
+        <div class="sla-card"><div class="sla-val">3</div><div class="sla-label">Contract reviews per month</div></div>
+        <div class="sla-card"><div class="sla-val">48h</div><div class="sla-label">Response SLA (business days)</div></div>
+        <div class="sla-card"><div class="sla-val">2</div><div class="sla-label">Portfolio advisory sessions/month</div></div>
+      </div>
+
+      <div style="margin-top:2.5rem;">
+        <div class="section-tag">What the Retainer Covers</div>
+        <ul class="bolt-list gold" style="margin-top:1rem;">
+          <li><strong>Contract review and mark-up</strong> for incubator agreements, vendor contracts, and portfolio company term sheets (up to 3 per month)</li>
+          <li><strong>Regulatory guidance</strong> covering Kenya Companies Act compliance, fintech / agritech sector notes, and tax-adjacent structuring</li>
+          <li><strong>Portfolio company legal support</strong> via two monthly sessions: founders bring live questions, Faith provides advisory guidance</li>
+          <li><strong>Quarterly governance health check</strong>: 30-day review of board decisions, document hygiene, and compliance status</li>
+          <li><strong>Async advisory</strong> for ad hoc questions via WhatsApp or email, within the 48-hour SLA</li>
+          <li><strong>Template updates</strong>: as the regulatory landscape shifts, we update the founder agreement templates at no extra cost</li>
+        </ul>
+      </div>
+
+      <div class="notice">
+        <strong>What this is not:</strong> The retainer covers advisory and structural support. It does not include court appearances, litigation, government submissions requiring admitted Kenyan counsel, tax compliance filings, or employment dispute representation. Those items are out of scope and will be flagged with referral recommendations when they arise.
+      </div>
+    </div>
+  </section>
+
+  <!-- 04. PRICING -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-tag">04. Engagement Options</div>
+      <h2 class="section-title">Three Ways to Engage</h2>
+      <p class="section-lead">Pick the structure that fits where Minion Incubator is right now. All three options deliver the same quality of work. The difference is timing, flexibility, and commercial model.</p>
+
+      <div class="price-tabs" style="margin-top:2rem;">
+        <button class="price-tab active" onclick="switchTab('fixed')">Fixed Fee</button>
+        <button class="price-tab" onclick="switchTab('hourbank')">Hour Bank</button>
+        <button class="price-tab" onclick="switchTab('milestone')">Milestone</button>
+      </div>
+
+      <!-- FIXED FEE -->
+      <div class="price-panel active" id="tab-fixed">
+        <p style="font-size:0.85rem;color:var(--muted);margin:1rem 0 1.5rem;">Best for organizations that want a predictable engagement with a fixed price and a defined delivery milestone. Works well for incubators with board sign-off requirements or fixed budget cycles.</p>
+        <div class="pricing-options">
+
+          <div class="pricing-card">
+            <div class="option-letter">A</div>
+            <h4>WS1 Only</h4>
+            <div class="tagline">Governance Architecture</div>
+            <div class="price-line">$2,500</div>
+            <div class="price-sub">Fixed. 50% upfront, 50% on delivery.</div>
+            <hr>
+            <div class="includes">Includes</div>
+            <ul class="bolt-list">
+              <li>Entity governance review</li>
+              <li>Board architecture design</li>
+              <li>Founder agreement templates (x3)</li>
+              <li>IP ownership framework</li>
+              <li>Governance handbook</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card featured">
+            <div class="featured-badge">Most popular</div>
+            <div class="option-letter">B</div>
+            <h4>WS1 + WS2</h4>
+            <div class="tagline">Build + Ongoing Advisory</div>
+            <div class="price-line">$2,500 <span>+ $2,000/mo</span></div>
+            <div class="price-sub">Fixed build + monthly retainer. 2-month minimum on WS2.</div>
+            <hr>
+            <div class="includes">All of WS1, plus</div>
+            <ul class="bolt-list">
+              <li>3 contract reviews/month</li>
+              <li>2 portfolio advisory sessions/month</li>
+              <li>Quarterly governance health check</li>
+              <li>48h async Q&amp;A</li>
+              <li>Template updates included</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card">
+            <div class="option-letter">C</div>
+            <h4>WS2 Only</h4>
+            <div class="tagline">Advisory Retainer</div>
+            <div class="price-line">$2,500 <span>/month</span></div>
+            <div class="price-sub">Monthly advance. 2-month minimum. No WS1 governance build.</div>
+            <hr>
+            <div class="includes">Includes</div>
+            <ul class="bolt-list">
+              <li>3 contract reviews/month</li>
+              <li>2 portfolio advisory sessions/month</li>
+              <li>Regulatory guidance (Kenya)</li>
+              <li>Quarterly governance health check</li>
+              <li>48h async response SLA</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- HOUR BANK -->
+      <div class="price-panel" id="tab-hourbank">
+        <p style="font-size:0.85rem;color:var(--muted);margin:1rem 0 1.5rem;">Pre-purchase a block of advisory hours. Use them how you need: governance review, founder sessions, contract mark-up, regulatory calls. Unused hours roll over for 60 days.</p>
+        <div class="hour-bank-options">
+          <div class="hb-card selected" onclick="selectHB(this)">
+            <div class="hb-hours">10</div>
+            <div class="hb-unit">hours</div>
+            <div class="hb-price">$1,900</div>
+            <div class="hb-per">$190/hr</div>
+          </div>
+          <div class="hb-card" onclick="selectHB(this)">
+            <div class="hb-hours">20</div>
+            <div class="hb-unit">hours</div>
+            <div class="hb-price">$3,600</div>
+            <div class="hb-per">$180/hr</div>
+          </div>
+          <div class="hb-card" onclick="selectHB(this)">
+            <div class="hb-hours">30</div>
+            <div class="hb-unit">hours</div>
+            <div class="hb-price">$5,100</div>
+            <div class="hb-per">$170/hr</div>
+          </div>
+        </div>
+        <div class="hb-note">Hours are pre-purchased and invoiced on signing. Unused hours roll over for 60 days. Minimum booking is 10 hours. No minimum engagement period. Top-up available at any time at the original block rate.</div>
+        <ul class="bolt-list" style="margin-top:1.5rem;">
+          <li><strong>What counts as an hour:</strong> document review, drafting, calls, async Q&amp;A sessions billed in 30-min increments</li>
+          <li><strong>What does not count:</strong> standard email responses and short clarification messages under 15 min are included free</li>
+          <li><strong>Tracking:</strong> monthly statement sent with hours used, remaining balance, and activity log</li>
+        </ul>
+      </div>
+
+      <!-- MILESTONE -->
+      <div class="price-panel" id="tab-milestone">
+        <p style="font-size:0.85rem;color:var(--muted);margin:1rem 0 1.5rem;">Start with low commitment. Pay a small activation fee to begin the governance work, then convert to a monthly advisory retainer once the foundations are in place.</p>
+        <div style="background:var(--dark3);border:1px solid var(--border);border-radius:14px;padding:1.75rem;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+            <div>
+              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Phase 1: Activation</div>
+              <div style="font-family:var(--font-head);font-size:1.6rem;font-weight:800;color:#fff;">$1,500</div>
+              <div style="font-size:0.8rem;color:var(--muted);margin-top:0.2rem;">One-time. Due on signing.</div>
+              <ul class="bolt-list" style="margin-top:1rem;">
+                <li>Entity governance audit</li>
+                <li>Board architecture design</li>
+                <li>One founder agreement template</li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Phase 2: Retainer</div>
+              <div style="font-family:var(--font-head);font-size:1.6rem;font-weight:800;color:#fff;">$750<span style="font-size:0.85rem;font-weight:400;color:var(--muted);">/month</span></div>
+              <div style="font-size:0.8rem;color:var(--muted);margin-top:0.2rem;">Billed monthly. Begins month 2.</div>
+              <ul class="bolt-list" style="margin-top:1rem;">
+                <li>2 contract reviews/month</li>
+                <li>1 portfolio advisory session/month</li>
+                <li>Async Q&amp;A (48h SLA)</li>
+              </ul>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--border);margin-top:1.5rem;padding-top:1.25rem;font-size:0.82rem;color:var(--muted);">
+            Best for incubators that want to see the quality of work before committing longer. No minimum on the retainer phase. Cancel with 30 days notice. Remaining WS1 deliverables can be commissioned separately at a reduced rate.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 05. OUT OF SCOPE -->
+  <section id="scope">
+    <div class="container">
+      <div class="section-tag">05. Boundaries</div>
+      <h2 class="section-title">What We Do Not Do</h2>
+      <p class="section-lead">Clarity on scope protects both sides. The following items are outside this engagement. When they come up, we will flag them and connect you to the right resource.</p>
+      <div class="out-list">
+        <span class="out-pill">Litigation and court filings</span>
+        <span class="out-pill">Tax compliance and KRA submissions</span>
+        <span class="out-pill">Employment disputes and HR law</span>
+        <span class="out-pill">Immigration and work permits</span>
+        <span class="out-pill">Registered Kenyan advocacy</span>
+        <span class="out-pill">Notarization and apostille</span>
+        <span class="out-pill">Banking and SWIFT compliance</span>
+        <span class="out-pill">Patent and trademark registration</span>
+        <span class="out-pill">Land and property transactions</span>
+        <span class="out-pill">Criminal law</span>
+      </div>
+      <p style="margin-top:1.5rem;font-size:0.85rem;color:var(--muted);max-width:560px;">Where any of the above arise from the governance work, we will identify the right Kenyan firm for referral. We maintain working relationships with counsel in Nairobi and will make warm introductions where needed.</p>
+    </div>
+  </section>
+
+  <!-- 06. FINE PRINT -->
+  <section id="fine">
+    <div class="container">
+      <div class="section-tag">06. Fine Print</div>
+      <h2 class="section-title">How This Works</h2>
+      <p class="section-lead">The important details, written plainly.</p>
+      <div class="fine-grid">
+        <div class="fine-block">
+          <h4>Contracting Entity</h4>
+          <p>Mexzungu Group Ltd, incorporated in Mauritius (Royal Road, Henrietta). All engagements are subject to Mauritius law, with dispute resolution by international arbitration (MCCI rules). A standard engagement letter will be sent on signature of this proposal.</p>
+        </div>
+        <div class="fine-block">
+          <h4>Practice Lead</h4>
+          <p>Faith Gathoni leads this engagement as the named Governance + Founder Development practice lead. She is your primary point of contact for all WS1 and WS2 matters. Mexzungu Group provides the legal operations infrastructure and proposal framework.</p>
+        </div>
+        <div class="fine-block">
+          <h4>Payment Terms</h4>
+          <ul class="bolt-list" style="margin-top:0.25rem;">
+            <li>WS1 fixed: 50% on signing, 50% on handbook delivery</li>
+            <li>WS2 retainer: monthly advance, due first business day of each month</li>
+            <li>Hour Bank: 100% pre-purchase on signing</li>
+            <li>Invoices in USD. Bank transfer or Wise accepted.</li>
+          </ul>
+        </div>
+        <div class="fine-block">
+          <h4>Confidentiality</h4>
+          <p>Standard mutual NDA applies from the date of engagement. All Minion Incubator documents, founder data, and portfolio company information are treated as strictly confidential and not shared or referenced in any external context.</p>
+        </div>
+        <div class="fine-block">
+          <h4>Cancellation</h4>
+          <p>WS1 fixed: non-refundable once work has commenced. Retainer: 30-day written notice to cancel. Hour Bank: hours are non-refundable after purchase, but balances roll over for 60 days from purchase date.</p>
+        </div>
+        <div class="fine-block">
+          <h4>Timeline</h4>
+          <p>WS1 delivery in 8 to 12 weeks from kick-off, subject to timely document provision and review rounds. WS2 begins immediately on signing. Kick-off call scheduled within 5 business days of payment receipt.</p>
+        </div>
+      </div>
+      <div class="notice">
+        <strong>Advisory only:</strong> Nothing in this proposal or the resulting engagement constitutes Kenyan legal advice or creates a solicitor-client relationship under the Law Society of Kenya. All outputs are advisory and structural. Execution, filing, or registration of any document with Kenyan authorities must be handled by admitted local counsel.
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="container">
+      <h2>Ready to build the<br>governance layer?</h2>
+      <p>Select your engagement option and sign the engagement letter. We will have a kick-off call scheduled within five business days.</p>
+      <div class="cta-actions">
+        <a href="https://mexzungu.com/sign/minion-incubator" class="btn-primary">Review and Sign</a>
+        <a href="mailto:faith88.wanjau@gmail.com" class="btn-outline">Talk to Faith</a>
+      </div>
+      <div style="margin-top:2.5rem;font-size:0.8rem;color:#444;">
+        Questions? Reach Faith Gathoni at faith88.wanjau@gmail.com or +254 706 571 606
+      </div>
+    </div>
+  </div>
+
+  <div class="proposal-footer">
+    <div class="container">
+      <p>Mexzungu Group Ltd. Royal Road, Henrietta, Mauritius. <a href="https://mexzungu.com">mexzungu.com</a></p>
+      <p style="margin-top:0.3rem;">Prepared by Faith Gathoni, Practice Lead (Governance + Founder Development)</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CORRECT = 'minion-2026';
+const MASTER_PW = 'Outlaw-Master-2026';
+const SESSION_KEY = 'minion_incubator_auth';
+
+function checkPW() {
+  const val = document.getElementById('pw-input').value.trim();
+  if (val === CORRECT || val === MASTER_PW) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    document.getElementById('pw-gate').style.display = 'none';
+    document.getElementById('proposal-content').classList.add('visible');
+    initCarousels();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+  }
+}
+
+document.getElementById('pw-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPW();
+});
+
+if (sessionStorage.getItem(SESSION_KEY) === '1') {
+  document.getElementById('pw-gate').style.display = 'none';
+  document.getElementById('proposal-content').classList.add('visible');
+}
+
+const carouselState = {};
+
+function initCarousel(id, total) {
+  carouselState[id] = { current: 0, total: total };
+  const dotsEl = document.getElementById(id + '-dots');
+  if (!dotsEl) return;
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.onclick = (function(idx) { return function() { carouselGo(id, idx); }; })(i);
+    dotsEl.appendChild(d);
+  }
+  updateCarousel(id);
+}
+
+function updateCarousel(id) {
+  const s = carouselState[id];
+  const track = document.getElementById(id + '-track');
+  if (!track) return;
+  track.style.transform = 'translateX(-' + (s.current * 100) + '%)';
+  const dots = document.getElementById(id + '-dots').children;
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('active', i === s.current);
+  }
+  const countEl = document.getElementById(id + '-count');
+  if (countEl) countEl.textContent = (s.current + 1) + ' / ' + s.total;
+}
+
+function carouselNext(id) {
+  const s = carouselState[id];
+  s.current = (s.current + 1) % s.total;
+  updateCarousel(id);
+}
+
+function carouselPrev(id) {
+  const s = carouselState[id];
+  s.current = (s.current - 1 + s.total) % s.total;
+  updateCarousel(id);
+}
+
+function carouselGo(id, idx) {
+  carouselState[id].current = idx;
+  updateCarousel(id);
+}
+
+function initCarousels() {
+  initCarousel('ws1', 5);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.price-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.price-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var map = { fixed: 0, hourbank: 1, milestone: 2 };
+  document.querySelectorAll('.price-tab')[map[tab]].classList.add('active');
+}
+
+function selectHB(el) {
+  document.querySelectorAll('.hb-card').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    initCarousels();
+  }
+});
+</script>
+</body>
+</html>

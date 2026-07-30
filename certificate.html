@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="la">
+<head>
+<meta charset="UTF-8">
+<title>Certificatum — Programma Dilectae</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=IM+Fell+English:ital@0;1&display=swap');
+
+  @page {
+    size: 297mm 420mm;
+    margin: 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 297mm;
+    height: 420mm;
+  }
+
+  .page {
+    width: 297mm;
+    height: 420mm;
+    position: relative;
+    background: #F5EDD6;
+    overflow: hidden;
+    color: #1A0F05;
+    font-family: 'IM Fell English', 'Palatino Linotype', serif;
+  }
+
+  /* ─── BORDERS ─── */
+  .border-outer {
+    position: absolute;
+    top: 7mm; left: 7mm; right: 7mm; bottom: 7mm;
+    border: 1.8px solid #C49A1A;
+    pointer-events: none; z-index: 10;
+  }
+  .border-inner {
+    position: absolute;
+    top: 10.5mm; left: 10.5mm; right: 10.5mm; bottom: 10.5mm;
+    border: 0.6px solid #C49A1A;
+    pointer-events: none; z-index: 10;
+  }
+
+  /* ─── CORNER ORNAMENTS ─── */
+  .corner { position: absolute; z-index: 11; }
+  .corner-tl { top: 3mm; left: 3mm; }
+  .corner-tr { top: 3mm; right: 3mm; transform: scaleX(-1); }
+  .corner-bl { bottom: 3mm; left: 3mm; transform: scaleY(-1); }
+  .corner-br { bottom: 3mm; right: 3mm; transform: scale(-1,-1); }
+
+  /* ─── CONTENT ─── */
+  .content {
+    position: absolute;
+    top: 13mm; left: 14mm; right: 14mm; bottom: 13mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ─── ILLUSTRATION ─── */
+  .illustration { width: 100%; height: 84mm; flex-shrink: 0; object-fit: cover; object-position: center; }
+
+  /* ─── ORNAMENTAL RULES ─── */
+  .rule { width: 88%; flex-shrink: 0; }
+
+  /* ─── COMMITTEE NAME — RUNIC ─── */
+  .committee-name {
+    font-size: 14.5pt;
+    letter-spacing: 0.18em;
+    color: #1A0F05;
+    line-height: 1.4;
+    font-family: 'Segoe UI Historic', 'Noto Sans Runic', 'Noto Sans', serif;
+    flex-shrink: 0;
+    margin-top: 2mm;
+  }
+  .founding-motto {
+    font-size: 8.5pt;
+    letter-spacing: 0.12em;
+    color: #8B6914;
+    font-family: 'Segoe UI Historic', 'Noto Sans Runic', 'Noto Sans', serif;
+    margin-top: 1mm;
+    flex-shrink: 0;
+  }
+
+  /* ─── BODY TEXT ─── */
+  .opening-formula {
+    font-size: 8pt;
+    font-style: italic;
+    color: #3A2510;
+    margin-top: 2.5mm;
+    flex-shrink: 0;
+  }
+  .notum-sit {
+    font-size: 8.5pt;
+    color: #3A2510;
+    margin-top: 2mm;
+    flex-shrink: 0;
+  }
+
+  /* ─── RECIPIENT NAME ─── */
+  .recipient-name {
+    font-family: 'Cinzel Decorative', 'Trajan Pro', serif;
+    font-size: 30pt;
+    font-weight: 700;
+    color: #B8860C;
+    letter-spacing: 0.07em;
+    line-height: 1;
+    margin: 2.5mm 0;
+    flex-shrink: 0;
+  }
+
+  /* ─── PHASES ─── */
+  .phases-intro {
+    font-size: 8.5pt;
+    font-style: italic;
+    color: #3A2510;
+    margin-top: 0.5mm;
+    flex-shrink: 0;
+  }
+  .phases-list {
+    font-size: 8pt;
+    font-style: italic;
+    color: #3A2510;
+    line-height: 1.7;
+    margin: 0.8mm 0;
+    flex-shrink: 0;
+  }
+
+  /* ─── ACHIEVEMENTS ─── */
+  .quae-praeterea {
+    font-size: 8.5pt;
+    color: #3A2510;
+    margin-top: 1.5mm;
+    flex-shrink: 0;
+  }
+  .achievements {
+    text-align: left;
+    width: 90%;
+    margin: 1mm 0;
+    flex-shrink: 0;
+  }
+  .achievement-clause {
+    font-size: 8pt;
+    color: #1A0F05;
+    line-height: 1.45;
+    padding-left: 5mm;
+    text-indent: -5mm;
+    margin-bottom: 0.8mm;
+  }
+  .achievement-clause::before {
+    content: '✦  ';
+    color: #C49A1A;
+    font-size: 6.5pt;
+  }
+
+  /* ─── UPDATE YOURSELF ─── */
+  .update-yourself {
+    font-size: 12pt;
+    font-style: italic;
+    color: #1A0F05;
+    margin: 2.5mm 0;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .ornament { color: #C49A1A; font-size: 9pt; vertical-align: middle; }
+
+  /* ─── ADMISSION ─── */
+  .his-omnibus {
+    font-size: 8pt;
+    font-style: italic;
+    color: #3A2510;
+    margin-top: 1.5mm;
+    flex-shrink: 0;
+  }
+  .admission-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13pt;
+    font-weight: 900;
+    color: #1A0F05;
+    letter-spacing: 0.14em;
+    margin: 0.8mm 0;
+    flex-shrink: 0;
+  }
+  .in-label {
+    font-size: 7.5pt;
+    font-style: italic;
+    color: #3A2510;
+    margin: 0.3mm 0;
+    flex-shrink: 0;
+  }
+  .admission-programme {
+    font-family: 'Cinzel', serif;
+    font-size: 11pt;
+    font-weight: 600;
+    color: #B8860C;
+    letter-spacing: 0.12em;
+    flex-shrink: 0;
+  }
+  .admission-rights {
+    font-size: 8pt;
+    font-style: italic;
+    color: #3A2510;
+    margin-top: 1mm;
+    flex-shrink: 0;
+  }
+  .admission-verdict {
+    font-size: 9.5pt;
+    font-weight: bold;
+    color: #1A0F05;
+    letter-spacing: 0.06em;
+    margin-top: 1mm;
+    flex-shrink: 0;
+  }
+  .effectu-statim {
+    font-family: 'Cinzel', serif;
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    color: #5A3A1A;
+    margin-top: 1.5mm;
+    flex-shrink: 0;
+    font-variant: small-caps;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 1.5mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  .footer-left {
+    font-size: 7pt;
+    font-style: italic;
+    color: #3A2510;
+    text-align: left;
+    line-height: 1.6;
+  }
+  .footer-right {
+    font-size: 7pt;
+    color: #3A2510;
+    text-align: right;
+    line-height: 1.7;
+  }
+  .committee-sig {
+    font-family: 'Segoe UI Historic', 'Noto Sans Runic', serif;
+    font-size: 12pt;
+    color: #B8860C;
+    display: block;
+    margin-bottom: 1mm;
+    letter-spacing: 0.1em;
+  }
+  .sig-line {
+    width: 42mm;
+    border-bottom: 0.5px solid #3A2510;
+    margin-bottom: 0.8mm;
+    margin-left: auto;
+  }
+  .sig-title {
+    font-size: 6pt;
+    font-style: italic;
+    color: #5A3A1A;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══ BORDERS ═══ -->
+  <div class="border-outer"></div>
+  <div class="border-inner"></div>
+
+  <!-- ═══ CORNER ORNAMENTS ═══ -->
+
+  <!-- Top-left: constellation A -->
+  <svg class="corner corner-tl" width="18mm" height="18mm" viewBox="0 0 68 68">
+    <g fill="#C49A1A" stroke="none">
+      <circle cx="14" cy="14" r="2.2"/>
+      <circle cx="36" cy="9" r="1.5"/>
+      <circle cx="52" cy="22" r="2"/>
+      <circle cx="22" cy="38" r="1.5"/>
+      <circle cx="48" cy="48" r="1.2"/>
+      <circle cx="8" cy="50" r="1.8"/>
+    </g>
+    <g stroke="#C49A1A" stroke-width="0.5" fill="none" stroke-dasharray="2.5,2">
+      <line x1="14" y1="14" x2="36" y2="9"/>
+      <line x1="36" y1="9" x2="52" y2="22"/>
+      <line x1="14" y1="14" x2="22" y2="38"/>
+      <line x1="22" y1="38" x2="48" y2="48"/>
+      <line x1="8" y1="50" x2="22" y2="38"/>
+    </g>
+  </svg>
+
+  <!-- Top-right: constellation B -->
+  <svg class="corner corner-tr" width="18mm" height="18mm" viewBox="0 0 68 68">
+    <g fill="#C49A1A" stroke="none">
+      <circle cx="14" cy="14" r="2"/>
+      <circle cx="38" cy="8" r="1.8"/>
+      <circle cx="55" cy="28" r="2.2"/>
+      <circle cx="30" cy="42" r="1.5"/>
+      <circle cx="55" cy="52" r="1.2"/>
+      <circle cx="10" cy="45" r="1.5"/>
+    </g>
+    <g stroke="#C49A1A" stroke-width="0.5" fill="none" stroke-dasharray="2.5,2">
+      <line x1="14" y1="14" x2="38" y2="8"/>
+      <line x1="38" y1="8" x2="55" y2="28"/>
+      <line x1="55" y1="28" x2="30" y2="42"/>
+      <line x1="30" y1="42" x2="55" y2="52"/>
+      <line x1="10" y1="45" x2="30" y2="42"/>
+    </g>
+  </svg>
+
+  <!-- Bottom-left: constellation C -->
+  <svg class="corner corner-bl" width="18mm" height="18mm" viewBox="0 0 68 68">
+    <g fill="#C49A1A" stroke="none">
+      <circle cx="12" cy="12" r="1.8"/>
+      <circle cx="30" cy="20" r="2.2"/>
+      <circle cx="50" cy="14" r="1.5"/>
+      <circle cx="42" cy="38" r="2"/>
+      <circle cx="18" cy="44" r="1.5"/>
+      <circle cx="55" cy="55" r="1.2"/>
+    </g>
+    <g stroke="#C49A1A" stroke-width="0.5" fill="none" stroke-dasharray="2.5,2">
+      <line x1="12" y1="12" x2="30" y2="20"/>
+      <line x1="30" y1="20" x2="50" y2="14"/>
+      <line x1="30" y1="20" x2="42" y2="38"/>
+      <line x1="42" y1="38" x2="18" y2="44"/>
+      <line x1="42" y1="38" x2="55" y2="55"/>
+    </g>
+  </svg>
+
+  <!-- Bottom-right: constellation D -->
+  <svg class="corner corner-br" width="18mm" height="18mm" viewBox="0 0 68 68">
+    <g fill="#C49A1A" stroke="none">
+      <circle cx="16" cy="10" r="1.5"/>
+      <circle cx="40" cy="16" r="2"/>
+      <circle cx="56" cy="8" r="1.8"/>
+      <circle cx="50" cy="35" r="2.2"/>
+      <circle cx="25" cy="50" r="1.5"/>
+      <circle cx="52" cy="56" r="1.2"/>
+    </g>
+    <g stroke="#C49A1A" stroke-width="0.5" fill="none" stroke-dasharray="2.5,2">
+      <line x1="16" y1="10" x2="40" y2="16"/>
+      <line x1="40" y1="16" x2="56" y2="8"/>
+      <line x1="40" y1="16" x2="50" y2="35"/>
+      <line x1="50" y1="35" x2="25" y2="50"/>
+      <line x1="50" y1="35" x2="52" y2="56"/>
+    </g>
+  </svg>
+
+  <!-- ═══ CONTENT ═══ -->
+  <div class="content">
+
+    <!-- ─── HEADER ILLUSTRATION ─── -->
+    <img class="illustration" src="https://mexzungu.com/certificate-header.png" alt=""/>
+    <!-- SVG FALLBACK (remove once image loads) -->
+    <svg style="display:none;" class="illustration" viewBox="0 0 840 315" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Cross-hatch for planet shadow -->
+        <pattern id="hatch45" width="4" height="4" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="4" stroke="#2A1A08" stroke-width="0.55"/>
+        </pattern>
+        <pattern id="hatch135" width="4" height="4" patternTransform="rotate(135)" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="4" stroke="#2A1A08" stroke-width="0.55"/>
+        </pattern>
+        <!-- Planet radial gradient -->
+        <radialGradient id="planetGrad" cx="36%" cy="32%" r="58%">
+          <stop offset="0%" stop-color="#F5EDD6"/>
+          <stop offset="45%" stop-color="#D9C9A8"/>
+          <stop offset="80%" stop-color="#A07840"/>
+          <stop offset="100%" stop-color="#5A2E0C"/>
+        </radialGradient>
+        <!-- Shadow overlay gradient -->
+        <radialGradient id="shadowGrad" cx="70%" cy="68%" r="52%">
+          <stop offset="0%" stop-color="#1A0F05" stop-opacity="0.65"/>
+          <stop offset="100%" stop-color="#1A0F05" stop-opacity="0"/>
+        </radialGradient>
+        <!-- Clip paths -->
+        <clipPath id="planetClip"><circle cx="420" cy="157" r="92"/></clipPath>
+        <clipPath id="ringFrontClip">
+          <rect x="0" y="167" width="840" height="160"/>
+        </clipPath>
+      </defs>
+
+      <!-- ── SCATTERED STARS ── -->
+      <g fill="#1A0F05">
+        <!-- Left cluster -->
+        <circle cx="68"  cy="42"  r="2.8" opacity=".9"/>
+        <circle cx="118" cy="78"  r="1.6" opacity=".8"/>
+        <circle cx="55"  cy="128" r="2.2" opacity=".85"/>
+        <circle cx="155" cy="195" r="1.6" opacity=".8"/>
+        <circle cx="88"  cy="255" r="2.2" opacity=".9"/>
+        <circle cx="195" cy="48"  r="1.6" opacity=".75"/>
+        <circle cx="245" cy="118" r="2.2" opacity=".85"/>
+        <circle cx="175" cy="168" r="1.2" opacity=".7"/>
+        <circle cx="140" cy="290" r="1.5" opacity=".7"/>
+        <circle cx="220" cy="270" r="2"   opacity=".8"/>
+        <!-- Right cluster -->
+        <circle cx="668" cy="38"  r="2.2" opacity=".85"/>
+        <circle cx="712" cy="88"  r="1.6" opacity=".8"/>
+        <circle cx="735" cy="162" r="2.8" opacity=".9"/>
+        <circle cx="692" cy="222" r="1.6" opacity=".8"/>
+        <circle cx="628" cy="182" r="2.2" opacity=".85"/>
+        <circle cx="598" cy="98"  r="1.2" opacity=".7"/>
+        <circle cx="752" cy="245" r="1.6" opacity=".75"/>
+        <circle cx="612" cy="268" r="2"   opacity=".8"/>
+        <circle cx="758" cy="52"  r="1.5" opacity=".7"/>
+        <circle cx="780" cy="300" r="1.8" opacity=".75"/>
+        <!-- Top/bottom scattered -->
+        <circle cx="312" cy="28"  r="1.6" opacity=".8"/>
+        <circle cx="488" cy="22"  r="2.2" opacity=".85"/>
+        <circle cx="360" cy="268" r="1.6" opacity=".75"/>
+        <circle cx="462" cy="282" r="2"   opacity=".8"/>
+        <circle cx="278" cy="205" r="1.6" opacity=".75"/>
+        <circle cx="542" cy="215" r="1.2" opacity=".7"/>
+      </g>
+
+      <!-- ── CONSTELLATION LINES ── -->
+      <g stroke="#1A0F05" stroke-width="0.65" stroke-dasharray="3,2.5" fill="none" opacity="0.45">
+        <line x1="68"  y1="42"  x2="118" y2="78"/>
+        <line x1="118" y1="78"  x2="55"  y2="128"/>
+        <line x1="68"  y1="42"  x2="195" y2="48"/>
+        <line x1="195" y1="48"  x2="245" y2="118"/>
+        <line x1="55"  y1="128" x2="155" y2="195"/>
+        <line x1="155" y1="195" x2="88"  y2="255"/>
+        <line x1="245" y1="118" x2="175" y2="168"/>
+        <line x1="175" y1="168" x2="220" y2="270"/>
+        <line x1="140" y1="290" x2="220" y2="270"/>
+
+        <line x1="668" y1="38"  x2="712" y2="88"/>
+        <line x1="712" y1="88"  x2="735" y2="162"/>
+        <line x1="735" y1="162" x2="692" y2="222"/>
+        <line x1="668" y1="38"  x2="598" y2="98"/>
+        <line x1="628" y1="182" x2="692" y2="222"/>
+        <line x1="598" y1="98"  x2="628" y2="182"/>
+        <line x1="752" y1="245" x2="692" y2="222"/>
+        <line x1="612" y1="268" x2="628" y2="182"/>
+
+        <line x1="312" y1="28"  x2="488" y2="22"/>
+      </g>
+
+      <!-- ── PLANET RING — back half ── -->
+      <ellipse cx="420" cy="172" rx="162" ry="32"
+               fill="#C9A84C" fill-opacity="0.08"
+               stroke="#2A1A08" stroke-width="22" stroke-opacity="0.18"/>
+      <ellipse cx="420" cy="172" rx="162" ry="32"
+               fill="none" stroke="#8B6914" stroke-width="13" stroke-opacity="0.35"/>
+      <ellipse cx="420" cy="172" rx="162" ry="32"
+               fill="none" stroke="#C49A1A" stroke-width="5" stroke-opacity="0.55"/>
+      <ellipse cx="420" cy="172" rx="162" ry="32"
+               fill="none" stroke="#F5EDD6" stroke-width="1" stroke-opacity="0.3"/>
+
+      <!-- ── PLANET BODY ── -->
+      <circle cx="420" cy="157" r="92"
+              fill="url(#planetGrad)"
+              stroke="#2A1A08" stroke-width="1.8"/>
+
+      <!-- Planet latitude lines (engraving style) -->
+      <g clip-path="url(#planetClip)" stroke="#2A1A08" stroke-width="0.4" fill="none" opacity="0.22">
+        <ellipse cx="420" cy="157" rx="92" ry="16"/>
+        <ellipse cx="420" cy="157" rx="92" ry="32"/>
+        <ellipse cx="420" cy="157" rx="92" ry="52"/>
+        <ellipse cx="420" cy="157" rx="92" ry="72"/>
+        <ellipse cx="420" cy="157" rx="92" ry="86"/>
+      </g>
+
+      <!-- Planet vertical lines -->
+      <g clip-path="url(#planetClip)" stroke="#2A1A08" stroke-width="0.35" fill="none" opacity="0.15">
+        <line x1="350" y1="65"  x2="350" y2="249"/>
+        <line x1="370" y1="65"  x2="370" y2="249"/>
+        <line x1="390" y1="65"  x2="390" y2="249"/>
+        <line x1="410" y1="65"  x2="410" y2="249"/>
+        <line x1="430" y1="65"  x2="430" y2="249"/>
+        <line x1="450" y1="65"  x2="450" y2="249"/>
+        <line x1="470" y1="65"  x2="470" y2="249"/>
+        <line x1="490" y1="65"  x2="490" y2="249"/>
+      </g>
+
+      <!-- Shadow overlay -->
+      <circle cx="420" cy="157" r="92"
+              fill="url(#shadowGrad)" clip-path="url(#planetClip)"/>
+
+      <!-- Shadow cross-hatch on dark side -->
+      <g clip-path="url(#planetClip)" opacity="0.2">
+        <rect x="455" y="65" width="65" height="185"
+              fill="url(#hatch45)"/>
+        <rect x="455" y="65" width="65" height="185"
+              fill="url(#hatch135)"/>
+      </g>
+
+      <!-- ── PLANET RING — front half (over planet) ── -->
+      <path d="M 258 172 A 162 32 0 0 0 582 172"
+            fill="none" stroke="#2A1A08" stroke-width="22" stroke-opacity="0.22"/>
+      <path d="M 258 172 A 162 32 0 0 0 582 172"
+            fill="none" stroke="#8B6914" stroke-width="13" stroke-opacity="0.4"/>
+      <path d="M 258 172 A 162 32 0 0 0 582 172"
+            fill="none" stroke="#C49A1A" stroke-width="5" stroke-opacity="0.65"/>
+      <path d="M 258 172 A 162 32 0 0 0 582 172"
+            fill="none" stroke="#F5EDD6" stroke-width="1" stroke-opacity="0.35"/>
+
+      <!-- ── STAR ABOVE PLANET ── -->
+      <g transform="translate(420,44)">
+        <polygon points="0,-10 2.5,-4 8.5,-4 4,0 6,6.5 0,3 -6,6.5 -4,0 -8.5,-4 -2.5,-4"
+                 fill="#C49A1A" stroke="#8B6914" stroke-width="0.6"/>
+      </g>
+
+      <!-- ── SMALL DECORATIVE CORNER STARS ── -->
+      <g fill="#C49A1A" opacity="0.55" font-size="18" font-family="serif">
+        <text x="28"  y="295" text-anchor="middle">✦</text>
+        <text x="812" y="295" text-anchor="middle">✦</text>
+        <text x="28"  y="25"  text-anchor="middle">✦</text>
+        <text x="812" y="25"  text-anchor="middle">✦</text>
+      </g>
+
+      <!-- ── FINE BORDER LINES AROUND ILLUSTRATION ── -->
+      <rect x="1" y="1" width="838" height="313"
+            fill="none" stroke="#C49A1A" stroke-width="0.6" opacity="0.4"/>
+    </svg>
+    <!-- end SVG fallback -->
+
+    <!-- ─── COMMITTEE NAME — RUNIC ─── -->
+    <div class="committee-name">
+      ᚲᛟᛗᛁᛏᚨᛏᚢᛊ &nbsp; ᛁᚾᛏᛖᚱᚷᚨᛚᚨᚲᛏᛁᚲᚢᛊ &nbsp; ᚱᛖᚱᚢᛗ &nbsp; ᛊᛟᚲᛁᛖᛏᚨᛏᛁᛊ
+    </div>
+    <div class="founding-motto">
+      ᚲᛟᚾᛞᛁᛏᚢᛊ &nbsp; ᚨᚾᚾᛟ &nbsp; ᛈᚱᛁᛗᛟ &nbsp; ᚲᛟᚾᛏᚨᚲᛏᚢᛊ
+    </div>
+
+    <!-- ─── ORNAMENTAL RULE 1 ─── -->
+    <svg class="rule" height="10" viewBox="0 0 600 10" style="margin:2mm 0 1.5mm 0;">
+      <line x1="0"   y1="5" x2="272" y2="5" stroke="#C49A1A" stroke-width="0.8"/>
+      <polygon points="280,2 294,5 280,8 284,5" fill="#C49A1A"/>
+      <polygon points="320,2 306,5 320,8 316,5" fill="#C49A1A"/>
+      <line x1="328" y1="5" x2="600" y2="5" stroke="#C49A1A" stroke-width="0.8"/>
+    </svg>
+
+    <!-- ─── OPENING FORMULA ─── -->
+    <div class="opening-formula">
+      Omnibus has litteras inspecturis, praesentes et futuros, salutem et iustitiam.
+    </div>
+    <div class="notum-sit">Notum sit universis et singulis quod</div>
+
+    <!-- ─── RECIPIENT NAME ─── -->
+    <div class="recipient-name">AGATHE DAUMAL</div>
+
+    <!-- ─── PHASES ─── -->
+    <div class="phases-intro">per phases duas programmatis nostri severi transivit:</div>
+    <div class="phases-list">
+      <em>primo, die pleno naturae, agenda ipsius, loco ipsius electo;</em><br>
+      <em>deinde, ritu sacro consociato in Templo Dhakini frequentato.</em>
+    </div>
+
+    <!-- ─── ACHIEVEMENTS ─── -->
+    <div class="quae-praeterea">Quae praeterea:</div>
+    <div class="achievements">
+      <div class="achievement-clause">amorem suum sub influxu psilocybini primum expressit, atque sobria, sua sponte, sine ambiguitate repetiit;</div>
+      <div class="achievement-clause">noctem integram supra corpus Evaluatoris Supremi requievit — quod, ut ipsa testata est, ante nec semel fecerat;</div>
+      <div class="achievement-clause">in perturbatione nocturna inopinata et maxima, composita et fortis stetit, aliis consternatis;</div>
+      <div class="achievement-clause">praeteritum vinculum solemniter solvit et levior emergens rediit;</div>
+      <div class="achievement-clause">opus litterarium intergalacticum, lingua Anglica, incepit, lectore idoneo prius approbato;</div>
+      <div class="achievement-clause">atque errorem in actis officialibus Comitatus — statum suum candidaturae scilicet — uno nuntio, non rogata, correxit, Comitatumque ipsum verbis his ad ordinem revocavit:</div>
+    </div>
+
+    <!-- ─── UPDATE YOURSELF ─── -->
+    <div class="update-yourself">
+      <span class="ornament">✦ &nbsp;</span><em>"Update yourself."</em><span class="ornament">&nbsp; ✦</span>
+    </div>
+
+    <!-- ─── ORNAMENTAL RULE 2 ─── -->
+    <svg class="rule" height="8" viewBox="0 0 600 8" style="margin:0.5mm 0 1mm 0;">
+      <line x1="0"   y1="4" x2="280" y2="4" stroke="#C49A1A" stroke-width="0.6"/>
+      <circle cx="292" cy="4" r="2.5" fill="#C49A1A"/>
+      <circle cx="300" cy="4" r="1.5" fill="#C49A1A"/>
+      <circle cx="308" cy="4" r="2.5" fill="#C49A1A"/>
+      <line x1="320" y1="4" x2="600" y2="4" stroke="#C49A1A" stroke-width="0.6"/>
+    </svg>
+
+    <!-- ─── ADMISSION ─── -->
+    <div class="his-omnibus">His omnibus consideratis,</div>
+    <div class="admission-name">AGATHE DAUMAL</div>
+    <div class="in-label">in</div>
+    <div class="admission-programme">PROGRAMMA DILECTAE</div>
+    <div class="admission-rights">omnibus iuribus, privilegiis, honoribus et mysteriis inde provenientibus</div>
+    <div class="admission-verdict">plene, perfecte et irrevocabiliter admittitur.</div>
+    <div class="effectu-statim">Effectu statim. &nbsp;&nbsp;&nbsp; Nulla amplius candidatura requiritur.</div>
+
+    <!-- ─── ORNAMENTAL RULE 3 ─── -->
+    <svg class="rule" height="6" viewBox="0 0 600 6" style="margin:2mm 0 1mm 0;">
+      <line x1="0" y1="3" x2="600" y2="3" stroke="#C49A1A" stroke-width="0.5"/>
+    </svg>
+
+    <!-- ─── FOOTER ─── -->
+    <div class="footer">
+
+      <div class="footer-left">
+        Sub sigillo Comitatus datum<br>
+        Barcinone, mense Aprili,<br>
+        anno <span style="font-family:'Cinzel',serif;font-size:7.5pt;letter-spacing:0.05em;">MMXXVI</span>
+      </div>
+
+      <!-- SEAL -->
+      <svg width="38mm" height="38mm" viewBox="0 0 145 145" style="flex-shrink:0;">
+        <!-- Outer decorative ring -->
+        <circle cx="72.5" cy="72.5" r="70" fill="none" stroke="#C49A1A" stroke-width="1.8"/>
+        <circle cx="72.5" cy="72.5" r="64" fill="none" stroke="#C49A1A" stroke-width="0.6"/>
+        <!-- Runic text path -->
+        <defs>
+          <path id="sealArc" d="M 72.5,72.5 m -57,0 a 57,57 0 1,1 114,0 a 57,57 0 1,1 -114,0"/>
+        </defs>
+        <text font-size="8.5" fill="#C49A1A"
+              font-family="'Segoe UI Historic','Noto Sans Runic','Noto Sans',serif"
+              letter-spacing="2.8">
+          <textPath href="#sealArc">ᚲᛟᛗᛁᛏᚨᛏᚢᛊ ✦ ᛁᚾᛏᛖᚱᚷᚨᛚᚨᚲᛏᛁᚲᚢᛊ ✦ ᛗᛗᛪᛪᚢᛁ ✦</textPath>
+        </text>
+        <!-- Inner planet emblem -->
+        <circle cx="72.5" cy="72.5" r="28" fill="none" stroke="#C49A1A" stroke-width="1"/>
+        <ellipse cx="72.5" cy="72.5" rx="42" ry="10"
+                 fill="none" stroke="#C49A1A" stroke-width="1"
+                 transform="rotate(-15,72.5,72.5)"/>
+        <!-- Star in seal -->
+        <polygon points="72.5,34 74.8,41 81.5,41 76,45.5 78.2,52.5 72.5,48 66.8,52.5 69,45.5 63.5,41 70.2,41"
+                 fill="#C49A1A"/>
+        <!-- Fine cross-lines in seal center -->
+        <line x1="72.5" y1="44" x2="72.5" y2="101" stroke="#C49A1A" stroke-width="0.4" opacity="0.4"/>
+        <line x1="44"   y1="72.5" x2="101" y2="72.5" stroke="#C49A1A" stroke-width="0.4" opacity="0.4"/>
+      </svg>
+
+      <div class="footer-right">
+        <span class="committee-sig">ᚲᛟᛗᛁᛏᚨᛏᚢᛊ</span>
+        <div class="sig-line"></div>
+        <div class="sig-title">
+          Evaluator Supremus, Director Programmatis,<br>
+          et Membrum Fundans
+        </div>
+      </div>
+
+    </div><!-- end footer -->
+
+  </div><!-- end content -->
+</div><!-- end page -->
+</body>
+</html>

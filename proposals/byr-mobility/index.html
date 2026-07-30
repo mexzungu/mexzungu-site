@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>BYR Mobility: Mexzungu Group Proposal</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --bg-primary:     #0d0d0d;
+            --bg-card:        #1a1a1a;
+            --text-primary:   #fafafa;
+            --text-secondary: #9a8f88;
+            --text-muted:     #6b5e57;
+            --text-accent:    #e86fa0;
+            --border:         #2a2a2a;
+            --border-hover:   #e14b87;
+            --card-bg:        #1a1a1a;
+            --card-border:    #2a2a2a;
+            --nav-bg:         rgba(13, 13, 13, 0.92);
+        }
+
+        /* PASSWORD GATE */
+        #pw-gate {
+            position: fixed; inset: 0;
+            background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a;
+            border-radius: 12px; padding: 3rem 2.5rem;
+            max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.6rem; color: #fafafa; margin-bottom: 0.6rem; line-height: 1.2; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem;
+            background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-size: 1rem;
+            letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center;
+            transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .pw-input:focus { outline: none; border-color: #e14b87; box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem;
+            background-color: #e14b87;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pw-btn:hover { background-color: #e86fa0; transform: scale(1.02); }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+        .pw-footer-note { font-size: 0.75rem; color: #4a4a4a; margin-top: 2rem; }
+
+        /* PROPOSAL */
+        #proposal-content { display: none; }
+        #proposal-content.visible { display: block; }
+
+        .proposal-hero {
+            min-height: 60vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 10rem 2rem 5rem; max-width: 1100px; margin: 0 auto;
+        }
+        .hero-tag {
+            font-family: 'Rock Salt', cursive; font-size: 0.75rem;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: #e14b87; margin-bottom: 1.5rem; opacity: 0.85;
+        }
+        .proposal-hero h1 {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(2.6rem, 5.5vw, 4.4rem); font-weight: 400;
+            line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 1.2rem; color: #fafafa;
+        }
+        .valid-note { font-size: 0.85rem; color: #6b5e57; letter-spacing: 0.05em; }
+
+        .prop-section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+        .prop-section + .prop-section { border-top: 1px solid #1e1e1e; }
+
+        .prop-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .prop-heading {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 400;
+            color: #fafafa; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 1.5rem;
+        }
+        .prop-copy { font-size: 1.05rem; color: #9a8f88; line-height: 1.85; max-width: 680px; }
+        .prop-copy strong { color: #c8c0bb; font-weight: 600; }
+
+        /* BOLT LIST */
+        .bolt-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+        .bolt-list li {
+            font-size: 0.92rem; color: #6b5e57; padding: 0.65rem 0;
+            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.8rem; line-height: 1.6;
+        }
+        .bolt-list li:last-child { border: none; }
+        .bolt-list li::before {
+            content: '';
+            display: inline-block;
+            width: 10px; height: 16px; flex-shrink: 0; margin-top: 0.1rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .bolt-list.gold li::before { background-color: #d4a039; }
+        .bolt-list.muted li::before { background-color: #3a3a3a; }
+
+        /* WORKSTREAM CARDS */
+        .ws-overview {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+        }
+        @media (max-width: 640px) { .ws-overview { grid-template-columns: 1fr; } }
+        .ws-track {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 1.8rem; position: relative; overflow: hidden;
+        }
+        .ws-track.ws1 { border-top: 3px solid #e14b87; }
+        .ws-track.ws2 { border-top: 3px solid #d4a039; }
+        .ws-track-badge {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 20px;
+            display: inline-block; margin-bottom: 1rem;
+        }
+        .ws1 .ws-track-badge { background: rgba(225,75,135,0.12); color: #e14b87; }
+        .ws2 .ws-track-badge { background: rgba(212,160,57,0.12); color: #d4a039; }
+        .ws-track-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.15rem; color: #fafafa; margin-bottom: 0.6rem;
+        }
+        .ws-track-desc { font-size: 0.85rem; color: #6b5e57; line-height: 1.65; margin-bottom: 1.2rem; }
+        .ws-track-outcome {
+            font-size: 0.8rem; color: #9a8f88;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .ws-track-outcome::before {
+            content: '';
+            display: inline-block; width: 8px; height: 13px; flex-shrink: 0;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .ws2 .ws-track-outcome::before { background-color: #d4a039; }
+        .ws-independent-note {
+            margin-top: 1.5rem; text-align: center;
+            font-size: 0.82rem; color: #4a4a4a; letter-spacing: 0.05em;
+        }
+
+        /* JOURNEY DIAGRAM */
+        .diagram-wrap {
+            margin: 2.5rem 0; background: #0f0f0f; border: 1px solid #1e1e1e;
+            border-radius: 14px; padding: 2.5rem 2rem; overflow-x: auto;
+        }
+        .diagram-label {
+            font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: #4a4a4a; font-weight: 600; margin-bottom: 2rem; text-align: center;
+        }
+        .journey-flow {
+            display: flex; align-items: flex-start; justify-content: center;
+            gap: 0; flex-wrap: nowrap; min-width: 560px;
+        }
+        .journey-step {
+            display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+            min-width: 120px; flex: 1; max-width: 150px;
+        }
+        .journey-node {
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 700;
+        }
+        .journey-node.ws1 { background: rgba(225,75,135,0.15); border: 1.5px solid #e14b87; color: #e14b87; }
+        .journey-node.ws2 { background: rgba(212,160,57,0.15); border: 1.5px solid #d4a039; color: #d4a039; }
+        .journey-node.done { background: rgba(107,94,87,0.1); border: 1.5px solid #3a3a3a; color: #6b5e57; }
+        .journey-step-label {
+            font-size: 0.72rem; color: #6b5e57; text-align: center; line-height: 1.4;
+        }
+        .journey-step-label strong { color: #9a8f88; display: block; margin-bottom: 0.2rem; }
+        .journey-connector {
+            height: 2px; flex: 0.5; background: #2a2a2a; align-self: flex-start; margin-top: 23px;
+        }
+        .journey-connector.pink { background: linear-gradient(90deg, #e14b87, #d4a039); }
+
+        /* FEE OPTIONS */
+        .fee-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2rem; }
+        @media (max-width: 700px) { .fee-grid { grid-template-columns: 1fr; } }
+        .fee-card {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 2rem 1.5rem; position: relative; transition: border-color 0.2s;
+        }
+        .fee-card:hover { border-color: #e14b87; }
+        .fee-card-label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; color: #e14b87; margin-bottom: 0.8rem;
+        }
+        .fee-card-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.1rem; color: #fafafa; margin-bottom: 0.5rem; line-height: 1.2;
+        }
+        .fee-card-best { font-size: 0.78rem; color: #6b5e57; margin-bottom: 1.5rem; line-height: 1.5; }
+        .fee-amount {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700;
+            color: #e14b87; line-height: 1; margin-bottom: 0.3rem;
+        }
+        .fee-amount-sub { font-size: 0.78rem; color: #6b5e57; margin-bottom: 1.5rem; line-height: 1.5; }
+        .fee-items { list-style: none; padding: 0; margin: 0; }
+        .fee-items li {
+            font-size: 0.82rem; color: #6b5e57; padding: 0.4rem 0;
+            border-bottom: 1px solid #1a1a1a; display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5;
+        }
+        .fee-items li:last-child { border: none; }
+        .fee-items li::before {
+            content: '';
+            display: inline-block; width: 7px; height: 11px; flex-shrink: 0; margin-top: 0.15rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+
+        /* PAYMENT & TERMS */
+        .payment-row {
+            display: flex; gap: 1rem; align-items: flex-start;
+            padding: 1rem 0; border-bottom: 1px solid #1e1e1e; flex-wrap: wrap;
+        }
+        .payment-row:last-child { border: none; }
+        .payment-method {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: #e14b87; min-width: 90px; padding-top: 0.1rem;
+        }
+        .payment-detail { font-size: 0.88rem; color: #6b5e57; line-height: 1.6; }
+        .payment-detail code {
+            font-family: monospace; font-size: 0.82rem; color: #9a8f88;
+            background: #1a1a1a; padding: 0.1rem 0.4rem; border-radius: 4px;
+        }
+
+        .terms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 1.5rem; }
+        @media (max-width: 560px) { .terms-grid { grid-template-columns: 1fr; } }
+        .term-item {
+            background: #111; border: 1px solid #1e1e1e; border-radius: 10px; padding: 1.2rem;
+        }
+        .term-item-label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+            color: #4a4a4a; margin-bottom: 0.5rem;
+        }
+        .term-item-val { font-size: 0.85rem; color: #6b5e57; line-height: 1.55; }
+
+        /* DISCLAIMER */
+        .disclaimer-box {
+            background: rgba(212,160,57,0.05); border: 1px solid rgba(212,160,57,0.22);
+            border-radius: 8px; padding: 1.2rem 1.5rem; margin-top: 2rem;
+        }
+        .disclaimer-box p { font-size: 0.82rem; color: #6b5e57; line-height: 1.65; margin: 0; }
+        .disclaimer-box strong { color: #9a8f88; }
+
+        /* CTA */
+        .cta-section {
+            padding: 6rem 2rem; text-align: center; max-width: 700px; margin: 0 auto;
+            border-top: 1px solid #1e1e1e;
+        }
+        .cta-section .prop-heading { margin-bottom: 1rem; }
+        .cta-section .prop-copy { margin: 0 auto 2.5rem; }
+        .cta-btn {
+            display: inline-block; padding: 1rem 2.5rem;
+            background-color: #e14b87; color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem;
+            border-radius: 8px; text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .cta-btn:hover { background-color: #e86fa0; transform: translateY(-2px); }
+        .cta-note { font-size: 0.8rem; color: #4a4a4a; margin-top: 1.2rem; }
+
+        body { background: #0d0d0d; }
+    
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-field .pw-input { margin-bottom: 0; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
+    </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" class="pw-logo" onerror="this.style.display='none'">
+        <p class="pw-label">Confidential proposal</p>
+        <h2 class="pw-heading">BYR Mobility</h2>
+        <p class="pw-sub">This proposal is private. Enter the access code to continue.</p>
+        <input type="password" class="pw-input" id="pw-input" placeholder="Access code" autocomplete="off">
+        <button class="pw-btn" onclick="checkPw()">Open proposal</button>
+        <p class="pw-error" id="pw-error"></p>
+        <p class="pw-footer-note">Mexzungu Group Ltd. Confidential. Not for distribution.</p>
+    </div>
+</div>
+
+<!-- PROPOSAL CONTENT -->
+<div id="proposal-content">
+
+    <!-- NAV -->
+    <nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid #1a1a1a;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" style="height:32px;" onerror="this.style.display='none'">
+        <a href="/sign/byr-mobility" style="font-family:'Space Grotesk',sans-serif;font-size:0.82rem;font-weight:700;color:#e14b87;text-decoration:none;letter-spacing:0.05em;">Sign the EL &rarr;</a>
+    </nav>
+
+    <!-- HERO -->
+    <div class="proposal-hero">
+        <p class="hero-tag">Mexzungu Group: Engagement Proposal</p>
+        <h1>Building Rwanda's first electric cargo fleet deserves legal infrastructure to match.</h1>
+        <p class="valid-note">Prepared for Elyse Byiringiro / BYR Mobility. July 2026. Valid 30 days.</p>
+    </div>
+
+    <!-- SECTION 1: SITUATION -->
+    <div class="prop-section">
+        <p class="prop-label">The Situation</p>
+        <h2 class="prop-heading">The market timing is rare. The legal foundation has to match it.</h2>
+        <p class="prop-copy">
+            Elyse, you are moving into a genuinely open market. Rwanda has banned new fuel-powered motorcycles for public transport, tax exemptions on EV imports run until 2028, and <strong>no electric operator is currently serving the heavy-duty cargo segment</strong>. The petrol trike operators running LIFAN and Zongshen are your actual competition, and they have no electrification pathway.
+        </p>
+        <p class="prop-copy" style="margin-top:1.2rem;">
+            What you need right now is not a VC pitch. It is a clean legal entity, a defensible cap table, and a fundraising strategy built for the reality of the Rwanda EV market, not a Silicon Valley playbook. You need to know what to offer the first investor, how to protect your data rights from day one, and which capital sources actually fund early-stage mobility in East Africa. That is what this engagement delivers.
+        </p>
+    </div>
+
+    <!-- SECTION 2: WORKSTREAMS -->
+    <div class="prop-section">
+        <p class="prop-label">What We Will Do</p>
+        <h2 class="prop-heading">Two workstreams. One outcome: a funded, legally sound company.</h2>
+
+        <div class="ws-overview">
+            <div class="ws-track ws1">
+                <span class="ws-track-badge">WS1</span>
+                <div class="ws-track-title">Venture Architecture</div>
+                <div class="ws-track-desc">Build the legal and governance foundation before the first external investor steps in. Clean cap table, defensible agreements, IP locked down.</div>
+                <div class="ws-track-outcome">Clean legal architecture ready for investor due diligence</div>
+            </div>
+            <div class="ws-track ws2">
+                <span class="ws-track-badge">WS2</span>
+                <div class="ws-track-title">Capital Closing</div>
+                <div class="ws-track-desc">Design the fundraising strategy, target the right capital sources for Rwanda EV, prepare the materials, and close the round at terms that work for you.</div>
+                <div class="ws-track-outcome">First round closed at agreed terms, documented and signed</div>
+            </div>
+        </div>
+        <p class="ws-independent-note">Both workstreams run in sequence. WS1 delivers a clean entity that WS2 can pitch to investors.</p>
+
+        <!-- JOURNEY DIAGRAM -->
+        <div class="diagram-wrap">
+            <p class="diagram-label">BYR Mobility: From Idea to Funded Company</p>
+            <div class="journey-flow">
+                <div class="journey-step">
+                    <div class="journey-node done">Now</div>
+                    <div class="journey-step-label"><strong>Idea Stage</strong>Market validated, no entity, no cap table</div>
+                </div>
+                <div class="journey-connector"></div>
+                <div class="journey-step">
+                    <div class="journey-node ws1">WS1</div>
+                    <div class="journey-step-label"><strong>Legal Foundation</strong>Entity, cap table, SHA, IP, data rights</div>
+                </div>
+                <div class="journey-connector pink"></div>
+                <div class="journey-step">
+                    <div class="journey-node ws2">WS2</div>
+                    <div class="journey-step-label"><strong>Fundraise</strong>Strategy, targets, pitch, term sheet, close</div>
+                </div>
+                <div class="journey-connector"></div>
+                <div class="journey-step">
+                    <div class="journey-node done">Done</div>
+                    <div class="journey-step-label"><strong>Funded</strong>Capital in, legal clean, ready to deploy fleet</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WS1 DELIVERABLES -->
+        <p class="prop-label" style="margin-top:2.5rem;">Workstream 1 deliverables</p>
+        <ul class="bolt-list">
+            <li><strong>Rwanda entity setup:</strong> Incorporation of BYR Mobility Ltd in Rwanda, articles of association, registered office, directorship documentation, RDB registration.</li>
+            <li><strong>Cap table architecture:</strong> Founder share allocation, vesting schedule, option pool sizing for future employees and advisors, pre-money structure ready for the first SAFE or priced round.</li>
+            <li><strong>Shareholder agreement:</strong> Founder rights, drag-along and tag-along provisions, right of first refusal, anti-dilution framework, consent matters list.</li>
+            <li><strong>IP assignment agreement:</strong> All current and future project IP (technology, brand, data, designs) formally assigned from founders to the company entity.</li>
+            <li><strong>Data rights framework:</strong> Sensor data ownership structure, data monetization architecture, third-party data sharing terms. This is a moat. Built in from day one.</li>
+            <li><strong>Governance framework:</strong> Board composition and decision rights for the seed stage, consent thresholds, annual meeting requirements, officer roles.</li>
+        </ul>
+
+        <!-- WS2 DELIVERABLES -->
+        <p class="prop-label" style="margin-top:2.5rem;">Workstream 2 deliverables</p>
+        <ul class="bolt-list gold">
+            <li><strong>Fundraising strategy memo:</strong> How much to raise, in what structure (SAFE vs priced round vs grant vs DFI), from whom, and in what sequence for the Rwanda EV market.</li>
+            <li><strong>Capital source targeting list:</strong> Curated list of angels, impact funds, DFIs (including BRD climate finance lines and Development Bank of Rwanda access), and sector-specific VCs active in East Africa EV.</li>
+            <li><strong>Pitch materials review and coaching:</strong> Your current pitch deck is well-researched. We refine the narrative, sharpen the ask, and integrate the data monetization layer identified in WS1.</li>
+            <li><strong>Term sheet review and negotiation advisory:</strong> When an investor comes with terms, we read it, tell you what is standard, what is not, and what to push back on. Rwanda jurisdiction calibration included.</li>
+            <li><strong>Closing coordination:</strong> SAFE or priced round documentation, investor onboarding agreements, closing checklist, executed documents filed and stored.</li>
+        </ul>
+    </div>
+
+    <!-- SECTION 3: OUT OF SCOPE -->
+    <div class="prop-section">
+        <p class="prop-label">Scope Boundaries</p>
+        <h2 class="prop-heading">Scope clarity protects both sides.</h2>
+        <ul class="bolt-list muted">
+            <li>We will not provide Rwandan domestic legal advice. Pepe Carrillo is not licensed to practice law in Rwanda. This engagement provides deal structuring, governance design, and fundraising advisory. For local filings and regulatory submissions, we work alongside a Rwandan law firm.</li>
+            <li>We will not engage directly with Rwanda Revenue Authority, RDB, or other government bodies on your behalf without separate written authorization.</li>
+            <li>We will not make investor introductions without your prior approval of each target. You control who gets access to your company.</li>
+        </ul>
+    </div>
+
+    <!-- SECTION 4: FEE OPTIONS -->
+    <div class="prop-section">
+        <p class="prop-label">Fee Options</p>
+        <h2 class="prop-heading">Three ways to structure this. You choose what works.</h2>
+        <p class="prop-copy">All options include both workstreams. The difference is how and when you pay.</p>
+
+        <div class="fee-grid">
+            <!-- OPTION A -->
+            <div class="fee-card">
+                <p class="fee-card-label">Option A</p>
+                <h3 class="fee-card-title">Fixed + Success</h3>
+                <p class="fee-card-best">Best if you want cost certainty and can commit upfront. Slight discount vs Options B and C.</p>
+                <div class="fee-amount">$2,500</div>
+                <p class="fee-amount-sub">upfront, covers both workstreams in full</p>
+                <ul class="fee-items">
+                    <li>Full WS1 + WS2 scope, no retainer</li>
+                    <li>2% success fee on fundraise close</li>
+                    <li>0.25% advisory equity, monthly vest, no cliff</li>
+                    <li>No additional invoices until close</li>
+                </ul>
+            </div>
+
+            <!-- OPTION B -->
+            <div class="fee-card">
+                <p class="fee-card-label">Option B</p>
+                <h3 class="fee-card-title">Milestone-Based</h3>
+                <p class="fee-card-best">Best if you want to pay as value is delivered. Tied to specific outputs.</p>
+                <div class="fee-amount">$1,000</div>
+                <p class="fee-amount-sub">at signing, then milestone payments</p>
+                <ul class="fee-items">
+                    <li>$1,000 at engagement signing</li>
+                    <li>$1,000 at WS1 completion (all docs delivered)</li>
+                    <li>$1,000 at first investor meeting secured</li>
+                    <li>2% success fee on fundraise close</li>
+                    <li>0.25% advisory equity, monthly vest</li>
+                </ul>
+            </div>
+
+            <!-- OPTION C -->
+            <div class="fee-card">
+                <p class="fee-card-label">Option C</p>
+                <h3 class="fee-card-title">Retainer + Success</h3>
+                <p class="fee-card-best">Best if timeline is uncertain and you want ongoing access without large upfront payments.</p>
+                <div class="fee-amount">$500</div>
+                <p class="fee-amount-sub">setup + $500/month retainer</p>
+                <ul class="fee-items">
+                    <li>$500 at signing (setup)</li>
+                    <li>$500/month while engagement is active</li>
+                    <li>2.5% success fee on fundraise close</li>
+                    <li>0.25% advisory equity, monthly vest</li>
+                    <li>30 days notice to pause or cancel</li>
+                </ul>
+            </div>
+        </div>
+
+        <p style="font-size:0.8rem;color:#4a4a4a;margin-top:1.5rem;line-height:1.6;">
+            Success fee is calculated on total capital raised and is payable within 14 days of funds clearing. Advisory equity vests monthly from engagement start. All fees in USD.
+        </p>
+    </div>
+
+    <!-- SECTION 5: PAYMENT -->
+    <div class="prop-section">
+        <p class="prop-label">Payment</p>
+        <h2 class="prop-heading">Three ways to pay. No friction.</h2>
+        <p class="prop-copy" style="margin-bottom:2rem;">Payment terms: 14 days from invoice. Invoices issued on signing and at each milestone (if Option B selected).</p>
+        <div class="payment-row">
+            <div class="payment-method">Wire</div>
+            <div class="payment-detail">MCB USD account (Mauritius Commercial Bank). Details provided on signing.</div>
+        </div>
+        <div class="payment-row">
+            <div class="payment-method">Payoneer</div>
+            <div class="payment-detail"><code>pepe@mexzungu.com</code></div>
+        </div>
+        <div class="payment-row">
+            <div class="payment-method">USDC</div>
+            <div class="payment-detail">Solana network: <code>CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A</code></div>
+        </div>
+    </div>
+
+    <!-- SECTION 6: TERMS -->
+    <div class="prop-section">
+        <p class="prop-label">Terms</p>
+        <h2 class="prop-heading">Clean, mutual, no surprises.</h2>
+        <div class="terms-grid">
+            <div class="term-item">
+                <p class="term-item-label">Governing law</p>
+                <p class="term-item-val">Mauritius (Mexzungu Group Ltd domicile). Disputes resolved by arbitration in Mauritius.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Term &amp; termination</p>
+                <p class="term-item-val">Engagement starts on signing. Either party may terminate with 30 days written notice. Success fee applies to any close within 12 months of termination.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Confidentiality</p>
+                <p class="term-item-val">Mutual. All information shared by either party is confidential and not disclosed to third parties without prior consent.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Non-solicitation</p>
+                <p class="term-item-val">12 months post-engagement. Neither party may approach the other's team or clients directly.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">Limitation of liability</p>
+                <p class="term-item-val">Capped at fees paid in the prior 3 months. No consequential or indirect damages.</p>
+            </div>
+            <div class="term-item">
+                <p class="term-item-label">IP ownership</p>
+                <p class="term-item-val">All deliverables produced for BYR Mobility are owned by BYR Mobility on delivery and payment.</p>
+            </div>
+        </div>
+
+        <div class="disclaimer-box">
+            <p><strong>Jurisdiction note:</strong> Pepe Carrillo is not licensed to practice law in Rwanda. This engagement provides deal structuring, governance design, fundraising advisory, and document coordination services. It does not constitute Rwandan legal advice. For local filings, court proceedings, and regulatory submissions, you should engage a Rwandan-licensed advocate. We are happy to coordinate with your local counsel.</p>
+        </div>
+    </div>
+
+    <!-- SECTION 7: CTA -->
+    <div class="cta-section">
+        <p class="prop-label">Next Step</p>
+        <h2 class="prop-heading">Ready to move?</h2>
+        <p class="prop-copy">Choose your option and sign the engagement letter. Once signed, we start immediately. The legal foundation for BYR Mobility can be complete within 3-4 weeks.</p>
+        <a href="/sign/byr-mobility" class="cta-btn">Sign the engagement letter &rarr;</a>
+        <p class="cta-note">Questions? Reach Pepe at pepe@mexzungu.com or WhatsApp.</p>
+    </div>
+
+</div><!-- end proposal-content -->
+
+<script>
+    const CORRECT_PW = 'byr-2026';
+    const MASTER_PW = 'Outlaw-Master-2026';
+    const SESSION_KEY = 'byr_mobility_access';
+
+    function checkPw() {
+        const val = document.getElementById('pw-input').value.trim().toLowerCase();
+        if (val === CORRECT_PW || val === MASTER_PW) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            document.getElementById('pw-gate').classList.add('hidden');
+            document.getElementById('proposal-content').classList.add('visible');
+        } else {
+            const inp = document.getElementById('pw-input');
+            inp.classList.add('error');
+            document.getElementById('pw-error').textContent = 'Incorrect access code.';
+            setTimeout(() => inp.classList.remove('error'), 350);
+        }
+    }
+
+    document.getElementById('pw-input').addEventListener('keydown', e => {
+        if (e.key === 'Enter') checkPw();
+    });
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('proposal-content').classList.add('visible');
+    }
+
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+    }
+</script>
+</body>
+</html>

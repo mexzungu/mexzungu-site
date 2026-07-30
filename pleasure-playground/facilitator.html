@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pleasure Playground -Facilitateur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #08050c;
+    --plum: #1a0d26;
+    --plum-mid: #2d1540;
+    --rose-dark: #7a3050;
+    --rose-mid: #b05070;
+    --rose-light: #e8a0b8;
+    --gold: #b8864a;
+    --gold-light: #d4a870;
+    --cream: #f0e8e0;
+    --mist: rgba(240,232,224,0.6);
+    --mist-thin: rgba(240,232,224,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--void);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* GATE */
+  #gate {
+    position: fixed; inset: 0;
+    background: var(--void);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+  #gate.hidden { display: none; }
+  #gate h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  #gate p { color: var(--mist); font-size: 0.85rem; }
+  #gate input {
+    background: var(--mist-thin);
+    border: 1px solid var(--gold);
+    color: var(--cream);
+    padding: 0.8rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-align: center;
+    border-radius: 2px;
+    width: 100%; max-width: 280px;
+    outline: none;
+  }
+  #gate button {
+    background: var(--gold);
+    border: none;
+    color: var(--void);
+    padding: 0.7rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  #gate .err { color: var(--rose-mid); font-size: 0.8rem; min-height: 1.2em; }
+
+  /* LAYOUT */
+  header {
+    background: rgba(8,5,12,0.95);
+    border-bottom: 1px solid var(--mist-thin);
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 50;
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+  /* TABS */
+  .main-tabs {
+    display: flex; gap: 0; border-bottom: 1px solid var(--mist-thin);
+    margin-bottom: 2rem;
+  }
+  .main-tab {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .main-tab:hover { color: var(--cream); }
+  .main-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .main-panel { display: none; }
+  .main-panel.active { display: block; }
+
+  /* STATS */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .stat-card .n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: var(--rose-light);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-card .l {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  /* PARTICIPANT CARDS */
+  .p-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .p-card {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .p-card-head {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--plum-mid);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .p-card-head h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+  .p-status {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    background: var(--plum-mid);
+    color: var(--mist);
+  }
+  .p-status.submitted { background: rgba(74,138,90,0.2); color: #7ec890; border: 1px solid rgba(74,138,90,0.4); }
+  .p-status.partial { background: rgba(184,134,74,0.2); color: var(--gold-light); border: 1px solid rgba(184,134,74,0.3); }
+  .p-card-body { padding: 1.2rem 1.5rem; }
+
+  .progress-mini { margin-bottom: 0.8rem; }
+  .progress-mini .label {
+    font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mist); margin-bottom: 0.4rem;
+    display: flex; justify-content: space-between;
+  }
+  .bar-track { height: 4px; background: var(--plum-mid); border-radius: 2px; }
+  .bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--rose-mid), var(--gold)); }
+
+  .safe-word-display {
+    display: inline-block;
+    background: rgba(184,134,74,0.15);
+    border: 1px solid rgba(184,134,74,0.4);
+    color: var(--gold);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    background: var(--plum-mid);
+    border-radius: 20px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    color: var(--mist);
+  }
+  .expand-btn {
+    background: none;
+    border: 1px solid var(--mist-thin);
+    color: var(--mist);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .expand-btn:hover { color: var(--cream); border-color: var(--mist); }
+  .expanded-section { display: none; margin-top: 1rem; }
+  .expanded-section.open { display: block; }
+  .p-detail-row {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--mist-thin);
+    font-size: 0.85rem;
+  }
+  .p-detail-row:last-child { border-bottom: none; }
+  .p-detail-row .key { color: var(--mist); font-size: 0.75rem; margin-bottom: 0.2rem; }
+  .p-detail-row .val { color: var(--cream); }
+
+  /* SESSION GUIDE */
+  .session-block {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .session-block-head {
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .session-block-head:hover { background: var(--plum-mid); }
+  .session-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    color: var(--gold);
+    white-space: nowrap;
+    min-width: 80px;
+  }
+  .session-block-head h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+  .session-block-body {
+    display: none;
+    padding: 1.2rem 1.5rem;
+    border-top: 1px solid var(--plum-mid);
+  }
+  .session-block-body.open { display: block; }
+  .session-block-body p { font-size: 0.88rem; color: var(--mist); margin-bottom: 0.5rem; }
+  .session-block-body strong { color: var(--cream); }
+  .session-block-body ul { margin: 0.5rem 0 0.8rem 1.2rem; }
+  .session-block-body ul li { font-size: 0.85rem; color: var(--mist); margin-bottom: 0.3rem; }
+  .key-line {
+    margin: 0 0 2rem;
+    padding: 1rem 1.2rem;
+    background: rgba(176,80,112,0.1);
+    border-left: 2px solid var(--rose-mid);
+    font-style: italic;
+    color: var(--cream);
+    font-size: 0.95rem;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .signal-row {
+    display: flex; gap: 0.6rem; align-items: flex-start;
+    margin-bottom: 0.4rem; font-size: 0.85rem;
+  }
+  .signal-trigger {
+    background: var(--plum-mid);
+    border-radius: 2px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    color: var(--gold);
+  }
+  .contingency-grid {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+  }
+  .contingency-grid h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .contingency-row { font-size: 0.85rem; }
+  .contingency-row strong { color: var(--gold); }
+  .contingency-row span { color: var(--mist); }
+
+  /* NOTES */
+  .notes-area {
+    background: var(--plum);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .notes-area h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: var(--cream);
+  }
+  textarea {
+    width: 100%;
+    background: rgba(8,5,12,0.4);
+    border: 1px solid var(--plum-mid);
+    border-radius: 4px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    padding: 0.8rem;
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    line-height: 1.7;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: var(--rose-mid); }
+  .btn {
+    background: transparent;
+    border: 1px solid var(--rose-mid);
+    color: var(--rose-light);
+    padding: 0.6rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 0.8rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn:hover { background: var(--rose-dark); color: var(--cream); }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--mist);
+  }
+  .empty-state h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--cream);
+  }
+
+  .header-actions { display: flex; align-items: center; gap: 1rem; }
+  .refresh-btn {
+    background: none;
+    border: 1px solid var(--mist-thin);
+    color: var(--mist);
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .refresh-btn:hover { color: var(--cream); border-color: var(--mist); }
+  .last-updated { font-size: 0.7rem; color: rgba(240,232,224,0.3); }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>Dashboard Facilitateur</h1>
+  <p>Acces prive</p>
+  <input type="text" id="gate-user" placeholder="email" autocomplete="username" style="text-align:center;width:100%;max-width:280px;background:rgba(240,232,224,0.08);border:1px solid var(--gold);color:var(--cream);padding:0.8rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:1rem;border-radius:2px;outline:none;">
+  <input type="password" id="gate-pass" placeholder="mot de passe" autocomplete="current-password" style="text-align:center;width:100%;max-width:280px;background:rgba(240,232,224,0.08);border:1px solid var(--gold);color:var(--cream);padding:0.8rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:1rem;border-radius:2px;outline:none;">
+  <div class="err" id="gate-err"></div>
+  <button onclick="checkGate()">Entrer</button>
+</div>
+
+<header>
+  <h1>Pleasure Playground -Facilitateur</h1>
+  <div class="header-actions">
+    <span class="last-updated" id="last-updated"></span>
+    <button class="refresh-btn" onclick="loadData()">Actualiser</button>
+  </div>
+</header>
+
+<main>
+  <div class="main-tabs">
+    <button class="main-tab active" onclick="switchMain('overview',this)">Vue generale</button>
+    <button class="main-tab" onclick="switchMain('participants',this)">Participantes</button>
+    <button class="main-tab" onclick="switchMain('session',this)">Guide de session</button>
+    <button class="main-tab" onclick="switchMain('notes',this)">Notes</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="main-panel active" id="panel-overview">
+    <div class="stat-row">
+      <div class="stat-card"><div class="n" id="stat-total">0</div><div class="l">Participantes</div></div>
+      <div class="stat-card"><div class="n" id="stat-submitted">0</div><div class="l">Cartes soumises</div></div>
+      <div class="stat-card"><div class="n" id="stat-defis">0</div><div class="l">Moy. defis</div></div>
+      <div class="stat-card"><div class="n" id="stat-modules">0</div><div class="l">Moy. modules</div></div>
+    </div>
+    <div id="overview-cards"></div>
+  </div>
+
+  <!-- PARTICIPANTS -->
+  <div class="main-panel" id="panel-participants">
+    <div class="p-grid" id="p-grid"></div>
+    <div class="empty-state" id="p-empty" style="display:none;">
+      <h3>En attente</h3>
+      <p>Aucune Carte du Desir soumise. Les donnees apparaissent ici des que les participantes soumettent.</p>
+    </div>
+  </div>
+
+  <!-- SESSION GUIDE -->
+  <div class="main-panel" id="panel-session">
+    <div class="key-line">
+      "L'orgasme n'est pas dans ton corps. Il est dans ton systeme nerveux. Et c'est la reddition qui l'allume vraiment."
+    </div>
+
+    <div class="session-block">
+      <div class="session-block-head" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="session-time">0:00 -0:30</span>
+        <h3>Ouverture du container</h3>
+      </div>
+      <div class="session-block-body">
+        <p><strong>Rituel:</strong> Cercle. 3 respirations avant de parler. Un mot: "Qu'est-ce que tu apportes aujourd'hui?"</p>
+        <p><strong>A couvrir:</strong></p>
+        <ul>
+          <li>Mots de securite: rouge = stop, jaune = ralentis, vert = encore. Les faire dire a voix haute. "Ce n'est pas un bouton panique. C'est un curseur de preference."</li>
+          <li>Confidentialite: ce qui se passe ici reste ici, y compris l'experience d'Agathe.</li>
+          <li>Cadre: "Ce n'est pas du BDSM comme sous-culture. Ce sont les mecanismes de la reddition."</li>
+        </ul>
+        <p><strong>Intro Agathe:</strong> Pas etude de cas. Co-facilitatrice. "Elle sait ca de l'interieur. Moi de l'exterieur."</p>
+      </div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-block-head" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="session-time">0:30 -1:15</span>
+        <h3>Module 1. L'architecture de la reddition</h3>
+      </div>
+      <div class="session-block-body">
+        <p><strong>Enseignement (15 min):</strong></p>
+        <ul>
+          <li>La reddition exige plus de confiance que le controle.</li>
+          <li>PFC qui se calme: le critique interieur s'eteint, les sensations arrivent sans filtre.</li>
+          <li>Endorphines: intensite soutenue = opioides endogenes. Meme mecanisme que runner's high.</li>
+          <li>Le temps se dissout. Orgasme feminin correle a conscience temporelle reduite.</li>
+        </ul>
+        <p><strong>Scan corporel (20 min):</strong> Yeux fermes, sommet vers bas. Au bassin: pause. "Remarquez sans changer."</p>
+        <p><strong>Discussion (10 min):</strong> Ou avez-vous decroche? Ce moment de decrochage c'est ce que la reddition dissout.</p>
+      </div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-block-head" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="session-time">1:15 -2:00</span>
+        <h3>Module 2. La dynamique en pratique</h3>
+      </div>
+      <div class="session-block-body">
+        <p><strong>Enseignement (10 min):</strong></p>
+        <ul>
+          <li>"La sub detient le plus de pouvoir dans la salle. Le mot de securite est un veto sans debat."</li>
+          <li>"Ce qui rend l'experience d'Agathe si intense, c'est ce qu'elle permet. Le permettre, c'est la pratique."</li>
+        </ul>
+        <p><strong>Signaux Agathe:</strong></p>
+        <div class="signal-row"><span class="signal-trigger">Un regard</span><span style="color:var(--mist);">Ancrer la salle</span></div>
+        <div class="signal-row"><span class="signal-trigger">Deux doigts</span><span style="color:var(--mist);">Approcher</span></div>
+        <div class="signal-row"><span class="signal-trigger">Main au coeur</span><span style="color:var(--mist);">Verifier avec moi</span></div>
+        <p style="margin-top:0.8rem;"><strong>Demo (15 min):</strong> Option A: attention soutenue sans performance. Option B: sequence de respiration et consigne verbale. Option C: lire l'energie.</p>
+        <p><strong>Exercice de groupe (20 min):</strong> Paires. Donner attention soutenue vs pratiquer uniquement recevoir. Debrief: comment c'etait d'etre vue sans repondre?</p>
+      </div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-block-head" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="session-time">2:00 -2:30</span>
+        <h3>Pause</h3>
+      </div>
+      <div class="session-block-body">
+        <p>Laisser bouger, manger, sortir. Ne pas faciliter. Laisser le travail se poser.</p>
+        <p><strong>Check-in prive Agathe:</strong> Comment tu vas? Qu'est-ce que tu as remarque dans la salle?</p>
+      </div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-block-head" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="session-time">2:30 -3:15</span>
+        <h3>Module 3. Etats alteres</h3>
+      </div>
+      <div class="session-block-body">
+        <p><strong>Enseignement (10 min):</strong></p>
+        <ul>
+          <li>Subspace: etat de conscience altere documente. Test de Stroop de Sagarin: alteration cognitive significative post-scene.</li>
+          <li>Hypofrontalite transitoire (Dietrich 2003): le PFC se met en veille. Meme mecanisme que la meditation profonde.</li>
+          <li>Deactivation OFC gauche a l'orgasme (Georgiadis): le cerveau ne peut pas climaxer en se surveillant.</li>
+          <li>116 sujets: orgasme feminin correle conscience corporelle (r=.62) et reduction conscience temporelle (r=-.48).</li>
+        </ul>
+        <p><strong>Travail respiratoire (25 min):</strong></p>
+        <ul>
+          <li>3 rounds conscients. Inspir nez, expir bouche. Expir = double inspir.</li>
+          <li>Auto-toucher doux: bras, visage, cou. Sans agenda.</li>
+          <li>"Suis une sensation ou qu'elle aille. Quand le mental commente, reviens."</li>
+          <li>A chaque expir: relacher une couche. Machoire, epaules, ventre, perinee.</li>
+          <li>5 min de silence. Agathe se deplace dans l'espace.</li>
+        </ul>
+        <p><strong>Debrief (10 min):</strong> Qu'est-ce qui s'est ouvert? Qu'est-ce qui a resiste?</p>
+      </div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-block-head" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="session-time">3:15 -3:45</span>
+        <h3>Module 4. Ta version</h3>
+      </div>
+      <div class="session-block-body">
+        <p>Question centrale: quel est ton point d'acces specifique a cet etat?</p>
+        <ul>
+          <li>Certaines: la respiration. D'autres: etre dans l'attention soutenue. D'autres: la voix. D'autres: l'intensite physique.</li>
+          <li>Chacune identifie une chose a pratiquer avant la prochaine fois qu'elle fait l'amour.</li>
+        </ul>
+        <p>Agathe partage son debut. Pas la version actuelle. Le debut.</p>
+        <p>"Le mot de securite n'est pas juste pour aujourd'hui. C'est une pratique de savoir ce que tu veux et d'etre prete a le dire. Ce muscle est ce qui rend tout le reste possible."</p>
+      </div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-block-head" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="session-time">3:45 -4:00</span>
+        <h3>Rituel de cloture</h3>
+      </div>
+      <div class="session-block-body">
+        <p>Cercle. Un mot: "Qu'est-ce que tu emportes?"</p>
+        <p><strong>Defi:</strong> Avant la fin de cette semaine, une chose pour pratiquer. Solo ou avec partenaire. Pas forcement sexuel.</p>
+        <p><strong>Avertissement subdrop:</strong> "Dans 24-72 heures, certaines peuvent se sentir plates ou tristes sans savoir pourquoi. C'est physiologique, ca passe. Reposez-vous, hydratez-vous. Vous pouvez ecrire a Agathe."</p>
+      </div>
+    </div>
+
+    <div class="contingency-grid">
+      <h3>Si ca deraille</h3>
+      <div class="contingency-row"><strong>La salle reste intellectuelle:</strong> <span>Passer au corps immediatement. Arreter d'enseigner, demander de remarquer quelque chose de physique et specifique.</span></div>
+      <div class="contingency-row"><strong>Quelqu'un devient emotionnel:</strong> <span>Bon signe. Laisser arriver sans se precipiter. Ralentir. Agathe s'assoit pres de cette personne.</span></div>
+      <div class="contingency-row"><strong>Mot de securite utilise:</strong> <span>Honorer immediatement. Aucune explication requise. Check-in prive a la pause suivante.</span></div>
+      <div class="contingency-row"><strong>L'energie du groupe s'effondre:</strong> <span>Re-entree physique: debout, secouer, 30 secondes de mouvement vigoureux. Puis reentrée.</span></div>
+      <div class="contingency-row"><strong>Quelqu'un veut aller plus loin:</strong> <span>Reconnaitre en prive apres: "Il y a plus. Ce n'est pas la que ca va, aujourd'hui."</span></div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="main-panel" id="panel-notes">
+    <div class="notes-area">
+      <h3>Ce qui s'est ouvert, par participante</h3>
+      <textarea id="note-opened" rows="6" placeholder="1.&#10;2.&#10;3.&#10;4."></textarea>
+    </div>
+    <div class="notes-area">
+      <h3>Ce qui a ete defendu</h3>
+      <textarea id="note-defended" rows="4" placeholder="Points de resistance observes..."></textarea>
+    </div>
+    <div class="notes-area">
+      <h3>Ce que je ferais differemment</h3>
+      <textarea id="note-different" rows="4" placeholder="Ajustements pour la prochaine fois..."></textarea>
+    </div>
+    <div class="notes-area">
+      <h3>Feedback d'Agathe</h3>
+      <textarea id="note-agathe" rows="4" placeholder="Sa perspective de l'interieur..."></textarea>
+    </div>
+    <button class="btn" onclick="saveNotes()">Sauvegarder</button>
+  </div>
+</main>
+
+<script>
+const NS = 'pp_facilitator_notes';
+const TOKEN_KEY = 'pp_fac_jwt';
+
+function api(method, path, body) {
+  const tok = localStorage.getItem(TOKEN_KEY);
+  return fetch('/api/pp-auth' + path, {
+    method,
+    headers: { 'Content-Type': 'application/json', ...(tok ? { Authorization: 'Bearer ' + tok } : {}) },
+    body: body ? JSON.stringify(body) : undefined,
+  }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+}
+
+async function checkGate() {
+  const username = document.getElementById('gate-user').value.trim();
+  const password = document.getElementById('gate-pass').value;
+  const err = document.getElementById('gate-err');
+  err.textContent = '';
+  try {
+    const res = await api('POST', '/auth/login', { username, password });
+    if (res.role !== 'facilitator' && res.role !== 'admin') {
+      err.textContent = 'Acces non autorise.';
+      return;
+    }
+    localStorage.setItem(TOKEN_KEY, res.token);
+    document.getElementById('gate').classList.add('hidden');
+    loadData();
+    loadNotes();
+  } catch(e) {
+    err.textContent = 'Identifiants incorrects.';
+    document.getElementById('gate-pass').value = '';
+  }
+}
+document.getElementById('gate-pass').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate(); });
+
+// Auto-login if token already stored
+(async () => {
+  const tok = localStorage.getItem(TOKEN_KEY);
+  if (!tok) return;
+  try {
+    await api('GET', '/auth/me');
+    document.getElementById('gate').classList.add('hidden');
+    loadData();
+    loadNotes();
+  } catch(e) {
+    localStorage.removeItem(TOKEN_KEY);
+  }
+})();
+
+function switchMain(id, btn) {
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+async function loadData() {
+  try {
+    const data = await api('GET', '/facilitator/overview');
+    renderAll(data);
+    document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('fr-FR');
+  } catch(e) {
+    renderAll({ participants: [], totals: { participant_count: 0, total_challenge_responses: 0, total_module_completions: 0, pending_redemptions: 0 } });
+  }
+}
+
+function pct(n, max) { return max ? Math.round((n / max) * 100) : 0; }
+
+function renderAll(data) {
+  const { participants, totals } = data;
+  const total = participants.length;
+  const avgC = total ? Math.round(participants.reduce((s, p) => s + p.challenges_done, 0) / total) : 0;
+  const avgM = total ? Math.round(participants.reduce((s, p) => s + p.modules_done, 0) / total) : 0;
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-submitted').textContent = totals.total_challenge_responses;
+  document.getElementById('stat-defis').textContent = avgC;
+  document.getElementById('stat-modules').textContent = avgM + '/5';
+
+  const cards = participants.map((p, i) => buildCard(p, i)).join('');
+  const empty = '<div class="empty-state"><h3>En attente</h3><p>Aucune participante inscrite pour l\'instant.</p></div>';
+  document.getElementById('overview-cards').innerHTML = total ? '<div class="p-grid">' + cards + '</div>' : empty;
+  document.getElementById('p-grid').innerHTML = total ? cards : '';
+  document.getElementById('p-empty').style.display = total ? 'none' : 'block';
+
+  if (totals.pending_redemptions > 0) {
+    const banner = document.getElementById('redemptions-banner') || (() => {
+      const b = document.createElement('div');
+      b.id = 'redemptions-banner';
+      b.style.cssText = 'background:rgba(184,134,74,0.15);border:1px solid var(--gold);border-radius:4px;padding:0.8rem 1.2rem;margin-bottom:1.5rem;font-size:0.85rem;color:var(--gold-light);';
+      document.getElementById('panel-overview').prepend(b);
+      return b;
+    })();
+    banner.textContent = totals.pending_redemptions + ' reward(s) pending fulfillment.';
+  }
+}
+
+function buildCard(p, i) {
+  const hasIntake = p.intake && Object.values(p.intake).some(v => v);
+  const status = p.challenges_done > 0 || p.modules_done > 0 ? 'submitted' : (hasIntake ? 'partial' : '');
+  const statusLabel = p.challenges_done > 0 ? 'Active' : (hasIntake ? 'Inscrite' : 'En attente');
+  const profileBadges = p.profiles.map(pr => `<span class="tag">${esc(pr.test_id)}</span>`).join('');
+  const redemptionBadges = p.redemptions.map(r => `<span class="tag">${esc(r.emoji + ' ' + r.title)}</span>`).join('');
+
+  const intakeHtml = hasIntake ? `
+    ${row('Ce qui l\'amene ici', p.intake.brings_you_here)}
+    ${row('Ce qu\'elle veut explorer', p.intake.want_to_explore)}
+    ${row('Plus grand defi', p.intake.biggest_challenge)}
+    ${row('Niveau d\'experience', p.intake.experience_level)}
+    ${row('En un mot', p.intake.one_word)}
+  ` : '<div class="p-detail-row" style="color:var(--mist);font-size:0.8rem;">Questionnaire non rempli.</div>';
+
+  return `<div class="p-card">
+    <div class="p-card-head">
+      <h3>${esc(p.name || 'Participante ' + (i + 1))}</h3>
+      <span class="p-status ${status}">${statusLabel}</span>
+    </div>
+    <div class="p-card-body">
+      <div style="display:flex;gap:1rem;margin-bottom:0.8rem;">
+        <span style="font-size:0.75rem;color:var(--gold-light);">&#9733; ${p.points} pts</span>
+        <span style="font-size:0.75rem;color:var(--mist);">Streak: ${p.streak}j</span>
+      </div>
+      <div class="progress-mini">
+        <div class="label"><span>Modules</span><span>${p.modules_done}/5</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct(p.modules_done, 5)}%"></div></div>
+      </div>
+      <div class="progress-mini">
+        <div class="label"><span>Defis</span><span>${p.challenges_done}</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.min(pct(p.challenges_done, 14), 100)}%"></div></div>
+      </div>
+      ${profileBadges ? `<div style="margin:0.6rem 0 0.2rem;font-size:0.7rem;color:var(--mist);letter-spacing:0.06em;text-transform:uppercase;">Tests completes</div><div class="tags">${profileBadges}</div>` : ''}
+      ${redemptionBadges ? `<div style="margin:0.6rem 0 0.2rem;font-size:0.7rem;color:var(--mist);letter-spacing:0.06em;text-transform:uppercase;">Rewards</div><div class="tags">${redemptionBadges}</div>` : ''}
+      <button class="expand-btn" onclick="toggleExpand(this)">Voir le questionnaire</button>
+      <div class="expanded-section">${intakeHtml}</div>
+    </div>
+  </div>`;
+}
+
+function row(label, val) {
+  if (!val) return '';
+  return `<div class="p-detail-row"><div class="key">${label}</div><div class="val">${esc(val)}</div></div>`;
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function toggleExpand(btn) {
+  const s = btn.nextElementSibling;
+  s.classList.toggle('open');
+  btn.textContent = s.classList.contains('open') ? 'Reduire' : 'Voir le questionnaire';
+}
+
+function saveNotes() {
+  localStorage.setItem(NS, JSON.stringify({
+    opened: document.getElementById('note-opened').value,
+    defended: document.getElementById('note-defended').value,
+    different: document.getElementById('note-different').value,
+    agathe: document.getElementById('note-agathe').value,
+    saved_at: new Date().toISOString()
+  }));
+  alert('Notes sauvegardees.');
+}
+
+function loadNotes() {
+  try {
+    const n = JSON.parse(localStorage.getItem(NS));
+    if (!n) return;
+    document.getElementById('note-opened').value = n.opened || '';
+    document.getElementById('note-defended').value = n.defended || '';
+    document.getElementById('note-different').value = n.different || '';
+    document.getElementById('note-agathe').value = n.agathe || '';
+  } catch(e) {}
+}
+</script>
+</body>
+</html>

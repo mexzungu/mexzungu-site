@@ -605,6 +605,30 @@
 
     .sig-clear-btn:hover { color: var(--stone); }
 
+    .sig-email-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sig-email-wrap label {
+      font-size: 0.72rem;
+      color: var(--mist);
+      white-space: nowrap;
+    }
+
+    .sig-email-wrap input {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      color: var(--navy);
+      flex: 1;
+      min-width: 0;
+    }
+
     .sig-date-wrap {
       display: flex;
       align-items: center;
@@ -1011,6 +1035,10 @@
               </div>
               <div class="sig-controls">
                 <button class="sig-clear-btn" onclick="clearSig('samuel')">Clear</button>
+                <div class="sig-email-wrap">
+                  <label for="email-samuel">Email</label>
+                  <input type="email" id="email-samuel" placeholder="your@email.com" oninput="updateApplyBtn('samuel')">
+                </div>
                 <div class="sig-date-wrap">
                   <label for="date-samuel">Date</label>
                   <input type="date" id="date-samuel">
@@ -1030,15 +1058,12 @@
         <!-- COMPLETION PANEL -->
         <div class="completion-wrap" id="completion-panel">
           <h3>Engagement letter signed.</h3>
-          <p>Download your signed copy below, then email it to Pepe to complete the record.</p>
+          <p id="server-submit-status" style="font-size:0.85rem;color:var(--stone);margin-bottom:0.5rem;">Sending signed copy to Pepe...</p>
+          <p style="font-size:0.78rem;color:var(--mist);margin-bottom:1.25rem;">Download your copy for your records.</p>
           <button class="btn-download" onclick="downloadPDF()">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Download Signed PDF
           </button>
-          <a class="btn-email" href="mailto:pepe@mexzungu.com?subject=Silica%20GBS%20EL%20Signed&body=Hi%20Pepe%2C%20please%20find%20the%20signed%20engagement%20letter%20attached.">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="3" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 4.5l6.5 4.5L14 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            Email to Pepe
-          </a>
         </div>
 
       </div>
@@ -1054,151 +1079,246 @@
 </div><!-- /page-wrap -->
 
 <script>
-  // Set today's date
+  // ── CONFIG ──
+  var DOC_ID = 'silica-gbs-el';
+  var DOC_TITLE = 'Engagement Letter — Silica GBS x Mexzungu Group';
+  var DOC_TYPE = 'Engagement Letter';
+  var DOC_PARTIES = ['Silica GBS', 'Mexzungu Group Ltd'];
+  var SIGNERS = ['samuel'];
+  var SIGNER_META = {
+    samuel: { name: 'Samuel Darko', role: 'Founder & CEO, Silica GBS' }
+  };
+  var PRE_SIGNED = [{ name: 'Pepe Carrillo', role: 'Chief Disruption Officer, Mexzungu Group Ltd', signed_at: 'May 2026' }];
+  var API_BASE = 'https://api.mexzungu.com';
+
+  // ── STATE ──
+  var signed = { samuel: false };
+  var pads = {};
+
+  // ── INIT DATE FIELDS ──
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('date-samuel').value = today;
   (function() {
-    var today = new Date();
+    var d = new Date();
     var opts = { year: 'numeric', month: 'long', day: 'numeric' };
-    var dateStr = today.toLocaleDateString('en-GB', opts);
+    var dateStr = d.toLocaleDateString('en-GB', opts);
     document.getElementById('el-date').textContent = dateStr;
     document.getElementById('el-date2').textContent = dateStr;
     document.getElementById('pepe-sign-date').textContent = dateStr;
-    document.getElementById('date-samuel').valueAsDate = today;
   })();
 
-  // Tier selection (exclusive — only one at a time)
+  // ── TIER SELECTION ──
   var selectedTier = 0;
-  var tierNames  = { 1: 'Tier 1 — On Call',          2: 'Tier 2 — Structural Partner', 3: 'Tier 3 — In the Room' };
-  var tierPrices = { 1: '$4,000 / month',             2: '$6,000 / month',               3: '$8,000 / month' };
+  var tierNames  = { 1: 'Tier 1 — On Call', 2: 'Tier 2 — Structural Partner', 3: 'Tier 3 — In the Room' };
+  var tierPrices = { 1: '$4,000 / month', 2: '$6,000 / month', 3: '$8,000 / month' };
 
   function selectTier(n) {
-    // Deactivate all cards
     [1, 2, 3].forEach(function(i) {
       document.getElementById('tier-card-' + i).classList.remove('active');
     });
-
     if (selectedTier === n) {
-      // Clicking the active one deselects it
       selectedTier = 0;
     } else {
       selectedTier = n;
       document.getElementById('tier-card-' + n).classList.add('active');
     }
-
     updateTierDisplay();
     updateApplyBtn('samuel');
     document.getElementById('tier-none-warning').classList.remove('visible');
   }
 
   function updateTierDisplay() {
-    var feeDisplay  = document.getElementById('tier-selected-fee-display');
-    var sigDisplay  = document.getElementById('sig-tier-display');
-
+    var feeDisplay = document.getElementById('tier-selected-fee-display');
+    var sigDisplay = document.getElementById('sig-tier-display');
     if (selectedTier === 0) {
       feeDisplay.textContent = 'No tier selected';
       feeDisplay.classList.remove('active');
-      sigDisplay.innerHTML   = 'Select a tier above to proceed.';
+      sigDisplay.innerHTML = 'Select a tier above to proceed.';
       sigDisplay.classList.add('none-selected');
     } else {
       feeDisplay.textContent = tierNames[selectedTier] + ' — ' + tierPrices[selectedTier];
       feeDisplay.classList.add('active');
-      sigDisplay.innerHTML   =
+      sigDisplay.innerHTML =
         '<span class="tier-label"><strong>' + tierNames[selectedTier] + '</strong> selected</span>' +
         '<span class="tier-price">' + tierPrices[selectedTier] + '</span>';
       sigDisplay.classList.remove('none-selected');
     }
   }
 
-  // Signature pad
-  var sigPads = {};
-  var signers = ['samuel'];
-
-  function initPad(name) {
-    var canvas = document.getElementById('canvas-' + name);
-    var pad = new SignaturePad(canvas, { penColor: '#1a1a2e', minWidth: 1.5, maxWidth: 3 });
-    sigPads[name] = pad;
-
-    function resize() {
-      var ratio = Math.max(window.devicePixelRatio || 1, 1);
-      var data = pad.toData();
-      canvas.width = canvas.offsetWidth * ratio;
-      canvas.height = canvas.offsetHeight * ratio;
-      canvas.getContext('2d').scale(ratio, ratio);
-      pad.clear();
-      pad.fromData(data);
-    }
-
-    resize();
-    window.addEventListener('resize', resize);
-
+  // ── INIT SIGNATURE PADS ──
+  function initPad(id) {
+    var canvas = document.getElementById('canvas-' + id);
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    var pad = new SignaturePad(canvas, { minWidth: 1, maxWidth: 2.5, penColor: '#1a1a2e' });
     pad.addEventListener('beginStroke', function() {
-      var wm = document.getElementById('wm-' + name);
-      if (wm) wm.style.display = 'none';
+      document.getElementById('wm-' + id).style.display = 'none';
     });
-
-    pad.addEventListener('afterUpdateStroke', function() {
-      updateApplyBtn(name);
-    });
+    pad.addEventListener('afterUpdateStroke', function() { updateApplyBtn(id); });
+    pads[id] = pad;
   }
 
-  signers.forEach(initPad);
+  initPad('samuel');
 
-  function clearSig(name) {
-    sigPads[name].clear();
-    var wm = document.getElementById('wm-' + name);
-    if (wm) wm.style.display = '';
-    updateApplyBtn(name);
+  function clearSig(id) {
+    pads[id].clear();
+    document.getElementById('wm-' + id).style.display = '';
+    updateApplyBtn(id);
   }
 
-  function updateApplyBtn(name) {
-    var pad      = sigPads[name];
-    var checkbox = document.getElementById('agree-' + name);
-    var btn      = document.getElementById('apply-' + name);
-    btn.disabled = (pad.isEmpty() || !checkbox.checked || selectedTier === 0);
+  function updateApplyBtn(id) {
+    if (signed[id]) return;
+    var agreed = document.getElementById('agree-' + id).checked;
+    var hasStroke = !pads[id].isEmpty();
+    var hasEmail = document.getElementById('email-' + id).value.includes('@');
+    document.getElementById('apply-' + id).disabled = !(agreed && hasStroke && hasEmail && selectedTier > 0);
   }
 
-  function applySig(name) {
+  function markBlockSigned(id, dateStr) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+    document.getElementById('progress-label').innerHTML = '<strong>2</strong> of 2 signatures collected';
+  }
+
+  function markBlockPreviouslySigned(id, sigData) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied', 'signed');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var body = block.querySelector('.sig-block-body');
+    body.innerHTML = '<div class="sig-display"><span class="sig-cursive">' + (sigData.name || SIGNER_META[id].name) + '</span></div>' +
+      '<div class="sig-meta">Signed: ' + (sigData.signed_at || '') + '</div>';
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+  }
+
+  async function applySig(id) {
     if (selectedTier === 0) {
       document.getElementById('tier-none-warning').classList.add('visible');
       document.querySelector('.tier-section').scrollIntoView({ behavior: 'smooth' });
       return;
     }
-    var block = document.getElementById('block-' + name);
-    block.classList.add('applied');
-    sigPads[name].off();
-    checkCompletion();
-  }
+    if (pads[id].isEmpty()) return;
+    var email = document.getElementById('email-' + id).value.trim();
+    if (!email) return;
 
-  function checkCompletion() {
-    var allDone = signers.every(function(n) {
-      return document.getElementById('block-' + n).classList.contains('applied');
-    });
-    if (allDone) {
-      document.getElementById('completion-panel').classList.add('visible');
-      document.getElementById('progress-label').innerHTML = '<strong>2</strong> of 2 signatures collected';
-      signers.forEach(function(n) {
-        var step = document.getElementById('step-' + n);
-        if (step) step.className = 'step done';
+    var btn = document.getElementById('apply-' + id);
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+
+    markBlockSigned(id, document.getElementById('date-' + id).value);
+
+    var payload = {
+      document_id: DOC_ID,
+      signer_id: id,
+      signer_name: SIGNER_META[id].name,
+      signer_role: SIGNER_META[id].role,
+      signer_email: email,
+      image_data: pads[id].toDataURL('image/png'),
+      signed_at: document.getElementById('date-' + id).value,
+      title: DOC_TITLE,
+      document_type: DOC_TYPE,
+      parties: DOC_PARTIES,
+      required_signers: SIGNERS,
+      pre_signed: PRE_SIGNED,
+      extra_meta: { selected_tier: selectedTier, tier_name: tierNames[selectedTier], tier_price: tierPrices[selectedTier] }
+    };
+
+    try {
+      var resp = await fetch(API_BASE + '/signing/partial-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
+      var data = await resp.json();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+        setTimeout(function() {
+          document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    } catch (err) {
+      console.error('Partial save failed:', err);
+    }
+
+    if (signed.samuel) {
+      document.getElementById('completion-panel').classList.add('visible');
+      setTimeout(function() {
+        document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
     }
   }
 
-  function downloadPDF() {
-    var el = document.getElementById('document-root');
-    html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
-      var imgData = canvas.toDataURL('image/png');
-      var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+  async function loadSigningStatus() {
+    try {
+      var resp = await fetch(API_BASE + '/signing/status/' + DOC_ID);
+      var data = await resp.json();
+      for (var sid in data.signatures) {
+        if (SIGNERS.indexOf(sid) !== -1 && !signed[sid]) {
+          markBlockPreviouslySigned(sid, data.signatures[sid]);
+        }
+      }
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+      }
+    } catch (err) {
+      console.warn('Could not load signing status:', err);
+    }
+  }
+
+  loadSigningStatus();
+
+  async function downloadPDF() {
+    var btn = document.querySelector('.btn-download');
+    btn.textContent = 'Generating...';
+    btn.disabled = true;
+    try {
+      var el = document.getElementById('document-root');
+      var canvas = await html2canvas(el, { scale: 1.5, useCORS: true, logging: false, backgroundColor: '#ffffff' });
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+      var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
       var pageW = pdf.internal.pageSize.getWidth();
       var pageH = pdf.internal.pageSize.getHeight();
-      var imgW = pageW;
-      var imgH = (canvas.height * imgW) / canvas.width;
+      var ratio = pageW / canvas.width;
+      var scaledH = canvas.height * ratio;
       var y = 0;
-      while (y < imgH) {
+      while (y < scaledH) {
         if (y > 0) pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, -y, imgW, imgH);
+        pdf.addImage(imgData, 'JPEG', 0, -y, pageW, scaledH);
         y += pageH;
       }
-      pdf.save('SilicaGBS-Mexzungu-Engagement-Letter.pdf');
-    });
+      var dateStr = new Date().toISOString().split('T')[0];
+      pdf.save('SilicaGBS_MexzunguGroup_EL_Signed_' + dateStr + '.pdf');
+    } catch (e) {
+      console.error(e);
+      alert('PDF generation failed. Please screenshot the page manually.');
+    }
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download Signed PDF';
+    btn.disabled = false;
   }
 </script>
 

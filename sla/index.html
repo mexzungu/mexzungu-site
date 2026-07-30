@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Level Standards — Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink:     #e14b87;
+      --navy:     #1a1a2e;
+      --black:    #0d0d0d;
+      --ash:      #e8e3df;
+      --stone:    #6b5e57;
+      --mist:     #9a8f88;
+      --charcoal: #3d3533;
+      --success:  #2d8f5e;
+      --heading:  'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:     'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: #f0ece8;
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--navy);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-wrap img { height: 34px; width: auto; }
+
+    .header-meta { text-align: right; }
+
+    .header-meta h1 {
+      font-family: var(--heading);
+      font-size: 0.9rem;
+      color: #fafafa;
+    }
+
+    .header-meta p {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 2px;
+    }
+
+    /* ── PAGE ── */
+    .page-wrap {
+      max-width: 780px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem 5rem;
+    }
+
+    .doc-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+    }
+
+    .doc-stripe {
+      height: 4px;
+      background: linear-gradient(90deg, var(--pink) 0%, #f97316 100%);
+    }
+
+    .doc-inner { padding: 2.5rem; }
+
+    /* ── WORDMARK ── */
+    .doc-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .doc-wordmark img { height: 38px; width: auto; }
+
+    .doc-wordmark-text span:first-child {
+      display: block;
+      font-family: var(--heading);
+      font-size: 0.88rem;
+      color: var(--navy);
+    }
+
+    .doc-wordmark-text span:last-child {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--mist);
+      margin-top: 2px;
+    }
+
+    /* ── TITLE BLOCK ── */
+    .doc-title {
+      font-family: var(--heading);
+      font-size: 1.65rem;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .doc-meta {
+      font-size: 0.78rem;
+      color: var(--mist);
+      margin-bottom: 0.3rem;
+    }
+
+    .doc-intro {
+      font-size: 0.88rem;
+      color: var(--stone);
+      line-height: 1.7;
+      margin-top: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--ash);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── SLA SECTIONS ── */
+    .sla-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .sla-section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .sla-section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .sla-num {
+      font-family: var(--heading);
+      font-size: 0.7rem;
+      color: var(--pink);
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .sla-section-name {
+      font-family: var(--heading);
+      font-size: 1rem;
+      color: var(--navy);
+    }
+
+    .sla-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .sla-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .sla-row:last-child { border-bottom: none; }
+
+    .sla-row-label {
+      padding: 0.85rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      background: #f8f5f2;
+      border-right: 1px solid var(--ash);
+    }
+
+    .sla-row-value {
+      padding: 0.85rem 1rem;
+      font-size: 0.82rem;
+      color: var(--stone);
+      line-height: 1.55;
+    }
+
+    .sla-row-value strong { color: var(--navy); }
+
+    .sla-note {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--mist);
+      line-height: 1.55;
+      padding-left: 0.1rem;
+    }
+
+    /* ── CALLOUT ── */
+    .sla-callout {
+      margin-top: 2rem;
+      padding: 1.2rem 1.4rem;
+      background: rgba(225,75,135,0.04);
+      border: 1px solid rgba(225,75,135,0.2);
+      border-radius: 10px;
+      font-size: 0.83rem;
+      color: var(--stone);
+      line-height: 1.6;
+    }
+
+    .sla-callout strong { color: var(--navy); }
+
+    /* ── VERSION BADGE ── */
+    .version-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--ash);
+    }
+
+    .version-bar p {
+      font-size: 0.73rem;
+      color: var(--mist);
+    }
+
+    .version-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--pink);
+      background: rgba(225,75,135,0.08);
+      border: 1px solid rgba(225,75,135,0.2);
+      border-radius: 20px;
+      padding: 0.2rem 0.65rem;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 600px) {
+      .doc-inner { padding: 1.5rem; }
+      .sla-row { grid-template-columns: 1fr; }
+      .sla-row-label { border-right: none; border-bottom: 1px solid var(--ash); }
+      .site-header { padding: 0.75rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="https://mexzungu.com" class="logo-wrap">
+    <img src="/logo-v3.png" alt="Mexzungu Group">
+  </a>
+  <div class="header-meta">
+    <h1>Service Level Standards</h1>
+    <p>Mexzungu Group — all engagements</p>
+  </div>
+</header>
+
+<div class="page-wrap">
+  <div class="doc-card">
+    <div class="doc-stripe"></div>
+    <div class="doc-inner">
+
+      <div class="doc-wordmark">
+        <img src="/logo-v3.png" alt="Mexzungu Group">
+        <div class="doc-wordmark-text">
+          <span>Mexzungu Venture Architecture</span>
+          <span>Outlaw Studio. Chaos starts companies. Structure builds them.</span>
+        </div>
+      </div>
+
+      <h1 class="doc-title">Service Level Standards</h1>
+      <p class="doc-meta">Applies to all active engagements. Referenced in your engagement letter.</p>
+      <p class="doc-intro">These are the operating standards that apply to every Mexzungu engagement unless your engagement letter specifies otherwise. They define how we work, how fast we move, and what you can reasonably expect from us. We do not have hidden clauses, volume caps buried in fine print, or response time commitments we cannot keep. This is what we actually do.</p>
+
+      <!-- 01: RESPONSE TIMES -->
+      <div class="sla-section">
+        <div class="sla-section-head">
+          <span class="sla-num">01</span>
+          <span class="sla-section-name">Response times</span>
+        </div>
+        <div class="sla-rows">
+          <div class="sla-row">
+            <div class="sla-row-label">Messages and emails</div>
+            <div class="sla-row-value">Same-day acknowledgment on any business day. <strong>Substantive response within 1 business day.</strong></div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Requests requiring research</div>
+            <div class="sla-row-value">Acknowledged same day. <strong>Response within 48 hours.</strong> If more time is needed, we say so and give you a revised timeline.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Urgent escalations</div>
+            <div class="sla-row-value">Flag it as urgent. <strong>We respond as fast as humanly possible.</strong> No defined SLA — you will hear from us the same day, typically within hours.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Outside business hours</div>
+            <div class="sla-row-value">We operate CET (Barcelona). Outside hours, urgent messages are seen and triaged. Non-urgent messages are addressed the next business day.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02: CALLS -->
+      <div class="sla-section">
+        <div class="sla-section-head">
+          <span class="sla-num">02</span>
+          <span class="sla-section-name">Calls and availability</span>
+        </div>
+        <div class="sla-rows">
+          <div class="sla-row">
+            <div class="sla-row-label">Scheduled calls</div>
+            <div class="sla-row-value"><strong>48 hours notice</strong> for any scheduled call. We show up prepared. Shorter notice is possible — just ask.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Investor calls (WS2)</div>
+            <div class="sla-row-value">Once you flag a live investor interaction — term sheet call, negotiation, closing — <strong>we are available same day.</strong> This is unconditional.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Volume</div>
+            <div class="sla-row-value">No cap on calls during an active engagement. The admin fee covers normal advisory cadence. If a single engagement begins to require substantially more than normal, we talk and adjust — transparently.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03: DELIVERABLES -->
+      <div class="sla-section">
+        <div class="sla-section-head">
+          <span class="sla-num">03</span>
+          <span class="sla-section-name">Deliverables and revisions</span>
+        </div>
+        <div class="sla-rows">
+          <div class="sla-row">
+            <div class="sla-row-label">First draft</div>
+            <div class="sla-row-value">Delivered on the timeline agreed in your engagement letter. If anything looks like it will be late, we tell you before the deadline — not after.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Revisions included</div>
+            <div class="sla-row-value"><strong>One round of consolidated feedback</strong> per deliverable. Send your comments together, not in separate threads over several days, and we turn them around within 48 hours.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Additional revision rounds</div>
+            <div class="sla-row-value">Available at an hourly rate agreed in writing before we start. We will always tell you when a request falls outside the included round so there are no surprises on the invoice.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Format</div>
+            <div class="sla-row-value">Delivered as password-protected web pages unless your engagement letter specifies otherwise. No version confusion. Share with investors and counsel directly.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04: SCOPE CHANGES -->
+      <div class="sla-section">
+        <div class="sla-section-head">
+          <span class="sla-num">04</span>
+          <span class="sla-section-name">Scope changes</span>
+        </div>
+        <div class="sla-rows">
+          <div class="sla-row">
+            <div class="sla-row-label">New workstreams</div>
+            <div class="sla-row-value">Activated by written agreement — an exchange of emails is sufficient. No new workstream begins without both parties confirming scope and fee in writing.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Out-of-scope requests</div>
+            <div class="sla-row-value">We will tell you immediately if a request falls outside the agreed scope. We will not just say no — we will tell you what it would take to include it.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Emergency requests</div>
+            <div class="sla-row-value">We accommodate genuine emergencies. What counts as an emergency and any additional fee is agreed before we start, not after.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05: WHAT WE EXPECT FROM YOU -->
+      <div class="sla-section">
+        <div class="sla-section-head">
+          <span class="sla-num">05</span>
+          <span class="sla-section-name">What we expect from you</span>
+        </div>
+        <div class="sla-rows">
+          <div class="sla-row">
+            <div class="sla-row-label">Documents and data</div>
+            <div class="sla-row-value">When we ask for materials — corporate records, term sheets, cap table, financials — <strong>we need them within 5 business days.</strong> Late materials push timelines. We will say so, not absorb silently.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Feedback consolidation</div>
+            <div class="sla-row-value">Send consolidated feedback on deliverables, not piecemeal over time. One clear set of comments per revision round keeps things moving.</div>
+          </div>
+          <div class="sla-row">
+            <div class="sla-row-label">Decision-making access</div>
+            <div class="sla-row-value">We need to be able to reach you. If a term sheet lands on a Friday, we need a response path that does not wait until Monday.</div>
+          </div>
+        </div>
+        <p class="sla-note">These are not one-sided obligations. The SLA runs both ways. We hold ourselves to the standards above and we need you to hold your side so we can hold ours.</p>
+      </div>
+
+      <div class="sla-callout">
+        <strong>One thing we never do:</strong> bill you for something you did not agree to in writing. If something is going to cost more — more time, more rounds, expanded scope — you will hear about it before the work starts, not when the invoice arrives.
+      </div>
+
+      <div class="version-bar">
+        <p>Mexzungu Group Ltd &nbsp;|&nbsp; Royal Road, Henrietta, 73120, Mauritius &nbsp;|&nbsp; <a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a></p>
+        <span class="version-badge">v1.0 — May 2026</span>
+      </div>
+
+    </div><!-- /doc-inner -->
+  </div><!-- /doc-card -->
+</div><!-- /page-wrap -->
+
+</body>
+</html>

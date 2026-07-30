@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engagement Letter — HavenPay x Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink:       #e14b87;
+      --pink-dark:  #b83a6b;
+      --navy:       #1a1a2e;
+      --black:      #0d0d0d;
+      --white:      #fafafa;
+      --ash:        #e8e3df;
+      --stone:      #6b5e57;
+      --mist:       #9a8f88;
+      --charcoal:   #3d3533;
+      --success:    #2d8f5e;
+      --heading:    'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans:       'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: #f0ece8;
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--navy);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    .site-header .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .site-header img {
+      height: 36px;
+      width: auto;
+    }
+
+    .header-meta {
+      text-align: right;
+    }
+
+    .header-meta h1 {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: #fafafa;
+      font-weight: 700;
+    }
+
+    .header-meta p {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 2px;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar-wrap {
+      background: var(--charcoal);
+      padding: 0.65rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .progress-steps {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .step.done { color: #2dce89; }
+    .step.pending { color: rgba(255,255,255,0.65); }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .step-sep {
+      color: rgba(255,255,255,0.25);
+      font-size: 0.8rem;
+    }
+
+    .progress-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .progress-label strong { color: #2dce89; }
+
+    /* ── PAGE ── */
+    .page-wrap {
+      max-width: 820px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    .doc-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    }
+
+    .doc-top-stripe {
+      height: 5px;
+      background: linear-gradient(90deg, var(--pink) 0%, #f97316 100%);
+    }
+
+    .doc-inner {
+      padding: 2.5rem 2.5rem 2rem;
+    }
+
+    /* ── WORDMARK ── */
+    .doc-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .doc-wordmark img { height: 40px; width: auto; }
+
+    .doc-wordmark-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .doc-wordmark-text span:first-child {
+      font-family: var(--heading);
+      font-size: 0.9rem;
+      color: var(--navy);
+    }
+
+    .doc-wordmark-text span:last-child {
+      font-size: 0.72rem;
+      color: var(--mist);
+    }
+
+    /* ── TITLE ── */
+    .doc-title {
+      font-family: var(--heading);
+      font-size: 1.7rem;
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+    }
+
+    .doc-subtitle {
+      font-size: 0.82rem;
+      color: var(--mist);
+      margin-bottom: 2rem;
+    }
+
+    /* ── PARTIES ── */
+    .parties-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .party-block {
+      background: #f8f5f2;
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+    }
+
+    .party-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mist);
+      margin-bottom: 0.35rem;
+    }
+
+    .party-name {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+    }
+
+    .party-detail {
+      font-size: 0.78rem;
+      color: var(--stone);
+      line-height: 1.5;
+    }
+
+    .doc-date-line {
+      font-size: 0.82rem;
+      color: var(--mist);
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    /* ── BODY ── */
+    .doc-body h2 {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin: 1.8rem 0 0.6rem;
+    }
+
+    .doc-body p {
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      line-height: 1.7;
+      margin-bottom: 0.8rem;
+    }
+
+    .intro-q {
+      font-style: italic;
+      color: var(--mist) !important;
+      font-size: 0.82rem !important;
+      margin-bottom: 0.3rem !important;
+    }
+
+    .sub-item {
+      font-size: 0.85rem;
+      color: var(--charcoal);
+      line-height: 1.65;
+      padding: 0.6rem 0 0.6rem 1.2rem;
+      border-left: 2px solid var(--ash);
+      margin-bottom: 0.5rem;
+    }
+
+    .sub-item strong { color: var(--navy); }
+
+    /* ── FEE OPTIONS ── */
+    .fee-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .fee-option {
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      background: #f8f5f2;
+    }
+
+    .fee-option.selected {
+      border-color: var(--pink);
+      background: rgba(225, 75, 135, 0.04);
+    }
+
+    .fee-option-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mist);
+      margin-bottom: 0.35rem;
+    }
+
+    .fee-option-name {
+      font-family: var(--heading);
+      font-size: 0.82rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+
+    .fee-option-detail {
+      font-size: 0.78rem;
+      color: var(--stone);
+      line-height: 1.5;
+    }
+
+    .fee-amount {
+      font-family: var(--heading);
+      font-size: 1.1rem;
+      color: var(--pink);
+      margin: 0.4rem 0 0.2rem;
+    }
+
+    /* ── BANK BLOCK ── */
+    .bank-block {
+      background: #f8f5f2;
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      margin: 0.8rem 0 1.2rem;
+    }
+
+    .bank-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 0.82rem;
+    }
+
+    .bank-row:last-child { border-bottom: none; }
+
+    .bank-label {
+      color: var(--mist);
+      font-size: 0.8rem;
+    }
+
+    .bank-val {
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    /* ── SIGNATURE SECTION ── */
+    .sig-section {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 2px solid var(--ash);
+    }
+
+    .sig-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .sig-section-header h3 {
+      font-family: var(--heading);
+      font-size: 1.1rem;
+      color: var(--navy);
+    }
+
+    .sig-section-note {
+      font-size: 0.78rem;
+      color: var(--mist);
+    }
+
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .sig-block {
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fdfdfd;
+    }
+
+    .sig-block.signed {
+      border-color: rgba(45, 143, 94, 0.35);
+      background: rgba(45, 143, 94, 0.02);
+    }
+
+    .sig-block-head {
+      background: var(--navy);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sig-block.signed .sig-block-head {
+      background: var(--success);
+    }
+
+    .sig-block-head .signer-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fafafa;
+    }
+
+    .sig-block-head .signer-title {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.65);
+      margin-top: 1px;
+    }
+
+    .signed-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      color: #fafafa;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 0.2rem 0.55rem;
+    }
+
+    .signed-badge svg { flex-shrink: 0; }
+
+    .sig-block-body {
+      padding: 1rem;
+    }
+
+    .sig-display {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(45, 143, 94, 0.3);
+      border-radius: 6px;
+      background: rgba(45, 143, 94, 0.03);
+      margin-bottom: 0.75rem;
+    }
+
+    .sig-cursive {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+
+    .sig-meta {
+      font-size: 0.72rem;
+      color: var(--mist);
+    }
+
+    .sig-canvas-wrap {
+      position: relative;
+      margin-bottom: 0.75rem;
+    }
+
+    canvas.sig-pad {
+      display: block;
+      width: 100%;
+      height: 100px;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      background: #fafafa;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .sig-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.75rem;
+      color: #d0cac6;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .sig-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .sig-clear-btn {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      color: var(--mist);
+      cursor: pointer;
+      text-align: right;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    .sig-clear-btn:hover { color: var(--stone); }
+
+    .sig-email-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sig-email-wrap label {
+      font-size: 0.72rem;
+      color: var(--mist);
+      white-space: nowrap;
+    }
+
+    .sig-email-wrap input {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      color: var(--navy);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sig-date-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sig-date-wrap label {
+      font-size: 0.72rem;
+      color: var(--mist);
+      white-space: nowrap;
+    }
+
+    .sig-date-wrap input {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      color: var(--navy);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sig-agree-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .sig-agree-wrap input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--pink);
+      flex-shrink: 0;
+    }
+
+    .sig-agree-wrap label {
+      font-size: 0.72rem;
+      color: var(--stone);
+      line-height: 1.4;
+    }
+
+    .sig-apply-btn {
+      width: 100%;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .sig-apply-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .sig-apply-btn:not(:disabled):hover {
+      background: var(--pink-dark);
+    }
+
+    .sig-block.applied canvas {
+      border-color: rgba(45, 143, 94, 0.4);
+      background: rgba(45, 143, 94, 0.02);
+      cursor: default;
+    }
+
+    .sig-applied-note {
+      display: none;
+      font-size: 0.72rem;
+      color: var(--success);
+      font-weight: 600;
+      text-align: center;
+      padding: 0.4rem 0;
+    }
+
+    .sig-block.applied .sig-applied-note { display: block; }
+    .sig-block.applied .sig-agree-wrap,
+    .sig-block.applied .sig-apply-btn,
+    .sig-block.applied .sig-clear-btn { display: none; }
+
+    /* ── COMPLETION ── */
+    .completion-wrap {
+      display: none;
+      margin-top: 2.5rem;
+      background: linear-gradient(135deg, rgba(45,143,94,0.06) 0%, rgba(45,143,94,0.02) 100%);
+      border: 1px solid rgba(45, 143, 94, 0.3);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .completion-wrap.visible { display: block; }
+
+    .completion-wrap h3 {
+      font-family: var(--heading);
+      font-size: 1.15rem;
+      color: var(--success);
+      margin-bottom: 0.5rem;
+    }
+
+    .completion-wrap p {
+      font-size: 0.88rem;
+      color: var(--stone);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.8rem 2rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin-bottom: 1rem;
+    }
+
+    .btn-download:hover { background: var(--pink-dark); }
+
+    .btn-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: none;
+      color: var(--navy);
+      border: 1.5px solid var(--ash);
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.65rem 1.5rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s ease;
+      margin-left: 0.75rem;
+    }
+
+    .btn-email:hover { border-color: var(--navy); }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--ash);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .doc-footer p {
+      font-size: 0.75rem;
+      color: var(--mist);
+    }
+
+    .doc-footer a { color: var(--pink); text-decoration: none; }
+    .doc-footer a:hover { text-decoration: underline; }
+
+    /* ── WORKSTREAM ACTIVATION ── */
+    .ws-activate-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: #f8f5f2;
+      border: 1px solid var(--ash);
+      border-radius: 14px;
+    }
+
+    .ws-activate-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .ws-activate-header h3 {
+      font-family: var(--heading);
+      font-size: 1.05rem;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+    }
+
+    .ws-activate-header p {
+      font-size: 0.8rem;
+      color: var(--mist);
+      margin: 0;
+    }
+
+    .ws-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .ws-card {
+      border: 2px solid var(--ash);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .ws-card:hover {
+      border-color: rgba(225,75,135,0.4);
+    }
+
+    .ws-card.active {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(225,75,135,0.1);
+    }
+
+    .ws-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+
+    .ws-card-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mist);
+      margin-bottom: 0.2rem;
+    }
+
+    .ws-card-name {
+      font-family: var(--heading);
+      font-size: 0.9rem;
+      color: var(--navy);
+    }
+
+    .ws-toggle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--ash);
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .ws-card.active .ws-toggle {
+      border-color: var(--pink);
+      background: var(--pink);
+    }
+
+    .ws-toggle svg { display: none; }
+    .ws-card.active .ws-toggle svg { display: block; }
+
+    .ws-card-desc {
+      font-size: 0.78rem;
+      color: var(--stone);
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+
+    .ws-card-fee {
+      font-family: var(--heading);
+      font-size: 1rem;
+      color: var(--pink);
+    }
+
+    .ws-card-fee-sub {
+      font-size: 0.7rem;
+      color: var(--mist);
+      margin-top: 2px;
+    }
+
+    .ws-admin-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px solid var(--ash);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+    }
+
+    .ws-admin-label {
+      color: var(--stone);
+    }
+
+    .ws-admin-label strong { color: var(--navy); }
+
+    .ws-admin-fee {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: var(--navy);
+      transition: color 0.2s ease;
+    }
+
+    .ws-admin-fee.active { color: var(--pink); }
+
+    .ws-none-warning {
+      display: none;
+      font-size: 0.75rem;
+      color: #c0392b;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    .ws-none-warning.visible { display: block; }
+
+    @media (max-width: 700px) {
+      .doc-inner { padding: 1.5rem; }
+      .sig-grid { grid-template-columns: 1fr; }
+      .parties-grid { grid-template-columns: 1fr; }
+      .ws-grid { grid-template-columns: 1fr; }
+      .site-header { padding: 0.75rem 1rem; }
+      .progress-bar-wrap { padding: 0.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- STICKY HEADER -->
+<header class="site-header">
+  <a href="https://mexzungu.com" class="logo-wrap">
+    <img src="/logo-v3.png" alt="Mexzungu Group">
+  </a>
+  <div class="header-meta">
+    <h1>Engagement Letter</h1>
+    <p>HavenPay x Mexzungu Group &nbsp;|&nbsp; 2026</p>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="step done" id="step-pepe">
+      <span class="step-dot"></span>
+      <span>Pepe Carrillo</span>
+    </div>
+    <span class="step-sep">›</span>
+    <div class="step pending" id="step-yoeal">
+      <span class="step-dot"></span>
+      <span>Yoeal Haile</span>
+    </div>
+  </div>
+  <div class="progress-label" id="progress-label"><strong>1</strong> of 2 signatures collected</div>
+</div>
+
+<!-- MAIN PAGE -->
+<div class="page-wrap">
+  <div class="doc-card" id="document-root">
+    <div class="doc-top-stripe"></div>
+    <div class="doc-inner">
+
+      <!-- Wordmark -->
+      <div class="doc-wordmark">
+        <img src="/logo-v3.png" alt="Mexzungu Group">
+        <div class="doc-wordmark-text">
+          <span>Mexzungu Venture Architecture</span>
+          <span>Outlaw Studio. Chaos starts companies. Structure builds them.</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="doc-title">Engagement Letter — HavenPay</h1>
+      <p class="doc-subtitle">Dated <span id="el-date">May 2026</span></p>
+
+      <!-- Parties -->
+      <div class="parties-grid">
+        <div class="party-block">
+          <div class="party-label">The Client</div>
+          <div class="party-name">HavenPay</div>
+          <div class="party-detail">Represented by Yoeal Haile (CEO &amp; Founder).<br><a href="mailto:yoeal@havenpay.io" style="color:var(--pink);text-decoration:none;">yoeal@havenpay.io</a></div>
+        </div>
+        <div class="party-block">
+          <div class="party-label">The Studio</div>
+          <div class="party-name">Mexzungu Group Ltd</div>
+          <div class="party-detail">A Mauritius company. Royal Road, Henrietta, 73120, Mauritius.<br>Signing through Pepe Carrillo (Chief Disruption Officer).<br><a href="mailto:pepe@mexzungu.com" style="color:var(--pink);text-decoration:none;">pepe@mexzungu.com</a></div>
+        </div>
+      </div>
+
+      <div class="doc-date-line">Dated: <span id="el-date2">May 2026</span></div>
+
+      <!-- BODY -->
+      <div class="doc-body">
+
+        <p class="intro-q">Why does this letter exist?</p>
+        <p>Because handshakes are beautiful and engagement letters are how the universe remembers them. We talked about the architecture, liked what we saw, and agreed on the shape of the work. This letter captures that shape: what we are doing, what we are not, what it costs, and how we treat each other if anything ever wobbles. Read it, sign it, and get to work.</p>
+
+        <h2>Where does the Studio sit, geographically and legally?</h2>
+        <p>The Studio is a Mauritius outfit. We work out of our registered office on the island and deliver from there to wherever HavenPay happens to be operating. Pepe signs as the Studio Chief Disruption Officer. None of what follows means we have set up shop, opened a branch, or started practising law in Kenya, Uganda, Delaware, or anywhere else. We are the visiting architects, not the local lawyers.</p>
+
+        <h2>1. What are we working on together?</h2>
+        <p>HavenPay is building two things simultaneously. HavenPay Foundation receives grant capital from DFIs, foundations, and UNHCR to fund the Refugee Financial Identity Stack and community infrastructure. HavenPay Technologies owns the platform, IP, and the Choice Bank BaaS relationship, holds the cap table, and generates revenue. The dual-entity model is the right architecture. The problem is that the architecture in your head is not yet the same as a legally defensible, investor-ready structure. That gap is what we close.</p>
+
+        <p>This engagement covers two workstreams. You activate the ones you need. Both are defined below. The workstreams you are signing up for are confirmed in the activation section before your signature.</p>
+
+        <div class="sub-item"><strong>Workstream 1: Venture Architecture.</strong> A full architecture blueprint covering entity structure, governance, IP licensing framework, fundraising architecture, and investor narrative. Four decision-ready deliverables, delivered within 4 weeks of engagement start.</div>
+        <div class="sub-item"><strong>Workstream 2: Deal Closing.</strong> We are in the room with you on the capital raise. First investor call, term sheet negotiation, and closing call, always. Available on 48 hours notice for anything else that surfaces before money clears.</div>
+
+        <h2>2. What do you actually walk away with?</h2>
+        <p style="font-size:0.82rem;color:var(--mist);margin-bottom:0.8rem;">Workstream 1 only. Each deliverable is a decision-ready document, not a deck.</p>
+        <div class="sub-item"><strong>Entity Architecture Memo.</strong> Confirmed entity map (Foundation jurisdiction analysis + Technologies HoldCo jurisdiction recommendation — Delaware vs Mauritius vs BVI), governance structure for each entity, which entity employs who, owns what, and receives what, with specific reference to the Choice Bank BaaS relationship, and regulatory requirements across Kenya, Uganda, and the HoldCo jurisdiction.</div>
+        <div class="sub-item"><strong>IP Licensing Framework.</strong> Full IP asset inventory covering HavenScore, the Refugee Financial Identity Stack, transaction data protocols, identity verification methodology, platform technology, and brand. Licensing terms defensible to a DFI grant officer and a Series A investor simultaneously. Carve-outs for open-access grant deliverables.</div>
+        <div class="sub-item"><strong>Fundraising Architecture.</strong> Capital flow diagram, grant receipt pathway, pre-seed instrument recommendation (SAFE vs convertible note vs priced round), cap table design, and DFI debt facility pathway.</div>
+        <div class="sub-item"><strong>Investor Narrative Brief.</strong> One page. Three audiences: a Systems Disruptor family office, a DFI or foundation grant officer, a future Series A institutional investor.</div>
+
+        <h2>3. What are we assuming going in?</h2>
+        <p>We are building this engagement on a few working assumptions. If anything shifts materially, we talk and adjust.</p>
+        <div class="sub-item"><strong>(a) IP is not yet formally assigned.</strong> We assume the relevant IP assets have not yet been formally vested in any entity. Phase 1 will map what exists and how to vest it cleanly. If prior assignments have been made, share them and we adjust the scope accordingly.</div>
+        <div class="sub-item"><strong>(b) What we need from you.</strong> When we ask for existing documents, term sheets, investor materials, or corporate records, we need them within 5 business days. If things come in late, the clock adjusts accordingly.</div>
+        <div class="sub-item"><strong>(c) Governing entity.</strong> HavenPay Technologies as a formal legal entity may not yet be incorporated at the time of signing. This engagement is entered into between Mexzungu Group Ltd and Yoeal Haile, with the understanding that Phase 1 deliverables will inform the final entity selection and formation in Phase 2.</div>
+
+        <h2>4. What are we not doing?</h2>
+        <div class="sub-item">(a) Filing anything with any court, registry, notary, or government office, anywhere.</div>
+        <div class="sub-item">(b) Being your lawyer of record in Kenya, Uganda, Delaware, or anywhere else.</div>
+        <div class="sub-item">(c) Representing you in front of investors or counterparties unless you give us a written mandate to do so.</div>
+        <div class="sub-item">(d) Replacing your local lawyers. For execution in your chosen jurisdictions, you will need qualified local counsel. We can point you toward good people.</div>
+        <div class="sub-item">(e) Anything that is not in sections 1 and 2 above.</div>
+
+        <h2>5. Is this legal advice?</h2>
+        <p>No. This is legal consulting. We give you the architecture, the risks, and the playbook. We do not file papers, sign legal opinions, or appear in court. Think of us as the friend who has closed a few billion in deals across a bunch of countries, sitting next to you at the table, telling you what to look out for.</p>
+
+        <h2>6. What does this cost?</h2>
+        <div class="sub-item"><strong>Administration fee — billed monthly from day one.</strong> While any workstream is open, a monthly admin fee is invoiced automatically: $500 per month for one active workstream, $900 per month for two. This is not a retainer or a discretionary line item. It is how the engagement is administered and invoiced. It stops the day the last active workstream closes.</div>
+        <div class="sub-item"><strong>Workstream 2 success fee — payable when capital clears.</strong> 2% of equity raised, or 1% of any debt facility. Payable within 14 days of money clearing. The admin fee runs in parallel throughout — the success fee is the additional charge triggered by the outcome. Applies to capital closed within 12 months of engagement start. If the engagement ends early and a deal closes within 6 months with a party we worked with during the engagement, the success fee still applies.</div>
+
+        <h2>7. How do you pay?</h2>
+        <p>Bank transfer to:</p>
+        <div class="bank-block">
+          <div class="bank-row"><span class="bank-label">Beneficiary</span><span class="bank-val">Mexzungu Group Ltd</span></div>
+          <div class="bank-row"><span class="bank-label">Bank</span><span class="bank-val">Mauritius Commercial Bank (MCB)</span></div>
+          <div class="bank-row"><span class="bank-label">Account Number</span><span class="bank-val">000448521954</span></div>
+          <div class="bank-row"><span class="bank-label">IBAN</span><span class="bank-val">MU49MCBL0901000448521954000USD</span></div>
+          <div class="bank-row"><span class="bank-label">SWIFT/BIC</span><span class="bank-val">MCBLMUMU</span></div>
+          <div class="bank-row"><span class="bank-label">Bank address</span><span class="bank-val">Sir William Newton Street, Port Louis, Mauritius</span></div>
+        </div>
+        <p>We invoice at each milestone. You have 30 days from invoice date to pay.</p>
+
+        <h2>8. What happens if something goes wrong?</h2>
+        <p>If something goes sideways and you come after us, the most we are on the hook for is the cash you have actually paid us at that point. Not hypothetical future fees, not consequential losses. The two things we cannot contractually cap are fraud and willful misconduct. We are not planning on either.</p>
+
+        <h2>9. Who else sees what we discuss?</h2>
+        <p>Nobody. What happens in this engagement stays in this engagement. You do not share our memos, analysis, or thinking outside this engagement without our permission. We do not share your business, structure, or strategy with anyone. This commitment does not expire when the engagement does.</p>
+
+        <h2>10. Can the Studio talk about this work later?</h2>
+        <p>Yes, in general terms. Once everything is public or done, we might say something like "we helped a refugee fintech build the architecture for a dual-entity structure and capital raise." We will never name HavenPay, share your documents, or say anything specific without your written permission.</p>
+
+        <h2>11. How long does this last?</h2>
+        <p>We start on the date at the top and keep going until one of these happens first: (a) All active workstreams are complete and all fees are settled. (b) Twelve months have passed. (c) One of us tells the other in writing that we are done, for any reason or no reason, with 14 days notice. Individual workstreams can be closed independently by written agreement without ending the full engagement. If we stop early, everything delivered stays delivered. Everything earned stays earned. Confidentiality survives.</p>
+
+        <h2>12. Which law applies if we ever disagree?</h2>
+        <p>Mauritius law. If we cannot sort it out between ourselves, it goes to the Supreme Court of Mauritius (Commercial Division). We are not expecting to need this. It is here so neither of us ever has to wonder.</p>
+
+        <h2>13. What are the service standards?</h2>
+        <p>Our response times, call availability, deliverable revision policy, and mutual obligations are published at <a href="https://mexzungu.com/sla" style="color:var(--pink);text-decoration:none;font-weight:500;">mexzungu.com/sla</a>. That document is incorporated into this engagement by reference. If we update it materially, we will notify you in writing before the change takes effect.</p>
+
+      </div>
+
+      <!-- WORKSTREAM ACTIVATION -->
+      <div class="ws-activate-section">
+        <div class="ws-activate-header">
+          <h3>Activate your workstreams</h3>
+          <p>Select the workstreams you are signing up for. You must activate at least one to proceed.</p>
+        </div>
+        <div class="ws-grid">
+
+          <div class="ws-card" id="ws-card-1" onclick="toggleWS(1)">
+            <div class="ws-card-top">
+              <div>
+                <div class="ws-card-label">Workstream 1</div>
+                <div class="ws-card-name">Venture Architecture</div>
+              </div>
+              <div class="ws-toggle" id="ws-toggle-1">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <p class="ws-card-desc">Entity architecture, IP licensing framework, fundraising architecture, investor narrative brief. Four deliverables in 4 weeks.</p>
+            <div class="ws-card-fee">$10,000</div>
+            <div class="ws-card-fee-sub">Flat fee. 50% on signing, 50% on delivery.</div>
+          </div>
+
+          <div class="ws-card" id="ws-card-2" onclick="toggleWS(2)">
+            <div class="ws-card-top">
+              <div>
+                <div class="ws-card-label">Workstream 2</div>
+                <div class="ws-card-name">Deal Closing</div>
+              </div>
+              <div class="ws-toggle" id="ws-toggle-2">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <p class="ws-card-desc">We are in the room on every investor call, term sheet negotiation, and closing. 48-hour availability throughout the raise.</p>
+            <div class="ws-card-fee">2% equity &nbsp;/&nbsp; 1% debt</div>
+            <div class="ws-card-fee-sub">Success fee when capital clears. Admin fee runs from day one.</div>
+          </div>
+
+        </div>
+
+        <div class="ws-admin-bar">
+          <span class="ws-admin-label"><strong>Monthly administration fee</strong> — billed while workstreams are open, stops when they close</span>
+          <span class="ws-admin-fee" id="ws-admin-fee-display">Select a workstream</span>
+        </div>
+        <div class="ws-none-warning" id="ws-none-warning">Please activate at least one workstream before signing.</div>
+      </div>
+
+      <!-- SIGNATURE SECTION -->
+      <div class="sig-section" id="sig-section">
+        <div class="sig-section-header">
+          <h3>Signatures</h3>
+          <span class="sig-section-note">Both parties must sign to complete the agreement.</span>
+        </div>
+
+        <div class="sig-grid">
+
+          <!-- PEPE — already signed -->
+          <div class="sig-block signed" id="block-pepe">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Pepe Carrillo</div>
+                <div class="signer-title">Chief Disruption Officer, Mexzungu Group Ltd</div>
+              </div>
+              <div class="signed-badge">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Signed
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-display">
+                <span class="sig-cursive">Pepe Carrillo</span>
+              </div>
+              <div class="sig-meta">Signed: <span id="pepe-sign-date">May 2026</span></div>
+            </div>
+          </div>
+
+          <!-- YOEAL HAILE -->
+          <div class="sig-block" id="block-yoeal">
+            <div class="sig-block-head">
+              <div>
+                <div class="signer-name">Yoeal Haile</div>
+                <div class="signer-title">CEO &amp; Founder, HavenPay</div>
+              </div>
+            </div>
+            <div class="sig-block-body">
+              <div class="sig-canvas-wrap">
+                <canvas class="sig-pad" id="canvas-yoeal"></canvas>
+                <span class="sig-watermark" id="wm-yoeal">Sign here</span>
+              </div>
+              <div class="sig-controls">
+                <button class="sig-clear-btn" onclick="clearSig('yoeal')">Clear</button>
+                <div class="sig-email-wrap">
+                  <label for="email-yoeal">Email</label>
+                  <input type="email" id="email-yoeal" placeholder="your@email.com" oninput="updateApplyBtn('yoeal')">
+                </div>
+                <div class="sig-date-wrap">
+                  <label for="date-yoeal">Date</label>
+                  <input type="date" id="date-yoeal">
+                </div>
+                <div class="sig-agree-wrap">
+                  <input type="checkbox" id="agree-yoeal" onchange="updateApplyBtn('yoeal')">
+                  <label for="agree-yoeal">I have read and agree to all terms above.</label>
+                </div>
+                <button class="sig-apply-btn" id="apply-yoeal" disabled onclick="applySig('yoeal')">Apply Signature</button>
+              </div>
+              <div class="sig-applied-note">Signature applied.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COMPLETION PANEL -->
+        <div class="completion-wrap" id="completion-panel">
+          <h3>Engagement letter signed.</h3>
+          <p id="server-submit-status" style="font-size:0.85rem;color:var(--stone);margin-bottom:0.5rem;">Sending signed copy to Pepe...</p>
+          <p style="font-size:0.78rem;color:var(--mist);margin-bottom:1.25rem;">Download your copy for your records.</p>
+          <button class="btn-download" onclick="downloadPDF()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download Signed PDF
+          </button>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="doc-footer">
+        <p>Mexzungu Group Ltd &nbsp;|&nbsp; Royal Road, Henrietta, 73120, Mauritius</p>
+        <p><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> &nbsp;|&nbsp; <a href="https://mexzungu.com">mexzungu.com</a></p>
+      </div>
+
+    </div><!-- /doc-inner -->
+  </div><!-- /doc-card -->
+</div><!-- /page-wrap -->
+
+<script>
+  // ── CONFIG ──
+  var DOC_ID = 'havenpay-el';
+  var DOC_TITLE = 'Engagement Letter — HavenPay x Mexzungu Group';
+  var DOC_TYPE = 'Engagement Letter';
+  var DOC_PARTIES = ['HavenPay', 'Mexzungu Group Ltd'];
+  var SIGNERS = ['yoeal'];
+  var SIGNER_META = {
+    yoeal: { name: 'Yoeal Haile', role: 'CEO & Founder, HavenPay' }
+  };
+  var PRE_SIGNED = [{ name: 'Pepe Carrillo', role: 'Chief Disruption Officer, Mexzungu Group Ltd', signed_at: 'May 2026' }];
+  var API_BASE = 'https://api.mexzungu.com';
+
+  // ── STATE ──
+  var signed = { yoeal: false };
+  var pads = {};
+
+  // ── INIT DATE FIELDS ──
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('date-yoeal').value = today;
+  (function() {
+    var d = new Date();
+    var opts = { year: 'numeric', month: 'long', day: 'numeric' };
+    var dateStr = d.toLocaleDateString('en-GB', opts);
+    document.getElementById('el-date').textContent = dateStr;
+    document.getElementById('el-date2').textContent = dateStr;
+    document.getElementById('pepe-sign-date').textContent = dateStr;
+  })();
+
+  // ── WORKSTREAM ACTIVATION ──
+  var wsActive = { 1: false, 2: false };
+  var adminFees = { 0: null, 1: '$500 / mo', 2: '$900 / mo' };
+
+  function toggleWS(n) {
+    wsActive[n] = !wsActive[n];
+    var card = document.getElementById('ws-card-' + n);
+    card.classList.toggle('active', wsActive[n]);
+    updateAdminFee();
+    updateApplyBtn('yoeal');
+    document.getElementById('ws-none-warning').classList.remove('visible');
+  }
+
+  function activeCount() {
+    return (wsActive[1] ? 1 : 0) + (wsActive[2] ? 1 : 0);
+  }
+
+  function updateAdminFee() {
+    var n = activeCount();
+    var display = document.getElementById('ws-admin-fee-display');
+    if (n === 0) {
+      display.textContent = 'Select a workstream';
+      display.classList.remove('active');
+    } else {
+      display.textContent = adminFees[n];
+      display.classList.add('active');
+    }
+  }
+
+  // ── INIT SIGNATURE PADS ──
+  function initPad(id) {
+    var canvas = document.getElementById('canvas-' + id);
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    var pad = new SignaturePad(canvas, { minWidth: 1, maxWidth: 2.5, penColor: '#1a1a2e' });
+    pad.addEventListener('beginStroke', function() {
+      document.getElementById('wm-' + id).style.display = 'none';
+    });
+    pad.addEventListener('afterUpdateStroke', function() { updateApplyBtn(id); });
+    pads[id] = pad;
+  }
+
+  initPad('yoeal');
+
+  function clearSig(id) {
+    pads[id].clear();
+    document.getElementById('wm-' + id).style.display = '';
+    updateApplyBtn(id);
+  }
+
+  function updateApplyBtn(id) {
+    if (signed[id]) return;
+    var agreed = document.getElementById('agree-' + id).checked;
+    var hasStroke = !pads[id].isEmpty();
+    var hasEmail = document.getElementById('email-' + id).value.includes('@');
+    document.getElementById('apply-' + id).disabled = !(agreed && hasStroke && hasEmail && activeCount() > 0);
+  }
+
+  function markBlockSigned(id, dateStr) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+    document.getElementById('progress-label').innerHTML = '<strong>2</strong> of 2 signatures collected';
+  }
+
+  function markBlockPreviouslySigned(id, sigData) {
+    signed[id] = true;
+    var block = document.getElementById('block-' + id);
+    block.classList.add('applied', 'signed');
+    var head = block.querySelector('.sig-block-head');
+    head.style.background = 'var(--success)';
+    if (!head.querySelector('.signed-badge')) {
+      var badge = document.createElement('div');
+      badge.className = 'signed-badge';
+      badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Signed';
+      head.appendChild(badge);
+    }
+    var body = block.querySelector('.sig-block-body');
+    body.innerHTML = '<div class="sig-display"><span class="sig-cursive">' + (sigData.name || SIGNER_META[id].name) + '</span></div>' +
+      '<div class="sig-meta">Signed: ' + (sigData.signed_at || '') + '</div>';
+    var step = document.getElementById('step-' + id);
+    if (step) { step.classList.remove('pending'); step.classList.add('done'); }
+  }
+
+  async function applySig(id) {
+    if (activeCount() === 0) {
+      document.getElementById('ws-none-warning').classList.add('visible');
+      document.querySelector('.ws-activate-section').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    if (pads[id].isEmpty()) return;
+    var email = document.getElementById('email-' + id).value.trim();
+    if (!email) return;
+
+    var btn = document.getElementById('apply-' + id);
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+
+    markBlockSigned(id, document.getElementById('date-' + id).value);
+
+    var activeWS = [];
+    if (wsActive[1]) activeWS.push('WS1: Venture Architecture');
+    if (wsActive[2]) activeWS.push('WS2: Deal Closing');
+
+    var payload = {
+      document_id: DOC_ID,
+      signer_id: id,
+      signer_name: SIGNER_META[id].name,
+      signer_role: SIGNER_META[id].role,
+      signer_email: email,
+      image_data: pads[id].toDataURL('image/png'),
+      signed_at: document.getElementById('date-' + id).value,
+      title: DOC_TITLE,
+      document_type: DOC_TYPE,
+      parties: DOC_PARTIES,
+      required_signers: SIGNERS,
+      pre_signed: PRE_SIGNED,
+      extra_meta: { active_workstreams: activeWS, admin_fee: adminFees[activeCount()] }
+    };
+
+    try {
+      var resp = await fetch(API_BASE + '/signing/partial-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await resp.json();
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+        setTimeout(function() {
+          document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    } catch (err) {
+      console.error('Partial save failed:', err);
+    }
+
+    if (signed.yoeal) {
+      document.getElementById('completion-panel').classList.add('visible');
+      setTimeout(function() {
+        document.getElementById('completion-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    }
+  }
+
+  async function loadSigningStatus() {
+    try {
+      var resp = await fetch(API_BASE + '/signing/status/' + DOC_ID);
+      var data = await resp.json();
+      for (var sid in data.signatures) {
+        if (SIGNERS.indexOf(sid) !== -1 && !signed[sid]) {
+          markBlockPreviouslySigned(sid, data.signatures[sid]);
+        }
+      }
+      if (data.all_complete) {
+        var statusEl = document.getElementById('server-submit-status');
+        statusEl.innerHTML = '<span style="color:var(--success)">&#10003; All signed. PDF sent to all parties.</span>';
+        document.getElementById('completion-panel').classList.add('visible');
+      }
+    } catch (err) {
+      console.warn('Could not load signing status:', err);
+    }
+  }
+
+  loadSigningStatus();
+
+  async function downloadPDF() {
+    var btn = document.querySelector('.btn-download');
+    btn.textContent = 'Generating...';
+    btn.disabled = true;
+    try {
+      var el = document.getElementById('document-root');
+      var canvas = await html2canvas(el, { scale: 1.5, useCORS: true, logging: false, backgroundColor: '#ffffff' });
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+      var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
+      var pageW = pdf.internal.pageSize.getWidth();
+      var pageH = pdf.internal.pageSize.getHeight();
+      var ratio = pageW / canvas.width;
+      var scaledH = canvas.height * ratio;
+      var y = 0;
+      while (y < scaledH) {
+        if (y > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, -y, pageW, scaledH);
+        y += pageH;
+      }
+      var dateStr = new Date().toISOString().split('T')[0];
+      pdf.save('HavenPay_MexzunguGroup_EL_Signed_' + dateStr + '.pdf');
+    } catch (e) {
+      console.error(e);
+      alert('PDF generation failed. Please screenshot the page manually.');
+    }
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download Signed PDF';
+    btn.disabled = false;
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Ayembe Loan Restructuring Proposal | Mexzungu Group</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --bg-primary:     #0d0d0d;
+            --bg-card:        #1a1a1a;
+            --text-primary:   #fafafa;
+            --text-secondary: #9a8f88;
+            --text-muted:     #6b5e57;
+            --text-accent:    #e86fa0;
+            --border:         #2a2a2a;
+            --border-hover:   #e14b87;
+            --nav-bg:         rgba(13, 13, 13, 0.92);
+        }
+        #pw-gate {
+            position: fixed; inset: 0; background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 3rem 2.5rem; max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.6rem; color: #fafafa; margin-bottom: 0.6rem; line-height: 1.2; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem; background: #0d0d0d; border: 1px solid #2a2a2a;
+            border-radius: 6px; color: #fafafa; font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center;
+            transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .pw-input:focus { outline: none; border-color: #e14b87; box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem; background-color: #e14b87;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pw-btn:hover { background-color: #e86fa0; transform: scale(1.02); }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+        .pw-footer-note { font-size: 0.75rem; color: #4a4a4a; margin-top: 2rem; }
+
+        #proposal-content { display: none; }
+        #proposal-content.visible { display: block; }
+        body { background: #0d0d0d; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: var(--nav-bg); backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1a1a1a; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        nav img { height: 32px; }
+        .nav-cta {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700;
+            color: #e14b87; text-decoration: none; letter-spacing: 0.05em;
+        }
+
+        .proposal-hero {
+            min-height: 55vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 10rem 2rem 4rem; max-width: 1100px; margin: 0 auto;
+        }
+        .hero-tag {
+            font-family: 'Rock Salt', cursive; font-size: 0.75rem;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: #e14b87; margin-bottom: 1.5rem; opacity: 0.85;
+        }
+        .proposal-hero h1 {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(2.6rem, 5.5vw, 4.4rem); font-weight: 400;
+            line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 1.2rem; color: #fafafa;
+        }
+        .hero-subtext {
+            font-size: 1.15rem; color: #9a8f88; font-style: italic; margin-bottom: 1rem;
+        }
+        .valid-note { font-size: 0.85rem; color: #6b5e57; letter-spacing: 0.05em; }
+
+        .prop-section { padding: 4rem 2rem; max-width: 900px; margin: 0 auto; }
+        .prop-section + .prop-section { border-top: 1px solid #1e1e1e; }
+        .prop-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .prop-heading {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 400;
+            color: #fafafa; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 1.5rem;
+        }
+        .prop-copy { font-size: 1.05rem; color: #9a8f88; line-height: 1.85; max-width: 680px; }
+        .prop-copy strong { color: #c8c0bb; font-weight: 600; }
+
+        .bolt-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+        .bolt-list li {
+            font-size: 0.95rem; color: #9a8f88; padding: 0.75rem 0;
+            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.8rem; line-height: 1.7;
+        }
+        .bolt-list li:last-child { border: none; }
+        .bolt-list li::before {
+            content: '';
+            display: inline-block; width: 10px; height: 16px; flex-shrink: 0; margin-top: 0.25rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .bolt-list li strong { color: #fafafa; }
+
+        .safe-banner {
+            background: linear-gradient(135deg, rgba(225,75,135,0.08) 0%, rgba(225,75,135,0.03) 100%);
+            border: 1px solid rgba(225,75,135,0.25); border-radius: 12px;
+            padding: 2rem 2rem; margin-top: 2rem;
+            display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;
+        }
+        .safe-banner-icon {
+            font-family: 'Rock Salt', cursive; font-size: 1.1rem;
+            color: #e14b87; letter-spacing: 0.05em; flex-shrink: 0;
+        }
+        .safe-banner-body { flex: 1; min-width: 240px; }
+        .safe-banner-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 700;
+            color: #fafafa; margin-bottom: 0.4rem;
+        }
+        .safe-banner-desc { font-size: 0.9rem; color: #9a8f88; line-height: 1.7; }
+        .safe-banner-amount {
+            font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700;
+            color: #e14b87; flex-shrink: 0; text-align: right;
+        }
+        .safe-banner-amount-label { font-size: 0.7rem; color: #6b5e57; letter-spacing: 0.15em; text-transform: uppercase; text-align: right; margin-top: 0.2rem; }
+
+        .rate-pill {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(78,194,122,0.12); border: 1px solid rgba(78,194,122,0.3);
+            border-radius: 20px; padding: 0.35rem 1rem; margin-top: 1.5rem;
+        }
+        .rate-pill-dot { width: 8px; height: 8px; background: #4ec27a; border-radius: 50%; }
+        .rate-pill-text {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 700;
+            color: #4ec27a; letter-spacing: 0.03em;
+        }
+
+        .calc-wrap {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 2.5rem 2rem; margin-top: 2rem;
+        }
+        .calc-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+        .calc-header-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: #6b5e57; font-weight: 600; }
+        .calc-term-display {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fafafa;
+        }
+        .calc-term-display span { color: #e14b87; }
+        .calc-term-years { font-size: 0.9rem; color: #6b5e57; margin-left: 0.5rem; font-weight: 400; }
+
+        .slider-wrap { position: relative; padding: 0.5rem 0 2.5rem; }
+        input[type="range"].slider {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 8px; background: #2a2a2a; border-radius: 4px;
+            outline: none; cursor: pointer;
+        }
+        input[type="range"].slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 24px; height: 24px; background: #e14b87; border-radius: 50%;
+            cursor: pointer; border: 3px solid #fafafa;
+        }
+        input[type="range"].slider::-moz-range-thumb {
+            width: 24px; height: 24px; background: #e14b87; border-radius: 50%;
+            cursor: pointer; border: 3px solid #fafafa;
+        }
+        .tier-marks {
+            position: relative; height: 30px; margin-top: 0.25rem;
+        }
+        .tier-mark {
+            position: absolute; top: 12px;
+            transform: translateX(-50%);
+            font-size: 0.65rem; color: #6b5e57; letter-spacing: 0.1em;
+        }
+        .tier-mark::before {
+            content: ''; display: block; width: 1px; height: 8px; background: #4a4a4a;
+            margin: 0 auto 4px;
+        }
+
+        .calc-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }
+        @media (max-width: 600px) { .calc-results { grid-template-columns: 1fr; } }
+        .calc-result-card {
+            background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 10px;
+            padding: 1.2rem 1rem; text-align: center;
+        }
+        .calc-result-label {
+            font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+            color: #6b5e57; margin-bottom: 0.5rem;
+        }
+        .calc-result-value {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fafafa; line-height: 1.1;
+        }
+        .calc-result-sub { font-size: 0.75rem; color: #4a4a4a; margin-top: 0.3rem; }
+
+        .cta-section {
+            padding: 5rem 2rem; text-align: center; max-width: 700px; margin: 0 auto;
+            border-top: 1px solid #1e1e1e;
+        }
+        .cta-section .prop-heading { margin-bottom: 1rem; }
+        .cta-btn {
+            display: inline-block; padding: 1rem 2.5rem;
+            background-color: #e14b87; color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem;
+            border-radius: 8px; text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .cta-btn:hover { background-color: #e86fa0; transform: translateY(-2px); }
+        .cta-note { font-size: 0.8rem; color: #4a4a4a; margin-top: 1.2rem; }
+    </style>
+</head>
+<body>
+
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" class="pw-logo" onerror="this.style.display='none'">
+        <p class="pw-label">Confidential proposal</p>
+        <h2 class="pw-heading">Ayembe Loan Restructuring</h2>
+        <p class="pw-sub">This proposal is private. Enter the access code to continue.</p>
+        <input type="password" class="pw-input" id="pw-input" placeholder="Access code" autocomplete="off">
+        <button class="pw-btn" onclick="checkPw()">Open proposal</button>
+        <p class="pw-error" id="pw-error"></p>
+        <p class="pw-footer-note">Mexzungu Group Ltd. Confidential. Not for distribution.</p>
+    </div>
+</div>
+
+<div id="proposal-content">
+
+    <nav>
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" onerror="this.style.display='none'">
+        <a href="/sign/ayembe" class="nav-cta">Review and Sign &rarr;</a>
+    </nav>
+
+    <div class="proposal-hero">
+        <p class="hero-tag">Loan restructuring proposal</p>
+        <h1>Ayembe Loan Restructuring Proposal</h1>
+        <p class="hero-subtext">A clean slate. A fixed rate. You pick the pace.</p>
+        <p class="valid-note">Prepared for Alex Kalanda / Ayembe. July 2026.</p>
+    </div>
+
+    <div class="prop-section">
+        <p class="prop-label">The terms, in one page</p>
+        <h2 class="prop-heading">Principal stays. Interest converts. Fixed rate.</h2>
+        <p class="prop-copy">
+            The original 2021 loan is being restructured cleanly. The <strong>principal stays at USD 35,000</strong> and carries a single fixed rate of 10% p.a., compounding quarterly. All accrued interest from 2021 to today converts into a <strong>SAFE</strong> that only pays out if you close a priced equity round in any Ayembe business over the next ten years. Repayment starts October 1, 2026. No early repayment penalties.
+        </p>
+        <ul class="bolt-list">
+            <li><strong>Principal:</strong> USD 35,000, repaid in equal quarterly instalments over a term you choose (between 4 and 40 quarters).</li>
+            <li><strong>Fixed rate:</strong> 10% per annum, compounding quarterly. One rate. No tiers.</li>
+            <li><strong>SAFE for accrued interest:</strong> USD 23,570 converts at a 25% discount at the next priced equity round in any business you control, valid for 10 years.</li>
+            <li><strong>No early repayment penalties:</strong> pay down faster whenever cash flow allows, with 5 days notice.</li>
+            <li><strong>First payment:</strong> October 1, 2026, then quarterly on the 1st.</li>
+            <li><strong>Governing law:</strong> Mauritius. MARC arbitration.</li>
+        </ul>
+
+        <div class="safe-banner">
+            <div class="safe-banner-icon">SAFE</div>
+            <div class="safe-banner-body">
+                <div class="safe-banner-title">Accrued interest becomes equity upside</div>
+                <div class="safe-banner-desc">All interest accumulated since June 2021 is forgiven as a cash obligation and converted into a Simple Agreement for Future Equity. If Ayembe Talent Solutions or any business you control raises a priced round, this SAFE converts at a 25% discount. If no round happens within 10 years, the SAFE expires and the amount is forgiven outright.</div>
+            </div>
+            <div>
+                <div class="safe-banner-amount">$23,570</div>
+                <div class="safe-banner-amount-label">SAFE amount / 25% discount</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="prop-section">
+        <p class="prop-label">Pick your term</p>
+        <h2 class="prop-heading">Move the slider. See the numbers.</h2>
+        <p class="prop-copy">
+            10% p.a. compounding quarterly, regardless of term. Move the slider to find the quarterly payment that works for your cash flow. These are real numbers.
+        </p>
+
+        <div class="rate-pill">
+            <span class="rate-pill-dot"></span>
+            <span class="rate-pill-text">Fixed 10% p.a. compounding quarterly</span>
+        </div>
+
+        <div class="calc-wrap">
+            <div class="calc-header">
+                <span class="calc-header-label">Chosen term</span>
+                <div class="calc-term-display">
+                    <span id="term-quarters">20</span> quarters
+                    <span class="calc-term-years" id="term-years">(5 years)</span>
+                </div>
+            </div>
+
+            <div class="slider-wrap">
+                <input type="range" min="4" max="40" step="1" value="20" class="slider" id="term-slider" oninput="updateCalc()">
+                <div class="tier-marks">
+                    <div class="tier-mark" style="left: 0%;">4</div>
+                    <div class="tier-mark" style="left: 16.67%;">10</div>
+                    <div class="tier-mark" style="left: 44.44%;">20</div>
+                    <div class="tier-mark" style="left: 66.67%;">28</div>
+                    <div class="tier-mark" style="left: 100%;">40</div>
+                </div>
+            </div>
+
+            <div class="calc-results">
+                <div class="calc-result-card">
+                    <div class="calc-result-label">Quarterly payment</div>
+                    <div class="calc-result-value" id="quarterly-payment">$2,245</div>
+                    <div class="calc-result-sub">USD, each quarter</div>
+                </div>
+                <div class="calc-result-card">
+                    <div class="calc-result-label">Total to repay</div>
+                    <div class="calc-result-value" id="total-repaid">$44,900</div>
+                    <div class="calc-result-sub">principal plus interest</div>
+                </div>
+                <div class="calc-result-card">
+                    <div class="calc-result-label">Total interest</div>
+                    <div class="calc-result-value" id="total-interest">$9,900</div>
+                    <div class="calc-result-sub">above principal</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <p class="prop-label">Next step</p>
+        <h2 class="prop-heading">Ready to sign?</h2>
+        <p class="prop-copy" style="margin: 0 auto 2.5rem;">Choose your term on the sign page and finalise the restructuring. First payment due October 1, 2026.</p>
+        <a href="/sign/ayembe" class="cta-btn">Review and Sign &rarr;</a>
+        <p class="cta-note">Questions? Reach Pepe at pepe@mexzungu.com.</p>
+    </div>
+
+</div>
+
+<script>
+    const CORRECT_PW = 'ayembe2026';
+    const MASTER_PW = 'outlaw-master-2026';
+    const SESSION_KEY = 'ayembe_access';
+
+    function checkPw() {
+        const val = document.getElementById('pw-input').value.trim().toLowerCase();
+        if (val === CORRECT_PW || val === MASTER_PW) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            document.getElementById('pw-gate').classList.add('hidden');
+            document.getElementById('proposal-content').classList.add('visible');
+        } else {
+            const inp = document.getElementById('pw-input');
+            inp.classList.add('error');
+            document.getElementById('pw-error').textContent = 'Incorrect access code.';
+            setTimeout(() => inp.classList.remove('error'), 350);
+        }
+    }
+    document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('proposal-content').classList.add('visible');
+    }
+
+    const PRINCIPAL = 35000;
+    const RATE = 0.10;
+
+    function formatUSD(n) {
+        return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function yearsLabel(q) {
+        const years = q / 4;
+        if (Number.isInteger(years)) return '(' + years + (years === 1 ? ' year' : ' years') + ')';
+        const wholeYears = Math.floor(years);
+        const months = Math.round((years - wholeYears) * 12);
+        return '(' + (wholeYears > 0 ? wholeYears + 'y ' : '') + months + 'mo)';
+    }
+
+    function updateCalc() {
+        const n = parseInt(document.getElementById('term-slider').value, 10);
+        const r = RATE / 4;
+        const pmt = PRINCIPAL * r / (1 - Math.pow(1 + r, -n));
+        const totalRepaid = pmt * n;
+        const totalInterest = totalRepaid - PRINCIPAL;
+
+        document.getElementById('term-quarters').textContent = n;
+        document.getElementById('term-years').textContent = yearsLabel(n);
+        document.getElementById('quarterly-payment').textContent = formatUSD(pmt);
+        document.getElementById('total-repaid').textContent = formatUSD(totalRepaid);
+        document.getElementById('total-interest').textContent = formatUSD(totalInterest);
+    }
+
+    updateCalc();
+</script>
+</body>
+</html>

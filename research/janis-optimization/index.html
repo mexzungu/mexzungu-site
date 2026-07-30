@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Janis Optimization | Mexzungu Research</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:#0a0a0a; --surface:#111111; --hover:#1a1a1a;
+      --pink:#E14B87; --pink-dim:#b83a6b;
+      --white:#ffffff; --muted:#888888; --border:#222222;
+      --font:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    }
+    body { background:var(--bg); color:var(--white); font-family:var(--font); line-height:1.7; }
+    .report-nav { position:sticky; top:0; z-index:100; background:rgba(10,10,10,0.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; }
+    .back-link { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:600; letter-spacing:0.03em; display:flex; align-items:center; gap:0.4rem; transition:color 0.15s; }
+    .back-link:hover { color:var(--white); }
+    .nav-brand { color:var(--muted); font-size:0.8rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none; }
+    .nav-brand:hover { color:var(--white); }
+    .report-wrap { display:grid; grid-template-columns:210px 1fr; gap:3rem; max-width:1060px; margin:0 auto; padding:3rem 2rem 5rem; }
+    @media (max-width:780px) { .report-wrap { grid-template-columns:1fr; } .toc-sidebar { display:none; } }
+    .toc-sidebar { position:sticky; top:5rem; align-self:start; }
+    .toc-sidebar h4 { color:var(--muted); font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.75rem; }
+    .toc-sidebar a { display:block; color:var(--muted); text-decoration:none; font-size:0.82rem; padding:0.3rem 0; border-left:2px solid var(--border); padding-left:0.75rem; margin-bottom:0.1rem; transition:all 0.15s; }
+    .toc-sidebar a:hover { color:var(--white); border-left-color:var(--pink); }
+    .cat-tag { display:inline-block; background:rgba(225,75,135,0.15); border:1px solid rgba(225,75,135,0.3); border-radius:4px; color:var(--pink); font-size:0.7rem; font-weight:700; letter-spacing:0.08em; padding:0.2rem 0.55rem; text-transform:uppercase; margin-bottom:1rem; }
+    .report-header { margin-bottom:2rem; }
+    .report-header h1 { font-size:clamp(1.6rem,4vw,2.2rem); font-weight:700; letter-spacing:-0.02em; line-height:1.2; margin-bottom:1rem; }
+    .meta-bar { color:var(--muted); font-size:0.82rem; display:flex; gap:1rem; flex-wrap:wrap; }
+    .key-findings { background:var(--surface); border-left:3px solid var(--pink); border-radius:0 8px 8px 0; padding:1.5rem 1.75rem; margin:2rem 0; }
+    .key-findings h3 { color:var(--pink); font-size:0.75rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem; }
+    .key-findings ul { list-style:none; display:flex; flex-direction:column; gap:0.6rem; }
+    .key-findings li { font-size:0.92rem; color:#e0e0e0; padding-left:1.25rem; position:relative; }
+    .key-findings li::before { content:''; position:absolute; left:0; top:0.55em; width:6px; height:6px; background:var(--pink); border-radius:50%; }
+    .report-body h2 { font-size:1.25rem; font-weight:700; margin:2.5rem 0 1rem; padding-top:0.5rem; color:var(--white); }
+    .report-body h3 { font-size:1rem; font-weight:700; margin:1.75rem 0 0.6rem; color:#d0d0d0; }
+    .report-body p { font-size:0.95rem; color:#cccccc; margin-bottom:1rem; max-width:720px; }
+    .report-body ul,.report-body ol { padding-left:1.4rem; margin-bottom:1rem; max-width:720px; }
+    .report-body li { font-size:0.93rem; color:#cccccc; margin-bottom:0.35rem; }
+    .report-body strong { color:var(--white); font-weight:600; }
+    .report-body table { width:100%; max-width:720px; border-collapse:collapse; margin:1.5rem 0; font-size:0.85rem; }
+    .report-body th { text-align:left; background:var(--surface); color:var(--muted); font-size:0.75rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:0.6rem 0.9rem; border-bottom:1px solid var(--border); }
+    .report-body td { padding:0.6rem 0.9rem; border-bottom:1px solid var(--border); color:#cccccc; vertical-align:top; }
+    .report-body tr:last-child td { border-bottom:none; }
+    hr { border:none; border-top:1px solid var(--border); margin:2rem 0; max-width:720px; }
+    .report-body pre { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.25rem; overflow-x:auto; margin:1.25rem 0; max-width:720px; }
+    .report-body code { font-family:'SF Mono','Fira Code',monospace; font-size:0.82rem; color:#a0e0c0; }
+    .finding-num { display:inline-flex; align-items:center; justify-content:center; background:var(--pink); color:var(--white); font-size:0.75rem; font-weight:700; width:1.6rem; height:1.6rem; border-radius:50%; flex-shrink:0; margin-right:0.5rem; vertical-align:middle; }
+    .sprint-block { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.25rem 1.5rem; margin:1rem 0; max-width:720px; }
+    .sprint-block h4 { color:var(--white); font-size:0.9rem; font-weight:700; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.5rem; }
+    .sprint-label { background:rgba(225,75,135,0.15); border:1px solid rgba(225,75,135,0.3); border-radius:4px; color:var(--pink); font-size:0.7rem; font-weight:700; padding:0.15rem 0.45rem; text-transform:uppercase; }
+    .sprint-block ol { padding-left:1.3rem; }
+    .sprint-block li { color:#cccccc; font-size:0.88rem; margin-bottom:0.4rem; }
+    .hook-row { display:grid; grid-template-columns:130px 1fr; gap:0.5rem 1rem; padding:0.6rem 0; border-bottom:1px solid var(--border); align-items:start; }
+    .hook-row:last-child { border-bottom:none; }
+    .hook-name { color:var(--pink); font-family:'SF Mono','Fira Code',monospace; font-size:0.78rem; font-weight:700; }
+    .hook-desc { color:#cccccc; font-size:0.85rem; }
+  </style>
+</head>
+<body>
+
+<nav class="report-nav">
+  <a href="/research/" class="back-link">&#8592; Research Hub</a>
+  <a href="/" class="nav-brand">Mexzungu</a>
+</nav>
+
+<div class="report-wrap">
+
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#top10">Top 10 Findings</a>
+    <a href="#hooks">1. Hooks System</a>
+    <a href="#context">2. Context Architecture</a>
+    <a href="#memory">3. Memory Architecture</a>
+    <a href="#proactive">4. Proactive Gaps</a>
+    <a href="#mistakes">5. Mistake Prevention</a>
+    <a href="#api">6. API Optimization</a>
+    <a href="#roadmap">7. Roadmap</a>
+  </aside>
+
+  <main>
+    <div class="report-header">
+      <div class="cat-tag">Tech</div>
+      <h1>Janis Optimization</h1>
+      <p style="color:var(--muted);font-size:0.88rem;margin-top:0.5rem;">Brain, Memory and Proactive Capabilities</p>
+      <div class="meta-bar" style="margin-top:1rem;">
+        <span>May 2026</span>
+        <span>Tech</span>
+        <span>12 sources</span>
+        <span>25 min read</span>
+      </div>
+    </div>
+
+    <div class="key-findings">
+      <h3>Key Findings</h3>
+      <ul>
+        <li>Exit code 1 does not block in Claude Code hooks. Only exit code 2 blocks. Every tutorial gets this wrong. Any safety hook written with exit 1 silently fails.</li>
+        <li>Instructed rules are probabilistic tendencies. Only structural enforcement creates invariant constraints. The Fire Away rule has been violated despite being in the system prompt. It needs a PreToolUse hook that blocks send_email regardless of model reasoning.</li>
+        <li>Rules in the middle third of CLAUDE.md receive 30%+ less attention due to transformer attention's U-shaped bias. Most of the 68 standing rules are functionally lower-priority than placement suggests.</li>
+        <li>The Manage phase of the memory lifecycle is entirely missing. Deduplication, contradiction detection, TTL, compression. Without it, the corpus degrades in quality over time.</li>
+        <li>Prompt caching on the 74-tool block could save 90%+ on that cost slice. It is almost certainly being sent uncached on every API call across 35+ cron jobs.</li>
+      </ul>
+    </div>
+
+    <div class="report-body">
+
+      <h2 id="top10">The 10 Most Important Findings</h2>
+
+      <p>Compiled from 9 research agents, 80+ web searches, and 4,700+ lines of raw research across Claude Code advanced features, AI memory architecture, proactive agent patterns, mistake prevention, and Claude API optimization.</p>
+
+      <ol style="list-style:none;padding:0;max-width:720px;">
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">1</span>
+          <div><strong>Exit code 2 blocks. Exit code 1 does not.</strong> Nearly every tutorial gets this backwards. Any safety hook written with exit 1 silently fails. The Fire Away hook must use exit 2.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">2</span>
+          <div><strong>Instructed rules are probabilistic.</strong> A May 2026 paper (arxiv:2605.01771) proved mathematically that the compliance gap is architectural. Structural enforcement (hooks) creates invariant constraints. Instructions do not.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">3</span>
+          <div><strong>U-shaped attention degradation.</strong> Rules in the middle third of CLAUDE.md receive 30%+ less attention. Most of the 68 standing rules are buried there. Position failure, not memory failure.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">4</span>
+          <div><strong>The Manage phase of the memory lifecycle is missing.</strong> Janis has Write and Read. Manage (deduplication, contradiction detection, TTL, compression) does not exist. Without it, the corpus grows indefinitely and signal-to-noise degrades.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">5</span>
+          <div><strong>PreToolUse can rewrite tool input, not just block it.</strong> The updatedInput field lets a hook intercept a send_email call and strip unauthorized content before Claude knows the modification happened.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">6</span>
+          <div><strong>HTTP hooks can route to tools server at port 8741.</strong> Every tool call Claude Code makes can be audited, logged, and blocked by Janis's own tools server in real-time. The infrastructure already exists.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">7</span>
+          <div><strong>Path-scoped rules load only when matching files are read.</strong> The 27KB tone profile, all Rock Council persona files, and client overviews burn context on every session regardless of task. Moving them to path-scoped rules cuts per-session context cost 40-60%.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">8</span>
+          <div><strong>The highest-value proactive gap is absence detection.</strong> Systems alert when something happens. Almost none alert when an expected thing does not happen. The invoice that did not arrive. The client who always replies in 24h and has not in 96h.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">9</span>
+          <div><strong>Prompt caching on the tool definitions block could save 90%+ on that cost slice.</strong> The 74-tool block is the largest stable block in every Janis request. Adding cache_control: ephemeral to the last tool definition caches it at 10% of normal cost.</div>
+        </li>
+        <li style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;gap:0.75rem;align-items:flex-start;">
+          <span class="finding-num">10</span>
+          <div><strong>Corrections must be tested, not assumed.</strong> Writing a correction to standing-rules.md and assuming it sticks repeats the original failure. The reliable@k metric: any rule followed in fewer than 9 of 10 similar scenarios is a tendency, not a rule.</div>
+        </li>
+      </ol>
+
+      <h2 id="hooks">1. The Hooks System (Almost Entirely Unused)</h2>
+
+      <p>Claude Code supports 17+ hook events. Janis currently uses zero.</p>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;max-width:720px;margin:1rem 0;">
+        <div class="hook-row"><span class="hook-name">PreToolUse</span><span class="hook-desc">Before any tool executes. Block send_email without "Fire Away" in context. Require ETA before code task. Prevent dashboard logging.</span></div>
+        <div class="hook-row"><span class="hook-name">PostToolUse</span><span class="hook-desc">After any tool executes. Scan Write/Edit output for em dashes, Castilian markers, bold markdown in Telegram. Log all tool calls for audit.</span></div>
+        <div class="hook-row"><span class="hook-name">PreCompact</span><span class="hook-desc">Just before context compaction. Flush standing orders (Showtime list, Fire Away rule) to disk so they survive compaction. Write rolling handoff.</span></div>
+        <div class="hook-row"><span class="hook-name">SessionStart</span><span class="hook-desc">Stdout is injected as guaranteed context. More reliable than CLAUDE.md injection. Model cannot deprioritize it.</span></div>
+        <div class="hook-row"><span class="hook-name">Stop</span><span class="hook-desc">When Janis finishes a response. Trigger inactivity handoff. Write session state.</span></div>
+        <div class="hook-row"><span class="hook-name">Notification</span><span class="hook-desc">Background task completes. Route code task completions to Telegram correctly.</span></div>
+      </div>
+
+      <h3>Critical implementation detail</h3>
+      <p><strong>Exit code 2 = block</strong> (prevents tool from running). <strong>Exit code 1 = log the error but run anyway.</strong> Every tutorial gets this backwards. Security hooks must use exit 2.</p>
+
+      <h3>PreToolUse can transform, not just block</h3>
+      <p>The updatedInput field lets the hook rewrite tool input before execution. Use cases: strip --force from git push commands automatically, add missing ETAs to code task descriptions, normalize file paths, redact sensitive data before it reaches external APIs.</p>
+
+      <h3>HTTP hooks route to the tools server</h3>
+      <p>PreToolUse can POST to http://127.0.0.1:8741/hooks/pre-tool-use. Every tool call Janis makes during Claude Code sessions can be logged, audited, and blocked by the existing tools server. The infrastructure is already there. It just needs to be wired up.</p>
+
+      <h2 id="context">2. Context Architecture</h2>
+
+      <h3>The problem: everything loads on every session</h3>
+      <p>CLAUDE.md @ imports pull in constitution, standing-rules (68 rules), all 7 Rock Council personas, tone-brain (27KB), profile, system-prompt, guides, and active tasks. Estimated per-session overhead: 40-60KB of context that is irrelevant to most tasks. A code task to fix a cron job loads the full Agathe ENM accountability framework.</p>
+
+      <h3>Path-scoped rules</h3>
+      <p>Files in .claude/rules/ use YAML frontmatter to load only when Claude reads a matching file path. Rock Council personas load only when working on a client file. Tone-brain loads only when working on content. Client overviews load only for their matching client path.</p>
+
+      <h3>Restructuring recommendation</h3>
+      <ul>
+        <li><strong>Keep always-loaded:</strong> constitution, Fire Away rule, Showtime list, top-10 most-violated rules</li>
+        <li><strong>Move to path-scoped:</strong> Rock Council personas, tone-brain, client overviews</li>
+        <li><strong>Result:</strong> 40-60% context reduction on code and infrastructure tasks</li>
+      </ul>
+
+      <h3>Sub-agent model routing</h3>
+      <p>The CLAUDE_CODE_SUBAGENT_MODEL environment variable lets sub-agents run on Haiku while the parent session runs on Sonnet. 5-10x cost reduction for research, classification, and summarization sub-tasks with no quality loss on the complex reasoning that stays on Sonnet.</p>
+
+      <h2 id="memory">3. Memory Architecture</h2>
+
+      <h3>The Write-Manage-Read framework</h3>
+      <p>Current Janis memory stack: Write (claude-mem observations, brain/ filesystem writes, Yoda rule updates) and Read (CLAUDE.md injection, MEMORY.md index, observation retrieval). The Manage phase is entirely missing.</p>
+
+      <p>Manage includes: deduplication, contradiction detection, expiration/TTL, compression, importance scoring, pruning. Without it, the corpus grows indefinitely and signal-to-noise degrades.</p>
+
+      <h3>The reflection cron: highest-value missing piece</h3>
+      <p>Production systems (Park et al., Reflexion, LangMem) run periodic synthesis passes: read recent episodic observations, identify patterns (recurring corrections, repeated mistakes), generate candidate rule additions, queue for review. Janis has 90K+ messages of episodic data and Yoda standing by. The connection between them is manual. A weekly reflection cron closing that loop automatically would continuously improve behavior.</p>
+
+      <h3>Memory retrieval: from universal injection to task-specific</h3>
+      <p>The Context Dump Fallacy: more context injected equals more noise equals worse reasoning. A 2025 enterprise AI analysis found context quality failures account for 65% of agent failures in production. Current Janis approach: inject everything at session start. Production pattern: assemble task-relevant context bundles based on what the session is about.</p>
+
+      <h3>Intelligent forgetting: TTL taxonomy</h3>
+      <table>
+        <thead><tr><th>Category</th><th>TTL</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>Permanent</td><td>Forever</td><td>Standing rules, constitutional principles, Showtime list</td></tr>
+          <tr><td>Long</td><td>1-2 years</td><td>Client facts, contact preferences, business decisions</td></tr>
+          <tr><td>Medium</td><td>90 days</td><td>Project status, deal stage, active tasks</td></tr>
+          <tr><td>Short</td><td>7-30 days</td><td>Session context, recent email threads, current work</td></tr>
+          <tr><td>Session-only</td><td>0</td><td>Working notes, intermediate reasoning</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Structured world model</h3>
+      <p>Current session handoffs are free-form markdown. Variable structure, variable depth. Production pattern: a structured YAML world model (300-500 words) injected at session start with explicit fields: current_focus, open_loops, decisions_this_week, rule_updates_pending, next_session_priority. Structured handoffs inject 10x more reliably than free-form markdown because the model can parse fields rather than extract meaning from prose.</p>
+
+      <h2 id="proactive">4. Proactive Agent Gaps</h2>
+
+      <h3>Event-driven vs. scheduled: the architecture gap</h3>
+      <p>Frontier systems run event-driven sentinel loops. Janis runs scheduled batch jobs. A deal going cold should trigger a reasoning loop within the hour, not be caught in the next 8am pipeline tracker sweep. An invoice arriving should immediately log to finance, not wait for the 4-hour cron.</p>
+
+      <p>Heartbeat pattern: a lightweight loop every 5-15 min checks current state against expected state and surfaces deviations immediately. Not a full reasoning session. Just a state check that decides whether to escalate.</p>
+
+      <h3>Top 10 proactive gaps</h3>
+      <table>
+        <thead><tr><th>Priority</th><th>Gap</th><th>Implementation</th></tr></thead>
+        <tbody>
+          <tr><td>P1</td><td>Absence detection</td><td>State file tracking expected events + heartbeat check. Alert when expected thing does not happen.</td></tr>
+          <tr><td>P2</td><td>Commitment tracking across channels</td><td>NLP scan of outbound messages for commitment language + deadline extraction across WhatsApp, email, Telegram.</td></tr>
+          <tr><td>P3</td><td>Auto pre-meeting staging</td><td>30 min before every external calendar event, auto-deliver structured brief to Telegram. No trigger required.</td></tr>
+          <tr><td>P4</td><td>Event-to-content capture</td><td>Monitor real events (calendar completions, sent emails, deal milestones) and auto-draft content angles within 24 hours.</td></tr>
+          <tr><td>P5</td><td>Cross-client pattern recognition</td><td>Span all clients simultaneously to see patterns: three quiet in the same week, conversion rates by sector, common stall points.</td></tr>
+          <tr><td>P6</td><td>Invoice payment prediction</td><td>Given payment history per client, flag invoices at risk before they are late. Duara has a pattern. It is in the data.</td></tr>
+          <tr><td>P7</td><td>Regulatory watch</td><td>Monitor official sources (BOE, EUR-Lex, Kenya Gazette) for changes relevant to active client matters.</td></tr>
+          <tr><td>P8</td><td>Voice capture pipeline</td><td>When a calendar event ends, fire a Telegram message: "That meeting just ended. Reply with a voice note and I'll extract action items."</td></tr>
+          <tr><td>P9</td><td>Pipeline stall detection</td><td>If a deal in an active stage has had no activity in 14 days, surface it immediately. Not at the next morning sweep.</td></tr>
+          <tr><td>P10</td><td>Weekly self-diagnosis</td><td>Every Sunday: rules violated (detected by PostToolUse scans), tasks completed vs. assigned, response quality flags, memory staleness.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="mistakes">5. Mistake Prevention</h2>
+
+      <h3>Why agents repeat mistakes: five root causes</h3>
+
+      <p><strong>Root cause 1: Compliance gap is structural.</strong> A May 2026 paper (arxiv:2605.01771) proved mathematically that the gap between what an LLM says it will do and what it does is inevitable under reinforcement learning. The model cannot catch its own process violations from text alone.</p>
+
+      <p><strong>Root cause 2: U-shaped attention degradation.</strong> Rules in the middle third of a long system prompt receive 30%+ less attention. Janis's 68 standing rules are injected as a monolith. Most rules are buried in the middle.</p>
+
+      <p><strong>Root cause 3: Training data defaults reactivate under load.</strong> Castilian Spanish is the model's default register. Markdown formatting is the model's default output style. These require active overrides that degrade when task-completion pressure rises. A hook scanning for them cannot be overridden.</p>
+
+      <p><strong>Root cause 4: Context compaction erases behavioral calibration.</strong> Compaction preserves facts but loses emotional weight. The correction "do not use em dashes" survives compaction as a fact, but the context that made it salient does not. Post-compaction adherence drops measurably.</p>
+
+      <p><strong>Root cause 5: Corrections are assumed, not verified.</strong> Writing a rule to standing-rules.md and calling it done repeats the same error as assuming the original instruction would be followed. There is no feedback loop from "rule written" to "rule verified."</p>
+
+      <h3>The fix architecture: three layers</h3>
+
+      <p><strong>Layer 1: Structural enforcement (highest reliability)</strong></p>
+      <table>
+        <thead><tr><th>Rule</th><th>Hook</th><th>Implementation</th></tr></thead>
+        <tbody>
+          <tr><td>Fire Away required for send_email</td><td>PreToolUse</td><td>Check context for "Fire Away" string. Exit code 2 if absent.</td></tr>
+          <tr><td>ETA required before code task</td><td>PreToolUse</td><td>Scan tool description for time estimate before allowing code-task call.</td></tr>
+          <tr><td>No Telegram bold/markdown</td><td>PostToolUse</td><td>Scan all Telegram send outputs for ** patterns. Log violations.</td></tr>
+          <tr><td>No em dashes</td><td>PostToolUse</td><td>Regex scan on every Write/Edit output. Block or log.</td></tr>
+          <tr><td>Castilian Spanish detection</td><td>PostToolUse</td><td>Scan Spanish output for Castilian second-person plural markers and possessives. Block and flag any match.</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Layer 2: Placement optimization.</strong> Move the 10 most-violated rules to the first 50 lines of CLAUDE.md and repeat them in the last block. The bulk of standing-rules.md stays where it is, but critical behavioral rules are no longer buried in the middle.</p>
+
+      <p><strong>Layer 3: Domain-tagged injection.</strong> Instead of injecting all 68 rules always, inject 10-15 relevant rules at task time. Email task gets email rules plus Fire Away. Spanish content gets Mexican Spanish rules. Telegram send gets formatting rules. Reduces context noise and increases signal weight.</p>
+
+      <h3>Rule testing: reliable@k</h3>
+      <p>The Six Sigma Agent paper introduces reliable@k: how consistently a rule is followed across k similar scenarios. Any rule with k below 90% across 10 test cases is a tendency, not a rule. Yoda should build behavioral tests for the top 5 fuckup categories and run them after every rule update: em dashes, Fire Away, Castilian Spanish, false completions, commit-does-not-equal-live.</p>
+
+      <h2 id="api">6. Claude API Optimization</h2>
+
+      <h3>Prompt caching: largest immediate cost win</h3>
+      <p>The 74-tool block in tools_server.py is the largest stable block in every Janis request. It is almost certainly being sent uncached on every call across 35+ cron jobs and the messaging bot. Adding cache_control: ephemeral to the last tool definition caches the entire block at 10% of normal input cost on every subsequent read within the 5-minute TTL.</p>
+      <p>Estimated impact: 90%+ cost reduction on the tool definitions slice of every API call. At current cron frequency, this is the single largest cost win available.</p>
+
+      <h3>Three-tier model routing</h3>
+      <table>
+        <thead><tr><th>Task type</th><th>Recommended model</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Email classification, label assignment</td><td>Haiku 4.5</td><td>Structured extraction, no complex reasoning needed</td></tr>
+          <tr><td>Contact tracker, cold contact detection</td><td>Haiku 4.5</td><td>Pattern matching against known rules</td></tr>
+          <tr><td>Finance categorization</td><td>Haiku 4.5</td><td>Template-driven extraction</td></tr>
+          <tr><td>Pipeline status update</td><td>Haiku 4.5</td><td>Structured field update</td></tr>
+          <tr><td>Meeting prep, briefing</td><td>Sonnet</td><td>Synthesis across multiple sources</td></tr>
+          <tr><td>Content drafting</td><td>Sonnet</td><td>Voice matching, quality matters</td></tr>
+          <tr><td>Complex client work</td><td>Opus</td><td>Maximum reasoning quality</td></tr>
+          <tr><td>Architecture decisions</td><td>Opus</td><td>Worth the cost</td></tr>
+        </tbody>
+      </table>
+      <p>Estimated savings: 40-60% reduction on cron job API spend by moving classification and extraction crons to Haiku.</p>
+
+      <h3>Parallel tool calls</h3>
+      <p>Many Janis cron jobs fetch email plus calendar plus tasks sequentially. With parallel tool call architecture enabled, these become simultaneous. Sequential (4 calls at 2s each): 8 seconds. Parallel (4 calls simultaneously): 2 seconds. For crons that run every 30 minutes, this compounds into significant latency reduction.</p>
+
+      <h2 id="roadmap">7. Implementation Roadmap</h2>
+
+      <div class="sprint-block">
+        <h4><span class="sprint-label">Sprint 1</span> Structural Enforcement (Week 1, highest ROI)</h4>
+        <ol>
+          <li>PreToolUse hook: Fire Away gate. Block send_email unless "Fire Away" appears in recent context. Exit code 2.</li>
+          <li>PostToolUse hook: content scanner. Scan every Write/Edit/Telegram-send output for em dashes, Castilian markers, bold markdown. Log violations to violations.log.</li>
+          <li>PreCompact hook: rule flush. Write the top-10 standing rules and Showtime list to a temp file before every compaction. Inject on next session start via SessionStart hook.</li>
+          <li>Fix hook exit codes. Audit any existing hooks. Ensure all blocking hooks use exit 2 not exit 1.</li>
+        </ol>
+      </div>
+
+      <div class="sprint-block">
+        <h4><span class="sprint-label">Sprint 2</span> Memory and Context (Week 2)</h4>
+        <ol>
+          <li>Path-scoped rules restructure. Move Rock Council personas, tone-brain, client overviews to .claude/rules/ with path frontmatter. Estimated 40-60% context reduction.</li>
+          <li>Reflection cron. Weekly Yoda run that reads recent claude-mem observations, generates candidate rule additions, queues for review.</li>
+          <li>Structured world model. Replace free-form handoff markdown with a YAML schema. Session-start injection reads the world model file, not the raw handoff.</li>
+          <li>Prompt caching. Add cache_control to tool definitions block in tools_server.py.</li>
+        </ol>
+      </div>
+
+      <div class="sprint-block">
+        <h4><span class="sprint-label">Sprint 3</span> Proactive Capabilities (Week 3)</h4>
+        <ol>
+          <li>Absence detection. State file tracking expected events plus heartbeat check every 15 min. Surface absences via Telegram alerts thread.</li>
+          <li>Commitment tracker. NLP scan of outbound messages for commitment language plus deadline extraction plus daily digest.</li>
+          <li>Auto pre-meeting staging. 30 min before every external calendar event, auto-deliver structured brief to Telegram. No trigger required.</li>
+          <li>Model routing. Switch classification and extraction crons to Haiku. Keep content and analysis on Sonnet.</li>
+        </ol>
+      </div>
+
+      <div class="sprint-block">
+        <h4><span class="sprint-label">Sprint 4</span> Testing and Learning Loop (Week 4)</h4>
+        <ol>
+          <li>reliable@k tests. Yoda builds behavioral tests for top 5 fuckup categories. Runs after every rule update.</li>
+          <li>Weekly self-diagnosis cron. Janis generates performance report: rules violated (from PostToolUse scan), tasks completed, memory staleness.</li>
+          <li>Domain-tagged fuckup injection. Tag each fuckup entry with trigger domain. Inject only relevant subset per task type.</li>
+        </ol>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = "mexzungu_research_auth";
+  if (localStorage.getItem(STORAGE_KEY) !== 'true') {
+    window.location.href = '/research/';
+  }
+</script>
+</body>
+</html>

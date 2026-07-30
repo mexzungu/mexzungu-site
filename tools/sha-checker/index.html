@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SHA Gap Checker | The Outlaw Chronicles</title>
+  <meta name="description" content="10 questions. Find the gaps in your shareholders agreement before your lawyer does.">
+  <meta property="og:title" content="SHA Gap Checker — The Outlaw Chronicles">
+  <meta property="og:description" content="10 questions. Find the gaps in your shareholders agreement before your lawyer does.">
+  <meta property="og:image" content="https://mexzungu.com/newsletter-assets/oc-003-header.png">
+  <link rel="canonical" href="https://mexzungu.com/tools/sha-checker">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:   #E14B87;
+      --pink-l: #E86FA0;
+      --gold:   #D4A039;
+      --bg:     #1E1610;
+      --card:   #2A1F1A;
+      --border: #352A22;
+      --text:   #E8E3DF;
+      --muted:  #9A8F88;
+      --dim:    #6B5E57;
+      --green:  #3DAA6B;
+      --amber:  #D4A039;
+      --red:    #C0392B;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--pink); }
+
+    /* ── NAV ── */
+    .nav {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-brand {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-issue {
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 40px;
+      text-align: center;
+    }
+    .hero-label {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero-title span { color: var(--pink); }
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+    .progress-bar-bg {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--pink);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* ── GAP SECTION ── */
+    .gaps {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 16px;
+    }
+
+    .gap-section {
+      background: var(--card);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s ease;
+    }
+    .gap-section.status-red    { border-color: var(--red); }
+    .gap-section.status-amber  { border-color: var(--amber); }
+    .gap-section.status-green  { border-color: var(--green); }
+
+    .gap-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gap-header-left {}
+    .gap-number {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 4px;
+    }
+    .gap-name {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    /* Traffic light badge */
+    .gap-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--border);
+      border-radius: 100px;
+      padding: 6px 14px 6px 10px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .gap-badge-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--dim);
+      transition: background 0.3s ease;
+      flex-shrink: 0;
+    }
+    .gap-badge-text {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--dim);
+      transition: color 0.3s ease;
+    }
+
+    .gap-badge.green { background: rgba(61,170,107,0.15); }
+    .gap-badge.green .gap-badge-dot { background: var(--green); }
+    .gap-badge.green .gap-badge-text { color: var(--green); }
+
+    .gap-badge.amber { background: rgba(212,160,57,0.15); }
+    .gap-badge.amber .gap-badge-dot { background: var(--amber); }
+    .gap-badge.amber .gap-badge-text { color: var(--amber); }
+
+    .gap-badge.red { background: rgba(192,57,43,0.15); }
+    .gap-badge.red .gap-badge-dot { background: var(--red); }
+    .gap-badge.red .gap-badge-text { color: var(--red); }
+
+    /* Questions */
+    .gap-questions {
+      padding: 20px 24px 24px;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+    .question:last-child { margin-bottom: 0; }
+    .question.disabled { opacity: 0.35; pointer-events: none; }
+
+    .question-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .question-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      margin-top: -6px;
+      line-height: 1.5;
+    }
+
+    .yn-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .yn-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--muted);
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .yn-btn:hover { border-color: var(--pink); color: var(--text); }
+
+    .yn-btn.selected-yes {
+      background: rgba(61,170,107,0.15);
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .yn-btn.selected-no {
+      background: rgba(192,57,43,0.12);
+      border-color: var(--red);
+      color: #E88070;
+    }
+
+    /* ── SCORE SUMMARY ── */
+    .summary-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 24px 0;
+    }
+
+    .summary-hidden { display: none; }
+
+    .summary-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .summary-header {
+      padding: 24px 28px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-label {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 8px;
+    }
+
+    .summary-score {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 32px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .summary-score span { color: var(--pink); }
+
+    .summary-score-sub {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .summary-gaps {
+      padding: 20px 28px;
+    }
+
+    .summary-gap-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-gap-row:last-child { border-bottom: none; }
+
+    .summary-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--dim);
+      flex-shrink: 0;
+      margin-top: 4px;
+      transition: background 0.3s ease;
+    }
+    .summary-dot.green { background: var(--green); }
+    .summary-dot.amber { background: var(--amber); }
+    .summary-dot.red   { background: var(--red); }
+
+    .summary-gap-name {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 13px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .summary-gap-action {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .summary-gap-action.red   { color: #E88070; }
+    .summary-gap-action.amber { color: #E8C870; }
+    .summary-gap-action.green { color: #80D0A0; }
+
+    /* ── EMAIL CAPTURE ── */
+    .capture-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 24px 0;
+    }
+
+    .capture-hidden { display: none; }
+
+    .capture-box {
+      background: #352A22;
+      border-left: 4px solid var(--pink);
+      border-radius: 0 12px 12px 0;
+      padding: 28px 32px;
+    }
+
+    .capture-title {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .capture-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .capture-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .capture-fields { grid-template-columns: 1fr; }
+    }
+
+    .capture-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .capture-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .capture-input, .capture-select {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      width: 100%;
+      transition: border-color 0.2s ease;
+    }
+    .capture-input:focus, .capture-select:focus {
+      outline: none;
+      border-color: var(--pink);
+    }
+    .capture-select option { background: #2A1F1A; }
+
+    .capture-email-row {
+      margin-bottom: 16px;
+    }
+
+    .capture-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--pink);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+    .capture-submit:hover { background: var(--pink-l); }
+    .capture-submit:active { transform: scale(0.99); }
+    .capture-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .capture-note {
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .capture-success {
+      display: none;
+      text-align: center;
+      padding: 16px 0;
+    }
+    .capture-success-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .capture-success-text {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 16px;
+      color: var(--green);
+    }
+
+    /* ── CTA ROW ── */
+    .cta-row {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 24px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .cta-row-hidden { display: none; }
+
+    @media (max-width: 520px) {
+      .cta-row { grid-template-columns: 1fr; }
+    }
+
+    .cta-btn {
+      display: block;
+      padding: 16px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      text-align: center;
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+    }
+    .cta-btn-primary {
+      background: var(--pink);
+      color: #fff;
+    }
+    .cta-btn-primary:hover { background: var(--pink-l); color: #fff; }
+    .cta-btn-secondary {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+    }
+    .cta-btn-secondary:hover { border-color: var(--pink); color: var(--text); }
+
+    .cta-btn-icon { display: block; font-size: 18px; margin-bottom: 4px; }
+    .cta-btn-label { display: block; }
+    .cta-btn-sub { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 400; margin-top: 2px; letter-spacing: 0; }
+    .cta-btn-secondary .cta-btn-sub { color: var(--muted); }
+
+    /* ── FOOTER ── */
+    .footer {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+    .footer-brand {
+      font-family: 'RocknRoll One', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .footer-text {
+      font-size: 11px;
+      color: var(--dim);
+      line-height: 1.7;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeIn 0.4s ease forwards; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://mexzungu.com/resources/outlaw-chronicles-003" class="nav-brand">The Outlaw Chronicles</a>
+  <span class="nav-issue">SHA Gap Checker &nbsp;·&nbsp; Issue #3</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Free Tool — Issue #3</div>
+  <h1 class="hero-title">Find your <span>SHA gaps</span><br>before your lawyer does.</h1>
+  <p class="hero-sub">10 questions about your shareholders agreement. Live scoring per gap. Takes 3 minutes.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span id="progress-label">0 of 10 answered</span>
+    <span id="progress-pct">0%</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<div class="gaps" id="gaps-container">
+
+  <!-- GAP 1: DEADLOCK -->
+  <div class="gap-section" id="gap-section-0">
+    <div class="gap-header">
+      <div class="gap-header-left">
+        <div class="gap-number">Gap 01</div>
+        <div class="gap-name">Deadlock Resolution</div>
+      </div>
+      <div class="gap-badge" id="badge-0">
+        <div class="gap-badge-dot"></div>
+        <div class="gap-badge-text">—</div>
+      </div>
+    </div>
+    <div class="gap-questions">
+      <div class="question" data-gap="0" data-q="0">
+        <div class="question-text">Does your SHA contain a deadlock provision?</div>
+        <div class="question-hint">Search the document for the word "deadlock." If you find it, say yes.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(0,0,'yes')">Yes</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(0,0,'no')">No</button>
+        </div>
+      </div>
+      <div class="question" data-gap="0" data-q="1" id="q-0-1">
+        <div class="question-text">Does a concrete resolution mechanism follow it?</div>
+        <div class="question-hint">A casting vote, a buy-sell clause, or a mediation process counts. "The founders shall discuss" does not.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(0,1,'yes')">Yes</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(0,1,'no')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAP 2: LEAVER DEFINITION -->
+  <div class="gap-section" id="gap-section-1">
+    <div class="gap-header">
+      <div class="gap-header-left">
+        <div class="gap-number">Gap 02</div>
+        <div class="gap-name">Leaver Definition</div>
+      </div>
+      <div class="gap-badge" id="badge-1">
+        <div class="gap-badge-dot"></div>
+        <div class="gap-badge-text">—</div>
+      </div>
+    </div>
+    <div class="gap-questions">
+      <div class="question" data-gap="1" data-q="0">
+        <div class="question-text">Does your SHA use two leaver categories — good leaver and bad leaver?</div>
+        <div class="question-hint">Search for "good leaver" or "bad leaver." If only "leaver" appears as a single category, that's a no.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(1,0,'yes')">Yes</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(1,0,'no')">No</button>
+        </div>
+      </div>
+      <div class="question" data-gap="1" data-q="1" id="q-1-1">
+        <div class="question-text">Are both categories defined in plain language with different buyout prices?</div>
+        <div class="question-hint">"As the board may determine" is not a definition. Specific events and specific prices count.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(1,1,'yes')">Yes</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(1,1,'no')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAP 3: IP ASSIGNMENT -->
+  <div class="gap-section" id="gap-section-2">
+    <div class="gap-header">
+      <div class="gap-header-left">
+        <div class="gap-number">Gap 03</div>
+        <div class="gap-name">IP Assignment</div>
+      </div>
+      <div class="gap-badge" id="badge-2">
+        <div class="gap-badge-dot"></div>
+        <div class="gap-badge-text">—</div>
+      </div>
+    </div>
+    <div class="gap-questions">
+      <div class="question" data-gap="2" data-q="0">
+        <div class="question-text">Did any founder create relevant code, designs, or IP before the company was incorporated?</div>
+        <div class="question-hint">Anything built before the company legally existed — even a prototype, early code, or design files.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(2,0,'yes')">Yes</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(2,0,'no')">No — nothing pre-exists</button>
+        </div>
+      </div>
+      <div class="question" data-gap="2" data-q="1" id="q-2-1">
+        <div class="question-text">Has that pre-existing IP been formally assigned to the company in a signed document?</div>
+        <div class="question-hint">A separate IP Assignment Agreement, signed by the founder who created it, listing the IP by name.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(2,1,'yes')">Yes — signed doc exists</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(2,1,'no')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAP 4: DRAG-ALONG -->
+  <div class="gap-section" id="gap-section-3">
+    <div class="gap-header">
+      <div class="gap-header-left">
+        <div class="gap-number">Gap 04</div>
+        <div class="gap-name">Drag-Along Threshold</div>
+      </div>
+      <div class="gap-badge" id="badge-3">
+        <div class="gap-badge-dot"></div>
+        <div class="gap-badge-text">—</div>
+      </div>
+    </div>
+    <div class="gap-questions">
+      <div class="question" data-gap="3" data-q="0">
+        <div class="question-text">Does your SHA have a drag-along clause?</div>
+        <div class="question-hint">Search for "drag-along" or "drag along."</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(3,0,'yes')">Yes</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(3,0,'no')">No</button>
+        </div>
+      </div>
+      <div class="question" data-gap="3" data-q="1" id="q-3-1">
+        <div class="question-text">Is the consent threshold set above simple majority — meaning it could actually force a sale?</div>
+        <div class="question-hint">If you're 50/50 founders and the threshold is "majority," the clause can only trigger when both of you agree — which defeats the purpose.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(3,1,'yes')">Yes — threshold works</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(3,1,'no')">No — it's majority / not sure</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAP 5: OPTION POOL -->
+  <div class="gap-section" id="gap-section-4">
+    <div class="gap-header">
+      <div class="gap-header-left">
+        <div class="gap-number">Gap 05</div>
+        <div class="gap-name">Option Pool Expansion</div>
+      </div>
+      <div class="gap-badge" id="badge-4">
+        <div class="gap-badge-dot"></div>
+        <div class="gap-badge-text">—</div>
+      </div>
+    </div>
+    <div class="gap-questions">
+      <div class="question" data-gap="4" data-q="0">
+        <div class="question-text">Does your SHA address future option pool expansion?</div>
+        <div class="question-hint">Search for "option pool," "ESOP," or "employee share scheme" — then check if it says what happens when you need to expand it.</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(4,0,'yes')">Yes</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(4,0,'no')">No</button>
+        </div>
+      </div>
+      <div class="question" data-gap="4" data-q="1" id="q-4-1">
+        <div class="question-text">Can the pool be expanded without requiring unanimous consent from all shareholders?</div>
+        <div class="question-hint">If unanimous consent is required, every future pool expansion is a negotiation — exactly when you have the least leverage (trying to close a round).</div>
+        <div class="yn-buttons">
+          <button class="yn-btn" data-answer="yes" onclick="answer(4,1,'yes')">Yes — pre-agreed mechanism</button>
+          <button class="yn-btn" data-answer="no"  onclick="answer(4,1,'no')">No — needs unanimous consent</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /gaps -->
+
+
+<!-- SCORE SUMMARY -->
+<div class="summary-wrap" id="summary-wrap">
+  <div class="summary-box summary-hidden" id="summary-box">
+    <div class="summary-header">
+      <div class="summary-label">Your Results</div>
+      <div class="summary-score" id="summary-score">
+        <span id="score-num">0</span> of 5 gaps covered
+      </div>
+      <div class="summary-score-sub" id="summary-sub">Answer the questions above to see your score.</div>
+    </div>
+    <div class="summary-gaps" id="summary-gaps">
+      <div class="summary-gap-row" id="sr-0">
+        <div class="summary-dot" id="sd-0"></div>
+        <div>
+          <div class="summary-gap-name">Deadlock Resolution</div>
+          <div class="summary-gap-action" id="sa-0">Not yet answered.</div>
+        </div>
+      </div>
+      <div class="summary-gap-row" id="sr-1">
+        <div class="summary-dot" id="sd-1"></div>
+        <div>
+          <div class="summary-gap-name">Leaver Definition</div>
+          <div class="summary-gap-action" id="sa-1">Not yet answered.</div>
+        </div>
+      </div>
+      <div class="summary-gap-row" id="sr-2">
+        <div class="summary-dot" id="sd-2"></div>
+        <div>
+          <div class="summary-gap-name">IP Assignment</div>
+          <div class="summary-gap-action" id="sa-2">Not yet answered.</div>
+        </div>
+      </div>
+      <div class="summary-gap-row" id="sr-3">
+        <div class="summary-dot" id="sd-3"></div>
+        <div>
+          <div class="summary-gap-name">Drag-Along Threshold</div>
+          <div class="summary-gap-action" id="sa-3">Not yet answered.</div>
+        </div>
+      </div>
+      <div class="summary-gap-row" id="sr-4">
+        <div class="summary-dot" id="sd-4"></div>
+        <div>
+          <div class="summary-gap-name">Option Pool Expansion</div>
+          <div class="summary-gap-action" id="sa-4">Not yet answered.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- EMAIL CAPTURE -->
+<div class="capture-wrap" id="capture-wrap">
+  <div class="capture-box capture-hidden" id="capture-box">
+    <div class="capture-title">Get your personalised SHA report.</div>
+    <div class="capture-sub">We'll email you your results with specific next steps for each gap. Takes 10 seconds.</div>
+    <div class="capture-fields">
+      <div class="capture-field">
+        <label class="capture-label">Company name</label>
+        <input class="capture-input" type="text" id="f-company" placeholder="e.g. Acme Corp">
+      </div>
+      <div class="capture-field">
+        <label class="capture-label">Stage</label>
+        <select class="capture-select" id="f-stage">
+          <option value="">Select stage</option>
+          <option value="pre-seed">Pre-seed</option>
+          <option value="seed">Seed</option>
+          <option value="series-a">Series A</option>
+          <option value="series-b+">Series B+</option>
+          <option value="bootstrapped">Bootstrapped</option>
+        </select>
+      </div>
+    </div>
+    <div class="capture-email-row">
+      <div class="capture-field">
+        <label class="capture-label">Email address</label>
+        <input class="capture-input" type="email" id="f-email" placeholder="you@yourcompany.com">
+      </div>
+    </div>
+    <button class="capture-submit" id="capture-btn" onclick="submitCapture()">
+      ⚡ Send me my results
+    </button>
+    <div class="capture-note">No pitch. No newsletter unless you ask. Just the results.</div>
+    <div class="capture-success" id="capture-success">
+      <div class="capture-success-icon">✓</div>
+      <div class="capture-success-text">Sent. Check your inbox.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CTA ROW -->
+<div class="cta-row cta-row-hidden" id="cta-row">
+  <a href="https://mexzungu.com/downloads/sha-survival-kit.pdf" target="_blank" class="cta-btn cta-btn-primary">
+    <span class="cta-btn-icon">⚡</span>
+    <span class="cta-btn-label">SHA Survival Kit</span>
+    <span class="cta-btn-sub">Free PDF — gap check + templates</span>
+  </a>
+  <a href="https://mexzungu.com/talk_to_pepe" target="_blank" class="cta-btn cta-btn-secondary">
+    <span class="cta-btn-icon">📅</span>
+    <span class="cta-btn-label">Book a 30-min call</span>
+    <span class="cta-btn-sub">No pitch. Bring your cap table question.</span>
+  </a>
+</div>
+
+
+<footer class="footer">
+  <div class="footer-brand">The Outlaw Chronicles &nbsp;·&nbsp; Mexzungu Group &nbsp;·&nbsp; Barcelona</div>
+  <p class="footer-text">
+    <a href="https://mexzungu.com/resources/outlaw-chronicles-003">Read Issue #3</a> &nbsp;·&nbsp;
+    <a href="https://mexzungu.com/resources/outlaw-chronicles-002">Read Issue #2</a> &nbsp;·&nbsp;
+    <a href="https://mexzungu.com">mexzungu.com</a>
+  </p>
+  <p class="footer-text" style="margin-top:8px;">For educational purposes only. Not legal advice.</p>
+</footer>
+
+
+<script>
+  // State
+  const state = {
+    answers: [
+      [null, null],
+      [null, null],
+      [null, null],
+      [null, null],
+      [null, null],
+    ],
+    gapStatus: ['unanswered', 'unanswered', 'unanswered', 'unanswered', 'unanswered'],
+  };
+
+  const ACTIONS = {
+    green: [
+      "Covered. Your SHA has a working deadlock mechanism.",
+      "Covered. Both leaver categories are properly defined.",
+      "Covered. Pre-existing IP is formally assigned.",
+      "Covered. Drag-along threshold is functional.",
+      "Covered. Option pool expansion is pre-agreed.",
+    ],
+    amber: [
+      "Partial gap. The clause exists but the resolution process is unclear. Costs ~€500 to add a proper mechanism.",
+      "Partial gap. Two categories exist but the definitions or pricing need work. Costs ~€400 to tighten.",
+      "Covered — no pre-existing IP to assign.",
+      "Partial gap. The clause exists but the threshold may not work in practice. Needs a quick lawyer check.",
+      "Partial gap. The clause exists but expansion may require unanimous consent. Costs ~€300 to fix.",
+    ],
+    red: [
+      "Critical gap. No deadlock mechanism. If you and your co-founder ever hit a standstill, there is no process. First thing to fix. Costs ~€800–1,500.",
+      "Critical gap. One leaver category means every departure is a negotiation. Fix before anyone leaves. Costs ~€600–1,200.",
+      "Critical gap. Pre-existing IP is unassigned. The company's core technology may not legally belong to it. Fix immediately with an IP Assignment Agreement (see Survival Kit). Costs ~€400–800.",
+      "Critical gap. No drag-along means you cannot force a sale even with majority support. Costs ~€500–1,000 to add.",
+      "Critical gap. Every future option pool expansion will require unanimous consent — negotiated in crisis. Costs ~€400 to pre-agree now.",
+    ],
+  };
+
+  function answer(gap, q, val) {
+    state.answers[gap][q] = val;
+
+    // Update button states
+    const container = document.querySelector(`[data-gap="${gap}"][data-q="${q}"]`);
+    container.querySelectorAll('.yn-btn').forEach(btn => {
+      btn.classList.remove('selected-yes', 'selected-no');
+    });
+    container.querySelector(`[data-answer="${val}"]`).classList.add(
+      val === 'yes' ? 'selected-yes' : 'selected-no'
+    );
+
+    // Special conditional logic
+    // Gap 2 (IP): if Q0=no, auto-set Q1 to "n/a" and disable it
+    if (gap === 2 && q === 0) {
+      const q1 = document.getElementById('q-2-1');
+      if (val === 'no') {
+        q1.classList.add('disabled');
+        state.answers[2][1] = 'na';
+      } else {
+        q1.classList.remove('disabled');
+        if (state.answers[2][1] === 'na') state.answers[2][1] = null;
+      }
+    }
+
+    // Gap 3 (Drag-along): if Q0=no, disable Q1
+    if (gap === 3 && q === 0) {
+      const q1 = document.getElementById('q-3-1');
+      if (val === 'no') {
+        q1.classList.add('disabled');
+        state.answers[3][1] = 'na';
+      } else {
+        q1.classList.remove('disabled');
+        if (state.answers[3][1] === 'na') state.answers[3][1] = null;
+      }
+    }
+
+    recalculate();
+  }
+
+  function scoreGap(gap) {
+    const [a0, a1] = state.answers[gap];
+
+    // Special: IP gap (gap 2)
+    if (gap === 2) {
+      if (a0 === null) return 'unanswered';
+      if (a0 === 'no') return 'amber';   // no pre-existing IP = covered-ish (amber = N/A, counts as ok)
+      if (a0 === 'yes' && a1 === null) return 'unanswered';
+      if (a0 === 'yes' && a1 === 'yes') return 'green';
+      if (a0 === 'yes' && a1 === 'no')  return 'red';
+    }
+
+    // Special: Drag-along (gap 3) — no drag-along = red
+    if (gap === 3) {
+      if (a0 === null) return 'unanswered';
+      if (a0 === 'no') return 'red';
+      if (a1 === null) return 'unanswered';
+      if (a1 === 'yes') return 'green';
+      return 'amber';
+    }
+
+    // Default for gaps 0, 1, 4
+    if (a0 === null) return 'unanswered';
+    if (a0 === 'no') return 'red';
+    if (a1 === null) return 'unanswered';
+    if (a1 === 'yes') return 'green';
+    return 'amber';
+  }
+
+  function recalculate() {
+    let answered = 0;
+    for (let g = 0; g < 5; g++) {
+      for (let q = 0; q < 2; q++) {
+        if (state.answers[g][q] !== null) answered++;
+      }
+    }
+
+    // Progress bar
+    const pct = Math.round((answered / 10) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = answered + ' of 10 answered';
+    document.getElementById('progress-pct').textContent = pct + '%';
+
+    // Gap scores
+    let covered = 0;
+    for (let g = 0; g < 5; g++) {
+      const status = scoreGap(g);
+      state.gapStatus[g] = status;
+
+      // Update section border
+      const section = document.getElementById('gap-section-' + g);
+      section.className = 'gap-section' + (status !== 'unanswered' ? ' status-' + status : '');
+
+      // Update badge
+      const badge = document.getElementById('badge-' + g);
+      badge.className = 'gap-badge' + (status !== 'unanswered' ? ' ' + status : '');
+      badge.querySelector('.gap-badge-text').textContent =
+        status === 'unanswered' ? '—' :
+        status === 'green'  ? 'Covered' :
+        status === 'amber'  ? 'Partial' : 'Gap Found';
+
+      // Update summary dots + actions
+      const dot    = document.getElementById('sd-' + g);
+      const action = document.getElementById('sa-' + g);
+      dot.className    = 'summary-dot' + (status !== 'unanswered' ? ' ' + status : '');
+      action.className = 'summary-gap-action' + (status !== 'unanswered' ? ' ' + status : '');
+      if (status === 'unanswered') {
+        action.textContent = 'Not yet answered.';
+      } else {
+        const actionText =
+          status === 'amber' && g === 2 ? ACTIONS.amber[2] :
+          ACTIONS[status][g];
+        action.textContent = actionText;
+      }
+
+      if (status === 'green' || status === 'amber') covered++;
+    }
+
+    // Show summary if at least one answered
+    const anyAnswered = state.answers.flat().some(a => a !== null);
+    const summaryBox = document.getElementById('summary-box');
+    if (anyAnswered && summaryBox.classList.contains('summary-hidden')) {
+      summaryBox.classList.remove('summary-hidden');
+      summaryBox.classList.add('animate-in');
+    }
+
+    document.getElementById('score-num').textContent = covered;
+
+    const redCount   = state.gapStatus.filter(s => s === 'red').length;
+    const subMessages = {
+      0: "All gaps covered. Run this again after your next funding round.",
+      1: "One critical gap. Fix it before the next time someone joins or leaves the cap table.",
+      2: "Two critical gaps. These need to be addressed before your next financing event.",
+      3: "Three critical gaps. Your agreement has significant structural exposure.",
+      4: "Four critical gaps. The template covered the formatting, not the protection.",
+      5: "Five critical gaps. The notwithstandings were fine. Everything else needs work."
+    };
+
+    const allAnswered = state.answers.flat().filter(a => a !== null).length === 10;
+    if (allAnswered) {
+      document.getElementById('summary-sub').textContent = subMessages[redCount] || '';
+      // Show capture form and CTAs
+      const captureBox = document.getElementById('capture-box');
+      const ctaRow = document.getElementById('cta-row');
+      if (captureBox.classList.contains('capture-hidden')) {
+        captureBox.classList.remove('capture-hidden');
+        captureBox.classList.add('animate-in');
+        ctaRow.classList.remove('cta-row-hidden');
+        ctaRow.classList.add('animate-in');
+        setTimeout(() => captureBox.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+      }
+    }
+  }
+
+  async function submitCapture() {
+    const email   = document.getElementById('f-email').value.trim();
+    const company = document.getElementById('f-company').value.trim();
+    const stage   = document.getElementById('f-stage').value;
+
+    if (!email || !email.includes('@')) {
+      document.getElementById('f-email').focus();
+      return;
+    }
+
+    const btn = document.getElementById('capture-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const gaps = state.gapStatus.map((status, i) => ({
+      name: ['Deadlock', 'Leaver Definition', 'IP Assignment', 'Drag-Along', 'Option Pool'][i],
+      status
+    }));
+
+    const covered = gaps.filter(g => g.status === 'green' || g.status === 'amber').length;
+
+    try {
+      await fetch('/api/sha-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, company, stage, gaps, score: covered, answers: state.answers })
+      });
+    } catch (e) {
+      // Fail silently — don't block UX on submission error
+    }
+
+    btn.style.display = 'none';
+    document.getElementById('capture-success').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>The Schedule: Nadia — Dante Rose</title>
+  <meta name="description" content="A wedding on the island's west coast. Three days of linen and silk and string lights and every professional contact I had. I had just lost my job. I walked in with Nadia on my arm.">
+  <meta property="og:title" content="The Schedule: Nadia — Dante Rose">
+  <meta property="og:description" content="A decade of living recklessly on three continents.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://mexzungu.com/dante-rose/the-schedule-nadia">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink:   #0d0d0d;
+      --paper: #f7f4ef;
+      --warm:  #f2ede6;
+      --muted: #8a7f74;
+      --gold:  #b8952a;
+      --pink:  #e14b87;
+      --rule:  #d9d2c8;
+      --serif: 'Georgia', 'Palatino Linotype', serif;
+      --sans:  'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { font-size: 18px; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--serif); -webkit-font-smoothing: antialiased; }
+
+    /* MASTHEAD */
+    .masthead { border-bottom: 1px solid var(--rule); padding: 28px 24px 24px; text-align: center; background: var(--warm); }
+    .masthead-series { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .masthead-author { font-family: var(--sans); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); font-weight: 700; }
+
+    .wrapper { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+
+    /* GATE */
+    .content-gate { background: #1a1a1a; color: #f7f4ef; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
+    .gate-box { max-width: 480px; text-align: center; }
+    .gate-label { font-family: var(--sans); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--pink); font-weight: 700; margin-bottom: 24px; display: block; }
+    .gate-title { font-size: 1.5rem; line-height: 1.4; color: #f7f4ef; margin-bottom: 16px; font-family: var(--serif); }
+    .gate-text { font-family: var(--sans); font-size: 14px; line-height: 1.7; color: #9a9188; margin-bottom: 36px; }
+    .gate-btn { display: inline-block; background: var(--pink); color: #fff; font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: 1px; text-decoration: none; padding: 14px 36px; border-radius: 2px; cursor: pointer; border: none; }
+    .gate-btn:hover { background: #cc3a72; }
+    .gate-decline { display: block; font-family: var(--sans); font-size: 12px; color: #5a5048; text-decoration: none; margin-top: 16px; }
+    .gate-decline:hover { color: #9a9188; }
+
+    #story { display: none; }
+
+    /* HEADER */
+    .story-header { padding: 64px 0 48px; border-bottom: 1px solid var(--rule); margin-bottom: 56px; }
+    .chapter-label { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .story-title { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 28px; font-weight: normal; }
+    .story-title em { font-style: italic; color: var(--muted); }
+    .story-meta { font-family: var(--sans); font-size: 13px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; }
+    .story-tagline { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--rule); font-style: italic; font-size: 1.05rem; line-height: 1.65; color: #4a4038; }
+
+    /* PROSE */
+    .prose { max-width: 640px; }
+    .prose p { font-size: 1.05rem; line-height: 1.85; margin-bottom: 1.6em; color: #1a1410; }
+    .prose p:last-child { margin-bottom: 0; }
+    .dialogue { font-style: italic; }
+
+    .section-break { text-align: center; margin: 52px 0; position: relative; }
+    .section-break::before { content: ''; display: block; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--rule); }
+    .section-num { position: relative; display: inline-block; background: var(--paper); padding: 0 20px; font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
+
+    .pov-note { font-family: var(--sans); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); margin-bottom: 24px; font-weight: 600; }
+
+    /* FOOTER */
+    .story-footer { margin-top: 72px; padding-top: 40px; border-top: 1px solid var(--rule); padding-bottom: 80px; }
+    .footer-disclaimer { font-family: var(--sans); font-size: 12px; line-height: 1.7; color: var(--muted); margin-bottom: 32px; }
+    .footer-nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-nav a { font-family: var(--sans); font-size: 13px; color: var(--pink); text-decoration: none; font-weight: 600; }
+    .footer-nav a:hover { text-decoration: underline; }
+    .series-tag { font-family: var(--sans); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+    @media (max-width: 640px) {
+      html { font-size: 17px; }
+      .story-header { padding: 44px 0 36px; margin-bottom: 40px; }
+      .section-break { margin: 40px 0; }
+      .story-footer { margin-top: 52px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="content-gate" id="gate">
+  <div class="gate-box">
+    <span class="gate-label">Dante Rose</span>
+    <h1 class="gate-title">This story contains explicit adult content.</h1>
+    <p class="gate-text">
+      <em>The Schedule: Nadia</em> is a chapter from a literary erotica memoir.
+      It contains graphic sexual content intended for adult readers only.<br><br>
+      By continuing you confirm you are 18 or older.
+    </p>
+    <button class="gate-btn" onclick="enterStory()">I am 18 or older. Enter.</button>
+    <a href="https://mexzungu.com" class="gate-decline">Take me back</a>
+  </div>
+</div>
+
+<div id="story">
+
+  <header class="masthead">
+    <div class="masthead-series">Outlaw Chronicles (R)</div>
+    <div class="masthead-author">Dante Rose</div>
+  </header>
+
+  <div class="wrapper">
+
+    <header class="story-header">
+      <div class="chapter-label">Chapter 16 &nbsp;&middot;&nbsp; Act III</div>
+      <h1 class="story-title">The Schedule: <em>Nadia</em></h1>
+      <div class="story-meta">
+        <span>Mauritius</span>
+        <span>&middot;</span>
+        <span>2025</span>
+        <span>&middot;</span>
+        <span>~2,800 words</span>
+        <span>&middot;</span>
+        <span>12 min read</span>
+      </div>
+      <p class="story-tagline">A wedding on the island's west coast. Three days of linen and silk and string lights and every professional contact I had. I had just lost my job. I walked in with Nadia on my arm.</p>
+    </header>
+
+    <article class="prose">
+
+      <p><em>All names have been changed. Some locations blurred. Everything else happened.</em></p>
+
+      <div class="section-break"><span class="section-num">I</span></div>
+
+      <p>Nadia bites the tip of her tongue when she's flirting.</p>
+
+      <p>Just the tip. Quick and barely there. She doesn't know she does it. But I always knew what it meant. That was the thing about Nadia: once you learned her tells, you could read exactly where you stood.</p>
+
+      <p>I met her at an ecstatic dance on a Sunday afternoon. I was with my friends, mid-sentence, explaining exactly how I like my women to look, and then she walked through the door. Black flowy pants with small white dots, elastic high on the waist, the kind of fabric that moves when you move. I turned to the person next to me and said: like her. Exactly like her. That is exactly how I like them.</p>
+
+      <p>She sat in front of us next to her older Russian friend Olga. I found a way to introduce myself. Then a way to move next to her. Then to make light conversation. That cool Dutch directness some men mistake for distance. I knew what it was. I had been hunting long enough to know the difference between a woman who doesn't notice and a woman who is deciding.</p>
+
+      <p>I called her cupcake from the second week. She pretended to hate it.</p>
+
+      <p>By the time this story happened we had been finding each other for months. Not dating. Finding. She had her life. I had mine. We had the hours between. That was enough. That was exactly right. I didn't want all of her. I wanted the parts she didn't give anyone else, and she gave me those willingly, and we both understood the arrangement without having to name it.</p>
+
+      <p>The wedding was a three-day Indian celebration at a resort on the island's west coast. The kind of gathering where everything is beautiful and everyone is watching everything. Half my professional network in linen and silk, open bar under string lights, the particular theater of a destination wedding where people show up as slightly elevated versions of themselves.</p>
+
+      <p>I had just lost my job. I walked in with Nadia on my arm.</p>
+
+      <p>I remember the exact moment we entered the first venue. The gardens were lit gold. Strings of light woven through frangipani, torches along the stone path, the whole arrangement designed to make you feel like you had stepped somewhere sacred. We came through the entrance together, and she was wearing a dress that understood the proportions of her body the way a poem understands white space, and I felt the room shift. Not one head. Not two. All of them.</p>
+
+      <p>She pretended not to notice. I never asked if she actually didn't.</p>
+
+      <p>At dinner I put my hand on her knee. She was mid-sentence to the person across from her. Didn't break stride. Just let her thigh settle a little heavier against my palm. I could feel the warmth of her through the fabric. I leaned close and said something quiet against the curve of her ear. Her cheeks went pink. The controlled flush of a woman who refuses to show something. Her pupils went wide for just a second before she pulled them back.</p>
+
+      <p>That night I was the most powerful man in the room.</p>
+
+      <p>When we left, we walked back across the grounds. Beach to our left. Somewhere past the palm line the ocean moved in the dark. The garden lights had dimmed to almost nothing. A warm, fragrant midnight quiet, the kind tropical islands produce when the party is over and the world contracts to just the two of you and the sound of your own feet on stone.</p>
+
+      <p>I had the harness in my suitcase. I had been thinking about it all night.</p>
+
+      <div class="section-break"><span class="section-num">II</span></div>
+
+      <div class="pov-note">Second person</div>
+
+      <p>You had seen it before. Not worn. Seen. The black leather against the white lining of my bag, the way you had reached in and touched the straps with two fingers and then pulled your hand back. Curious and trying not to show it.</p>
+
+      <p>Tonight you wear it.</p>
+
+      <p>In the room I take it out and hold it up and watch your face move through three things in quick succession. Assessment. Decision. Surrender. With you, surrender is never defeat. It is permission. You step toward me.</p>
+
+      <p>I take my time with the buckles. That is the point. I turn you around and run the straps across your body, the chest piece first, adjusting the width across your broad shoulders, checking the lay against your skin, then the frame below, cinching the lower panels around your hips, all 105 centimeters of curve taking the leather in a way that makes the harness look like it was built for exactly this body. When I tighten the last buckle you exhale. Small and sharp. Your shoulder blades draw back. I feel your posture adjust to the constraint.</p>
+
+      <p>You stand in it and look at yourself in the mirror.</p>
+
+      <p>You are not looking at me.</p>
+
+      <p>You are looking at what you look like like this. The chest straps tracking across your collarbone, the lower frame sitting wide across your hips, the full specific geography of you transformed by leather into something that belongs to a different register entirely. Whatever you see makes your lips part. You go very still. The room goes very still.</p>
+
+      <p>I step back, pick up the Polaroid from the nightstand, and frame you in it. You do not turn around. You do not pose. You stay exactly as you are, watching yourself, and I shoot.</p>
+
+      <p>I press the print into your hand while it develops. This one is yours. Your memory archive. I keep a copy. The first one belongs to you.</p>
+
+      <p>I step out to the corridor for a moment. When I come back and lean against the doorframe you are on the bed, still in the harness, on your knees. Looking at me.</p>
+
+      <p>There is no single word for the look on your face. Deer in headlights and starving wolf at the same time. You know what is coming. You are terrified and you are hungry and you cannot decide which one is louder. I hold the doorframe and I look at you and I do not rush because the approach is part of it. The space between the door and the bed is its own kind of territory.</p>
+
+      <p>I walk toward you slowly. I stand at the edge of the bed. You reach for my belt without being told.</p>
+
+      <p>Here is something that had happened over the months we had been finding each other: Nadia had learned to crave having my cock in her mouth. This was not a given at the start. But something had changed, something I had cultivated, not by force or demand but by teaching her what it felt like to be genuinely good at something, to give pleasure so precisely that it came back to her as something close to pride. Now she wanted it. Now she moved into it with her whole body.</p>
+
+      <p>You take me in your hand first. Slowly. You look up at me and hold the look and lower your mouth to the base of my shaft and I feel the flat of your tongue press against me there, warm and deliberate, and you drag it upward. All the way up. The full length of me. Unhurried. Your eyes never leave mine.</p>
+
+      <p>At the tip you stop. You kiss it. Softly. Once. The way you'd kiss something you wanted to remember. Then you wrap your hand around the base and you open your mouth and you slide your lips down over me, inch by inch, taking your time, and I feel the warmth close around me and then the wet and then the pressure of it, that specific enveloping heat, and I feel it all the way to the back of my knees.</p>
+
+      <p>I look down at you.</p>
+
+      <p>Blue eyes looking up. Lids heavy. Pupils blown so wide there is almost nothing left of the color. There is no performance in your face. No technique being executed. What I see in your eyes is surrender and devotion in equal measure, the look of a woman who has given herself entirely to a single purpose and found something close to peace in it. You are not doing this for me. You are doing this because you want to. Because somewhere between the first time and now, something in you decided this was yours to give.</p>
+
+      <p>You pick up the rhythm slowly. Your hand and your mouth working together, going to the places you know will make me lose my composure. I feel you take more of me. I feel the suction increase. I feel you reach.</p>
+
+      <p>I grab a fistful of your hair.</p>
+
+      <p class="dialogue">"Good girl. You love sucking my cock, don't you."</p>
+
+      <p>You make a sound low in your throat that is answer enough.</p>
+
+      <p>I pull you off before I am finished. You look up at me with the expression of someone who had something taken away. I push you onto all fours on the bed and I kneel behind you.</p>
+
+      <p>I run my hands down the length of your spine, over the harness frame, across the spread of your hips. I find the heat of you with my mouth.</p>
+
+      <p>You gasp. The sharp intake of someone who expected it and still wasn't ready.</p>
+
+      <p>I take my time. I know your body now. I know the places that make you curl inward and the ones that make you press back and the rhythm that builds pressure the way a tide builds. I bring you to the edge and stop. You make a sound that is not quite a word. I wait. I let you breathe. I start again.</p>
+
+      <p>You reach for a pillow and pull it toward your face. I take it away.</p>
+
+      <p class="dialogue">"You moan for me," I say. "Let me hear you."</p>
+
+      <p>While I eat you I slide one finger slowly into your ass. You freeze for half a second. Then you exhale and your whole body adjusts around it. I keep going. My mouth on you, my finger inside you, working you from both directions with the same patience I bring to everything.</p>
+
+      <p>The sound that comes out of you is not controlled. It is not the careful Dutch version of Nadia who walked into that wedding on my arm. It is something older and louder. You moan like you are possessed. Like your body has been waiting months for permission to make this sound in front of someone and tonight it is finally allowed.</p>
+
+      <p>I bring you to the edge one more time and hold you there just long enough. Then I let you go and you explode in my mouth. Your whole body seizes. Your hips drive back against my face. The scream comes out of you unguarded and full-throated in the quiet resort room. Your legs shake. Your arms shake. You collapse forward and lie there, face down, panting, your body still moving in long trembling aftershocks. Dying and coming back at the same time.</p>
+
+      <p class="dialogue">"Good little whore," I say.</p>
+
+      <p>I pull my finger from your ass and stand up.</p>
+
+      <p>There is something that happens to me when I make a woman come like that. Something that has nothing to do with tenderness. My cock is already hard but now it is hard in a different way, the specific hardness that comes from watching someone lose all of it in my hands. It is invigorating. Empowering in a way I have never found a more precise word for. Her surrender is not a gift that diminishes me. It is a current that runs the other direction entirely. The more she gives, the more present I become.</p>
+
+      <p>You are still face down, panting, recovering, when I reach for the condom. I take my time. I lube generously. I watch you breathe.</p>
+
+      <p>You had given me everything else by August. This was the part you hadn't.</p>
+
+      <p>I position myself behind you and press forward slowly. Past the first resistance, watching your body for everything it tells me. Your breath catches. You grip the sheets. I go further and you exhale and I feel you open and I stop and hold there.</p>
+
+      <p>All the way in. Still.</p>
+
+      <p>Your exhale comes out rough and long, the kind that releases something held for months.</p>
+
+      <p class="dialogue">"Good girl."</p>
+
+      <div class="section-break"><span class="section-num">III</span></div>
+
+      <p>Here is where the night changes.</p>
+
+      <p>There is the part of every night like this that is deliberate and careful. And there is the part where something breaks open and neither of us is performing anything anymore and the room gets small and it is only this.</p>
+
+      <p>I pull out of you and flip you onto your back. I want to see your face.</p>
+
+      <p>You look up at me from inside the harness and there is nothing left of the careful Dutch composure. The chest straps frame you. The buckles catch the low light. Your legs fall open without my asking. Your lips are parted. Your eyes are the eyes of a woman who has decided to give everything and is waiting to feel it taken.</p>
+
+      <p>I push into you. You arch up to meet me. Your hands find my shoulders.</p>
+
+      <p class="dialogue">"Tell me you want it," I say.</p>
+
+      <p class="dialogue">"I want it."</p>
+
+      <p class="dialogue">"Tell me what you are."</p>
+
+      <p>A pause. Then, quietly: <span class="dialogue">"I'm your slut."</span></p>
+
+      <p class="dialogue">"What else."</p>
+
+      <p class="dialogue">"I'm your dirty little whore."</p>
+
+      <p>The words come out of your mouth with something between shame and relief, the way confessions do when they are also true. I drive into you and you gasp and I pull your hair back until your neck extends, long and pale in the low light, and I put my mouth against the curve of it and say in your ear the things I know will reach through the language part of your brain and hit something older. I call you my filthy whore. My perra. Mi putita sucia. The Spanish lands differently than the English and I watch what it does to your face and I do it again.</p>
+
+      <p>I grip your broad shoulders and feel the leather warm under my palms and your skin burning underneath it. I smack your ass once, flat and sharp in the quiet room, and you push back instead of forward. Good. You have always pushed back instead of forward. That is one of the true things about you.</p>
+
+      <p>You are soaking. Every time I pull back I feel you, the heat of you past your thighs and into the sheets, your body giving me everything without my having to ask. I can feel you on me every time I drive home. That specific wet warmth that means you are past thinking.</p>
+
+      <p>This is where you go quiet in a different way. Not the careful quiet of the mirror. The other one. Where your mind goes blank. Where you stop deciding what to let me see and just let me see it. Where you make sounds that surprise you and you don't reach back to take them back. I know your vocabulary in this register now. I use it. The rhythm that makes your hips roll up to meet mine, the angle that makes you grip my shoulders white-knuckled, the moment just before the edge when your whole body tightens and I slow down instead of speeding up, making you hold it, making you wait, making you ask me.</p>
+
+      <p>You ask me.</p>
+
+      <p class="dialogue">"Please," you say, and the word has stopped being a word. Just breath and need. "Please, please, please."</p>
+
+      <p>I cover your mouth with my hand. I feel your lips against my palm, the warm rush of your breath, your teeth grazing my fingers. I hold you at the edge until you are shaking from the inside out.</p>
+
+      <p class="dialogue">"Come for me," I say. "Now."</p>
+
+      <p>And you do. With your face down and your voice low and wrecked, the pulse of it moving through you in long waves. I stay still so you feel every second of it. Your fingers dig into my back. You make a sound like something breaking and remaking at the same time.</p>
+
+      <p class="dialogue">"Good girl," I say against your ear. "Good dirty girl."</p>
+
+      <p>You collapse forward. I follow you down. Both of us sweating and spent. Your hair is completely wrecked. The harness buckles press against my chest. I feel your body settle, the small aftershocks moving through you. Within minutes you are asleep. Boneless. Total. The way you sleep when we are together: like something in you finally releases whatever grip it keeps on things all day.</p>
+
+      <p>I lie in the dark and listen to you breathe. The ocean does something outside. Everything is warm and still.</p>
+
+      <p>The Polaroid is in your bag.</p>
+
+      <p>I have my copy.</p>
+
+      <div class="section-break"><span class="section-num">IV</span></div>
+
+      <p>Nadia was the hunt that changed the way I hunt.</p>
+
+      <p>Not because I wanted her more than others. I have wanted bodies with a desperation that leaked out of me before I could catch it. That showed in how I moved, how I reached, how I made the wanting visible when I should have kept it contained. It has ended things before they found their shape. The wanting was never the problem. The problem was that I couldn't hold it.</p>
+
+      <p>With Nadia I was composed.</p>
+
+      <p>I wanted her and I moved through that wanting without spilling it. I played the long game not from detachment but from something harder: understanding that the hunt and the having are two separate things, and that collapsing them, reaching for the second before finishing the first, is what ruins it every time.</p>
+
+      <p>She could feel the composure. That is why she gave me everything.</p>
+
+      <p>I think about that night sometimes. The wedding, the turned heads, the walk across the grounds. The mirror. What her face did when she saw herself in the leather. What her body did when I took it somewhere it hadn't been before.</p>
+
+      <p>The Polaroid is in her archive. A piece of that night belongs to her completely.</p>
+
+      <p>I keep my copy.</p>
+
+    </article>
+
+    <footer class="story-footer">
+      <p class="footer-disclaimer">
+        All names have been changed. Some locations blurred. Everything else happened.<br>
+        &copy; Dante Rose. All rights reserved. Not for reproduction or distribution.
+      </p>
+      <div class="footer-nav">
+        <a href="/dante-rose">&larr; All stories</a>
+        <span class="series-tag">Outlaw Chronicles (R)</span>
+        <a href="#">Chapter 17: The Dimension &rarr;</a>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  function enterStory() {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('story').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>

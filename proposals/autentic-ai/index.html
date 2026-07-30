@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Mexzungu x Autentic.ai — Venture Architecture</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/style.css?v=10">
+  <style>
+        /* DARK OVERRIDE — always dark */
+        :root {
+            --bg-primary:   #0d0d0d;
+            --bg-card:      #1a1a1a;
+            --text-primary: #fafafa;
+            --text-secondary:#9a8f88;
+            --text-muted:   #6b5e57;
+            --text-accent:  #e86fa0;
+            --border:       #2a2a2a;
+            --border-hover: #e14b87;
+            --card-bg:      #1a1a1a;
+            --nav-bg:       rgba(13,13,13,0.92);
+            --dropdown-bg:  rgba(26,26,26,0.97);
+        }
+
+        /* PASSWORD GATE */
+        #pw-gate { position:fixed;inset:0;background:#0d0d0d;display:flex;align-items:center;justify-content:center;z-index:9999;padding:2rem; }
+        #pw-gate.hidden { display:none; }
+        .pw-card { background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:3rem 2.5rem;max-width:420px;width:100%;text-align:center; }
+        .pw-logo { height:52px;margin-bottom:2rem; }
+        .pw-label { font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#e14b87;font-weight:600;margin-bottom:1rem; }
+        .pw-heading { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:1.6rem;font-weight:400;color:#fafafa;margin-bottom:.6rem;line-height:1.2; }
+        .pw-sub { font-size:.9rem;color:#9a8f88;margin-bottom:2rem;line-height:1.6; }
+        .pw-input { width:100%;padding:.9rem 1rem;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:6px;color:#fafafa;font-family:'Space Grotesk',sans-serif;font-size:1rem;letter-spacing:.05em;margin-bottom:1rem;transition:border-color .2s;text-align:center;box-sizing:border-box; }
+        .pw-input:focus { outline:none;border-color:#e14b87;box-shadow:0 0 0 3px rgba(225,75,135,.15); }
+        .pw-input.error { border-color:#c93545;animation:shake .3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn { width:100%;padding:.9rem 2rem;background-color:#e14b87;background-image:radial-gradient(ellipse 12px 8px at 20% 40%,rgba(255,255,255,.2) 0%,transparent 70%),radial-gradient(ellipse 8px 12px at 60% 25%,rgba(255,255,255,.15) 0%,transparent 70%);color:#fafafa;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;border:none;border-radius:6px;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(225,75,135,.35);letter-spacing:.02em; }
+        .pw-btn:hover { background-color:#e86fa0;box-shadow:0 6px 22px rgba(225,75,135,.45);transform:scale(1.02); }
+        .pw-error { font-size:.85rem;color:#c93545;margin-top:.8rem;min-height:1.2em; }
+        .pw-footer-note { font-size:.75rem;color:#4a4a4a;margin-top:2rem; }
+
+        /* PROPOSAL */
+        #proposal-content { display:none; }
+        #proposal-content.visible { display:block; }
+
+        /* HERO */
+        .proposal-hero { min-height:65vh;display:flex;flex-direction:column;justify-content:center;padding:10rem 2rem 5rem;max-width:1200px;margin:0 auto; }
+        .proposal-hero .hero-tag { font-family:'Rock Salt',cursive;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:#e14b87;margin-bottom:1.5rem;opacity:.85; }
+        .proposal-hero h1 { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:clamp(2.8rem,6vw,4.8rem);font-weight:400;line-height:1.1;letter-spacing:-.01em;margin-bottom:1rem;color:#fafafa; }
+        .proposal-hero .hero-sub { font-size:1.05rem;color:#9a8f88;line-height:1.7;margin-bottom:1.5rem;max-width:560px; }
+        .proposal-hero .valid-note { font-size:.85rem;color:#6b5e57;letter-spacing:.05em; }
+
+        /* SECTIONS */
+        .prop-section { padding:5rem 2rem;max-width:860px;margin:0 auto; }
+        .prop-section + .prop-section { border-top:1px solid #1e1e1e; }
+        .prop-label { font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#e14b87;font-weight:600;margin-bottom:1rem; }
+        .prop-heading { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:400;color:#fafafa;line-height:1.15;letter-spacing:-.01em;margin-bottom:1.5rem; }
+        .prop-copy { font-size:1.05rem;color:#9a8f88;line-height:1.85;max-width:680px; }
+        .prop-copy strong { color:#c8c0bb;font-weight:600; }
+        .prop-divider { height:1px;background:#1a1a1a;max-width:860px;margin:0 auto; }
+
+        /* STATS GRID (section 01 — what we heard) */
+        .stats-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2.5rem 0 2rem; }
+        @media(max-width:600px){.stats-grid{grid-template-columns:1fr;}}
+        .stat-item { background:#111111;border:1px solid #1e1e1e;border-radius:10px;padding:1.6rem 1.4rem;text-align:center; }
+        .stat-number { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:2.6rem;color:#d4a039;letter-spacing:-.02em;line-height:1;margin-bottom:.5rem; }
+        .stat-label { font-size:.78rem;color:#6b5e57;line-height:1.55;letter-spacing:.01em; }
+
+        /* RISK ITEMS (section 02 — what breaks) */
+        .urgency-window { display:inline-flex;align-items:center;gap:.6rem;background:rgba(212,160,57,.07);border:1px solid rgba(212,160,57,.2);border-radius:6px;padding:.7rem 1.2rem;margin-bottom:2rem;font-size:.85rem;color:#d4a039;letter-spacing:.03em; }
+        .urgency-window::before { content:'⏱';font-size:1rem; }
+        .breaks-intro { font-size:.95rem;color:#6b5e57;line-height:1.8;margin-bottom:2rem;max-width:680px; }
+        .risk-list { display:flex;flex-direction:column;gap:.8rem; }
+        .risk-item { background:#0f0f0f;border:1px solid #2a2a2a;border-left:3px solid #d4a039;border-radius:0 8px 8px 0;padding:1.4rem 1.6rem;transition:border-left-color .2s;display:grid;grid-template-columns:auto 1fr;gap:0 1.2rem;align-items:start; }
+        .risk-item:hover { border-left-color:#e14b87; }
+        .risk-badge { display:flex;flex-direction:column;align-items:center;gap:.3rem;padding-top:.1rem; }
+        .risk-icon { font-size:1.3rem;line-height:1; }
+        .risk-num { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:.65rem;color:#3d3533;letter-spacing:.1em; }
+        .risk-content {}
+        .risk-title { font-family:'Space Grotesk',sans-serif;font-weight:700;color:#d4a039;font-size:.85rem;letter-spacing:.03em;margin-bottom:.5rem;text-transform:uppercase; }
+        .risk-body { font-size:.92rem;color:#9a8f88;line-height:1.7; }
+
+        /* PORTFOLIO LINK (replaces section 05) */
+        .portfolio-teaser { max-width:860px;margin:0 auto;padding:2.5rem 2rem;text-align:center; }
+        .portfolio-link { display:inline-flex;align-items:center;gap:.5rem;font-size:.9rem;color:#e14b87;text-decoration:none;border-bottom:1px solid rgba(225,75,135,.3);padding-bottom:2px;transition:all .2s;letter-spacing:.01em; }
+        .portfolio-link:hover { color:#fafafa;border-color:#fafafa; }
+        .portfolio-link::after { content:'→';font-size:.85rem; }
+
+        /* SERVICE SPLIT (section 03 — workstreams) */
+        .service-split { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem; }
+        @media(max-width:768px){.service-split{grid-template-columns:1fr;}}
+        .service-col { background:#111111;border:1px solid #2a2a2a;border-radius:14px;display:flex;flex-direction:column; }
+        .service-col-head { padding:1.8rem 1.8rem 1.4rem;border-bottom:1px solid #1e1e1e; }
+        .service-col-tag { font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#e14b87;font-weight:700;margin-bottom:.5rem; }
+        .service-col-name { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:1.35rem;color:#fafafa;margin-bottom:.8rem;line-height:1.2; }
+        .service-col-tagline { font-size:.83rem;color:#6b5e57;line-height:1.65;margin:0; }
+        .service-deliverables { padding:1.4rem 1.8rem;flex:1;display:flex;flex-direction:column;gap:1.2rem; }
+        .service-item-name { font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:700;color:#c8c0bb;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem; }
+        .service-item-name::before { content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#e14b87;flex-shrink:0; }
+        .service-item-body { font-size:.8rem;color:#6b5e57;line-height:1.6;padding-left:1rem; }
+        .service-timeline { padding:1rem 1.8rem;border-top:1px solid #1e1e1e;display:flex;align-items:center;gap:.75rem; }
+        .timeline-label { font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#3d3533;font-weight:700; }
+        .timeline-value { font-size:.8rem;color:#9a8f88; }
+
+        /* PRICING (section 04) */
+        .pricing-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:2.5rem; }
+        .pricing-card { background:#111111;border:1px solid #2a2a2a;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column; }
+        .pricing-card.featured { border-color:#2d1f28;background:linear-gradient(160deg,#111111 0%,#1a0f15 100%); }
+        .pricing-card-label { font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#e14b87;font-weight:700;margin-bottom:.8rem; }
+        .pricing-card-name { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:1.1rem;color:#fafafa;margin-bottom:.8rem;line-height:1.3; }
+        .pricing-number { font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:2rem;color:#d4a039;letter-spacing:-.02em;line-height:1;margin-bottom:.2rem; }
+        .pricing-number-sub { font-size:.78rem;color:#4a4a4a;margin-bottom:1rem; }
+        .pricing-desc { font-size:.83rem;color:#6b5e57;line-height:1.65;margin-bottom:1rem;flex:1; }
+        .pricing-desc strong { color:#9a8f88; }
+        .pricing-lines { list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.4rem; }
+        .pricing-lines li { font-size:.83rem;color:#c8c0bb;padding-left:.9rem;position:relative; }
+        .pricing-lines li::before { content:'–';position:absolute;left:0;color:#e14b87; }
+        .pricing-lines li strong { color:#d4a039;font-family:'RocknRoll One','Space Grotesk',sans-serif; }
+        .admin-card { background:#0f0f0f;border:1px solid #1e1e1e;border-radius:10px;padding:1.6rem;margin-top:1.2rem; }
+        .admin-card-label { font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#4a4a4a;font-weight:700;margin-bottom:.5rem; }
+        .admin-card-name { font-family:'Space Grotesk',sans-serif;font-size:.95rem;color:#9a8f88;font-weight:700;margin-bottom:.5rem; }
+        .admin-card-desc { font-size:.8rem;color:#4a4a4a;line-height:1.6;margin-bottom:.8rem; }
+        .payment-note { margin-top:1rem;padding:1rem 1.2rem;background:rgba(225,75,135,.04);border-left:2px solid #2d1f28;border-radius:0 6px 6px 0;font-size:.8rem;color:#4a4a4a;line-height:1.6; }
+        .payment-note strong { color:#6b5e57; }
+
+        /* FINE PRINT */
+
+        /* FINE PRINT */
+        .fine-print-list { list-style:none;padding:0;margin:1.5rem 0 0; }
+        .fine-print-list li { font-size:.88rem;color:#6b5e57;padding:.5rem 0;border-bottom:1px solid #1a1a1a;display:flex;align-items:flex-start;gap:.7rem;line-height:1.6; }
+        .fine-print-list li:last-child { border:none; }
+        .fine-print-list li::before { content:'//';color:#2d2d2d;font-family:monospace;font-size:.8rem;flex-shrink:0;margin-top:.1rem; }
+
+        /* CTA */
+        .cta-section { text-align:center;padding:6rem 2rem 8rem;max-width:760px;margin:0 auto; }
+        .cta-sub { font-size:1rem;color:#6b5e57;margin-bottom:3rem;line-height:1.7; }
+        .cta-btn { display:inline-flex;align-items:center;gap:.6rem;padding:1.1rem 2.8rem;background-color:#e14b87;background-image:radial-gradient(ellipse 12px 8px at 20% 40%,rgba(255,255,255,.2) 0%,transparent 70%),radial-gradient(ellipse 8px 12px at 60% 25%,rgba(255,255,255,.15) 0%,transparent 70%),radial-gradient(ellipse 10px 8px at 80% 65%,rgba(255,255,255,.18) 0%,transparent 70%),radial-gradient(ellipse 8px 10px at 40% 75%,rgba(255,255,255,.12) 0%,transparent 70%);color:#fafafa;font-family:'RocknRoll One','Space Grotesk',sans-serif;font-size:1.1rem;font-weight:400;border-radius:6px;text-decoration:none;transition:all .2s;letter-spacing:.01em;box-shadow:0 6px 24px rgba(225,75,135,.4),0 2px 4px rgba(0,0,0,.2); }
+        .cta-btn:hover { background-color:#e86fa0;color:#fafafa;box-shadow:0 8px 30px rgba(225,75,135,.5),0 3px 6px rgba(0,0,0,.2);transform:scale(1.03); }
+        .cta-btn:active { transform:scale(.98);box-shadow:0 3px 12px rgba(225,75,135,.3); }
+        .cta-secondary { margin-top:2rem;font-size:.88rem;color:#4a4a4a; }
+        .cta-secondary a { color:#9a8f88;text-decoration:underline;text-underline-offset:3px;transition:color .2s; }
+        .cta-secondary a:hover { color:#e14b87; }
+
+        @media(max-width:768px){
+            .proposal-hero{padding:9rem 1.5rem 4rem;}
+            .prop-section{padding:4rem 1.5rem;}
+            .cta-section{padding:4rem 1.5rem 6rem;}
+            .pricing-grid{grid-template-columns:1fr;}
+        }
+
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-field .pw-input { margin-bottom: 0; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
+    </style>
+</head>
+<body>
+
+
+<div id="pw-gate">
+  <div class="pw-card">
+    <img src="/logo-v3.png" alt="Mexzungu Group" class="pw-logo">
+    <div class="pw-label">Propuesta privada</div>
+    <div class="pw-heading">Esta página es para ti.</div>
+    <p class="pw-sub">Introduce tu código de acceso para leer la propuesta.</p>
+    <input type="password" id="pw-input" class="pw-input"
+           placeholder="código de acceso" autocomplete="off" autofocus>
+    <button class="pw-btn" onclick="checkPassword()">Abrir propuesta</button>
+    <div class="pw-error" id="pw-error"></div>
+    <p class="pw-footer-note">Esta propuesta es confidencial y ha sido preparada específicamente para Autentic.ai.</p>
+  </div>
+</div>
+
+<div id="proposal-content">
+
+
+<nav>
+  <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+  <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li class="nav-dropdown">
+      <a href="/#pillars">What We Do</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="/venture-architecture">Venture Architecture</a></li>
+        <li><a href="/data-privacy">Data Privacy</a></li>
+        <li><a href="/rebel-capital">Rebel Capital</a></li>
+        <li><a href="/ai-ninja-factory">AI Ninja Factory</a></li>
+      </ul>
+    </li>
+    <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+    <li><a href="/lets-jam" class="nav-cta">Let's Jam</a></li>
+  </ul>
+</nav>
+
+<main>
+
+
+<div class="proposal-hero leopard-dense">
+  <div class="hero-tag">Para Dani Diestre Tomas y Aniol Carreras, Autentic.ai</div>
+  <h1>Tienes una mesa de cap table que no sobrevive la due diligence.</h1>
+  <p class="hero-sub">Vinisteis a la llamada. Escuchamos. Esto es lo que proponemos.</p>
+  <p class="valid-note">Válida durante 30 días desde el 5 de junio de 2026.</p>
+</div>
+
+<div class="prop-divider"></div>
+
+
+<div class="prop-section">
+  <div class="prop-label">01 / Lo que escuchamos</div>
+  <div class="prop-heading">Esto es lo que vimos en la mesa.</div>
+<div class="stats-grid">
+  <div class="stat-item"><div class="stat-number">15%</div><div class="stat-label">equity de cofundador sin escritura pública</div></div>
+  <div class="stat-item"><div class="stat-number">10%</div><div class="stat-label">ESOP reservado en papel — €0 formalizado</div></div>
+  <div class="stat-item"><div class="stat-number">€50k</div><div class="stat-label">en nota convertible con términos sin limpiar</div></div>
+</div>
+  <p class="prop-copy"><strong>Autentic.ai</strong> está construyendo una herramienta de market research
+            con IA para estrategia de pricing. Bootstrap, tracción real, fundadores que saben
+            lo que hacen. La siguiente ronda — €1M a €7M post-money — está en el horizonte.
+            <br><br>
+            El problema no es el producto. Es la estructura debajo del producto.
+            Un tercer cofundador con el 15% que solo existe en un pacto de socios, sin paso
+            por notario. Un ESOP del 10% reservado en papel, sin crear formalmente.
+            Un pool ángel de €50k en nota convertible con términos que nadie ha limpiado.
+            Una asesora cuyo acuerdo se está negociando caso a caso, sin modelo estándar.
+            <br><br>
+            Todo esto funciona mientras sois tres personas hablando entre vosotros.
+            Deja de funcionar el día que un VC entra en la sala.</p>
+</div>
+<div class="prop-divider"></div>
+
+<div class="prop-section">
+  <div class="prop-label">02 / Lo que se rompe si no actuáis</div>
+  <div class="prop-heading">Lo que se rompe si no actuáis ahora.</div>
+  <div class="urgency-window">La ventana: 60-90 días antes de vuestra primera reunión con un VC</div>
+  <p class="breaks-intro">Cada uno de estos problemas es invisible hoy. En due diligence, cada uno se convierte en un argumento de negociación para el inversor, no para vosotros.</p>
+  <div class="risk-list">
+    <div class="risk-item">
+      <div class="risk-badge">
+        <span class="risk-icon">🏛️</span>
+        <span class="risk-num">01</span>
+      </div>
+      <div class="risk-content">
+        <div class="risk-title">El tercer cofundador sin formalizar</div>
+        <div class="risk-body">Un 15% que vive solo en un pacto de socios es una bandera roja inmediata en cualquier DD institucional. El VC lo descubre, congela el proceso, y lo usa para renegociar condiciones. Ese no es el momento para resolverlo.</div>
+      </div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-badge">
+        <span class="risk-icon">📋</span>
+        <span class="risk-num">02</span>
+      </div>
+      <div class="risk-content">
+        <div class="risk-title">El ESOP que no existe</div>
+        <div class="risk-body">Lleváis un 10% reservado en papel. En la primera reunión de DD os preguntan por el plan de equity para empleados. Crear el ESOP bajo presión, con una term sheet encima, es el error más caro y más evitable de todos.</div>
+      </div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-badge">
+        <span class="risk-icon">⚖️</span>
+        <span class="risk-num">03</span>
+      </div>
+      <div class="risk-content">
+        <div class="risk-title">La governance que no escala</div>
+        <div class="risk-body">Cuando el pool ángel esté lleno y el ESOP activo, cada junta tiene más votos en la sala. Sin una clase de acciones sin voto, la governance se complica exactamente cuando necesitáis que sea simple. Se diseña ahora o se negocia con el inversor.</div>
+      </div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-badge">
+        <span class="risk-icon">🤝</span>
+        <span class="risk-num">04</span>
+      </div>
+      <div class="risk-content">
+        <div class="risk-title">El modelo de asesores sin estándar</div>
+        <div class="risk-body">El acuerdo de María es el primero de una serie. Cada deal ad hoc crea un precedente y una comparación para el siguiente. Necesitáis dos modelos estándar y nada más — o cada negociación futura parte de cero.</div>
+      </div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-badge">
+        <span class="risk-icon">💰</span>
+        <span class="risk-num">05</span>
+      </div>
+      <div class="risk-content">
+        <div class="risk-title">La nota convertible sin limpiar</div>
+        <div class="risk-body">€50k convierte en la ronda. Si los términos no están perfectos antes de que llegue una term sheet, el inversor fija las condiciones en ese momento. Ese es el peor escenario posible para negociar.</div>
+      </div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-badge">
+        <span class="risk-icon">🔒</span>
+        <span class="risk-num">06</span>
+      </div>
+      <div class="risk-content">
+        <div class="risk-title">La propiedad intelectual sin asignar</div>
+        <div class="risk-body">¿Quién posee el modelo de IA? ¿El código lo desarrollaron los fundadores antes o después de la empresa? Un inversor institucional preguntará. Si la IP no está formalmente asignada a la sociedad, con acuerdos de contribución firmados, el activo central de Autentic.ai no está donde debería estar.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="prop-divider"></div>
+
+<div class="prop-section">
+  <div class="prop-label">03 / Lo que construimos</div>
+  <div class="prop-heading">Lo que construimos.</div>
+  <p class="prop-copy" style="margin-bottom:0;">Cada deliverable está diseñado para eliminar uno de los problemas de arriba antes de que un VC lo vea.</p>
+  <div class="service-split">
+
+      <div class="service-col">
+        <div class="service-col-head">
+          <div class="service-col-tag">Workstream 1</div>
+          <div class="service-col-name">Arquitectura de Capital</div>
+          <p class="service-col-tagline">La estructura limpia antes de la ronda. Cap table, ESOP, governance, notas convertibles, marco de asesores — todo resuelto en 6 semanas.</p>
+        </div>
+        <div class="service-deliverables">
+        <div class="service-item">
+          <div class="service-item-name">Auditoría de cap table</div>
+          <div class="service-item-body">Revisión completa del estado actual. Gap analysis, mapa de riesgos para DD, plan de limpieza por escrito. Entregamos el problema antes de proponer la solución.</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-name">Formalización del tercer cofundador</div>
+          <div class="service-item-body">Resolución del 15% — ya sea elevación a escritura pública o acuerdo de compraventa. Limpio antes de la ronda, sin sorpresas en DD.</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-name">Creación del ESOP</div>
+          <div class="service-item-body">Diseño e implementación formal del plan de phantom equity o acciones. Clase de participaciones definida, reserva documentada, reglas de administración. Listo para presentar en la primera reunión de DD.</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-name">Marco de asesores estándar</div>
+          <div class="service-item-body">Modelo A (phantom equity + milestone) y Modelo B (success-based). Dos modelos, nada más. Todos los futuros acuerdos de asesores usan uno de los dos.</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-name">Marco de propiedad intelectual</div>
+          <div class="service-item-body">Inventario de activos: modelo de IA, datos de entrenamiento, código de plataforma, marca. Acuerdos de asignación de IP firmados por cada fundador. Estructura de licencia entre la sociedad operativa y cualquier HoldCo. Diseñado para sobrevivir la salida de un fundador y la entrada de un inversor institucional.</div>
+        </div>
+        </div>
+        <div class="service-timeline">
+          <span class="timeline-label">Plazo</span>
+          <span class="timeline-value">6-8 semanas desde el inicio</span>
+        </div>
+      </div>
+      <div class="service-col">
+        <div class="service-col-head">
+          <div class="service-col-tag">Workstream 2</div>
+          <div class="service-col-name">Apoyo en la ronda</div>
+          <p class="service-col-tagline">Entramos en la sala cuando empieza la ronda. Term sheets, negociaciones, cierre. Fee solo cuando el dinero entra.</p>
+        </div>
+        <div class="service-deliverables">
+        <div class="service-item">
+          <div class="service-item-name">Primera reunión con inversores</div>
+          <div class="service-item-body">Estamos en la llamada. No como observadores — como copresentadores de la arquitectura. Las preguntas que hacen los VCs sobre vuestra estructura son exactamente las que hemos diseñado para responder.</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-name">Revisión de term sheets</div>
+          <div class="service-item-body">Leemos cada term sheet antes que vosotros. Marcamos qué es estándar, qué parece estándar pero no lo es, y qué necesita negociación. Vosotros decidís con información completa.</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-name">Soporte hasta el cierre</div>
+          <div class="service-item-body">Disponibles en 48h para cualquier cosa que surja entre la term sheet y el dinero en cuenta. El fee aplica en el cierre — no antes.</div>
+        </div>
+        </div>
+        <div class="service-timeline">
+          <span class="timeline-label">Plazo</span>
+          <span class="timeline-value">En curso durante la ronda. Fee al cierre.</span>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="prop-divider"></div>
+
+<div class="prop-section">
+  <div class="prop-label">04 / Lo que cuesta</div>
+  <div class="prop-heading">Lo que cuesta.</div>
+  <p class="prop-copy" style="margin-bottom:0;">Un precio fijo para limpiar la estructura. Un fee de éxito para la ronda. Sin horas, sin sorpresas.</p>
+  <div class="pricing-grid">
+
+    <div class="pricing-card featured">
+      <div class="pricing-card-label">WS1 — precio fijo por entregable</div>
+      <div class="pricing-card-name">Arquitectura de Capital</div>
+      <div class="pricing-number">€7.500</div>
+      <div class="pricing-number-sub">pagado al recibir cada entregable</div>
+      <p class="pricing-desc">Precio fijo para los cinco deliverables. Se cobra al entregar cada uno — nada de golpe, nada por adelantado. Si el trabajo no se entrega, no se paga.</p>
+      <ul class="pricing-lines"><li>€1.500 por entregable, al recibirlo (×5)</li>
+<li>Hasta el 40% de los fees convertible en equity al precio de la siguiente ronda, a vuestra elección, ejercido antes de la factura</li></ul>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-card-label">WS2 — fee de éxito</div>
+      <div class="pricing-card-name">Apoyo en la ronda</div>
+      <div class="pricing-number">2% / 1%</div>
+      <div class="pricing-number-sub">equity cerrado / deuda cerrada</div>
+      <p class="pricing-desc">Solo cuando el dinero entra en cuenta. Pagadero en 14 días desde el cierre. Sin ronda, sin fee.</p>
+      <ul class="pricing-lines"><li>2% sobre equity cerrado</li>
+<li>1% sobre deuda cerrada</li>
+<li>Dentro de 12 meses desde el inicio del engagement</li></ul>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-label">Fee de administración — facturado mensualmente</div>
+    <div class="admin-card-name">Mientras cualquier workstream está activo</div>
+    <div class="admin-card-desc">Cubre acceso, coordinación y asesoramiento mientras cualquier workstream esté abierto. Se detiene automáticamente cuando el engagement termina.</div>
+    <ul class="pricing-lines"><li>1 workstream: <strong>€500 / mes</strong></li>
+<li>2 workstreams: <strong>€900 / mes</strong></li>
+<li>3 workstreams: <strong>€1.200 / mes</strong></li></ul>
+  </div>
+
+  <div class="payment-note">
+    <strong>Opciones de pago:</strong> Transferencia bancaria (cuenta MCB USD), Payoneer (ACH/SEPA) o USDC en Solana. Detalles en el engagement letter.
+  </div>
+</div>
+<div class="prop-divider"></div>
+
+<div class="portfolio-teaser">
+  <a class="portfolio-link" href="/work">Ver el portfolio completo →</a>
+</div>
+<div class="prop-divider"></div>
+
+<div class="prop-section">
+  <div class="prop-label">06 / La letra pequeña</div>
+  <div class="prop-heading">Versión corta.</div>
+  <ul class="fine-print-list">
+<li>Rige la ley española. Jurisdicción exclusiva de los Tribunales de Barcelona.</li>
+<li>Preaviso de 30 días para rescisión, cualquiera de las partes.</li>
+<li>Confidencial. Lo que ocurre en este engagement se queda en este engagement.</li>
+<li>Esto es consultoría estructural, no asesoramiento jurídico.</li>
+  </ul>
+</div>
+
+<div class="prop-divider"></div>
+
+
+<div class="cta-section">
+  <div class="prop-label">¿Listo?</div>
+  <div class="prop-heading">Construyamos esto.</div>
+  <p class="cta-sub">Lee el engagement letter y firma cuando estés listo.</p>
+  <a class="cta-btn" href="https://mexzungu.com/sign/autentic-ai">Revisar y firmar el Engagement Letter</a>
+  <p class="cta-secondary">¿Todavía no estás listo? <a href="https://mexzungu.com/lets-jam">Reserva 30 minutos con Pepe.</a></p>
+</div>
+
+</main>
+
+
+<footer>
+  <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding:0 2rem;">
+    <span>© 2026 Mexzungu Group Ltd. Todos los derechos reservados.</span>
+    <span style="font-size:.85rem;">
+      <a href="https://pepecarrillo.co" style="color:var(--gold);">Pepe's Writing</a> &middot;
+      <a href="/privacy/" style="color:var(--gold);">Privacy Policy</a> &middot;
+      <a href="/terms/" style="color:var(--gold);">Terms of Service</a> &middot;
+      <a href="/ai-policy/" style="color:var(--gold);">AI Policy</a>
+    </span>
+  </div>
+  <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice.</div>
+</footer>
+
+</div>
+
+
+<script>
+(function() {
+  var CORRECT = 'autentic-outlaw-0506';
+    var MASTER_PW = 'Outlaw-Master-2026';
+  var SESSION_KEY = 'autentic_auth';
+  var ERR_MSG = 'Código incorrecto. Inténtalo de nuevo.';
+  function unlock() {
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('proposal-content').classList.add('visible');
+  }
+  if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); return; }
+  document.getElementById('pw-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+  window.checkPassword = function() {
+    var val = document.getElementById('pw-input').value.trim();
+    var input = document.getElementById('pw-input');
+    var err = document.getElementById('pw-error');
+    if (val === CORRECT || val === MASTER_PW) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      unlock();
+    } else {
+      input.classList.add('error');
+      err.textContent = ERR_MSG;
+      input.value = '';
+      setTimeout(function() { input.classList.remove('error'); }, 400);
+      setTimeout(function() { err.textContent = ''; }, 3000);
+      input.focus();
+    }
+  };
+})();
+document.querySelectorAll('.nav-links a').forEach(function(l) {
+  l.addEventListener('click', function() {
+    document.querySelector('.nav-links').classList.remove('open');
+  });
+});
+
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+    }
+</script>
+
+</body>
+</html>

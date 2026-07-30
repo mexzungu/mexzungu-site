@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kabisa x ACV: SAFE Variations</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; padding: 16px; }
+  h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: #fff; }
+  .meta { font-size: 0.8rem; color: #888; margin-bottom: 20px; }
+  .summary { background: #1a1a1a; border-left: 4px solid #E14B87; padding: 14px 16px; border-radius: 6px; margin-bottom: 24px; }
+  .summary h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: #E14B87; margin-bottom: 10px; }
+  .fight { padding: 6px 0; border-bottom: 1px solid #2a2a2a; font-size: 0.9rem; line-height: 1.4; }
+  .fight:last-child { border-bottom: none; }
+  .fight strong { color: #fff; }
+  .fight span { color: #aaa; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { background: #1e1e1e; padding: 10px 10px; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #888; border-bottom: 2px solid #333; position: sticky; top: 0; }
+  td { padding: 10px 10px; border-bottom: 1px solid #1e1e1e; vertical-align: top; line-height: 1.4; }
+  tr:hover td { background: #161616; }
+  .critical td:first-child { border-left: 3px solid #ff4444; }
+  .high td:first-child { border-left: 3px solid #ff8800; }
+  .medium td:first-child { border-left: 3px solid #f0c040; }
+  .low td:first-child { border-left: 3px solid #555; }
+  .badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+  .badge-critical { background: #3a0f0f; color: #ff6b6b; }
+  .badge-high { background: #2d1a00; color: #ffa040; }
+  .badge-medium { background: #2a2000; color: #f0c040; }
+  .badge-low { background: #1a1a1a; color: #777; }
+  .badge-new { background: #0d2a1a; color: #40d080; }
+  .badge-change { background: #1a1a2d; color: #7090ff; }
+  .badge-prenegotiated { background: #2a1a00; color: #ffa040; }
+  .badge-intts { background: #1a1a1a; color: #888; }
+  .tag { font-size: 0.72rem; font-weight: 600; color: #E14B87; }
+  .action { font-size: 0.82rem; }
+  .action strong { color: #fff; display: block; margin-bottom: 2px; }
+  .justif { font-size: 0.8rem; color: #aaa; }
+  .var-name { font-weight: 600; color: #e8e8e8; display: block; }
+  .var-ref { font-size: 0.72rem; color: #666; display: block; margin-top: 2px; }
+  .section-header td { background: #1a1a1a; color: #888; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 10px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .filter-group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .filter-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #555; margin-right: 2px; white-space: nowrap; }
+  .pill { cursor: pointer; font-size: 0.72rem; font-weight: 600; padding: 4px 11px; border-radius: 20px; border: 1px solid #333; background: #1a1a1a; color: #888; transition: all 0.15s; user-select: none; }
+  .pill:hover { border-color: #555; color: #ccc; }
+  .pill.active { border-color: #E14B87; background: #2a0a18; color: #E14B87; }
+  .pill.active.imp-critical { border-color: #ff4444; background: #2a0a0a; color: #ff6b6b; }
+  .pill.active.imp-high { border-color: #ff8800; background: #2a1500; color: #ffa040; }
+  .pill.active.imp-medium { border-color: #f0c040; background: #252000; color: #f0c040; }
+  .pill.active.imp-low { border-color: #555; background: #1e1e1e; color: #999; }
+  .divider { width: 1px; background: #2a2a2a; align-self: stretch; margin: 0 4px; }
+  tr.hidden { display: none !important; }
+  @media (max-width: 700px) {
+    table, thead, tbody, th, td, tr { display: block; }
+    thead tr { display: none; }
+    td { padding: 6px 10px; }
+    td:first-child { padding-top: 12px; }
+    td:last-child { padding-bottom: 12px; }
+    .var-name { font-size: 0.9rem; }
+    tr { border-bottom: 2px solid #2a2a2a; margin-bottom: 4px; }
+    .section-header { display: block; }
+    .section-header td { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Kabisa x ACV: SAFE and Side Letter Variations</h1>
+<div class="meta">vs. Signed Term Sheet (May 17, 2026) &nbsp;·&nbsp; Updated Jun 3, 2026</div>
+
+<div class="summary">
+  <h2>Three fights that matter most</h2>
+  <div class="fight"><strong>1. Longstop (row 1)</strong> <span>Not in the signed TS at all. ACV IC introduced a 2yr forced conversion after signing. Push 4yr, settle 3yr. CJ has signalled 3yr is acceptable.</span></div>
+  <div class="fight"><strong>2. Reserved matters thresholds (rows 5-7)</strong> <span>TS said "material indebtedness," "material related-party transactions," "material asset disposals" with no numbers. SL adds $250K debt, $25K related-party, $50K asset disposal. Each blocks routine EV infrastructure capex and operations.</span></div>
+  <div class="fight"><strong>3. Commitment period (row 8)</strong> <span>TS says founders commit for the 4-year lock-up period. SL ties commitment to "for so long as this SAFE remains outstanding." With a 2yr longstop, ACV could force conversion and end the full-time obligation early.</span></div>
+</div>
+
+<div class="filters">
+  <div class="filter-group">
+    <span class="filter-label">Category</span>
+    <span class="pill active" data-filter="cat" data-value="all">All</span>
+    <span class="pill" data-filter="cat" data-value="conversion">Conversion</span>
+    <span class="pill" data-filter="cat" data-value="governance">Governance</span>
+    <span class="pill" data-filter="cat" data-value="reserved">Reserved Matters</span>
+    <span class="pill" data-filter="cat" data-value="lockup">Lock-up</span>
+    <span class="pill" data-filter="cat" data-value="mechanics">Mechanics</span>
+  </div>
+  <div class="divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Importance</span>
+    <span class="pill active" data-filter="imp" data-value="all">All</span>
+    <span class="pill imp-critical" data-filter="imp" data-value="critical">Critical</span>
+    <span class="pill imp-high" data-filter="imp" data-value="high">High</span>
+    <span class="pill imp-medium" data-filter="imp" data-value="medium">Medium</span>
+    <span class="pill imp-low" data-filter="imp" data-value="low">Low</span>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Variation</th>
+      <th>Status</th>
+      <th>Importance</th>
+      <th>Justification</th>
+      <th>What to do</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr class="section-header" data-cat="conversion"><td colspan="6">CONVERSION MECHANICS (SAFE)</td></tr>
+
+    <tr class="critical" data-cat="conversion" data-imp="critical">
+      <td>1</td>
+      <td><span class="var-name">Longstop: 2yr forced conversion</span><span class="var-ref">SAFE s.1.5</span></td>
+      <td><span class="badge badge-prenegotiated">Pre-agreed / IC</span></td>
+      <td><span class="badge badge-critical">Critical</span></td>
+      <td class="justif">Not in signed TS text. Pre-agreed in Nick-CJ conversation; Pepe commented May 29; Lukas listed as item A. 2yr is too tight for early-stage African EV co to reach a qualifying round.</td>
+      <td class="action"><strong>Push: 4yr. Settle: 3yr.</strong><span>Already staked on May 29 in WA.</span></td>
+    </tr>
+
+    <tr class="medium" data-cat="conversion" data-imp="medium">
+      <td>2</td>
+      <td><span class="var-name">$4M minimum for Equity Financing</span><span class="var-ref">SAFE Definitions</span></td>
+      <td><span class="badge badge-prenegotiated">IC-requested</span></td>
+      <td><span class="badge badge-medium">Medium</span></td>
+      <td class="justif">Not in signed TS. IC-driven per CJ email. Prevents SAFE converting on a small bridge. Protects against cheap dilution. Pepe flagged acceptable May 29.</td>
+      <td class="action"><strong>Accept.</strong><span>No pushback needed.</span></td>
+    </tr>
+
+    <tr class="section-header" data-cat="governance"><td colspan="6">GOVERNANCE (SIDE LETTER)</td></tr>
+
+    <tr class="high" data-cat="governance" data-imp="high">
+      <td>3</td>
+      <td><span class="var-name">Board size change requires ACV consent</span><span class="var-ref">Side Letter s.1.3</span></td>
+      <td><span class="badge badge-new">New</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">TS stated a 3-person board but gave no consent right over changing the size. SL makes any board size change subject to ACV written consent. Blocks Series A board expansion without ACV approval.</td>
+      <td class="action"><strong>Remove or limit to pre-Series A period only.</strong><span>Board composition at Series A is for incoming investors to negotiate, not pre-set by ACV at SAFE stage.</span></td>
+    </tr>
+
+    <tr class="high" data-cat="governance" data-imp="high">
+      <td>12</td>
+      <td><span class="var-name">Board seat persists post-Series A</span><span class="var-ref">Side Letter s.1.1(b)</span></td>
+      <td><span class="badge badge-new">New (Lukas Jun 3)</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">SL s.1.1(b) grants ACV a board seat for so long as they hold 10%+ of Capital Stock after conversion. Board composition post-Series A is a Series A SHA matter. A SAFE investor should not be able to pre-commit that right before the equity round that determines the board structure.</td>
+      <td class="action"><strong>Strike sub-clause (b) entirely.</strong><span>Board seat terminates on SAFE conversion. ACV's post-Series A board representation is for the Series A SHA, not a SAFE side letter.</span></td>
+    </tr>
+
+    <tr class="medium" data-cat="governance" data-imp="medium">
+      <td>4</td>
+      <td><span class="var-name">D&amp;O insurance: new obligation not in TS</span><span class="var-ref">Side Letter s.1.5</span></td>
+      <td><span class="badge badge-new">New</span></td>
+      <td><span class="badge badge-medium">Medium</span></td>
+      <td class="justif">Signed TS contained no D&amp;O insurance requirement. SL s.1.5 obliges the Company to maintain D&amp;O coverage in such amount and on such terms as the board determines, at Company cost. Imposes an ongoing financial obligation not negotiated in the TS.</td>
+      <td class="action"><strong>Negotiate scope.</strong><span>Commercially reasonable requirement in principle. Qualify: board determines adequacy (not ACV); cap to "commercially reasonable terms"; exclude from triggering budget approval consent.</span></td>
+    </tr>
+
+    <tr class="section-header" data-cat="reserved"><td colspan="6">RESERVED MATTERS THRESHOLDS</td></tr>
+
+    <tr class="high" data-cat="reserved" data-imp="high">
+      <td>13</td>
+      <td><span class="var-name">New SAFE issuance requires ACV consent</span><span class="var-ref">Side Letter s.2.1.2</span></td>
+      <td><span class="badge badge-new">New (Lukas Jun 3)</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">SL s.2.1.2 requires ACV consent for any new equity securities or convertible instruments. As written, every future SAFE requires ACV approval. Blocks core fundraising operations for a growth-stage company that will need bridging capital before Series A.</td>
+      <td class="action"><strong>Add carveout: SAFE issuances up to USD 1,500,000 in any 12-month period need no consent.</strong><span>Equivalent to ACV's own ticket. Preserves ability to raise bridging capital without ACV acting as gatekeeper.</span></td>
+    </tr>
+
+    <tr class="high" data-cat="reserved" data-imp="high">
+      <td>5</td>
+      <td><span class="var-name">Debt consent threshold: $250K</span><span class="var-ref">Side Letter s.2.1</span></td>
+      <td><span class="badge badge-new">Stricter than TS</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">TS said "material indebtedness" (no number). SL sets $250K. An EV infrastructure company routinely needs equipment leases and project finance exceeding this. Blocks core operations.</td>
+      <td class="action"><strong>Push: $1M. Settle: $750K.</strong><span>$250K is a veto on capex financing, not a protective right.</span></td>
+    </tr>
+
+    <tr class="high" data-cat="reserved" data-imp="high">
+      <td>6</td>
+      <td><span class="var-name">Related-party threshold: $25K</span><span class="var-ref">Side Letter s.2.1</span></td>
+      <td><span class="badge badge-new">Stricter than TS</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">TS said "material related-party transactions" (no number). SL sets $25K. Blocks routine payments to any entity with a founder connection. Market standard for early-stage is $250K-$500K.</td>
+      <td class="action"><strong>Push: $250K. Settle: $100K.</strong><span>$25K is not a threshold, it is a full veto on operations.</span></td>
+    </tr>
+
+    <tr class="high" data-cat="reserved" data-imp="high">
+      <td>7</td>
+      <td><span class="var-name">Asset disposal: $50K threshold</span><span class="var-ref">Side Letter s.2.1</span></td>
+      <td><span class="badge badge-new">Stricter than TS</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">TS said "material asset disposals." SL sets $50K (or 15% of total assets) outside ordinary course. For an EV company, disposal of a single charging station or vehicle can exceed $50K.</td>
+      <td class="action"><strong>Push: $500K or 15% of total assets, whichever lower.</strong><span>Carve-out for ordinary-course disposal of operating equipment is essential.</span></td>
+    </tr>
+
+    <tr class="high" data-cat="reserved" data-imp="high">
+      <td>14</td>
+      <td><span class="var-name">Budget deviation threshold: 15% / $50K</span><span class="var-ref">Side Letter s.2.1.13</span></td>
+      <td><span class="badge badge-intts">In TS, pushing back</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">The TS included this threshold but $50K aggregate across all line items in a year will be breached by routine operational variance in an EV infrastructure business. At this level it is a veto on daily operations, not a protective right for an investor.</td>
+      <td class="action"><strong>Push: 25% of any individual line item or USD 400,000 in aggregate across all line items per year.</strong><span>Market standard for a high-growth infrastructure company at this stage.</span></td>
+    </tr>
+
+    <tr class="section-header" data-cat="lockup"><td colspan="6">LOCK-UP &amp; FOUNDER OBLIGATIONS</td></tr>
+
+    <tr class="high" data-cat="lockup" data-imp="high">
+      <td>8</td>
+      <td><span class="var-name">Commitment period: 4yr (TS) vs SAFE outstanding (SL)</span><span class="var-ref">Side Letter s.3.2</span></td>
+      <td><span class="badge badge-change">Change</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">TS said founders commit "for the 4-year lock-up period." SL ties commitment to "for so long as this Safe remains outstanding." With a 2yr longstop, ACV could force conversion and end the commitment period early.</td>
+      <td class="action"><strong>Align: commitment period should be 4 years from effective date, regardless of SAFE conversion.</strong><span>Full-time commitment is what ACV bought. Conversion should not end it.</span></td>
+    </tr>
+
+    <tr class="medium" data-cat="lockup" data-imp="medium">
+      <td>9</td>
+      <td><span class="var-name">UMVA Muhazi: no explicit carve-out</span><span class="var-ref">Side Letter s.3.3</span></td>
+      <td><span class="badge badge-new">Gap</span></td>
+      <td><span class="badge badge-medium">Medium</span></td>
+      <td class="justif">TS named UMVA Muhazi explicitly as a pre-disclosed activity. SL s.3.3 requires a general written disclosure of all outside activities but does not name it. Without a named carve-out, Nick has ongoing exposure.</td>
+      <td class="action"><strong>Add explicit carve-out: "Nicholas Hu's existing commitment to UMVA Muhazi as disclosed on or before closing."</strong></td>
+    </tr>
+
+    <tr class="high" data-cat="lockup" data-imp="high">
+      <td>10</td>
+      <td><span class="var-name">IP assignment as closing condition (TS said on or before closing)</span><span class="var-ref">Side Letter s.7.2</span></td>
+      <td><span class="badge badge-change">Change</span></td>
+      <td><span class="badge badge-high">High</span></td>
+      <td class="justif">TS said "shall, on or before closing, have assigned... all intellectual property." SL s.7.2 makes it a condition precedent to the Investor funding. If any assignment is contested at closing, ACV can refuse to fund.</td>
+      <td class="action"><strong>Remove as a condition precedent.</strong><span>Keep as an obligation to be performed on or before closing, not a right to refuse funding.</span></td>
+    </tr>
+
+    <tr class="section-header" data-cat="mechanics"><td colspan="6">MECHANICS &amp; ADMIN</td></tr>
+
+    <tr class="low" data-cat="mechanics" data-imp="low">
+      <td>11</td>
+      <td><span class="var-name">SAFE amendment: bilateral only (Company + Investor)</span><span class="var-ref">SAFE s.5.2</span></td>
+      <td><span class="badge badge-new">New</span></td>
+      <td><span class="badge badge-low">Low</span></td>
+      <td class="justif">TS did not specify amendment threshold. SAFE requires both Company and Investor to amend. Standard for a single-investor SAFE. No material concern given there is only one SAFE holder.</td>
+      <td class="action"><strong>Accept.</strong><span>Standard for single-investor instrument.</span></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<div style="padding: 20px 0; color: #555; font-size: 0.75rem; text-align: center;">
+  Kabisa x ACV · Janis · Jun 2, 2026
+</div>
+
+<script>
+  var activeCat = 'all';
+  var activeImp = 'all';
+
+  function applyFilters() {
+    var rows = document.querySelectorAll('tbody tr');
+    rows.forEach(function(row) {
+      if (row.classList.contains('section-header')) {
+        row.classList.add('hidden');
+        return;
+      }
+      var cat = row.getAttribute('data-cat');
+      var imp = row.getAttribute('data-imp');
+      var catMatch = activeCat === 'all' || cat === activeCat;
+      var impMatch = activeImp === 'all' || imp === activeImp;
+      if (catMatch && impMatch) {
+        row.classList.remove('hidden');
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+
+    // show section headers only if they have visible rows following them
+    rows.forEach(function(row) {
+      if (!row.classList.contains('section-header')) return;
+      var cat = row.getAttribute('data-cat');
+      var catMatch = activeCat === 'all' || cat === activeCat;
+      if (!catMatch) { row.classList.add('hidden'); return; }
+      // check if any sibling data rows in this section are visible
+      var next = row.nextElementSibling;
+      var hasVisible = false;
+      while (next && !next.classList.contains('section-header')) {
+        if (!next.classList.contains('hidden')) { hasVisible = true; break; }
+        next = next.nextElementSibling;
+      }
+      if (hasVisible) { row.classList.remove('hidden'); } else { row.classList.add('hidden'); }
+    });
+  }
+
+  document.querySelectorAll('.pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      var filter = this.getAttribute('data-filter');
+      var value = this.getAttribute('data-value');
+      // deactivate siblings
+      document.querySelectorAll('.pill[data-filter="' + filter + '"]').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      this.classList.add('active');
+      if (filter === 'cat') activeCat = value;
+      if (filter === 'imp') activeImp = value;
+      applyFilters();
+    });
+  });
+</script>
+
+</body>
+</html>

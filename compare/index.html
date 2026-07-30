@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Janis vs ChatGPT Plus vs Claude Pro: Capability Comparison</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --janis: #e14b87;
+      --chatgpt: #10a37f;
+      --claude: #d97706;
+      --yes-bg: #dcfce7;
+      --yes-txt: #166534;
+      --partial-bg: #fef9c3;
+      --partial-txt: #854d0e;
+      --no-bg: #fee2e2;
+      --no-txt: #991b1b;
+      --unique-bg: #fce7f3;
+      --unique-txt: #9d174d;
+      --row-odd: #fafafa;
+      --row-even: #f3f4f6;
+      --header-bg: #0d0d0d;
+      --border: #e5e7eb;
+    }
+
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f9fafb; color: #111; margin: 0; }
+    h1, h2, h3, .score-label, .section-header { font-family: 'Syne', system-ui, sans-serif; }
+
+    .hero {
+      background: var(--header-bg);
+      color: #fafafa;
+      padding: 3rem 1.5rem 2rem;
+      text-align: center;
+    }
+    .hero a.back { color: #9ca3af; font-size: .85rem; text-decoration: none; display: inline-block; margin-bottom: 1.5rem; }
+    .hero a.back:hover { color: var(--janis); }
+    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 800; margin: 0 0 .6rem; line-height: 1.2; }
+    .hero h1 span { color: var(--janis); }
+    .hero p { color: #9ca3af; font-size: .95rem; max-width: 620px; margin: 0 auto 2rem; }
+
+    .plan-badges { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .45rem 1rem; border-radius: 999px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .03em;
+    }
+    .badge-janis  { background: var(--janis); color: #fff; }
+    .badge-gpt    { background: var(--chatgpt); color: #fff; }
+    .badge-claude { background: var(--claude); color: #fff; }
+
+    .legend {
+      display: flex; justify-content: center; gap: .75rem; flex-wrap: wrap;
+      padding: 1.25rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      font-size: .8rem;
+    }
+    .leg { display: flex; align-items: center; gap: .35rem; }
+    .leg-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+    .section-header {
+      background: #111827;
+      color: #f9fafb;
+      padding: .75rem 1.5rem;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .section-icon { font-size: 1.1rem; }
+
+    .compare-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    .compare-table thead th {
+      padding: .75rem 1rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: .75rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--border);
+      background: #fff;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .col-capability { text-align: left !important; width: 28%; }
+    .col-gpt   { color: var(--chatgpt); }
+    .col-claude { color: var(--claude); }
+    .col-janis { color: var(--janis); }
+
+    .compare-table tbody tr:nth-child(odd)  { background: var(--row-odd); }
+    .compare-table tbody tr:nth-child(even) { background: var(--row-even); }
+    .compare-table tbody tr:hover { background: #ede9fe22; }
+
+    td { padding: .7rem 1rem; vertical-align: top; border-bottom: 1px solid var(--border); line-height: 1.4; }
+    td:first-child { font-weight: 600; color: #374151; }
+    td .sub { font-size: .75rem; color: #6b7280; font-weight: 400; display: block; margin-top: .15rem; }
+
+    .pill {
+      display: inline-flex; align-items: flex-start; gap: .4rem;
+      padding: .2rem .6rem; border-radius: .4rem;
+      font-size: .75rem; font-weight: 600; line-height: 1.4;
+    }
+    .pill-icon { font-size: .85rem; flex-shrink: 0; margin-top: .05rem; }
+    .yes     { background: var(--yes-bg);     color: var(--yes-txt); }
+    .partial { background: var(--partial-bg); color: var(--partial-txt); }
+    .no      { background: var(--no-bg);      color: var(--no-txt); }
+    .unique  { background: var(--unique-bg);  color: var(--unique-txt); }
+    .pill-text { display: block; }
+    .pill-note { font-size: .7rem; font-weight: 400; display: block; margin-top: .1rem; opacity: .85; }
+
+    .table-wrap { overflow-x: auto; }
+
+    .summary { padding: 3rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .summary h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem; text-align: center; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .card {
+      background: #fff; border-radius: 12px; padding: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h3 { font-size: .95rem; font-weight: 700; margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+    .card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .4rem; }
+    .card li { font-size: .82rem; color: #4b5563; display: flex; align-items: flex-start; gap: .4rem; }
+    .card li::before { content: "→"; flex-shrink: 0; }
+    .card-gpt h3 { color: var(--chatgpt); }
+    .card-claude h3 { color: var(--claude); }
+    .card-janis h3 { color: var(--janis); }
+
+    .score-section { background: #111827; color: #f9fafb; padding: 2.5rem 1.5rem; text-align: center; }
+    .score-section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 2rem; }
+    .scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 800px; margin: 0 auto; }
+    .score-bar-outer { background: #374151; border-radius: 999px; height: 10px; margin-bottom: .35rem; }
+    .score-bar-inner { height: 100%; border-radius: 999px; }
+    .score-val { font-size: .75rem; color: #9ca3af; margin-bottom:.2rem; }
+    .score-label { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .75rem; }
+
+    .compare-footer { text-align: center; padding: 1.5rem; font-size: .75rem; color: #9ca3af; border-top: 1px solid var(--border); background: #fff; }
+    .compare-footer a { color: var(--janis); text-decoration: none; }
+
+    .gap-alert { margin-top:2rem; padding:1.25rem; background:#fce7f3; border-radius:12px; border:1px solid #f9a8d4; }
+    .gap-alert p { font-size:.82rem; color:#6b7280; margin:0; }
+    .gap-alert strong { color:#9d174d; display:block; margin-bottom:.4rem; }
+
+    @media (max-width: 640px) {
+      .compare-table { font-size: .78rem; }
+      td { padding: .6rem .65rem; }
+      .col-capability { width: 30%; }
+      .pill { font-size: .7rem; padding: .15rem .45rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <a class="back" href="/">← mexzungu.com</a>
+  <h1><span>Janis</span> vs ChatGPT Plus vs Claude Pro</h1>
+  <p>Full capability comparison across connectors, automation, workflows, and platform integrations. Updated July 2026.</p>
+  <div class="plan-badges">
+    <span class="badge badge-gpt">ChatGPT Plus, $20/mo</span>
+    <span class="badge badge-claude">Claude Pro, $20/mo · Max, $100-200/mo</span>
+    <span class="badge badge-janis">Janis, Custom infrastructure</span>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:var(--yes-txt)"></div> Full native support</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--partial-txt)"></div> Partial / limited</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--no-txt)"></div> Not available</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--unique-txt)"></div> Unique advantage</div>
+</div>
+
+<div class="table-wrap">
+
+<!-- 1. CONNECTORS & INTEGRATIONS -->
+<div class="section-header"><span class="section-icon">🔌</span> Connectors &amp; Platform Integrations</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Native connector library<span class="sub">Pre-built 1-click integrations</span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">60+ apps<span class="pill-note">Full access on Business/Enterprise; Plus has limited read connectors</span></span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">414+ connectors<span class="pill-note">Available on Pro &amp; Max via MCP directory; 30 categories</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">74 custom tools<span class="pill-note">Purpose-built for Pepe's exact workflow stack</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Google Workspace<span class="sub">Drive, Docs, Sheets, Slides, Gmail, Calendar</span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Drive + Docs (read)<span class="pill-note">Full suite on Business; Plus limited</span></span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Drive, Gmail, Docs (Pro+)<span class="pill-note">Research Mode combines web + Workspace</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">All 6 apps × 4 accounts<span class="pill-note">Full read/write: mexzungu, personal, nca, yale</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Microsoft 365<span class="sub">Outlook, Teams, SharePoint, OneDrive, Excel</span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Full suite (Business+)<span class="pill-note">Plus: Outlook read via connectors</span></span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Excel, Word, Outlook, OneDrive (Pro+)<span class="pill-note">Write enabled July 2026 (admin opt-in)</span></span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not connected<span class="pill-note">Pepe doesn't use M365</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Slack</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Business/Enterprise only<span class="pill-note">Not available on Plus</span></span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Task delegation, async results (Pro+)<span class="pill-note">June 2026 GA</span></span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not used</span></span></td>
+    </tr>
+    <tr>
+      <td>Notion</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via connectors (read-heavy)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Full read/write via MCP</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Active integration<span class="pill-note">Social content calendar, task DB, page CRUD</span></span></span></td>
+    </tr>
+    <tr>
+      <td>GitHub</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Read + basic write via connector</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">PR review + GitHub Actions (Pro+)</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Full read/write + auto-commit<span class="pill-note">Every brain change committed to git history</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Salesforce / CRM</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Enterprise connector</span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via MCP (third-party)</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Custom CRM (Bono)<span class="pill-note">track_lead, update_lead, pipeline_summary (purpose-built)</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Zapier / Make / n8n<span class="sub">Third-party automation bridges</span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via ChatGPT Actions (GPTs)<span class="pill-note">Requires custom GPT setup</span></span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Via MCP connectors</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not used<span class="pill-note">Direct API integrations preferred; no middleware overhead</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Asana / Jira / Linear<span class="sub">Project management tools</span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via Business connectors</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Native MCP connectors (Pro+)</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Custom ticket system (Lars)<span class="pill-note">ticket_create, ticket_list, ticket_close (tailored to flow)</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Custom MCP / API endpoint<span class="sub">Connect to your own services</span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via GPT Actions (manual setup)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Custom MCP server (Pro+)<span class="pill-note">Point at own MCP URL</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">tools_server.py (port 8741)<span class="pill-note">FastAPI; new tool live in minutes</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Figma / Canva<span class="sub">Design tools with live UI in chat</span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Interactive connectors: render live UI inside Claude</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not connected</span></span></td>
+    </tr>
+    <tr>
+      <td>Budget Bakers / Personal finance</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Wallet API read-only<span class="pill-note">Expense data flows into P&amp;L automatically</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 2. COMMUNICATION -->
+<div class="section-header"><span class="section-icon">📬</span> Communication: Email, Messaging &amp; Calendar</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Send email autonomously</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Cannot send<span class="pill-note">Drafts only via Outlook connector</span></span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Cannot send<span class="pill-note">Gmail connector: draft-only</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Full send across 4 accounts<span class="pill-note">mexzungu, personal, nca, yale (Fire Away gate)</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Read &amp; search email</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Outlook (Business+); Gmail limited</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Gmail read via MCP connector (Pro+)</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">4-account Gmail read + full-thread search<span class="pill-note">Attachment download, label management</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Proactive email triage (background)</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Session-only; no background triage</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Connectors don't self-trigger</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Every 30 min, 3 accounts, always on<span class="pill-note">Auto-categorize, flag, route to council</span></span></span></td>
+    </tr>
+    <tr>
+      <td>WhatsApp Business send</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Meta Cloud API: send, edit, delete<span class="pill-note">send_whatsapp, search_whatsapp</span></span></span></td>
+    </tr>
+    <tr>
+      <td>WhatsApp Personal history search</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">+13477700838 fully searchable<span class="pill-note">wa_conversation, wa_last_contact, wa_recent_contacts</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Telegram send / group routing</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">5 groups + thread routing table<span class="pill-note">Topic-aware, voice note processing</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Create / patch calendar events</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No calendar write</span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Read via connector; write limited</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Full create/patch + invites across all accounts</span></span></td>
+    </tr>
+    <tr>
+      <td>Instagram / Facebook DMs</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Post-only (no DM read/write)<span class="pill-note">Meta API restriction; Playwright fallback possible</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 3. AUTOMATION & AGENTS -->
+<div class="section-header"><span class="section-icon">⚡</span> Automation &amp; Agent Mode</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Agent / Work mode<span class="sub">Multi-step autonomous tasks</span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">ChatGPT Work (July 2026)<span class="pill-note">~40 tasks/mo on Plus; browses, fills forms, edits spreadsheets</span></span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Claude Cowork (Max GA, Pro preview)<span class="pill-note">Folder access, remote execution, desktop + web + mobile</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Unlimited loop-based agents<span class="pill-note">loop-maker: self-checking exit predicates, state files, verifiers</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Scheduled / recurring tasks</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Scheduled Tasks: daily/weekly/monthly<span class="pill-note">Push + email notifications; managed at chatgpt.com/schedules</span></span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Cowork scheduled support (Max only)<span class="pill-note">Less mature than ChatGPT Tasks</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">35 persistent cron jobs<span class="pill-note">System-level; run 24/7 independent of any session or user action</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Background jobs while you sleep</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Scheduled Tasks (~40/mo cap on Plus)</span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Managed Agents (API/Enterprise only)</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Always on, uncapped<span class="pill-note">Morning brief, invoice chase, contract watchdog, backups, triage. All running right now</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Event-triggered automation<span class="sub">Do X automatically when Y happens</span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No event triggers<span class="pill-note">Time-based only</span></span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Connectors never self-trigger<span class="pill-note">"Nothing fires on an event in your apps" (Anthropic docs)</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Email arrives → triage → route → act<span class="pill-note">Webhook + cron hybrid; full event pipeline</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Headless browser automation<span class="sub">Login, click, fill forms, scrape authenticated sites</span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Agent mode browser (session-only)<span class="pill-note">Pauses on login/payment; no persistent scripts</span></span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Computer Use (Pro preview / Max)<span class="pill-note">Mouse + keyboard; requires human oversight on sensitive actions</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Persistent Playwright scripts<span class="pill-note">LinkedIn, SafetyWing, CPNL: fully autonomous, no handoff</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Computer Use / GUI control</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Browser control in Work mode</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Screenshot, mouse, keyboard (Pro preview / Max)<span class="pill-note">Prompt-injection detection; 2,576px max res</span></span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Web-only via Playwright<span class="pill-note">No desktop GUI control</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Spawn nested AI sub-agents</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Codex Goal Mode subagents</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Managed Agents (API/Enterprise)<span class="pill-note">Stateful, persistent memory stores (2,000 items)</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">code-task endpoint (port 8741)<span class="pill-note">Spawns headless Claude Code; Telegram ping on complete</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Multi-model routing<span class="sub">Pick the best AI per task</span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">GPT-4o / o1 / o3 within OpenAI</span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Sonnet / Opus / Haiku within Anthropic</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Sonnet, Opus, Gemini, Whisper<span class="pill-note">Auto-fallback to Gemini when OpenAI quota exhausted</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Service restart after code change</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not applicable</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not applicable</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Auto-restart systemd + health check<span class="pill-note">Mandatory on tools_server.py changes; commit is not live until restart passes</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 4. SOCIAL MEDIA -->
+<div class="section-header"><span class="section-icon">📲</span> Social Media Management</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>LinkedIn post publish</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No native publish</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No native publish</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Direct LinkedIn API<span class="pill-note">/linkedin/post, /linkedin/carousel, newsletter publish</span></span></span></td>
+    </tr>
+    <tr>
+      <td>LinkedIn comment engagement</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Playwright scrape + auto-reply<span class="pill-note">Mon/Wed/Fri 6am; rate-limited; voice-matched drafts</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Instagram post publish</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Meta Graph API<span class="pill-note">/instagram/post + story reshare</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Twitter / X post publish</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">X API integrated<span class="pill-note">/twitter/post</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Unified multi-platform post</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">/social/post: one call, all platforms</span></span></td>
+    </tr>
+    <tr>
+      <td>Scheduled auto-publishing</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No social publishing</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No social publishing</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Every 15 min Mon-Fri (cron)<span class="pill-note">Notion status Approved → auto-publish, no action needed</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Content approval workflow</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Draft → Notion approve → auto-publish<span class="pill-note">Rock Council review gate before anything goes live</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 5. MEMORY & PERSISTENCE -->
+<div class="section-header"><span class="section-icon">🧠</span> Memory &amp; Persistence</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Cross-session memory</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Native memory (opt-in)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">All tiers since March 2026<span class="pill-note">Chat summaries + /memory folder for agents</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">100k+ file brain + MEMORY.md index<span class="pill-note">Per-project, per-contact, per-cluster structured memory</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Persona / voice corpus</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No custom persona memory</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No custom persona memory</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">90,000 WhatsApp messages as voice corpus<span class="pill-note">Tone-profile calibrated to Pepe's exact writing style</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Long-term structured journals</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Yearly / monthly / weekly / daily journal ladder<span class="pill-note">Auto-loaded at session start</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Git-backed versioned history</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Auto-commit on every brain change<span class="pill-note">Full versioned history; nothing is ever lost</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Session handoff continuity</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via memory feature</span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via Projects feature</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Mandatory handoff notes + auto-trigger<span class="pill-note">Messaging bot reads latest handoff on startup</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Decision / calibration logs per persona</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Rock Council calibration logs<span class="pill-note">12 personas remember past recommendations + Pepe's feedback</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 6. FILE, DOCUMENT & MEDIA -->
+<div class="section-header"><span class="section-icon">📁</span> File, Document &amp; Media</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>File upload in chat</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">User drags file into chat</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Up to 20 files, 30MB each per chat</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not applicable<span class="pill-note">Janis pulls from Drive/email; Pepe never pastes</span></span></span></td>
+    </tr>
+    <tr>
+      <td>PDF text extraction</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Full PDF analysis in chat</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Full PDF analysis in chat</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">extract_pdf_text tool<span class="pill-note">Digital PDFs; scanned/OCR is a gap</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Image analysis / vision</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Native GPT-4o vision</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Native vision across all tiers</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Gemini 2.5 Flash + Claude fallback<span class="pill-note">Telegram/WA photos, receipts, screenshots</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Image generation</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">DALL-E 3 (native)</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">gpt-image-1 via generate_image tool</span></span></td>
+    </tr>
+    <tr>
+      <td>Voice transcription + auto-filing</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Whisper via Voice Mode (single-shot)</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No audio transcription</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Auto-file loop: transcribe → route → file<span class="pill-note">Voice note → correct brain folder, automatically</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Live editable doc in chat (Canvas / Artifacts)</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Canvas: inline editable documents</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Artifacts: code, HTML, React, Markdown<span class="pill-note">In-place editing June 2026; 20MB persistent</span></span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No equivalent yet<span class="pill-note">Gap: dashboard artifact panel recommended</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Google Slides create + export PDF</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">create_deck_from_template + export_deck_as_pdf</span></span></td>
+    </tr>
+    <tr>
+      <td>Voice output / TTS</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Advanced Voice Mode (real-time, turn-taking)</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Text output only</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not implemented<span class="pill-note">Gap: TTS reply on Telegram recommended</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 7. CODE & RESEARCH -->
+<div class="section-header"><span class="section-icon">💻</span> Code, Research &amp; Web</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Web search</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Native browse (real-time)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">All tiers since May 2025</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Tavily search_web tool</span></span></td>
+    </tr>
+    <tr>
+      <td>Deep / multi-step research</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Deep Research mode (Plus+)<span class="pill-note">Multi-source, cited output</span></span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Research Mode (Pro+)<span class="pill-note">Combines web + Workspace + MCP connectors</span></span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via research-ops skill<span class="pill-note">Functional but no dedicated first-class UI</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Code execution (Python / data analysis)</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Code Interpreter (native)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Analysis tool (native)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">run_task (shell) + code-task endpoint</span></span></td>
+    </tr>
+    <tr>
+      <td>Terminal / shell access on server</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">No shell access</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Claude Code terminal agent (Max/Enterprise)<span class="pill-note">87.6% SWE-bench; multi-agent, Dynamic Workflows</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Full bash on VPS<span class="pill-note">SSH, systemd, cron, git. Completely unrestricted</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Long-running code tasks (fire-and-forget)</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Work mode tasks (5-30 min, session-bound)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Claude Code / Cowork extended tasks<span class="pill-note">Large migrations via Dynamic Workflows</span></span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">code-task endpoint: returns task_id immediately<span class="pill-note">Runs headless; Telegram ping when done; not session-bound</span></span></span></td>
+    </tr>
+    <tr>
+      <td>GitHub PR review + CI/CD</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Via Codex / connector</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">PR review + GitHub Actions (Pro+)</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Via bash + gh CLI</span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 8. FINANCE, CRM & BUSINESS OPS -->
+<div class="section-header"><span class="section-icon">💰</span> Finance, CRM &amp; Business Ops</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Invoice tracking &amp; chasing</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Gene: run_invoice_chase<span class="pill-note">Auto-escalates overdue; integrates Budget Bakers</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Live P&amp;L / financial summary</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">get_financial_summary<span class="pill-note">Invoice Tracker + Budget Bakers Wallet API combined</span></span></span></td>
+    </tr>
+    <tr>
+      <td>BD pipeline / lead management</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available (Salesforce connector on Enterprise)</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Via MCP only (third-party CRM)</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Bono: track_lead, pipeline_summary, signal detection<span class="pill-note">bd-engine loop runs autonomously</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Contract registry &amp; expiry alerts</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Lemmy: register_contract, contract_alerts<span class="pill-note">Monday 8am watchdog; auto-renewal flags</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Therapy / health report generation</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">generate_therapy_report<span class="pill-note">Combines journal ladder + contact dossiers</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Booking system (calendar-backed)</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not available</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">/booking/slots + /booking/create<span class="pill-note">mexzungu.com/talk_to_pepe calendar-backed</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 9. SECURITY & ACCESS -->
+<div class="section-header"><span class="section-icon">🔐</span> Security &amp; Access Control</div>
+<table class="compare-table">
+  <thead><tr>
+    <th class="col-capability">Capability</th>
+    <th class="col-gpt">ChatGPT Plus</th>
+    <th class="col-claude">Claude Pro / Max</th>
+    <th class="col-janis">Janis</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Human-in-loop approval gates</td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Pauses on logins &amp; payments in agent mode</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Human oversight required on Computer Use sensitive actions</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">10-item Showtime list<span class="pill-note">Explicit "very well" required; all other actions autonomous</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Zero-trust access control</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Enterprise Lockdown Mode</span></span></td>
+      <td><span class="pill yes"><span class="pill-icon">✓</span><span class="pill-text">Zero Data Retention, ISO/IEC 42001, HIPAA (Enterprise)</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Cloudflare Access at api.mexzungu.com (zero-trust)<span class="pill-note">Per-endpoint auth; external services blocked</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Compartmentalized AI identities</td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Custom GPTs per persona</span></span></td>
+      <td><span class="pill partial"><span class="pill-icon">⚠</span><span class="pill-text">Projects per user</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">Janis / Miriam fully isolated<span class="pill-note">Hard credential separation; Miriam has no Pepe file access</span></span></span></td>
+    </tr>
+    <tr>
+      <td>Audit log / rule violation tracking</td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not user-accessible</span></span></td>
+      <td><span class="pill no"><span class="pill-icon">✗</span><span class="pill-text">Not user-accessible</span></span></td>
+      <td><span class="pill unique"><span class="pill-icon">★</span><span class="pill-text">logs/hook-violations.log<span class="pill-note">Every rule break logged with timestamp + context</span></span></span></td>
+    </tr>
+  </tbody>
+</table>
+
+</div><!-- /table-wrap -->
+
+<!-- SCORECARDS -->
+<div class="score-section">
+  <h2>Category Scorecards</h2>
+  <div class="scores">
+    <div>
+      <div class="score-label" style="color:var(--chatgpt)">ChatGPT Plus</div>
+      <div class="score-val">Connectors &amp; integrations</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:55%;background:var(--chatgpt)"></div></div>
+      <div class="score-val">Automation / agents</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:60%;background:var(--chatgpt)"></div></div>
+      <div class="score-val">Communication (email/WA/TG)</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:15%;background:var(--chatgpt)"></div></div>
+      <div class="score-val">Social media publish</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:5%;background:var(--chatgpt)"></div></div>
+      <div class="score-val">File &amp; media</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:75%;background:var(--chatgpt)"></div></div>
+    </div>
+    <div>
+      <div class="score-label" style="color:var(--claude)">Claude Pro / Max</div>
+      <div class="score-val">Connectors &amp; integrations</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:80%;background:var(--claude)"></div></div>
+      <div class="score-val">Automation / agents</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:72%;background:var(--claude)"></div></div>
+      <div class="score-val">Communication (email/WA/TG)</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:20%;background:var(--claude)"></div></div>
+      <div class="score-val">Social media publish</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:5%;background:var(--claude)"></div></div>
+      <div class="score-val">File &amp; media</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:68%;background:var(--claude)"></div></div>
+    </div>
+    <div>
+      <div class="score-label" style="color:var(--janis)">Janis</div>
+      <div class="score-val">Connectors &amp; integrations</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:90%;background:var(--janis)"></div></div>
+      <div class="score-val">Automation / agents</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:95%;background:var(--janis)"></div></div>
+      <div class="score-val">Communication (email/WA/TG)</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:100%;background:var(--janis)"></div></div>
+      <div class="score-val">Social media publish</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:95%;background:var(--janis)"></div></div>
+      <div class="score-val">File &amp; media</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" style="width:60%;background:var(--janis)"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- VERDICT -->
+<div class="summary">
+  <h2>The Verdict</h2>
+  <div class="cards">
+    <div class="card card-gpt">
+      <h3>🤖 ChatGPT Plus wins on</h3>
+      <ul>
+        <li>In-chat Canvas editable documents</li>
+        <li>Advanced Voice Mode (real-time, turn-taking)</li>
+        <li>DALL-E 3 image generation (native)</li>
+        <li>ChatGPT Work agent (~40 multi-step tasks/mo)</li>
+        <li>Scheduled recurring task reminders</li>
+        <li>Deep Research with cited sources</li>
+        <li>60+ app connectors (best on Business tier)</li>
+      </ul>
+    </div>
+    <div class="card card-claude">
+      <h3>🔶 Claude Pro / Max wins on</h3>
+      <ul>
+        <li>414+ MCP connectors, largest directory</li>
+        <li>Computer Use (GUI automation, mouse + keyboard)</li>
+        <li>Research Mode (web + Workspace + MCP combined)</li>
+        <li>Claude Code terminal agent (Max)</li>
+        <li>Interactive app connectors (Figma, Canva live in chat)</li>
+        <li>Claude Cowork (multi-step autonomous, Max GA)</li>
+        <li>1M token context (Opus 4.8)</li>
+      </ul>
+    </div>
+    <div class="card card-janis">
+      <h3>💗 Janis is the only one that can</h3>
+      <ul>
+        <li>SEND email, WhatsApp, Telegram autonomously</li>
+        <li>Run 35 always-on background jobs (not session-bound)</li>
+        <li>Publish to LinkedIn, Instagram, and X natively</li>
+        <li>React to events (email in → action out)</li>
+        <li>Voice-match output to 90K Pepe messages</li>
+        <li>Route decisions through 12 calibrated personas</li>
+        <li>Chase invoices, manage pipeline, watch contracts</li>
+        <li>File system + git as versioned persistent memory</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="gap-alert" style="background: #1a2e1a; border-color: #4caf50;">
+    <strong style="color: #4caf50;">Vision is live in Janis</strong>
+    <p>Telegram and WhatsApp photos run through Gemini 2.5 Flash with Claude OAuth fallback. Receipts, screenshots, whiteboard captures, and document photos all work. The remaining gap is scanned/image-based PDFs, where <code>extract_pdf_text</code> returns empty. That is the #1 remaining fix.</p>
+  </div>
+</div>
+
+<div class="compare-footer">
+  Compiled by Janis · July 2026 · Sources: OpenAI, Anthropic, IntuitionLabs, AIToolsReview, Suprmind, ExplainX, UseCarly · <a href="/">mexzungu.com</a>
+</div>
+
+</body>
+</html>
