@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0D0A12">
+<title>A few questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0A12;
+  --text:#F4EFE6;
+  --accent:#9B7FA6;
+  --secondary:#C5873A;
+  --border:#1E1829;
+  --muted:rgba(244,239,230,.45);
+  --faint:rgba(244,239,230,.22);
+}
+html{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;font-size:clamp(16px,4.5vw,19px);line-height:1.65;-webkit-text-size-adjust:100%}
+body{min-height:100vh;background:var(--bg)}
+
+.page{max-width:560px;margin:0 auto;padding:3rem 1.5rem 5rem}
+.page.hidden{display:none}
+
+.serif{font-family:'Cormorant Garamond',serif;font-style:italic}
+h1.serif{font-size:clamp(1.9rem,6vw,2.6rem);line-height:1.2;color:var(--accent);margin-bottom:1.25rem}
+.intro{color:var(--muted);font-size:.94rem;line-height:1.85;margin-bottom:.75rem}
+.intro p{margin-bottom:1rem}
+.intro p:last-child{margin-bottom:0}
+.divider{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
+
+.field-label{font-size:.72rem;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-bottom:.6rem;display:block}
+.field-optional{font-size:.7rem;color:var(--faint);margin-left:.5rem;text-transform:none;letter-spacing:0}
+input[type=text]{
+  width:100%;background:var(--border);
+  border:1px solid rgba(155,127,166,.25);
+  border-radius:4px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:1rem;
+  padding:.9rem 1.15rem;outline:none;
+  transition:border-color .35s;-webkit-appearance:none;
+}
+input[type=text]:focus{border-color:var(--accent)}
+input[type=text]::placeholder{color:rgba(244,239,230,.25)}
+
+.q-block{margin-bottom:2.5rem}
+.q-number{font-size:.68rem;letter-spacing:.16em;color:var(--faint);text-transform:uppercase;margin-bottom:.55rem}
+.q-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;line-height:1.45;color:var(--text);margin-bottom:.85rem}
+.q-bonus .q-number{color:rgba(197,135,58,.45)}
+.q-bonus .q-text{color:rgba(244,239,230,.72)}
+textarea{
+  width:100%;background:var(--border);
+  border:1px solid rgba(155,127,166,.22);
+  border-radius:4px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:.95rem;
+  padding:.9rem 1.15rem;outline:none;resize:none;
+  min-height:120px;transition:border-color .35s;
+  line-height:1.65;-webkit-appearance:none;
+}
+textarea:focus{border-color:var(--accent)}
+textarea::placeholder{color:rgba(244,239,230,.2);font-style:italic}
+
+.bonus-header{margin:3rem 0 1.75rem}
+.bonus-header h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--secondary);margin-bottom:.5rem}
+.bonus-header p{font-size:.85rem;color:var(--muted)}
+
+.submit-wrap{margin-top:3rem}
+.btn-submit{
+  display:block;width:100%;padding:1.1rem;
+  background:var(--accent);border:none;border-radius:4px;
+  color:var(--bg);font-family:'DM Sans',sans-serif;
+  font-size:.88rem;letter-spacing:.12em;cursor:pointer;
+  transition:opacity .3s;min-height:52px;
+}
+.btn-submit:hover{opacity:.85}
+.btn-submit:disabled{opacity:.35;cursor:not-allowed}
+.submit-note{font-size:.75rem;color:var(--faint);text-align:center;margin-top:1rem;line-height:1.6}
+.error-msg{color:#c47a7a;font-size:.82rem;margin-top:1rem;text-align:center;min-height:1.1rem}
+
+#thankyou{text-align:center;padding-top:5rem}
+#thankyou h1{font-size:clamp(2rem,7vw,3rem);margin-bottom:1.5rem}
+#thankyou .ty-body{color:var(--muted);font-size:.95rem;line-height:1.85}
+#thankyou .ty-body p{margin-bottom:1rem}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page{animation:fadeIn .6s ease both}
+</style>
+</head>
+<body>
+
+<div class="page" id="survey">
+  <h1 class="serif">A few questions.</h1>
+  <div class="intro">
+    <p>I am building something. Before I do, I want to understand a few things. About you, about us, about what happens in a body when it finally lets go.</p>
+    <p>Ten questions. Three optional ones at the end. Write as much or as little as you want. No wrong answers. You can leave your name or not.</p>
+    <p>Take your time with this.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:2.5rem">
+    <label class="field-label">Your name <span class="field-optional">(optional)</span></label>
+    <input type="text" id="name-field" placeholder="leave blank to stay anonymous" autocomplete="off">
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">Before you and I ever touched, what was your relationship with surrender? With actually letting go?</div>
+    <textarea id="q1" placeholder="Take your time." rows="5"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">I sometimes wait a long time before I make a move. Watching. Building. Not yet touching. What did that stillness do to you?</div>
+    <textarea id="q2" rows="5"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">I read your body instead of asking with words. Did you feel that, and what did it open?</div>
+    <textarea id="q3" rows="5"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">Was there a moment with me where your thinking stopped? Where you were no longer in your head?</div>
+    <textarea id="q4" rows="5"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">Where in your body did you feel most alive when we were together?</div>
+    <textarea id="q5" rows="4"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">Was there something you wanted but couldn't name out loud? What got in the way?</div>
+    <textarea id="q6" rows="5"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">Did being with me shift how you understand your own pleasure?</div>
+    <textarea id="q7" rows="5"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">What did I give you, without you having to ask, that you didn't know you needed?</div>
+    <textarea id="q8" rows="5"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">What would you have wanted more of?</div>
+    <textarea id="q9" rows="4"></textarea>
+  </div>
+
+  <div class="q-block">
+    <div class="q-text">Is there something about your body, your desire, or pleasure itself that lives differently in you now?</div>
+    <textarea id="q10" rows="5"></textarea>
+  </div>
+
+  <hr class="divider">
+
+  <div class="bonus-header">
+    <h2>Three more. Optional.</h2>
+    <p>Answer if they move you. Skip them if they don't.</p>
+  </div>
+
+  <div class="q-block q-bonus">
+    <div class="q-text">Was there a sound you made with me. A breath, a moan, something wordless that surprised you. What was underneath it?</div>
+    <textarea id="qb1" rows="5"></textarea>
+  </div>
+
+  <div class="q-block q-bonus">
+    <div class="q-text">Was there a place, a time, a way we arrived at each other that let you drop deeper than usual? What was different about it?</div>
+    <textarea id="qb2" rows="5"></textarea>
+  </div>
+
+  <div class="q-block q-bonus">
+    <div class="q-text">Was there a moment when you thought it was over, and then something else opened? What happened there?</div>
+    <textarea id="qb3" rows="5"></textarea>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="btn-submit" id="submit-btn" onclick="submitSurvey()">Send</button>
+    <div class="error-msg" id="error-msg"></div>
+    <p class="submit-note">Your answers are private. Only Pepe will read them.</p>
+  </div>
+</div>
+
+<div class="page hidden" id="thankyou">
+  <h1 class="serif">Thank you.</h1>
+  <div class="ty-body">
+    <p>This means something.</p>
+    <p>I will read every word.</p>
+  </div>
+</div>
+
+<script>
+const API = 'https://forms.mexzungu.com/survey/pleasure';
+
+async function submitSurvey() {
+  const btn = document.getElementById('submit-btn');
+  const err = document.getElementById('error-msg');
+  err.textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const name = document.getElementById('name-field').value.trim() || null;
+  const qs = [
+    {q:1,id:'q1'},{q:2,id:'q2'},{q:3,id:'q3'},{q:4,id:'q4'},{q:5,id:'q5'},
+    {q:6,id:'q6'},{q:7,id:'q7'},{q:8,id:'q8'},{q:9,id:'q9'},{q:10,id:'q10'},
+    {q:'b1',id:'qb1'},{q:'b2',id:'qb2'},{q:'b3',id:'qb3'},
+  ];
+  const responses = qs
+    .map(({q,id}) => ({q, a: document.getElementById(id).value.trim()}))
+    .filter(({a}) => a.length > 0);
+
+  if (responses.length === 0) {
+    err.textContent = 'Write something first.';
+    btn.disabled = false;
+    btn.textContent = 'Send';
+    return;
+  }
+
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({name, responses}),
+    });
+    if (!res.ok) throw new Error('server error');
+    document.getElementById('survey').classList.add('hidden');
+    document.getElementById('thankyou').classList.remove('hidden');
+    window.scrollTo(0, 0);
+  } catch(e) {
+    err.textContent = 'Something went wrong. Try again in a moment.';
+    btn.disabled = false;
+    btn.textContent = 'Send';
+  }
+}
+</script>
+</body>
+</html>
