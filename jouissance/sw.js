@@ -1,4 +1,4 @@
-const CACHE = 'jouissance-v1';
+const CACHE = 'jouissance-v2';
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/jouissance/manifest.json'])));
