@@ -127,7 +127,7 @@ textarea:focus{border-color:var(--accent)}
 .msg-section{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
 .msg-section-label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1rem}
 .msg-bubble{background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.75rem;font-size:.88rem;line-height:1.65;color:rgba(244,239,230,.82)}
-.msg-meta{font-size:.68rem;color:rgba(244,239,230,.28);margin-top:.4rem;letter-spacing:.06em}
+.msg-meta{font-size:.68rem;color:rgba(244,239,230,.28);margin-top:.4rem;letter-spacing:.06em}.msg-bubble p{margin:0 0 .9em}.msg-bubble p:last-child{margin-bottom:0}
 .msg-dot{position:absolute;top:4px;right:2px;min-width:16px;height:16px;background:var(--accent);border-radius:8px;display:none;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff;padding:0 4px;line-height:1;font-family:'DM Sans',sans-serif}
 .msg-dot.on{display:flex}
 
@@ -407,8 +407,8 @@ textarea:focus{border-color:var(--accent)}
 
 <div class="screen" id="reg-photo">
   <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem;text-align:center">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);line-height:1.3">A face for us</div>
-    <div style="color:var(--muted);font-size:0.85rem;line-height:1.7">Optional. Pepe and Agathe will see this before you arrive. It helps them hold you from the first moment.</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);line-height:1.3">One last thing</div>
+    <div style="color:var(--muted);font-size:0.85rem;line-height:1.7">A photo helps Pepe and Agathe hold you before you arrive. Optional.</div>
     <div id="reg-photo-preview" style="width:120px;height:120px;border-radius:50%;background:rgba(155,127,166,.15);border:1px solid rgba(155,127,166,.3);display:flex;align-items:center;justify-content:center;margin:0 auto;overflow:hidden">
       <span style="color:var(--muted);font-size:2rem">&#9670;</span>
     </div>
@@ -537,7 +537,7 @@ textarea:focus{border-color:var(--accent)}
 <div class="screen" id="profile-complete">
   <div class="container center" style="justify-content:center">
     <div class="pc-title">Your profile is kept.</div>
-    <div class="pc-sub">Agathe will read it.</div>
+    <div class="pc-sub">Pepe and Agathe will read it.</div>
     <button class="btn btn-primary" id="p-begin">Begin</button>
   </div>
 </div>
@@ -1264,7 +1264,7 @@ document.getElementById('reg-submit').addEventListener('click',()=>{
   if(!name||!email||!pass){err.textContent='Please fill in all fields.';return;}
   err.textContent='';
   window.regData={...window.regData,name,email,pass};
-  show('reg-photo');
+  const _rsBtn=document.getElementById('reg-submit');doRegister(_rsBtn,'inv-err');
 });
 
 
@@ -1290,8 +1290,8 @@ document.getElementById('reg-photo-input').addEventListener('change',function(){
 
 
 
-async function doRegister(btn){
-  const err=document.getElementById('reg-photo-err');
+async function doRegister(btn,errId){
+  const err=document.getElementById(errId||'reg-photo-err');
   if(btn)btn.disabled=true;err.textContent='';
   const d=window.regData;
   try{
@@ -1301,19 +1301,24 @@ async function doRegister(btn){
     const j=await r.json();
     if(r.ok&&j.token){
       token=j.token;localStorage.setItem('jouissance_token',token);
-      if(regPhotoFile){
-        try{
-          const fd=new FormData();fd.append('photo',regPhotoFile);
-          await fetch(API+'/profile/photo',{method:'POST',headers:{Authorization:'Bearer '+token},body:fd});
-        }catch(pe){}
-      }
       localStorage.setItem('jouissance_profile_step','1');
       show('welcome');
     } else {err.textContent=j.detail||'Registration failed.';if(btn)btn.disabled=false;}
   }catch(e){err.textContent='Connection error.';if(btn)btn.disabled=false;}
 }
-document.getElementById('reg-photo-next').addEventListener('click',function(){doRegister(this);});
-document.getElementById('reg-photo-skip').addEventListener('click',function(){regPhotoFile=null;doRegister(this);});
+async function submitPhoto(btn){
+  if(btn)btn.disabled=true;
+  if(regPhotoFile){
+    try{
+      const fd=new FormData();fd.append('photo',regPhotoFile);
+      await fetch(API+'/profile/photo',{method:'POST',headers:{Authorization:'Bearer '+token},body:fd});
+    }catch(pe){}
+  }
+  if(btn)btn.disabled=false;
+  show('reg-photo');
+}
+document.getElementById('reg-photo-next').addEventListener('click',function(){submitPhoto(this);});
+document.getElementById('reg-photo-skip').addEventListener('click',function(){regPhotoFile=null;submitPhoto(this);});
 
 // Login (participant portal)
 document.getElementById('login-submit-p').addEventListener('click',async()=>{
@@ -1392,7 +1397,7 @@ document.getElementById('p-submit').addEventListener('click',async()=>{
     })});
     localStorage.setItem('jouissance_profile_complete','true');
   }catch(e){}
-  show('profile-complete');
+  show('reg-photo');
 });
 document.getElementById('p-begin').addEventListener('click',()=>startTour());
 
