@@ -397,71 +397,11 @@ textarea:focus{border-color:var(--accent)}
   </div>
 </div>
 
-<div class="screen" id="reg-onboard-1">
-  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem">
-    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">1 of 5</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">How do you identify?</div>
-    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">e.g. queer, bisexual, straight, fluid, pansexual. Use your own words.</div>
-    <input type="text" id="reg-q1-input" placeholder="your answer..." style="width:100%;max-width:340px">
-    <button class="btn btn-primary" id="reg-onboard-1-next" style="max-width:240px">Continue</button>
-    <div class="error-msg" id="reg-ob1-err" style="min-height:1rem"></div>
-  </div>
-</div>
-
-<div class="screen" id="reg-onboard-2">
-  <div class="container" style="justify-content:center;gap:1.2rem;padding:3rem 2rem">
-    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">2 of 5</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">Your relationship landscape</div>
-    <div id="reg-q2-cards" style="display:flex;flex-direction:column;gap:0.6rem;width:100%;max-width:340px">
-      <div class="radio-card" data-v="solo" style="padding:0.9rem 1.2rem">Solo explorer</div>
-      <div class="radio-card" data-v="partnered" style="padding:0.9rem 1.2rem">Partnered</div>
-      <div class="radio-card" data-v="open" style="padding:0.9rem 1.2rem">In an open relationship</div>
-      <div class="radio-card" data-v="polyamorous" style="padding:0.9rem 1.2rem">Polyamorous</div>
-      <div class="radio-card" data-v="other" style="padding:0.9rem 1.2rem">Other</div>
-    </div>
-    <button class="btn btn-primary" id="reg-onboard-2-next" disabled style="max-width:240px">Continue</button>
-  </div>
-</div>
-
-<div class="screen" id="reg-onboard-3">
-  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem">
-    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">3 of 5</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">What are you coming to explore?</div>
-    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">No right answers. Let something true come through.</div>
-    <textarea id="reg-q3-input" placeholder="your answer..." style="width:100%;max-width:340px;min-height:120px;resize:vertical"></textarea>
-    <button class="btn btn-primary" id="reg-onboard-3-next" style="max-width:240px">Continue</button>
-  </div>
-</div>
-
-<div class="screen" id="reg-onboard-4">
-  <div class="container" style="justify-content:center;gap:1.2rem;padding:3rem 2rem">
-    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">4 of 5</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">Your energetic nature</div>
-    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">In intimacy, where do you tend to flow?</div>
-    <div id="reg-q4-cards" style="display:flex;flex-direction:column;gap:0.6rem;width:100%;max-width:340px">
-      <div class="radio-card" data-v="give" style="padding:0.9rem 1.2rem">I tend to give</div>
-      <div class="radio-card" data-v="receive" style="padding:0.9rem 1.2rem">I tend to receive</div>
-      <div class="radio-card" data-v="flow" style="padding:0.9rem 1.2rem">I flow between both</div>
-      <div class="radio-card" data-v="discovering" style="padding:0.9rem 1.2rem">I am still discovering</div>
-    </div>
-    <button class="btn btn-primary" id="reg-onboard-4-next" disabled style="max-width:240px">Continue</button>
-  </div>
-</div>
-
-<div class="screen" id="reg-onboard-5">
-  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem">
-    <div style="font-size:0.75rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">5 of 5</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);text-align:center;line-height:1.3">One limit you want respected</div>
-    <div style="color:var(--muted);font-size:0.85rem;text-align:center;line-height:1.7">This stays with Agathe. It shapes the container she holds for you.</div>
-    <textarea id="reg-q5-input" placeholder="your answer..." style="width:100%;max-width:340px;min-height:120px;resize:vertical"></textarea>
-    <button class="btn btn-primary" id="reg-onboard-5-next" style="max-width:240px">Continue</button>
-  </div>
-</div>
 
 <div class="screen" id="reg-photo">
   <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem;text-align:center">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);line-height:1.3">A face for Agathe</div>
-    <div style="color:var(--muted);font-size:0.85rem;line-height:1.7">Optional. Agathe will see this before you arrive. It helps her hold you from the first moment.</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);line-height:1.3">A face for us</div>
+    <div style="color:var(--muted);font-size:0.85rem;line-height:1.7">Optional. Pepe and Agathe will see this before you arrive. It helps them hold you from the first moment.</div>
     <div id="reg-photo-preview" style="width:120px;height:120px;border-radius:50%;background:rgba(155,127,166,.15);border:1px solid rgba(155,127,166,.3);display:flex;align-items:center;justify-content:center;margin:0 auto;overflow:hidden">
       <span style="color:var(--muted);font-size:2rem">&#9670;</span>
     </div>
@@ -473,18 +413,6 @@ textarea:focus{border-color:var(--accent)}
   </div>
 </div>
 
-<div class="screen" id="reg-gdpr">
-  <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem;text-align:center">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);line-height:1.3">Before you enter</div>
-    <div style="color:var(--muted);font-size:0.9rem;line-height:1.8">What you share here stays between us. Your answers are visible only to Agathe and the Jouissance team. This information is held under GDPR Article 9 and used solely to shape your experience.</div>
-    <label style="display:flex;align-items:flex-start;gap:0.6rem;font-size:0.85rem;color:var(--muted);cursor:pointer;text-align:left;max-width:340px">
-      <input type="checkbox" id="reg-gdpr-chk" style="margin-top:2px;width:16px;height:16px;min-width:16px;accent-color:var(--accent)">
-      <span>I understand my answers are visible only to Agathe and held under GDPR Article 9.</span>
-    </label>
-    <div class="error-msg" id="reg-gdpr-err" style="min-height:1rem"></div>
-    <button class="btn btn-primary" id="reg-gdpr-submit" style="max-width:240px">Create my account</button>
-  </div>
-</div>
 
 <div class="screen" id="welcome">
   <div class="container" style="justify-content:center;gap:1.5rem;padding:3rem 2rem;text-align:center">
@@ -492,8 +420,8 @@ textarea:focus{border-color:var(--accent)}
     <div class="welcome-text" style="font-size:1.6rem">Bienvenue.</div>
     <div style="color:var(--muted);font-size:0.95rem;line-height:1.9">
       Over the next 14 days, you will receive daily Rituals: small practices to prepare your body and presence for August 14.<br><br>
-      Before you begin, Agathe wants to understand who you are.<br><br>
-      What follows are 10 questions. Take your time. There are no right answers. Your responses stay with Agathe only.
+      Before you begin, we want to understand who you are.<br><br>
+      What follows are 10 questions. Take your time. There are no right answers. Your responses stay with us only.
     </div>
     <button class="btn btn-primary" id="welcome-begin" style="max-width:240px;margin-top:1rem">Begin my profile</button>
   </div>
@@ -580,14 +508,6 @@ textarea:focus{border-color:var(--accent)}
   </div>
 </div>
 
-<div class="screen" id="profile-q8">
-  <div class="container" style="justify-content:center">
-    <div class="profile-question">What have you been most afraid to want?</div>
-    <textarea id="a8" placeholder="Write here..."></textarea>
-    <div class="char-counter" id="cc8">0 / 50</div>
-    <button class="btn btn-primary pnext" data-q="8">Continue</button>
-  </div>
-</div>
 
 <div class="screen" id="profile-q9">
   <div class="container" style="justify-content:center">
@@ -664,7 +584,7 @@ textarea:focus{border-color:var(--accent)}
     <div class="no-chal" id="h-no-chal" style="display:none">Your space is waiting for you.</div>
     <div class="presence-line" id="h-presence"></div>
     <div id="notif-prompt" class="notif-prompt" style="display:none">
-      <div class="notif-prompt-text">Get a reminder when the August 13 checklist unlocks.</div>
+      <div class="notif-prompt-text">Get notified when new challenges, rewards and content become available for you.</div>
       <div class="notif-prompt-btns">
         <button class="notif-prompt-btn" onclick="notifAllow()">Allow</button>
         <button class="notif-prompt-btn" onclick="notifSkip()">Skip</button>
@@ -1329,52 +1249,9 @@ document.getElementById('reg-submit').addEventListener('click',()=>{
   if(!name||!email||!pass){err.textContent='Please fill in all fields.';return;}
   err.textContent='';
   window.regData={...window.regData,name,email,pass};
-  show('reg-onboard-1');
-});
-
-// Reg onboarding screens
-document.getElementById('reg-onboard-1-next').addEventListener('click',()=>{
-  window.regData.reg_q1=document.getElementById('reg-q1-input').value.trim();
-  show('reg-onboard-2');
-});
-
-(function setupRegQ2(){
-  const container=document.getElementById('reg-q2-cards');
-  const nextBtn=document.getElementById('reg-onboard-2-next');
-  container.querySelectorAll('.radio-card').forEach(card=>{
-    card.addEventListener('click',()=>{
-      container.querySelectorAll('.radio-card').forEach(x=>x.classList.remove('selected'));
-      card.classList.add('selected');
-      window.regData.reg_q2=card.dataset.v;
-      nextBtn.disabled=false;
-    });
-  });
-  nextBtn.addEventListener('click',()=>show('reg-onboard-3'));
-})();
-
-document.getElementById('reg-onboard-3-next').addEventListener('click',()=>{
-  window.regData.reg_q3=document.getElementById('reg-q3-input').value.trim();
-  show('reg-onboard-4');
-});
-
-(function setupRegQ4(){
-  const container=document.getElementById('reg-q4-cards');
-  const nextBtn=document.getElementById('reg-onboard-4-next');
-  container.querySelectorAll('.radio-card').forEach(card=>{
-    card.addEventListener('click',()=>{
-      container.querySelectorAll('.radio-card').forEach(x=>x.classList.remove('selected'));
-      card.classList.add('selected');
-      window.regData.reg_q4=card.dataset.v;
-      nextBtn.disabled=false;
-    });
-  });
-  nextBtn.addEventListener('click',()=>show('reg-onboard-5'));
-})();
-
-document.getElementById('reg-onboard-5-next').addEventListener('click',()=>{
-  window.regData.reg_q5=document.getElementById('reg-q5-input').value.trim();
   show('reg-photo');
 });
+
 
 // Photo upload
 let regPhotoFile=null;
@@ -1393,24 +1270,19 @@ document.getElementById('reg-photo-input').addEventListener('change',function(){
   };
   reader.readAsDataURL(f);
 });
-document.getElementById('reg-photo-next').addEventListener('click',()=>show('reg-gdpr'));
-document.getElementById('reg-photo-skip').addEventListener('click',()=>{regPhotoFile=null;show('reg-gdpr');});
 
-// GDPR + final register submit
-document.getElementById('reg-gdpr-chk').addEventListener('change',function(){
-  document.getElementById('reg-gdpr-submit').disabled=!this.checked;
-});
-document.getElementById('reg-gdpr-submit').disabled=true;
-document.getElementById('reg-gdpr-submit').addEventListener('click',async()=>{
-  const btn=document.getElementById('reg-gdpr-submit');
-  const err=document.getElementById('reg-gdpr-err');
-  btn.disabled=true;err.textContent='';
+
+
+
+
+async function doRegister(btn){
+  const err=document.getElementById('reg-photo-err');
+  if(btn)btn.disabled=true;err.textContent='';
   const d=window.regData;
   try{
     const r=await fetch(API+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({username:d.email,password:d.pass,display_name:d.name,consent_gdpr:true,
-        access_code:d.access_code||'',
-        reg_q1:d.reg_q1||'',reg_q2:d.reg_q2||'',reg_q3:d.reg_q3||'',reg_q4:d.reg_q4||'',reg_q5:d.reg_q5||''})});
+        access_code:d.access_code||'',reg_q1:'',reg_q2:'',reg_q3:'',reg_q4:'',reg_q5:''})});
     const j=await r.json();
     if(r.ok&&j.token){
       token=j.token;localStorage.setItem('jouissance_token',token);
@@ -1422,9 +1294,11 @@ document.getElementById('reg-gdpr-submit').addEventListener('click',async()=>{
       }
       localStorage.setItem('jouissance_profile_step','1');
       show('welcome');
-    } else {err.textContent=j.detail||'Registration failed.';btn.disabled=false;}
-  }catch(e){err.textContent='Connection error.';btn.disabled=false;}
-});
+    } else {err.textContent=j.detail||'Registration failed.';if(btn)btn.disabled=false;}
+  }catch(e){err.textContent='Connection error.';if(btn)btn.disabled=false;}
+}
+document.getElementById('reg-photo-next').addEventListener('click',function(){doRegister(this);});
+document.getElementById('reg-photo-skip').addEventListener('click',function(){regPhotoFile=null;doRegister(this);});
 
 // Login (participant portal)
 document.getElementById('login-submit-p').addEventListener('click',async()=>{
@@ -1487,7 +1361,8 @@ document.querySelectorAll('.pnext').forEach(btn=>{
     if(ta) window._pAnswers['q'+q]=ta.value.trim();
     const nxt=q+1;
     localStorage.setItem('jouissance_profile_step',String(nxt));
-    show('profile-q'+nxt);
+    const nxtEl=document.getElementById('profile-q'+nxt);
+    if(nxtEl)show('profile-q'+nxt);else show('profile-q'+(nxt+1));
   });
 });
 
@@ -1509,7 +1384,7 @@ document.getElementById('p-begin').addEventListener('click',()=>startTour());
 const TOUR_STEPS=[
   {icon:'&#9737;',title:'Your daily Ritual',body:'Each day a new practice appears on your home screen. Complete it, share what came up, and earn points.'},
   {icon:'&#10022;',title:'Collect and redeem',body:'Points become Rewards: real experiences waiting for you on August 14. The more you practice, the more you unlock.'},
-  {icon:'&#9670;',title:'Go deeper with Practices',body:'Five texts to read and reflect on at your own pace. Submit what surfaces in you. No right answers.'}
+  {icon:'&#9670;',title:'Daily reads',body:'Each day a new page unlocks: philosophy and science about pleasure. Read slowly. Notice what lands in your body.'}
 ];
 let tourStep=0;
 function startTour(){
@@ -2724,7 +2599,7 @@ async function loadMessages(){
         return;
       }
       const senderName=m=>m.from_role==='admin'?'Pepe':m.from_role==='facilitator'?'Agathe':m.from_role;
-      list.innerHTML=msgs.map(m=>{
+      list.innerHTML=[...msgs].reverse().map(m=>{
           const d2=new Date(m.sent_at+'Z');
           const label=d2.toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
           return `<div class="msg-bubble"><div class="msg-section-label" style="margin-bottom:.5rem">From ${senderName(m)}</div>${m.message}<div class="msg-meta">${label}</div></div>`;
