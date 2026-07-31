@@ -553,14 +553,19 @@ textarea:focus{border-color:var(--accent)}
     </div>
   </div>
   <div class="home-body">
+    <div id="workshop-countdown" style="margin-bottom:1.25rem;padding:.85rem 1rem;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;text-align:center;cursor:pointer" onclick="show('workshop')">
+      <div id="wc-label" style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:.3rem">The Workshop</div>
+      <div id="wc-value" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--secondary)">Loading...</div>
+      <div id="wc-read-more" style="display:none;font-size:.72rem;letter-spacing:.1em;color:var(--accent);margin-top:.4rem;text-transform:uppercase">Read more &rarr;</div>
+    </div>
+    <div id="h-msg-section" class="msg-section" style="display:none;margin-top:0;padding-top:0;border-top:none">
+      <div class="msg-section-label" id="h-msg-label">Messages</div>
+      <div id="h-msg-list"></div>
+    </div>
     <div id="h-personalization" style="padding:.5rem 0 1.25rem"></div>
     <div id="h-daily-msg" class="daily-msg-block" style="display:none">
       <div class="daily-msg-text" id="h-daily-msg-text"></div>
       <div class="daily-msg-attr">Pepe</div>
-    </div>
-    <div id="h-msg-section" class="msg-section" style="display:none">
-      <div class="msg-section-label" id="h-msg-label">Messages</div>
-      <div id="h-msg-list"></div>
     </div>
     <div id="h-challenges-section" style="display:none">
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1.1rem">Today's Rituals</div>
@@ -596,10 +601,6 @@ textarea:focus{border-color:var(--accent)}
         <button class="notif-prompt-btn" onclick="notifAllow()">Allow</button>
         <button class="notif-prompt-btn" onclick="notifSkip()">Skip</button>
       </div>
-    </div>
-    <div id="workshop-countdown" style="margin-top:1.25rem;padding:.85rem 1rem;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;text-align:center;cursor:pointer" onclick="show('workshop')">
-      <div id="wc-label" style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:.3rem">The Workshop</div>
-      <div id="wc-value" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--secondary)">Loading...</div>
     </div>
   </div>
   <div class="home-footer">
@@ -2419,8 +2420,10 @@ function initWorkshop(){
   const pre=document.getElementById('ws-pre');
   const tod=document.getElementById('ws-today');
   const post=document.getElementById('ws-post');
+  const wcReadMore=document.getElementById('wc-read-more');
   if(diff>0){
     if(wcVal)wcVal.textContent=diff+' day'+(diff===1?'':'s')+' away';
+    if(wcReadMore)wcReadMore.style.display=diff<=14?'block':'none';
     const daysEl=document.getElementById('ws-days-away');
     if(daysEl)daysEl.textContent=diff+' day'+(diff===1?'':'s')+' away';
     if(pre)pre.style.display='block';
