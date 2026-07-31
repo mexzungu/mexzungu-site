@@ -376,9 +376,24 @@ textarea:focus{border-color:var(--accent)}
       <input type="email" id="login-email-p" placeholder="email" autocomplete="email">
       <input type="password" id="login-pass-p" placeholder="password" autocomplete="current-password">
       <button class="btn btn-primary" id="login-submit-p">Sign in</button>
+      <button onclick="show('forgot-pw-screen')" style="background:none;border:none;color:rgba(155,127,166,.55);font-size:.8rem;cursor:pointer;padding:.25rem;text-decoration:underline;text-underline-offset:3px">Forgot password?</button>
     </div>
 
     <div class="error-msg" id="inv-err" style="min-height:1.2rem"></div>
+  </div>
+</div>
+
+<div class="screen" id="forgot-pw-screen">
+  <div class="home-header">
+    <button onclick="show('invite-entry')" style="background:none;border:none;color:rgba(244,239,230,.55);cursor:pointer;font-size:1.1rem;padding:.5rem;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center">&#8592;</button>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--accent)">Reset password</div>
+    <div style="width:44px"></div>
+  </div>
+  <div class="container center" style="justify-content:center;gap:1rem;padding:3rem 2rem">
+    <div style="font-size:.88rem;color:rgba(244,239,230,.55);text-align:center;line-height:1.7;max-width:280px">Enter your email and we will send you a new temporary password.</div>
+    <input type="email" id="forgot-email" placeholder="your email" autocomplete="email" style="width:100%;max-width:320px">
+    <button class="btn btn-primary" id="forgot-submit" onclick="doForgotPassword()" style="max-width:320px">Send me a password</button>
+    <div id="forgot-result" style="font-size:.85rem;color:rgba(244,239,230,.5);text-align:center;min-height:1.2rem;line-height:1.6"></div>
   </div>
 </div>
 
@@ -1266,7 +1281,7 @@ async function boot(){
     } else if((u.challenge_day||0)===14){
       setTimeout(()=>show('day14'),2500);
     } else {
-      try{const p=JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));if(p.role==='admin'||p.role==='facilitator'){const b=document.getElementById('fac-view-btn');if(b)b.style.display='block';}}catch(e){}
+      const b=document.getElementById('fac-view-btn');if(b)b.style.display='block';
       setTimeout(()=>{loadHome();show('home')},2500);
     }
   }catch(e){setTimeout(()=>show('invite-entry'),2500)}
