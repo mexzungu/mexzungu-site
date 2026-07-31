@@ -318,6 +318,13 @@ textarea:focus{border-color:var(--accent)}
 .pwa-text{flex:1;font-size:.82rem;color:rgba(244,239,230,.68);line-height:1.45}
 .pwa-install-btn{background:var(--accent);border:none;border-radius:4px;color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.07em;padding:.55rem 1.1rem;cursor:pointer;white-space:nowrap}
 .pwa-dismiss{background:none;border:none;color:rgba(244,239,230,.32);font-size:1.1rem;cursor:pointer;padding:.4rem;flex-shrink:0}
+#ios-banner{position:fixed;bottom:0;left:0;right:0;background:rgba(21,15,30,.98);border-top:1px solid rgba(155,127,166,.22);padding:1rem 1.5rem;display:none;z-index:250;flex-direction:column;gap:.5rem}
+#ios-banner.show{display:flex}
+.ios-banner-row{display:flex;align-items:center;gap:.75rem}
+.ios-banner-icon{font-size:1.4rem;flex-shrink:0}
+.ios-banner-text{font-size:.82rem;color:var(--muted);line-height:1.55;flex:1}
+.ios-banner-text strong{color:var(--secondary)}
+.ios-dismiss{background:none;border:none;color:rgba(244,239,230,.32);font-size:1.1rem;cursor:pointer;padding:.2rem;flex-shrink:0}
 .theory-card{background:rgba(155,127,166,.06);border:1px solid rgba(155,127,166,.18);border-radius:8px;padding:1.2rem 1.1rem;margin-top:1.5rem}
 .theory-card-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--secondary);margin-bottom:.75rem}
 .theory-card-body{font-size:.88rem;color:rgba(244,239,230,.72);line-height:1.85;white-space:pre-wrap}
@@ -1126,6 +1133,14 @@ textarea:focus{border-color:var(--accent)}
   <div class="pwa-text">Add jouissance to your home screen for the full experience.</div>
   <button class="pwa-install-btn" id="pwa-install-btn">Install</button>
   <button class="pwa-dismiss" id="pwa-dismiss">&#10005;</button>
+</div>
+
+<div id="ios-banner">
+  <div class="ios-banner-row">
+    <div class="ios-banner-icon">&#9671;</div>
+    <div class="ios-banner-text">Add jouissance to your home screen: tap <strong>Share</strong> then <strong>Add to Home Screen</strong></div>
+    <button class="ios-dismiss" id="ios-dismiss">&#10005;</button>
+  </div>
 </div>
 
 <div id="rdm-modal">
@@ -2686,12 +2701,17 @@ function ksCloseReader() {
 
 // ---- PWA INSTALL ----
 let _dip=null;
+const _standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+const _isIos=/iphone|ipad|ipod/i.test(navigator.userAgent);
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();_dip=e;
-  if(!window.matchMedia('(display-mode: standalone)').matches&&!localStorage.getItem('pwa_dismissed')){
+  if(!_standalone&&!localStorage.getItem('pwa_dismissed')){
     setTimeout(()=>document.getElementById('pwa-banner').classList.add('show'),3000);
   }
 });
+if(_isIos&&!_standalone&&!localStorage.getItem('ios_banner_dismissed')){
+  setTimeout(()=>document.getElementById('ios-banner').classList.add('show'),3000);
+}
 document.getElementById('pwa-install-btn').addEventListener('click',()=>{
   if(_dip){_dip.prompt();_dip.userChoice.then(()=>{_dip=null;});}
   document.getElementById('pwa-banner').classList.remove('show');
@@ -2699,6 +2719,10 @@ document.getElementById('pwa-install-btn').addEventListener('click',()=>{
 document.getElementById('pwa-dismiss').addEventListener('click',()=>{
   document.getElementById('pwa-banner').classList.remove('show');
   localStorage.setItem('pwa_dismissed','1');
+});
+document.getElementById('ios-dismiss').addEventListener('click',()=>{
+  document.getElementById('ios-banner').classList.remove('show');
+  localStorage.setItem('ios_banner_dismissed','1');
 });
 
 // ---- DAY-BEFORE CHECKLIST ----
