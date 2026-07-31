@@ -128,8 +128,8 @@ textarea:focus{border-color:var(--accent)}
 .msg-section-label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1rem}
 .msg-bubble{background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.75rem;font-size:.88rem;line-height:1.65;color:rgba(244,239,230,.82)}
 .msg-meta{font-size:.68rem;color:rgba(244,239,230,.28);margin-top:.4rem;letter-spacing:.06em}
-.msg-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--accent);border-radius:50%;display:none}
-.msg-dot.on{display:block}
+.msg-dot{position:absolute;top:4px;right:2px;min-width:16px;height:16px;background:var(--accent);border-radius:8px;display:none;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff;padding:0 4px;line-height:1;font-family:'DM Sans',sans-serif}
+.msg-dot.on{display:flex}
 
 /* Screen header */
 .screen-header{display:flex;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem}
@@ -760,6 +760,7 @@ textarea:focus{border-color:var(--accent)}
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
     <div class="ct-title" id="md-title"></div>
+    <div id="md-diff-badge" style="display:inline-flex;align-items:center;padding:.28rem .7rem;border:1px solid rgba(155,127,166,.25);border-radius:20px;font-size:.65rem;letter-spacing:.1em;color:rgba(155,127,166,.75);margin-bottom:1.1rem"></div>
     <div class="mod-content" id="md-body" style="margin-bottom:1.5rem"></div>
     <div id="md-submit-area">
       <div class="field-label" style="margin-bottom:0.5rem">What came up for you?</div>
@@ -1638,7 +1639,9 @@ async function loadHome(){
         const md=await mr2.json();
         const msgs=md.messages||[];
         const unread=md.unread_count||0;
-        document.getElementById('msg-dot').classList.toggle('on',unread>0);
+        const dot=document.getElementById('msg-dot');
+        dot.classList.toggle('on',unread>0);
+        dot.textContent=unread>0?unread:'';
         const msgSection=document.getElementById('h-msg-section');
         const msgList=document.getElementById('h-msg-list');
         if(msgs.length>0){
@@ -1783,61 +1786,166 @@ document.getElementById('ct-submit').addEventListener('click',async()=>{
 });
 document.getElementById('cc-back').addEventListener('click',()=>{loadHome();show('home')});
 
-// Modules
+// Modules: rolling 3-day practice window (Aug 1-14)
+const CHALLENGE_DATA=[
+  {title:"Notice Your Body",v:[
+    {id:126,d:"Vanilla",p:1,t:"Take 2 minutes to scan from feet to head. Notice one place of tension and one of ease. Write both."},
+    {id:127,d:"Mild",p:3,t:"Take 10 minutes to pause and ask: where do I feel tension? Where do I feel ease? Focus specifically on your vagal nerve from your throat to your pussy. Write what you find."},
+    {id:128,d:"Spicy",p:7,t:"Three times today, pause for 3 minutes. Place one hand on your heart or your throat, and one hand on your lower belly. Listen to your body and stay there. Write what you noticed inside your pussy. What emotions did you feel? Did you feel tension? Pleasure? Itchiness? Heat?"}
+  ]},
+  {title:"One Thing You Want",v:[
+    {id:129,d:"Vanilla",p:2,t:"Write down one small thing you want that you rarely allow yourself to have."},
+    {id:130,d:"Mild",p:5,t:"Write down one thing you want that you don't like to say out loud. Don't explain it. Just name it."},
+    {id:131,d:"Spicy",p:9,t:"Write three things you want that you have never admitted out loud. Explain one of them in detail."}
+  ]},
+  {title:"The Breath Practice",v:[
+    {id:132,d:"Vanilla",p:3,t:"Repeat this breath exercise: inhale 4 counts, hold 2, exhale 8. Write what shifted in your body."},
+    {id:133,d:"Mild",p:7,t:"Do the vagal toning breath (inhale 4 counts, hold 2, exhale 8) 5 times before bed. Write what shifted."},
+    {id:134,d:"Spicy",p:11,t:"Do 10 rounds of vagal toning breath (inhale 4 counts, hold 2, exhale 8). Contract your perineum as you inhale, squeeze harder as you hold, and progressively release as you exhale. Write what surfaced."}
+  ]},
+  {title:"What Safety Feels Like",v:[
+    {id:135,d:"Vanilla",p:4,t:"Name a place or person where you feel safe. Describe what safety felt like in your body."},
+    {id:136,d:"Mild",p:9,t:"Describe a moment when you felt safe sexually. Where were you? Who was there? What made it possible?"},
+    {id:137,d:"Spicy",p:15,t:"Describe a moment when you felt unsafe sexually. What happened in your body? Then describe what would need to be different for that to become safe."}
+  ]},
+  {title:"The Ask",v:[
+    {id:138,d:"Vanilla",p:5,t:"Think of one thing you want from someone today. Write what it would feel like to ask."},
+    {id:139,d:"Mild",p:10,t:"Ask someone for one thing you want today, something small but that you don't usually ask for. Write about what it was like to ask."},
+    {id:140,d:"Spicy",p:20,t:"Ask for something today that feels intimate, sensual or sexual. Write what it felt like to ask and what happened."}
+  ]},
+  {title:"Pleasure Inventory",v:[
+    {id:141,d:"Vanilla",p:6,t:"List 5 things that give you simple physical pleasure. No editing."},
+    {id:142,d:"Mild",p:12,t:"List 5 things that give you sensual or sexual physical pleasure. Not what should. What does."},
+    {id:143,d:"Spicy",p:25,t:"List 5 things that give you sensual pleasure, including 3 you would not say in public. No apology. Give details."}
+  ]},
+  {title:"Rest",v:[
+    {id:144,d:"Vanilla",p:7,t:"Lie down for 10 minutes doing nothing. Write one thing that surfaced."},
+    {id:145,d:"Mild",p:15,t:"Take 30 minutes today without a screen, without a book. Rest, decompress, be creative, disconnect."},
+    {id:146,d:"Spicy",p:30,t:"Spend 10 minutes in complete stillness, scan your body from head to toe, then start touching yourself from the head on the left and the knees on the right, progressively touching your sex in full consciousness. Be gentle, connect with yourself."}
+  ]},
+  {title:"Your Edge",v:[
+    {id:147,d:"Vanilla",p:8,t:"Name one thing you want to explore sensually or sexually that you haven't yet. Just name it."},
+    {id:148,d:"Mild",p:17,t:"What is one thing you want to explore sensually or sexually but feel afraid to? Don't explain the fear. Just name the thing."},
+    {id:149,d:"Spicy",p:33,t:"Name three things you want to explore but have never told anyone. Include one that makes you feel slightly ashamed, or that you have not been sharing easily. Write about why it has stayed silent."}
+  ]},
+  {title:"Gratitude for Your Body",v:[
+    {id:150,d:"Vanilla",p:9,t:"Write 3 things your body does that you are grateful for. Be specific."},
+    {id:151,d:"Mild",p:20,t:"Write 3 things you are grateful about regarding your body during sex. A few words, no details needed."},
+    {id:152,d:"Spicy",p:35,t:"Write 5 things you are grateful about regarding your body during sex. Explain one of them in detail. Why does it matter to you?"}
+  ]},
+  {title:"The Mirror",v:[
+    {id:153,d:"Vanilla",p:10,t:"Look at yourself in a mirror for 60 seconds. Write the first thing you noticed."},
+    {id:154,d:"Mild",p:22,t:"Stand in front of a mirror for 5 minutes naked without doing anything. Just looking. Write what you noticed."},
+    {id:155,d:"Spicy",p:38,t:"Stand in front of a mirror for 5 minutes naked, with your legs spread. Observe your pussy as you would observe art. Write what you noticed about your relationship to your own body."}
+  ]},
+  {title:"An Old Story",v:[
+    {id:156,d:"Vanilla",p:11,t:"What is one thing about intimacy or bodies you were taught that you now question?"},
+    {id:157,d:"Mild",p:25,t:"What is one story you tell yourself about intimacy or sexuality that you learned from someone else, not from your own experience?"},
+    {id:158,d:"Spicy",p:40,t:"Name three stories you carry about intimacy or sexuality that don't belong to you. For each, write what you would believe instead if you started fresh."}
+  ]},
+  {title:"Desire vs Expectation",v:[
+    {id:159,d:"Vanilla",p:12,t:"Name one thing you actually want, that is different from what you think you should want. A few words."},
+    {id:160,d:"Mild",p:27,t:"Write about the difference between what you desire and what you think you should desire. Where do they diverge? Be specific."},
+    {id:161,d:"Spicy",p:42,t:"Write the desires of the version of yourself that wants freely, without shame. What does that person want? How different is that from the version you show the world?"}
+  ]},
+  {title:"What You're Bringing",v:[
+    {id:162,d:"Vanilla",p:13,t:"Write one feeling you are carrying into tomorrow. Just name it."},
+    {id:163,d:"Mild",p:30,t:"What are you bringing into the workshop tomorrow? What are you hoping to leave behind?"},
+    {id:164,d:"Spicy",p:45,t:"Write a letter to the workshop. Tell it what you're afraid of, what you're hoping for, what you are ready to release. Be specific, and be ready to read it out loud."}
+  ]},
+  {title:"Workshop Day",v:[
+    {id:165,d:"Vanilla",p:15,t:"Write one word for what you want to feel today."},
+    {id:166,d:"Mild",p:35,t:"The workshop is today. Before you arrive: write one intention for the day. One thing you want to open to. Send it to Agathe."},
+    {id:167,d:"Spicy",p:50,t:"Write your full honest intention for today. Not the polished version. The real one. What do you want to feel, experience, and leave behind?"}
+  ]}
+];
 let completedMods=[];
 async function loadMods(){
-  try{
-    const r=await apiFetch('/modules');
-    if(r.ok){const d=await r.json();const arr=Array.isArray(d)?d:(d.modules||[]);completedMods=arr.filter(m=>m.completed).map(m=>m.id||m.title)}
-  }catch(e){}
+  try{const r=await apiFetch('/modules');if(r.ok){const d=await r.json();const arr=Array.isArray(d)?d:(d.modules||[]);completedMods=arr.filter(m=>m.completed).map(m=>m.id)}}catch(e){}
   const list=document.getElementById('mod-list');list.innerHTML='';
-  const unlocked=new Date()>=new Date('2026-08-14T00:00:00');
-
-  // Bundle 1: Day After Retreat
-  const b1=document.createElement('div');
-  b1.innerHTML=`<div class="prac-bundle-header"><div class="prac-corner tl"></div><div class="prac-corner tr"></div><div class="prac-bundle-title">Day After Retreat</div><div class="prac-bundle-sub">Five practices to carry what opened, forward</div><div class="prac-corner bl"></div><div class="prac-corner br"></div></div>${!unlocked?'<div class="prac-locked-banner">&#128274;&nbsp; Unlocks August 14</div>':''}`;
-  const cards=document.createElement('div');
-  cards.className=unlocked?'':'prac-grayed';
-  Object.entries(MODULES).forEach(([id,m])=>{
-    const done=completedMods.includes(id)||completedMods.includes(m.name);
-    const card=document.createElement('div');
-    card.className='mod-card'+(unlocked?'':' mod-locked');
-    card.innerHTML=`<div><div class="mod-name">${m.name}</div><div style="color:var(--muted);font-size:.78rem;margin-top:.25rem;line-height:1.5">${m.body.substring(0,75)}...</div></div><div class="mod-right" style="flex-shrink:0;margin-left:.75rem"><span class="mod-pts">${done?'Done':'+ 10 pts'}</span><div class="dot ${done?'filled':''}"></div></div>`;
-    if(unlocked){
-      card.addEventListener('click',()=>{
-        currentModId=id;
-        document.getElementById('md-title').textContent=m.name;
-        document.getElementById('md-label').textContent=m.name;
-        document.getElementById('md-body').textContent=m.body;
-        document.getElementById('md-resp').value='';
-        document.getElementById('md-cc').textContent='0 / 50';
-        document.getElementById('md-media-lbl').textContent='';
-        document.querySelectorAll('#md-mb-audio,#md-mb-video').forEach(b=>b.classList.remove('on'));
-        const area=document.getElementById('md-submit-area');
-        const doneMsg=document.getElementById('md-done-msg');
-        if(done){area.style.display='none';doneMsg.style.display='block';}
-        else{area.style.display='block';doneMsg.style.display='none';}
-        show('module-detail');
-      });
-    }
-    cards.appendChild(card);
+  const START=new Date('2026-08-01T00:00:00');
+  const now=new Date();now.setHours(0,0,0,0);
+  const dayIdx=Math.floor((now-START)/86400000);
+  const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function fd(d){return MO[d.getMonth()]+' '+d.getDate();}
+  const startIdx=Math.max(dayIdx,0);
+  if(dayIdx<0){
+    const note=document.createElement('div');
+    note.style.cssText='text-align:center;color:rgba(244,239,230,.35);font-size:.8rem;padding:.5rem 0 .75rem;letter-spacing:.05em';
+    note.textContent='Program begins August 1';
+    list.appendChild(note);
+  }
+  const legend=document.createElement('div');
+  legend.style.cssText='display:flex;gap:.4rem;margin-bottom:1.25rem';
+  [{d:'Vanilla',desc:'gentle entry'},{d:'Mild',desc:'deeper'},{d:'Spicy',desc:'all in'}].forEach(item=>{
+    const el=document.createElement('div');
+    el.style.cssText='flex:1;padding:.45rem .3rem;border:1px solid rgba(155,127,166,.12);border-radius:8px;text-align:center';
+    el.innerHTML='<div style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(155,127,166,.65);margin-bottom:.18rem">'+item.d+'</div><div style="font-size:.65rem;color:rgba(244,239,230,.3);font-style:italic">'+item.desc+'</div>';
+    legend.appendChild(el);
   });
-  b1.appendChild(cards);
-  list.appendChild(b1);
-
-  // Bundle 2: Erotic Energy Movement
-  const EE=[
-    {name:'Sensual Body Scan',dur:'10 min',body:'Lie down. Close your eyes. Bring your awareness to your feet. Slowly move it upward. Do not try to feel anything in particular. Only notice what is already there. Sensation is information. Let it speak.'},
-    {name:'Breath and Pleasure',dur:'5 min',body:'Inhale slowly to a count of 4. As you exhale, let the breath move through your pelvis. Repeat. Notice what shifts as you breathe into places you normally hold tension. Pleasure lives where tension is released.'},
-    {name:'Erotic Visualization',dur:'15 min',body:'Find a comfortable position. Close your eyes. Let an image of beauty arise. Not pornographic. Something that moves you. A memory, a colour, a quality of touch. Stay with it. Notice where in your body it lands.'},
-    {name:'Pelvic Awakening',dur:'8 min',body:'Sit or lie with your pelvis free. Begin slow circles. Find the movement that feels most natural. Add your breath. Let it gradually become more expressive. This is not performance. This is conversation with your own body.'},
-  ];
-  const b2=document.createElement('div');
-  b2.style.marginTop='1.75rem';
-  const b2Cards=EE.map(p=>`<div class="mod-card${unlocked?'':' mod-locked'}" style="${unlocked?'':'cursor:default'};flex-direction:column;align-items:flex-start"><div style="display:flex;justify-content:space-between;width:100%;align-items:baseline"><div class="mod-name">${p.name}</div><div style="font-size:.68rem;color:var(--secondary);opacity:.65;flex-shrink:0;margin-left:.5rem">${p.dur}</div></div><div style="color:var(--muted);font-size:.78rem;margin-top:.3rem;line-height:1.5">${p.body.substring(0,80)}...</div></div>`).join('');
-  b2.innerHTML=`<div class="prac-bundle-header"><div class="prac-corner tl"></div><div class="prac-corner tr"></div><div class="prac-bundle-title">Erotic Energy Movement</div><div class="prac-bundle-sub">Your body's own language</div><div class="prac-corner bl"></div><div class="prac-corner br"></div></div>${!unlocked?'<div class="prac-locked-banner">&#128274;&nbsp; Unlocks August 14</div>':''}${unlocked?b2Cards:`<div class="prac-grayed">${b2Cards}</div>`}`;
-  list.appendChild(b2);
-  const el=document.createElement('div');el.style.height='2rem';list.appendChild(el);
+  list.appendChild(legend);
+  for(let off=0;off<3;off++){
+    const idx=startIdx+off;
+    if(idx>=CHALLENGE_DATA.length)break;
+    const chal=CHALLENGE_DATA[idx];
+    const cardDate=new Date('2026-08-01T00:00:00');cardDate.setDate(cardDate.getDate()+idx);
+    const isToday=off===0;
+    const isLocked=!isToday;
+    const wrap=document.createElement('div');
+    wrap.style.cssText='margin-bottom:1.1rem;border:1px solid rgba(155,127,166,'+(isLocked?'.14':'.28')+');border-radius:12px;overflow:hidden;background:rgba(155,127,166,'+(isLocked?'.02':'.06')+')';
+    const dl=document.createElement('div');
+    dl.style.cssText='padding:.42rem 1rem;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,'+(isToday?'.5':'.25')+');border-bottom:1px solid rgba(155,127,166,.1)';
+    dl.textContent=(isToday?'Today, ':'')+fd(cardDate);
+    wrap.appendChild(dl);
+    const bd=document.createElement('div');bd.style.cssText='padding:.85rem 1rem';
+    const ht=document.createElement('div');
+    ht.style.cssText='font-family:"Cormorant Garamond",serif;font-size:1.22rem;color:var(--cream);margin-bottom:.6rem'+(isLocked?';opacity:.38':'');
+    ht.textContent=chal.title;
+    bd.appendChild(ht);
+    if(isLocked){
+      const ll=document.createElement('div');
+      ll.style.cssText='font-size:.76rem;color:rgba(244,239,230,.28);display:flex;align-items:center;gap:.35rem';
+      ll.innerHTML='🔒 Unlocks '+fd(cardDate);
+      bd.appendChild(ll);
+    }else{
+      const dayDone=chal.v.some(v=>completedMods.includes(v.id));
+      const br=document.createElement('div');br.style.cssText='display:flex;gap:.45rem';
+      chal.v.forEach(v=>{
+        const done=completedMods.includes(v.id);
+        const blocked=dayDone&&!done;
+        const btn=document.createElement('button');
+        const borderOp=done?'.38':blocked?'.08':'.2';
+        const bg=done?'rgba(155,127,166,.18)':'transparent';
+        const cur=done||blocked?'default':'pointer';
+        const lblColor=done?'var(--secondary)':blocked?'rgba(244,239,230,.18)':'rgba(244,239,230,.55)';
+        const ptsColor=blocked?'rgba(197,135,58,.2)':'var(--gold)';
+        btn.style.cssText='flex:1;padding:.55rem .15rem;border:1px solid rgba(155,127,166,'+borderOp+');border-radius:8px;background:'+bg+';cursor:'+cur+';display:flex;flex-direction:column;align-items:center;gap:.15rem;-webkit-tap-highlight-color:transparent'+(blocked?';opacity:.35':'');
+        btn.innerHTML='<span style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:'+lblColor+'">'+(done?'\u2713 ':'')+v.d+'</span><span style="font-size:.68rem;color:'+ptsColor+'">+'+v.p+' pts</span>';
+        if(!done&&!blocked){
+          btn.addEventListener('click',()=>{
+            currentModId=v.id;
+            document.getElementById('md-title').textContent=chal.title;
+            document.getElementById('md-label').textContent=v.d;
+            document.getElementById('md-diff-badge').textContent=v.d+' · +'+v.p+' pts';
+            document.getElementById('md-body').textContent=v.t;
+            document.getElementById('md-resp').value='';
+            document.getElementById('md-cc').textContent='0 / 50';
+            document.getElementById('md-media-lbl').textContent='';
+            document.querySelectorAll('#md-mb-audio,#md-mb-video').forEach(b=>b.classList.remove('on'));
+            document.getElementById('md-submit-area').style.display='block';
+            document.getElementById('md-done-msg').style.display='none';
+            document.getElementById('md-complete').textContent='Offer (+'+v.p+' pts)';
+            show('module-detail');
+          });
+        }
+        br.appendChild(btn);
+      });
+      bd.appendChild(br);
+    }
+    wrap.appendChild(bd);
+    list.appendChild(wrap);
+  }
+  const sp=document.createElement('div');sp.style.height='2rem';list.appendChild(sp);
 }
 const mdResp=document.getElementById('md-resp'),mdCc=document.getElementById('md-cc');
 let mdUploads={};
@@ -2612,7 +2720,7 @@ async function loadMessages(){
       // Mark messages as read by clearing dot
       document.getElementById('msg-dot').classList.remove('on');
       if(!msgs.length){
-        list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1.5rem 0">Nothing yet. Messages from Agathe will appear here.</div>';
+        list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1.5rem 0">Nothing yet. Messages from Agathe or Pepe will appear here.</div>';
         return;
       }
       const senderName=m=>m.from_role==='admin'?'Pepe':m.from_role==='facilitator'?'Agathe':m.from_role;
@@ -2764,6 +2872,25 @@ function clToggle(idx){
 
 renderChecklist();
 setInterval(renderChecklist,60000);
+
+// ---- MESSAGE POLLING ----
+let _lastMsgCount=0;
+async function pollMessages(){
+  if(!token)return;
+  try{
+    const r=await apiFetch('/my/messages/unread-count');
+    if(!r.ok)return;
+    const d=await r.json();
+    const unread=d.unread_count||0;
+    const dot=document.getElementById('msg-dot');
+    if(dot){dot.classList.toggle('on',unread>0);dot.textContent=unread>0?unread:'';}
+    if(unread>_lastMsgCount&&_lastMsgCount>=0&&Notification.permission==='granted'){
+      new Notification('Jouissance',{body:'You have a new message.',icon:'/jouissance/icon-192.png',tag:'jouissance-msg'});
+    }
+    _lastMsgCount=unread;
+  }catch(e){}
+}
+setInterval(pollMessages,60000);
 
 // ---- NOTIFICATION PROMPT ----
 function showNotifPrompt(){
