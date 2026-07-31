@@ -181,6 +181,10 @@ textarea:focus{border-color:var(--accent)}
 /* Rewards */
 .pts-big{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2rem;color:var(--secondary);margin-bottom:.25rem}
 .pts-big-lbl{font-size:.72rem;color:rgba(244,239,230,.32);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.75rem}
+.rank-info-wrap{position:relative;display:inline-flex;align-items:center;gap:.35rem}
+.rank-info-icon{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;border:1px solid rgba(244,239,230,.25);font-size:.55rem;color:rgba(244,239,230,.35);cursor:default;flex-shrink:0;line-height:1}
+.rank-tooltip{position:absolute;bottom:calc(100% + 6px);left:0;width:210px;background:#2a1f35;border:1px solid rgba(155,127,166,.3);border-radius:8px;padding:.65rem .8rem;font-size:.75rem;color:rgba(244,239,230,.75);line-height:1.5;pointer-events:none;opacity:0;transition:opacity .15s;z-index:20;font-style:normal;text-transform:none;letter-spacing:0}
+.rank-info-wrap.open .rank-tooltip{opacity:1}
 .tier-lbl{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin:1.5rem 0 .75rem}
 .rwd-card{border:1px solid var(--border);border-radius:6px;padding:1.2rem;margin-bottom:.55rem;transition:border-color .3s}
 .rwd-card:hover{border-color:rgba(155,127,166,.28)}
@@ -613,7 +617,7 @@ textarea:focus{border-color:var(--accent)}
       <div class="daily-msg-attr">Pepe</div>
     </div>
     <div id="h-msg-section" class="msg-section" style="display:none">
-      <div class="msg-section-label">From Agathe</div>
+      <div class="msg-section-label" id="h-msg-label">Messages</div>
       <div id="h-msg-list"></div>
     </div>
     <div id="h-challenges-section" style="display:none">
@@ -650,19 +654,6 @@ textarea:focus{border-color:var(--accent)}
         <button class="notif-prompt-btn" onclick="notifAllow()">Allow</button>
         <button class="notif-prompt-btn" onclick="notifSkip()">Skip</button>
       </div>
-    </div>
-    <div id="home-rank-widget" onclick="loadLeaderboard();show('leaderboard')" style="cursor:pointer;margin:0 0 1.25rem;padding:1rem;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;display:none;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:.25rem">Your Rank</div>
-        <div id="home-rank-number" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem">#1</div>
-      </div>
-      <div style="flex:1;margin:0 1rem">
-        <div style="height:4px;background:rgba(155,127,166,.15);border-radius:2px;overflow:hidden">
-          <div id="home-rank-bar" style="height:100%;background:var(--accent);border-radius:2px;width:100%;transition:width .6s"></div>
-        </div>
-        <div id="home-rank-streak" style="font-size:.72rem;color:rgba(244,239,230,.38);margin-top:.4rem"></div>
-      </div>
-      <div style="font-size:.72rem;color:rgba(244,239,230,.38)">&#9657;</div>
     </div>
     <div id="workshop-countdown" style="margin-top:1.25rem;padding:.85rem 1rem;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;text-align:center;cursor:pointer" onclick="show('workshop')">
       <div id="wc-label" style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:.3rem">The Workshop</div>
@@ -778,6 +769,23 @@ textarea:focus{border-color:var(--accent)}
     <div class="screen-label">Rewards</div>
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
+    <div id="rwd-rank-widget" onclick="loadLeaderboard();show('leaderboard')" style="cursor:pointer;margin:0 0 1.25rem;padding:1rem;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.18);border-radius:8px;display:none;align-items:center;justify-content:space-between">
+      <div>
+        <div class="rank-info-wrap" id="rank-info-wrap" style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:.25rem">
+          Your Rank
+          <span class="rank-info-icon" onclick="event.stopPropagation();document.getElementById('rank-info-wrap').classList.toggle('open')">i</span>
+          <div class="rank-tooltip">This reflects how many practices you've shown up for compared to the others. It's not a competition. Everyone gets something beautiful on the 14th.</div>
+        </div>
+        <div id="rwd-rank-number" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem">#1</div>
+      </div>
+      <div style="flex:1;margin:0 1rem">
+        <div style="height:4px;background:rgba(155,127,166,.15);border-radius:2px;overflow:hidden">
+          <div id="rwd-rank-bar" style="height:100%;background:var(--accent);border-radius:2px;width:100%;transition:width .6s"></div>
+        </div>
+        <div id="rwd-rank-streak" style="font-size:.72rem;color:rgba(244,239,230,.38);margin-top:.4rem"></div>
+      </div>
+      <div style="font-size:.72rem;color:rgba(244,239,230,.38)">&#9657;</div>
+    </div>
     <div class="pts-big" id="rwd-pts">0 pts</div>
     <div class="pts-big-lbl">available</div>
     <div id="rwd-list"></div>
@@ -1137,7 +1145,9 @@ textarea:focus{border-color:var(--accent)}
 
 <div class="screen" id="messages-screen">
   <div class="home-header">
+    <button onclick="show('home');setActiveNav('nav-home')" style="background:none;border:none;color:rgba(244,239,230,.55);cursor:pointer;font-size:1.1rem;padding:.5rem;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center">&#8592;</button>
     <div class="screen-label" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:var(--accent)">Messages</div>
+    <div style="width:44px"></div>
   </div>
   <div style="flex:1;overflow-y:auto;padding:1.5rem;max-width:480px;margin:0 auto;width:100%">
     <div id="messages-list">
@@ -1620,6 +1630,8 @@ async function loadHome(){
           // Show just the most recent message as a teaser
           const latest=msgs[0];
           const preview=latest.message.length>80?latest.message.slice(0,80)+'...':latest.message;
+          const senderName=latest.from_role==='admin'?'Pepe':latest.from_role==='facilitator'?'Agathe':latest.from_role;
+          document.getElementById('h-msg-label').textContent='From '+senderName;
           msgSection.style.display='block';
           msgList.innerHTML=`<div class="msg-bubble" onclick="loadMessages();show('messages-screen');setActiveNav('nav-messages')" style="cursor:pointer">${preview}<div class="msg-meta">${unread>0?unread+' unread message'+(unread>1?'s':''):'Tap to read'} &rarr;</div></div>`;
         } else {
@@ -1627,21 +1639,21 @@ async function loadHome(){
         }
       }
     }catch(e){}
-    // Ranking widget
+    // Ranking widget (lives on Rewards page)
     try{
       const lrr=await apiFetch('/leaderboard');
       if(lrr.ok){
         const ld=await lrr.json();
-        const widget=document.getElementById('home-rank-widget');
+        const widget=document.getElementById('rwd-rank-widget');
         if(widget){
           widget.style.display='flex';
-          document.getElementById('home-rank-number').textContent='#'+ld.my_rank;
+          document.getElementById('rwd-rank-number').textContent='#'+ld.my_rank;
           const total=ld.total_participants||1;
           const rank=ld.my_rank||1;
           const barPct=total<=1?100:Math.round(((total-rank)/(total-1))*100);
-          document.getElementById('home-rank-bar').style.width=barPct+'%';
+          document.getElementById('rwd-rank-bar').style.width=barPct+'%';
           const streak=pts>0?pts+' pts total':'';
-          document.getElementById('home-rank-streak').textContent=streak;
+          document.getElementById('rwd-rank-streak').textContent=streak;
         }
       }
     }catch(e){}
@@ -1850,6 +1862,23 @@ let pendingRwdCost = 0;
 async function loadRewards(){
   try{const r=await apiFetch('/auth/me');if(r.ok){const d=await r.json();pts=d.points||pts}}catch(e){}
   document.getElementById('rwd-pts').textContent=pts+' pts';
+  try{
+    const lrr=await apiFetch('/leaderboard');
+    if(lrr.ok){
+      const ld=await lrr.json();
+      const widget=document.getElementById('rwd-rank-widget');
+      if(widget){
+        widget.style.display='flex';
+        document.getElementById('rwd-rank-number').textContent='#'+ld.my_rank;
+        const total=ld.total_participants||1;
+        const rank=ld.my_rank||1;
+        const barPct=total<=1?100:Math.round(((total-rank)/(total-1))*100);
+        document.getElementById('rwd-rank-bar').style.width=barPct+'%';
+        const streak=pts>0?pts+' pts total':'';
+        document.getElementById('rwd-rank-streak').textContent=streak;
+      }
+    }
+  }catch(e){}
   const list=document.getElementById('rwd-list');
   list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1rem 0">...</div>';
   try{
@@ -2571,11 +2600,11 @@ async function loadMessages(){
         list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic;padding:1.5rem 0">Nothing yet. Messages from Agathe will appear here.</div>';
         return;
       }
-      list.innerHTML='<div class="msg-section-label" style="margin-bottom:1rem">From Agathe</div>'
-        +msgs.map(m=>{
+      const senderName=m=>m.from_role==='admin'?'Pepe':m.from_role==='facilitator'?'Agathe':m.from_role;
+      list.innerHTML=msgs.map(m=>{
           const d2=new Date(m.sent_at+'Z');
           const label=d2.toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-          return `<div class="msg-bubble">${m.message}<div class="msg-meta">${label}</div></div>`;
+          return `<div class="msg-bubble"><div class="msg-section-label" style="margin-bottom:.5rem">From ${senderName(m)}</div>${m.message}<div class="msg-meta">${label}</div></div>`;
         }).join('');
     } else {
       list.innerHTML='<div style="color:rgba(244,239,230,.32);font-style:italic">Could not load messages.</div>';
