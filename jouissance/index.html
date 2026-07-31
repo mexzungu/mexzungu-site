@@ -437,7 +437,7 @@ textarea:focus{border-color:var(--accent)}
 <div class="screen" id="consent">
   <div class="container" style="justify-content:center">
     <div class="consent-title">Before we begin</div>
-    <div class="consent-body">What you share here stays between us. Your answers are visible only to Agathe and the Jouissance team. This information is held under GDPR Article 9 and used solely to shape your experience.</div>
+    <div class="consent-body">What you share here stays between us. Your answers are visible only to Pepe and Agathe. This information is held under GDPR Article 9 and used solely to shape your experience.</div>
     <label class="checkbox-row">
       <input type="checkbox" id="consent-chk">
       <label>I understand and consent</label>
@@ -846,11 +846,11 @@ textarea:focus{border-color:var(--accent)}
     <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.6rem">Articles</div>
     <p style="font-size:.85rem;color:rgba(244,239,230,.6);margin-bottom:1.25rem;line-height:1.75">Short reads worth sitting with.</p>
 
-    <a href="https://www.emilynagoski.com/come-as-you-are" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
+    <a href="https://www.goodreads.com/book/show/22609341-come-as-you-are" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.15rem">The Dual Control Model of Sexual Response</div>
       <div style="font-size:.72rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.55rem">Emily Nagoski</div>
       <div style="font-size:.83rem;color:rgba(244,239,230,.6);line-height:1.7">Why your accelerator and brake are the whole story. The model that explains almost everything about how desire actually works.</div>
-      <div style="font-size:.72rem;color:var(--secondary);margin-top:.55rem;opacity:.7">emilynagoski.com &rarr;</div>
+      <div style="font-size:.72rem;color:var(--secondary);margin-top:.55rem;opacity:.7">goodreads.com &rarr;</div>
     </a>
 
     <a href="https://www.estherperel.com/blog" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem">
@@ -880,7 +880,7 @@ textarea:focus{border-color:var(--accent)}
       </div>
     </a>
 
-    <a href="https://podcasts.apple.com/us/podcast/the-pleasure-mechanics-podcast/id989073330" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+    <a href="https://pleasuremechanics.com/podcast/" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
       <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts115/v4/74/f5/42/74f54231-5bf4-03c2-8a18-0e1a9a1a0c84/mza_3887539855765024551.jpg/300x300bb.jpg" alt="Pleasure Mechanics" style="width:60px;min-width:60px;height:60px;object-fit:cover;border-radius:6px;background:rgba(155,127,166,.15)">
       <div style="min-width:0">
         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">Pleasure Mechanics</div>
@@ -890,7 +890,7 @@ textarea:focus{border-color:var(--accent)}
       </div>
     </a>
 
-    <a href="https://podcasts.apple.com/us/podcast/the-embodiment-podcast/id1330447019" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:2rem">
+    <a href="https://embodimentunlimited.com/podcasts/" target="_blank" rel="noopener" style="text-decoration:none;display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:2rem">
       <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/83/94/3b/83943b5c-dba0-3b75-5a42-f64d79c33f82/mza_14560573688547543083.jpg/300x300bb.jpg" alt="The Embodiment Podcast" style="width:60px;min-width:60px;height:60px;object-fit:cover;border-radius:6px;background:rgba(155,127,166,.15)">
       <div style="min-width:0">
         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">The Embodiment Podcast</div>
@@ -1316,7 +1316,7 @@ async function submitPhoto(btn){
     }catch(pe){}
   }
   if(btn)btn.disabled=false;
-  show('reg-photo');
+  show('profile-complete');
 }
 document.getElementById('reg-photo-next').addEventListener('click',function(){submitPhoto(this);});
 document.getElementById('reg-photo-skip').addEventListener('click',function(){regPhotoFile=null;submitPhoto(this);});
@@ -1350,7 +1350,7 @@ document.getElementById('consent-btn').addEventListener('click',()=>{
 });
 
 // Char counters
-[1,3,5,8,9,10].forEach(n=>{
+[1,3,5,9,10].forEach(n=>{
   const ta=document.getElementById('a'+n),cc=document.getElementById('cc'+n);
   if(!ta||!cc)return;
   ta.addEventListener('input',()=>{const l=ta.value.length;cc.textContent=l+' / 50';cc.classList.toggle('ok',l>=50)});
@@ -2489,7 +2489,7 @@ async function loadExplore(){
     } else {
       // Fetch knowledge data then render
       try{
-        const r=await apiFetch('/jouissance/knowledge-sets/unlocked');
+        const r=await apiFetch('/knowledge-sets/unlocked');
         if(r.ok){
           _ksData=await r.json();
           if(_ksData.total_unlocked===0){
@@ -2537,8 +2537,8 @@ async function loadExplore(){
 async function loadProfile() {
   try {
     const [me, intake] = await Promise.all([
-      apiFetch('/jouissance/auth/me'),
-      apiFetch('/jouissance/intake')
+      apiFetch('/auth/me'),
+      apiFetch('/intake')
     ]);
     // Name + email
     document.getElementById('profile-name').textContent = me.display_name || '';
@@ -2646,7 +2646,7 @@ async function showKnowledge() {
   document.getElementById('ks-list').style.display = 'none';
   document.getElementById('ks-locked').style.display = 'none';
   try {
-    const r = await apiFetch('/jouissance/knowledge-sets/unlocked');
+    const r = await apiFetch('/knowledge-sets/unlocked');
     if (!r.ok) throw new Error();
     _ksData = await r.json();
     document.getElementById('ks-loading').style.display = 'none';
