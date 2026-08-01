@@ -560,16 +560,16 @@ const API = (window.location.hostname === '127.0.0.1' || window.location.hostnam
   : 'https://jouissance.mexzungu.com';
 
 const PROFILE_QUESTIONS = [
-  'What is your first name?',
-  'What brought you to this experience?',
-  'How familiar are you with sensory or somatic practices?',
-  'What is one thing you are curious about but have never explored?',
-  'Describe a moment when you felt fully in your body.',
-  'What word describes how you want to feel by Day 14?',
-  'Is there anything you want the facilitator to know about your boundaries or needs?',
-  'Which element speaks to you most: fire, water, earth, air?',
-  'What time of day do you feel most alive?',
-  'Is there anything you want to ask or say before we begin?'
+  'How do you name pleasure in your everyday life?',
+  'What draws you most?',
+  'When you imagine yourself at your most desirable, where are you, who are you with, what are you doing?',
+  'Do you prefer to lead, to follow, or both?',
+  'What does consent mean to you in a space of exploration?',
+  'Are there practices or energies you want to explore?',
+  'Are there limits you want others to know about?',
+  null,
+  'How do you want to be seen by this group?',
+  'What do you want to feel on August 14th?'
 ];
 
 function togglePass(inputId, btnId) {
@@ -696,6 +696,7 @@ function buildCard(p) {
 
   const profile = p.profile || {};
   const profileHtml = PROFILE_QUESTIONS.map((q, i) => {
+    if (!q) return '';
     const a = profile[`q${i+1}`]; if (!a) return '';
     return `<div><div class="qa-q">${q}</div><div class="qa-a">${esc(a)}</div></div>`;
   }).filter(Boolean).join('');
