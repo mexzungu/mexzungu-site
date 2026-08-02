@@ -568,8 +568,6 @@ const API = (window.location.hostname === '127.0.0.1' || window.location.hostnam
   : 'https://jouissance.mexzungu.com';
 
 const PROFILE_QUESTIONS = [
-  'How do you name pleasure in your everyday life?',
-  'What draws you most?',
   'When you imagine yourself at your most desirable, where are you, who are you with, what are you doing?',
   'Do you prefer to lead, to follow, or both?',
   'What does consent mean to you in a space of exploration?',
@@ -757,7 +755,7 @@ function buildCard(p) {
     ? `<img src="${API}/profile/photo/${p.id}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" onerror="this.parentNode.textContent='${init}'">`
     : init;
 
-  const regQLabels = ['How they identify','Relationship landscape','Coming to explore','Energetic nature','Limit to respect'];
+  const regQLabels = ['How they identify','Relationship landscape','Coming to explore','Energetic nature'];
   const rq = p.reg_questions || {};
   const regQHtml = regQLabels.map((lbl, i) => {
     const a = rq[`q${i+1}`]; if (!a) return '';
@@ -767,7 +765,7 @@ function buildCard(p) {
   const profile = p.profile || {};
   const profileHtml = PROFILE_QUESTIONS.map((q, i) => {
     if (!q) return '';
-    const a = profile[`q${i+1}`]; if (!a) return '';
+    const a = profile[`q${i+3}`]; if (!a) return '';
     return `<div><div class="qa-q">${q}</div><div class="qa-a">${esc(a)}</div></div>`;
   }).filter(Boolean).join('');
   const kyHtml = (p.ky_results || []).map(ky => {

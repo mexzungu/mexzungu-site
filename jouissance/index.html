@@ -446,24 +446,35 @@ textarea:focus{border-color:var(--accent)}
   </div>
 </div>
 
-<div class="screen" id="profile-q1">
+<div class="screen" id="reg-q1">
   <div class="container" style="justify-content:center">
-    <div class="profile-question">How do you name pleasure in your everyday life?</div>
-    <textarea id="a1" placeholder="Write here..."></textarea>
-    <div class="char-counter" id="cc1">0 / 50</div>
-    <button class="btn btn-primary pnext" data-q="1">Continue</button>
+    <div class="profile-question">How do you move through the world? Tell us how you identify. Your gender, your sexuality, or simply what feels most true.</div>
+    <textarea id="rqa1" placeholder="Write here..."></textarea>
+    <button class="btn btn-primary" id="rqnext1">Continue</button>
   </div>
 </div>
 
-<div class="screen" id="profile-q2">
+<div class="screen" id="reg-q2">
   <div class="container" style="justify-content:center">
-    <div class="profile-question">What draws you most?</div>
-    <div class="radio-cards" id="rc2">
-      <div class="radio-card" data-v="Intensity">Intensity</div>
-      <div class="radio-card" data-v="Softness">Softness</div>
-      <div class="radio-card" data-v="Surprise">Surprise</div>
-    </div>
-    <button class="btn btn-primary pnext" data-q="2" id="q2btn" disabled>Continue</button>
+    <div class="profile-question">What does your current relationship landscape look like? Solo, partnered, open. Describe it briefly.</div>
+    <textarea id="rqa2" placeholder="Write here..."></textarea>
+    <button class="btn btn-primary" id="rqnext2">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="reg-q3">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">What brings you to this space? What are you curious about, ready to touch, or hoping to discover?</div>
+    <textarea id="rqa3" placeholder="Write here..."></textarea>
+    <button class="btn btn-primary" id="rqnext3">Continue</button>
+  </div>
+</div>
+
+<div class="screen" id="reg-q4">
+  <div class="container" style="justify-content:center">
+    <div class="profile-question">How would you describe your energetic nature? Are you more drawn to giving or receiving, leading or following, or does it shift with the moment?</div>
+    <textarea id="rqa4" placeholder="Write here..."></textarea>
+    <button class="btn btn-primary" id="rqnext4">Continue</button>
   </div>
 </div>
 
@@ -1156,6 +1167,33 @@ textarea:focus{border-color:var(--accent)}
   </div>
 </div>
 
+<div id="reg-q-modal" style="display:none;position:fixed;inset:0;background:rgba(13,10,18,.97);z-index:300;align-items:center;justify-content:center;padding:1.5rem;flex-direction:column">
+  <div class="modal-box" style="max-width:480px;width:100%">
+    <div class="modal-title" style="margin-bottom:.75rem">A couple more things before we begin</div>
+    <div class="modal-sub" style="margin-bottom:1.5rem;line-height:1.7">Thank you for completing your profile. We have a few more questions to get to know you better before the workshop.</div>
+    <div id="rqm-step1">
+      <div class="profile-question" style="margin-bottom:.75rem;font-size:.9rem">How do you move through the world? Tell us how you identify. Your gender, your sexuality, or simply what feels most true.</div>
+      <textarea id="rqma1" placeholder="Write here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.1);border:1px solid rgba(155,127,166,.3);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical"></textarea>
+      <button class="btn btn-primary" id="rqmnext1" style="width:100%;margin-top:1rem">Continue</button>
+    </div>
+    <div id="rqm-step2" style="display:none">
+      <div class="profile-question" style="margin-bottom:.75rem;font-size:.9rem">What does your current relationship landscape look like? Solo, partnered, open. Describe it briefly.</div>
+      <textarea id="rqma2" placeholder="Write here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.1);border:1px solid rgba(155,127,166,.3);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical"></textarea>
+      <button class="btn btn-primary" id="rqmnext2" style="width:100%;margin-top:1rem">Continue</button>
+    </div>
+    <div id="rqm-step3" style="display:none">
+      <div class="profile-question" style="margin-bottom:.75rem;font-size:.9rem">What brings you to this space? What are you curious about, ready to touch, or hoping to discover?</div>
+      <textarea id="rqma3" placeholder="Write here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.1);border:1px solid rgba(155,127,166,.3);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical"></textarea>
+      <button class="btn btn-primary" id="rqmnext3" style="width:100%;margin-top:1rem">Continue</button>
+    </div>
+    <div id="rqm-step4" style="display:none">
+      <div class="profile-question" style="margin-bottom:.75rem;font-size:.9rem">How would you describe your energetic nature? Are you more drawn to giving or receiving, leading or following, or does it shift with the moment?</div>
+      <textarea id="rqma4" placeholder="Write here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.1);border:1px solid rgba(155,127,166,.3);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical"></textarea>
+      <button class="btn btn-primary" id="rqmnext4" style="width:100%;margin-top:1rem">Save and continue</button>
+    </div>
+  </div>
+</div>
+
 <div id="rdm-modal">
   <div class="modal-box">
     <div class="modal-title" id="modal-rwd-name">Reward</div>
@@ -1225,8 +1263,13 @@ async function boot(){
     const u=await r.json();
     pts=u.points||0;
     if(!u.profile_complete){
-      const s=parseInt(localStorage.getItem('jouissance_profile_step')||'1');
-      setTimeout(()=>show('profile-q'+Math.min(Math.max(s,1),10)),2500);
+      const s=parseInt(localStorage.getItem('jouissance_profile_step')||'3');
+      setTimeout(()=>show('profile-q'+Math.min(Math.max(s,3),10)),2500);
+    } else if(!u.reg_q1){
+      setTimeout(()=>{
+        show('home');loadHome();
+        const m=document.getElementById('reg-q-modal');m.style.display='flex';
+      },2500);
     } else if((u.challenge_day||0)===14){
       setTimeout(()=>show('day14'),2500);
     } else {
@@ -1268,7 +1311,7 @@ document.getElementById('reg-code-submit').addEventListener('click',async()=>{
 });
 document.getElementById('reg-code').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('reg-code-submit').click()});
 
-// Register step 2: name/email/password
+// Register step 2: name/email/password -> then reg questions -> then doRegister
 document.getElementById('reg-submit').addEventListener('click',()=>{
   const name=document.getElementById('reg-name').value.trim();
   const email=document.getElementById('reg-email').value.trim();
@@ -1277,7 +1320,26 @@ document.getElementById('reg-submit').addEventListener('click',()=>{
   if(!name||!email||!pass){err.textContent='Please fill in all fields.';return;}
   err.textContent='';
   window.regData={...window.regData,name,email,pass};
-  const _rsBtn=document.getElementById('reg-submit');doRegister(_rsBtn,'inv-err');
+  show('reg-q1');
+});
+
+// Registration questions flow
+document.getElementById('rqnext1').addEventListener('click',()=>{
+  window.regData.reg_q1=(document.getElementById('rqa1').value||'').trim();
+  show('reg-q2');
+});
+document.getElementById('rqnext2').addEventListener('click',()=>{
+  window.regData.reg_q2=(document.getElementById('rqa2').value||'').trim();
+  show('reg-q3');
+});
+document.getElementById('rqnext3').addEventListener('click',()=>{
+  window.regData.reg_q3=(document.getElementById('rqa3').value||'').trim();
+  show('reg-q4');
+});
+document.getElementById('rqnext4').addEventListener('click',()=>{
+  window.regData.reg_q4=(document.getElementById('rqa4').value||'').trim();
+  const btn=document.getElementById('rqnext4');
+  doRegister(btn,'inv-err');
 });
 
 
@@ -1310,7 +1372,7 @@ async function doRegister(btn,errId){
   try{
     const r=await fetch(API+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({username:d.email,password:d.pass,display_name:d.name,consent_gdpr:true,
-        access_code:d.access_code||'',reg_q1:'',reg_q2:'',reg_q3:'',reg_q4:'',reg_q5:''})});
+        access_code:d.access_code||'',reg_q1:d.reg_q1||'',reg_q2:d.reg_q2||'',reg_q3:d.reg_q3||'',reg_q4:d.reg_q4||'',reg_q5:''})});
     const j=await r.json();
     if(r.ok&&j.token){
       token=j.token;localStorage.setItem('jouissance_token',token);
@@ -1358,7 +1420,7 @@ document.getElementById('welcome-begin').addEventListener('click',()=>show('cons
 // Consent
 document.getElementById('consent-chk').addEventListener('change',function(){document.getElementById('consent-btn').disabled=!this.checked});
 document.getElementById('consent-btn').addEventListener('click',()=>{
-  show('profile-q1');localStorage.setItem('jouissance_profile_step','1');
+  show('profile-q3');localStorage.setItem('jouissance_profile_step','3');
 });
 
 // Char counters
@@ -2852,6 +2914,41 @@ function toggleFaq(el){
   const item=el.closest('.faq-item');
   item.classList.toggle('open');
 }
+
+// Blocking reg-questions modal for existing users
+(function(){
+  function rqmShow(step){
+    ['rqm-step1','rqm-step2','rqm-step3','rqm-step4'].forEach((id,i)=>{
+      document.getElementById(id).style.display=(i+1===step)?'block':'none';
+    });
+  }
+  document.getElementById('rqmnext1').addEventListener('click',()=>{
+    window._rqmAnswers=window._rqmAnswers||{};
+    window._rqmAnswers.q1=(document.getElementById('rqma1').value||'').trim();
+    rqmShow(2);
+  });
+  document.getElementById('rqmnext2').addEventListener('click',()=>{
+    window._rqmAnswers=window._rqmAnswers||{};
+    window._rqmAnswers.q2=(document.getElementById('rqma2').value||'').trim();
+    rqmShow(3);
+  });
+  document.getElementById('rqmnext3').addEventListener('click',()=>{
+    window._rqmAnswers=window._rqmAnswers||{};
+    window._rqmAnswers.q3=(document.getElementById('rqma3').value||'').trim();
+    rqmShow(4);
+  });
+  document.getElementById('rqmnext4').addEventListener('click',async()=>{
+    window._rqmAnswers=window._rqmAnswers||{};
+    window._rqmAnswers.q4=(document.getElementById('rqma4').value||'').trim();
+    const btn=document.getElementById('rqmnext4');
+    btn.disabled=true;btn.textContent='Saving...';
+    try{
+      const a=window._rqmAnswers;
+      await apiFetch('/profile/reg-questions',{method:'POST',body:JSON.stringify({q1:a.q1||'',q2:a.q2||'',q3:a.q3||'',q4:a.q4||''})});
+      document.getElementById('reg-q-modal').style.display='none';
+    }catch(e){btn.disabled=false;btn.textContent='Save and continue';}
+  });
+})();
 </script>
 <script>
 if('serviceWorker' in navigator){
