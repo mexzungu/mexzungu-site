@@ -299,7 +299,8 @@
   .response-text { font-size: 14px; line-height: 1.6; color: var(--text); }
   .response-audio { margin-top: 10px; }
   .response-audio audio { width: 100%; height: 32px; }
-  .ky-summary { font-size: 13px; font-weight: 600; color: var(--accent); margin: 4px 0 2px; }
+  .ky-summary { font-size: 13px; font-weight: 600; color: var(--accent); margin: 4px 0 4px; }
+  .ky-interp { font-size: 13px; color: var(--text); line-height: 1.55; margin-bottom: 4px; }
   .ky-detail { font-size: 11px; color: var(--muted); }
 
   /* REDEMPTION ITEMS */
@@ -691,33 +692,60 @@ function interpretQuiz(testId, scores) {
     return { summary: `${s.label || ''} (${s.pct ?? '?'}%)`, detail: s.interp || '' };
   }
   if (testId === 'ssk-orientation_quick') {
-    const opts = [['Sensual', s.S||0], ['Switched', s.X||0], ['Kinky', s.K||0]];
-    const top = [...opts].sort((a,b)=>b[1]-a[1])[0];
-    return { summary: top[1] > 0 ? `${top[0]}-dominant (${top[1]}%)` : 'Balanced', detail: opts.map(([k,v])=>`${k}: ${v}%`).join(' · ') };
+    const sskLabels = {S:'Sensual', X:'Sexual', K:'Kink-oriented'};
+    const sskInterps = {
+      S: "Primary desire language is Sensual. Deeply responsive to atmosphere, texture, slowness, and presence. Intimacy is a full-body immersion experience.",
+      X: "Primary desire language is Sexual. Drawn to the raw physical intensity of bodies meeting, the energy of mutual desire, the pleasure of pure sensation.",
+      K: "Primary desire language is Kink-oriented. What moves them most is psychological as much as physical. Power dynamics, the edge of transgression, the deliberate construction of a scene."
+    };
+    const entries = Object.entries(s).filter(([k])=>sskLabels[k]);
+    const top = entries.sort((a,b)=>b[1]-a[1])[0];
+    const bars = entries.map(([k,v])=>`${sskLabels[k]}: ${v}%`).join(' · ');
+    return { summary: top ? `${sskLabels[top[0]]} (${top[1]}%)` : '', detail: bars, interp: top ? sskInterps[top[0]] : '' };
   }
   if (testId === 'desire-driver_quick') {
-    const lbl = {safety:'Safety & Trust', sensation:'Sensation', novelty:'Novelty', power:'Power dynamics', fantasy:'Fantasy'};
-    const ents = Object.entries(s).filter(([k])=>lbl[k]).sort((a,b)=>b[1]-a[1]);
-    const top2 = ents.filter(([,v])=>v>0).slice(0,2).map(([k])=>lbl[k]).join(' + ');
-    return { summary: top2 || 'No strong drivers', detail: ents.map(([k,v])=>`${lbl[k]}: ${v}/4`).join(' · ') };
-  }
-  if (testId === 'communication-style_quick') {
-    const lbl = {direct:'Direct', nonverbal:'Non-verbal', silent:'Silent presence', playful:'Playful'};
+    const driverInterps = {
+      safety: "Desire is rooted in safety. They don't need wild or complex, they need real. When they feel genuinely seen and emotionally safe, desire unlocks fully.",
+      sensation: "Desire lives in the body. Sensation is the primary doorway. Deeply responsive to touch, temperature, pressure, and physical intensity.",
+      novelty: "Novelty is the desire engine. New experiences, unexpected moments, the edge of the unknown. Routine dampens; surprise awakens.",
+      power: "Power dynamics are the primary desire driver. The explicit negotiation of who leads and who follows, the clarity of a defined dynamic, the trust that makes that dynamic possible.",
+      fantasy: "Desire lives in imagination. Aroused by story, by character, by the co-creation of a shared world."
+    };
+    const lbl = {safety:'Safety', sensation:'Sensation', novelty:'Novelty', power:'Power', fantasy:'Fantasy'};
     const ents = Object.entries(s).filter(([k])=>lbl[k]).sort((a,b)=>b[1]-a[1]);
     const top = ents[0];
-    return { summary: top ? `${lbl[top[0]]}-style communicator` : '', detail: ents.map(([k,v])=>`${lbl[k]}: ${v}/4`).join(' · ') };
+    const bars = ents.map(([k,v])=>`${lbl[k]}: ${v}/4`).join(' · ');
+    return { summary: top ? `Primary driver: ${lbl[top[0]]}` : '', detail: bars, interp: top ? driverInterps[top[0]] : '' };
+  }
+  if (testId === 'communication-style_quick') {
+    const commInterps = {
+      direct: "Communicates directly. Words are their preferred tool and they're generally comfortable naming what they want. Growth edge: learning that not everyone receives direct communication the same way.",
+      nonverbal: "Body speaks before words do. Highly tuned to physical signals: touch, space, breath. Growth edge: developing a verbal vocabulary that matches the somatic one.",
+      silent: "Tends to process intimacy internally and may struggle to ask for what they need. Growth edge: the practice of naming one want per encounter, even something small.",
+      playful: "Uses lightness and humor as the primary communication style. Growth edge: learning to drop into something more serious when the moment calls for it."
+    };
+    const lbl = {direct:'Direct', nonverbal:'Somatic', silent:'Internal', playful:'Playful'};
+    const ents = Object.entries(s).filter(([k])=>lbl[k]).sort((a,b)=>b[1]-a[1]);
+    const top = ents[0];
+    const bars = ents.map(([k,v])=>`${lbl[k]}: ${v}/4`).join(' · ');
+    return { summary: top ? `${lbl[top[0]]} communicator` : '', detail: bars, interp: top ? commInterps[top[0]] : '' };
   }
   if (testId === 'body-connection_quick') {
-    const total = s.total || 0; const max = s.maxScore || 30;
+    const total = s.total || 0; const max = s.maxScore || 15;
     const pct = max > 0 ? Math.round(total/max*100) : 0;
-    const level = pct >= 80 ? 'High embodiment' : pct >= 55 ? 'Good connection' : pct >= 35 ? 'Developing' : 'Still awakening';
-    return { summary: `${total}/${max}, ${level}`, detail: '' };
+    const levels = [
+      [70, 'Embodied', "Lives in their body with a high degree of awareness. Notices sensations quickly, trusts body signals, and comes back naturally when they drift."],
+      [40, 'Building Connection', "Has a real relationship with their body but loses the thread at times. Work is building consistency, returning to the body faster when drifting."],
+      [0,  'Developing Connection', "Body and self are still getting acquainted. Somatic awareness is a skill, not a fixed trait, and the practices here are specifically designed for where they are."]
+    ];
+    const [, label, interp] = levels.find(([min])=>pct>=min) || levels[2];
+    return { summary: `${pct}%, ${label}`, detail: `${total}/${max}`, interp };
   }
   if (testId === 'turn-on-map_quick') {
     const sel = s.selected || [];
-    return { summary: sel.length ? `${sel.length} turn-ons identified` : 'Not yet completed', detail: sel.join(', ') };
+    return { summary: sel.length ? `${sel.length} turn-ons identified` : 'Not yet completed', detail: sel.join(', '), interp: '' };
   }
-  return { summary: '', detail: Object.entries(s).map(([k,v])=>`${k}: ${v}`).join(' · ') };
+  return { summary: '', detail: Object.entries(s).map(([k,v])=>`${k}: ${v}`).join(' · '), interp: '' };
 }
 
 function buildCard(p) {
@@ -744,10 +772,11 @@ function buildCard(p) {
   }).filter(Boolean).join('');
   const kyHtml = (p.ky_results || []).map(ky => {
     const title = ky.test_id.replace(/_quick$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    const { summary, detail } = interpretQuiz(ky.test_id, ky.scores);
+    const { summary, detail, interp } = interpretQuiz(ky.test_id, ky.scores);
     return `<div>
       <div class="qa-q">${esc(title)}</div>
       ${summary ? `<div class="ky-summary">${esc(summary)}</div>` : ''}
+      ${interp ? `<div class="ky-interp">${esc(interp)}</div>` : ''}
       ${detail ? `<div class="ky-detail">${esc(detail)}</div>` : ''}
     </div>`;
   }).join('');
