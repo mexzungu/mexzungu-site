@@ -559,7 +559,7 @@ textarea:focus{border-color:var(--accent)}
     <div class="header-right">
       <div class="pts-display" id="h-pts">0 pts</div>
       <a href="https://wa.me/23055068793?text=Hi+Janis,+I+have+a+question+about+the+Jouissance+app" target="_blank" rel="noopener" class="wa-support-btn" aria-label="Help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg></a>
-      <a id="fac-view-btn" href="/jouissance/facilitator.html" style="display:none;border:1px solid rgba(155,127,166,.35);border-radius:20px;padding:.25rem .75rem;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(155,127,166,.7);text-decoration:none;white-space:nowrap;transition:border-color .3s,color .3s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='rgba(155,127,166,.35)';this.style.color='rgba(155,127,166,.7)'">Facilitator</a>
+      <a id="fac-view-btn" class="fac-view-btn-all" href="/jouissance/facilitator.html" style="display:none;border:1px solid rgba(155,127,166,.35);border-radius:20px;padding:.25rem .75rem;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(155,127,166,.7);text-decoration:none;white-space:nowrap;transition:border-color .3s,color .3s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='rgba(155,127,166,.35)';this.style.color='rgba(155,127,166,.7)'">Facilitator</a>
       <button class="bell-btn" id="bell-btn" onclick="loadProfile();show('profile-screen')" aria-label="Profile">&#9651;</button>
     </div>
   </div>
@@ -686,6 +686,7 @@ textarea:focus{border-color:var(--accent)}
   <div class="screen-header">
     <button class="back-btn" data-back="home">&#8592;</button>
     <div class="screen-label">Practices</div>
+    <a class="fac-view-btn-all" href="/jouissance/facilitator.html" style="display:none;border:1px solid rgba(155,127,166,.35);border-radius:20px;padding:.25rem .75rem;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(155,127,166,.7);text-decoration:none;white-space:nowrap;transition:border-color .3s,color .3s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='rgba(155,127,166,.35)';this.style.color='rgba(155,127,166,.7)'">Facilitator</a>
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
     <div id="mod-list"></div>
@@ -1284,7 +1285,7 @@ async function boot(){
     } else if((u.challenge_day||0)===14){
       setTimeout(()=>show('day14'),2500);
     } else {
-      const b=document.getElementById('fac-view-btn');if(b)b.style.display='block';
+      document.querySelectorAll('.fac-view-btn-all').forEach(b=>b.style.display='block');
       setTimeout(()=>{loadHome();show('home')},2500);
     }
   }catch(e){setTimeout(()=>show('invite-entry'),2500)}
@@ -1899,7 +1900,7 @@ async function loadMods(){
         const bg=done?'rgba(155,127,166,.18)':'transparent';
         const cur=done||blocked?'default':'pointer';
         const lblColor=done?'var(--secondary)':blocked?'rgba(244,239,230,.18)':'rgba(244,239,230,.55)';
-        const ptsColor=blocked?'rgba(197,135,58,.2)':'var(--gold)';
+        const ptsColor=blocked?'rgba(197,135,58,.2)':'var(--secondary)';
         btn.style.cssText='flex:1;padding:.55rem .15rem;border:1px solid rgba(155,127,166,'+borderOp+');border-radius:8px;background:'+bg+';cursor:'+cur+';display:flex;flex-direction:column;align-items:center;gap:.15rem;-webkit-tap-highlight-color:transparent'+(blocked?';opacity:.35':'');
         btn.innerHTML='<span style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:'+lblColor+'">'+(done?'\u2713 ':'')+v.d+'</span><span style="font-size:.68rem;color:'+ptsColor+'">+'+v.p+' pts</span>';
         if(!done&&!blocked){
