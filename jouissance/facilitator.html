@@ -299,9 +299,8 @@
   .response-text { font-size: 14px; line-height: 1.6; color: var(--text); }
   .response-audio { margin-top: 10px; }
   .response-audio audio { width: 100%; height: 32px; }
-  .ky-scores { display: flex; flex-wrap: wrap; gap: 6px 12px; }
-  .ky-score { font-size: 12px; color: var(--muted); }
-  .ky-score b { color: var(--accent); font-weight: 600; }
+  .ky-summary { font-size: 13px; font-weight: 600; color: var(--accent); margin: 4px 0 2px; }
+  .ky-detail { font-size: 11px; color: var(--muted); }
 
   /* REDEMPTION ITEMS */
   .redemption-item {
@@ -686,6 +685,41 @@ async function loadParticipants() {
   } catch(e) { el.innerHTML = `<div class="empty">Error loading participants: ${e.message}</div>`; }
 }
 
+function interpretQuiz(testId, scores) {
+  const s = scores || {};
+  if (testId === 'ds-spectrum_quick') {
+    return { summary: `${s.label || ''} (${s.pct ?? '?'}%)`, detail: s.interp || '' };
+  }
+  if (testId === 'ssk-orientation_quick') {
+    const opts = [['Sensual', s.S||0], ['Switched', s.X||0], ['Kinky', s.K||0]];
+    const top = [...opts].sort((a,b)=>b[1]-a[1])[0];
+    return { summary: top[1] > 0 ? `${top[0]}-dominant (${top[1]}%)` : 'Balanced', detail: opts.map(([k,v])=>`${k}: ${v}%`).join(' · ') };
+  }
+  if (testId === 'desire-driver_quick') {
+    const lbl = {safety:'Safety & Trust', sensation:'Sensation', novelty:'Novelty', power:'Power dynamics', fantasy:'Fantasy'};
+    const ents = Object.entries(s).filter(([k])=>lbl[k]).sort((a,b)=>b[1]-a[1]);
+    const top2 = ents.filter(([,v])=>v>0).slice(0,2).map(([k])=>lbl[k]).join(' + ');
+    return { summary: top2 || 'No strong drivers', detail: ents.map(([k,v])=>`${lbl[k]}: ${v}/4`).join(' · ') };
+  }
+  if (testId === 'communication-style_quick') {
+    const lbl = {direct:'Direct', nonverbal:'Non-verbal', silent:'Silent presence', playful:'Playful'};
+    const ents = Object.entries(s).filter(([k])=>lbl[k]).sort((a,b)=>b[1]-a[1]);
+    const top = ents[0];
+    return { summary: top ? `${lbl[top[0]]}-style communicator` : '', detail: ents.map(([k,v])=>`${lbl[k]}: ${v}/4`).join(' · ') };
+  }
+  if (testId === 'body-connection_quick') {
+    const total = s.total || 0; const max = s.maxScore || 30;
+    const pct = max > 0 ? Math.round(total/max*100) : 0;
+    const level = pct >= 80 ? 'High embodiment' : pct >= 55 ? 'Good connection' : pct >= 35 ? 'Developing' : 'Still awakening';
+    return { summary: `${total}/${max}, ${level}`, detail: '' };
+  }
+  if (testId === 'turn-on-map_quick') {
+    const sel = s.selected || [];
+    return { summary: sel.length ? `${sel.length} turn-ons identified` : 'Not yet completed', detail: sel.join(', ') };
+  }
+  return { summary: '', detail: Object.entries(s).map(([k,v])=>`${k}: ${v}`).join(' · ') };
+}
+
 function buildCard(p) {
   const init = (p.name || p.email || '?')[0].toUpperCase();
   const hasPend = p.pending_redemptions && p.pending_redemptions.length;
@@ -709,9 +743,13 @@ function buildCard(p) {
     return `<div><div class="qa-q">${q}</div><div class="qa-a">${esc(a)}</div></div>`;
   }).filter(Boolean).join('');
   const kyHtml = (p.ky_results || []).map(ky => {
-    const scores = ky.scores || {};
-    const lines = Object.entries(scores).map(([k,v]) => `<span class="ky-score">${esc(k)}: <b>${v}</b></span>`).join(' ');
-    return `<div><div class="qa-q">${esc(ky.test_id.replace(/_/g,' '))}</div><div class="qa-a ky-scores">${lines}</div></div>`;
+    const title = ky.test_id.replace(/_quick$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const { summary, detail } = interpretQuiz(ky.test_id, ky.scores);
+    return `<div>
+      <div class="qa-q">${esc(title)}</div>
+      ${summary ? `<div class="ky-summary">${esc(summary)}</div>` : ''}
+      ${detail ? `<div class="ky-detail">${esc(detail)}</div>` : ''}
+    </div>`;
   }).join('');
   const qaHtml = (regQHtml + profileHtml + kyHtml) || '<div class="empty">Profile not yet complete.</div>';
 
@@ -764,7 +802,7 @@ function buildCard(p) {
         <div class="tab" onclick="tab(event,'trd${p.id}')">Rewards</div>
         <div class="tab" onclick="tab(event,'tc${p.id}')">Specials</div>
       </div>
-      <div class="tab-panel active qa-list" id="tp${p.id}">${qaHtml}</div>
+      <div class="tab-panel active" id="tp${p.id}"><div class="qa-list">${qaHtml}</div></div>
       <div class="tab-panel" id="tr${p.id}">${respHtml}</div>
       <div class="tab-panel" id="trd${p.id}">${rdHtml}</div>
       <div class="tab-panel" id="tc${p.id}">
