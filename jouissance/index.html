@@ -1268,7 +1268,9 @@ async function boot(){
     } else if((u.challenge_day||0)===14){
       setTimeout(()=>show('day14'),2500);
     } else {
-      document.querySelectorAll('.fac-view-btn-all').forEach(b=>b.style.display='block');
+      if(u.role==='admin'||u.role==='facilitator'){
+        document.querySelectorAll('.fac-view-btn-all').forEach(b=>{b.style.display='inline-flex';b.style.alignItems='center';b.style.background='rgba(155,127,166,.18)';b.style.padding='.4rem .9rem';b.style.fontSize='.72rem';b.style.color='var(--accent)';b.style.borderColor='var(--accent)';});
+      }
       setTimeout(()=>{loadHome();show('home')},2500);
     }
   }catch(e){setTimeout(()=>show('invite-entry'),2500)}
