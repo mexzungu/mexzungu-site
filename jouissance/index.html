@@ -636,6 +636,7 @@ textarea:focus{border-color:var(--accent)}
       <span class="media-label" id="media-lbl"></span>
     </div>
     <button class="btn btn-primary mb2" id="ct-submit" disabled>Send</button>
+    <div id="ct-error" style="display:none;color:#e07070;font-size:.82rem;text-align:center;margin-top:.5rem;letter-spacing:.04em"></div>
   </div>
 </div>
 
@@ -1665,20 +1666,27 @@ setupMedia('mb-file','fi-doc','doc');
 
 document.getElementById('ct-submit').addEventListener('click',async()=>{
   const btn=document.getElementById('ct-submit');btn.disabled=true;btn.textContent='Sending...';
+  const errEl=document.getElementById('ct-error');errEl.style.display='none';
   try{
     const chalId=currentChal&&currentChal.id?currentChal.id:1;
     const hasMedia=Object.keys(uploads).length>0;
-    let data={};
+    let data={};let ok=false;
     if(hasMedia){
       const fd=new FormData();
       fd.append('response_text',ctResp.value);
       fd.append('media_type',Object.keys(uploads)[0]||'text');
       Object.entries(uploads).forEach(([k,f])=>fd.append('media_file',f));
       const r=await apiForm('/challenges/'+chalId+'/submit-media',fd);
-      if(r.ok)data=await r.json();
+      if(r.ok){data=await r.json();ok=true;}
     } else {
       const r=await apiFetch('/challenges/'+chalId+'/complete',{method:'POST',body:JSON.stringify({response:ctResp.value})});
-      if(r.ok)data=await r.json();
+      if(r.ok){data=await r.json();ok=true;}
+    }
+    if(!ok){
+      errEl.textContent='Something went wrong. Please try again.';
+      errEl.style.display='block';
+      btn.disabled=false;btn.textContent='Send';
+      return;
     }
     pts=data.total_points||data.points||pts;
     const ptsAwarded=data.points_awarded||(currentChal&&currentChal.points_value)||5;
@@ -1702,7 +1710,7 @@ document.getElementById('ct-submit').addEventListener('click',async()=>{
       +'<div style="font-family:\'DM Sans\',sans-serif;font-size:1rem;color:#F4EFE6;letter-spacing:.08em">'+ritualLine+'</div>';
     document.body.appendChild(ov);
     setTimeout(()=>{ov.style.opacity='0';setTimeout(()=>{if(ov.parentNode)ov.remove();},600);},2500);
-  }catch(e){btn.disabled=false;btn.textContent='Send'}
+  }catch(e){btn.disabled=false;btn.textContent='Send';errEl.textContent='Connection error. Please try again.';errEl.style.display='block';}
 });
 document.getElementById('cc-back').addEventListener('click',()=>{loadHome();show('home')});
 
