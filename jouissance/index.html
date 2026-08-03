@@ -1046,7 +1046,7 @@ textarea:focus{border-color:var(--accent)}
   <div class="home-header">
     <button onclick="show('home')" style="background:none;border:none;color:rgba(244,239,230,.55);cursor:pointer;font-size:1.1rem;padding:.5rem">&#8592;</button>
     <div class="wordmark" style="opacity:1;font-size:1rem">Profile</div>
-    <div style="width:44px"></div>
+    <a id="profile-fac-btn" href="/jouissance/facilitator.html" style="display:none;border:1px solid rgba(155,127,166,.35);border-radius:20px;padding:.25rem .75rem;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(155,127,166,.7);text-decoration:none;white-space:nowrap" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='rgba(155,127,166,.35)';this.style.color='rgba(155,127,166,.7)'">Facilitator</a>
   </div>
   <div style="padding:1.5rem 1.25rem 5rem;overflow-y:auto;height:calc(100vh - 60px)">
     <!-- Avatar — tappable, shows photo if set -->
@@ -1078,6 +1078,32 @@ textarea:focus{border-color:var(--accent)}
     <!-- Intake answers -->
     <div style="font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">Your Answers</div>
     <div id="profile-intake" style="display:flex;flex-direction:column;gap:.75rem"></div>
+    <!-- Intake form — shown only when no answers submitted yet -->
+    <div id="profile-intake-form" style="display:none;flex-direction:column;gap:1.25rem;margin-top:.75rem">
+      <div style="font-size:.78rem;color:rgba(244,239,230,.38);line-height:1.65;margin-bottom:.25rem">Help Agathe prepare. Answer at your own pace. She reads these before the session.</div>
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.4);margin-bottom:.5rem">What brought you here?</div>
+        <textarea id="intake-brings" placeholder="Write here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical;font-family:inherit;line-height:1.6"></textarea>
+      </div>
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.4);margin-bottom:.5rem">What do you want to explore?</div>
+        <textarea id="intake-explore" placeholder="Write here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical;font-family:inherit;line-height:1.6"></textarea>
+      </div>
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.4);margin-bottom:.5rem">Your biggest challenge</div>
+        <textarea id="intake-challenge" placeholder="Write here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical;font-family:inherit;line-height:1.6"></textarea>
+      </div>
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.4);margin-bottom:.5rem">Experience level</div>
+        <textarea id="intake-exp" placeholder="Beginner, curious, some experience..." style="width:100%;min-height:60px;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;resize:vertical;font-family:inherit;line-height:1.6"></textarea>
+      </div>
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.4);margin-bottom:.5rem">In one word</div>
+        <input type="text" id="intake-word" placeholder="One word..." style="width:100%;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.75rem;font-size:.9rem;font-family:inherit;box-sizing:border-box">
+      </div>
+      <div id="profile-intake-msg" style="font-size:.78rem;color:var(--accent);min-height:1.2rem;text-align:center"></div>
+      <button id="profile-intake-save" class="btn btn-primary">Save my answers</button>
+    </div>
 
     <!-- About You questions -->
     <div style="font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-top:2rem;margin-bottom:.75rem">About You</div>
@@ -2624,6 +2650,13 @@ async function loadProfile() {
     document.getElementById('profile-rq2').value = me.reg_q2 || '';
     document.getElementById('profile-rq3').value = me.reg_q3 || '';
     document.getElementById('profile-rq4').value = me.reg_q4 || '';
+    // Show intake form only when no intake submitted yet
+    const intakeForm = document.getElementById('profile-intake-form');
+    const hasIntake = !!(intake && (intake.brings_you_here || intake.want_to_explore || intake.biggest_challenge || intake.experience_level || intake.one_word));
+    intakeForm.style.display = hasIntake ? 'none' : 'flex';
+    // Facilitator button: only for facilitator or admin role
+    const facBtn = document.getElementById('profile-fac-btn');
+    if (facBtn) facBtn.style.display = (me.role === 'facilitator' || me.role === 'admin') ? 'block' : 'none';
   } catch(e) { console.error('loadProfile', e); }
 }
 document.getElementById('profile-rq-save').addEventListener('click', async function() {
@@ -2642,6 +2675,26 @@ document.getElementById('profile-rq-save').addEventListener('click', async funct
   } catch(e) { msg.textContent = 'Connection error.'; msg.style.color = '#c47a7a'; }
   btn.disabled = false; btn.textContent = 'Save';
   setTimeout(()=>{ msg.textContent = ''; }, 3000);
+});
+
+document.getElementById('profile-intake-save').addEventListener('click', async function() {
+  const btn = this;
+  const msg = document.getElementById('profile-intake-msg');
+  btn.disabled = true; btn.textContent = 'Saving...'; msg.textContent = '';
+  try {
+    const r = await apiFetch('/intake', {method:'POST', body: JSON.stringify({
+      brings_you_here: (document.getElementById('intake-brings').value||'').trim(),
+      want_to_explore: (document.getElementById('intake-explore').value||'').trim(),
+      biggest_challenge: (document.getElementById('intake-challenge').value||'').trim(),
+      experience_level: (document.getElementById('intake-exp').value||'').trim(),
+      one_word: (document.getElementById('intake-word').value||'').trim()
+    })});
+    if (r.ok) {
+      msg.textContent = 'Saved.'; msg.style.color = 'var(--accent)';
+      setTimeout(()=>{ loadProfile(); }, 1200);
+    } else { msg.textContent = 'Could not save. Try again.'; msg.style.color = '#c47a7a'; }
+  } catch(e) { msg.textContent = 'Connection error.'; msg.style.color = '#c47a7a'; }
+  btn.disabled = false; btn.textContent = 'Save my answers';
 });
 
 async function uploadProfilePhoto(input) {
