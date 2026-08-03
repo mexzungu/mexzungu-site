@@ -1263,6 +1263,7 @@ async function boot(){
     pts=u.points||0;
     if(!u.profile_complete){
       const s=parseInt(localStorage.getItem('jouissance_profile_step')||'3');
+      try{const pr=await apiFetch('/profile');if(pr.ok){const pd=await pr.json();window._pAnswers=window._pAnswers||{};for(let i=1;i<=10;i++){if(pd['q'+i]){window._pAnswers['q'+i]=pd['q'+i];const el=document.getElementById('a'+i);if(el)el.value=pd['q'+i];}}const rc2=document.getElementById('rc2'),rc4=document.getElementById('rc4');if(pd.q2&&rc2){rc2.querySelectorAll('.radio-card').forEach(c=>{if(c.dataset.v===pd.q2){c.classList.add('selected');const b=document.getElementById('q2btn');if(b)b.disabled=false;}});}if(pd.q4&&rc4){rc4.querySelectorAll('.radio-card').forEach(c=>{if(c.dataset.v===pd.q4){c.classList.add('selected');const b=document.getElementById('q4btn');if(b)b.disabled=false;}});}}}catch(_){}
       setTimeout(()=>show('profile-q'+Math.min(Math.max(s,3),10)),2500);
     } else if((u.challenge_day||0)===14){
       setTimeout(()=>show('day14'),2500);
@@ -1433,6 +1434,9 @@ document.querySelectorAll('.pnext').forEach(btn=>{
     if(ta) window._pAnswers['q'+q]=ta.value.trim();
     const nxt=q+1;
     localStorage.setItem('jouissance_profile_step',String(nxt));
+    // Save current answer to backend immediately so it survives browser refresh
+    const payload={};payload['q'+q]=window._pAnswers['q'+q]||'';
+    apiFetch('/profile',{method:'POST',body:JSON.stringify(payload)}).catch(()=>{});
     const nxtEl=document.getElementById('profile-q'+nxt);
     if(nxtEl)show('profile-q'+nxt);else show('profile-q'+(nxt+1));
   });
