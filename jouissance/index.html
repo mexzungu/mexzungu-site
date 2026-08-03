@@ -1267,6 +1267,8 @@ async function boot(){
       setTimeout(()=>show('profile-q'+Math.min(Math.max(s,3),10)),2500);
     } else if((u.challenge_day||0)===14){
       setTimeout(()=>show('day14'),2500);
+    } else if(!u.reg_q1 && u.role!=='admin' && u.role!=='facilitator'){
+      setTimeout(()=>showRegModal(u),2500);
     } else {
       if(u.role==='admin'||u.role==='facilitator'){
         document.querySelectorAll('.fac-view-btn-all').forEach(b=>{b.style.display='inline-flex';b.style.alignItems='center';b.style.background='rgba(155,127,166,.18)';b.style.padding='.4rem .9rem';b.style.fontSize='.72rem';b.style.color='var(--accent)';b.style.borderColor='var(--accent)';});
@@ -2965,6 +2967,32 @@ function notifSkip(){
   if(el)el.style.display='none';
 }
 
+const _rqmData={};
+function showRegModal(u){
+  document.getElementById('reg-q-modal').style.display='flex';
+}
+function rqmNext(step){
+  const val=document.getElementById('rqm-q'+step).value.trim();
+  if(!val)return;
+  _rqmData['q'+step]=val;
+  document.getElementById('rqm-step-'+step).style.display='none';
+  const next=document.getElementById('rqm-step-'+(step+1));
+  if(next)next.style.display='block';
+}
+async function rqmSubmit(){
+  const val=document.getElementById('rqm-q4').value.trim();
+  if(!val)return;
+  _rqmData.q4=val;
+  const btn=document.getElementById('rqm-submit');
+  btn.disabled=true;btn.textContent='Saving...';
+  try{
+    const r=await apiFetch('/profile/reg-questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q1:_rqmData.q1||'',q2:_rqmData.q2||'',q3:_rqmData.q3||'',q4:_rqmData.q4||''})});
+    if(r.ok){document.getElementById('reg-q-modal').style.display='none';loadHome();show('home');}
+    else{const e=await r.json();document.getElementById('rqm-err').textContent=e.detail||'Could not save. Try again.';}
+  }catch(e){document.getElementById('rqm-err').textContent='Network error. Try again.';}
+  btn.disabled=false;btn.textContent='Enter';
+}
+
 boot();
 
 function toggleFaq(el){
@@ -2985,5 +3013,34 @@ if('serviceWorker' in navigator){
 .help-float svg{width:20px;height:20px}
 </style>
 <a href="https://wa.me/23055068793?text=Hi+Janis,+I+have+a+question+about+the+Jouissance+app" target="_blank" rel="noopener" class="help-float" aria-label="Get help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg></a>
+
+<!-- Reg questions blocking modal for existing users -->
+<div id="reg-q-modal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;overflow-y:auto;padding:2rem 1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;">
+  <div style="max-width:480px;width:100%;padding-top:3rem;">
+    <h2 style="font-size:1.4rem;margin-bottom:.5rem;color:var(--text);">Before we go in</h2>
+    <p style="color:var(--muted);font-size:.92rem;margin-bottom:2rem;line-height:1.6;">A few things to help shape your experience. Takes 2 minutes.</p>
+    <div id="rqm-step-1">
+      <label style="color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;display:block;">How do you identify?</label>
+      <input id="rqm-q1" type="text" placeholder="e.g. woman, non-binary, fluid..." style="width:100%;padding:.85rem 1rem;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.05);color:var(--text);font-size:.95rem;margin-bottom:1.5rem;">
+      <button onclick="rqmNext(1)" style="width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:.95rem;cursor:pointer;">Continue</button>
+    </div>
+    <div id="rqm-step-2" style="display:none;">
+      <label style="color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;display:block;">How would you describe your relationship landscape?</label>
+      <input id="rqm-q2" type="text" placeholder="e.g. single, partnered, open..." style="width:100%;padding:.85rem 1rem;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.05);color:var(--text);font-size:.95rem;margin-bottom:1.5rem;">
+      <button onclick="rqmNext(2)" style="width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:.95rem;cursor:pointer;">Continue</button>
+    </div>
+    <div id="rqm-step-3" style="display:none;">
+      <label style="color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;display:block;">What are you coming to explore?</label>
+      <textarea id="rqm-q3" rows="3" placeholder="What draws you to this experience?" style="width:100%;padding:.85rem 1rem;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.05);color:var(--text);font-size:.95rem;margin-bottom:1.5rem;resize:none;"></textarea>
+      <button onclick="rqmNext(3)" style="width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:.95rem;cursor:pointer;">Continue</button>
+    </div>
+    <div id="rqm-step-4" style="display:none;">
+      <label style="color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;display:block;">How would you describe your energetic nature?</label>
+      <input id="rqm-q4" type="text" placeholder="e.g. receptive, assertive, both..." style="width:100%;padding:.85rem 1rem;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.05);color:var(--text);font-size:.95rem;margin-bottom:1.5rem;">
+      <button id="rqm-submit" onclick="rqmSubmit()" style="width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:.95rem;cursor:pointer;">Enter</button>
+      <p id="rqm-err" style="color:#c47a7a;font-size:.82rem;margin-top:.5rem;"></p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
