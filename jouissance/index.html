@@ -1264,7 +1264,10 @@ async function boot(){
     if(!u.profile_complete){
       const s=parseInt(localStorage.getItem('jouissance_profile_step')||'3');
       try{const pr=await apiFetch('/profile');if(pr.ok){const pd=await pr.json();window._pAnswers=window._pAnswers||{};for(let i=1;i<=10;i++){if(pd['q'+i]){window._pAnswers['q'+i]=pd['q'+i];const el=document.getElementById('a'+i);if(el)el.value=pd['q'+i];}}const rc2=document.getElementById('rc2'),rc4=document.getElementById('rc4');if(pd.q2&&rc2){rc2.querySelectorAll('.radio-card').forEach(c=>{if(c.dataset.v===pd.q2){c.classList.add('selected');const b=document.getElementById('q2btn');if(b)b.disabled=false;}});}if(pd.q4&&rc4){rc4.querySelectorAll('.radio-card').forEach(c=>{if(c.dataset.v===pd.q4){c.classList.add('selected');const b=document.getElementById('q4btn');if(b)b.disabled=false;}});}}}catch(_){}
-      setTimeout(()=>show('profile-q'+Math.min(Math.max(s,3),10)),2500);
+      // Find the first existing profile-q screen at or after s (handles missing q1,q2,q8)
+      let resumeQ=Math.min(Math.max(s,3),10);
+      while(resumeQ<=10&&!document.getElementById('profile-q'+resumeQ))resumeQ++;
+      setTimeout(()=>show(resumeQ<=10?'profile-q'+resumeQ:'profile-q10'),2500);
     } else if((u.challenge_day||0)===14){
       setTimeout(()=>show('day14'),2500);
     } else if(!u.reg_q1 && u.role!=='admin' && u.role!=='facilitator'){
@@ -1451,13 +1454,14 @@ document.querySelectorAll('.pnext').forEach(btn=>{
     const q=parseInt(btn.dataset.q);
     const ta=document.getElementById('a'+q);
     if(ta) window._pAnswers['q'+q]=ta.value.trim();
-    const nxt=q+1;
-    localStorage.setItem('jouissance_profile_step',String(nxt));
     // Save current answer to backend immediately so it survives browser refresh
     const payload={};payload['q'+q]=window._pAnswers['q'+q]||'';
     apiFetch('/profile',{method:'POST',body:JSON.stringify(payload)}).catch(()=>{});
-    const nxtEl=document.getElementById('profile-q'+nxt);
-    if(nxtEl)show('profile-q'+nxt);else show('profile-q'+(nxt+1));
+    // Find the next existing profile-q screen (skip missing q8 etc.)
+    let nxt=q+1;
+    while(nxt<=10&&!document.getElementById('profile-q'+nxt))nxt++;
+    localStorage.setItem('jouissance_profile_step',String(nxt));
+    if(nxt<=10)show('profile-q'+nxt);
   });
 });
 
@@ -2967,27 +2971,63 @@ function notifSkip(){
   if(el)el.style.display='none';
 }
 
+// Server-side persistence: answers saved per-step to /profile/reg-questions
 const _rqmData={};
-function showRegModal(u){
+async function showRegModal(u){
   document.getElementById('reg-q-modal').style.display='flex';
+  // Pre-fill from server state so PWA refresh doesn't lose progress
+  try{
+    const r=await apiFetch('/auth/me');
+    if(r.ok){
+      const d=await r.json();
+      ['q1','q2','q3','q4'].forEach(k=>{
+        const rk='reg_'+k;
+        if(d[rk]){_rqmData[k]=d[rk];const el=document.getElementById('rqm-'+k);if(el)el.value=d[rk];}
+      });
+    }
+  }catch(_){}
+  // Advance to last incomplete step
+  let lastStep=1;
+  if(_rqmData.q1) lastStep=2;
+  if(_rqmData.q2) lastStep=3;
+  if(_rqmData.q3) lastStep=4;
+  for(let s=1;s<=4;s++){
+    const el=document.getElementById('rqm-step-'+s);
+    if(el) el.style.display=(s===lastStep?'block':'none');
+  }
 }
-function rqmNext(step){
-  const val=document.getElementById('rqm-q'+step).value.trim();
-  if(!val)return;
+async function rqmNext(step){
+  const el=document.getElementById('rqm-q'+step);
+  const val=el ? el.value.trim() : '';
+  if(!val){
+    if(el){el.style.border='1px solid #c47a7a';el.placeholder='Please fill this in to continue.';}
+    return;
+  }
+  if(el) el.style.border='';
   _rqmData['q'+step]=val;
+  // Autosave this step to server immediately
+  apiFetch('/profile/reg-questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({['q'+step]:val})}).catch(()=>{});
   document.getElementById('rqm-step-'+step).style.display='none';
   const next=document.getElementById('rqm-step-'+(step+1));
   if(next)next.style.display='block';
 }
 async function rqmSubmit(){
-  const val=document.getElementById('rqm-q4').value.trim();
-  if(!val)return;
+  const el=document.getElementById('rqm-q4');
+  const val=el ? el.value.trim() : '';
+  if(!val){
+    if(el){el.style.border='1px solid #c47a7a';el.placeholder='Please fill this in to continue.';}
+    return;
+  }
+  if(el) el.style.border='';
   _rqmData.q4=val;
   const btn=document.getElementById('rqm-submit');
   btn.disabled=true;btn.textContent='Saving...';
   try{
-    const r=await apiFetch('/profile/reg-questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q1:_rqmData.q1||'',q2:_rqmData.q2||'',q3:_rqmData.q3||'',q4:_rqmData.q4||''})});
-    if(r.ok){document.getElementById('reg-q-modal').style.display='none';loadHome();show('home');}
+    const r=await apiFetch('/profile/reg-questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q1:_rqmData.q1||'',q2:_rqmData.q2||'',q3:_rqmData.q3||'',q4:_rqmData.q4})});
+    if(r.ok){
+      document.getElementById('reg-q-modal').style.display='none';
+      loadHome();show('home');
+    }
     else{const e=await r.json();document.getElementById('rqm-err').textContent=e.detail||'Could not save. Try again.';}
   }catch(e){document.getElementById('rqm-err').textContent='Network error. Try again.';}
   btn.disabled=false;btn.textContent='Enter';
