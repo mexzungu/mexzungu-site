@@ -1394,6 +1394,21 @@ document.getElementById('login-submit-p').addEventListener('click',async()=>{
 });
 document.getElementById('login-pass-p').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-submit-p').click()});
 
+async function doForgotPassword(){
+  const email=document.getElementById('forgot-email').value.trim();
+  const res=document.getElementById('forgot-result');
+  const btn=document.getElementById('forgot-submit');
+  if(!email){res.textContent='Please enter your email.';return;}
+  btn.disabled=true;res.textContent='Sending...';
+  try{
+    const r=await fetch(API+'/auth/forgot-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    await r.json();
+    res.textContent='Check your email for a new temporary password.';
+    res.style.color='rgba(244,239,230,.85)';
+  }catch(e){res.textContent='Connection error. Please try again.';res.style.color='#e57373';}
+  btn.disabled=false;
+}
+
 // Welcome
 document.getElementById('welcome-begin').addEventListener('click',()=>show('consent'));
 
