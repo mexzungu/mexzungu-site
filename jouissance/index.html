@@ -555,19 +555,19 @@ textarea:focus{border-color:var(--accent)}
         <div class="diff-badge easy-badge">Tender</div>
         <div class="chal-card-title" id="h-chal-easy-title"></div>
         <div class="chal-card-desc" id="h-chal-easy-desc"></div>
-        <div class="chal-card-pts" id="h-chal-easy-pts">+1 pt</div>
+        <div class="chal-card-pts" id="h-chal-easy-pts">+5 pts</div>
       </div>
       <div class="chal-card" id="h-chal-mild">
         <div class="diff-badge mild-badge">Alive</div>
         <div class="chal-card-title" id="h-chal-mild-title"></div>
         <div class="chal-card-desc" id="h-chal-mild-desc"></div>
-        <div class="chal-card-pts" id="h-chal-mild-pts">+3 pts</div>
+        <div class="chal-card-pts" id="h-chal-mild-pts">+10 pts</div>
       </div>
       <div class="chal-card" id="h-chal-spicy">
         <div class="diff-badge spicy-badge">Bold</div>
         <div class="chal-card-title" id="h-chal-spicy-title"></div>
         <div class="chal-card-desc" id="h-chal-spicy-desc"></div>
-        <div class="chal-card-pts" id="h-chal-spicy-pts">+7 pts</div>
+        <div class="chal-card-pts" id="h-chal-spicy-pts">+20 pts</div>
       </div>
     </div>
     <div id="h-theory-section" class="theory-card" style="display:none">
@@ -631,7 +631,7 @@ textarea:focus{border-color:var(--accent)}
   <div class="container" style="flex:1;overflow-y:auto">
     <div class="ct-title" id="ct-title"></div>
     <div class="ct-desc" id="ct-desc"></div>
-    <div class="pts-hint" id="ct-pts-hint">+1 pt on submission</div>
+    <div class="pts-hint" id="ct-pts-hint">+pts on submission</div>
     <textarea id="ct-resp" placeholder="Write here..." style="min-height:150px"></textarea>
     <div class="char-counter" id="ct-cc">0 / 50</div>
     <div class="media-row">
@@ -1607,7 +1607,7 @@ async function loadHome(){
         if(c){
           document.getElementById('h-chal-'+diff+'-title').textContent=c.title||'Today';
           document.getElementById('h-chal-'+diff+'-desc').textContent=(c.description||'').substring(0,100);
-          const pts_v=c.points_value||(diff==='easy'?1:diff==='spicy'?7:3);
+          const pts_v=c.points_value||(diff==='easy'?5:diff==='spicy'?20:10);
           document.getElementById('h-chal-'+diff+'-pts').textContent='+'+pts_v+' pts';
           card.style.display='block';
         } else {
@@ -1699,7 +1699,7 @@ function openChallenge(diff){
   document.getElementById('ct-title').textContent=c.title||'';
   document.getElementById('ct-desc').textContent=c.description||'';
   const ptsHint=document.querySelector('#challenge-today .pts-hint');
-  const pv=c.points_value||(diff==='easy'?1:diff==='spicy'?7:3);if(ptsHint)ptsHint.textContent='+'+pv+' pt'+(pv===1?'':'s')+' on submission';
+  const pv=c.points_value||(diff==='easy'?5:diff==='spicy'?20:10);if(ptsHint)ptsHint.textContent='+'+pv+' pts on submission';
   document.getElementById('ct-resp').value='';
   document.getElementById('ct-cc').textContent='0 / 50';
   document.getElementById('ct-submit').disabled=true;
