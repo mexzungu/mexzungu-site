@@ -570,6 +570,12 @@ textarea:focus{border-color:var(--accent)}
         <div class="chal-card-pts" id="h-chal-spicy-pts">+20 pts</div>
       </div>
     </div>
+    <div id="h-chal-history-section" style="display:none;margin-top:1.1rem">
+      <button onclick="toggleChallengesHistory()" id="h-chal-history-toggle" style="background:none;border:none;color:rgba(155,127,166,.55);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:.25rem 0;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:.5rem;min-height:36px">
+        <span id="h-chal-history-arrow" style="font-size:.8rem">&#9656;</span> Past rituals
+      </button>
+      <div id="h-chal-history-list" style="display:none;margin-top:.65rem"></div>
+    </div>
     <div id="h-theory-section" class="theory-card" style="display:none">
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">Today's Knowledge</div>
       <div class="theory-card-title" id="theory-title"></div>
@@ -1600,6 +1606,8 @@ async function loadHome(){
       const hasAny=Object.keys(challengesAll).length>0;
       section.style.display=hasAny?'block':'none';
       document.getElementById('h-no-chal').style.display=hasAny?'none':'block';
+      const chalHistSec=document.getElementById('h-chal-history-section');
+      if(chalHistSec)chalHistSec.style.display=hasAny?'':'none';
       ['easy','mild','spicy'].forEach(diff=>{
         const c=challengesAll[diff];
         const card=document.getElementById('h-chal-'+diff);
@@ -2824,6 +2832,61 @@ async function toggleHistory(){
     list.dataset.loaded='1';
   }catch(e){
     list.innerHTML='<div style="color:#c47a7a;font-size:.85rem;padding:.5rem 0">Could not load past readings.</div>';
+  }
+}
+async function toggleChallengesHistory(){
+  const list=document.getElementById('h-chal-history-list');
+  const arrow=document.getElementById('h-chal-history-arrow');
+  if(list.style.display!=='none'){
+    list.style.display='none';
+    arrow.innerHTML='&#9656;';
+    return;
+  }
+  arrow.innerHTML='&#9662;';
+  list.style.display='block';
+  if(list.dataset.loaded)return;
+  list.innerHTML='<div style="color:rgba(244,239,230,.3);font-size:.85rem;font-style:italic;padding:.5rem 0">Loading...</div>';
+  try{
+    const r=await apiFetch('/challenges/history');
+    if(!r.ok)throw new Error();
+    const {history}=await r.json();
+    if(!history||!history.length){
+      list.innerHTML='<div style="color:rgba(244,239,230,.3);font-size:.85rem;font-style:italic;padding:.5rem 0">No past rituals yet.</div>';
+    }else{
+      const diffLabel={easy:'Tender',mild:'Alive',spicy:'Bold'};
+      const diffColor={easy:'#9b7fa6',mild:'#c4a882',spicy:'#c47a7a'};
+      list.innerHTML=history.map(h=>{
+        const d=new Date(h.date+'T12:00:00');
+        const label=d.toLocaleDateString('en-GB',{month:'short',day:'numeric'});
+        const completedDiff=h.completed_difficulty;
+        const chalEntries=Object.entries(h.challenges||{});
+        const cardsHtml=chalEntries.map(([diff,c])=>{
+          const done=completedDiff===diff;
+          const label2=diffLabel[diff]||diff;
+          const col=diffColor[diff]||'#9b7fa6';
+          return `<div style="padding:.55rem .75rem;border-radius:5px;background:rgba(30,24,41,${done?'.6':'.25'});border:1px solid rgba(${done?'155,127,166':'244,239,230'},.${done?'25':'1'});margin-bottom:.4rem;opacity:${done?'1':'.55'}">
+            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem">
+              <span style="font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:${col};border:1px solid ${col};border-radius:3px;padding:.1rem .35rem">${label2}</span>
+              ${done?'<span style="font-size:.65rem;color:#9b7fa6;letter-spacing:.08em">completed</span>':''}
+            </div>
+            <div style="font-size:.82rem;color:rgba(244,239,230,.75)">${c.title||''}</div>
+          </div>`;
+        }).join('');
+        return `<details style="border:1px solid rgba(155,127,166,.18);border-radius:6px;padding:.85rem 1rem;margin-bottom:.6rem;background:rgba(30,24,41,.4)">
+          <summary style="cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:.75rem">
+            <div>
+              <div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(155,127,166,.45);margin-bottom:.2rem">${label}</div>
+              <div style="font-size:.82rem;color:rgba(244,239,230,.65)">${completedDiff?'Completed: '+diffLabel[completedDiff]:'Not completed'}</div>
+            </div>
+            <span style="font-size:.85rem;color:rgba(155,127,166,.4);flex-shrink:0">&#9656;</span>
+          </summary>
+          <div style="margin-top:.75rem">${cardsHtml}</div>
+        </details>`;
+      }).join('');
+    }
+    list.dataset.loaded='1';
+  }catch(e){
+    list.innerHTML='<div style="color:#c47a7a;font-size:.85rem;padding:.5rem 0">Could not load past rituals.</div>';
   }
 }
 async function loadMessages(){
