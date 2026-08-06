@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Deal Review Methodology — Mexzungu Group</title>
+    <meta name="description" content="How we evaluate investment deals: 5-dimension risk rubric with transparent scoring criteria.">
+    <meta property="og:title" content="Deal Review Methodology | Mexzungu Group">
+    <meta property="og:description" content="A structured, transparent framework for evaluating investment risk across 5 dimensions.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mexzungu.com/deal-review/methodology">
+    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+    <link rel="canonical" href="https://mexzungu.com/deal-review/methodology">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        .method-hero {
+            background: var(--obsidian);
+            padding: 80px 24px 60px;
+            text-align: center;
+            border-bottom: 1px solid rgba(225,75,135,0.2);
+        }
+        .method-hero .section-label {
+            color: var(--pink);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .method-hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: #fff;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            line-height: 1.2;
+        }
+        .method-hero p {
+            color: #aaa;
+            max-width: 580px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .rubric-wrap {
+            max-width: 860px;
+            margin: 60px auto;
+            padding: 0 24px;
+        }
+        .rubric-intro {
+            background: rgba(225,75,135,0.07);
+            border: 1px solid rgba(225,75,135,0.2);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-bottom: 48px;
+        }
+        .rubric-intro h2 {
+            color: var(--pink);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 0 0 12px;
+        }
+        .rubric-intro p {
+            color: #ccc;
+            line-height: 1.7;
+            margin: 0;
+        }
+        .dimension {
+            background: #161616;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 22px 28px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .dim-number {
+            background: var(--pink);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.85rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .dim-title {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            flex: 1;
+        }
+        .dim-weight {
+            color: #666;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        .dimension-body {
+            padding: 20px 28px;
+        }
+        .dimension-body p {
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0 0 16px;
+        }
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        @media (max-width: 600px) {
+            .criteria-grid { grid-template-columns: 1fr; }
+        }
+        .criterion {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+        .criterion .c-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #555;
+            margin-bottom: 4px;
+        }
+        .criterion .c-text {
+            font-size: 0.82rem;
+            color: #bbb;
+            line-height: 1.5;
+        }
+        .thresholds-section {
+            max-width: 860px;
+            margin: 0 auto 60px;
+            padding: 0 24px;
+        }
+        .thresholds-section h2 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+        .threshold-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: #161616;
+            border: 1px solid #2a2a2a;
+        }
+        .threshold-score {
+            font-weight: 800;
+            font-size: 1.1rem;
+            width: 60px;
+            flex-shrink: 0;
+        }
+        .threshold-bar {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            position: relative;
+        }
+        .threshold-label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            width: 160px;
+            flex-shrink: 0;
+        }
+        .threshold-note {
+            color: #777;
+            font-size: 0.8rem;
+            flex: 1;
+        }
+        .t-low .threshold-score { color: #4ade80; }
+        .t-low .threshold-bar { background: #4ade80; }
+        .t-low .threshold-label { color: #4ade80; }
+        .t-mod .threshold-score { color: #facc15; }
+        .t-mod .threshold-bar { background: #facc15; }
+        .t-mod .threshold-label { color: #facc15; }
+        .t-high .threshold-score { color: #fb923c; }
+        .t-high .threshold-bar { background: #fb923c; }
+        .t-high .threshold-label { color: #fb923c; }
+        .t-vhigh .threshold-score { color: #f87171; }
+        .t-vhigh .threshold-bar { background: #f87171; }
+        .t-vhigh .threshold-label { color: #f87171; }
+        .t-dnp .threshold-score { color: #aaa; }
+        .t-dnp .threshold-bar { background: #555; }
+        .t-dnp .threshold-label { color: #aaa; }
+        .baseline-section {
+            max-width: 860px;
+            margin: 0 auto 80px;
+            padding: 0 24px;
+        }
+        .baseline-section h2 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+        .baseline-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .baseline-grid { grid-template-columns: 1fr; }
+        }
+        .baseline-item {
+            background: #161616;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 18px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .baseline-icon {
+            color: var(--pink);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .baseline-item p {
+            color: #bbb;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .footer-cta {
+            background: rgba(225,75,135,0.07);
+            border-top: 1px solid rgba(225,75,135,0.2);
+            text-align: center;
+            padding: 48px 24px;
+        }
+        .footer-cta p {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .footer-cta a {
+            display: inline-block;
+            background: var(--pink);
+            color: #fff;
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+        }
+        .footer-cta a:hover { background: var(--pink-dark); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <button class="menu-toggle" onclick="document.querySelector(\'.nav-links\').classList.toggle(\'open\')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li class="nav-dropdown">
+            <a href="/#pillars">What We Do</a>
+            <ul class="nav-dropdown-menu">
+                <li><a href="/venture-architecture">Venture Architecture</a></li>
+                <li><a href="/data-privacy">Data Privacy</a></li>
+                <li><a href="/rebel-capital">Rebel Capital</a></li>
+                <li><a href="/ai-ninja-factory">AI Ninja Factory</a></li>
+            </ul>
+        </li>
+        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+        <li><a href="/meet-the-band">Meet the Band</a></li>
+        <li><a href="/lets-jam" class="nav-cta">Let's Jam</a></li>
+    </ul>
+</nav>
+
+<main id="main">
+
+<div class="method-hero">
+    <div class="section-label">Deal Review Framework</div>
+    <h1>How we score an investment deal</h1>
+    <p>Every deal review we produce uses the same 5-dimension rubric. 100 points total. No guesswork, no vibes. Here is exactly how we get to the number.</p>
+</div>
+
+<div class="rubric-wrap">
+
+    <div class="rubric-intro">
+        <h2>The Framework</h2>
+        <p>We evaluate every deal across five dimensions, each worth 20 points. The dimensions cover structural integrity, investor protections, financial transparency, exit potential, and process conduct. A perfect score is 100. The risk label tells you what to do with the number.</p>
+    </div>
+
+    <div class="dimension">
+        <div class="dimension-header">
+            <div class="dim-number">1</div>
+            <div class="dim-title">Structure &amp; Legitimacy</div>
+            <div class="dim-weight">20 pts</div>
+        </div>
+        <div class="dimension-body">
+            <p>Is the legal entity clean, properly formed, and operating in a jurisdiction you understand? Can you verify what you are actually buying?</p>
+            <div class="criteria-grid">
+                <div class="criterion">
+                    <div class="c-label">Entity type</div>
+                    <div class="c-text">Is the structure (LLC, Corp, SPV) appropriate and verifiable? Do we know the governing law?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Equity class</div>
+                    <div class="c-text">What are you getting exactly? Voting rights, economic rights, priority on liquidation?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Cap table</div>
+                    <div class="c-text">Who else owns the company? Are there senior classes ahead of you? Debt that ranks above equity?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Valuation basis</div>
+                    <div class="c-text">How was the valuation set? Is there an independent appraisal or is it a number someone picked?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dimension">
+        <div class="dimension-header">
+            <div class="dim-number">2</div>
+            <div class="dim-title">Investor Protections</div>
+            <div class="dim-weight">20 pts</div>
+        </div>
+        <div class="dimension-body">
+            <p>What mechanisms exist to protect your investment after the wire goes out? Unprotected minority equity is very close to a gift.</p>
+            <div class="criteria-grid">
+                <div class="criterion">
+                    <div class="c-label">Information rights</div>
+                    <div class="c-text">Will you receive periodic financial reports? Annual statements? Can you audit?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Anti-dilution</div>
+                    <div class="c-text">If they raise more capital at a lower valuation, does your stake get protected?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Tag-along rights</div>
+                    <div class="c-text">If founders sell, can you sell alongside them on the same terms?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">ROFR / pre-emption</div>
+                    <div class="c-text">First right to buy new shares or existing shares before outsiders? Prevents dilution and protects exit.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dimension">
+        <div class="dimension-header">
+            <div class="dim-number">3</div>
+            <div class="dim-title">Financial Transparency</div>
+            <div class="dim-weight">20 pts</div>
+        </div>
+        <div class="dimension-body">
+            <p>Can you verify the financial claims being made? Does the company have clean books, audited statements, and a credible use-of-proceeds plan?</p>
+            <div class="criteria-grid">
+                <div class="criterion">
+                    <div class="c-label">Financial health</div>
+                    <div class="c-text">Audited or reviewed financials available? What does revenue, margin, and debt look like?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Valuation methodology</div>
+                    <div class="c-text">DCF, comps, asset-based? Is the implied multiple defensible relative to the sector?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Use of proceeds</div>
+                    <div class="c-text">Where is the capital going? Is there a budget? What changes after you invest?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Tax pass-through</div>
+                    <div class="c-text">For US LLCs: will you receive a K-1? What are the tax implications in your jurisdiction?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dimension">
+        <div class="dimension-header">
+            <div class="dim-number">4</div>
+            <div class="dim-title">Exit &amp; Return Path</div>
+            <div class="dim-weight">20 pts</div>
+        </div>
+        <div class="dimension-body">
+            <p>How do you get your money back? An investment with no exit mechanism is closer to a loan you will never see repaid.</p>
+            <div class="criteria-grid">
+                <div class="criterion">
+                    <div class="c-label">Exit mechanism</div>
+                    <div class="c-text">Is there a defined path? Sale, buyback, IPO, or redemption clause? Timeline attached?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Return expectations</div>
+                    <div class="c-text">What is the projected multiple? Is there a distribution policy for cash-flowing businesses?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Market opportunity</div>
+                    <div class="c-text">Is the sector growing? Is there a realistic path to growth that justifies the entry price?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Dissolution priority</div>
+                    <div class="c-text">If the business closes, what priority do you have on remaining assets? Ahead of or behind whom?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dimension">
+        <div class="dimension-header">
+            <div class="dim-number">5</div>
+            <div class="dim-title">Process &amp; Conduct</div>
+            <div class="dim-weight">20 pts</div>
+        </div>
+        <div class="dimension-body">
+            <p>How is the deal being run? Pressure tactics and rushed timelines are not coincidences. They are signals about how the relationship will operate post-close.</p>
+            <div class="criteria-grid">
+                <div class="criterion">
+                    <div class="c-label">Documents before wire</div>
+                    <div class="c-text">Are final, signed documents delivered before any money moves? Non-negotiable.</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Time pressure</div>
+                    <div class="c-text">Are you being pushed to decide in days? Artificial urgency is a red flag in any asset class.</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Independent review</div>
+                    <div class="c-text">Has the issuer encouraged or allowed independent legal and financial review?</div>
+                </div>
+                <div class="criterion">
+                    <div class="c-label">Track record</div>
+                    <div class="c-text">Can you verify the management team's history? References? Prior investors you can call?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="thresholds-section">
+    <h2>Risk Score Thresholds</h2>
+
+    <div class="threshold-row t-low">
+        <div class="threshold-score">80+</div>
+        <div class="threshold-bar"></div>
+        <div class="threshold-label">Low Risk</div>
+        <div class="threshold-note">Well-structured deal with strong protections. Proceed with normal diligence.</div>
+    </div>
+    <div class="threshold-row t-mod">
+        <div class="threshold-score">60-79</div>
+        <div class="threshold-bar"></div>
+        <div class="threshold-label">Moderate Risk</div>
+        <div class="threshold-note">Acceptable with negotiated improvements. Identify weak dimensions and push back.</div>
+    </div>
+    <div class="threshold-row t-high">
+        <div class="threshold-score">40-59</div>
+        <div class="threshold-bar"></div>
+        <div class="threshold-label">High Risk</div>
+        <div class="threshold-note">Significant gaps. Only proceed if terms can be meaningfully improved before close.</div>
+    </div>
+    <div class="threshold-row t-vhigh">
+        <div class="threshold-score">20-39</div>
+        <div class="threshold-bar"></div>
+        <div class="threshold-label">Very High Risk</div>
+        <div class="threshold-note">Multiple structural failures. Proceed only if you can afford to lose the full amount.</div>
+    </div>
+    <div class="threshold-row t-dnp">
+        <div class="threshold-score">&lt;20</div>
+        <div class="threshold-bar"></div>
+        <div class="threshold-label">Do Not Proceed</div>
+        <div class="threshold-note">Fundamental failures across multiple dimensions. Walk away.</div>
+    </div>
+</div>
+
+<div class="baseline-section">
+    <h2>Our Absolute Minimums</h2>
+    <div class="baseline-grid">
+        <div class="baseline-item">
+            <div class="baseline-icon">&#9632;</div>
+            <p><strong>Information rights required.</strong> If you cannot get periodic financial reports in writing, you cannot monitor your investment. This is non-negotiable regardless of deal size.</p>
+        </div>
+        <div class="baseline-item">
+            <div class="baseline-icon">&#9632;</div>
+            <p><strong>Docs before wire, always.</strong> No final documents, no money. Any deal where funds are required before paperwork is signed has a structural integrity problem.</p>
+        </div>
+        <div class="baseline-item">
+            <div class="baseline-icon">&#9632;</div>
+            <p><strong>Independent review over $25k.</strong> For investments above $25k, independent legal review is the floor. Not optional.</p>
+        </div>
+        <div class="baseline-item">
+            <div class="baseline-icon">&#9632;</div>
+            <p><strong>At least one exit mechanism.</strong> A buyback clause, a sale provision, a redemption right. Something. An investment with zero exit path is not an investment.</p>
+        </div>
+    </div>
+</div>
+
+<div class="footer-cta">
+    <p>Want us to run this framework on a deal you are evaluating?</p>
+    <a href="/lets-jam">Let's talk</a>
+</div>
+
+</main>
+
+<footer style="background:#111;border-top:1px solid #222;padding:32px 24px;text-align:center;">
+    <p style="color:#555;font-size:0.8rem;margin:0;">&copy; 2026 Mexzungu Group. All rights reserved. &middot; <a href="/privacy" style="color:#777;">Privacy</a></p>
+</footer>
+
+</body>
+</html>
