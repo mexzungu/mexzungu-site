@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>What We Do | Mexzungu Group</title>
+    <meta name="description" content="Three arms for founders, one for investors. Venture Architecture, Privacy Architect, AI Ninja Factory, and deal review for angels.">
+    <meta property="og:title" content="What We Do | Mexzungu Group">
+    <meta property="og:description" content="Three arms for founders, one for investors. Find yours.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mexzungu.com/what-we-do">
+    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://mexzungu.com/what-we-do">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        .wtw-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+        .wtw-card {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            background: var(--bg-card, rgba(255,255,255,0.03));
+            border-radius: var(--radius-md, 10px);
+            border: 1px solid var(--card-border, rgba(255,255,255,0.06));
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .wtw-card:hover {
+            border-color: var(--pink);
+            transform: translateY(-2px);
+        }
+        .wtw-card-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--pink);
+            margin-bottom: 0.75rem;
+        }
+        .wtw-card h2 {
+            font-family: var(--heading);
+            font-size: 1.5rem;
+            margin: 0 0 0.25rem;
+            font-weight: 400;
+        }
+        .wtw-card .wtw-outcome {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+        .wtw-card p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            flex: 1;
+            margin: 0 0 1.5rem;
+        }
+        .wtw-card .wtw-link {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--pink);
+            margin-top: auto;
+        }
+        .wtw-divider {
+            grid-column: 1 / -1;
+            padding: 1rem 0 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            opacity: 0.6;
+            border-top: 1px solid var(--card-border, rgba(255,255,255,0.06));
+        }
+        .wtw-card.investors-card {
+            border-color: rgba(225,75,135,0.2);
+        }
+        @media (max-width: 600px) {
+            .wtw-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="#main" class="skip-nav">Skip to content</a>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li class="nav-dropdown">
+            <a href="/what-we-do" class="active">What We Do</a>
+            <ul class="nav-dropdown-menu">
+                <li class="nav-group-label">For Founders</li>
+                <li><a href="/venture-architecture"><span class="nav-outcome">Structure a Company</span><span class="nav-product">Venture Architecture</span></a></li>
+                <li><a href="/data-privacy"><span class="nav-outcome">Handle Data &amp; Privacy</span><span class="nav-product">Privacy Architect</span></a></li>
+                <li><a href="/ai-ninja-factory"><span class="nav-outcome">Go AI-Native</span><span class="nav-product">AI Ninja Factory</span></a></li>
+                <li class="nav-group-label nav-group-sep">For Investors</li>
+                <li><a href="/investors"><span class="nav-outcome">Review a Deal</span><span class="nav-product">Mexzungu x Investors</span></a></li>
+            </ul>
+        </li>
+        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+        <li><a href="/meet-the-band">Meet the Band</a></li>
+        <li><a href="/lets-jam" class="nav-cta"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Let's Jam</a></li>
+    </ul>
+</nav>
+
+<main id="main">
+
+<div class="page-hero">
+    <div class="section-label">Mexzungu Group</div>
+    <h1>Find your <span class="highlight">arm.</span></h1>
+    <p>We work with two kinds of people: founders building something, and investors reviewing something. Pick the one that fits and go deep from there.</p>
+</div>
+
+<section>
+    <div class="wtw-grid">
+
+        <div class="wtw-divider">For Founders</div>
+
+        <a href="/venture-architecture" class="wtw-card">
+            <div class="wtw-card-tag">Venture Architecture</div>
+            <h2>Structure a Company</h2>
+            <div class="wtw-outcome">Legal architecture / Governance / Transactions</div>
+            <p>The operating system of your business. Cap table design, entity structuring, governance architecture, cross-border transactions, and the structural decisions that compound over time. For founders who know that getting the structure wrong in year one costs real money in year three.</p>
+            <span class="wtw-link">Explore Venture Architecture &rarr;</span>
+        </a>
+
+        <a href="/data-privacy" class="wtw-card">
+            <div class="wtw-card-tag">Privacy Architect</div>
+            <h2>Handle Data &amp; Privacy</h2>
+            <div class="wtw-outcome">GDPR / Data strategy / Breach response</div>
+            <p>Privacy built into how your business works, not bolted on at the request of a regulator. Data mapping, consent architecture, cross-border compliance, and privacy by design embedded in your product sprint. For ventures that collect data and need to do it right.</p>
+            <span class="wtw-link">Explore Privacy Architect &rarr;</span>
+        </a>
+
+        <a href="/ai-ninja-factory" class="wtw-card">
+            <div class="wtw-card-tag">AI Ninja Factory</div>
+            <h2>Go AI-Native</h2>
+            <div class="wtw-outcome">Operators / Automation / AI deployment</div>
+            <p>An apprenticeship programme that trains sharp operators and deploys them into real businesses. Not a certification course. Your business gets an AI-native operator; the apprentice gets real experience; you earn commission on the value they create.</p>
+            <span class="wtw-link">Explore AI Ninja Factory &rarr;</span>
+        </a>
+
+        <div class="wtw-divider">For Investors</div>
+
+        <a href="/investors" class="wtw-card investors-card">
+            <div class="wtw-card-tag">Mexzungu x Investors</div>
+            <h2>Review a Deal</h2>
+            <div class="wtw-outcome">Deal analysis / Risk scoring / 48h turnaround</div>
+            <p>Send the term sheet before you wire the money. We run a structured review across five dimensions: deal terms, founder risk, market fit, legal red flags, and exit mechanics. You get a risk score, a breakdown, and the questions you need answered. First review is free.</p>
+            <span class="wtw-link">See deal review &rarr;</span>
+        </a>
+
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding:0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size:0.85rem;">
+            <a href="https://pepecarrillo.co" style="color:var(--gold);">Pepe's Writing</a> &middot;
+            <a href="/privacy/" style="color:var(--gold);">Privacy Policy</a> &middot;
+            <a href="/terms/" style="color:var(--gold);">Terms of Service</a>
+        </span>
+    </div>
+    <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and investor deal analysis. This does not constitute legal or investment advice.</div>
+</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(link => {
+    if (link.href === window.location.href) link.classList.add('active');
+});
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.querySelector('.nav-links').classList.toggle('open');
+});
+</script>
+</body>
+</html>

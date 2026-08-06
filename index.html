@@ -58,12 +58,14 @@
     <ul class="nav-links">
         <li><a href="/" class="active">Home</a></li>
         <li class="nav-dropdown">
-            <a href="/#pillars">What We Do</a>
+            <a href="/what-we-do">What We Do</a>
             <ul class="nav-dropdown-menu">
-                <li><a href="/venture-architecture">Venture Architecture</a></li>
-                <li><a href="/data-privacy">Data Privacy</a></li>
-                <li><a href="/rebel-capital">Rebel Capital</a></li>
-                <li><a href="/ai-ninja-factory">AI Ninja Factory</a></li>
+                <li class="nav-group-label">For Founders</li>
+                <li><a href="/venture-architecture"><span class="nav-outcome">Structure a Company</span><span class="nav-product">Venture Architecture</span></a></li>
+                <li><a href="/data-privacy"><span class="nav-outcome">Handle Data &amp; Privacy</span><span class="nav-product">Privacy Architect</span></a></li>
+                <li><a href="/ai-ninja-factory"><span class="nav-outcome">Go AI-Native</span><span class="nav-product">AI Ninja Factory</span></a></li>
+                <li class="nav-group-label nav-group-sep">For Investors</li>
+                <li><a href="/investors"><span class="nav-outcome">Review a Deal</span><span class="nav-product">Mexzungu x Investors</span></a></li>
             </ul>
         </li>
         <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
@@ -79,46 +81,52 @@
 <div class="hero leopard-dense">
     <div class="hero-tag">Outlaw Studio</div>
     <h1>Legal clarity meets<br><span class="highlight">creative fire.</span></h1>
-    <p class="hero-sub">Mexzungu is where strategy meets rebellion — where wild founders get the structure they need without losing the spark that makes them dangerous in the first place.</p>
-    <p class="hero-accent">If your ideas scare spreadsheets and excite galaxies — you're exactly who we built this for.</p>
-    <div style="margin-top: 1rem;"><a href="/lets-jam" class="hero-cta">Let's Jam &rarr;</a></div>
+    <p class="hero-sub">Mexzungu is where strategy meets rebellion, where wild founders get the structure they need without losing the spark that makes them dangerous in the first place.</p>
+    <p class="hero-accent">If your ideas scare spreadsheets and excite galaxies, you're exactly who we built this for.</p>
+    <div class="hero-dual-cta">
+        <a href="/lets-jam" class="hero-cta">Building something? Let's Jam &rarr;</a>
+        <a href="/investors" class="hero-cta-secondary">Reviewing a deal? Start here &rarr;</a>
+    </div>
     <span class="margin-whisper">chaos starts companies.</span>
 </div>
 
 <!-- THREE PILLARS -->
 <section class="leopard-medium" id="pillars">
     <div class="section-label">What We Do</div>
-    <div class="section-title">Four pillars. Zero bullshit.</div>
+    <div class="section-title">Three arms. Built for founders.</div>
     <p class="section-text">For the beautifully unconventional ones who build outside the lines and refuse to dim their colour.</p>
 
     <div class="pillars">
         <a href="/venture-architecture" class="pillar">
-            <div class="pillar-num">01</div>
             <h3>Venture Architecture</h3>
-            <p>Structural and strategic architecture for ventures with real ambition. Not legal advice. The operating system of your business.</p>
+            <p>Structural and strategic architecture for ventures with real ambition. The operating system of your business, not a legal disclaimer.</p>
             <span class="pillar-arrow">Explore &rarr;</span>
         </a>
 
         <a href="/data-privacy" class="pillar">
-            <div class="pillar-num">02</div>
-            <h3>Data Privacy</h3>
-            <p>GDPR, breach response, privacy architecture. Your data isn't a liability — it's a trust engine.</p>
-            <span class="pillar-arrow">Explore &rarr;</span>
-        </a>
-
-        <a href="/rebel-capital" class="pillar">
-            <div class="pillar-num">03</div>
-            <h3>Rebel Capital</h3>
-            <p>Early-stage conviction capital for founders building at the frontier. Small cheques, real belief, structural support beyond the wire.</p>
+            <h3>Privacy Architect</h3>
+            <p>GDPR, breach response, privacy architecture. Your data is a trust engine. We help you build it like one.</p>
             <span class="pillar-arrow">Explore &rarr;</span>
         </a>
 
         <a href="/ai-ninja-factory" class="pillar">
-            <div class="pillar-num">04</div>
             <h3>AI Ninja Factory</h3>
-            <p>AI operations apprenticeship. Train sharp operators, deploy them into real businesses, earn commission on value created. Not a course — a deployment.</p>
+            <p>AI operations apprenticeship. Train sharp operators, deploy them into real businesses, earn commission on value created.</p>
             <span class="pillar-arrow">Explore &rarr;</span>
         </a>
+    </div>
+</section>
+
+<!-- REBEL CAPITAL CONVICTION -->
+<section style="padding-top:0;">
+    <div style="max-width:860px;margin:0 auto;padding:2rem;background:var(--bg-card,rgba(255,255,255,0.03));border-radius:var(--radius-md,10px);display:flex;gap:2rem;align-items:flex-start;flex-wrap:wrap;">
+        <div style="flex:0 0 auto;font-size:2rem;">&#x26A1;</div>
+        <div style="flex:1;min-width:240px;">
+            <div class="section-label" style="margin-bottom:0.5rem;">Rebel Capital</div>
+            <h3 style="font-family:var(--heading);font-size:1.4rem;margin:0 0 0.75rem;">We back founders we believe in.</h3>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.7;margin:0 0 1rem;">Early-stage conviction capital for founders building at the frontier. Small cheques, real belief, structural support beyond the wire. From Rwandan hospitality to Kenyan mobility to East African education.</p>
+            <a href="/rebel-capital" style="font-size:var(--text-sm);color:var(--pink);font-weight:600;text-decoration:none;">About Rebel Capital &rarr;</a>
+        </div>
     </div>
 </section>
 
@@ -412,7 +420,7 @@
             </div>
             <label class="nl-consent-label"><input type="checkbox" required style="accent-color:var(--pink);flex-shrink:0;"> I agree to receive emails and accept the <a href="/privacy/" style="color:var(--text-accent);">Privacy Policy</a>.</label>
         </form>
-        <p class="newsletter-consent">By subscribing, you agree to receive occasional emails from Mexzungu Group. We respect your data — see our <a href="/privacy/">Privacy Policy</a>. Unsubscribe anytime.</p>
+        <p class="newsletter-consent">By subscribing, you agree to receive occasional emails from Mexzungu Group. We respect your data: see our <a href="/privacy/">Privacy Policy</a>. Unsubscribe anytime.</p>
     </div>
 </div>
 
