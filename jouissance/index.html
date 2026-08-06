@@ -674,6 +674,12 @@ textarea:focus{border-color:var(--accent)}
   </div>
   <div class="container" style="flex:1;overflow-y:auto">
     <div id="mod-list"></div>
+    <div id="p-hist-section" style="display:none;margin-top:1.1rem;padding-bottom:1rem">
+      <button onclick="togglePracticesHistory()" id="p-hist-toggle" style="background:none;border:none;color:rgba(155,127,166,.55);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:.25rem 0;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:.5rem;min-height:36px">
+        <span id="p-hist-arrow" style="font-size:.8rem">&#9656;</span> Past rituals
+      </button>
+      <div id="p-hist-list" style="display:none;margin-top:.65rem"></div>
+    </div>
   </div>
 </div>
 
@@ -1869,7 +1875,9 @@ const CHALLENGE_DATA=[
 ];
 let completedMods=[];
 async function loadMods(){
-  try{const r=await apiFetch('/modules');if(r.ok){const d=await r.json();const arr=Array.isArray(d)?d:(d.modules||[]);completedMods=arr.filter(m=>m.completed).map(m=>m.id)}}catch(e){}
+  let completedTodayDiff=null;
+  try{const r=await apiFetch('/challenges/today-all');if(r.ok){const d=await r.json();if(d.completed_today)completedTodayDiff=d.completed_today_difficulty;}}catch(e){}
+  const diffToApi={Vanilla:'easy',Mild:'mild',Spicy:'spicy'};
   const list=document.getElementById('mod-list');list.innerHTML='';
   const START=new Date('2026-08-01T00:00:00');
   const now=new Date();now.setHours(0,0,0,0);
@@ -1916,10 +1924,11 @@ async function loadMods(){
       ll.innerHTML='🔒 Unlocks '+fd(cardDate);
       bd.appendChild(ll);
     }else{
-      const dayDone=chal.v.some(v=>completedMods.includes(v.id));
+      const dayDone=!!completedTodayDiff;
       const br=document.createElement('div');br.style.cssText='display:flex;gap:.45rem';
       chal.v.forEach(v=>{
-        const done=completedMods.includes(v.id);
+        const apiDiff=diffToApi[v.d]||v.d.toLowerCase();
+        const done=completedTodayDiff===apiDiff;
         const blocked=dayDone&&!done;
         const btn=document.createElement('button');
         const borderOp=done?'.38':blocked?'.08':'.2';
@@ -1929,23 +1938,7 @@ async function loadMods(){
         const ptsColor=blocked?'rgba(197,135,58,.2)':'var(--secondary)';
         btn.style.cssText='flex:1;padding:.55rem .15rem;border:1px solid rgba(155,127,166,'+borderOp+');border-radius:8px;background:'+bg+';cursor:'+cur+';display:flex;flex-direction:column;align-items:center;gap:.15rem;-webkit-tap-highlight-color:transparent'+(blocked?';opacity:.35':'');
         btn.innerHTML='<span style="font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:'+lblColor+'">'+(done?'\u2713 ':'')+v.d+'</span><span style="font-size:.68rem;color:'+ptsColor+'">+'+v.p+' pts</span>';
-        if(!done&&!blocked){
-          btn.addEventListener('click',()=>{
-            currentModId=v.id;
-            document.getElementById('md-title').textContent=chal.title;
-            document.getElementById('md-label').textContent=v.d;
-            document.getElementById('md-diff-badge').textContent=v.d+' · +'+v.p+' pts';
-            document.getElementById('md-body').textContent=v.t;
-            document.getElementById('md-resp').value='';
-            document.getElementById('md-cc').textContent='0 / 50';
-            document.getElementById('md-media-lbl').textContent='';
-            document.querySelectorAll('#md-mb-audio,#md-mb-video').forEach(b=>b.classList.remove('on'));
-            document.getElementById('md-submit-area').style.display='block';
-            document.getElementById('md-done-msg').style.display='none';
-            document.getElementById('md-complete').textContent='Offer (+'+v.p+' pts)';
-            show('module-detail');
-          });
-        }
+        if(!done&&!blocked){btn.addEventListener('click',()=>openChallenge(apiDiff));}
         br.appendChild(btn);
       });
       bd.appendChild(br);
@@ -1954,6 +1947,48 @@ async function loadMods(){
     list.appendChild(wrap);
   }
   const sp=document.createElement('div');sp.style.height='2rem';list.appendChild(sp);
+  const phs=document.getElementById('p-hist-section');if(phs)phs.style.display='';
+}
+async function togglePracticesHistory(){
+  const list=document.getElementById('p-hist-list');
+  const arrow=document.getElementById('p-hist-arrow');
+  if(list.style.display!=='none'){list.style.display='none';arrow.innerHTML='&#9656;';return;}
+  arrow.innerHTML='&#9662;';list.style.display='block';
+  if(list.dataset.loaded)return;
+  list.innerHTML='<div style="color:rgba(244,239,230,.3);font-size:.85rem;font-style:italic;padding:.5rem 0">Loading...</div>';
+  try{
+    const r=await apiFetch('/challenges/history');
+    if(!r.ok)throw new Error();
+    const {history}=await r.json();
+    if(!history||!history.length){
+      list.innerHTML='<div style="color:rgba(244,239,230,.3);font-size:.85rem;font-style:italic;padding:.5rem 0">No past rituals yet.</div>';
+    }else{
+      const diffLabel={easy:'Tender',mild:'Alive',spicy:'Bold'};
+      const diffColor={easy:'#9b7fa6',mild:'#c4a882',spicy:'#c47a7a'};
+      list.innerHTML=history.map(h=>{
+        const d=new Date(h.date+'T12:00:00');
+        const lbl=d.toLocaleDateString('en-GB',{month:'short',day:'numeric'});
+        const comp=h.completed_difficulty;
+        const cardsHtml=Object.entries(h.challenges||{}).map(([diff,c])=>{
+          const done=comp===diff;const col=diffColor[diff]||'#9b7fa6';
+          return '<div style="padding:.55rem .75rem;border-radius:5px;background:rgba(30,24,41,'+(done?'.6':'.25')+');border:1px solid rgba('+(done?'155,127,166':'244,239,230')+',.1);margin-bottom:.4rem;opacity:'+(done?'1':'.55')+'">'
+            +'<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem">'
+            +'<span style="font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:'+col+';border:1px solid '+col+';border-radius:3px;padding:.1rem .35rem">'+(diffLabel[diff]||diff)+'</span>'
+            +(done?'<span style="font-size:.65rem;color:#9b7fa6;letter-spacing:.08em">completed</span>':'')
+            +'</div><div style="font-size:.82rem;color:rgba(244,239,230,.75)">'+(c.title||'')+'</div></div>';
+        }).join('');
+        return '<details style="border:1px solid rgba(155,127,166,.18);border-radius:6px;padding:.85rem 1rem;margin-bottom:.6rem;background:rgba(30,24,41,.4)">'
+          +'<summary style="cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:.75rem">'
+          +'<div><div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(155,127,166,.45);margin-bottom:.2rem">'+lbl+'</div>'
+          +'<div style="font-size:.82rem;color:rgba(244,239,230,.65)">'+(comp?'Completed: '+(diffLabel[comp]||comp):'Not completed')+'</div></div>'
+          +'<span style="font-size:.85rem;color:rgba(155,127,166,.4);flex-shrink:0">&#9656;</span></summary>'
+          +'<div style="margin-top:.75rem">'+cardsHtml+'</div></details>';
+      }).join('');
+    }
+    list.dataset.loaded='1';
+  }catch(e){
+    list.innerHTML='<div style="color:#c47a7a;font-size:.85rem;padding:.5rem 0">Could not load past rituals.</div>';
+  }
 }
 const mdResp=document.getElementById('md-resp'),mdCc=document.getElementById('md-cc');
 let mdUploads={};
