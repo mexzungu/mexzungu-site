@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Mexzungu x Investors — Deal Review & Investor Advisory</title>
+    <meta name="description" content="Before you wire the money, get a second opinion. Independent deal review for angel investors. First review free.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        /* ── Investors page ──────────────────────────────── */
+
+        /* Score teaser */
+        .score-teaser {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.6rem 1.1rem;
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            margin-top: 1.5rem;
+        }
+        .score-teaser .score-num {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #f87171;
+            line-height: 1;
+        }
+        .score-teaser .score-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #f87171;
+            font-weight: 700;
+        }
+
+        /* What you get grid */
+        .deliverable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+        .deliverable-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.4rem 1.5rem;
+        }
+        .deliverable-item .d-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        .deliverable-item h4 {
+            font-size: var(--text-md);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--text-primary);
+        }
+        .deliverable-item p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Process steps */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0;
+            margin-top: 2.5rem;
+            position: relative;
+        }
+        .process-step {
+            padding: 2rem 2rem 2rem 0;
+            position: relative;
+        }
+        .process-step:not(:last-child) {
+            border-right: 1px solid var(--border);
+            margin-right: 0;
+            padding-right: 2rem;
+        }
+        .process-step:not(:first-child) {
+            padding-left: 2rem;
+        }
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--pink);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .process-step h4 {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .process-step p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        /* Pricing block */
+        .pricing-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            max-width: 640px;
+            margin-top: 2rem;
+        }
+        .pricing-line {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        .pricing-line span { color: var(--pink); }
+        .pricing-detail {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+        .pricing-detail strong { color: var(--text-primary); }
+
+        /* Example deal */
+        .example-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: var(--obsidian);
+            border: 1px solid #2a2a2a;
+            border-radius: var(--radius-lg);
+            padding: 2rem 2.5rem;
+            margin-top: 2rem;
+            text-decoration: none;
+            transition: border-color 0.2s;
+        }
+        .example-card:hover { border-color: var(--pink); }
+        .example-score-badge {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a0a0a;
+            border: 2px solid #f87171;
+            border-radius: var(--radius-md);
+            padding: 1rem 1.4rem;
+            gap: 2px;
+        }
+        .example-score-badge .esb-num {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #f87171;
+            line-height: 1;
+        }
+        .example-score-badge .esb-100 {
+            font-size: 0.7rem;
+            color: #555;
+        }
+        .example-score-badge .esb-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #f87171;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .example-info { flex: 1; }
+        .example-info .ex-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--pink);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .example-info h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.4rem;
+        }
+        .example-info p {
+            font-size: var(--text-sm);
+            color: #777;
+            margin: 0;
+        }
+        .example-arrow {
+            color: var(--pink);
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        /* CTA block */
+        .cta-block {
+            background: var(--bg-dark);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2.5rem;
+            text-align: center;
+            margin-top: 0;
+        }
+        .cta-block h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: #fff;
+            margin-bottom: 0.75rem;
+            text-wrap: balance;
+        }
+        .cta-block p {
+            color: #888;
+            font-size: var(--text-md);
+            margin-bottom: 2rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cta-wa {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--pink);
+            color: #fff;
+            font-weight: 700;
+            font-size: var(--text-md);
+            padding: 0.8rem 1.8rem;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .cta-wa:hover { background: var(--pink-dark); color: #fff; transform: translateY(-1px); }
+        .cta-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            color: #aaa;
+            font-size: var(--text-sm);
+            padding: 0.8rem 1.4rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid #333;
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .cta-email:hover { border-color: #666; color: #ddd; }
+
+        /* Funds callout */
+        .funds-callout {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+        .funds-callout .funds-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+        }
+        .funds-callout h3 {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .funds-callout p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            margin: 0 0 1rem;
+            line-height: 1.55;
+        }
+        .funds-link {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            color: var(--pink);
+            text-decoration: none;
+        }
+        .funds-link:hover { color: var(--pink-light); }
+
+        /* Investor disclaimer */
+        .investor-disclaimer {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            margin-top: 2rem;
+        }
+        .investor-disclaimer p {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+        .investor-disclaimer strong {
+            font-size: 0.78rem;
+            color: var(--text-primary);
+        }
+
+        /* Referral whisper */
+        .referral-line {
+            text-align: center;
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+            padding: 2rem 0 0;
+        }
+        .referral-line a { color: var(--pink); font-weight: 600; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .process-steps { grid-template-columns: 1fr; }
+            .process-step:not(:last-child) {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding-right: 0;
+                padding-bottom: 2rem;
+                margin-bottom: 0;
+            }
+            .process-step:not(:first-child) { padding-left: 0; }
+            .example-card { flex-direction: column; gap: 1.25rem; }
+            .example-arrow { display: none; }
+            .funds-callout { flex-direction: column; gap: 1rem; }
+            .cta-block { padding: 2rem 1.5rem; }
+            .pricing-block { padding: 1.75rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cta-wa, .example-card { transition: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li class="nav-dropdown">
+            <a href="/#pillars" class="active">What We Do</a>
+            <ul class="nav-dropdown-menu">
+                <li><a href="/venture-architecture">Venture Architecture</a></li>
+                <li><a href="/data-privacy">Data Privacy</a></li>
+                <li><a href="/rebel-capital">Rebel Capital</a></li>
+                <li><a href="/investors" class="active">Mexzungu x Investors</a></li>
+                <li><a href="/ai-ninja-factory">AI Ninja Factory</a></li>
+            </ul>
+        </li>
+        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+        <li><a href="/meet-the-band">Meet the Band</a></li>
+        <li><a href="/lets-jam" class="nav-cta"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Let's Jam</a></li>
+    </ul>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<div class="page-hero leopard-medium">
+    <div class="section-label">Mexzungu x Investors</div>
+    <h1>Before you wire the money,<br><span class="highlight">get a second opinion.</span></h1>
+    <p>You found an interesting deal. The term sheet looks reasonable. Your instinct says yes. But you've seen how these things go wrong.</p>
+    <p class="hero-accent">Send us the documents. We'll tell you what you actually own, what's missing, and what to negotiate.</p>
+    <div class="score-teaser">
+        <div>
+            <div class="score-num">26</div>
+            <div class="score-label">Very High Risk</div>
+        </div>
+        <div style="line-height:1.4;">
+            Last review scored 26/100.<br>
+            <a href="/deal-review/ambity-smiley-2026" style="color:var(--pink);font-weight:600;">See what we found &rarr;</a>
+        </div>
+    </div>
+</div>
+
+<!-- WHAT YOU GET -->
+<section>
+    <div class="section-label" style="color:var(--text-accent);">What you get</div>
+    <div class="section-title">Not a summary. A structured review.</div>
+    <p class="section-text">Every review covers the same five dimensions. You get a score, a breakdown, and the questions you need answered before signing anything.</p>
+
+    <div class="deliverable-grid">
+        <div class="deliverable-item">
+            <span class="d-icon">&#x2696;&#xFE0F;</span>
+            <h4>Risk score</h4>
+            <p>0 to 100 across five dimensions: structure, investor protections, financial transparency, exit path, and process conduct.</p>
+        </div>
+        <div class="deliverable-item">
+            <span class="d-icon">&#x1F4CB;</span>
+            <h4>Terms extracted</h4>
+            <p>What you own, what you paid for it, what rights you have, and what the documents are silent on. Silence is flagged, not ignored.</p>
+        </div>
+        <div class="deliverable-item">
+            <span class="d-icon">&#x1F6A9;</span>
+            <h4>Red flags</h4>
+            <p>Anything that should stop or slow you down. Wire-before-docs clauses. Missing anti-dilution. Unexplained valuations. Named explicitly.</p>
+        </div>
+        <div class="deliverable-item">
+            <span class="d-icon">&#x1F4AC;</span>
+            <h4>Questions to ask</h4>
+            <p>Before you sign anything, here are the specific questions that need answers. Numbered. Direct. Ready to send.</p>
+        </div>
+        <div class="deliverable-item">
+            <span class="d-icon">&#x1F3AF;</span>
+            <h4>Potential score</h4>
+            <p>What the deal could score if you negotiate the missing protections. Is it worth fighting for, or walk away now?</p>
+        </div>
+        <div class="deliverable-item">
+            <span class="d-icon">&#x1F4CE;</span>
+            <h4>Private link</h4>
+            <p>Your review lives on a private page. Direct link only. Not public. Share it with your co-investors or keep it to yourself.</p>
+        </div>
+    </div>
+</section>
+
+<hr class="leopard-divider">
+
+<!-- HOW IT WORKS -->
+<section>
+    <div class="section-title">Three steps. 48 hours.</div>
+    <p class="section-text">No forms. No onboarding. No intake calls. Send the documents, get the analysis.</p>
+
+    <div class="process-steps">
+        <div class="process-step">
+            <div class="step-num">1</div>
+            <h4>Send the documents</h4>
+            <p>Forward the term sheet, SAFE, pitch deck, or loan agreement by WhatsApp or email. Images, PDFs, screenshots, screenshots of screenshots. Whatever you have.</p>
+        </div>
+        <div class="process-step">
+            <div class="step-num">2</div>
+            <h4>We run the analysis</h4>
+            <p>Pepe reviews the deal across all five dimensions. Legal structure, investor protections, financial transparency, exit path, and how the process itself was run. Delivered within 48 hours.</p>
+        </div>
+        <div class="process-step">
+            <div class="step-num">3</div>
+            <h4>You get the breakdown</h4>
+            <p>A private page with the score, the flags, the questions, and the bottom line. If new documents arrive, the analysis updates. The review lives until the deal closes or dies.</p>
+        </div>
+    </div>
+</section>
+
+<hr class="leopard-divider">
+
+<!-- PRICING -->
+<section>
+    <div class="section-title">Pricing</div>
+
+    <div class="pricing-block">
+        <div class="pricing-line">
+            First review: <span>free.</span><br>
+            After that: <span>0.5% of the deal size.</span>
+        </div>
+        <p class="pricing-detail">
+            <strong>Deals under &euro;60k:</strong> flat &euro;300.<br>
+            <strong>Deals above &euro;500k:</strong> let's talk before we start.<br><br>
+            The first review is free because the best way to understand what you get is to get it. After that, you pay for the work.
+            No retainer. No monthly fees. One deal, one review, one invoice.
+        </p>
+    </div>
+</section>
+
+<hr class="leopard-divider">
+
+<!-- EXAMPLE DEAL -->
+<section>
+    <div class="section-title">See a real review</div>
+    <p class="section-text">Here is what a completed deal review looks like. Real documents. Real score. Real flags.</p>
+
+    <a href="/deal-review/ambity-smiley-2026" class="example-card" target="_blank" rel="noopener">
+        <div class="example-score-badge">
+            <div class="esb-num">26</div>
+            <div class="esb-100">out of 100</div>
+            <div class="esb-label">Very High Risk</div>
+        </div>
+        <div class="example-info">
+            <div class="ex-tag">Deal Review Example</div>
+            <h3>Ambity Smiley DSO LLC</h3>
+            <p>$100,000 &middot; 0.80% Class B equity &middot; Texas LLC &middot; Dental group acquisition<br>
+            Wire-before-docs clause. No information rights. No anti-dilution. No exit mechanism.</p>
+        </div>
+        <div class="example-arrow">&rarr;</div>
+    </a>
+</section>
+
+<hr class="leopard-divider">
+
+<!-- CTA -->
+<section style="padding-top:0;">
+    <div class="cta-block leopard-dense">
+        <h2>Have a deal you need reviewed?</h2>
+        <p>Send the documents. WhatsApp or email. No form, no intake call, no waiting room.</p>
+        <div class="cta-buttons">
+            <a href="https://wa.me/13477700838?text=Hey%20Pepe%2C%20I%20have%20a%20deal%20I%27d%20like%20you%20to%20review" class="cta-wa" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.552 4.116 1.523 5.845L.057 23.036a.75.75 0 0 0 .908.908l5.255-1.448A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.954 9.954 0 0 1-5.031-1.36l-.36-.215-3.737 1.028 1.051-3.645-.233-.376A9.956 9.956 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                Send on WhatsApp
+            </a>
+            <a href="mailto:pepe@mexzungu.com?subject=Deal%20Review%20Request" class="cta-email">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                pepe@mexzungu.com
+            </a>
+        </div>
+    </div>
+</section>
+
+<hr class="leopard-divider">
+
+<!-- FOR FUNDS -->
+<section>
+    <div class="funds-callout">
+        <div class="funds-icon">&#x1F3DB;&#xFE0F;</div>
+        <div>
+            <h3>Family offices and funds</h3>
+            <p>If you run a small fund or family office looking at deals in Africa, LatAm, or emerging markets, the deal review service scales to your volume. Retainer structures available for ongoing portfolio support.</p>
+            <a href="mailto:pepe@mexzungu.com?subject=Fund%20Advisory%20Inquiry" class="funds-link">Get in touch &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="investor-disclaimer" style="max-width:860px;margin:3rem auto 0;">
+    <p><strong>Important notice.</strong> This service is prepared for discussion purposes only. It does not constitute legal advice, financial advice, or investment advice of any kind. It does not create an attorney-client relationship or any other professional relationship. Analysis is based solely on documents as provided and publicly available information at the time of preparation. Valuations, projections, and representations are not independently verified. You must obtain independent legal, financial, and investment advice before making any investment decision or signing any document. Mexzungu Group accepts no liability for any loss or damage arising from reliance on this analysis.</p>
+</div>
+
+<!-- REFERRAL -->
+<div class="referral-line">
+    Know an investor looking at a deal? Forward them this page: <a href="https://mexzungu.com/investors">mexzungu.com/investors</a>
+</div>
+
+</main>
+
+<section class="disclaimer" style="max-width:1200px;margin:2rem auto;">
+    <p><strong>Professional Services Notice.</strong> Mexzungu Group provides strategic advisory and deal analysis services. The information on this page does not constitute investment advice, legal advice, or financial advice and does not establish any professional relationship. By requesting a review, you acknowledge that the analysis is strategic in nature and prepared for discussion purposes only.</p>
+</section>
+
+<footer>
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding:0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size:0.85rem;">
+            <a href="https://pepecarrillo.co" style="color:var(--gold);">Pepe's Writing</a> &middot;
+            <a href="/privacy/" style="color:var(--gold);">Privacy Policy</a> &middot;
+            <a href="/terms/" style="color:var(--gold);">Terms of Service</a> &middot;
+            <a href="/ai-policy/" style="color:var(--gold);">AI Policy</a>
+        </span>
+    </div>
+    <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and investor deal analysis. This does not constitute legal or investment advice.</div>
+</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+</script>
+</body>
+</html>
