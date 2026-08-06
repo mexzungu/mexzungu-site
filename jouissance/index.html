@@ -3196,7 +3196,7 @@ if('serviceWorker' in navigator){
     if(!_sid||!token) return;
     const sid=_sid; _sid=null;
     clearInterval(_ping); _ping=null;
-    try{navigator.sendBeacon(API+'/jouissance/session/end',new Blob([JSON.stringify({session_id:sid})],{type:'application/json'}));}
+    try{navigator.sendBeacon(API+'/session/end',new Blob([JSON.stringify({session_id:sid})],{type:'application/json'}));}
     catch(_){}
   }
 
