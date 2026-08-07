@@ -173,10 +173,11 @@
     .pp-owners { display: flex; gap: 6px; flex-wrap: wrap; }
     .pp-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
     .pp-subtasks h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 12px; }
-    .subtask-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1e1e1e; font-size: 13px; }
+    .subtask-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #1e1e1e; font-size: 13px; }
     .subtask-row:last-child { border-bottom: none; }
-    .subtask-task { flex: 1; color: #ccc; }
-    .subtask-owner { font-size: 10px; color: var(--muted); white-space: nowrap; }
+    .subtask-task { flex: 1; color: #ccc; line-height: 1.5; }
+    .subtask-meta { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: nowrap; }
+    .al-generic { background: rgba(200,200,200,0.07); color: #999; border: 1px solid rgba(200,200,200,0.14); }
     .pp-output { background: #111; border: 1px solid #252525; border-radius: 8px; padding: 16px; height: fit-content; }
     .pp-output .out-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 10px; }
     .pp-output ul { padding-left: 16px; font-size: 13px; color: #bbb; line-height: 2; }
@@ -195,6 +196,7 @@
 <nav>
   <span class="logo">Client Acquisition Engine</span>
   <a href="#journey">Journey</a>
+  <a href="#kpis">KPIs</a>
   <a href="#actors">Actors</a>
   <a href="#raci">RACI</a>
   <a href="#lifecycle">Lifecycle</a>
@@ -212,7 +214,8 @@
   <div class="wrap">
     <div class="sec-label">Mexzungu Group, Delivery Engine</div>
     <h1>Client Acquisition Engine</h1>
-    <p>End-to-end specification. Every trigger, workflow, actor, tool call, gate, and failure mode documented. From content publishing to signed engagement letter.</p>
+    <p>The Client Acquisition Engine is how Mexzungu Group finds, qualifies, and closes every new client. It runs autonomously at 07:00 CET every morning, scanning email and WhatsApp for signals, advancing every live lead on cadence, and queuing every Showtime decision for Pepe. No opportunity falls through. No follow-up depends on anyone remembering.</p>
+    <p style="margin-top: 8px;">What follows is the complete specification: every trigger, actor, tool call, gate, and failure mode, from the first piece of content published to the signed engagement letter.</p>
     <div class="chips">
       <span class="chip chip-pink">Cron 07:00 CET daily</span>
       <span class="chip chip-green">7-phase journey</span>
@@ -237,6 +240,78 @@
 <div class="wrap" style="padding-top: 24px; padding-bottom: 64px; border-bottom: 1px solid var(--border);">
   <div class="phase-panels" id="phasePanels"></div>
 </div>
+
+<section id="kpis">
+  <div class="wrap">
+    <h2>KPIs</h2>
+    <p>Four metric categories. Input tells you if the funnel is filling. Velocity tells you if leads are moving. Output tells you if deals are closing. Engine Health tells you if the system is running.</p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 20px; margin-top: 28px;">
+
+      <div>
+        <h3 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px;">Input. Is the funnel filling?</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Target</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>New signals detected per week</td><td>10+</td><td><span class="al al-janis">JANIS</span></td></tr>
+              <tr><td>Leads enrolled per month</td><td>4+</td><td><span class="al al-joan">JOAN</span></td></tr>
+              <tr><td>Content-attributed leads (share of inbound)</td><td>30%+</td><td><span class="al al-joan">JOAN</span></td></tr>
+              <tr><td>Signal queue cleared within 48h</td><td>100%</td><td><span class="al al-pepe">PEPE</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px;">Pipeline Velocity. Are leads moving?</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Target</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>Avg days: new to warm</td><td>&lt; 5 days</td><td><span class="al al-janis">JANIS</span></td></tr>
+              <tr><td>Avg days: warm to active</td><td>&lt; 14 days</td><td><span class="al al-janis">JANIS</span></td></tr>
+              <tr><td>Avg days: active to proposal</td><td>&lt; 21 days</td><td><span class="al al-jagger">JAGGER</span></td></tr>
+              <tr><td>Avg days: proposal to close</td><td>&lt; 30 days</td><td><span class="al al-pepe">PEPE</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px;">Output. Are deals closing?</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Target</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>Deals won per quarter</td><td>2+</td><td><span class="al al-jagger">JAGGER</span></td></tr>
+              <tr><td>Conversion: enrolled lead to proposal sent</td><td>50%+</td><td><span class="al al-jagger">JAGGER</span></td></tr>
+              <tr><td>Conversion: proposal to EL signed</td><td>40%+</td><td><span class="al al-pepe">PEPE</span></td></tr>
+              <tr><td>Average contract value (year 1)</td><td>&euro;10k+</td><td><span class="al al-lemmy">LEMMY</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px;">Engine Health. Is the system running?</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Target</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>Daily engine run completion rate</td><td>95%+</td><td><span class="al al-bowie">BOWIE</span></td></tr>
+              <tr><td>WA bridge uptime</td><td>99%+</td><td><span class="al al-bowie">BOWIE</span></td></tr>
+              <tr><td>Leads with overdue next_action_date</td><td>0</td><td><span class="al al-janis">JANIS</span></td></tr>
+              <tr><td>Showtime queue cleared within 24h</td><td>100%</td><td><span class="al al-pepe">PEPE</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <p style="margin-top: 20px; font-size: 12px; color: var(--muted);">KPIs reviewed weekly on Monday BD Pulse (JAGGER) and monthly in BRUCE's strategy retro.</p>
+  </div>
+</section>
 
 <section id="actors">
   <div class="wrap">
@@ -1106,6 +1181,21 @@ flowchart TD
     }
   ];
 
+  const ACTOR_CLS = {
+    'JANIS': 'al-janis', 'PEPE': 'al-pepe', 'JAGGER': 'al-jagger',
+    'JOAN': 'al-joan', 'BRUCE': 'al-bruce', 'LARS': 'al-lars',
+    'BOWIE': 'al-bowie', 'LEMMY': 'al-lemmy'
+  };
+
+  function ownerBadge(ownerStr) {
+    if (!ownerStr) return '';
+    return ownerStr.split(/\s*[\/\+]\s*/).map(name => {
+      name = name.trim();
+      const cls = ACTOR_CLS[name] || 'al-generic';
+      return `<span class="al ${cls}">${name}</span>`;
+    }).join('');
+  }
+
   function buildJourney() {
     const rail = document.getElementById('phaseRail');
     const panels = document.getElementById('phasePanels');
@@ -1126,7 +1216,10 @@ flowchart TD
       const subtasksHtml = phase.subtasks.map(s => `
         <div class="subtask-row">
           <div class="subtask-task">${s.task}</div>
-          <span class="gate gate-${s.gate}">${s.gate}</span>
+          <div class="subtask-meta">
+            ${ownerBadge(s.owner)}
+            <span class="gate gate-${s.gate}">${s.gate}</span>
+          </div>
         </div>
       `).join('');
 
