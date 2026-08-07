@@ -1065,8 +1065,8 @@ flowchart TD
       ],
       description: 'Content engine publishes. Audience builds. Inbound signals surface. The funnel starts here, not at the inbox.',
       subtasks: [
-        { task: 'Publish Outlaw Chronicles issue (newsletter)', owner: 'GROHL + LENNY', gate: 'showtime' },
-        { task: 'Post LinkedIn, X, Instagram content (scheduled or immediate)', owner: 'FREDDIE / JANIS', gate: 'soundcheck' },
+        { task: 'Publish Outlaw Chronicles issue (newsletter)', owner: 'GROHL', gate: 'showtime' },
+        { task: 'Post LinkedIn, X, Instagram content (scheduled or immediate)', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Track engagement signals: replies, DMs, shares, follows', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Flag high-engagement contacts for signal queue', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Weekly content performance report', owner: 'ANNIE', gate: 'soundcheck' }
@@ -1085,7 +1085,7 @@ flowchart TD
         { task: 'Scan email (known leads): 30-email budget, signal keywords', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Scan email (unknown inbound): 20 most recent, opportunity keywords', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Scan WhatsApp (known leads): wa_conversation + personal fallback', owner: 'JANIS', gate: 'soundcheck' },
-        { task: 'WA bridge health check: increment degraded streak if offline', owner: 'JANIS / BOWIE', gate: 'soundcheck' },
+        { task: 'WA bridge health check: increment degraded streak if offline', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Append unknown signals to bd-signal-queue.md', owner: 'JANIS', gate: 'soundcheck' }
       ],
       output: ['bd-signal-queue.md updated with unknown inbound', 'upgrade_candidates list populated', 'closure_queue flagged', 'STATE.md updated: signals_found count']
@@ -1121,7 +1121,7 @@ flowchart TD
         { task: 'Warm follow-up at 14 days if no reply (Soundcheck)', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Active follow-up at 14 days with topic check-in', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'Stale alert to PEPE at 28 days. Revive or close decision.', owner: 'JANIS', gate: 'showtime' },
-        { task: 'Collab track: 30-day independent touch cadence', owner: 'JANIS / JAGGER', gate: 'soundcheck' }
+        { task: 'Collab track: 30-day independent touch cadence', owner: 'JANIS', gate: 'soundcheck' }
       ],
       output: ['Status advances: new to warm, warm to active', 'Two-way dialogue confirmed', 'next_action_date updated on each touch', 'Stale leads flagged to PEPE for decision']
     },
@@ -1156,7 +1156,7 @@ flowchart TD
       subtasks: [
         { task: 'BRUCE scenario analysis: three-level stress-test of terms and positioning', owner: 'BRUCE', gate: 'soundcheck' },
         { task: 'PEPE negotiates scope, fee, and timeline with client', owner: 'PEPE', gate: 'showtime' },
-        { task: 'LEMMY drafts EL from agreed terms using canonical template', owner: 'LEMMY / JANIS', gate: 'soundcheck' },
+        { task: 'LEMMY drafts EL from agreed terms using canonical template', owner: 'LEMMY', gate: 'soundcheck' },
         { task: 'LEMMY reviews exposure: jurisdiction, exit conditions, IP', owner: 'LEMMY', gate: 'soundcheck' },
         { task: 'Status set to negotiation when client engages on terms', owner: 'JANIS', gate: 'soundcheck' }
       ],
@@ -1172,10 +1172,10 @@ flowchart TD
       description: 'EL sent on Fire Away. Signed copy filed. Status set to won. Handoff to client delivery pipeline.',
       subtasks: [
         { task: 'PEPE reviews EL (Showtime). Fire Away to send.', owner: 'PEPE', gate: 'showtime' },
-        { task: '14-day chase if no signature. LEMMY advises on escalation.', owner: 'JANIS / LEMMY', gate: 'soundcheck' },
+        { task: '14-day chase if no signature. LEMMY advises on escalation.', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'On signature confirmed: JANIS sets status=won', owner: 'JANIS', gate: 'soundcheck' },
         { task: 'LEMMY files signed EL to client Drive folder + contracts registry', owner: 'LEMMY', gate: 'soundcheck' },
-        { task: 'LARS adds to weekly scorecard. Client orbit opened.', owner: 'LARS / JANIS', gate: 'soundcheck' }
+        { task: 'LARS adds lead to weekly scorecard. JANIS opens client orbit.', owner: 'LARS', gate: 'soundcheck' }
       ],
       output: ['Status: won', 'EL signed and filed', 'Contracts registry updated', 'Client orbit created. Delivery pipeline begins.']
     }
