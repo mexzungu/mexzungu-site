@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Founders Delivery Engine. Mexzungu Group</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <style>
     :root {
       --pink: #E14B87;
@@ -26,33 +27,55 @@
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; }
 
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; gap: 4px; overflow-x: auto; white-space: nowrap; }
-    nav .logo { font-weight: 700; color: var(--pink); font-size: 13px; margin-right: 8px; flex-shrink: 0; }
-    nav a { font-size: 11px; color: var(--muted); text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: color .15s, background .15s; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; gap: 8px; overflow-x: auto; white-space: nowrap; }
+    nav .logo { font-weight: 700; color: var(--pink); font-size: 14px; margin-right: 12px; flex-shrink: 0; }
+    nav a { font-size: 12px; color: var(--muted); text-decoration: none; padding: 4px 10px; border-radius: 4px; transition: color .15s, background .15s; }
     nav a:hover { color: var(--text); background: var(--surface2); }
     nav .nav-sep { color: var(--border); font-size: 11px; }
 
     .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-    section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    section { padding: 64px 0; border-bottom: 1px solid var(--border); }
     section:last-child { border-bottom: none; }
     h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
-    h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
-    h3 { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-    p { color: #bbb; margin-bottom: 10px; font-size: 14px; }
+    h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 20px; color: var(--text); }
+    h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    p { color: #bbb; margin-bottom: 12px; font-size: 14px; }
+    p:last-child { margin-bottom: 0; }
 
     .sec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 8px; }
-    .phase-meta { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-    .pm-item .pm-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
-    .pm-item p { font-size: 13px; color: #ccc; margin: 0; }
 
-    .tbl-wrap { overflow-x: auto; margin-bottom: 24px; }
-    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    th { background: var(--surface2); color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 9px 13px; text-align: left; border-bottom: 1px solid var(--border); }
-    td { padding: 10px 13px; border-bottom: 1px solid #1e1e1e; vertical-align: top; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255,255,255,0.015); }
+    /* Chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .chip-pink  { background: rgba(225,75,135,0.1); color: var(--pink); border: 1px solid rgba(225,75,135,0.25); }
+    .chip-green { background: rgba(76,175,125,0.1); color: var(--green); border: 1px solid rgba(76,175,125,0.25); }
+    .chip-amber { background: rgba(240,160,48,0.1); color: var(--amber); border: 1px solid rgba(240,160,48,0.25); }
+    .chip-blue  { background: rgba(100,152,255,0.1); color: var(--blue); border: 1px solid rgba(100,152,255,0.25); }
+    .chip-teal  { background: rgba(76,200,180,0.1); color: var(--teal); border: 1px solid rgba(76,200,180,0.25); }
 
-    .al { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap; margin: 1px; }
+    /* Actor cards */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+    .card h3 { font-size: 13px; margin-bottom: 6px; }
+    .card .owns { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.8; }
+    .card-pepe    { border-top: 2px solid var(--amber); }
+    .card-janis   { border-top: 2px solid var(--pink); }
+    .card-lars    { border-top: 2px solid var(--green); }
+    .card-lemmy   { border-top: 2px solid var(--orange); }
+    .card-gene    { border-top: 2px solid var(--gold); }
+    .card-ozzy    { border-top: 2px solid var(--red); }
+    .card-prince  { border-top: 2px solid var(--teal); }
+    .card-sade    { border-top: 2px solid var(--purple); }
+    .card-nina    { border-top: 2px solid #e05abb; }
+    .card-joan    { border-top: 2px solid #3cc8a0; }
+    .card-tina    { border-top: 2px solid #9664ff; }
+    .card-pj      { border-top: 2px solid #3caf6e; }
+    .card-aretha  { border-top: 2px solid #508cff; }
+    .card-chrissie{ border-top: 2px solid #c864ff; }
+    .card-kim     { border-top: 2px solid #e13cb4; }
+
+    /* Actor label badges */
+    .al { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap; margin: 1px; }
     .al-janis    { background: rgba(225,75,135,0.12); color: #E14B87; border: 1px solid rgba(225,75,135,0.28); }
     .al-pepe     { background: rgba(240,160,48,0.12); color: #f0a030; border: 1px solid rgba(240,160,48,0.28); }
     .al-lars     { background: rgba(76,175,125,0.12); color: #4caf7d; border: 1px solid rgba(76,175,125,0.28); }
@@ -76,42 +99,95 @@
     .al-aretha   { background: rgba(80,140,255,0.12); color: #508cff; border: 1px solid rgba(80,140,255,0.28); }
     .al-chrissie { background: rgba(200,100,255,0.12); color: #c864ff; border: 1px solid rgba(200,100,255,0.28); }
     .al-practice { background: rgba(150,150,150,0.12); color: #a0a0a0; border: 1px solid rgba(150,150,150,0.28); }
+    .al-bowie    { background: rgba(180,130,255,0.12); color: #b482ff; border: 1px solid rgba(180,130,255,0.28); }
 
-    .gate { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+    /* Gate badges */
+    .gate { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
     .gate-show  { background: rgba(225,75,135,0.15); color: var(--pink); }
     .gate-sc    { background: rgba(76,175,125,0.12); color: var(--green); }
     .gate-block { background: rgba(224,80,80,0.15); color: var(--red); }
     .gate-fa    { background: rgba(225,75,135,0.12); color: #ff80b0; border: 1px solid rgba(225,75,135,0.2); }
 
+    /* Inline tool badge */
     .tool { font-family: 'Courier New', monospace; font-size: 11px; color: #6498ff; background: rgba(100,152,255,0.08); padding: 1px 5px; border-radius: 3px; }
 
-    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-    .meta-tag { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); letter-spacing: 0.05em; text-transform: uppercase; }
-
-    .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-    .ph-num-badge { background: var(--pink); color: white; font-weight: 800; font-size: 12px; padding: 4px 12px; border-radius: 4px; flex-shrink: 0; }
-    .ph-title { font-size: 22px; font-weight: 700; }
-    .ph-sub { font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-
-    .sub-phase { margin-top: 28px; }
-    .sub-phase h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; padding: 8px 14px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--pink); }
-
+    /* Conditional tag */
     .if-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; background: rgba(180,130,255,0.12); color: #b482ff; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Tables */
+    .tbl-wrap { overflow-x: auto; margin-bottom: 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 11px 14px; border-bottom: 1px solid #1e1e1e; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* Fault table */
+    .fault-tbl { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+    .fault-tbl th { background: #111; color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+    .fault-tbl td { padding: 7px 10px; border-bottom: 1px solid #1a1a1a; color: #bbb; }
+    .fault-tbl tr:last-child td { border-bottom: none; }
+
+    /* Collapsible phase details */
+    details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+    details[open] { border-color: rgba(225,75,135,0.3); }
+    summary { padding: 14px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; list-style: none; font-weight: 600; font-size: 14px; user-select: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; margin-left: auto; color: var(--muted); font-size: 18px; font-weight: 300; transition: transform .2s; }
+    details[open] summary::after { content: '-'; }
+    .step-num { background: rgba(225,75,135,0.12); color: var(--pink); border: 1px solid rgba(225,75,135,0.25); border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+    .step-body { padding: 0 18px 18px; }
+    .step-body p { font-size: 13px; color: #bbb; margin-bottom: 10px; }
+    .step-body h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 14px 0 6px; }
+
+    /* Diagram */
+    .diagram-wrap { background: #080808; border: 1px solid #2a2a2a; border-radius: 8px; padding: 24px; margin: 16px 0; overflow-x: auto; }
+    .diagram-wrap .mermaid { min-width: 400px; }
+
+    /* Phase meta block */
+    .phase-meta { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .pm-item .pm-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
+    .pm-item p { font-size: 13px; color: #ccc; margin: 0; }
+
+    /* Sub-phase within step-body */
+    .sub-h3 { font-size: 13px; font-weight: 700; color: var(--text); margin: 20px 0 10px; padding: 7px 12px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--pink); }
+
+    /* Phase/step layout helpers */
+    .phase-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
+    .phase-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .phase-box .ph-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 6px; }
+    .phase-box h3 { font-size: 14px; margin-bottom: 8px; }
+    .phase-box ul { padding-left: 16px; font-size: 12px; color: #bbb; line-height: 2; }
+
+    .gap-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; text-transform: uppercase; }
+    .gb-infra { background: rgba(180,130,255,0.12); color: #b482ff; }
+    .gb-data  { background: rgba(240,160,48,0.12); color: #f0a030; }
+    .gb-proc  { background: rgba(100,152,255,0.12); color: #6498ff; }
+
+    .handoff-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .handoff-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-size: 13px; }
+    .handoff-card .hc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 8px; }
+    .handoff-card ul { padding-left: 16px; color: #bbb; line-height: 2; font-size: 12px; }
 
     @media (max-width: 640px) {
       h1 { font-size: 24px; }
-      section { padding: 36px 0; }
-      .phase-meta { grid-template-columns: 1fr; }
+      h2 { font-size: 18px; }
+      section { padding: 40px 0; }
+      .handoff-row { grid-template-columns: 1fr; }
+      .phase-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <span class="logo">MGL</span>
-  <a href="../">Engines</a>
+  <span class="logo">Founders Delivery Engine</span>
+  <a href="/engines/">All Engines</a>
   <span class="nav-sep">|</span>
   <a href="#overview">Overview</a>
+  <a href="#diagram">Journey</a>
+  <a href="#actors">Actors</a>
+  <a href="#phases">Phases</a>
   <a href="#p0">Ph 0</a>
   <a href="#p1">Ph 1</a>
   <a href="#p2">Ph 2</a>
@@ -127,20 +203,21 @@
 
 <div class="wrap">
 
+  <!-- OVERVIEW -->
   <section id="overview">
     <div class="sec-label">Mexzungu x Founders</div>
     <h1>Founders Delivery Engine</h1>
     <p>Complete operational map for every engagement: startup founders, operators, and African/LatAm ventures requiring legal strategy, deal structuring, governance, and operational counsel.</p>
-    <div class="hero-meta">
-      <span class="meta-tag">Version 1.0</span>
-      <span class="meta-tag">Produced 2026-08-07</span>
-      <span class="meta-tag">EL-triggered intake</span>
-      <span class="meta-tag">Retainer or deal-closing</span>
-      <span class="meta-tag">Weeks to months</span>
-      <span class="meta-tag">Score: 0.955 / 1.0</span>
+    <div class="chips">
+      <span class="chip chip-pink">Version 1.0</span>
+      <span class="chip chip-green">Produced 2026-08-07</span>
+      <span class="chip chip-pink">EL-triggered intake</span>
+      <span class="chip chip-amber">Retainer or deal-closing</span>
+      <span class="chip chip-green">Weeks to months</span>
+      <span class="chip chip-teal">Score: 0.955 / 1.0</span>
     </div>
 
-    <div style="margin-top: 32px;">
+    <div style="margin-top: 40px;">
       <h2>Practice Lead Matrix</h2>
       <div class="tbl-wrap">
         <table>
@@ -149,522 +226,682 @@
             <tr><td>Venture Architecture</td><td><span class="al al-joan">Joan</span></td><td><span class="al al-bruce">Bruce</span> strategic &nbsp;<span class="al al-gene">Gene</span> financial</td></tr>
             <tr><td>Equity / cap table</td><td><span class="al al-tina">Tina</span></td><td><span class="al al-chrissie">Chrissie</span> governance &nbsp;<span class="al al-gene">Gene</span> valuation</td></tr>
             <tr><td>Debt / loan</td><td><span class="al al-pj">PJ</span></td><td><span class="al al-lemmy">Lemmy</span> docs &nbsp;<span class="al al-gene">Gene</span> financial</td></tr>
-            <tr><td>M&A</td><td><span class="al al-aretha">Aretha</span></td><td><span class="al al-lemmy">Lemmy</span> docs &nbsp;<span class="al al-tina">Tina</span> cap table</td></tr>
+            <tr><td>M&amp;A</td><td><span class="al al-aretha">Aretha</span></td><td><span class="al al-lemmy">Lemmy</span> docs &nbsp;<span class="al al-tina">Tina</span> cap table</td></tr>
             <tr><td>Asset deals</td><td><span class="al al-chrissie">Chrissie</span></td><td><span class="al al-lemmy">Lemmy</span> docs &nbsp;<span class="al al-gene">Gene</span> valuation</td></tr>
-            <tr><td>AI Operations</td><td><span class="al al-kim">Kim</span></td><td><span class="al al-practice">Bowie</span> technical &nbsp;<span class="al al-lars">Lars</span> delivery</td></tr>
+            <tr><td>AI Operations</td><td><span class="al al-kim">Kim</span></td><td><span class="al al-bowie">Bowie</span> technical &nbsp;<span class="al al-lars">Lars</span> delivery</td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <!-- PHASE 0 -->
-  <section id="p0">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 0</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Intake</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>Engagement Letter arrives via email or WhatsApp</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Janis (detection), Lemmy (verify), Gene (fee), Nile (routing)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>EL verified, both signatures confirmed, contract registered, welcome email drafted</p></div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th><th>Gate</th></tr></thead>
-        <tbody>
-          <tr><td>0.1</td><td>Scan get_emails (all 4 accounts) and search_whatsapp_personal for signed EL</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">get_emails</span> <span class="tool">search_whatsapp_personal</span></td><td></td></tr>
-          <tr><td>0.2</td><td>Extract key fields: client name, entity, jurisdiction, deal type, fee structure, effective date</td><td><span class="al al-janis">Janis</span> / <span class="al al-nina">Nina</span></td><td><span class="tool">extract_pdf_text</span> <span class="tool">read_doc</span></td><td></td></tr>
-          <tr><td>0.3</td><td>Verify both party signatures present</td><td><span class="al al-lemmy">Lemmy</span></td><td>Manual review</td><td><span class="gate gate-block">Blocked if unsigned</span></td></tr>
-          <tr><td>0.4</td><td>Confirm signatory authority: director or authorized rep</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">search_web</span> <span class="tool">read_doc</span></td><td></td></tr>
-          <tr><td>0.5</td><td>Upload EL to client Drive folder (Mexzungu Group shared drive, supportsAllDrives=True, never My Drive)</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">upload_to_drive</span></td><td></td></tr>
-          <tr><td>0.6</td><td>Register contract: status=active, fee structure, scope, effective date, term</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">register_contract</span></td><td></td></tr>
-          <tr><td>0.7</td><td>Write to brain/clients/registry.md: name, EL date, status, billing type, practice area</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>0.8</td><td>Notify Gene of fee structure and billing mechanics</td><td><span class="al al-janis">Janis</span></td><td>Telegram OPS</td><td></td></tr>
-          <tr><td>0.9</td><td>Confirm payment method on file. Flag if bank details not confirmed.</td><td><span class="al al-gene">Gene</span></td><td><span class="tool">get_financial_summary</span></td><td></td></tr>
-          <tr><td>0.10</td><td>Telegram to OPS channel: new engagement live, client name, deal type, Practice Lead</td><td><span class="al al-janis">Janis</span></td><td>Telegram</td><td></td></tr>
-          <tr><td>0.11</td><td>Draft welcome email to founder in Pepe's voice: EL received, pod intro, next steps</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">draft_email_reply</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
-          <tr><td>0.12</td><td>search_contacts first. Create or update contact record with entity, deal type, WhatsApp, email.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">search_contacts</span> <span class="tool">create_contact</span></td><td></td></tr>
-          <tr><td>0.13</td><td>Auto-commit: git add + git commit all registry and client folder changes</td><td><span class="al al-janis">Janis</span></td><td>Bash</td><td></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- PHASE 1 -->
-  <section id="p1">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 1</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Activation</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 0 complete. EL verified and registered.</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Lars (pod), Practice Lead (content), Nile (routing), Tina (if equity)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Pod composed, folder scaffolded, kickoff scheduled, CRM updated, pod briefed</p></div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th><th>Condition</th></tr></thead>
-        <tbody>
-          <tr><td>1.1</td><td>Assign Practice Lead: match deal type to matrix. Log to overview.md.</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>1.2</td><td>Compose pod: Practice Lead + Lemmy + Gene + relevant ExCo. Confirm availability.</td><td><span class="al al-lars">Lars</span></td><td>Telegram OPS</td><td></td></tr>
-          <tr><td>1.3</td><td>Scaffold folder: brain/clients/[name]/ with overview.md, email-log.md, meetings/, workstream/</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">write_brain</span> Bash mkdir</td><td></td></tr>
-          <tr><td>1.4</td><td>Add Notion entry: project tracker DB with client name, deal type, EL date, pod, billing</td><td><span class="al al-janis">Janis</span></td><td>Notion API</td><td></td></tr>
-          <tr><td>1.5</td><td>Draft kickoff invite: 60-min calendar event, full description, location, all pod members</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">create_calendar_event</span></td><td></td></tr>
-          <tr><td>1.6</td><td>Confirm Telegram OPS thread for engagement: create or confirm</td><td><span class="al al-practice">Bowie</span></td><td>Telegram</td><td></td></tr>
-          <tr><td>1.7</td><td>Register CRM: track_lead with deal type, billing, Practice Lead, pod, stage</td><td><span class="al al-jagger">Jagger</span></td><td><span class="tool">track_lead</span></td><td></td></tr>
-          <tr><td>1.8</td><td>Send pod briefing: EL summary, client context, objectives, billing mechanics, scope summary</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="tool">draft_email_reply</span></td><td></td></tr>
-          <tr><td>1.9</td><td>Set health baseline: health = GREEN in registry</td><td><span class="al al-sheryl">Sheryl</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>1.10</td><td>Confirm comms preference (WhatsApp or email). Update contacts record.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">search_whatsapp_personal</span></td><td></td></tr>
-          <tr><td>1.11</td><td>Nile adds client email domain to routing rules</td><td><span class="al al-nile">Nile</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>1.12</td><td>Cap table snapshot: if equity deal, Tina reviews cap table docs received</td><td><span class="al al-tina">Tina</span></td><td><span class="tool">extract_pdf_text</span></td><td><span class="if-tag">If equity</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- PHASE 2 -->
-  <section id="p2">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 2</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Scope Lock</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 1 complete. Pod briefed and kickoff scheduled.</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Pepe (kickoff), Practice Lead (SoW), Ozzy (stress-test), Lemmy (EL alignment), Prince (quality bar)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>SoW approved by founder, scope locked, milestones registered, execution announced</p></div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th><th>Gate</th></tr></thead>
-        <tbody>
-          <tr><td>2.1</td><td>Assemble kickoff pack: EL, scope summary, deliverable template, timeline, team intro</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="tool">write_brain</span> <span class="tool">search_drive</span></td><td></td></tr>
-          <tr><td>2.2</td><td>Run kickoff call: Pepe leads. Practice Lead joins. Gene attends if billing questions expected.</td><td><span class="al al-pepe">Pepe</span></td><td><span class="tool">get_calendar</span></td><td></td></tr>
-          <tr><td>2.3</td><td>Transcribe if voice recorded. Generate structured notes with action items.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">transcribe_audio</span></td><td></td></tr>
-          <tr><td>2.4</td><td>Save notes: brain/clients/[name]/meetings/[date]-kickoff.md</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.5</td><td>Build founder profile: background, objectives, risk tolerance, communication style</td><td><span class="al al-nina">Nina</span></td><td><span class="tool">write_brain</span> <span class="tool">search_web</span></td><td></td></tr>
-          <tr><td>2.6</td><td>Draft Statement of Work: scope, deliverables, timeline, milestones, acceptance criteria</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.7</td><td>Ozzy stress-test: 3 failure scenarios on SoW. Log to ozzy-scope-review.md.</td><td><span class="al al-ozzy">Ozzy</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.8</td><td>Lemmy review: SoW vs EL. Flag any scope gap.</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">read_brain</span> <span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.9</td><td>Aretha regulatory: if cross-border, jurisdiction checklist</td><td><span class="al al-aretha">Aretha</span></td><td><span class="tool">search_web</span></td><td><span class="if-tag">If cross-border</span></td></tr>
-          <tr><td>2.10</td><td>Gene fee mapping: map deliverables to billing milestones; confirm trigger mechanism</td><td><span class="al al-gene">Gene</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.11</td><td>Prince quality bar: set acceptance criteria per deliverable</td><td><span class="al al-prince">Prince</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.12</td><td>Chrissie governance: if equity, review governance implications</td><td><span class="al al-chrissie">Chrissie</span></td><td><span class="tool">write_brain</span></td><td><span class="if-tag">If equity</span></td></tr>
-          <tr><td>2.13</td><td>Nina indexes scope, pod, deliverables, timeline to knowledge base</td><td><span class="al al-nina">Nina</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.14</td><td>Send SoW to founder for approval</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">draft_email_reply</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
-          <tr><td>2.15</td><td>Receive founder written sign-off. Log receipt.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">get_emails</span></td><td><span class="gate gate-block">Blocked without sign-off</span></td></tr>
-          <tr><td>2.16</td><td>Lock scope: update overview.md. Notion status = "Scope Locked".</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">write_brain</span> Notion API</td><td></td></tr>
-          <tr><td>2.17</td><td>Register milestones: create_calendar_event per milestone; ticket tracker</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">create_calendar_event</span> <span class="tool">ticket_create</span></td><td></td></tr>
-          <tr><td>2.18</td><td>Update health score: GREEN. Log scope lock event.</td><td><span class="al al-sheryl">Sheryl</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
-          <tr><td>2.19</td><td>Announce scope lock: notify pod via Telegram OPS</td><td><span class="al al-lars">Lars</span></td><td>Telegram</td><td></td></tr>
-          <tr><td>2.20</td><td>Auto-commit: git commit -m "client/[name]: scope locked [date]"</td><td><span class="al al-janis">Janis</span></td><td>Bash</td><td></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- PHASE 3 -->
-  <section id="p3">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 3</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Delivery Planning</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>Scope locked and confirmed.</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Lars (work packages), Practice Lead (content plan), Gene (billing staging), Ozzy (risk review)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Work packages assigned with owners and deadlines, sprint cadence set, invoices staged</p></div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th></tr></thead>
-        <tbody>
-          <tr><td>3.1</td><td>Confirm scope-locked SoW receipt with founder (WhatsApp Soundcheck / email Fire Away)</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">send_whatsapp</span> / <span class="tool">draft_email_reply</span></td></tr>
-          <tr><td>3.2</td><td>Identify SPOC and escalation ladder: founder SPOC, Mexzungu SPOC (Practice Lead), escalation to Pepe</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">write_brain</span></td></tr>
-          <tr><td>3.3</td><td>Decompose SoW into work packages: owner, deadline, acceptance criteria per package</td><td><span class="al al-lars">Lars</span> / Practice Lead</td><td><span class="tool">write_brain</span> <span class="tool">ticket_create</span></td></tr>
-          <tr><td>3.4</td><td>Ozzy stress-test on plan: resource conflicts, timeline risks, hidden dependencies</td><td><span class="al al-ozzy">Ozzy</span></td><td><span class="tool">write_brain</span></td></tr>
-          <tr><td>3.5</td><td>Kim spot-check: verify plan completeness against Phase 2 acceptance criteria</td><td><span class="al al-kim">Kim</span></td><td><span class="tool">read_brain</span></td></tr>
-          <tr><td>3.6</td><td>Ingest all client documents: auto_file to Drive + brain/clients/[name]/docs/</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">auto_file</span> <span class="tool">upload_to_drive</span></td></tr>
-          <tr><td>3.7</td><td>Confirm comms channels: email routing active, Telegram thread live, WhatsApp confirmed</td><td><span class="al al-nile">Nile</span></td><td><span class="tool">write_brain</span></td></tr>
-          <tr><td>3.8</td><td>Set sprint cadence: weekly check-in (retainer) or milestone-based (deal-closing)</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">create_calendar_event</span></td></tr>
-          <tr><td>3.9</td><td>Gene stages invoices: billing milestones loaded to invoice tracker with expected dates</td><td><span class="al al-gene">Gene</span></td><td><span class="tool">write_brain</span></td></tr>
-          <tr><td>3.10</td><td>Update contract registry with milestone flags</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">update_contract</span></td></tr>
-          <tr><td>3.11</td><td>Update CRM: update_lead with delivery stage, expected close, billing forecast</td><td><span class="al al-jagger">Jagger</span></td><td><span class="tool">update_lead</span></td></tr>
-          <tr><td>3.12</td><td>Send post-scope-lock summary to founder: timeline, work packages, milestone dates</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">draft_email_reply</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- PHASE 4 -->
-  <section id="p4">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 4</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Execution</div></div>
-    </div>
-
-    <div class="sub-phase">
-      <h3>4A - Per-Work-Package Execution</h3>
-      <p style="font-size:13px;color:#888;">Run for each work package in the delivery plan.</p>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Note</th></tr></thead>
-          <tbody>
-            <tr><td>4A.1</td><td>Full-read rule: Practice Lead reads complete source document. No skimming.</td><td><span class="al al-practice">Practice Lead</span></td><td><strong>Non-negotiable</strong></td></tr>
-            <tr><td>4A.2</td><td>Batch founder asks: gather all questions before sending. No piecemeal asks.</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
-            <tr><td>4A.3</td><td>Canonical save: all drafts to Mexzungu Group Drive (supportsAllDrives=True) + brain mirror</td><td><span class="al al-janis">Janis</span></td><td>Never My Drive</td></tr>
-            <tr><td>4A.4</td><td>Version naming: "Doc v[N] - [date]" in filename AND Drive version history comment</td><td><span class="al al-practice">Practice Lead</span></td><td>Mandatory</td></tr>
-            <tr><td>4A.5</td><td>Session handoff: write_brain to brain/memory/session-handoffs/[date]-[time].md after each session</td><td><span class="al al-janis">Janis</span></td><td><strong>Non-negotiable</strong></td></tr>
-            <tr><td>4A.6</td><td>Practice Lead self-review against Phase 2 acceptance criteria before escalating</td><td><span class="al al-practice">Practice Lead</span></td><td></td></tr>
-            <tr><td>4A.7</td><td>Prince spot-check at 50%: flag if direction wrong at midpoint</td><td><span class="al al-prince">Prince</span></td><td></td></tr>
-            <tr><td>4A.8</td><td>Anselmo brand pass: any external-facing content reviewed before QG</td><td><span class="al al-anselmo">Anselmo</span></td><td></td></tr>
-            <tr><td>4A.9</td><td>Log progress: Notion task status update; email-log.md if founder-facing</td><td><span class="al al-lars">Lars</span></td><td></td></tr>
-            <tr><td>4A.10</td><td>Auto-commit on package completion</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="sub-phase">
-      <h3>4B - In-flight Risk Signals (continuous monitoring)</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Signal</th><th>Monitor</th><th>Owner</th><th>Frequency</th><th>Response</th></tr></thead>
-          <tbody>
-            <tr><td>No founder response &gt;3 days</td><td>Email + WhatsApp</td><td><span class="al al-sheryl">Sheryl</span></td><td>Daily</td><td>YELLOW flag; Sade check-in</td></tr>
-            <tr><td>Founder frustration signal</td><td>Email/WhatsApp tone</td><td><span class="al al-sade">Sade</span></td><td>On event</td><td>Log; Pepe briefed</td></tr>
-            <tr><td>Out-of-scope request</td><td>Email/WhatsApp</td><td><span class="al al-lemmy">Lemmy</span></td><td>On event</td><td><span class="gate gate-show">Showtime</span> before accepting</td></tr>
-            <tr><td>Billing milestone passed</td><td>Ticket tracker</td><td><span class="al al-gene">Gene</span></td><td>Daily</td><td>Generate invoice (Phase 7A)</td></tr>
-            <tr><td>Regulatory event in jurisdiction</td><td>Web news</td><td><span class="al al-aretha">Aretha</span></td><td>Weekly</td><td>Options memo within 48h</td></tr>
-            <tr><td>Adverse FX move &gt;3%</td><td>FX data</td><td><span class="al al-sheryl">Sheryl</span></td><td>Weekly</td><td>Alert Gene and Pepe</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="sub-phase">
-      <h3>4C - Exception Paths</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Trigger</th><th>Detection</th><th>Owner</th><th>Action</th><th>Escalation</th></tr></thead>
-          <tbody>
-            <tr><td>Founder unresponsive &gt;7 days</td><td>Sheryl health scan</td><td><span class="al al-sade">Sade</span></td><td>WhatsApp check-in</td><td>Pepe direct WhatsApp at Day 10</td></tr>
-            <tr><td>Scope creep request</td><td>Lemmy email monitor</td><td><span class="al al-lemmy">Lemmy</span></td><td>Flag to Pepe immediately</td><td><span class="gate gate-show">Showtime</span> before accepting</td></tr>
-            <tr><td>Document missing or incomplete</td><td>Practice Lead flag</td><td><span class="al al-practice">Practice Lead</span></td><td>Batched request via WhatsApp</td><td></td></tr>
-            <tr><td>Mexzungu delay on milestone</td><td>Lars delivery tracker</td><td><span class="al al-sade">Sade</span></td><td>Proactive notification to founder</td><td>Pepe approves any extension</td></tr>
-            <tr><td>Billing dispute</td><td>Gene invoice tracker</td><td><span class="al al-gene">Gene</span></td><td>Document dispute; Lemmy reviews EL</td><td>Pepe direct if unresolved &gt;14 days</td></tr>
-            <tr><td>Key pod member unavailable</td><td>Lars capacity check</td><td><span class="al al-lars">Lars</span></td><td>Resource reallocation from pod bench</td><td></td></tr>
-            <tr><td>Founder requests pause</td><td>Founder message</td><td><span class="al al-lemmy">Lemmy</span></td><td>Review pause/restart mechanics in EL</td><td><span class="gate gate-show">Showtime</span> before confirming pause</td></tr>
-            <tr><td>Deal collapses mid-engagement</td><td>Founder or news signal</td><td><span class="al al-lemmy">Lemmy</span></td><td>Termination review; Gene invoices accrued work</td><td>Pepe direct call</td></tr>
-            <tr><td>Founder changes deal structure</td><td>Founder request</td><td><span class="al al-practice">Practice Lead</span></td><td>Full re-scope via Phase 2</td><td><span class="gate gate-show">Showtime</span></td></tr>
-            <tr><td>Regulatory block discovered</td><td>Aretha monitor</td><td><span class="al al-aretha">Aretha</span></td><td>Options memo + Ozzy 3-scenario plan</td><td>Pepe briefing</td></tr>
-            <tr><td>Cap table dispute</td><td>Tina flag</td><td><span class="al al-tina">Tina</span></td><td>Mediation memo; Lemmy reviews implications</td><td></td></tr>
-            <tr><td>Competitor bid surfaces</td><td>Bruce intel scan</td><td><span class="al al-bruce">Bruce</span></td><td>Competitive positioning brief for Pepe</td><td></td></tr>
-            <tr><td>Founder requests third-party NDA</td><td>Founder ask</td><td><span class="al al-lemmy">Lemmy</span></td><td>Standard NDA from template</td><td><span class="gate gate-fa">Fire Away</span> to founder</td></tr>
-            <tr><td>Co-counsel request</td><td>Founder ask</td><td><span class="al al-lemmy">Lemmy</span></td><td>Conflict check first</td><td><span class="gate gate-show">Showtime</span> if conflict found</td></tr>
-            <tr><td>Data room access issue</td><td>Bowie monitor</td><td><span class="al al-practice">Bowie</span></td><td>Technical fix; no delay to Practice Lead</td><td></td></tr>
-            <tr><td>Invoice unpaid &gt;14 days</td><td>Gene tracker</td><td><span class="al al-gene">Gene</span></td><td>Chase cadence activates</td><td>Telegram alert to Pepe</td></tr>
-            <tr><td>Founder silent after delivery</td><td>Sade monitor</td><td><span class="al al-sade">Sade</span></td><td>WhatsApp relationship check-in</td><td>Pepe at Day 7</td></tr>
-            <tr><td>Deliverable rejected post-QG</td><td>Prince flag</td><td><span class="al al-prince">Prince</span></td><td>Root cause; revision cycle (Phase 6E)</td><td>Kim audit if &gt;2 revision cycles</td></tr>
-          </tbody>
-        </table>
+  <!-- JOURNEY DIAGRAM -->
+  <section id="diagram">
+    <div class="sec-label">Mexzungu x Founders</div>
+    <h2>Journey Map</h2>
+    <p>Eleven phases from EL intake to post-close relationship. Key gate labels mark the decision points where Pepe must authorize before proceeding.</p>
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart LR
+  P0["Phase 0\nIntake"] -->|"EL Check"| P1["Phase 1\nActivation"]
+  P1 --> P2["Phase 2\nScope Lock"]
+  P2 -->|"Scope Lock"| P3["Phase 3\nDelivery Planning"]
+  P3 --> P4["Phase 4\nExecution"]
+  P4 -->|"QG"| P5["Phase 5\nQuality Gate"]
+  P5 -->|"Fire Away"| P6["Phase 6\nDelivery"]
+  P6 -->|"Invoice"| P7["Phase 7\nBilling"]
+  P7 --> P8["Phase 8\nClose"]
+  P8 --> P9["Phase 9\nKnowledge"]
+  P9 --> P10["Phase 10\nPost-Close"]
       </div>
     </div>
   </section>
 
-  <!-- PHASE 5 -->
-  <section id="p5">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 5</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Quality Gate</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>Work package complete and Practice Lead self-review done</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Prince (overall QG), Lemmy (legal clearance), Anselmo (brand), Kim (spot-check)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>All four PASS. QG summary logged. Cleared for delivery.</p></div>
-    </div>
+  <!-- ACTOR MAP -->
+  <section id="actors">
+    <div class="sec-label">Mexzungu x Founders</div>
+    <h2>Actor Map</h2>
+    <p>Fifteen actors across Principal, ExCo, and Practice Leads. Pepe holds all Showtime gates. Lars owns delivery rhythm. Practice Leads own content. Prince and Kim own quality.</p>
+    <div class="grid-3" style="margin-top: 24px;">
 
-    <div class="sub-phase">
-      <h3>5A - Prince Review</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Criterion</th></tr></thead>
-          <tbody>
-            <tr><td>5A.1</td><td>Full read against Phase 2 acceptance criteria. Score each PASS/FAIL with evidence.</td><td>100% criteria addressed</td></tr>
-            <tr><td>5A.2</td><td>Triple Gate: Is this the best we can do? What would a competing firm produce? Second pass. Kill lazy parts.</td><td>Senior counsel standard</td></tr>
-            <tr><td>5A.3</td><td>Format check: letterhead, tables, signature blocks, version number in filename and Drive version history</td><td>Canonical format</td></tr>
-            <tr><td>5A.4</td><td>Factual accuracy: cross-check all claims, citations, dates against source documents</td><td>Zero unsupported facts</td></tr>
-            <tr><td>5A.5</td><td>Founder-fit: deliverable matches this founder's context, goals, and deal structure specifically</td><td>Context-specific</td></tr>
-            <tr><td>5A.6</td><td>Jurisdiction accuracy: Aretha verifies all jurisdiction-specific content</td><td>Jurisdiction-verified</td></tr>
-            <tr><td>5A.7</td><td>Write QG summary to brain/clients/[name]/qg/qg-[date].md</td><td>Audit trail</td></tr>
-          </tbody>
-        </table>
+      <div class="card card-pepe">
+        <span class="al al-pepe">Pepe</span>
+        <h3 style="margin-top: 10px;">Principal</h3>
+        <div class="owns">Authorizes all Showtime decisions.<br>"Fire Away" is the only send trigger.<br>Leads kickoff calls.<br>Signs and approves ELs.<br>Pod debrief on close.<br>Personal post-close relationship.</div>
       </div>
-    </div>
 
-    <div class="sub-phase">
-      <h3>5B - Lemmy Legal Clearance</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Flag condition</th><th>Gate</th></tr></thead>
-          <tbody>
-            <tr><td>5B.1</td><td>Legal exposure scan: positions creating liability for Mexzungu Group</td><td>Any unqualified legal advice</td><td></td></tr>
-            <tr><td>5B.2</td><td>EL alignment: deliverable within EL scope, no unauthorized expansion</td><td>Out-of-scope content present</td><td></td></tr>
-            <tr><td>5B.3</td><td>Public positions scan: content constituting public legal position</td><td>Any public legal statement</td><td><span class="gate gate-show">Showtime #9</span></td></tr>
-            <tr><td>5B.4</td><td>Confidentiality: no third-party confidential information without consent</td><td>Third-party data present</td><td></td></tr>
-            <tr><td>5B.5</td><td>Multi-jurisdiction conflict: Aretha cross-checks where multiple jurisdictions involved</td><td>Conflicting advice present</td><td></td></tr>
-            <tr><td>5B.6</td><td>Regulated activity risk: banking, securities, fintech advisory touching licensed domains</td><td>Unlicensed regulated advice</td><td></td></tr>
-          </tbody>
-        </table>
+      <div class="card card-janis">
+        <span class="al al-janis">Janis</span>
+        <h3 style="margin-top: 10px;">Chief of Staff</h3>
+        <div class="owns">EL detection and intake.<br>Folder scaffold and file routing.<br>Drafts all client-facing emails.<br>Session handoffs at every breakpoint.<br>Git auto-commit on all changes.<br>Telegram OPS notifications.</div>
       </div>
-    </div>
 
-    <div class="sub-phase">
-      <h3>5C - Anselmo Brand Review</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Criterion</th></tr></thead>
-          <tbody>
-            <tr><td>5C.1</td><td>Voice: no corporate jargon, no generic legal boilerplate, Mexzungu voice present</td><td>Warm, direct, sharp</td></tr>
-            <tr><td>5C.2</td><td>AI tells: em dashes, "I'd be happy to," excess hedging, passive voice sweep</td><td>Zero AI tells</td></tr>
-            <tr><td>5C.3</td><td>Chain compliance: external narrative content followed Joni/Grohl/Nick chain</td><td>Chain documented</td></tr>
-            <tr><td>5C.4</td><td>Tone calibration: matches engagement type (direct for deal-closing, strategic for architecture)</td><td>Tone-context match</td></tr>
-          </tbody>
-        </table>
+      <div class="card card-lars">
+        <span class="al al-lars">Lars</span>
+        <h3 style="margin-top: 10px;">COO. Pod Lead</h3>
+        <div class="owns">Composes and briefs pod.<br>Decomposes SoW into work packages.<br>Sets sprint cadence.<br>Tracks delivery milestones.<br>Notifies pod on scope lock and close.<br>Manages resource reallocation.</div>
       </div>
-    </div>
 
-    <div class="sub-phase">
-      <h3>5D - Kim Spot-Check</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Output</th></tr></thead>
-          <tbody>
-            <tr><td>5D.1</td><td>Kim reviews against MGL quality standards for this deal type</td><td>Written audit note</td></tr>
-            <tr><td>5D.2</td><td>PASS: cleared for delivery. FAIL: targeted patch; re-run 5A before re-delivery.</td><td>PASS / FAIL</td></tr>
-          </tbody>
-        </table>
+      <div class="card card-lemmy">
+        <span class="al al-lemmy">Lemmy</span>
+        <h3 style="margin-top: 10px;">CLO</h3>
+        <div class="owns">Verifies EL signatures.<br>Reviews SoW vs. EL alignment.<br>Legal clearance QG gate.<br>Surviving obligations on close.<br>Conflict check on third-party requests.<br>Watches regulatory exposure.</div>
       </div>
+
+      <div class="card card-gene">
+        <span class="al al-gene">Gene</span>
+        <h3 style="margin-top: 10px;">CFO</h3>
+        <div class="owns">Confirms billing mechanics at intake.<br>Maps deliverables to billing milestones.<br>Generates all invoices.<br>Runs chase cadence on unpaid invoices.<br>Reconciles on close.<br>Tax memo on deal-closing fees.</div>
+      </div>
+
+      <div class="card card-ozzy">
+        <span class="al al-ozzy">Ozzy</span>
+        <h3 style="margin-top: 10px;">Scenario / QA</h3>
+        <div class="owns">Stress-tests SoW (3 failure scenarios).<br>Stress-tests delivery plan.<br>Exception path identification.<br>Monitors in-flight risk signals.<br>Second-order effect analysis.<br>Scenario memo on Showtime decisions.</div>
+      </div>
+
+      <div class="card card-prince">
+        <span class="al al-prince">Prince</span>
+        <h3 style="margin-top: 10px;">Head of Excellence</h3>
+        <div class="owns">Quality Gate lead across all deliverables.<br>Triple Gate: best we can do?<br>Format check: letterhead, sig blocks, version.<br>Factual accuracy cross-check.<br>QG summary written to audit trail.<br>Flags rework if criteria unmet.</div>
+      </div>
+
+      <div class="card card-sade">
+        <span class="al al-sade">Sade</span>
+        <h3 style="margin-top: 10px;">Head of Client Success</h3>
+        <div class="owns">Monitors founder engagement health.<br>Flags unresponsive signals.<br>Handles billing relationship.<br>Post-close relationship cadence.<br>Referral relationship.<br>Escalates to Pepe at Day 7+.</div>
+      </div>
+
+      <div class="card card-nina">
+        <span class="al al-nina">Nina</span>
+        <h3 style="margin-top: 10px;">Chief Knowledge Officer</h3>
+        <div class="owns">Builds founder profile at kickoff.<br>Indexes scope and deliverables.<br>Persona dossier updates post-close.<br>Feeds knowledge base with learnings.<br>Referral network mapping.<br>Archives extraction session.</div>
+      </div>
+
+      <div class="card card-joan">
+        <span class="al al-joan">Joan</span>
+        <h3 style="margin-top: 10px;">Venture Architecture Lead</h3>
+        <div class="owns">Lead practice for venture architecture.<br>Coordinates signal-to-EL flow from BD.<br>Manages sector coverage.<br>Renewal trigger on next funding round.<br>Second company = new EL from Phase 0.</div>
+      </div>
+
+      <div class="card card-tina">
+        <span class="al al-tina">Tina</span>
+        <h3 style="margin-top: 10px;">Equity Lead</h3>
+        <div class="owns">Cap table review at activation.<br>Equity structure analysis.<br>ESOP sizing with Chrissie.<br>Cap table archive on close.<br>Equity knowledge base updates.</div>
+      </div>
+
+      <div class="card card-pj">
+        <span class="al al-pj">PJ</span>
+        <h3 style="margin-top: 10px;">Deal Execution Lead</h3>
+        <div class="owns">Debt and loan engagements.<br>Deal execution and signature coordination.<br>Gene model required before execution.<br>Joan brief required at handoff.</div>
+      </div>
+
+      <div class="card card-aretha">
+        <span class="al al-aretha">Aretha</span>
+        <h3 style="margin-top: 10px;">Regulatory Lead</h3>
+        <div class="owns">Cross-border jurisdiction checklist.<br>M&amp;A regulatory compliance.<br>Weekly regulatory event monitoring.<br>New market entry regulatory brief.</div>
+      </div>
+
+      <div class="card card-chrissie">
+        <span class="al al-chrissie">Chrissie</span>
+        <h3 style="margin-top: 10px;">Governance Lead</h3>
+        <div class="owns">Governance implications on equity deals.<br>Board structure and SHA.<br>Annual governance hygiene trigger.<br>Shareholder dispute escalation.</div>
+      </div>
+
+      <div class="card card-kim">
+        <span class="al al-kim">Kim</span>
+        <h3 style="margin-top: 10px;">Quality Auditor</h3>
+        <div class="owns">Spot-check at 50% execution.<br>Final QG PASS/FAIL verdict.<br>Root cause on repeat rework cycles.<br>Audit reports only. No client actions.</div>
+      </div>
+
     </div>
   </section>
 
-  <!-- PHASE 6 -->
-  <section id="p6">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 6</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Delivery</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>QG PASS on all four gates</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Practice Lead (package), Janis (logistics), Pepe (Fire Away)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Deliverable received and acknowledged by founder</p></div>
-    </div>
+  <!-- ALL PHASES -->
+  <section id="phases">
+    <div class="sec-label">Mexzungu x Founders</div>
+    <h2>Phases</h2>
+    <p>Phases 0-2 open by default. Phases 3-10 collapsed. Click any phase header to expand.</p>
 
-    <div class="sub-phase">
-      <h3>6A - Delivery Preparation</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th></tr></thead>
+    <!-- PHASE 0 -->
+    <details open id="p0">
+      <summary>
+        <div class="step-num">Phase 0</div>
+        Intake
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">EL-triggered. Lemmy verifies. Gene confirms billing.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>Engagement Letter arrives via email or WhatsApp</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Janis (detection), Lemmy (verify), Gene (fee), Nile (routing)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>EL verified, both signatures confirmed, contract registered, welcome email drafted</p></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th><th>Gate</th></tr></thead>
+            <tbody>
+              <tr><td>0.1</td><td>Scan get_emails (all 4 accounts) and search_whatsapp_personal for signed EL</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">get_emails</span> <span class="tool">search_whatsapp_personal</span></td><td></td></tr>
+              <tr><td>0.2</td><td>Extract key fields: client name, entity, jurisdiction, deal type, fee structure, effective date</td><td><span class="al al-janis">Janis</span> / <span class="al al-nina">Nina</span></td><td><span class="tool">extract_pdf_text</span> <span class="tool">read_doc</span></td><td></td></tr>
+              <tr><td>0.3</td><td>Verify both party signatures present</td><td><span class="al al-lemmy">Lemmy</span></td><td>Manual review</td><td><span class="gate gate-block">Blocked if unsigned</span></td></tr>
+              <tr><td>0.4</td><td>Confirm signatory authority: director or authorized rep</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">search_web</span> <span class="tool">read_doc</span></td><td></td></tr>
+              <tr><td>0.5</td><td>Upload EL to client Drive folder (Mexzungu Group shared drive, supportsAllDrives=True, never My Drive)</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">upload_to_drive</span></td><td></td></tr>
+              <tr><td>0.6</td><td>Register contract: status=active, fee structure, scope, effective date, term</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">register_contract</span></td><td></td></tr>
+              <tr><td>0.7</td><td>Write to brain/clients/registry.md: name, EL date, status, billing type, practice area</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>0.8</td><td>Notify Gene of fee structure and billing mechanics</td><td><span class="al al-janis">Janis</span></td><td>Telegram OPS</td><td></td></tr>
+              <tr><td>0.9</td><td>Confirm payment method on file. Flag if bank details not confirmed.</td><td><span class="al al-gene">Gene</span></td><td><span class="tool">get_financial_summary</span></td><td></td></tr>
+              <tr><td>0.10</td><td>Telegram to OPS channel: new engagement live, client name, deal type, Practice Lead</td><td><span class="al al-janis">Janis</span></td><td>Telegram</td><td></td></tr>
+              <tr><td>0.11</td><td>Draft welcome email to founder in Pepe's voice: EL received, pod intro, next steps</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">draft_email_reply</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>0.12</td><td>search_contacts first. Create or update contact record with entity, deal type, WhatsApp, email.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">search_contacts</span> <span class="tool">create_contact</span></td><td></td></tr>
+              <tr><td>0.13</td><td>Auto-commit: git add + git commit all registry and client folder changes</td><td><span class="al al-janis">Janis</span></td><td>Bash</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin:16px 0 8px;">Failure conditions</h4>
+        <table class="fault-tbl">
+          <thead><tr><th>Condition</th><th>Owner</th><th>Action</th></tr></thead>
           <tbody>
-            <tr><td>6A.1</td><td>Assemble package: all deliverable files, cover memo, appendices in one Drive folder</td><td><span class="al al-practice">Practice Lead</span></td></tr>
-            <tr><td>6A.2</td><td>PDF export: export_deck_as_pdf for presentations; Drive PDF export for docs</td><td><span class="al al-janis">Janis</span></td></tr>
-            <tr><td>6A.3</td><td>Prepare cover context: what the deliverable contains, any founder action required, next steps</td><td><span class="al al-practice">Practice Lead</span></td></tr>
-            <tr><td>6A.4</td><td>One-page plain-language summary for non-legal founders</td><td><span class="al al-practice">Practice Lead</span></td></tr>
+            <tr><td>EL unsigned or partially signed</td><td><span class="al al-lemmy">Lemmy</span></td><td>Block intake. WhatsApp to founder requesting countersigned copy.</td></tr>
+            <tr><td>Unknown signatory authority</td><td><span class="al al-lemmy">Lemmy</span></td><td>Flag to Pepe. Showtime before accepting.</td></tr>
+            <tr><td>Fee structure ambiguous</td><td><span class="al al-gene">Gene</span></td><td>Hold on billing notify until resolved. Pepe clarifies with founder.</td></tr>
+            <tr><td>Duplicate client detected in registry</td><td><span class="al al-nina">Nina</span></td><td>Merge records. Confirm practice area reassignment.</td></tr>
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
-    <div class="sub-phase">
-      <h3>6B - Delivery Email</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+    <!-- PHASE 1 -->
+    <details open id="p1">
+      <summary>
+        <div class="step-num">Phase 1</div>
+        Activation
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Pod composition. Folder scaffold. Kickoff calendar.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 0 complete. EL verified and registered.</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Lars (pod), Practice Lead (content), Nile (routing), Tina (if equity)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>Pod composed, folder scaffolded, kickoff scheduled, CRM updated, pod briefed</p></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th><th>Condition</th></tr></thead>
+            <tbody>
+              <tr><td>1.1</td><td>Assign Practice Lead: match deal type to matrix. Log to overview.md.</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>1.2</td><td>Compose pod: Practice Lead + Lemmy + Gene + relevant ExCo. Confirm availability.</td><td><span class="al al-lars">Lars</span></td><td>Telegram OPS</td><td></td></tr>
+              <tr><td>1.3</td><td>Scaffold folder: brain/clients/[name]/ with overview.md, email-log.md, meetings/, workstream/</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">write_brain</span> Bash mkdir</td><td></td></tr>
+              <tr><td>1.4</td><td>Add Notion entry: project tracker DB with client name, deal type, EL date, pod, billing</td><td><span class="al al-janis">Janis</span></td><td>Notion API</td><td></td></tr>
+              <tr><td>1.5</td><td>Draft kickoff invite: 60-min calendar event, full description, location, all pod members</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">create_calendar_event</span></td><td></td></tr>
+              <tr><td>1.6</td><td>Confirm Telegram OPS thread for engagement: create or confirm</td><td><span class="al al-bowie">Bowie</span></td><td>Telegram</td><td></td></tr>
+              <tr><td>1.7</td><td>Register CRM: track_lead with deal type, billing, Practice Lead, pod, stage</td><td><span class="al al-jagger">Jagger</span></td><td><span class="tool">track_lead</span></td><td></td></tr>
+              <tr><td>1.8</td><td>Send pod briefing: EL summary, client context, objectives, billing mechanics, scope summary</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="tool">draft_email_reply</span></td><td></td></tr>
+              <tr><td>1.9</td><td>Set health baseline: health = GREEN in registry</td><td><span class="al al-sheryl">Sheryl</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>1.10</td><td>Confirm comms preference (WhatsApp or email). Update contacts record.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">search_whatsapp_personal</span></td><td></td></tr>
+              <tr><td>1.11</td><td>Nile adds client email domain to routing rules</td><td><span class="al al-nile">Nile</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>1.12</td><td>Cap table snapshot: if equity deal, Tina reviews cap table docs received</td><td><span class="al al-tina">Tina</span></td><td><span class="tool">extract_pdf_text</span></td><td><span class="if-tag">If equity</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin:16px 0 8px;">Failure conditions</h4>
+        <table class="fault-tbl">
+          <thead><tr><th>Condition</th><th>Owner</th><th>Action</th></tr></thead>
           <tbody>
-            <tr><td>6B.1</td><td>Draft: draft_email_reply in-thread, reply-all with all original To/Cc. build_email_html() mandatory.</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
-            <tr><td>6B.2</td><td>Account routing: pepe@mexzungu.com default. Personal only if explicitly instructed.</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
-            <tr><td>6B.3</td><td>CC/BCC discipline: CC client counsel if known; BCC Daniel+Pablo for NCA clients</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
-            <tr><td>6B.4</td><td>Format verification: HTML renders correctly before send</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
-            <tr><td>6B.5</td><td>Send</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
-            <tr><td>6B.6</td><td>Log send to brain/clients/[name]/email-log.md</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+            <tr><td>Practice Lead unavailable for pod</td><td><span class="al al-lars">Lars</span></td><td>Escalate to Pepe. Identify alternate Practice Lead from matrix.</td></tr>
+            <tr><td>Kickoff scheduling fails (no mutual slot)</td><td><span class="al al-janis">Janis</span></td><td>WhatsApp founder with 3 options. Escalate to Sade at Day 5.</td></tr>
+            <tr><td>Cap table docs not provided (equity deal)</td><td><span class="al al-tina">Tina</span></td><td>Batched request to founder. Block Phase 2 until received.</td></tr>
           </tbody>
         </table>
       </div>
-    </div>
-  </section>
+    </details>
 
-  <!-- PHASE 7 -->
-  <section id="p7">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 7</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Billing</div></div>
-    </div>
-
-    <div class="sub-phase">
-      <h3>7A - Retainer Billing Cadence</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
-          <tbody>
-            <tr><td>7A.1</td><td>Monitor retainer period end dates via billing calendar</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
-            <tr><td>7A.2</td><td>Confirm deliverables completed for billing period</td><td><span class="al al-practice">Practice Lead</span></td><td></td></tr>
-            <tr><td>7A.3</td><td>Generate invoice: canonical template; <strong>bank hours option mandatory</strong></td><td><span class="al al-gene">Gene</span></td><td></td></tr>
-            <tr><td>7A.4</td><td>Confirm billing currency and invoicing entity (Mexzungu Group Ltd, Mauritius)</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
-            <tr><td>7A.5</td><td>Prince format check</td><td><span class="al al-prince">Prince</span></td><td></td></tr>
-            <tr><td>7A.6</td><td>Lemmy review: billing aligns with EL fee structure</td><td><span class="al al-lemmy">Lemmy</span></td><td></td></tr>
-            <tr><td>7A.7</td><td>Send invoice</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
-            <tr><td>7A.8</td><td>Log invoice to brain/areas/finance/invoices/</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
-          </tbody>
-        </table>
+    <!-- PHASE 2 -->
+    <details open id="p2">
+      <summary>
+        <div class="step-num">Phase 2</div>
+        Scope Lock
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Kickoff call. SoW. Ozzy stress-test. Founder sign-off.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 1 complete. Pod briefed and kickoff scheduled.</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Pepe (kickoff), Practice Lead (SoW), Ozzy (stress-test), Lemmy (EL alignment), Prince (quality bar)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>SoW approved by founder, scope locked, milestones registered, execution announced</p></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th><th>Gate</th></tr></thead>
+            <tbody>
+              <tr><td>2.1</td><td>Assemble kickoff pack: EL, scope summary, deliverable template, timeline, team intro</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="tool">write_brain</span> <span class="tool">search_drive</span></td><td></td></tr>
+              <tr><td>2.2</td><td>Run kickoff call: Pepe leads. Practice Lead joins. Gene attends if billing questions expected.</td><td><span class="al al-pepe">Pepe</span></td><td><span class="tool">get_calendar</span></td><td></td></tr>
+              <tr><td>2.3</td><td>Transcribe if voice recorded. Generate structured notes with action items.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">transcribe_audio</span></td><td></td></tr>
+              <tr><td>2.4</td><td>Save notes: brain/clients/[name]/meetings/[date]-kickoff.md</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.5</td><td>Build founder profile: background, objectives, risk tolerance, communication style</td><td><span class="al al-nina">Nina</span></td><td><span class="tool">write_brain</span> <span class="tool">search_web</span></td><td></td></tr>
+              <tr><td>2.6</td><td>Draft Statement of Work: scope, deliverables, timeline, milestones, acceptance criteria</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.7</td><td>Ozzy stress-test: 3 failure scenarios on SoW. Log to ozzy-scope-review.md.</td><td><span class="al al-ozzy">Ozzy</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.8</td><td>Lemmy review: SoW vs EL. Flag any scope gap.</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">read_brain</span> <span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.9</td><td>Aretha regulatory: if cross-border, jurisdiction checklist</td><td><span class="al al-aretha">Aretha</span></td><td><span class="tool">search_web</span></td><td><span class="if-tag">If cross-border</span></td></tr>
+              <tr><td>2.10</td><td>Gene fee mapping: map deliverables to billing milestones; confirm trigger mechanism</td><td><span class="al al-gene">Gene</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.11</td><td>Prince quality bar: set acceptance criteria per deliverable</td><td><span class="al al-prince">Prince</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.12</td><td>Chrissie governance: if equity, review governance implications</td><td><span class="al al-chrissie">Chrissie</span></td><td><span class="tool">write_brain</span></td><td><span class="if-tag">If equity</span></td></tr>
+              <tr><td>2.13</td><td>Nina indexes scope, pod, deliverables, timeline to knowledge base</td><td><span class="al al-nina">Nina</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.14</td><td>Send SoW to founder for approval</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">draft_email_reply</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>2.15</td><td>Receive founder written sign-off. Log receipt.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">get_emails</span></td><td><span class="gate gate-block">Blocked without sign-off</span></td></tr>
+              <tr><td>2.16</td><td>Lock scope: update overview.md. Notion status = "Scope Locked".</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">write_brain</span> Notion API</td><td></td></tr>
+              <tr><td>2.17</td><td>Register milestones: create_calendar_event per milestone; ticket tracker</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">create_calendar_event</span> <span class="tool">ticket_create</span></td><td></td></tr>
+              <tr><td>2.18</td><td>Update health score: GREEN. Log scope lock event.</td><td><span class="al al-sheryl">Sheryl</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+              <tr><td>2.19</td><td>Announce scope lock: notify pod via Telegram OPS</td><td><span class="al al-lars">Lars</span></td><td>Telegram</td><td></td></tr>
+              <tr><td>2.20</td><td>Auto-commit: git commit -m "client/[name]: scope locked [date]"</td><td><span class="al al-janis">Janis</span></td><td>Bash</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </details>
 
-    <div class="sub-phase">
-      <h3>7C - Payment Follow-Up Chase Cadence</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Day</th><th>Action</th><th>Owner</th></tr></thead>
-          <tbody>
-            <tr><td>Daily</td><td>Reconcile get_financial_summary for invoice payment status</td><td><span class="al al-gene">Gene</span></td></tr>
-            <tr><td>Day 7 unpaid</td><td>run_invoice_chase</td><td><span class="al al-gene">Gene</span></td></tr>
-            <tr><td>Day 14</td><td>Gene Telegram alert to Pepe</td><td><span class="al al-gene">Gene</span></td></tr>
-            <tr><td>Cross-border</td><td>African/LatAm SWIFT delays: allow +5 business days before chasing</td><td><span class="al al-gene">Gene</span></td></tr>
-            <tr><td>FX event</td><td>Adverse move &gt;3%: Sheryl alerts Gene and Pepe</td><td><span class="al al-sheryl">Sheryl</span></td></tr>
-            <tr><td>Payment failure</td><td>Immediate Telegram alert + daily nag until resolved</td><td><span class="al al-gene">Gene</span></td></tr>
-            <tr><td>Day 30</td><td>Sade contacts founder (WhatsApp)</td><td><span class="al al-sade">Sade</span></td></tr>
-            <tr><td>Day 45</td><td>Pepe direct WhatsApp</td><td><span class="al al-pepe">Pepe</span></td></tr>
-            <tr><td>On receipt</td><td>Write to email-log.md; close invoice ticket</td><td><span class="al al-gene">Gene</span></td></tr>
-          </tbody>
-        </table>
+    <!-- PHASE 3 -->
+    <details id="p3">
+      <summary>
+        <div class="step-num">Phase 3</div>
+        Delivery Planning
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Work packages. Sprint cadence. Invoices staged.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>Scope locked and confirmed.</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Lars (work packages), Practice Lead (content plan), Gene (billing staging), Ozzy (risk review)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>Work packages assigned with owners and deadlines, sprint cadence set, invoices staged</p></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th></tr></thead>
+            <tbody>
+              <tr><td>3.1</td><td>Confirm scope-locked SoW receipt with founder (WhatsApp Soundcheck / email Fire Away)</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">send_whatsapp</span> / <span class="tool">draft_email_reply</span></td></tr>
+              <tr><td>3.2</td><td>Identify SPOC and escalation ladder: founder SPOC, Mexzungu SPOC (Practice Lead), escalation to Pepe</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">write_brain</span></td></tr>
+              <tr><td>3.3</td><td>Decompose SoW into work packages: owner, deadline, acceptance criteria per package</td><td><span class="al al-lars">Lars</span> / Practice Lead</td><td><span class="tool">write_brain</span> <span class="tool">ticket_create</span></td></tr>
+              <tr><td>3.4</td><td>Ozzy stress-test on plan: resource conflicts, timeline risks, hidden dependencies</td><td><span class="al al-ozzy">Ozzy</span></td><td><span class="tool">write_brain</span></td></tr>
+              <tr><td>3.5</td><td>Kim spot-check: verify plan completeness against Phase 2 acceptance criteria</td><td><span class="al al-kim">Kim</span></td><td><span class="tool">read_brain</span></td></tr>
+              <tr><td>3.6</td><td>Ingest all client documents: auto_file to Drive + brain/clients/[name]/docs/</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">auto_file</span> <span class="tool">upload_to_drive</span></td></tr>
+              <tr><td>3.7</td><td>Confirm comms channels: email routing active, Telegram thread live, WhatsApp confirmed</td><td><span class="al al-nile">Nile</span></td><td><span class="tool">write_brain</span></td></tr>
+              <tr><td>3.8</td><td>Set sprint cadence: weekly check-in (retainer) or milestone-based (deal-closing)</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">create_calendar_event</span></td></tr>
+              <tr><td>3.9</td><td>Gene stages invoices: billing milestones loaded to invoice tracker with expected dates</td><td><span class="al al-gene">Gene</span></td><td><span class="tool">write_brain</span></td></tr>
+              <tr><td>3.10</td><td>Update contract registry with milestone flags</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">update_contract</span></td></tr>
+              <tr><td>3.11</td><td>Update CRM: update_lead with delivery stage, expected close, billing forecast</td><td><span class="al al-jagger">Jagger</span></td><td><span class="tool">update_lead</span></td></tr>
+              <tr><td>3.12</td><td>Send post-scope-lock summary to founder: timeline, work packages, milestone dates</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">draft_email_reply</span></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </section>
+    </details>
 
-  <!-- PHASE 8 -->
-  <section id="p8">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 8</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Close</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>Final deliverable accepted and all invoices paid</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Prince (final confirm), Lemmy (close-out), Gene (reconciliation), Nina (extraction scheduling)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Contract closed in registry, client archived, extraction session scheduled within 7 days</p></div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
-        <tbody>
-          <tr><td>8.1</td><td>Identify close trigger type: retainer end vs. deal-closing event</td><td><span class="al al-gene">Gene</span> / <span class="al al-lemmy">Lemmy</span></td><td></td></tr>
-          <tr><td>8.2</td><td>Confirm all deliverables accepted (Prince + founder sign-off received)</td><td><span class="al al-prince">Prince</span></td><td></td></tr>
-          <tr><td>8.3</td><td>Confirm all invoices paid</td><td><span class="al al-gene">Gene</span></td><td><span class="gate gate-block">Blocked if unpaid</span></td></tr>
-          <tr><td>8.4</td><td>Deal-closing fee reconciliation: Gene reconciles final fee vs. actual closing value</td><td><span class="al al-gene">Gene</span></td><td><span class="if-tag">If deal-closing</span></td></tr>
-          <tr><td>8.5</td><td>Close-out email: Pepe formally closes engagement with founder</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
-          <tr><td>8.6</td><td>Tax memo on deal-closing fee: Gene + Aretha produce jurisdiction-specific memo</td><td><span class="al al-gene">Gene</span> / <span class="al al-aretha">Aretha</span></td><td><span class="if-tag">If deal-closing</span></td></tr>
-          <tr><td>8.7</td><td>Lemmy surviving obligations: confidentiality (perpetual or 5yr), IP (perpetual), non-solicit (12 months)</td><td><span class="al al-lemmy">Lemmy</span></td><td></td></tr>
-          <tr><td>8.8</td><td>Cap table snapshot archive: Tina + Chrissie archive final structure</td><td><span class="al al-tina">Tina</span> / <span class="al al-chrissie">Chrissie</span></td><td><span class="if-tag">If equity</span></td></tr>
-          <tr><td>8.9</td><td>Archive via Iggy: client folder frozen; all docs to Drive archive; local mirror read-only</td><td><span class="al al-iggy">Iggy</span></td><td></td></tr>
-          <tr><td>8.10</td><td>Registry update: status = closed; close date logged</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
-          <tr><td>8.11</td><td>Referral ask via Jagger: draft in Pepe's voice</td><td><span class="al al-jagger">Jagger</span></td><td><span class="gate gate-show">Showtime #4</span> for first contact with referral</td></tr>
-          <tr><td>8.12</td><td>Testimonial capture if founder willing: send to Freddie content pipeline</td><td><span class="al al-freddie">Freddie</span></td><td></td></tr>
-          <tr><td>8.13</td><td>Pod notification: engagement closed; release pod resources</td><td><span class="al al-lars">Lars</span></td><td></td></tr>
-          <tr><td>8.14</td><td>Nina extraction calendar: schedule within 7 days of close</td><td><span class="al al-nina">Nina</span></td><td></td></tr>
-          <tr><td>8.15</td><td>Post-close Sheryl monitoring: schedule 30-day health check</td><td><span class="al al-sheryl">Sheryl</span></td><td></td></tr>
-          <tr><td>8.16</td><td>Contact record update: brain/contacts/[name].md with outcome, next need, referral status</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <!-- PHASE 4 -->
+    <details id="p4">
+      <summary>
+        <div class="step-num">Phase 4</div>
+        Execution
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Per-package loop. In-flight risk monitoring. Exception paths.</span>
+      </summary>
+      <div class="step-body">
 
-  <!-- PHASE 9 -->
-  <section id="p9">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 9</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Knowledge Extraction</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Trigger</div><p>Close confirmed. Extraction session within 7 days of Phase 8.</p></div>
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Nina (lead), Practice Lead (debrief), Prince (QG analysis), Freddie (content pipeline)</p></div>
-      <div class="pm-item"><div class="pm-label">Exit condition</div><p>All learnings logged, dossiers updated, templates versioned, knowledge base fed</p></div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th></tr></thead>
-        <tbody>
-          <tr><td>9.1</td><td>Classify engagement: deal type, jurisdiction, sector, stage, fee structure, outcome</td><td><span class="al al-nina">Nina</span></td></tr>
-          <tr><td>9.2</td><td>Pod debrief: Pepe + Practice Lead on what worked and what did not</td><td><span class="al al-pepe">Pepe</span> / Practice Lead</td></tr>
-          <tr><td>9.3</td><td>Cross-check: Sade (relationship), Sheryl (health anomalies), Lemmy (compliance flags)</td><td><span class="al al-sade">Sade</span> / <span class="al al-sheryl">Sheryl</span> / <span class="al al-lemmy">Lemmy</span></td></tr>
-          <tr><td>9.4</td><td>Extract portable learnings: templates, clauses, structures reusable in future</td><td>Practice Lead / <span class="al al-nina">Nina</span></td></tr>
-          <tr><td>9.5</td><td>Persona dossier updates: calibration entries to relevant MGL persona dossiers</td><td><span class="al al-nina">Nina</span></td></tr>
-          <tr><td>9.6</td><td>Template version-bumps: update templates used; rename to v[N+1] in Drive</td><td>Practice Lead</td></tr>
-          <tr><td>9.7</td><td>Jurisdiction knowledge base: Aretha logs to brain/knowledge/jurisdictions/[code].md</td><td><span class="al al-aretha">Aretha</span></td></tr>
-          <tr><td>9.8</td><td>Sector pattern update: valuation norms, governance structures, red flags</td><td><span class="al al-bruce">Bruce</span> / <span class="al al-nina">Nina</span></td></tr>
-          <tr><td>9.9</td><td>Rework log analysis: if &gt;2 revision cycles, Prince identifies root cause</td><td><span class="al al-prince">Prince</span></td></tr>
-          <tr><td>9.10</td><td>Standing rule proposal: if new rule emerges, draft for Pepe review</td><td><span class="al al-janis">Janis</span></td></tr>
-          <tr><td>9.11</td><td>Nina feeds all learnings to brain/knowledge/ index</td><td><span class="al al-nina">Nina</span></td></tr>
-          <tr><td>9.12</td><td>Content opportunity flag to Freddie: anonymizable insights from engagement</td><td><span class="al al-freddie">Freddie</span></td></tr>
-          <tr><td>9.13</td><td>Three-gate anonymization: Lemmy consent + founder consent + Anselmo pass before any public use</td><td><span class="al al-lemmy">Lemmy</span> / <span class="al al-anselmo">Anselmo</span></td></tr>
-          <tr><td>9.14</td><td>Referral network mapping: Nina + Jagger map new referral relationships</td><td><span class="al al-nina">Nina</span> / <span class="al al-jagger">Jagger</span></td></tr>
-          <tr><td>9.15</td><td>Close knowledge session: Nina archives extraction; close Notion ticket</td><td><span class="al al-nina">Nina</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+        <p class="sub-h3">4A - Per-Work-Package Execution</p>
+        <p style="font-size:13px;color:#888;margin-bottom:12px;">Run for each work package in the delivery plan.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td>4A.1</td><td>Full-read rule: Practice Lead reads complete source document. No skimming.</td><td><span class="al al-practice">Practice Lead</span></td><td><strong>Non-negotiable</strong></td></tr>
+              <tr><td>4A.2</td><td>Batch founder asks: gather all questions before sending. No piecemeal asks.</td><td><span class="al al-practice">Practice Lead</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>4A.3</td><td>Canonical save: all drafts to Mexzungu Group Drive (supportsAllDrives=True) + brain mirror</td><td><span class="al al-janis">Janis</span></td><td>Never My Drive</td></tr>
+              <tr><td>4A.4</td><td>Version naming: "Doc v[N] - [date]" in filename AND Drive version history comment</td><td><span class="al al-practice">Practice Lead</span></td><td>Mandatory</td></tr>
+              <tr><td>4A.5</td><td>Session handoff: write_brain to brain/memory/session-handoffs/[date]-[time].md after each session</td><td><span class="al al-janis">Janis</span></td><td><strong>Non-negotiable</strong></td></tr>
+              <tr><td>4A.6</td><td>Practice Lead self-review against Phase 2 acceptance criteria before escalating</td><td><span class="al al-practice">Practice Lead</span></td><td></td></tr>
+              <tr><td>4A.7</td><td>Prince spot-check at 50%: flag if direction wrong at midpoint</td><td><span class="al al-prince">Prince</span></td><td></td></tr>
+              <tr><td>4A.8</td><td>Anselmo brand pass: any external-facing content reviewed before QG</td><td><span class="al al-anselmo">Anselmo</span></td><td></td></tr>
+              <tr><td>4A.9</td><td>Log progress: Notion task status update; email-log.md if founder-facing</td><td><span class="al al-lars">Lars</span></td><td></td></tr>
+              <tr><td>4A.10</td><td>Auto-commit on package completion</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
 
-  <!-- PHASE 10 -->
-  <section id="p10">
-    <div class="phase-header">
-      <div class="ph-num-badge">PH 10</div>
-      <div><div class="ph-sub">Founders Engine</div><div class="ph-title">Post-Close Relationship</div></div>
-    </div>
-    <div class="phase-meta">
-      <div class="pm-item"><div class="pm-label">Owners</div><p>Sheryl (health), Sade (relationship), Jagger (referral), Freddie (content)</p></div>
-      <div class="pm-item"><div class="pm-label">Pattern</div><p>Ongoing loop. No fixed end.</p></div>
-    </div>
+        <p class="sub-h3">4B - In-flight Risk Signals (continuous monitoring)</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Signal</th><th>Monitor</th><th>Owner</th><th>Frequency</th><th>Response</th></tr></thead>
+            <tbody>
+              <tr><td>No founder response &gt;3 days</td><td>Email + WhatsApp</td><td><span class="al al-sheryl">Sheryl</span></td><td>Daily</td><td>YELLOW flag; Sade check-in</td></tr>
+              <tr><td>Founder frustration signal</td><td>Email/WhatsApp tone</td><td><span class="al al-sade">Sade</span></td><td>On event</td><td>Log; Pepe briefed</td></tr>
+              <tr><td>Out-of-scope request</td><td>Email/WhatsApp</td><td><span class="al al-lemmy">Lemmy</span></td><td>On event</td><td><span class="gate gate-show">Showtime</span> before accepting</td></tr>
+              <tr><td>Billing milestone passed</td><td>Ticket tracker</td><td><span class="al al-gene">Gene</span></td><td>Daily</td><td>Generate invoice (Phase 7A)</td></tr>
+              <tr><td>Regulatory event in jurisdiction</td><td>Web news</td><td><span class="al al-aretha">Aretha</span></td><td>Weekly</td><td>Options memo within 48h</td></tr>
+              <tr><td>Adverse FX move &gt;3%</td><td>FX data</td><td><span class="al al-sheryl">Sheryl</span></td><td>Weekly</td><td>Alert Gene and Pepe</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-    <div class="sub-phase">
-      <h3>Touch Cadence</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Interval</th><th>Action</th><th>Owner</th><th>Gate</th></tr></thead>
-          <tbody>
-            <tr><td>30 days</td><td>WhatsApp check-in: how is the deal landing? Any questions?</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
-            <tr><td>90 days</td><td>Formal follow-up: brief update, offer new engagement scan</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
-            <tr><td>6 months</td><td>Strategic touchpoint: new jurisdiction, round, or governance need?</td><td><span class="al al-bruce">Bruce</span> / <span class="al al-pepe">Pepe</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
-            <tr><td>12 months</td><td>Pepe personal anniversary touch: brief WhatsApp</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
-          </tbody>
-        </table>
+        <p class="sub-h3">4C - Exception Paths</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Trigger</th><th>Detection</th><th>Owner</th><th>Action</th><th>Escalation</th></tr></thead>
+            <tbody>
+              <tr><td>Founder unresponsive &gt;7 days</td><td>Sheryl health scan</td><td><span class="al al-sade">Sade</span></td><td>WhatsApp check-in</td><td>Pepe direct WhatsApp at Day 10</td></tr>
+              <tr><td>Scope creep request</td><td>Lemmy email monitor</td><td><span class="al al-lemmy">Lemmy</span></td><td>Flag to Pepe immediately</td><td><span class="gate gate-show">Showtime</span> before accepting</td></tr>
+              <tr><td>Document missing or incomplete</td><td>Practice Lead flag</td><td><span class="al al-practice">Practice Lead</span></td><td>Batched request via WhatsApp</td><td></td></tr>
+              <tr><td>Mexzungu delay on milestone</td><td>Lars delivery tracker</td><td><span class="al al-sade">Sade</span></td><td>Proactive notification to founder</td><td>Pepe approves any extension</td></tr>
+              <tr><td>Billing dispute</td><td>Gene invoice tracker</td><td><span class="al al-gene">Gene</span></td><td>Document dispute; Lemmy reviews EL</td><td>Pepe direct if unresolved &gt;14 days</td></tr>
+              <tr><td>Key pod member unavailable</td><td>Lars capacity check</td><td><span class="al al-lars">Lars</span></td><td>Resource reallocation from pod bench</td><td></td></tr>
+              <tr><td>Founder requests pause</td><td>Founder message</td><td><span class="al al-lemmy">Lemmy</span></td><td>Review pause/restart mechanics in EL</td><td><span class="gate gate-show">Showtime</span> before confirming pause</td></tr>
+              <tr><td>Deal collapses mid-engagement</td><td>Founder or news signal</td><td><span class="al al-lemmy">Lemmy</span></td><td>Termination review; Gene invoices accrued work</td><td>Pepe direct call</td></tr>
+              <tr><td>Founder changes deal structure</td><td>Founder request</td><td><span class="al al-practice">Practice Lead</span></td><td>Full re-scope via Phase 2</td><td><span class="gate gate-show">Showtime</span></td></tr>
+              <tr><td>Regulatory block discovered</td><td>Aretha monitor</td><td><span class="al al-aretha">Aretha</span></td><td>Options memo + Ozzy 3-scenario plan</td><td>Pepe briefing</td></tr>
+              <tr><td>Cap table dispute</td><td>Tina flag</td><td><span class="al al-tina">Tina</span></td><td>Mediation memo; Lemmy reviews implications</td><td></td></tr>
+              <tr><td>Competitor bid surfaces</td><td>Bruce intel scan</td><td><span class="al al-bruce">Bruce</span></td><td>Competitive positioning brief for Pepe</td><td></td></tr>
+              <tr><td>Founder requests third-party NDA</td><td>Founder ask</td><td><span class="al al-lemmy">Lemmy</span></td><td>Standard NDA from template</td><td><span class="gate gate-fa">Fire Away</span> to founder</td></tr>
+              <tr><td>Co-counsel request</td><td>Founder ask</td><td><span class="al al-lemmy">Lemmy</span></td><td>Conflict check first</td><td><span class="gate gate-show">Showtime</span> if conflict found</td></tr>
+              <tr><td>Data room access issue</td><td>Bowie monitor</td><td><span class="al al-bowie">Bowie</span></td><td>Technical fix; no delay to Practice Lead</td><td></td></tr>
+              <tr><td>Invoice unpaid &gt;14 days</td><td>Gene tracker</td><td><span class="al al-gene">Gene</span></td><td>Chase cadence activates</td><td>Telegram alert to Pepe</td></tr>
+              <tr><td>Founder silent after delivery</td><td>Sade monitor</td><td><span class="al al-sade">Sade</span></td><td>WhatsApp relationship check-in</td><td>Pepe at Day 7</td></tr>
+              <tr><td>Deliverable rejected post-QG</td><td>Prince flag</td><td><span class="al al-prince">Prince</span></td><td>Root cause; revision cycle (Phase 6E)</td><td>Kim audit if &gt;2 revision cycles</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </details>
 
-    <div class="sub-phase">
-      <h3>Renewal Trigger Map</h3>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Trigger</th><th>Signal</th><th>Lead</th><th>First Action</th></tr></thead>
-          <tbody>
-            <tr><td>Next funding round</td><td>Founder mention</td><td><span class="al al-joan">Joan</span></td><td>Jagger schedules discovery</td></tr>
-            <tr><td>New jurisdiction entry</td><td>News or ask</td><td><span class="al al-aretha">Aretha</span></td><td>Regulatory brief within 48h</td></tr>
-            <tr><td>M&A interest</td><td>Rumor or request</td><td><span class="al al-aretha">Aretha</span></td><td>Joint brief within 72h</td></tr>
-            <tr><td>Governance refresh</td><td>Board change or dispute</td><td><span class="al al-chrissie">Chrissie</span></td><td>Governance review offer</td></tr>
-            <tr><td>Regulatory event</td><td>New law or enforcement</td><td><span class="al al-aretha">Aretha</span></td><td>Proactive flag to founder</td></tr>
-            <tr><td>Founder exit or shareholder dispute</td><td>Sade / Sheryl / news</td><td><span class="al al-lemmy">Lemmy</span></td><td>Pepe calls founder</td></tr>
-            <tr><td>Second company</td><td>Founder announcement</td><td><span class="al al-joan">Joan</span></td><td>New EL from Phase 0</td></tr>
-            <tr><td>IPO preparation</td><td>Timeline mention</td><td><span class="al al-pj">PJ</span></td><td>Full engagement renewal</td></tr>
-            <tr><td>Annual governance hygiene</td><td>Calendar trigger</td><td><span class="al al-chrissie">Chrissie</span></td><td>Standard review offer</td></tr>
-            <tr><td>Portfolio-level opportunity</td><td>Multiple founders, same sector</td><td><span class="al al-bruce">Bruce</span></td><td>Portfolio brief for Pepe</td></tr>
-            <tr><td>Cross-border restructure</td><td>Jurisdiction change</td><td><span class="al al-aretha">Aretha</span></td><td>Combined regulatory and financial review</td></tr>
-            <tr><td>Founder distress signal</td><td>Unresponsive + negative news</td><td><span class="al al-pepe">Pepe</span></td><td>Pepe direct WhatsApp</td></tr>
-          </tbody>
-        </table>
+    <!-- PHASE 5 -->
+    <details id="p5">
+      <summary>
+        <div class="step-num">Phase 5</div>
+        Quality Gate
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Prince. Lemmy. Anselmo. Kim. All four must PASS.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>Work package complete and Practice Lead self-review done</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Prince (overall QG), Lemmy (legal clearance), Anselmo (brand), Kim (spot-check)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>All four PASS. QG summary logged. Cleared for delivery.</p></div>
+        </div>
+
+        <p class="sub-h3">5A - Prince Review</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Criterion</th></tr></thead>
+            <tbody>
+              <tr><td>5A.1</td><td>Full read against Phase 2 acceptance criteria. Score each PASS/FAIL with evidence.</td><td>100% criteria addressed</td></tr>
+              <tr><td>5A.2</td><td>Triple Gate: Is this the best we can do? What would a competing firm produce? Second pass. Kill lazy parts.</td><td>Senior counsel standard</td></tr>
+              <tr><td>5A.3</td><td>Format check: letterhead, tables, signature blocks, version number in filename and Drive version history</td><td>Canonical format</td></tr>
+              <tr><td>5A.4</td><td>Factual accuracy: cross-check all claims, citations, dates against source documents</td><td>Zero unsupported facts</td></tr>
+              <tr><td>5A.5</td><td>Founder-fit: deliverable matches this founder's context, goals, and deal structure specifically</td><td>Context-specific</td></tr>
+              <tr><td>5A.6</td><td>Jurisdiction accuracy: Aretha verifies all jurisdiction-specific content</td><td>Jurisdiction-verified</td></tr>
+              <tr><td>5A.7</td><td>Write QG summary to brain/clients/[name]/qg/qg-[date].md</td><td>Audit trail</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="sub-h3">5B - Lemmy Legal Clearance</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Flag condition</th><th>Gate</th></tr></thead>
+            <tbody>
+              <tr><td>5B.1</td><td>Legal exposure scan: positions creating liability for Mexzungu Group</td><td>Any unqualified legal advice</td><td></td></tr>
+              <tr><td>5B.2</td><td>EL alignment: deliverable within EL scope, no unauthorized expansion</td><td>Out-of-scope content present</td><td></td></tr>
+              <tr><td>5B.3</td><td>Public positions scan: content constituting public legal position</td><td>Any public legal statement</td><td><span class="gate gate-show">Showtime #9</span></td></tr>
+              <tr><td>5B.4</td><td>Confidentiality: no third-party confidential information without consent</td><td>Third-party data present</td><td></td></tr>
+              <tr><td>5B.5</td><td>Multi-jurisdiction conflict: Aretha cross-checks where multiple jurisdictions involved</td><td>Conflicting advice present</td><td></td></tr>
+              <tr><td>5B.6</td><td>Regulated activity risk: banking, securities, fintech advisory touching licensed domains</td><td>Unlicensed regulated advice</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="sub-h3">5C - Anselmo Brand Review</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Criterion</th></tr></thead>
+            <tbody>
+              <tr><td>5C.1</td><td>Voice: no corporate jargon, no generic legal boilerplate, Mexzungu voice present</td><td>Warm, direct, sharp</td></tr>
+              <tr><td>5C.2</td><td>AI tells: em dashes, "I'd be happy to," excess hedging, passive voice sweep</td><td>Zero AI tells</td></tr>
+              <tr><td>5C.3</td><td>Chain compliance: external narrative content followed Joni/Grohl/Nick chain</td><td>Chain documented</td></tr>
+              <tr><td>5C.4</td><td>Tone calibration: matches engagement type (direct for deal-closing, strategic for architecture)</td><td>Tone-context match</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="sub-h3">5D - Kim Spot-Check</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td>5D.1</td><td>Kim reviews against MGL quality standards for this deal type</td><td>Written audit note</td></tr>
+              <tr><td>5D.2</td><td>PASS: cleared for delivery. FAIL: targeted patch; re-run 5A before re-delivery.</td><td>PASS / FAIL</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </details>
+
+    <!-- PHASE 6 -->
+    <details id="p6">
+      <summary>
+        <div class="step-num">Phase 6</div>
+        Delivery
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">QG-cleared package. Draft email. Fire Away. Founder acknowledgment.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>QG PASS on all four gates</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Practice Lead (package), Janis (logistics), Pepe (Fire Away)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>Deliverable received and acknowledged by founder</p></div>
+        </div>
+
+        <p class="sub-h3">6A - Delivery Preparation</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>6A.1</td><td>Assemble package: all deliverable files, cover memo, appendices in one Drive folder</td><td><span class="al al-practice">Practice Lead</span></td></tr>
+              <tr><td>6A.2</td><td>PDF export: export_deck_as_pdf for presentations; Drive PDF export for docs</td><td><span class="al al-janis">Janis</span></td></tr>
+              <tr><td>6A.3</td><td>Prepare cover context: what the deliverable contains, any founder action required, next steps</td><td><span class="al al-practice">Practice Lead</span></td></tr>
+              <tr><td>6A.4</td><td>One-page plain-language summary for non-legal founders</td><td><span class="al al-practice">Practice Lead</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="sub-h3">6B - Delivery Email</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+            <tbody>
+              <tr><td>6B.1</td><td>Draft: draft_email_reply in-thread, reply-all with all original To/Cc. build_email_html() mandatory.</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+              <tr><td>6B.2</td><td>Account routing: pepe@mexzungu.com default. Personal only if explicitly instructed.</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+              <tr><td>6B.3</td><td>CC/BCC discipline: CC client counsel if known; BCC Daniel+Pablo for NCA clients</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+              <tr><td>6B.4</td><td>Format verification: HTML renders correctly before send</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+              <tr><td>6B.5</td><td>Send</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>6B.6</td><td>Log send to brain/clients/[name]/email-log.md</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <!-- PHASE 7 -->
+    <details id="p7">
+      <summary>
+        <div class="step-num">Phase 7</div>
+        Billing
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Retainer cadence. Invoice generation. Chase escalation ladder.</span>
+      </summary>
+      <div class="step-body">
+
+        <p class="sub-h3">7A - Retainer Billing Cadence</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+            <tbody>
+              <tr><td>7A.1</td><td>Monitor retainer period end dates via billing calendar</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+              <tr><td>7A.2</td><td>Confirm deliverables completed for billing period</td><td><span class="al al-practice">Practice Lead</span></td><td></td></tr>
+              <tr><td>7A.3</td><td>Generate invoice: canonical template. Bank hours option mandatory.</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+              <tr><td>7A.4</td><td>Confirm billing currency and invoicing entity (Mexzungu Group Ltd, Mauritius)</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+              <tr><td>7A.5</td><td>Prince format check</td><td><span class="al al-prince">Prince</span></td><td></td></tr>
+              <tr><td>7A.6</td><td>Lemmy review: billing aligns with EL fee structure</td><td><span class="al al-lemmy">Lemmy</span></td><td></td></tr>
+              <tr><td>7A.7</td><td>Send invoice</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>7A.8</td><td>Log invoice to brain/areas/finance/invoices/</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="sub-h3">7C - Payment Follow-Up Chase Cadence</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Day</th><th>Action</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>Daily</td><td>Reconcile get_financial_summary for invoice payment status</td><td><span class="al al-gene">Gene</span></td></tr>
+              <tr><td>Day 7 unpaid</td><td>run_invoice_chase</td><td><span class="al al-gene">Gene</span></td></tr>
+              <tr><td>Day 14</td><td>Gene Telegram alert to Pepe</td><td><span class="al al-gene">Gene</span></td></tr>
+              <tr><td>Cross-border</td><td>African/LatAm SWIFT delays: allow +5 business days before chasing</td><td><span class="al al-gene">Gene</span></td></tr>
+              <tr><td>FX event</td><td>Adverse move &gt;3%: Sheryl alerts Gene and Pepe</td><td><span class="al al-sheryl">Sheryl</span></td></tr>
+              <tr><td>Payment failure</td><td>Immediate Telegram alert + daily nag until resolved</td><td><span class="al al-gene">Gene</span></td></tr>
+              <tr><td>Day 30</td><td>Sade contacts founder (WhatsApp)</td><td><span class="al al-sade">Sade</span></td></tr>
+              <tr><td>Day 45</td><td>Pepe direct WhatsApp</td><td><span class="al al-pepe">Pepe</span></td></tr>
+              <tr><td>On receipt</td><td>Write to email-log.md; close invoice ticket</td><td><span class="al al-gene">Gene</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <!-- PHASE 8 -->
+    <details id="p8">
+      <summary>
+        <div class="step-num">Phase 8</div>
+        Close
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Final acceptance. Invoice paid. Archive. Knowledge extraction seeded.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>Final deliverable accepted and all invoices paid</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Prince (final confirm), Lemmy (close-out), Gene (reconciliation), Nina (extraction scheduling)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>Contract closed in registry, client archived, extraction session scheduled within 7 days</p></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+            <tbody>
+              <tr><td>8.1</td><td>Identify close trigger type: retainer end vs. deal-closing event</td><td><span class="al al-gene">Gene</span> / <span class="al al-lemmy">Lemmy</span></td><td></td></tr>
+              <tr><td>8.2</td><td>Confirm all deliverables accepted (Prince + founder sign-off received)</td><td><span class="al al-prince">Prince</span></td><td></td></tr>
+              <tr><td>8.3</td><td>Confirm all invoices paid</td><td><span class="al al-gene">Gene</span></td><td><span class="gate gate-block">Blocked if unpaid</span></td></tr>
+              <tr><td>8.4</td><td>Deal-closing fee reconciliation: Gene reconciles final fee vs. actual closing value</td><td><span class="al al-gene">Gene</span></td><td><span class="if-tag">If deal-closing</span></td></tr>
+              <tr><td>8.5</td><td>Close-out email: Pepe formally closes engagement with founder</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>8.6</td><td>Tax memo on deal-closing fee: Gene + Aretha produce jurisdiction-specific memo</td><td><span class="al al-gene">Gene</span> / <span class="al al-aretha">Aretha</span></td><td><span class="if-tag">If deal-closing</span></td></tr>
+              <tr><td>8.7</td><td>Lemmy surviving obligations: confidentiality (perpetual or 5yr), IP (perpetual), non-solicit (12 months)</td><td><span class="al al-lemmy">Lemmy</span></td><td></td></tr>
+              <tr><td>8.8</td><td>Cap table snapshot archive: Tina + Chrissie archive final structure</td><td><span class="al al-tina">Tina</span> / <span class="al al-chrissie">Chrissie</span></td><td><span class="if-tag">If equity</span></td></tr>
+              <tr><td>8.9</td><td>Archive via Iggy: client folder frozen; all docs to Drive archive; local mirror read-only</td><td><span class="al al-iggy">Iggy</span></td><td></td></tr>
+              <tr><td>8.10</td><td>Registry update: status = closed; close date logged</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+              <tr><td>8.11</td><td>Referral ask via Jagger: draft in Pepe's voice</td><td><span class="al al-jagger">Jagger</span></td><td><span class="gate gate-show">Showtime #4</span> for first contact with referral</td></tr>
+              <tr><td>8.12</td><td>Testimonial capture if founder willing: send to Freddie content pipeline</td><td><span class="al al-freddie">Freddie</span></td><td></td></tr>
+              <tr><td>8.13</td><td>Pod notification: engagement closed; release pod resources</td><td><span class="al al-lars">Lars</span></td><td></td></tr>
+              <tr><td>8.14</td><td>Nina extraction calendar: schedule within 7 days of close</td><td><span class="al al-nina">Nina</span></td><td></td></tr>
+              <tr><td>8.15</td><td>Post-close Sheryl monitoring: schedule 30-day health check</td><td><span class="al al-sheryl">Sheryl</span></td><td></td></tr>
+              <tr><td>8.16</td><td>Contact record update: brain/contacts/[name].md with outcome, next need, referral status</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <!-- PHASE 9 -->
+    <details id="p9">
+      <summary>
+        <div class="step-num">Phase 9</div>
+        Knowledge Extraction
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Nina leads. Dossiers updated. Templates versioned. Knowledge base fed.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><p>Close confirmed. Extraction session within 7 days of Phase 8.</p></div>
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Nina (lead), Practice Lead (debrief), Prince (QG analysis), Freddie (content pipeline)</p></div>
+          <div class="pm-item"><div class="pm-label">Exit condition</div><p>All learnings logged, dossiers updated, templates versioned, knowledge base fed</p></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>9.1</td><td>Classify engagement: deal type, jurisdiction, sector, stage, fee structure, outcome</td><td><span class="al al-nina">Nina</span></td></tr>
+              <tr><td>9.2</td><td>Pod debrief: Pepe + Practice Lead on what worked and what did not</td><td><span class="al al-pepe">Pepe</span> / Practice Lead</td></tr>
+              <tr><td>9.3</td><td>Cross-check: Sade (relationship), Sheryl (health anomalies), Lemmy (compliance flags)</td><td><span class="al al-sade">Sade</span> / <span class="al al-sheryl">Sheryl</span> / <span class="al al-lemmy">Lemmy</span></td></tr>
+              <tr><td>9.4</td><td>Extract portable learnings: templates, clauses, structures reusable in future</td><td>Practice Lead / <span class="al al-nina">Nina</span></td></tr>
+              <tr><td>9.5</td><td>Persona dossier updates: calibration entries to relevant MGL persona dossiers</td><td><span class="al al-nina">Nina</span></td></tr>
+              <tr><td>9.6</td><td>Template version-bumps: update templates used; rename to v[N+1] in Drive</td><td>Practice Lead</td></tr>
+              <tr><td>9.7</td><td>Jurisdiction knowledge base: Aretha logs to brain/knowledge/jurisdictions/[code].md</td><td><span class="al al-aretha">Aretha</span></td></tr>
+              <tr><td>9.8</td><td>Sector pattern update: valuation norms, governance structures, red flags</td><td><span class="al al-bruce">Bruce</span> / <span class="al al-nina">Nina</span></td></tr>
+              <tr><td>9.9</td><td>Rework log analysis: if &gt;2 revision cycles, Prince identifies root cause</td><td><span class="al al-prince">Prince</span></td></tr>
+              <tr><td>9.10</td><td>Standing rule proposal: if new rule emerges, draft for Pepe review</td><td><span class="al al-janis">Janis</span></td></tr>
+              <tr><td>9.11</td><td>Nina feeds all learnings to brain/knowledge/ index</td><td><span class="al al-nina">Nina</span></td></tr>
+              <tr><td>9.12</td><td>Content opportunity flag to Freddie: anonymizable insights from engagement</td><td><span class="al al-freddie">Freddie</span></td></tr>
+              <tr><td>9.13</td><td>Three-gate anonymization: Lemmy consent + founder consent + Anselmo pass before any public use</td><td><span class="al al-lemmy">Lemmy</span> / <span class="al al-anselmo">Anselmo</span></td></tr>
+              <tr><td>9.14</td><td>Referral network mapping: Nina + Jagger map new referral relationships</td><td><span class="al al-nina">Nina</span> / <span class="al al-jagger">Jagger</span></td></tr>
+              <tr><td>9.15</td><td>Close knowledge session: Nina archives extraction; close Notion ticket</td><td><span class="al al-nina">Nina</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <!-- PHASE 10 -->
+    <details id="p10">
+      <summary>
+        <div class="step-num">Phase 10</div>
+        Post-Close Relationship
+        <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Ongoing loop. No fixed end. Renewal trigger map.</span>
+      </summary>
+      <div class="step-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Owners</div><p>Sheryl (health), Sade (relationship), Jagger (referral), Freddie (content)</p></div>
+          <div class="pm-item"><div class="pm-label">Pattern</div><p>Ongoing loop. No fixed end.</p></div>
+        </div>
+
+        <p class="sub-h3">Touch Cadence</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Interval</th><th>Action</th><th>Owner</th><th>Gate</th></tr></thead>
+            <tbody>
+              <tr><td>30 days</td><td>WhatsApp check-in: how is the deal landing? Any questions?</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
+              <tr><td>90 days</td><td>Formal follow-up: brief update, offer new engagement scan</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>6 months</td><td>Strategic touchpoint: new jurisdiction, round, or governance need?</td><td><span class="al al-bruce">Bruce</span> / <span class="al al-pepe">Pepe</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
+              <tr><td>12 months</td><td>Pepe personal anniversary touch: brief WhatsApp</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="sub-h3">Renewal Trigger Map</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Trigger</th><th>Signal</th><th>Lead</th><th>First Action</th></tr></thead>
+            <tbody>
+              <tr><td>Next funding round</td><td>Founder mention</td><td><span class="al al-joan">Joan</span></td><td>Jagger schedules discovery</td></tr>
+              <tr><td>New jurisdiction entry</td><td>News or ask</td><td><span class="al al-aretha">Aretha</span></td><td>Regulatory brief within 48h</td></tr>
+              <tr><td>M&amp;A interest</td><td>Rumor or request</td><td><span class="al al-aretha">Aretha</span></td><td>Joint brief within 72h</td></tr>
+              <tr><td>Governance refresh</td><td>Board change or dispute</td><td><span class="al al-chrissie">Chrissie</span></td><td>Governance review offer</td></tr>
+              <tr><td>Regulatory event</td><td>New law or enforcement</td><td><span class="al al-aretha">Aretha</span></td><td>Proactive flag to founder</td></tr>
+              <tr><td>Founder exit or shareholder dispute</td><td>Sade / Sheryl / news</td><td><span class="al al-lemmy">Lemmy</span></td><td>Pepe calls founder</td></tr>
+              <tr><td>Second company</td><td>Founder announcement</td><td><span class="al al-joan">Joan</span></td><td>New EL from Phase 0</td></tr>
+              <tr><td>IPO preparation</td><td>Timeline mention</td><td><span class="al al-pj">PJ</span></td><td>Full engagement renewal</td></tr>
+              <tr><td>Annual governance hygiene</td><td>Calendar trigger</td><td><span class="al al-chrissie">Chrissie</span></td><td>Standard review offer</td></tr>
+              <tr><td>Portfolio-level opportunity</td><td>Multiple founders, same sector</td><td><span class="al al-bruce">Bruce</span></td><td>Portfolio brief for Pepe</td></tr>
+              <tr><td>Cross-border restructure</td><td>Jurisdiction change</td><td><span class="al al-aretha">Aretha</span></td><td>Combined regulatory and financial review</td></tr>
+              <tr><td>Founder distress signal</td><td>Unresponsive + negative news</td><td><span class="al al-pepe">Pepe</span></td><td>Pepe direct WhatsApp</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
   </section>
 
 </div>
 
-<div style="font-size:12px;color:#555;padding:20px 24px;max-width:1100px;margin:0 auto;border-top:1px solid #2a2a2a;margin-top:0;">
-  Founders Delivery Engine v1.0 | MGL Delivery Engines loop, iteration 1, 2026-08-07 | Score: 0.955 / 1.0 | <a href="../" style="color:#E14B87;">All Engines</a>
+<div style="font-size:12px;color:#555;padding:20px 24px;max-width:1100px;margin:0 auto;border-top:1px solid #2a2a2a;">
+  Founders Delivery Engine v1.0 | MGL Delivery Engines loop, iteration 1, 2026-08-07 | Score: 0.955 / 1.0 | <a href="/engines/" style="color:#E14B87;">All Engines</a>
 </div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', flowchart: { curve: 'basis' } });
+</script>
 
 </body>
 </html>
