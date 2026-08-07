@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Engine. Mexzungu Group</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --accent: #f0c850;
+      --bg: #0f0f0f;
+      --surface: #181818;
+      --surface2: #222222;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --green: #4caf7d;
+      --amber: #f0a030;
+      --red: #e05050;
+      --blue: #6498ff;
+      --pink: #E14B87;
+      --teal: #4cc8b4;
+      --purple: #b482ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: #111; border-bottom: 1px solid var(--border); padding: 0.7rem 1.4rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 12px; }
+    .logo { font-weight: 700; color: var(--accent); margin-right: 0.5rem; font-size: 13px; }
+    .nav-sep { color: var(--border); }
+    nav a { color: var(--muted); padding: 3px 6px; border-radius: 4px; }
+    nav a:hover { color: var(--text); background: var(--surface2); text-decoration: none; }
+
+    section { max-width: 980px; margin: 0 auto; padding: 3rem 1.4rem 2rem; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+    h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.8rem; }
+    h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    p { color: #bbb; margin-bottom: 0.8rem; }
+
+    .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.2rem 0; }
+    .chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: #ccc; }
+    .chip.accent { border-color: var(--accent); color: var(--accent); }
+
+    .stat-row { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+    .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; min-width: 140px; flex: 1; }
+    .stat .val { font-size: 1.6rem; font-weight: 800; color: var(--accent); }
+    .stat .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+    .mermaid-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; overflow-x: auto; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+    .al { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 4px; padding: 2px 8px; }
+    .al-nina   { background: rgba(240,200,80,0.15); color: var(--accent); }
+    .al-bruce  { background: rgba(100,152,255,0.15); color: var(--blue); }
+    .al-bowie  { background: rgba(100,152,255,0.12); color: var(--blue); }
+    .al-janis  { background: rgba(78,200,180,0.15); color: var(--teal); }
+    .al-lemmy  { background: rgba(225,75,135,0.15); color: var(--pink); }
+    .al-gene   { background: rgba(240,160,48,0.15); color: var(--amber); }
+    .al-lars   { background: rgba(240,200,80,0.12); color: var(--accent); }
+    .al-grohl  { background: rgba(180,130,255,0.15); color: var(--purple); }
+    .al-pepe   { background: rgba(240,200,80,0.10); color: var(--accent); }
+    .owns { font-size: 12px; color: #aaa; margin-top: 8px; line-height: 1.5; }
+
+    details { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.7rem; }
+    summary { cursor: pointer; padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 600; font-size: 14px; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { border-bottom: 1px solid var(--border); }
+    .step-num { background: var(--accent); color: #111; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 8px; min-width: 60px; text-align: center; }
+    .step-body { padding: 1.2rem; }
+
+    .phase-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; margin-bottom: 1.2rem; background: var(--surface2); border-radius: 8px; padding: 1rem; }
+    .pm-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
+    .pm-item p { font-size: 13px; color: #bbb; margin: 0; }
+
+    .tbl-wrap { overflow-x: auto; margin-top: 0.8rem; }
+    .fault-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .fault-tbl th { background: #111; color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+    .fault-tbl td { padding: 7px 10px; border-bottom: 1px solid #1a1a1a; color: #bbb; }
+    .fault-tbl tr:last-child td { border-bottom: none; }
+
+    .badge { display: inline-block; font-size: 10px; font-weight: 700; border-radius: 3px; padding: 1px 6px; text-transform: uppercase; }
+    .b-showtime { background: rgba(225,75,135,0.18); color: var(--pink); }
+    .b-auto     { background: rgba(76,175,125,0.18); color: var(--green); }
+    .b-gate     { background: rgba(240,160,48,0.18); color: var(--amber); }
+    .b-cron     { background: rgba(100,152,255,0.18); color: var(--blue); }
+    .b-weekly   { background: rgba(240,200,80,0.18); color: var(--accent); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; }
+    .kpi-card h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent); margin: 0 0 6px; }
+    .kpi-card .kpi-owners { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+    .kpi-card ul { margin: 0; padding-left: 1.1rem; list-style: disc; }
+    .kpi-card li { font-size: 13px; color: #bbb; margin-bottom: 5px; line-height: 1.45; }
+
+    .rule-list { list-style: none; padding: 0; margin-top: 1rem; }
+    .rule-list li { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.6rem; font-size: 13px; color: #ccc; display: flex; gap: 0.8rem; align-items: flex-start; }
+    .rule-list li::before { content: "/"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+    .infra-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(240,200,80,0.1); border: 1px solid rgba(240,200,80,0.3); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
+
+    /* RACI circles */
+    .rc   { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; font-size:10px; font-weight:700; }
+    .rc-r { background:rgba(240,200,80,0.2); color:var(--accent); border:1px solid rgba(240,200,80,0.5); }
+    .rc-a { background:rgba(225,75,135,0.2); color:var(--pink); border:1px solid rgba(225,75,135,0.5); }
+    .rc-c { background:rgba(100,152,255,0.2); color:var(--blue); border:1px solid rgba(100,152,255,0.5); }
+    .rc-i { background:rgba(78,200,180,0.2); color:var(--teal); border:1px solid rgba(78,200,180,0.5); }
+    .raci-tbl { width:100%; border-collapse:collapse; font-size:12px; min-width:680px; }
+    .raci-tbl th { background:#111; color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:6px 10px; border-bottom:1px solid var(--border); text-align:center; }
+    .raci-tbl th:first-child { text-align:left; min-width:240px; }
+    .raci-tbl td { padding:7px 10px; border-bottom:1px solid #1a1a1a; color:#bbb; text-align:center; vertical-align:middle; }
+    .raci-tbl td:first-child { text-align:left; color:#ccc; }
+    .raci-tbl tr:last-child td { border-bottom:none; }
+    .raci-tbl tr:hover td { background:rgba(255,255,255,0.02); }
+    .raci-legend { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; font-size:11px; color:var(--muted); align-items:center; }
+    .raci-legend span { display:flex; align-items:center; gap:5px; }
+
+    /* Actor card accents */
+    .card-nina  { border-top: 2px solid var(--accent); }
+    .card-bruce { border-top: 2px solid var(--blue); }
+    .card-bowie { border-top: 2px solid var(--blue); }
+    .card-janis { border-top: 2px solid var(--teal); }
+    .card-lemmy { border-top: 2px solid var(--pink); }
+    .card-gene  { border-top: 2px solid var(--amber); }
+    .card-lars  { border-top: 2px solid var(--accent); }
+    .card-grohl { border-top: 2px solid var(--purple); }
+    .card-pepe  { border-top: 2px solid var(--accent); }
+
+    /* Severity badges */
+    .sev    { display:inline-block; font-size:10px; font-weight:700; border-radius:3px; padding:1px 6px; text-transform:uppercase; }
+    .s-warn { background:rgba(240,160,48,0.18); color:var(--amber); }
+    .s-err  { background:rgba(225,75,135,0.18); color:var(--pink); }
+    .s-crit { background:rgba(224,80,80,0.18); color:var(--red); }
+
+    @media (max-width: 600px) {
+      nav { font-size: 11px; gap: 0.3rem; }
+      .stat-row { gap: 0.6rem; }
+      .stat .val { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Knowledge Engine</span>
+  <a href="/engines/">All Engines</a>
+  <span class="nav-sep">|</span>
+  <a href="#overview">Overview</a>
+  <a href="#diagram">Flow</a>
+  <a href="#actors">Actors</a>
+  <a href="#raci">RACI</a>
+  <a href="#kpis">KPIs</a>
+  <a href="#phases">Phases</a>
+  <a href="#faults">Faults</a>
+  <a href="#gaps">Gaps</a>
+  <a href="#rules">Standing Rules</a>
+</nav>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="infra-tag">Infrastructure Engine</div>
+  <div class="sec-label">Mexzungu Knowledge Engine</div>
+  <h1>The memory that persists across every session.</h1>
+  <p>Every decision made, every rule learned, every client pattern detected goes somewhere specific. Nina captures and classifies. Bowie stores to the right layer. Bruce synthesizes patterns weekly. Janis recalls at session start. Nothing gets lost because nothing relies on memory that disappears when the context window closes.</p>
+  <div class="chips">
+    <span class="chip accent">Infrastructure Engine</span>
+    <span class="chip">MEMORY.md</span>
+    <span class="chip">mcp-mem</span>
+    <span class="chip">brain/</span>
+    <span class="chip">clients/</span>
+    <span class="chip">4 storage layers</span>
+    <span class="chip">7 phases</span>
+    <span class="chip">9 actors</span>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="val">4</div><div class="lbl">Storage layers</div></div>
+    <div class="stat"><div class="val">&lt;200</div><div class="lbl">MEMORY.md line limit</div></div>
+    <div class="stat"><div class="val">Mon 03:00</div><div class="lbl">Weekly synthesis</div></div>
+    <div class="stat"><div class="val">7</div><div class="lbl">Phases, 0 skippable</div></div>
+  </div>
+</section>
+
+<!-- FLOW DIAGRAM -->
+<section id="diagram">
+  <div class="sec-label">End-to-End Flow</div>
+  <h2>Knowledge Journey</h2>
+  <p>From signal to stored memory to active recall. Every knowledge item follows this chain.</p>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+flowchart LR
+  A([Trigger<br/>Session end / Instruction / Pattern]) --> B([Capture<br/>Nina + Janis])
+  B --> C([Classify<br/>Nina])
+  C --> D{Sensitive?<br/>Lemmy gate}
+  D -->|Clear| E([Store<br/>Bowie])
+  D -->|Sensitive| F([Gate<br/>Lemmy review])
+  F --> E
+  E --> G([Index<br/>MEMORY.md])
+  G --> H([Pattern Synthesis<br/>Bruce weekly])
+  H --> I([Activate<br/>Janis + Nina])
+  I --> A
+    </div>
+  </div>
+</section>
+
+<!-- ACTORS -->
+<section id="actors">
+  <div class="sec-label">Who Runs This</div>
+  <h2>Actor Map</h2>
+  <p>9 personas across capture, classification, storage, synthesis, and recall functions.</p>
+  <div class="grid-3">
+
+    <div class="card card-nina">
+      <span class="al al-nina">Nina</span>
+      <h3 style="margin-top:10px;">Chief Knowledge Officer</h3>
+      <div class="owns">Primary owner. Captures all knowledge events. Classifies by type, cluster, and sensitivity. Resolves contradictions. Runs after-action reviews. Keeps dossiers current.</div>
+    </div>
+
+    <div class="card card-bruce">
+      <span class="al al-bruce">Bruce</span>
+      <h3 style="margin-top:10px;">CSO</h3>
+      <div class="owns">Pattern synthesis lead. Runs weekly scan every Monday 03:00 CET. Detects strategic signals, recurring client patterns, and second-order effects from accumulated knowledge. Feeds findings into Bruce's strategy briefs.</div>
+    </div>
+
+    <div class="card card-bowie">
+      <span class="al al-bowie">Bowie</span>
+      <h3 style="margin-top:10px;">CTO</h3>
+      <div class="owns">Storage architecture owner. Routes each item to the correct layer: brain/ for git-versioned files, MEMORY.md for session-start index, mcp-mem for searchable observations, clients/ for cluster-specific context. Enforces MEMORY.md line limit.</div>
+    </div>
+
+    <div class="card card-janis">
+      <span class="al al-janis">Janis</span>
+      <h3 style="margin-top:10px;">System</h3>
+      <div class="owns">Knowledge capture during live sessions. Writes to memory files before session ends. Reads MEMORY.md at session start. Executes search and recall on demand. Rolling handoff at every task breakpoint.</div>
+    </div>
+
+    <div class="card card-lemmy">
+      <span class="al al-lemmy">Lemmy</span>
+      <h3 style="margin-top:10px;">CLO</h3>
+      <div class="owns">Gate on sensitive patterns before storage. Anything touching client legal exposure, financial terms, NCA succession risk, or personal data requires Lemmy review before it enters a shared memory file.</div>
+    </div>
+
+    <div class="card card-gene">
+      <span class="al al-gene">Gene</span>
+      <h3 style="margin-top:10px;">CFO</h3>
+      <div class="owns">Financial knowledge indexing. Invoice terms, billing patterns, pricing decisions. Gene flags when a stored financial pattern conflicts with current deal structure.</div>
+    </div>
+
+    <div class="card card-lars">
+      <span class="al al-lars">Lars</span>
+      <h3 style="margin-top:10px;">COO</h3>
+      <div class="owns">Task-level knowledge and operational memory. Tracks what was promised to whom. Ensures task completions get logged. Flags when knowledge gaps cause delivery failures.</div>
+    </div>
+
+    <div class="card card-grohl">
+      <span class="al al-grohl">Grohl</span>
+      <h3 style="margin-top:10px;">Content Feed</h3>
+      <div class="owns">Content performance data feeds back as knowledge. Engagement patterns, what angles land, what dies. Grohl surfaces these as input to the next strategy cycle via the Knowledge Engine.</div>
+    </div>
+
+    <div class="card card-pepe">
+      <span class="al al-pepe">Pepe</span>
+      <h3 style="margin-top:10px;">Owner</h3>
+      <div class="owns">Final authority on behavioral rules. When Pepe corrects a behavior or approves an approach, Nina captures it immediately. Pepe's explicit instructions are permanent until revoked.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RACI -->
+<section id="raci">
+  <div class="sec-label">Ownership Matrix</div>
+  <h2>RACI</h2>
+  <p>Who is Responsible, Accountable, Consulted, and Informed for each knowledge management process step. Eight primary actors shown. Grohl feeds content performance data into the cycle without owning a process step.</p>
+  <div class="tbl-wrap">
+    <table class="raci-tbl">
+      <thead>
+        <tr>
+          <th>Process</th>
+          <th><span class="al al-nina">NINA</span></th>
+          <th><span class="al al-bruce">BRUCE</span></th>
+          <th><span class="al al-bowie">BOWIE</span></th>
+          <th><span class="al al-janis">JANIS</span></th>
+          <th><span class="al al-lemmy">LEMMY</span></th>
+          <th><span class="al al-lars">LARS</span></th>
+          <th><span class="al al-gene">GENE</span></th>
+          <th style="color:var(--accent);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;">PEPE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Detect knowledge trigger</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Extract and capture knowledge candidate</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Classify by type, cluster, sensitivity</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Lemmy gate review (sensitive items)</td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Route to correct storage layer</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Write file to canonical path</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td><span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Update MEMORY.md index entry</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td><span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Enforce 200-line limit on MEMORY.md</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Git commit all memory files</td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Weekly pattern synthesis (Mon 03:00 CET)</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Flag and update stale knowledge entries</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Prune noise via Yoda Janitor</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Surface knowledge at session start</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Search and recall on demand</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Proactive context-match surfacing</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="raci-legend">
+    <span><span class="rc rc-r">R</span> Responsible - does the work</span>
+    <span><span class="rc rc-a">A</span> Accountable - owns the outcome</span>
+    <span><span class="rc rc-c">C</span> Consulted - input required</span>
+    <span><span class="rc rc-i">I</span> Informed - kept in loop</span>
+  </div>
+</section>
+
+<!-- KPIs -->
+<section id="kpis">
+  <div class="sec-label">Performance</div>
+  <h2>Engine KPIs</h2>
+  <p>Four quadrants. Measured weekly and at every significant session. Owner named per metric.</p>
+  <div class="kpi-grid">
+
+    <div class="kpi-card">
+      <h4>Capture</h4>
+      <div class="kpi-owners">Nina, Lars, Janis</div>
+      <ul>
+        <li>Knowledge entries written per session: 2+</li>
+        <li>Sessions ending without a handoff: 0</li>
+        <li>Active clusters with stale files (&gt;7 days): 0</li>
+        <li>Explicit Pepe instructions captured same-turn: 100%</li>
+      </ul>
+    </div>
+
+    <div class="kpi-card">
+      <h4>Quality</h4>
+      <div class="kpi-owners">Nina, Bowie</div>
+      <ul>
+        <li>MEMORY.md line count: under 200 at all times</li>
+        <li>Duplicate memory entries: 0 (Nina deduplicates before write)</li>
+        <li>Stale memories flagged and updated: within 24h of detection</li>
+        <li>Classification accuracy (type/cluster/sensitivity): 95%+</li>
+      </ul>
+    </div>
+
+    <div class="kpi-card">
+      <h4>Activation</h4>
+      <div class="kpi-owners">Bruce, Janis, Grohl</div>
+      <ul>
+        <li>Session start: relevant memories surfaced before first task</li>
+        <li>Search recall precision: Janis finds it before saying "I don't know"</li>
+        <li>Bruce weekly synthesis run: zero missed Mondays</li>
+        <li>Pattern signals fed into strategy doc within 48h</li>
+      </ul>
+    </div>
+
+    <div class="kpi-card">
+      <h4>Engine Health</h4>
+      <div class="kpi-owners">Bowie, Nina</div>
+      <ul>
+        <li>Yoda Janitor run streak: no missed Mondays</li>
+        <li>MEMORY.md index accuracy: every entry points to an existing file</li>
+        <li>mcp-mem corpus rebuild lag: under 24h after major write</li>
+        <li>brain/ git commit lag: 0 sessions with uncommitted memory</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHASES -->
+<section id="phases">
+  <div class="sec-label">Mexzungu Knowledge Engine</div>
+  <h2>Phases</h2>
+  <p>Phases 0 and 1 open by default. Phases 2-6 collapsed. Click to expand.</p>
+
+  <details open id="p0">
+    <summary>
+      <div class="step-num">Phase 0</div>
+      Trigger
+      <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Three trigger types: session end, explicit instruction, or pattern detected mid-session.</span>
+    </summary>
+    <div class="step-body">
+      <div class="phase-meta">
+        <div class="pm-item"><div class="pm-label">Trigger types</div><p>Session end (inactivity hook at 5 min or task breakpoint), explicit "remember this", or Nina detecting a recurring pattern mid-session</p></div>
+        <div class="pm-item"><div class="pm-label">Owner</div><p>Nina (detection), Janis (execution)</p></div>
+        <div class="pm-item"><div class="pm-label">Exit condition</div><p>Knowledge candidate identified and marked for capture. Type pre-classified: user / feedback / project / reference.</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="fault-tbl">
+          <thead><tr><th>Trigger</th><th>Signal</th><th>Who detects</th></tr></thead>
+          <tbody>
+            <tr><td>Session end</td><td>Auto-handoff hook fires after 5 minutes of inactivity</td><td>Janis (hook)</td></tr>
+            <tr><td>Task breakpoint</td><td>Major deliverable complete. Rolling autosave rule fires.</td><td>Janis</td></tr>
+            <tr><td>Explicit instruction</td><td>Pepe says "remember this" or gives a rule that corrects behavior</td><td>Janis</td></tr>
+            <tr><td>Pattern detection</td><td>Nina notices the same issue, decision, or preference appearing 2+ times</td><td>Nina</td></tr>
+            <tr><td>Weekly synthesis</td><td>Monday 03:00 CET cron. Bruce scans all new entries from the past week.</td><td>Bruce (weekly)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details open id="p1">
+    <summary>
+      <div class="step-num">Phase 1</div>
+      Capture
+      <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Nina extracts the signal. Janis writes. Both verify before moving to Classify.</span>
+    </summary>
+    <div class="step-body">
+      <div class="phase-meta">
+        <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 0 signals a knowledge candidate</p></div>
+        <div class="pm-item"><div class="pm-label">Owners</div><p>Nina (extraction), Janis (write)</p></div>
+        <div class="pm-item"><div class="pm-label">Exit condition</div><p>Raw knowledge written to a candidate file or MEMORY.md draft entry. Not yet indexed.</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="fault-tbl">
+          <thead><tr><th>Knowledge type</th><th>What to capture</th><th>What NOT to capture</th></tr></thead>
+          <tbody>
+            <tr><td>User</td><td>Pepe's role, preferences, expertise level, working style signals</td><td>Ephemeral mood or context-specific reactions</td></tr>
+            <tr><td>Feedback</td><td>Rule the user gave + WHY + How to apply. Both corrections AND confirmations.</td><td>Neutral statements with no behavioral implication</td></tr>
+            <tr><td>Project</td><td>Who is doing what, by when, why. Convert relative dates to absolute.</td><td>Status that changes hourly (use STATE.md instead)</td></tr>
+            <tr><td>Reference</td><td>Where to find specific information in external systems</td><td>Information that can be derived from reading the current code</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details id="p2">
+    <summary>
+      <div class="step-num">Phase 2</div>
+      Classify
+      <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Nina assigns type, cluster, sensitivity level. Lemmy gates on sensitive items.</span>
+    </summary>
+    <div class="step-body">
+      <div class="phase-meta">
+        <div class="pm-item"><div class="pm-label">Trigger</div><p>Raw capture complete from Phase 1</p></div>
+        <div class="pm-item"><div class="pm-label">Owner</div><p>Nina (classification), Lemmy (sensitivity gate)</p></div>
+        <div class="pm-item"><div class="pm-label">Exit condition</div><p>Type assigned, cluster identified, sensitivity level set (open / restricted / confidential). Lemmy-gated items held until cleared.</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="fault-tbl">
+          <thead><tr><th>Dimension</th><th>Options</th><th>Decision rule</th></tr></thead>
+          <tbody>
+            <tr><td>Type</td><td>user, feedback, project, reference</td><td>See memory type definitions in MEMORY.md system spec</td></tr>
+            <tr><td>Cluster</td><td>Client name, personal, mexzungu, infrastructure, dating, NCA, investments</td><td>Match to the source of the knowledge signal</td></tr>
+            <tr><td>Sensitivity</td><td>Open, Restricted, Confidential</td><td>Open: shareable in any session. Restricted: in-scope sessions only. Confidential: Lemmy gate required before write.</td></tr>
+            <tr><td>Lemmy gate triggers</td><td>Client legal exposure, NDA terms, financial deal terms, NCA succession, personal health data</td><td>Hold write. Lemmy reviews. Lemmy clears or recommends redaction.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details id="p3">
+    <summary>
+      <div class="step-num">Phase 3</div>
+      Store
+      <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Bowie routes each item to the correct storage layer. One canonical location per fact.</span>
+    </summary>
+    <div class="step-body">
+      <div class="phase-meta">
+        <div class="pm-item"><div class="pm-label">Trigger</div><p>Classification and sensitivity clearance complete from Phase 2</p></div>
+        <div class="pm-item"><div class="pm-label">Owner</div><p>Bowie (routing and write)</p></div>
+        <div class="pm-item"><div class="pm-label">Exit condition</div><p>Item written to canonical location. Git staged (not yet committed). Ready for Phase 4 indexing.</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="fault-tbl">
+          <thead><tr><th>Storage layer</th><th>Path</th><th>When to use</th></tr></thead>
+          <tbody>
+            <tr><td>brain/ git file</td><td>brain/memory/[type]_[topic].md</td><td>Durable knowledge that all future sessions need. Checked into git. Referenced via CLAUDE.md includes or MEMORY.md index.</td></tr>
+            <tr><td>MEMORY.md index</td><td>~/.claude/projects/[path]/memory/MEMORY.md</td><td>One-line pointer entry for any knowledge that should be discoverable at session start. Max 200 lines enforced.</td></tr>
+            <tr><td>mcp-mem observation</td><td>Written via mcp-mem tools (write_observation)</td><td>Research findings, discoveries, anything searchable by topic rather than by file path. No prior knowledge of path needed to find it.</td></tr>
+            <tr><td>clients/ cluster file</td><td>brain/clients/[name]/overview.md or state log</td><td>Client-specific context, project state, relationship history. Loaded only when that client context is active.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details id="p4">
+    <summary>
+      <div class="step-num">Phase 4</div>
+      Index
+      <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Bowie updates MEMORY.md. Enforces 200-line limit. Commits everything to git.</span>
+    </summary>
+    <div class="step-body">
+      <div class="phase-meta">
+        <div class="pm-item"><div class="pm-label">Trigger</div><p>Item stored in Phase 3. File exists on disk.</p></div>
+        <div class="pm-item"><div class="pm-label">Owner</div><p>Bowie (indexing), Nina (line count gate)</p></div>
+        <div class="pm-item"><div class="pm-label">Exit condition</div><p>MEMORY.md updated with one-line pointer. Line count verified under 200. Git commit confirms write. No uncommitted memory exits this phase.</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="fault-tbl">
+          <thead><tr><th>Step</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td>Check existing MEMORY.md entries</td><td>Search for existing entry on same topic before adding a new one. Update or replace, never duplicate.</td></tr>
+            <tr><td>Write pointer entry</td><td>Format: - [Title](file.md): one-line hook. Under 150 chars total. Points to canonical file.</td></tr>
+            <tr><td>Count MEMORY.md lines</td><td>If count reaches 200: prune one low-value entry before adding the new one. Never let it exceed 200. Truncated entries are invisible.</td></tr>
+            <tr><td>Git commit</td><td>git add [canonical-path] and git commit with message "knowledge: [topic] [date]". No session ends with unstaged memory.</td></tr>
+            <tr><td>Verify pointer resolves</td><td>File referenced in MEMORY.md must exist on disk. Dead pointers are worse than no entry.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details id="p5">
+    <summary>
+      <div class="step-num">Phase 5</div>
+      Pattern Synthesis
+      <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Bruce. Weekly, Monday 03:00 CET. Turns accumulated entries into strategic signals.</span>
+    </summary>
+    <div class="step-body">
+      <div class="phase-meta">
+        <div class="pm-item"><div class="pm-label">Trigger</div><p>Cron: every Monday 03:00 CET. Also runs on demand when Bruce flags an emerging pattern mid-week.</p></div>
+        <div class="pm-item"><div class="pm-label">Owner</div><p>Bruce (synthesis), Nina (input curation)</p></div>
+        <div class="pm-item"><div class="pm-label">Exit condition</div><p>Weekly synthesis note written to brain/memory/weekly-journals/[ISO-week].md. Strategic patterns flagged for morning briefing.</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="fault-tbl">
+          <thead><tr><th>Synthesis task</th><th>Output</th></tr></thead>
+          <tbody>
+            <tr><td>Scan all new memory entries from the past 7 days</td><td>List of signals sorted by cluster and type</td></tr>
+            <tr><td>Identify recurring patterns (same issue appearing 2+ times)</td><td>Pattern memo: what keeps happening and why it matters</td></tr>
+            <tr><td>Cross-cluster signal detection (e.g. billing pattern + client relationship signal)</td><td>Second-order flag for Pepe's morning briefing</td></tr>
+            <tr><td>Stale knowledge audit: entries older than 30 days that may be outdated</td><td>Stale flag list. Nina verifies or removes.</td></tr>
+            <tr><td>Yoda Janitor integration: prune noise from standing-rules.md</td><td>Cleaner rule files. Lower cognitive load each session.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details id="p6">
+    <summary>
+      <div class="step-num">Phase 6</div>
+      Activate
+      <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px;">Janis and Nina surface the right knowledge at the right moment. Search before refusing.</span>
+    </summary>
+    <div class="step-body">
+      <div class="phase-meta">
+        <div class="pm-item"><div class="pm-label">Trigger</div><p>Session start (automatic), on-demand search, or task context match</p></div>
+        <div class="pm-item"><div class="pm-label">Owners</div><p>Janis (session start recall, search execution), Nina (relevance matching)</p></div>
+        <div class="pm-item"><div class="pm-label">Exit condition</div><p>Relevant memories surfaced and applied before first task. Search complete before "I don't know" is ever said.</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="fault-tbl">
+          <thead><tr><th>Activation mode</th><th>Mechanism</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td>Session start</td><td>MEMORY.md loaded in system context. Hearth sequence reads journal ladder.</td><td>Mandatory. Never skip. Without it, Janis is a stranger every session.</td></tr>
+            <tr><td>Search on demand</td><td>unified_search, mem-search skill, read_brain, grep</td><td>Exhaust all four before saying something cannot be found.</td></tr>
+            <tr><td>Context match</td><td>Nina detects task context overlaps with stored knowledge</td><td>Surface proactively. Do not wait for Pepe to ask "do you remember?"</td></tr>
+            <tr><td>Stale memory check</td><td>Before acting on a stored memory, verify the underlying file or resource still matches</td><td>Memory says X exists != X exists now. Verify first.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+</section>
+
+<!-- FAULTS -->
+<section id="faults">
+  <div class="sec-label">Failure Modes</div>
+  <h2>Fault Reference</h2>
+  <p>Known failure patterns, severity, and the standard recovery. If this table does not cover it, escalate to Nina and Bowie.</p>
+  <div class="tbl-wrap">
+    <table class="fault-tbl">
+      <thead>
+        <tr><th>Fault</th><th>Sev</th><th>Signal</th><th>Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MEMORY.md exceeds 200 lines</td>
+          <td><span class="sev s-crit">Critical</span></td>
+          <td>Lines past 200 are truncated silently. Session starts with incomplete context.</td>
+          <td>Nina prunes lowest-value entries immediately. Bowie verifies line count before next commit. Pruned entries are archived to brain/memory/archive/ before deletion.</td>
+        </tr>
+        <tr>
+          <td>MEMORY.md entry points to a deleted file</td>
+          <td><span class="sev s-err">High</span></td>
+          <td>Janis follows an index pointer and gets a file-not-found error</td>
+          <td>Nina removes the stale pointer. If the underlying knowledge is still needed, Bowie recreates the file at the canonical path and repoints the index entry.</td>
+        </tr>
+        <tr>
+          <td>Session ends without a handoff note</td>
+          <td><span class="sev s-err">High</span></td>
+          <td>brain/memory/session-handoffs/ has no file from this session</td>
+          <td>The auto-handoff hook should have fired after 5 min of inactivity. If it did not fire, Bowie investigates the asyncRewake hook config. Write the handoff manually before the next task starts.</td>
+        </tr>
+        <tr>
+          <td>Sensitive knowledge stored without Lemmy gate</td>
+          <td><span class="sev s-crit">Critical</span></td>
+          <td>Client legal terms or NCA succession content found in a file marked Open sensitivity</td>
+          <td>Lemmy reviews immediately. Redact or reclassify. If the file is already committed, Bowie removes it from git history using git filter-branch and force-pushes. Pepe notified.</td>
+        </tr>
+        <tr>
+          <td>Duplicate memory entries on same topic</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>Nina or Bowie finds two MEMORY.md entries pointing to different files about the same subject</td>
+          <td>Nina merges content into the canonical file. Removes the duplicate. Updates MEMORY.md to single pointer. Commits the merged file.</td>
+        </tr>
+        <tr>
+          <td>Weekly synthesis cron missed</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>brain/loops/yoda-janitor/STATE.md shows last_run more than 8 days ago</td>
+          <td>Bowie checks cron config. Bruce runs synthesis manually. State file updated with current timestamp. Yoda Janitor reruns next Monday automatically if cron is restored.</td>
+        </tr>
+        <tr>
+          <td>Cluster log blending (wrong entries in wrong file)</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>Duara entries found in panda.md or NCA entries in a client cluster log</td>
+          <td>Nina moves entries to the correct cluster file. Bowie commits the correction. Root cause review to determine if classification rules need updating.</td>
+        </tr>
+        <tr>
+          <td>mcp-mem corpus stale after major write session</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>mem-search returns outdated results not reflecting recent observations</td>
+          <td>Bowie triggers corpus rebuild via mcp-mem rebuild_corpus. Confirm index reflects latest observations before declaring resolved.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- GAPS -->
+<section id="gaps">
+  <div class="sec-label">Known Limitations</div>
+  <h2>Gaps</h2>
+  <p>Open gaps in coverage, tooling, or process. Each has an owner and a resolution path.</p>
+  <div class="tbl-wrap">
+    <table class="fault-tbl">
+      <thead>
+        <tr><th>Gap</th><th>Impact</th><th>Owner</th><th>Resolution path</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>No automatic staleness detection</td>
+          <td>Stale memories persist until Nina manually audits them</td>
+          <td>Bowie</td>
+          <td>Build a staleness scorer that flags entries older than 30 days where the referenced file has not changed. Run as part of weekly synthesis.</td>
+        </tr>
+        <tr>
+          <td>MEMORY.md index has no priority or relevance weighting</td>
+          <td>All entries loaded with equal weight at session start; high-value entries do not surface first</td>
+          <td>Nina</td>
+          <td>Add a relevance tier (core / active / archive) to MEMORY.md entries. Loader surfaces core entries first when approaching context limits.</td>
+        </tr>
+        <tr>
+          <td>Cross-session feedback loop is manual</td>
+          <td>Patterns detected by Bruce in weekly synthesis require manual propagation to standing-rules.md</td>
+          <td>Bruce</td>
+          <td>Build an automated rule-promotion loop: Bruce flags a pattern, Nina drafts a rule, Pepe approves, Janis writes to standing-rules.md. Currently all manual.</td>
+        </tr>
+        <tr>
+          <td>No versioning on individual memory files</td>
+          <td>When a memory is updated, prior state is lost unless git history is queried manually</td>
+          <td>Bowie</td>
+          <td>Git history provides implicit versioning. Add a convention: append a dated changelog block to each memory file on update so prior state is visible without a git blame.</td>
+        </tr>
+        <tr>
+          <td>mcp-mem observations not indexed in MEMORY.md</td>
+          <td>Observations written via mcp-mem are searchable but not discoverable at session start without a search</td>
+          <td>Bowie</td>
+          <td>For high-value observations, add a MEMORY.md pointer after writing the mcp-mem observation. Lower-value observations remain search-only.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- STANDING RULES -->
+<section id="rules">
+  <div class="sec-label">Non-Negotiable</div>
+  <h2>Standing Rules</h2>
+  <p>Applies to every knowledge capture, every session, every cluster.</p>
+  <ul class="rule-list">
+    <li>One canonical location per fact. Never duplicate knowledge across files. Cross-reference with links. Duplication creates drift and contradiction.</li>
+    <li>MEMORY.md must stay under 200 lines at all times. Lines past 200 are truncated and invisible. Every write triggers a line count check.</li>
+    <li>Before acting on any stored memory, verify it is still current. A memory that names a file path, function, or flag is a claim it existed when the memory was written. Check before recommending.</li>
+    <li>Sensitive client patterns require Lemmy gate before storage. Anything touching legal exposure, financial deal terms, NCA succession, or personal health data is held until Lemmy clears it.</li>
+    <li>Cluster log isolation enforced. Panda entries go in panda.md. Duara entries go in duara.md. Never blend clusters in a single note.</li>
+    <li>State vs knowledge: evolving counters, timestamps, and session-specific tracking go to STATE.md files, not MEMORY.md. MEMORY.md is for durable knowledge only.</li>
+    <li>Every feedback memory must include a WHY line and a How to apply line. A rule without context cannot be applied correctly in edge cases.</li>
+    <li>New knowledge gets written before the session ends. Not after. Not in the next session. Before. Rolling autosave at every task breakpoint is the mechanism.</li>
+    <li>Yoda Janitor runs every Monday 03:00 CET and prunes noise from standing-rules.md and guide files. Do not disable it and do not add trivial entries that will just be pruned.</li>
+    <li>Every memory write is committed to git immediately. No session ends with unstaged knowledge files. Uncommitted memory is lost memory.</li>
+  </ul>
+</section>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { primaryColor: '#f0c850', primaryTextColor: '#111111', primaryBorderColor: '#2a2a2a', lineColor: '#555', fontSize: '13px' } });
+</script>
+
+</body>
+</html>

@@ -180,6 +180,24 @@
     .kpi-card .kpi-owners { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
     .kpi-card ul { margin: 0; padding-left: 1.1rem; list-style: disc; }
     .kpi-card li { font-size: 13px; color: #bbb; margin-bottom: 5px; line-height: 1.45; }
+    .rc   { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; font-size:10px; font-weight:700; }
+    .rc-r { background:rgba(240,160,48,0.2); color:var(--amber); border:1px solid rgba(240,160,48,0.5); }
+    .rc-a { background:rgba(225,75,135,0.2); color:var(--pink); border:1px solid rgba(225,75,135,0.5); }
+    .rc-c { background:rgba(100,152,255,0.2); color:var(--blue); border:1px solid rgba(100,152,255,0.5); }
+    .rc-i { background:rgba(76,175,125,0.2); color:var(--green); border:1px solid rgba(76,175,125,0.5); }
+    .raci-tbl { width:100%; border-collapse:collapse; font-size:12px; min-width:700px; }
+    .raci-tbl th { background:#111; color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:6px 10px; border-bottom:1px solid var(--border); text-align:center; }
+    .raci-tbl th:first-child { text-align:left; min-width:240px; }
+    .raci-tbl td { padding:7px 10px; border-bottom:1px solid #1a1a1a; color:#bbb; text-align:center; vertical-align:middle; }
+    .raci-tbl td:first-child { text-align:left; color:#ccc; }
+    .raci-tbl tr:last-child td { border-bottom:none; }
+    .raci-tbl tr:hover td { background:rgba(255,255,255,0.02); }
+    .raci-legend { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; font-size:11px; color:var(--muted); align-items:center; }
+    .raci-legend span { display:flex; align-items:center; gap:5px; }
+    .sev    { display:inline-block; font-size:10px; font-weight:700; border-radius:3px; padding:1px 6px; text-transform:uppercase; }
+    .s-warn { background:rgba(240,160,48,0.18); color:var(--amber); }
+    .s-err  { background:rgba(225,75,135,0.18); color:var(--pink); }
+    .s-crit { background:rgba(224,80,80,0.18); color:var(--red); }
   </style>
 </head>
 <body>
@@ -191,6 +209,7 @@
   <a href="#overview">Overview</a>
   <a href="#diagram">Journey</a>
   <a href="#actors">Actors</a>
+  <a href="#raci">RACI</a>
   <a href="#kpis">KPIs</a>
   <a href="#phases">Phases</a>
   <a href="#p0">Ph 0</a>
@@ -385,6 +404,153 @@ flowchart LR
         <div class="owns">Document type classification at intake.<br>10 core terms extraction with citations.<br>Investor profile creation.<br>Scope agreement logging.<br>Deal fingerprint on close.<br>Weekly anonymized pattern digest.</div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- RACI -->
+  <section id="raci">
+    <div class="sec-label">Accountability</div>
+    <h2>RACI Matrix</h2>
+    <p>R = Responsible (does the work) &nbsp;|&nbsp; A = Accountable (owns the outcome) &nbsp;|&nbsp; C = Consulted (input required) &nbsp;|&nbsp; I = Informed (notified on completion)</p>
+    <div class="tbl-wrap">
+      <table class="raci-tbl">
+        <thead>
+          <tr>
+            <th>Process</th>
+            <th>PEPE</th>
+            <th>JANIS</th>
+            <th>LEMMY</th>
+            <th>GENE</th>
+            <th>BRUCE</th>
+            <th>OZZY</th>
+            <th>PRINCE</th>
+            <th>SADE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Ph 0</strong> Deal Submission Intake</td>
+            <td><span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 1</strong> Activation and Scope</td>
+            <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td></td>
+            <td></td>
+            <td><span class="rc rc-i">I</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 2</strong> Scope Confirmation</td>
+            <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 3</strong> Review Planning</td>
+            <td><span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 4</strong> Analysis Execution</td>
+            <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 5</strong> Quality Gate + MiFID II</td>
+            <td><span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 6</strong> Web Breakdown Delivery</td>
+            <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-c">C</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 7</strong> Billing</td>
+            <td><span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 8</strong> Close</td>
+            <td><span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td></td>
+            <td></td>
+            <td><span class="rc rc-c">C</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 9</strong> Knowledge Extraction</td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-r">R</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ph 10</strong> Post-Close Investor Relationship</td>
+            <td><span class="rc rc-a">A</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td><span class="rc rc-c">C</span></td>
+            <td><span class="rc rc-i">I</span></td>
+            <td></td>
+            <td></td>
+            <td><span class="rc rc-r">R</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 

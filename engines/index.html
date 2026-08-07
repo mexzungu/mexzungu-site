@@ -20,6 +20,7 @@
       --purple: #b482ff;
       --orange: #ffa050;
       --teal: #4cc8b4;
+      --gold: #f0c850;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -61,6 +62,18 @@
     .card-content:hover { border-color: var(--purple); background: #160f1c; }
     .card-content .ec-label { color: var(--purple); }
     .card-content .ec-arrow { color: var(--purple); }
+    .card-knowledge { border-top: 3px solid var(--gold); }
+    .card-knowledge:hover { border-color: var(--gold); background: #1a1900; }
+    .card-knowledge .ec-label { color: var(--gold); }
+    .card-knowledge .ec-arrow { color: var(--gold); }
+    .card-invoice { border-top: 3px solid var(--green); }
+    .card-invoice:hover { border-color: var(--green); background: #0e1a13; }
+    .card-invoice .ec-label { color: var(--green); }
+    .card-invoice .ec-arrow { color: var(--green); }
+    .card-agent { border-top: 3px solid var(--blue); }
+    .card-agent:hover { border-color: var(--blue); background: #0d1020; }
+    .card-agent .ec-label { color: var(--blue); }
+    .card-agent .ec-arrow { color: var(--blue); }
     .card-framework { border-top: 3px solid var(--blue); }
 
     .tbl-wrap { overflow-x: auto; margin-top: 16px; }
@@ -124,12 +137,12 @@
   <section id="hero">
     <div class="sec-label">Mexzungu Group</div>
     <h1>Delivery Engines</h1>
-    <p>Operational engine maps for all arms of Mexzungu Group: Founders delivery, Investors deal review, Customer Acquisition, and the Content Engine that runs underneath all three. Phases, owners, gates, and exception paths documented for each.</p>
+    <p>Operational engine maps for all arms of Mexzungu Group: two delivery arms, deal review, customer acquisition, content, knowledge, invoice-to-cash, and AI agent building. Phases, owners, RACI, gates, and exception paths documented for each.</p>
     <div class="hero-meta">
-      <span class="meta-tag">Version 1.1</span>
+      <span class="meta-tag">Version 1.2</span>
       <span class="meta-tag">Updated 2026-08-07</span>
       <span class="meta-tag">29 MGL personas wired</span>
-      <span class="meta-tag">4 engines</span>
+      <span class="meta-tag">7 engines</span>
       <span class="meta-tag">11 phases (delivery arms)</span>
     </div>
   </section>
@@ -137,7 +150,7 @@
   <section id="engines">
     <div class="sec-label">All Engines</div>
     <h2>Choose Your Engine</h2>
-    <p>Three delivery arms plus the Content Engine that feeds all of them. Each has its own intake trigger, billing model, deliverable format, and team composition.</p>
+    <p>Seven engines covering the full operating model: two delivery arms, deal review, acquisition, content, knowledge, invoice-to-cash, and AI agent building. Each has its own intake trigger, billing model, deliverable format, RACI, and team composition.</p>
 
     <div class="engine-grid">
       <a class="engine-card card-founders" href="founders/">
@@ -190,6 +203,45 @@
           <div class="stat"><strong>Phases</strong><br>8 (0 through 8)</div>
         </div>
         <div class="ec-arrow">View Content Engine &rarr;</div>
+      </a>
+
+      <a class="engine-card card-knowledge" href="/engines/knowledge/">
+        <div class="ec-label">Infrastructure Engine</div>
+        <h3>Knowledge Engine</h3>
+        <p>Captures, structures, and surfaces operational intelligence across all client engagements. Every deal close, every lesson learned, every template versioned. Nina owns. Runs after every Phase 9.</p>
+        <div class="ec-stats">
+          <div class="stat"><strong>Trigger</strong><br>Phase 9 of any engagement</div>
+          <div class="stat"><strong>Output</strong><br>Dossier update + template version</div>
+          <div class="stat"><strong>Owner</strong><br>Nina (CKO)</div>
+          <div class="stat"><strong>Actors</strong><br>9 (Nina, Bruce, Bowie, Janis + 5)</div>
+        </div>
+        <div class="ec-arrow">View Knowledge Engine &rarr;</div>
+      </a>
+
+      <a class="engine-card card-invoice" href="/engines/invoice-to-cash/">
+        <div class="ec-label">Finance Engine</div>
+        <h3>Invoice-to-Cash Engine</h3>
+        <p>End-to-end billing lifecycle from invoice generation to payment confirmed. Gene owns. Runs on delivery trigger and monthly chase cadence. Zero manual steps once engagement is registered.</p>
+        <div class="ec-stats">
+          <div class="stat"><strong>Trigger</strong><br>Phase 6 delivery confirmed</div>
+          <div class="stat"><strong>Chase cadence</strong><br>Day 0, 7, 14, 30</div>
+          <div class="stat"><strong>Owner</strong><br>Gene (CFO)</div>
+          <div class="stat"><strong>Actors</strong><br>5 (Gene, Janis, Lars, Lemmy, Pepe)</div>
+        </div>
+        <div class="ec-arrow">View Invoice-to-Cash Engine &rarr;</div>
+      </a>
+
+      <a class="engine-card card-agent" href="/engines/agent-building/">
+        <div class="ec-label">Product Engine</div>
+        <h3>AI Agent Building Engine</h3>
+        <p>Design, build, test, and deploy AI agents for clients and internal operations. Bowie leads architecture. Iggy handles automation. Jack runs integration tests. From spec to live agent in a structured 10-phase pipeline.</p>
+        <div class="ec-stats">
+          <div class="stat"><strong>Trigger</strong><br>Agent brief approved by Pepe</div>
+          <div class="stat"><strong>Output</strong><br>Live deployed agent + runbook</div>
+          <div class="stat"><strong>Owner</strong><br>Bowie (CTO)</div>
+          <div class="stat"><strong>Actors</strong><br>8 (Bowie, Iggy, Jack, Lou, Nile + 3)</div>
+        </div>
+        <div class="ec-arrow">View Agent Building Engine &rarr;</div>
       </a>
     </div>
   </section>

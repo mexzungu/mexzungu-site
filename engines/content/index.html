@@ -105,6 +105,41 @@
 
     .micro-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(180,130,255,0.1); border: 1px solid rgba(180,130,255,0.3); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
 
+    /* RACI circles */
+    .rc   { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; font-size:10px; font-weight:700; }
+    .rc-r { background:rgba(180,130,255,0.2); color:var(--accent); border:1px solid rgba(180,130,255,0.5); }
+    .rc-a { background:rgba(225,75,135,0.2); color:var(--pink); border:1px solid rgba(225,75,135,0.5); }
+    .rc-c { background:rgba(100,152,255,0.2); color:var(--blue); border:1px solid rgba(100,152,255,0.5); }
+    .rc-i { background:rgba(240,160,48,0.2); color:var(--amber); border:1px solid rgba(240,160,48,0.5); }
+    .raci-tbl { width:100%; border-collapse:collapse; font-size:12px; min-width:680px; }
+    .raci-tbl th { background:#111; color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:6px 10px; border-bottom:1px solid var(--border); text-align:center; }
+    .raci-tbl th:first-child { text-align:left; min-width:230px; }
+    .raci-tbl td { padding:7px 10px; border-bottom:1px solid #1a1a1a; color:#bbb; text-align:center; vertical-align:middle; }
+    .raci-tbl td:first-child { text-align:left; color:#ccc; }
+    .raci-tbl tr:last-child td { border-bottom:none; }
+    .raci-tbl tr:hover td { background:rgba(255,255,255,0.02); }
+    .raci-legend { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; font-size:11px; color:var(--muted); align-items:center; }
+    .raci-legend span { display:flex; align-items:center; gap:5px; }
+
+    /* Actor card accents */
+    .card-joni    { border-top: 2px solid var(--accent); }
+    .card-grohl   { border-top: 2px solid var(--amber); }
+    .card-lenny   { border-top: 2px solid var(--teal); }
+    .card-nick    { border-top: 2px solid var(--blue); }
+    .card-anselmo { border-top: 2px solid var(--pink); }
+    .card-freddie { border-top: 2px solid var(--gold); }
+    .card-grace   { border-top: 2px solid var(--green); }
+    .card-annie   { border-top: 2px solid var(--green); }
+    .card-bowie   { border-top: 2px solid var(--blue); }
+    .card-iggy    { border-top: 2px solid var(--blue); }
+    .card-lars    { border-top: 2px solid var(--gold); }
+
+    /* Fault / Gaps tables */
+    .sev    { display:inline-block; font-size:10px; font-weight:700; border-radius:3px; padding:1px 6px; text-transform:uppercase; }
+    .s-warn { background:rgba(240,160,48,0.18); color:var(--amber); }
+    .s-err  { background:rgba(225,75,135,0.18); color:var(--pink); }
+    .s-crit { background:rgba(224,80,80,0.18); color:var(--red); }
+
     @media (max-width: 600px) {
       nav { font-size: 11px; gap: 0.3rem; }
       .stat-row { gap: 0.6rem; }
@@ -121,8 +156,11 @@
   <a href="#overview">Overview</a>
   <a href="#diagram">Journey</a>
   <a href="#actors">Actors</a>
+  <a href="#raci">RACI</a>
   <a href="#kpis">KPIs</a>
   <a href="#phases">Phases</a>
+  <a href="#faults">Faults</a>
+  <a href="#gaps">Gaps</a>
   <a href="#rules">Standing Rules</a>
 </nav>
 
@@ -179,72 +217,269 @@ flowchart LR
   <p>11 personas across creative, editorial, technical, and measurement functions.</p>
   <div class="grid-3">
 
-    <div class="card">
+    <div class="card card-joni">
       <span class="al al-joni">Joni</span>
       <h3 style="margin-top:10px;">Creative Director</h3>
       <div class="owns">Sets the brief. Decides what gets made, what format, what angle. Nothing enters the pipeline without her sign-off. Quarterly strategy calibration with Freddie.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-grohl">
       <span class="al al-grohl">Grohl</span>
       <h3 style="margin-top:10px;">Senior Content Producer</h3>
       <div class="owns">Long-form output: Outlaw Chronicles newsletter, LinkedIn posts, strategy threads. Voice-matched to Pepe. Runs the LinkedIn engine Mon/Wed/Fri.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-lenny">
       <span class="al al-lenny">Lenny</span>
       <h3 style="margin-top:10px;">Copywriter</h3>
       <div class="owns">Short-form: X, Instagram captions, ad copy, hooks. Writes image briefs for visual generation. Punchy, no filler.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-nick">
       <span class="al al-nick">Nick</span>
       <h3 style="margin-top:10px;">Editor</h3>
       <div class="owns">Tightens every draft before Anselmo sees it. Cuts fluff, sharpens the hook, kills weak closers. Pre-gate quality control.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-anselmo">
       <span class="al al-anselmo">Anselmo</span>
       <h3 style="margin-top:10px;">Brand Police</h3>
       <div class="owns">Final gate before anything goes external. Checks for em dashes, AI tells, corporate language, voice drift, logo on visuals. PASS/FAIL. No exceptions.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-freddie">
       <span class="al al-freddie">Freddie</span>
       <h3 style="margin-top:10px;">CMO</h3>
       <div class="owns">Brand guidelines, content strategy, channel priorities. Sets quarterly direction with Bruce. Approves Joni's brief. Platform-level decisions.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-grace">
       <span class="al al-grace">Grace</span>
       <h3 style="margin-top:10px;">Analyst</h3>
       <div class="owns">Performance data, content ROI, audience signals. Pulls 7-day metrics after every post. Feeds measurement back into next strategy cycle.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-annie">
       <span class="al al-annie">Annie</span>
       <h3 style="margin-top:10px;">Measurement Lead</h3>
       <div class="owns">Weekly performance reports. Engine quality log. Content-engine-improver rubric scoring. Tracks publish cadence adherence.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-bowie">
       <span class="al al-bowie">Bowie</span>
       <h3 style="margin-top:10px;">CTO</h3>
       <div class="owns">Infrastructure ownership. Social-poster cron. LinkedIn engine. Image hosting at mexzungu.com/img/social/. On-call if the cron breaks.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-iggy">
       <span class="al al-iggy">Iggy</span>
       <h3 style="margin-top:10px;">Automation</h3>
       <div class="owns">Notion status sync, scheduling queue, cron job management. When Pepe fires, Iggy routes. Posts to platforms without human touch once approved.</div>
     </div>
 
-    <div class="card">
+    <div class="card card-lars">
       <span class="al al-lars">Lars</span>
       <h3 style="margin-top:10px;">COO</h3>
       <div class="owns">Delivery tracking, cadence accountability. Flags when the pipeline runs dry. Weekly content health check. Escalates publish misses to Pepe.</div>
     </div>
 
+  </div>
+</section>
+
+<!-- RACI -->
+<section id="raci">
+  <div class="sec-label">Ownership Matrix</div>
+  <h2>RACI</h2>
+  <p>Who is Responsible, Accountable, Consulted, and Informed for each content process step. Eight primary actors shown. Iggy (automation/cron) and Annie (reporting) execute downstream without blocking the main chain.</p>
+  <div class="tbl-wrap">
+    <table class="raci-tbl">
+      <thead>
+        <tr>
+          <th>Process</th>
+          <th><span class="al al-joni">JONI</span></th>
+          <th><span class="al al-grohl">GROHL</span></th>
+          <th><span class="al al-lenny">LENNY</span></th>
+          <th><span class="al al-nick">NICK</span></th>
+          <th><span class="al al-anselmo">ANSELMO</span></th>
+          <th><span class="al al-freddie">FREDDIE</span></th>
+          <th><span class="al al-grace">GRACE</span></th>
+          <th style="color:var(--pink);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;">PEPE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Set quarterly content strategy</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Write content brief</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Approve content brief</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Assign writer to brief</td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Create long-form draft (LinkedIn, OC)</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Create short-form draft (X, Instagram)</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Edit draft (Nick pass)</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Brand gate review (Anselmo PASS / FAIL)</td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Write image brief</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Generate and host visual asset</td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span></td>
+          <td></td>
+          <td><span class="rc rc-a">A</span></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Fire Away approval</td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+        </tr>
+        <tr>
+          <td>Publish to platforms (cron, Iggy)</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Pull 7-day performance data</td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Log metrics to engine quality log</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+        <tr>
+          <td>Feed learnings into next strategy cycle</td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td><span class="rc rc-i">I</span></td>
+          <td></td>
+          <td></td>
+          <td><span class="rc rc-r">R</span> <span class="rc rc-a">A</span></td>
+          <td><span class="rc rc-c">C</span></td>
+          <td><span class="rc rc-i">I</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="raci-legend">
+    <span><span class="rc rc-r">R</span> Responsible - does the work</span>
+    <span><span class="rc rc-a">A</span> Accountable - owns the outcome</span>
+    <span><span class="rc rc-c">C</span> Consulted - input required</span>
+    <span><span class="rc rc-i">I</span> Informed - kept in loop</span>
   </div>
 </section>
 
@@ -551,6 +786,122 @@ flowchart LR
     </div>
   </details>
 
+</section>
+
+<!-- FAULTS -->
+<section id="faults">
+  <div class="sec-label">Failure Modes</div>
+  <h2>Fault Reference</h2>
+  <p>Known failure patterns, severity, and the standard fix. If this table doesn't cover it, escalate to Freddie and Lars.</p>
+  <div class="tbl-wrap">
+    <table class="fault-tbl">
+      <thead>
+        <tr><th>Fault</th><th>Sev</th><th>Signal</th><th>Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Brand gate FAIL: em dash in copy</td>
+          <td><span class="sev s-err">High</span></td>
+          <td>Anselmo returns FAIL with specific line</td>
+          <td>Grohl or Lenny rewrites affected sentence. Resubmit to Anselmo before Nick re-pass.</td>
+        </tr>
+        <tr>
+          <td>Brand gate FAIL: AI tells in copy</td>
+          <td><span class="sev s-err">High</span></td>
+          <td>"Delve", "it's worth noting", "in today's landscape" flagged by Anselmo</td>
+          <td>Writer rewrites the passage from scratch. Patching individual words does not fix a voice problem; the construction itself is the tell.</td>
+        </tr>
+        <tr>
+          <td>Social-poster cron not publishing</td>
+          <td><span class="sev s-crit">Critical</span></td>
+          <td>Notion status stuck on Approved past scheduled time</td>
+          <td>Bowie checks cron logs. Iggy inspects queue. Manual publish via /social/post if cron is down.</td>
+        </tr>
+        <tr>
+          <td>Image URL returning 403 / 401</td>
+          <td><span class="sev s-crit">Critical</span></td>
+          <td>LinkedIn preview broken, Instagram image missing</td>
+          <td>Image is on api.mexzungu.com (auth-protected). Move to /home/mexzungu/mexzungu-site/img/social/ and run deploy.sh. Update Notion URL.</td>
+        </tr>
+        <tr>
+          <td>Content calendar runs below 3 queued briefs</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>Lars weekly health check shows less than 3 briefs with status In Brief or Draft</td>
+          <td>Lars escalates to Joni. Joni writes 3 new briefs same day. Freddie approves by EOD.</td>
+        </tr>
+        <tr>
+          <td>LinkedIn engine scrape fails</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>logs/linkedin-engine.log shows error or zero comments processed</td>
+          <td>Bowie checks token expiry. Re-auth via linkedin_playwright.py if session expired. Do not skip the auto-draft replies obligation.</td>
+        </tr>
+        <tr>
+          <td>Outlaw Chronicles published without cover image</td>
+          <td><span class="sev s-err">High</span></td>
+          <td>Substack post live, no preview image visible</td>
+          <td>Unpublish immediately. Add 1200x627 cover image. Republish. Anselmo post-mortem.</td>
+        </tr>
+        <tr>
+          <td>Channel dark for more than 7 days</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>Lars cadence check shows last post more than 7 days ago on any platform</td>
+          <td>Lars flags to Pepe same day. Pepe confirms the dark is intentional or triggers an emergency brief. Iggy holds the cron until Pepe confirms intent.</td>
+        </tr>
+        <tr>
+          <td>Instagram post wrong aspect ratio</td>
+          <td><span class="sev s-warn">Medium</span></td>
+          <td>Image is 1080x1080 (square) instead of 1080x1350 (portrait)</td>
+          <td>Regenerate at 1080x1350 portrait. Update Notion image URL before re-publishing. The Instagram grid changed to portrait-only in January 2025.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- GAPS -->
+<section id="gaps">
+  <div class="sec-label">Known Limitations</div>
+  <h2>Gaps</h2>
+  <p>Open gaps in coverage, tooling, or process. Each has an owner and a resolution path.</p>
+  <div class="tbl-wrap">
+    <table class="fault-tbl">
+      <thead>
+        <tr><th>Gap</th><th>Impact</th><th>Owner</th><th>Resolution path</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>No Instagram DM read or write capability</td>
+          <td>Cannot respond to inbound DMs from content posts</td>
+          <td>Bowie</td>
+          <td>Meta Graph API does not support personal DMs. Monitor for API changes. Workaround: monitor via phone, respond manually.</td>
+        </tr>
+        <tr>
+          <td>Substack publish not automated</td>
+          <td>Outlaw Chronicles requires manual copy-paste to Substack editor</td>
+          <td>Iggy</td>
+          <td>Substack has no official publish API. Playwright automation possible. Build when OC frequency increases.</td>
+        </tr>
+        <tr>
+          <td>No Facebook / Threads posting</td>
+          <td>Reach limited to LinkedIn, X, Instagram only</td>
+          <td>Freddie</td>
+          <td>Freddie to decide if Facebook or Threads fits the brand. Bowie builds connector when approved.</td>
+        </tr>
+        <tr>
+          <td>content-engine-improver patches content-engine.py but not this page</td>
+          <td>Engine documentation can drift from live implementation</td>
+          <td>Annie</td>
+          <td>Annie to flag whenever content-engine.py changes. This page to be updated manually on any structural engine change.</td>
+        </tr>
+        <tr>
+          <td>No A/B testing capability</td>
+          <td>Cannot test hook variants or image styles systematically</td>
+          <td>Grace</td>
+          <td>Grace tracks performance manually per post. Build A/B variant loop when volume justifies it.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <!-- STANDING RULES -->
