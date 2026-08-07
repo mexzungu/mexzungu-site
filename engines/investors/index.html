@@ -174,6 +174,12 @@
       section { padding: 40px 0; }
       .zone-grid { grid-template-columns: 1fr; }
     }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; }
+    .kpi-card h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--amber); margin: 0 0 6px; }
+    .kpi-card .kpi-owners { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+    .kpi-card ul { margin: 0; padding-left: 1.1rem; list-style: disc; }
+    .kpi-card li { font-size: 13px; color: #bbb; margin-bottom: 5px; line-height: 1.45; }
   </style>
 </head>
 <body>
@@ -185,6 +191,7 @@
   <a href="#overview">Overview</a>
   <a href="#diagram">Journey</a>
   <a href="#actors">Actors</a>
+  <a href="#kpis">KPIs</a>
   <a href="#phases">Phases</a>
   <a href="#p0">Ph 0</a>
   <a href="#p1">Ph 1</a>
@@ -376,6 +383,60 @@ flowchart LR
         <span class="al al-nina">Nina</span>
         <h3 style="margin-top: 10px;">Chief Knowledge Officer</h3>
         <div class="owns">Document type classification at intake.<br>10 core terms extraction with citations.<br>Investor profile creation.<br>Scope agreement logging.<br>Deal fingerprint on close.<br>Weekly anonymized pattern digest.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KPIs -->
+  <section id="kpis">
+    <div class="sec-label">Performance</div>
+    <h2>Engine KPIs</h2>
+    <p>Four quadrants. Measured monthly. Owner named per metric.</p>
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        <h4>Throughput</h4>
+        <div class="kpi-owners">Lars, Janis, Lemmy, Ozzy</div>
+        <ul>
+          <li>Reviews completed per month: 4+</li>
+          <li>48h SLA met: 95%+</li>
+          <li>Conflict check completed at intake: 100%</li>
+          <li>Zone locked by Phase 2: 100%</li>
+        </ul>
+      </div>
+
+      <div class="kpi-card">
+        <h4>Quality</h4>
+        <div class="kpi-owners">Prince, Ozzy, Nina, Lemmy</div>
+        <ul>
+          <li>Pepe revision rate: under 20%</li>
+          <li>Average 5-dimension score: 4.0+</li>
+          <li>10 core terms extracted per review: 100%</li>
+          <li>MiFID II scan completed: 100%</li>
+        </ul>
+      </div>
+
+      <div class="kpi-card">
+        <h4>Billing</h4>
+        <div class="kpi-owners">Gene, Pepe, Jagger</div>
+        <ul>
+          <li>Invoice-to-payment under 14 days</li>
+          <li>Zone 3 EL conversion rate: 70%+</li>
+          <li>Blended average deal fee: EUR 400+</li>
+          <li>Free-to-paid conversion: 40%+</li>
+        </ul>
+      </div>
+
+      <div class="kpi-card">
+        <h4>Engine Health</h4>
+        <div class="kpi-owners">Janis, Pepe, Lemmy</div>
+        <ul>
+          <li>Web breakdown page live within 48h: 100%</li>
+          <li>CRM entry created at Phase 0: 100%</li>
+          <li>PI insurance status: Active (J7 pending)</li>
+          <li>MiFID II opinion status: Pending</li>
+        </ul>
       </div>
 
     </div>

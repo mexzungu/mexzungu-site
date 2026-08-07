@@ -176,6 +176,12 @@
       .handoff-row { grid-template-columns: 1fr; }
       .phase-row { grid-template-columns: 1fr; }
     }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; }
+    .kpi-card h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--pink); margin: 0 0 6px; }
+    .kpi-card .kpi-owners { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+    .kpi-card ul { margin: 0; padding-left: 1.1rem; list-style: disc; }
+    .kpi-card li { font-size: 13px; color: #bbb; margin-bottom: 5px; line-height: 1.45; }
   </style>
 </head>
 <body>
@@ -187,6 +193,7 @@
   <a href="#overview">Overview</a>
   <a href="#diagram">Journey</a>
   <a href="#actors">Actors</a>
+  <a href="#kpis">KPIs</a>
   <a href="#phases">Phases</a>
   <a href="#p0">Ph 0</a>
   <a href="#p1">Ph 1</a>
@@ -352,6 +359,60 @@ flowchart LR
         <span class="al al-kim">Kim</span>
         <h3 style="margin-top: 10px;">Quality Auditor</h3>
         <div class="owns">Spot-check at 50% execution.<br>Final QG PASS/FAIL verdict.<br>Root cause on repeat rework cycles.<br>Audit reports only. No client actions.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KPIs -->
+  <section id="kpis">
+    <div class="sec-label">Performance</div>
+    <h2>Engine KPIs</h2>
+    <p>Four quadrants. Measured monthly. Owner named per metric.</p>
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        <h4>Delivery Quality</h4>
+        <div class="kpi-owners">Prince, Lars, Pepe</div>
+        <ul>
+          <li>Quality Gate pass rate 85%+</li>
+          <li>Revision rounds per engagement under 2</li>
+          <li>Milestone completion rate 90%+</li>
+          <li>Pepe review turnaround under 48h</li>
+        </ul>
+      </div>
+
+      <div class="kpi-card">
+        <h4>Billing</h4>
+        <div class="kpi-owners">Gene, Lemmy</div>
+        <ul>
+          <li>Invoice-to-payment under 30 days</li>
+          <li>Zero overdue invoices at month end</li>
+          <li>Average contract value EUR 5k+</li>
+          <li>EL signed within 5 days of mandate: 100%</li>
+        </ul>
+      </div>
+
+      <div class="kpi-card">
+        <h4>Engagement Health</h4>
+        <div class="kpi-owners">Sade, Jagger, Nina</div>
+        <ul>
+          <li>Client response time under 5 days</li>
+          <li>Post-close conversion to repeat: 70%+</li>
+          <li>Referrals generated: 2+ per year</li>
+          <li>Phase 9 extraction completed: 100%</li>
+        </ul>
+      </div>
+
+      <div class="kpi-card">
+        <h4>Engine Health</h4>
+        <div class="kpi-owners">Lemmy, Sade, Nina</div>
+        <ul>
+          <li>Conflict check at Phase 0: 100%</li>
+          <li>EL verified before Phase 1: 100%</li>
+          <li>Phase 10 touch cadence maintained: 100%</li>
+          <li>Post-close extraction filed: 100%</li>
+        </ul>
       </div>
 
     </div>
