@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Engines. Mexzungu Group</title>
+  <style>
+    :root {
+      --pink: #E14B87;
+      --bg: #0f0f0f;
+      --surface: #181818;
+      --surface2: #222222;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --green: #4caf7d;
+      --amber: #f0a030;
+      --red: #e05050;
+      --blue: #6498ff;
+      --purple: #b482ff;
+      --orange: #ffa050;
+      --teal: #4cc8b4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; gap: 8px; overflow-x: auto; white-space: nowrap; }
+    nav .logo { font-weight: 700; color: var(--pink); font-size: 14px; margin-right: 12px; flex-shrink: 0; }
+    nav a { font-size: 12px; color: var(--muted); text-decoration: none; padding: 4px 10px; border-radius: 4px; transition: color .15s, background .15s; }
+    nav a:hover { color: var(--text); background: var(--surface2); }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+    h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+    h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 20px; }
+    p { color: #bbb; margin-bottom: 12px; }
+
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .meta-tag { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); letter-spacing: 0.05em; text-transform: uppercase; }
+
+    .engine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; margin-top: 24px; }
+    .engine-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; text-decoration: none; color: inherit; display: block; transition: border-color .2s, background .2s; }
+    .engine-card:hover { border-color: var(--pink); background: #1c1218; }
+    .engine-card .ec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 12px; }
+    .engine-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+    .engine-card p { font-size: 13px; color: #999; margin-bottom: 20px; }
+    .engine-card .ec-stats { display: flex; flex-wrap: wrap; gap: 12px; }
+    .engine-card .stat { font-size: 12px; color: var(--muted); }
+    .engine-card .stat strong { color: var(--text); }
+    .engine-card .ec-arrow { margin-top: 20px; font-size: 13px; color: var(--pink); font-weight: 600; }
+
+    .card-founders { border-top: 3px solid var(--pink); }
+    .card-investors { border-top: 3px solid var(--amber); }
+    .card-acquisition { border-top: 3px solid var(--teal); }
+    .card-acquisition:hover { border-color: var(--teal); background: #0f1c1a; }
+    .card-acquisition .ec-label { color: var(--teal); }
+    .card-acquisition .ec-arrow { color: var(--teal); }
+    .card-framework { border-top: 3px solid var(--blue); }
+
+    .tbl-wrap { overflow-x: auto; margin-top: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 11px 14px; border-bottom: 1px solid #1e1e1e; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .al { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap; }
+    .al-janis  { background: rgba(225,75,135,0.12); color: #E14B87; border: 1px solid rgba(225,75,135,0.28); }
+    .al-pepe   { background: rgba(240,160,48,0.12); color: #f0a030; border: 1px solid rgba(240,160,48,0.28); }
+    .al-lars   { background: rgba(76,175,125,0.12); color: #4caf7d; border: 1px solid rgba(76,175,125,0.28); }
+    .al-lemmy  { background: rgba(255,160,80,0.12); color: #ffa050; border: 1px solid rgba(255,160,80,0.28); }
+    .al-bruce  { background: rgba(100,152,255,0.12); color: #6498ff; border: 1px solid rgba(100,152,255,0.28); }
+    .al-gene   { background: rgba(240,200,80,0.12); color: #f0c850; border: 1px solid rgba(240,200,80,0.28); }
+    .al-ozzy   { background: rgba(224,80,80,0.12); color: #e05050; border: 1px solid rgba(224,80,80,0.28); }
+    .al-prince { background: rgba(76,200,180,0.12); color: #4cc8b4; border: 1px solid rgba(76,200,180,0.28); }
+    .al-sade   { background: rgba(180,130,255,0.12); color: #b482ff; border: 1px solid rgba(180,130,255,0.28); }
+
+    .gate { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .gate-showtime   { background: rgba(225,75,135,0.15); color: var(--pink); }
+    .gate-soundcheck { background: rgba(76,175,125,0.12); color: var(--green); }
+    .gate-blocked    { background: rgba(224,80,80,0.15); color: var(--red); }
+
+    .shared-phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 20px; }
+    .ph { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+    .ph .ph-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--pink); margin-bottom: 4px; }
+    .ph h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .ph p { font-size: 12px; color: #777; margin: 0; }
+
+    .rule-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin-top: 16px; }
+    .rule-list li { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; font-size: 12px; color: #bbb; line-height: 1.5; }
+    .rule-list li strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+
+    .sec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 10px; }
+    .version-note { font-size: 12px; color: var(--muted); margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 26px; }
+      h2 { font-size: 18px; }
+      section { padding: 40px 0; }
+      .engine-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">MGL</span>
+  <a href="#engines">Engines</a>
+  <a href="#shared">Shared Framework</a>
+  <a href="#rules">Universal Rules</a>
+  <a href="founders/">Founders Engine</a>
+  <a href="investors/">Investors Engine</a>
+  <a href="/bd-function/">Acquisition Engine</a>
+</nav>
+
+<div class="wrap">
+
+  <section id="hero">
+    <div class="sec-label">Mexzungu Group</div>
+    <h1>Delivery Engines</h1>
+    <p>Operational engine maps for all three arms of Mexzungu Group: Founders delivery, Investors deal review, and Customer Acquisition. Phases, owners, gates, and exception paths documented for each.</p>
+    <div class="hero-meta">
+      <span class="meta-tag">Version 1.0</span>
+      <span class="meta-tag">Produced 2026-08-07</span>
+      <span class="meta-tag">Loop iteration 1</span>
+      <span class="meta-tag">29 MGL personas wired</span>
+      <span class="meta-tag">3 engines</span>
+      <span class="meta-tag">11 phases (delivery arms)</span>
+    </div>
+  </section>
+
+  <section id="engines">
+    <div class="sec-label">Two Arms</div>
+    <h2>Choose Your Engine</h2>
+    <p>Each arm has its own intake trigger, billing model, deliverable format, and team composition. Start here.</p>
+
+    <div class="engine-grid">
+      <a class="engine-card card-founders" href="founders/">
+        <div class="ec-label">Mexzungu x Founders</div>
+        <h3>Founders Delivery Engine</h3>
+        <p>Legal strategy, deal structuring, governance, and operational counsel for startup founders and African/LatAm operators. EL-triggered intake. Retainer or deal-closing billing.</p>
+        <div class="ec-stats">
+          <div class="stat"><strong>Trigger</strong><br>Engagement Letter signed</div>
+          <div class="stat"><strong>Billing</strong><br>Retainer or deal-closing</div>
+          <div class="stat"><strong>Timeline</strong><br>Weeks to months</div>
+          <div class="stat"><strong>Phases</strong><br>11 (0 through 10)</div>
+        </div>
+        <div class="ec-arrow">View Founders Engine &rarr;</div>
+      </a>
+
+      <a class="engine-card card-investors" href="investors/">
+        <div class="ec-label">Mexzungu x Investors (Mexzungu x Angels)</div>
+        <h3>Investors Delivery Engine</h3>
+        <p>Deal analysis for angel investors, diaspora investors, and first-time angels. First review always free. 48-hour SLA. Web breakdown page as primary deliverable.</p>
+        <div class="ec-stats">
+          <div class="stat"><strong>Trigger</strong><br>WhatsApp or email with docs</div>
+          <div class="stat"><strong>Billing</strong><br>EUR 300 flat / 0.5% over EUR 60k</div>
+          <div class="stat"><strong>SLA</strong><br>48 hours</div>
+          <div class="stat"><strong>Cap</strong><br>4 reviews/month (soft launch)</div>
+        </div>
+        <div class="ec-arrow">View Investors Engine &rarr;</div>
+      </a>
+
+      <a class="engine-card card-acquisition" href="/bd-function/">
+        <div class="ec-label">Customer Acquisition</div>
+        <h3>BD &amp; Acquisition Engine</h3>
+        <p>End-to-end business development function. Lead detection, qualification, pipeline cadence, proposal process, collaboration track, and commercial structuring. Runs autonomously at 07:00 CET daily.</p>
+        <div class="ec-stats">
+          <div class="stat"><strong>Trigger</strong><br>Cron 07:00 CET daily</div>
+          <div class="stat"><strong>Tracks</strong><br>Direct + Collab pipeline</div>
+          <div class="stat"><strong>Actors</strong><br>6 (Janis, Pepe, Jagger, Lars, Bowie, Lemmy)</div>
+          <div class="stat"><strong>Steps</strong><br>11-step daily run sequence</div>
+        </div>
+        <div class="ec-arrow">View Acquisition Engine &rarr;</div>
+      </a>
+    </div>
+  </section>
+
+  <section id="shared">
+    <div class="sec-label">Master Framework</div>
+    <h2>Shared Phase Architecture</h2>
+    <p>Both engines share a common 11-phase lifecycle. The content differs by arm. The architecture is identical.</p>
+
+    <div class="shared-phases">
+      <div class="ph"><div class="ph-num">Phase 0</div><h4>Intake</h4><p>Document detection, conflict check, registration</p></div>
+      <div class="ph"><div class="ph-num">Phase 1</div><h4>Activation</h4><p>Pod/team assembly, CRM entry, timeline set</p></div>
+      <div class="ph"><div class="ph-num">Phase 2</div><h4>Scope Lock</h4><p>SoW or scope confirmation, written sign-off</p></div>
+      <div class="ph"><div class="ph-num">Phase 3</div><h4>Delivery Planning</h4><p>Work packages, workspace setup, team briefed</p></div>
+      <div class="ph"><div class="ph-num">Phase 4</div><h4>Execution</h4><p>Core work, risk management, exception paths</p></div>
+      <div class="ph"><div class="ph-num">Phase 5</div><h4>Quality Gate</h4><p>Prince + Lemmy + Anselmo + Kim review</p></div>
+      <div class="ph"><div class="ph-num">Phase 6</div><h4>Delivery</h4><p>Package assembly, Fire Away send, receipt confirm</p></div>
+      <div class="ph"><div class="ph-num">Phase 7</div><h4>Billing</h4><p>Invoice generation, format check, chase cadence</p></div>
+      <div class="ph"><div class="ph-num">Phase 8</div><h4>Close</h4><p>Archive, CRM close, extraction scheduled</p></div>
+      <div class="ph"><div class="ph-num">Phase 9</div><h4>Knowledge Extraction</h4><p>Templates versioned, patterns logged, dossiers updated</p></div>
+      <div class="ph"><div class="ph-num">Phase 10</div><h4>Post-Close</h4><p>Relationship cadence, renewal signals, referral map</p></div>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top: 40px;">
+      <div class="sec-label">Key Divergence Points</div>
+      <table>
+        <thead><tr><th>Dimension</th><th>Founders Arm</th><th>Investors Arm</th></tr></thead>
+        <tbody>
+          <tr><td>Intake trigger</td><td>Engagement Letter (signed, both parties)</td><td>WhatsApp or email with deal documents</td></tr>
+          <tr><td>First interaction gate</td><td>EL BLOCKED if unsigned</td><td>Conflict check only; first review always free</td></tr>
+          <tr><td>Billing model</td><td>Retainer or deal-closing fee</td><td>EUR 300 flat (under EUR 60k) / 0.5% (over EUR 60k)</td></tr>
+          <tr><td>Primary deliverable</td><td>Legal docs, strategy briefs, contracts, cap table models</td><td>Web breakdown page at mexzungu.com/deal-review/[slug]-[year]/</td></tr>
+          <tr><td>SLA</td><td>Weeks to months (milestone-based)</td><td>48 hours from intake confirmation</td></tr>
+          <tr><td>Monthly capacity</td><td>Unlimited (pod capacity-dependent)</td><td>4 reviews/month (soft launch cap)</td></tr>
+          <tr><td>Zone 3 gate</td><td>Not applicable</td><td>EL required before deliverable built; MiFID II EL before billing</td></tr>
+          <tr><td>Regulatory compliance</td><td>Lemmy jurisdiction review per engagement</td><td>MiFID II scan every review (Lemmy Phase 5B)</td></tr>
+          <tr><td>Delivery mechanism</td><td>Email (Fire Away) + Drive folder</td><td>WhatsApp URL + optional email</td></tr>
+          <tr><td>Public launch gating</td><td>No outstanding blockers</td><td>PI insurance (J7) + MiFID II opinion required</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="sec-label">Universal Rules</div>
+    <h2>Standing Rules Across Both Arms</h2>
+
+    <ul class="rule-list">
+      <li><strong>No em dashes</strong>Use periods or commas. Zero tolerance in any output, code, or comment.</li>
+      <li><strong>Mexican Spanish only</strong>Ustedes, sus, les, tienen. Never Castilian. Never vosotros.</li>
+      <li><strong>Fire Away</strong>Emails may only be sent when Pepe says the exact words "Fire Away." No other phrase qualifies.</li>
+      <li><strong>build_email_html()</strong>Every outbound email uses the HTML template. Bare text or p-tag dumps are banned.</li>
+      <li><strong>supportsAllDrives=True</strong>Every Drive API call. Never My Drive. Shared drives only.</li>
+      <li><strong>Reply in-thread, reply-all</strong>All follow-up emails find the thread and include all original To/Cc recipients.</li>
+      <li><strong>Auto-commit every write</strong>No data loss. Every file change committed to git in the same turn.</li>
+      <li><strong>No false completions</strong>"Done/Sent/Filed" banned unless a tool confirmed success in the same turn.</li>
+      <li><strong>Version naming</strong>"Doc v[N] - [date]" in filename AND Drive version history comment. Mandatory.</li>
+      <li><strong>Bank hours mandatory</strong>Every invoice must include bank transfer option. No exceptions.</li>
+      <li><strong>Canonical format gate</strong>All contracts and invoices verified against canonical template before any send.</li>
+      <li><strong>Triple Gate</strong>Before every output: (1) Is this the best we can do? (2) What would a competing firm produce? (3) Second pass. Kill the lazy parts.</li>
+      <li><strong>search_contacts first</strong>Always before claiming "I don't have their info." 2,500+ contacts in Google Contacts.</li>
+      <li><strong>Verifiable claims only</strong>Bruce's strategic analysis uses only verifiable facts. No inferences presented as facts.</li>
+      <li><strong>Deletion is Showtime #10</strong>Any live published content requires explicit "very well" before removal.</li>
+    </ul>
+  </section>
+
+  <section id="gates">
+    <div class="sec-label">Gate System</div>
+    <h2>Showtime vs Soundcheck</h2>
+    <p>Two levels. One rule: is it on the Showtime list? If yes, declare intent and wait. If no, execute and report when noteworthy.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Gate</th><th>What it covers</th><th>Authorization</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="gate gate-showtime">Showtime</span></td>
+            <td>Substantive client emails, publishing content, sending invoices, first contact with new person, contracts, pricing changes, board actions, investments, public legal positions, deleting live content</td>
+            <td>Pepe says "Very well"</td>
+          </tr>
+          <tr>
+            <td><span class="gate gate-showtime">Fire Away</span></td>
+            <td>Emails only. A subset of Showtime.</td>
+            <td>Pepe says exact words "Fire Away"</td>
+          </tr>
+          <tr>
+            <td><span class="gate gate-soundcheck">Soundcheck</span></td>
+            <td>Everything else. Just do it. Report when noteworthy.</td>
+            <td>No approval needed</td>
+          </tr>
+          <tr>
+            <td><span class="gate gate-blocked">Blocked</span></td>
+            <td>Conditional stop. Cannot proceed until condition is met.</td>
+            <td>Unblocked by stated condition only</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="sec-label">MGL Personas</div>
+    <h2>Who Does What</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Persona</th><th>Role</th><th>Primary domain</th></tr></thead>
+        <tbody>
+          <tr><td><span class="al al-pepe">Pepe</span></td><td>Principal</td><td>All Showtime decisions. GC-equivalent or transaction counsel (Founders). Preliminary review (Investors). Final authority.</td></tr>
+          <tr><td><span class="al al-janis">Janis</span></td><td>Chief of Staff</td><td>Detection, routing, logistics, communications, auto-commit, session handoffs</td></tr>
+          <tr><td><span class="al al-lars">Lars</span></td><td>COO</td><td>Pod assembly, work packages, sprint cadence, delivery tracking, milestone tickets</td></tr>
+          <tr><td><span class="al al-lemmy">Lemmy</span></td><td>CLO</td><td>EL verification, legal clearance, conflict checks, MiFID II compliance, surviving obligations</td></tr>
+          <tr><td><span class="al al-gene">Gene</span></td><td>CFO</td><td>Fee structure, invoice generation, financial analysis (Investors), billing reconciliation</td></tr>
+          <tr><td><span class="al al-bruce">Bruce</span></td><td>CSO</td><td>Strategic analysis (Investors), scope pre-assessment, zone pre-determination</td></tr>
+          <tr><td><span class="al al-ozzy">Ozzy</span></td><td>Scenario Planner</td><td>5-dim scoring rubric, zone classification, 3-scenario analysis (Investors); SoW stress-test (Founders)</td></tr>
+          <tr><td><span class="al al-prince">Prince</span></td><td>Head of Excellence</td><td>Quality gate (all phases), revision tracking, format verification, QG audit trail</td></tr>
+          <tr><td><span class="al al-sade">Sade</span></td><td>Head of Client Success</td><td>Relationship health, check-ins on silence signals, post-delivery monitoring</td></tr>
+          <tr><td><span class="al al-janis">Nina</span></td><td>Chief Knowledge Officer</td><td>Document typing, knowledge extraction, dossier updates, 10-term extraction (Investors)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<div class="version-note wrap">
+  Delivery Master Framework v1.0 | Produced by MGL Delivery Engines loop, iteration 1, 2026-08-07 |
+  Loop: brain/loops/mgl-delivery-engines/ | Scores: Founders 0.955, Investors 0.96
+</div>
+
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investors Delivery Engine. Mexzungu x Angels</title>
+  <style>
+    :root {
+      --pink: #E14B87;
+      --bg: #0f0f0f;
+      --surface: #181818;
+      --surface2: #222222;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --green: #4caf7d;
+      --amber: #f0a030;
+      --red: #e05050;
+      --blue: #6498ff;
+      --purple: #b482ff;
+      --orange: #ffa050;
+      --teal: #4cc8b4;
+      --gold: #f0c850;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; gap: 4px; overflow-x: auto; white-space: nowrap; }
+    nav .logo { font-weight: 700; color: var(--amber); font-size: 13px; margin-right: 8px; flex-shrink: 0; }
+    nav a { font-size: 11px; color: var(--muted); text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: color .15s, background .15s; }
+    nav a:hover { color: var(--text); background: var(--surface2); }
+    nav .nav-sep { color: var(--border); font-size: 11px; }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+    h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+    h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+    h3 { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+    p { color: #bbb; margin-bottom: 10px; font-size: 14px; }
+
+    .sec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 8px; }
+
+    .phase-meta { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .pm-item .pm-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
+    .pm-item p { font-size: 13px; color: #ccc; margin: 0; }
+
+    .tbl-wrap { overflow-x: auto; margin-bottom: 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th { background: var(--surface2); color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 9px 13px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 13px; border-bottom: 1px solid #1e1e1e; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.015); }
+
+    .al { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap; margin: 1px; }
+    .al-janis    { background: rgba(225,75,135,0.12); color: #E14B87; border: 1px solid rgba(225,75,135,0.28); }
+    .al-pepe     { background: rgba(240,160,48,0.12); color: #f0a030; border: 1px solid rgba(240,160,48,0.28); }
+    .al-lars     { background: rgba(76,175,125,0.12); color: #4caf7d; border: 1px solid rgba(76,175,125,0.28); }
+    .al-lemmy    { background: rgba(255,160,80,0.12); color: #ffa050; border: 1px solid rgba(255,160,80,0.28); }
+    .al-bruce    { background: rgba(100,152,255,0.12); color: #6498ff; border: 1px solid rgba(100,152,255,0.28); }
+    .al-gene     { background: rgba(240,200,80,0.12); color: #f0c850; border: 1px solid rgba(240,200,80,0.28); }
+    .al-ozzy     { background: rgba(224,80,80,0.12); color: #e05050; border: 1px solid rgba(224,80,80,0.28); }
+    .al-prince   { background: rgba(76,200,180,0.12); color: #4cc8b4; border: 1px solid rgba(76,200,180,0.28); }
+    .al-sade     { background: rgba(180,130,255,0.12); color: #b482ff; border: 1px solid rgba(180,130,255,0.28); }
+    .al-nina     { background: rgba(225,75,175,0.10); color: #e05abb; border: 1px solid rgba(225,75,175,0.28); }
+    .al-sheryl   { background: rgba(120,200,100,0.12); color: #78c864; border: 1px solid rgba(120,200,100,0.28); }
+    .al-jagger   { background: rgba(80,190,120,0.12); color: #50be78; border: 1px solid rgba(80,190,120,0.28); }
+    .al-iggy     { background: rgba(160,110,255,0.12); color: #a06eff; border: 1px solid rgba(160,110,255,0.28); }
+    .al-anselmo  { background: rgba(255,140,60,0.12); color: #ff8c3c; border: 1px solid rgba(255,140,60,0.28); }
+    .al-freddie  { background: rgba(80,210,230,0.12); color: #50d2e6; border: 1px solid rgba(80,210,230,0.28); }
+    .al-tina     { background: rgba(150,100,255,0.12); color: #9664ff; border: 1px solid rgba(150,100,255,0.28); }
+    .al-aretha   { background: rgba(80,140,255,0.12); color: #508cff; border: 1px solid rgba(80,140,255,0.28); }
+    .al-bowie    { background: rgba(180,130,255,0.12); color: #b482ff; border: 1px solid rgba(180,130,255,0.28); }
+    .al-joan     { background: rgba(60,200,160,0.12); color: #3cc8a0; border: 1px solid rgba(60,200,160,0.28); }
+
+    .gate { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .gate-show  { background: rgba(225,75,135,0.15); color: var(--pink); }
+    .gate-sc    { background: rgba(76,175,125,0.12); color: var(--green); }
+    .gate-block { background: rgba(224,80,80,0.15); color: var(--red); }
+    .gate-fa    { background: rgba(225,75,135,0.12); color: #ff80b0; border: 1px solid rgba(225,75,135,0.2); }
+
+    .tool { font-family: 'Courier New', monospace; font-size: 11px; color: #6498ff; background: rgba(100,152,255,0.08); padding: 1px 5px; border-radius: 3px; }
+
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .meta-tag { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); letter-spacing: 0.05em; text-transform: uppercase; }
+
+    .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .ph-num-badge { background: var(--amber); color: #111; font-weight: 800; font-size: 12px; padding: 4px 12px; border-radius: 4px; flex-shrink: 0; }
+    .ph-title { font-size: 22px; font-weight: 700; }
+    .ph-sub { font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .sub-phase { margin-top: 28px; }
+    .sub-phase h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; padding: 8px 14px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--amber); }
+
+    .if-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; background: rgba(180,130,255,0.12); color: #b482ff; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .zone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+    .zone-card { border-radius: 10px; padding: 20px; text-align: center; }
+    .zone-1 { background: rgba(224,80,80,0.08); border: 1px solid rgba(224,80,80,0.3); }
+    .zone-2 { background: rgba(240,160,48,0.08); border: 1px solid rgba(240,160,48,0.3); }
+    .zone-3 { background: rgba(76,175,125,0.08); border: 1px solid rgba(76,175,125,0.3); }
+    .zone-card .zn { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .zone-1 .zn { color: var(--red); }
+    .zone-2 .zn { color: var(--amber); }
+    .zone-3 .zn { color: var(--green); }
+    .zone-card .zs { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .zone-card p { font-size: 12px; color: #999; margin: 0; }
+
+    .blocker-banner { background: rgba(224,80,80,0.08); border: 1px solid rgba(224,80,80,0.35); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+    .blocker-banner .bb-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--red); margin-bottom: 6px; }
+    .blocker-banner p { font-size: 13px; color: #ddd; margin: 0; }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      section { padding: 36px 0; }
+      .zone-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">MGL</span>
+  <a href="../">Engines</a>
+  <span class="nav-sep">|</span>
+  <a href="#overview">Overview</a>
+  <a href="#p0">Ph 0</a>
+  <a href="#p1">Ph 1</a>
+  <a href="#p2">Ph 2</a>
+  <a href="#p3">Ph 3</a>
+  <a href="#p4">Ph 4</a>
+  <a href="#p5">Ph 5</a>
+  <a href="#p6">Ph 6</a>
+  <a href="#p7">Ph 7</a>
+  <a href="#p8">Ph 8</a>
+  <a href="#p9">Ph 9</a>
+  <a href="#p10">Ph 10</a>
+</nav>
+
+<div class="wrap">
+
+  <section id="overview">
+    <div class="sec-label">Mexzungu x Investors (Mexzungu x Angels)</div>
+    <h1>Investors Delivery Engine</h1>
+    <p>Complete operational map for every angel investor deal review: diaspora investors, mid-career professionals, and first-time angels who need professional deal analysis before committing capital.</p>
+    <div class="hero-meta">
+      <span class="meta-tag">Version 1.0</span>
+      <span class="meta-tag">Produced 2026-08-07</span>
+      <span class="meta-tag">WhatsApp/email intake</span>
+      <span class="meta-tag">48h SLA</span>
+      <span class="meta-tag">4 reviews/month cap</span>
+      <span class="meta-tag">Score: 0.96 / 1.0</span>
+    </div>
+
+    <div class="blocker-banner" style="margin-top:28px;">
+      <div class="bb-label">Public Launch Blockers</div>
+      <p>PI insurance (J7 open task) must be confirmed before any public announcement of this arm. MiFID II opinion required before Zone 3 billing activates. Both are being tracked.</p>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h2>Zone Classification System</h2>
+      <div class="zone-grid">
+        <div class="zone-card zone-1">
+          <div class="zn">Zone 1</div>
+          <div class="zs">0-59</div>
+          <p>Walk away. Red flag concentration too high. No EL required.</p>
+        </div>
+        <div class="zone-card zone-2">
+          <div class="zn">Zone 2</div>
+          <div class="zs">60-84</div>
+          <p>Negotiate. Proceed with documented protections. No EL required.</p>
+        </div>
+        <div class="zone-card zone-3">
+          <div class="zn">Zone 3</div>
+          <div class="zs">85-100</div>
+          <p>Proceed with counsel. Full engagement. EL required before deliverable build.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h2>Analysis Team</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Persona</th><th>Role</th><th>Output file</th><th>Max score</th></tr></thead>
+          <tbody>
+            <tr><td><span class="al al-lemmy">Lemmy</span></td><td>Legal: structure, investor rights, red flags, jurisdiction</td><td>lemmy-analysis.md</td><td>25 pts</td></tr>
+            <tr><td><span class="al al-gene">Gene</span></td><td>Financial: valuation, financial model, comparable deals, returns</td><td>gene-analysis.md</td><td>25 pts</td></tr>
+            <tr><td><span class="al al-bruce">Bruce</span></td><td>Strategic: market, team, traction, positioning</td><td>bruce-analysis.md</td><td>20 pts</td></tr>
+            <tr><td><span class="al al-ozzy">Ozzy</span></td><td>Scoring: 5-dim rubric, zone classification, 3 scenarios</td><td>ozzy-scoring.md</td><td>10 pts (Operator)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h2>5-Dimension Scoring Rubric</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Dimension</th><th>Owner</th><th>Weight</th><th>Criteria</th></tr></thead>
+          <tbody>
+            <tr><td>Legal</td><td><span class="al al-lemmy">Lemmy</span></td><td>25 pts</td><td>Structure integrity, investor rights adequacy, clause risk, jurisdiction</td></tr>
+            <tr><td>Financial</td><td><span class="al al-gene">Gene</span></td><td>25 pts</td><td>Valuation sanity, financial model quality, comparables, return path</td></tr>
+            <tr><td>Strategic</td><td><span class="al al-bruce">Bruce</span></td><td>20 pts</td><td>Market size, team track record, traction evidence, positioning</td></tr>
+            <tr><td>Structural composite</td><td><span class="al al-ozzy">Ozzy</span></td><td>20 pts</td><td>Document completeness, term clarity, negotiability</td></tr>
+            <tr><td>Operator</td><td><span class="al al-ozzy">Ozzy</span></td><td>10 pts</td><td>Founder execution signals, operational risk, scenario resilience</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h2>10 Core Terms (mandatory for every review)</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Term</th><th>Source required</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Security type</td><td>Term sheet or subscription agreement</td></tr>
+            <tr><td>2</td><td>Pre-money valuation</td><td>Term sheet or cap table</td></tr>
+            <tr><td>3</td><td>Investor rights (information, pro-rata, board)</td><td>SHA or term sheet</td></tr>
+            <tr><td>4</td><td>Key investor risks</td><td>Offering docs or risk factors section</td></tr>
+            <tr><td>5</td><td>Use of funds</td><td>Pitch deck or IM</td></tr>
+            <tr><td>6</td><td>Founder track record</td><td>Bio, LinkedIn, or IM</td></tr>
+            <tr><td>7</td><td>Governance rights</td><td>SHA or term sheet</td></tr>
+            <tr><td>8</td><td>Exit mechanics</td><td>SHA or term sheet</td></tr>
+            <tr><td>9</td><td>Jurisdiction and governing law</td><td>All docs</td></tr>
+            <tr><td>10</td><td>Comparable deals</td><td>Gene search_web</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:#666;margin-top:8px;">Missing term = "NOT SPECIFIED" with source note. Never infer.</p>
+    </div>
+  </section>
+
+  <!-- PHASE 0 -->
+  <section id="p0">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 0</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Deal Submission Intake</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>Angel investor submits deal documents via WhatsApp or email</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Janis (detection), Nina (document typing), Lemmy (preliminary conflict check)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Documents received, conflict check CLEAR, monthly cap confirmed, intake ticket opened</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Tool</th><th>Gate</th></tr></thead>
+        <tbody>
+          <tr><td>0.1</td><td>Detect WhatsApp: search_whatsapp_personal every 30 min with keywords: deal, invest, term sheet, SAFE, raise, round, share, subscription</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">search_whatsapp_personal</span></td><td></td></tr>
+          <tr><td>0.2</td><td>Detect email: get_emails with attachment keywords; auto-flag PDF and DOCX attachments</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">get_emails</span></td><td></td></tr>
+          <tr><td>0.3</td><td>Extract document contents: extract_pdf_text, read_doc. auto_file to brain/areas/mexzungu/deal-review/inbound/</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">extract_pdf_text</span> <span class="tool">auto_file</span></td><td></td></tr>
+          <tr><td>0.4</td><td>Identify document type: Nina classifies (term sheet, SHA, pitch deck, IM, SAFE, subscription agreement, other)</td><td><span class="al al-nina">Nina</span></td><td><span class="tool">write_brain</span></td><td></td></tr>
+          <tr><td>0.5</td><td>Preliminary conflict check: Lemmy searches client registry, investments, contacts, and CRM for target company or founders</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="tool">read_brain</span> <span class="tool">list_leads</span></td><td><span class="gate gate-show">Showtime</span> if conflict found</td></tr>
+          <tr><td>0.6</td><td>Monthly cap check: query monthly-cap-YYYY-MM.md. If 4 reviews this month, add to waitlist.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">read_brain</span></td><td><span class="gate gate-block">Blocked if cap reached</span></td></tr>
+          <tr><td>0.7</td><td>First-review detection: search deals-reviewed.md for investor name. First review = free.</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">read_brain</span></td><td></td></tr>
+          <tr><td>0.8</td><td>Acknowledge receipt within 2h: WhatsApp (Soundcheck) or email (Fire Away)</td><td><span class="al al-janis">Janis</span></td><td><span class="tool">send_whatsapp</span> / <span class="tool">draft_email_reply</span></td><td></td></tr>
+          <tr><td>0.9</td><td>Open intake ticket: investor name, target company, document type, date received</td><td><span class="al al-lars">Lars</span></td><td><span class="tool">ticket_create</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 1 -->
+  <section id="p1">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 1</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Activation and Scope</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 0 complete. Conflict check CLEAR. Monthly cap confirmed.</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Lemmy (full conflict check), Bruce (zone pre-assessment), Gene (fee calc), Jagger (CRM)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Full conflict check complete, zone pre-assessed, EL drafted if Zone 3, 48h SLA timer started</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+        <tbody>
+          <tr><td>1.1</td><td>Full conflict check: 5-step Lemmy search across (1) client registry, (2) active investments, (3) drive search, (4) CRM pipeline, (5) contacts database. Log result to conflict-check.md.</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="gate gate-show">Showtime</span> if any conflict</td></tr>
+          <tr><td>1.2</td><td>Zone pre-determination: Bruce reads all available documents; applies zone rubric based on investor's own framing. Produces preliminary zone estimate with confidence level.</td><td><span class="al al-bruce">Bruce</span></td><td></td></tr>
+          <tr><td>1.3</td><td>Confirm first review is free: check deals-reviewed.md. If not first review, calculate fee per pricing matrix.</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+          <tr><td>1.4</td><td>Zone 3 EL trigger: if Bruce's preliminary zone estimate is Zone 3, Lemmy drafts EL from canonical template. Gene calculates fee (0.5% of deal size or EUR 300 min). EL includes bank hours option.</td><td><span class="al al-lemmy">Lemmy</span> / <span class="al al-gene">Gene</span></td><td><span class="gate gate-show">Showtime</span> if Zone 3</td></tr>
+          <tr><td>1.5</td><td>Log investor profile: Nina creates brain/areas/mexzungu/deal-review/investors/[name].md</td><td><span class="al al-nina">Nina</span></td><td></td></tr>
+          <tr><td>1.6</td><td>Start 48h SLA timer: create_calendar_event at T+48h with alert. Write start time to STATE.</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+          <tr><td>1.7</td><td>Add to CRM: track_lead with investor name, target company, deal type, zone estimate, first/repeat flag</td><td><span class="al al-jagger">Jagger</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section id="p2">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 2</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Scope Confirmation</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 1 complete. Conflict check CLEAR. Zone pre-assessed.</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Prince (doc completeness), Bowie (web setup), Bruce (analyst brief), Jagger (scope confirmation)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Documents complete, web page reserved, analysis team briefed, scope confirmed with investor</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+        <tbody>
+          <tr><td>2.1</td><td>Document completeness check: Prince reviews against zone-specific minimum requirements. Zone 1/2: term sheet + any 2 supporting docs. Zone 3: full data room minimum.</td><td><span class="al al-prince">Prince</span></td><td>Flag if incomplete</td></tr>
+          <tr><td>2.2</td><td>Reserve web deliverable slug: Bowie creates empty page at mexzungu.com/deal-review/[slug]-[year]/ (password protected, not indexed)</td><td><span class="al al-bowie">Bowie</span></td><td></td></tr>
+          <tr><td>2.3</td><td>Decide PDF companion: default is web page only. PDF if investor requests or deal complexity warrants.</td><td><span class="al al-bruce">Bruce</span></td><td></td></tr>
+          <tr><td>2.4</td><td>Brief analysis team: Bruce posts in Telegram OPS with role assignments, document links, zone estimate, 48h deadline</td><td><span class="al al-bruce">Bruce</span></td><td></td></tr>
+          <tr><td>2.5</td><td>Draft scope confirmation to investor: what was received, what will be produced, expected delivery time</td><td><span class="al al-jagger">Jagger</span></td><td><span class="gate gate-show">Showtime</span> if pricing included</td></tr>
+          <tr><td>2.6</td><td>Send scope confirmation: WhatsApp (Soundcheck for known) or email (Fire Away for new)</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+          <tr><td>2.7</td><td>Confirm delivery format preference (web only, web + PDF, web + optional call)</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+          <tr><td>2.8</td><td>Log scope agreement to Nina knowledge log</td><td><span class="al al-nina">Nina</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 3 -->
+  <section id="p3">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 3</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Review Planning</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 2 complete. Analysis team briefed.</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Janis (workspace), Lars (tracking), Lemmy + Gene + Bruce + Ozzy (analysis)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Workspace created, documents ingested, 10 core terms extracted, analysts briefed</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>3.1</td><td>Create workspace in Drive: create_drive_folder under Mexzungu Group drive. Path: Deal Reviews/[year]/[slug]-[year]/. supportsAllDrives=True always.</td><td><span class="al al-janis">Janis</span></td><td>Never My Drive</td></tr>
+          <tr><td>3.2</td><td>Create local mirror: brain/areas/mexzungu/deal-review/active/[slug]-[year]/</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+          <tr><td>3.3</td><td>Ingest all deal documents to local mirror and Drive</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+          <tr><td>3.4</td><td>Extract to text: extract_pdf_text, read_doc, read_sheet for all document formats</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+          <tr><td>3.5</td><td>Extract 10 core terms to deal-summary.md: every field cites source document and page. Missing = "NOT SPECIFIED". Never infer.</td><td><span class="al al-nina">Nina</span></td><td><strong>Non-negotiable</strong></td></tr>
+          <tr><td>3.6</td><td>Create analyst-brief.md: deal summary, investor profile, zone estimate, 10 core terms, document list, 48h deadline, analyst role assignments</td><td><span class="al al-bruce">Bruce</span></td><td></td></tr>
+          <tr><td>3.7</td><td>Create 48h deadline ticket with hard deadline timestamp</td><td><span class="al al-lars">Lars</span></td><td></td></tr>
+          <tr><td>3.8</td><td>Register in CRM: update_lead with workspace path, documents received, analyst team</td><td><span class="al al-jagger">Jagger</span></td><td></td></tr>
+          <tr><td>3.9</td><td>Intermediate notification to investor: "Review underway. Delivery in 48h from [timestamp]."</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
+          <tr><td>3.10</td><td>Scope creep cross-check: Lemmy confirms no new documents submitted after Phase 2 scope lock that change the review scope</td><td><span class="al al-lemmy">Lemmy</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 4 -->
+  <section id="p4">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 4</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Analysis Execution</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 3 complete. analyst-brief.md ready. 48h SLA clock running.</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Lemmy (legal), Gene (financial), Bruce (strategic), Ozzy (scoring + zone classification)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>All 4 analysis files complete, zone classified, Pepe preliminary review done</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Output</th><th>Gate</th></tr></thead>
+        <tbody>
+          <tr><td>4.1</td><td>Lemmy legal analysis: (1) structure integrity, (2) investor rights adequacy, (3) red flag identification, (4) jurisdiction and governing law, (5) clause risk assessment, (6) protective provisions, (7) anti-dilution terms, (8) liquidation preference. Score 0-25 with citations.</td><td><span class="al al-lemmy">Lemmy</span></td><td>lemmy-analysis.md</td><td></td></tr>
+          <tr><td>4.2</td><td>Gene financial analysis: (1) valuation sanity check vs. comparables, (2) financial model review, (3) use of funds credibility, (4) return path analysis, (5) comparable deal search via search_web. Score 0-25 with citations.</td><td><span class="al al-gene">Gene</span></td><td>gene-analysis.md</td><td></td></tr>
+          <tr><td>4.3</td><td>Bruce strategic analysis: (1) market size and dynamics, (2) team track record (search_web for founder background), (3) traction evidence, (4) competitive positioning, (5) strategic timing, (6) network and co-investor quality. Score 0-20, verifiable claims only.</td><td><span class="al al-bruce">Bruce</span></td><td>bruce-analysis.md</td><td></td></tr>
+          <tr><td>4.4</td><td>Ozzy scoring: reads all 3 analysis files. Applies 5-dim rubric. Produces zone classification, total score out of 100, 3 scenarios (bull/base/bear).</td><td><span class="al al-ozzy">Ozzy</span></td><td>ozzy-scoring.md</td><td></td></tr>
+          <tr><td>4.5</td><td>Zone classification: Ozzy writes to deal-summary.md: "Zone: [1/2/3] | Score: [X]/100 | Confidence: [high/medium/low]"</td><td><span class="al al-ozzy">Ozzy</span></td><td>deal-summary.md</td><td></td></tr>
+          <tr><td>4.6</td><td>Zone 3 detection: if Ozzy classifies Zone 3 and no EL signed, STOP. Flag to Pepe as Showtime. Do not produce deliverable until EL signed.</td><td><span class="al al-ozzy">Ozzy</span></td><td></td><td><span class="gate gate-show">Showtime</span> if Zone 3 without EL</td></tr>
+          <tr><td>4.7</td><td>Preliminary findings summary: Bruce writes preliminary-summary.md (1-2 pages) from all 4 analyst files</td><td><span class="al al-bruce">Bruce</span></td><td>preliminary-summary.md</td><td></td></tr>
+          <tr><td>4.8</td><td>Pepe preliminary review: 30-min block. Pepe reads preliminary-summary.md and can add notes. Showtime gate before client-facing deliverable is built.</td><td><span class="al al-pepe">Pepe</span></td><td></td><td><span class="gate gate-show">Showtime</span></td></tr>
+          <tr><td>4.9</td><td>Update deadline ticket: log progress, confirm on-track for 48h delivery</td><td><span class="al al-lars">Lars</span></td><td></td><td></td></tr>
+          <tr><td>4.10</td><td>Log analysis stage to CRM: update_lead with zone, score, preliminary findings</td><td><span class="al al-jagger">Jagger</span></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 5 -->
+  <section id="p5">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 5</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Quality Gate</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>All 4 analysis files complete. Pepe preliminary review done.</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Prince (completeness), Lemmy (MiFID II and compliance), Anselmo (brand), Prince (gate close)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>All three QG reports PASS. Cleared for web page build.</p></div>
+    </div>
+
+    <div class="sub-phase">
+      <h3>5A: Prince QG (Completeness and Accuracy)</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Sub-task</th><th>Criterion</th></tr></thead>
+          <tbody>
+            <tr><td>5A.1</td><td>Rubric completeness: all 5 dimensions scored with evidence in ozzy-scoring.md</td><td>5/5 dimensions</td></tr>
+            <tr><td>5A.2</td><td>10-term check: all 10 core terms populated in deal-summary.md (NOT SPECIFIED where absent, never blank)</td><td>10/10 populated</td></tr>
+            <tr><td>5A.3</td><td>Flag color consistency: red/amber/green flags used consistently across all 4 analyst files</td><td>No conflicting flags</td></tr>
+            <tr><td>5A.4</td><td>Zone classification matches rubric scores: zone derived from score, not subjective judgment</td><td>Zone = score-derived</td></tr>
+            <tr><td>5A.5</td><td>Recommendation zone-appropriateness: Zone 1/2 cannot recommend "proceed without qualification"</td><td>Zone-appropriate</td></tr>
+            <tr><td>5A.6</td><td>Write qg-prince.md with PASS/FAIL and specific evidence</td><td>Audit trail</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-phase">
+      <h3>5B: Lemmy QG (MiFID II and Compliance)</h3>
+      <div class="blocker-banner" style="margin-bottom:12px;">
+        <div class="bb-label">MiFID II Banned Phrases</div>
+        <p>"you should buy" &bull; "this is a good investment" &bull; "we recommend investing" &bull; "expected return of X%"</p>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Sub-task</th><th>Flag condition</th></tr></thead>
+          <tbody>
+            <tr><td>5B.1</td><td>MiFID II compliance scan: no phrases constituting regulated investment advice</td><td>Any regulated phrase present</td></tr>
+            <tr><td>5B.2</td><td>Zone 3 EL check: if Zone 3, confirm EL signed before deliverable is built</td><td>No EL and Zone 3</td></tr>
+            <tr><td>5B.3</td><td>Cross-client confidentiality: no deal information from other investors leaked into this analysis</td><td>Any cross-deal contamination</td></tr>
+            <tr><td>5B.4</td><td>Write qg-lemmy.md with PASS/FAIL and specific evidence</td><td>MiFID II clearance on file</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-phase">
+      <h3>5C: Anselmo QG (Brand and Voice)</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Sub-task</th><th>Criterion</th></tr></thead>
+          <tbody>
+            <tr><td>5C.1</td><td>Voice: analysis is sharp, direct, warm. No corporate hedging. No "it remains to be seen whether."</td><td>Mexzungu voice</td></tr>
+            <tr><td>5C.2</td><td>Tone-Zone match: Zone 1 blunt and clear; Zone 2 constructive and protective; Zone 3 enthusiastic but precise</td><td>Tone-appropriate</td></tr>
+            <tr><td>5C.3</td><td>Over-cautious language sweep: no "we cannot guarantee," "this is not financial advice" as the primary message</td><td>Forward, not defensive</td></tr>
+            <tr><td>5C.4</td><td>Write qg-anselmo.md with PASS/FAIL</td><td>Brand cleared</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-phase">
+      <h3>5D: Prince Gate Close</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Sub-task</th><th>Gate</th></tr></thead>
+          <tbody>
+            <tr><td>5D.1</td><td>Confirm qg-prince.md = PASS, qg-lemmy.md = PASS, qg-anselmo.md = PASS</td><td><strong>All three required</strong></td></tr>
+            <tr><td>5D.2</td><td>FAIL on any gate: targeted patch. Re-run failing QG section only. Re-write affected analysis section.</td><td>Re-run minimum scope</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 6 -->
+  <section id="p6">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 6</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Web Breakdown Delivery</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>All QG gates PASS</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Bowie (web build), Janis (deployment), Jagger (investor delivery), Pepe (Fire Away if applicable)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Page live at mexzungu.com/deal-review/[slug]-[year]/. Investor notified. CRM updated.</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+        <tbody>
+          <tr><td>6.1</td><td>Assemble page data: pull from deal-summary.md, ozzy-scoring.md, lemmy-analysis.md, gene-analysis.md, bruce-analysis.md</td><td><span class="al al-bowie">Bowie</span></td><td></td></tr>
+          <tr><td>6.2</td><td>Build HTML page: deal summary, Ozzy score visual (0-100 gauge), Zone banner, red/amber flag table, 10-term extraction table, recommendation block, next steps. Design language matches mexzungu-site/investors/index.html.</td><td><span class="al al-bowie">Bowie</span></td><td></td></tr>
+          <tr><td>6.3</td><td>Image handling: all images served from mexzungu.com/img/social/[file]. NEVER api.mexzungu.com (auth-protected, external services get 401).</td><td><span class="al al-bowie">Bowie</span></td><td></td></tr>
+          <tr><td>6.4</td><td>Add noindex meta tag: page is for investor only, not for public search indexing</td><td><span class="al al-bowie">Bowie</span></td><td></td></tr>
+          <tr><td>6.5</td><td>Local build sanity check: confirm page renders correctly, all sections present, no broken links</td><td><span class="al al-bowie">Bowie</span></td><td></td></tr>
+          <tr><td>6.6</td><td>Deploy to production: run deploy.sh. This is Showtime #2 (publishing content).</td><td><span class="al al-bowie">Bowie</span> / <span class="al al-pepe">Pepe</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
+          <tr><td>6.7</td><td>Post-deploy curl verification: HTTP 200 + content grep for key terms (company name, zone classification)</td><td><span class="al al-bowie">Bowie</span></td><td></td></tr>
+          <tr><td>6.8</td><td>CRM update: update_lead with page URL, delivery date, zone final, score final</td><td><span class="al al-jagger">Jagger</span></td><td></td></tr>
+          <tr><td>6.9</td><td>Investor first contact: if investor is new (never contacted by Mexzungu), sending the page link is Showtime #4</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-show">Showtime #4</span> if new</td></tr>
+          <tr><td>6.10</td><td>WhatsApp delivery message: share page URL + access code + one-line context</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-sc">Soundcheck</span> (known) / <span class="gate gate-show">Showtime</span> (new)</td></tr>
+          <tr><td>6.11</td><td>Email delivery (if investor preference)</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
+          <tr><td>6.12</td><td>Log delivery to brain/areas/mexzungu/deal-review/deliveries-log.md</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+          <tr><td>6.13</td><td>Close 48h SLA timer: write delivery timestamp to deal STATE; flag PASS or MISS</td><td><span class="al al-lars">Lars</span></td><td></td></tr>
+          <tr><td>6.14</td><td>Auto-commit: git commit -m "deal-review/[slug]-[year]: page delivered [date]"</td><td><span class="al al-janis">Janis</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 7 -->
+  <section id="p7">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 7</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Billing</div></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th><th>Gate</th></tr></thead>
+        <tbody>
+          <tr><td>7.1</td><td>First-review check: query deals-reviewed.md by investor name. Count.</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+          <tr><td>7.2</td><td>If first review: send thank-you WhatsApp. Close billing ticket. No invoice. Add to deals-reviewed.md.</td><td><span class="al al-janis">Janis</span> / <span class="al al-gene">Gene</span></td><td></td></tr>
+          <tr><td>7.3</td><td>Pricing calculation (non-first review): deal size &lt; EUR 60k = EUR 300 flat; deal size &ge; EUR 60k = 0.5% (min EUR 300)</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+          <tr><td>7.4</td><td>Zone 3 MiFID II EL gate: if Zone 3 billing, confirm EL signed AND MiFID II opinion filed before invoice</td><td><span class="al al-lemmy">Lemmy</span></td><td><span class="gate gate-block">Blocked if no EL or no MiFID II opinion</span></td></tr>
+          <tr><td>7.5</td><td>Generate invoice: canonical template. <strong>Bank hours option mandatory.</strong> Currency: EUR. Entity: Mexzungu Group Ltd.</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+          <tr><td>7.6</td><td>Prince format check on invoice</td><td><span class="al al-prince">Prince</span></td><td></td></tr>
+          <tr><td>7.7</td><td>Send invoice</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-show">Showtime</span> <span class="gate gate-fa">Fire Away</span></td></tr>
+          <tr><td>7.8</td><td>Log invoice to brain/areas/finance/invoices/ and deals-reviewed.md</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+          <tr><td>7.9</td><td>Day 7 unpaid: WhatsApp reminder</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
+          <tr><td>7.10</td><td>Day 14 unpaid: formal email</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
+          <tr><td>7.11</td><td>Day 21: Pepe direct WhatsApp</td><td><span class="al al-pepe">Pepe</span></td><td></td></tr>
+          <tr><td>7.12</td><td>Day 30: Sade escalation contact</td><td><span class="al al-sade">Sade</span></td><td></td></tr>
+          <tr><td>7.13</td><td>Payment failure: immediate Telegram alert to Pepe. Daily nag until resolved.</td><td><span class="al al-gene">Gene</span></td><td>On failure</td></tr>
+          <tr><td>7.14</td><td>Payment received: log to deals-reviewed.md; update ticket; close billing</td><td><span class="al al-gene">Gene</span></td><td></td></tr>
+          <tr><td>7.15</td><td>Sade client health check: is investor satisfied? Would they refer?</td><td><span class="al al-sade">Sade</span></td><td>Post-payment</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 8 -->
+  <section id="p8">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 8</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Close</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>Deliverable acknowledged (or 48h SLA timer expired). Invoice closed.</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Lars (SLA log), Iggy (archive), Nina (extraction seed), Bruce (ExCo close)</p></div>
+      <div class="pm-item"><div class="pm-label">Exit condition</div><p>Review archived, CRM closed, monthly counter incremented, Ozzy calibration seeded</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th></tr></thead>
+        <tbody>
+          <tr><td>8.1</td><td>Confirm delivery acknowledgment: search_whatsapp_personal + get_emails for investor reply. Log outcome.</td><td><span class="al al-janis">Janis</span></td></tr>
+          <tr><td>8.2</td><td>Log SLA outcome: write to brain/areas/mexzungu/deal-review/metrics/YYYY-MM-sla-log.md (deal slug, SLA target, actual delivery, PASS or MISS)</td><td><span class="al al-lars">Lars</span></td></tr>
+          <tr><td>8.3</td><td>Archive full review package: copy all files from active/ to archive/[slug]-[year]/. Upload to Drive archive folder.</td><td><span class="al al-iggy">Iggy</span></td></tr>
+          <tr><td>8.4</td><td>Anonymize archive: Prince strips company name and founder names from archive copy. Web page remains live with password protection.</td><td><span class="al al-prince">Prince</span></td></tr>
+          <tr><td>8.5</td><td>Close CRM entry: update_lead with final zone, final score, delivery status, invoice status</td><td><span class="al al-jagger">Jagger</span></td></tr>
+          <tr><td>8.6</td><td>Increment monthly counter: write to brain/areas/mexzungu/deal-review/monthly-cap-YYYY-MM.md (+1)</td><td><span class="al al-janis">Janis</span></td></tr>
+          <tr><td>8.7</td><td>Seed Ozzy calibration: write deal fingerprint to brain/areas/mexzungu/deal-review/ozzy-calibration-log.md</td><td><span class="al al-ozzy">Ozzy</span></td></tr>
+          <tr><td>8.8</td><td>Close billing: confirm invoice paid or first-review; close financial ticket</td><td><span class="al al-gene">Gene</span></td></tr>
+          <tr><td>8.9</td><td>Delivery ExCo close confirmation: Bruce posts one-liner to ExCo Telegram log confirming review closed</td><td><span class="al al-bruce">Bruce</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 9 -->
+  <section id="p9">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 9</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Knowledge Extraction</div></div>
+    </div>
+    <div class="phase-meta">
+      <div class="pm-item"><div class="pm-label">Trigger</div><p>Phase 8 complete. Within 7 days of close.</p></div>
+      <div class="pm-item"><div class="pm-label">Owners</div><p>Nina (lead), Lemmy + Gene + Bruce + Ozzy (contributors)</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Sub-task</th><th>Owner</th></tr></thead>
+        <tbody>
+          <tr><td>9.1</td><td>Deal fingerprint: classify by security type, jurisdiction, sector, stage, deal size band, zone</td><td><span class="al al-nina">Nina</span></td></tr>
+          <tr><td>9.2</td><td>Score breakdown analysis: compare Lemmy/Gene/Bruce/Ozzy scores to prior 5 comparable deals</td><td><span class="al al-ozzy">Ozzy</span></td></tr>
+          <tr><td>9.3</td><td>Legal red flag patterns: Lemmy adds new patterns to brain/knowledge/legal-playbooks/deal-review-red-flags.md</td><td><span class="al al-lemmy">Lemmy</span></td></tr>
+          <tr><td>9.4</td><td>Term benchmarks: Gene adds to brain/knowledge/deal-benchmarks/YYYY-[sector]-[stage].md</td><td><span class="al al-gene">Gene</span></td></tr>
+          <tr><td>9.5</td><td>Equity structure patterns: Tina adds to equity knowledge base if convertible note or SAFE involved</td><td><span class="al al-tina">Tina</span></td></tr>
+          <tr><td>9.6</td><td>Jurisdiction patterns: Aretha logs new jurisdiction learnings if cross-border deal</td><td><span class="al al-aretha">Aretha</span></td></tr>
+          <tr><td>9.7</td><td>Ozzy rubric calibration: compare predicted zone to investor's actual decision (if known). Propose rubric update.</td><td><span class="al al-ozzy">Ozzy</span></td></tr>
+          <tr><td>9.8</td><td>Nina deal review playbook update: update brain/areas/mexzungu/deal-review/process-v2.md with new learnings</td><td><span class="al al-nina">Nina</span></td></tr>
+          <tr><td>9.9</td><td>Investor behavior pattern: Sheryl + Jagger log communication patterns, response speed, questions asked</td><td><span class="al al-sheryl">Sheryl</span> / <span class="al al-jagger">Jagger</span></td></tr>
+          <tr><td>9.10</td><td>Weekly anonymized pattern digest: Nina produces weekly digest of deal patterns for Bruce's market intelligence</td><td><span class="al al-nina">Nina</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHASE 10 -->
+  <section id="p10">
+    <div class="phase-header">
+      <div class="ph-num-badge">PH 10</div>
+      <div><div class="ph-sub">Investors Engine</div><div class="ph-title">Post-Close Investor Relationship</div></div>
+    </div>
+
+    <div class="sub-phase">
+      <h3>Touch Cadence</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Interval</th><th>Action</th><th>Owner</th><th>Gate</th></tr></thead>
+          <tbody>
+            <tr><td>Same day</td><td>Thank-you WhatsApp: "Great working with you on this one. Next deal, send it over."</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
+            <tr><td>7 days</td><td>Follow-up ping: ask if they have questions after sitting with the review. Seed Ozzy calibration request.</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
+            <tr><td>If waitlisted</td><td>Communicate waitlist position and expected slot opening</td><td><span class="al al-janis">Janis</span></td><td><span class="gate gate-sc">Soundcheck</span></td></tr>
+            <tr><td>Quarterly</td><td>Angel relationship review: Pepe-signed message, high-touch for repeat investors</td><td><span class="al al-pepe">Pepe</span></td><td><span class="gate gate-fa">Fire Away</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-phase">
+      <h3>Exception Paths</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Trigger</th><th>Detection</th><th>Owner</th><th>Action</th><th>Gate</th></tr></thead>
+          <tbody>
+            <tr><td>Investor disputes analysis</td><td>WhatsApp or email</td><td><span class="al al-bruce">Bruce</span> / <span class="al al-pepe">Pepe</span></td><td>Pepe reviews; Bruce prepares supplemental note if warranted</td><td>Pepe direct judgment</td></tr>
+            <tr><td>Investor requests Zone 3 advisory without EL</td><td>Investor asks for negotiation help</td><td><span class="al al-lemmy">Lemmy</span></td><td>Explain Zone 3 = EL required; draft EL</td><td><span class="gate gate-show">Showtime</span>: EL must be signed</td></tr>
+            <tr><td>Dual-facing conflict discovered post-delivery</td><td>Lemmy ongoing scan</td><td><span class="al al-lemmy">Lemmy</span></td><td>Disclose to relevant parties; Pepe judgment on recusal</td><td><span class="gate gate-show">Showtime</span></td></tr>
+            <tr><td>Investor becomes a founder client</td><td>Investor launches company</td><td><span class="al al-joan">Joan</span></td><td>New Founders arm intake from Phase 0</td><td>New EL required</td></tr>
+            <tr><td>Monthly cap reached mid-review</td><td>Cap monitor</td><td><span class="al al-lars">Lars</span></td><td>Continue current review; waitlist all new submissions</td><td></td></tr>
+            <tr><td>MiFID II opinion not yet filed</td><td>Lemmy monitor</td><td><span class="al al-lemmy">Lemmy</span></td><td>BLOCK Zone 3 invoice until opinion filed (J7 open task)</td><td><span class="gate gate-block">Blocked</span></td></tr>
+            <tr><td>PI insurance not yet in place</td><td>Lemmy monitor</td><td><span class="al al-lemmy">Lemmy</span></td><td>Flag J7 task daily until resolved. No public announcement until insurance confirmed.</td><td><span class="gate gate-block">Blocked for public launch</span></td></tr>
+            <tr><td>Investor dissatisfied with deliverable</td><td>Sade signal</td><td><span class="al al-sade">Sade</span> / <span class="al al-pepe">Pepe</span></td><td>Pepe direct call within 24h; supplemental analysis if warranted</td><td>Pepe direct</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div style="font-size:12px;color:#555;padding:20px 24px;max-width:1100px;margin:0 auto;border-top:1px solid #2a2a2a;">
+  Investors Delivery Engine v1.0 | MGL Delivery Engines loop, iteration 1, 2026-08-07 | Score: 0.96 / 1.0 |
+  Open items: J7 (PI insurance) and MiFID II opinion required before public launch. |
+  <a href="../" style="color:#f0a030;">All Engines</a>
+</div>
+
+</body>
+</html>
