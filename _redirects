@@ -50,3 +50,7 @@
 # Arte redirected to Juego de las Mijagas
 /arte /juegodemijagas 301
 /arte/ /juegodemijagas/ 301
+
+# BD function renamed to Client Acquisition Engine
+/bd-function /engines/client-acquisition/ 301
+/bd-function/* /engines/client-acquisition/ 301
