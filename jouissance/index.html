@@ -1891,7 +1891,7 @@ async function submitSpecialChallenge(){
   fd.append('media_type',window._ssMediaType||'audio');
   const txt=(document.getElementById('ss-resp').value||'').trim();
   if(txt)fd.append('response_text',txt);
-  const token=localStorage.getItem('j_token');
+  const token=localStorage.getItem('jouissance_token');
   const r=await fetch(API+'/challenges/special/'+s.id+'/submit',{method:'POST',headers:{'Authorization':'Bearer '+token},body:fd});
   if(r&&r.ok){
     const d=await r.json();
