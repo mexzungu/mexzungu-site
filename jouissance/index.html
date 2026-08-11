@@ -562,6 +562,20 @@ textarea:focus{border-color:var(--accent)}
       <div class="daily-msg-text" id="h-daily-msg-text"></div>
       <div class="daily-msg-attr">Pepe</div>
     </div>
+    <div id="h-special-section" style="display:none;margin-bottom:1.25rem">
+      <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.9rem">For you</div>
+      <div class="chal-card" id="h-special-card" onclick="openSpecialChallenge()" style="border-color:rgba(225,75,135,.35);background:rgba(225,75,135,.05);cursor:pointer">
+        <div class="diff-badge" style="background:rgba(225,75,135,.15);color:#e14b87;border-color:rgba(225,75,135,.25);margin-bottom:.6rem">Special</div>
+        <div class="chal-card-title" id="h-special-title"></div>
+        <div style="display:flex;gap:.75rem;align-items:center;margin-top:.8rem">
+          <span style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(225,75,135,.75)">Stake <span id="h-special-cost">30</span> pts</span>
+          <span style="color:rgba(244,239,230,.25);font-size:.8rem">·</span>
+          <span style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(155,127,166,.75)">Win <span id="h-special-reward">100</span> pts</span>
+          <span style="color:rgba(244,239,230,.25);font-size:.8rem">·</span>
+          <span style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,239,230,.35)" id="h-special-expires"></span>
+        </div>
+      </div>
+    </div>
     <div id="h-challenges-section" style="display:none">
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1.1rem">Today's Rituals</div>
       <div class="chal-card" id="h-chal-easy">
@@ -676,6 +690,55 @@ textarea:focus{border-color:var(--accent)}
       <div class="surprise-q" id="surprise-q"></div>
     </div>
     <button class="btn" id="cc-back" style="max-width:200px">Back</button>
+  </div>
+</div>
+
+<div class="screen" id="special-challenge">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">Special Challenge</div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div id="sc-title" class="ct-title"></div>
+    <div id="sc-expires-line" style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:1.25rem"></div>
+    <div style="display:flex;gap:1rem;margin-bottom:1.75rem">
+      <div style="flex:1;padding:1rem;background:rgba(225,75,135,.07);border:1px solid rgba(225,75,135,.2);border-radius:8px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;color:#e14b87" id="sc-cost-num">30</div>
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(225,75,135,.55);margin-top:.2rem">pts staked</div>
+      </div>
+      <div style="flex:1;padding:1rem;background:rgba(155,127,166,.07);border:1px solid rgba(155,127,166,.2);border-radius:8px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;color:var(--secondary)" id="sc-reward-num">100</div>
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(155,127,166,.55);margin-top:.2rem">pts earned</div>
+      </div>
+    </div>
+    <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,239,230,.35);margin-bottom:.6rem">What I need from you</div>
+    <div id="sc-requirement" style="color:rgba(244,239,230,.78);font-size:.93rem;line-height:1.85;margin-bottom:2rem;padding:1rem 1.1rem;background:rgba(155,127,166,.06);border:1px solid rgba(155,127,166,.14);border-radius:8px"></div>
+    <button class="btn btn-primary mb2" id="sc-accept-btn">Accept and stake <span id="sc-accept-cost">30</span> pts</button>
+    <button class="btn" id="sc-decline-btn" style="background:none;border-color:rgba(244,239,230,.12);color:rgba(244,239,230,.45);margin-top:.5rem">Decline</button>
+    <div id="sc-error" style="display:none;color:#e07070;font-size:.82rem;text-align:center;margin-top:.75rem;letter-spacing:.04em"></div>
+  </div>
+</div>
+
+<div class="screen" id="special-submit">
+  <div class="screen-header">
+    <button class="back-btn" data-back="home">&#8592;</button>
+    <div class="screen-label">Submit</div>
+  </div>
+  <div class="container" style="flex:1;overflow-y:auto">
+    <div class="ct-title" style="font-size:1.4rem;margin-bottom:.75rem">You are in.</div>
+    <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,239,230,.35);margin-bottom:.6rem">What I need from you</div>
+    <div id="ss-requirement" style="color:rgba(244,239,230,.72);font-size:.9rem;line-height:1.8;margin-bottom:1.5rem;padding:.9rem 1rem;background:rgba(155,127,166,.06);border:1px solid rgba(155,127,166,.14);border-radius:8px"></div>
+    <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.38);margin-bottom:.75rem">Voice note or image required</div>
+    <div class="media-row">
+      <button class="media-btn" id="ss-mb-audio" title="Voice note">&#9834;</button>
+      <button class="media-btn" id="ss-mb-video" title="Photo or video">&#9645;</button>
+      <input type="file" id="ss-fi-audio" accept="audio/*" style="display:none" capture="microphone">
+      <input type="file" id="ss-fi-video" accept="video/*,image/*" style="display:none" capture="environment">
+      <span class="media-label" id="ss-media-lbl">Tap to attach</span>
+    </div>
+    <textarea id="ss-resp" placeholder="Short reflection (optional)..." style="min-height:90px"></textarea>
+    <button class="btn btn-primary mb2" id="ss-submit-btn" style="margin-top:1rem">Send</button>
+    <div id="ss-error" style="display:none;color:#e07070;font-size:.82rem;text-align:center;margin-top:.5rem;letter-spacing:.04em"></div>
   </div>
 </div>
 
@@ -913,6 +976,18 @@ textarea:focus{border-color:var(--accent)}
       </div>
     </div>
 
+    <div style="display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:.75rem">
+      <div style="width:60px;min-width:60px;height:60px;border-radius:6px;background:rgba(155,127,166,.25);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0">🎙️</div>
+      <div style="min-width:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);margin-bottom:.1rem">In Bed With Alexa: Have Better Sex</div>
+        <div style="font-size:.7rem;color:var(--secondary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.45rem">Alexa Andre</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.6);line-height:1.65">A sexologist unpacks desire, pleasure, and intimacy without the clinical distance. Practical and honest.</div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.55rem">
+          <a href="https://open.spotify.com/show/6NajLQWDzhpSgh3D9h0plj" target="_blank" rel="noopener" style="font-size:.65rem;color:var(--secondary);text-decoration:none;border:1px solid rgba(155,127,166,.28);border-radius:4px;padding:.18rem .42rem;opacity:.85">Spotify ↗</a>
+        </div>
+      </div>
+    </div>
+
     <div style="display:flex;gap:.85rem;align-items:flex-start;background:rgba(30,24,41,.7);border:1px solid rgba(155,127,166,.2);border-radius:8px;padding:.85rem;margin-bottom:2rem">
       <img src="/jouissance/covers/podcast-embodiment.jpg" alt="The Embodiment Podcast" style="width:60px;min-width:60px;height:60px;object-fit:cover;border-radius:6px;background:rgba(155,127,166,.15)">
       <div style="min-width:0">
@@ -945,7 +1020,7 @@ textarea:focus{border-color:var(--accent)}
       <div id="ks-back-btn" onclick="ksCloseReader()" style="cursor:pointer;font-size:.75rem;color:rgba(155,127,166,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.4rem">&#8592; All pieces</div>
       <div id="ks-reader-set" style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,127,166,.5);margin-bottom:.4rem"></div>
       <div id="ks-reader-title" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.75rem;color:var(--cream);margin-bottom:1.5rem;line-height:1.3"></div>
-      <div id="ks-reader-body" style="font-size:.92rem;color:rgba(244,239,230,.78);line-height:1.95;white-space:pre-wrap"></div>
+      <div id="ks-reader-body" style="font-size:.92rem;color:rgba(244,239,230,.78);line-height:1.95"></div>
       <div id="ks-quiz-mount"></div>
     </div>
     <div id="ks-list" style="display:none">
@@ -1109,6 +1184,9 @@ textarea:focus{border-color:var(--accent)}
     </div>
     <!-- Countdown to Aug 14 -->
     <div id="profile-countdown" style="background:rgba(107,47,166,.12);border:1px solid rgba(107,47,166,.25);border-radius:10px;padding:.65rem 1rem;text-align:center;margin-bottom:1.5rem;font-size:.82rem;color:rgba(244,239,230,.6)"></div>
+    <!-- Points history -->
+    <div style="font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.6rem;margin-top:1.25rem">Points history</div>
+    <div id="profile-pts-log" style="margin-bottom:1.5rem;display:flex;flex-direction:column;gap:.4rem"></div>
     <!-- Intake answers -->
     <div style="font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.75rem">Your Answers</div>
     <div id="profile-intake" style="display:flex;flex-direction:column;gap:.75rem"></div>
@@ -1665,14 +1743,14 @@ async function loadHome(){
         dot.textContent=unread>0?unread:'';
         const msgSection=document.getElementById('h-msg-section');
         const msgList=document.getElementById('h-msg-list');
-        if(msgs.length>0){
-          // Show just the most recent message as a teaser
-          const latest=msgs[0];
+        const unreadMsgs=msgs.filter(m=>!m.read_at);
+        if(unread>0&&unreadMsgs.length>0){
+          const latest=unreadMsgs[0];
           const preview=latest.message.length>80?latest.message.slice(0,80)+'...':latest.message;
           const senderName=latest.from_role==='admin'?'Pepe':latest.from_role==='facilitator'?'Agathe':latest.from_role;
           document.getElementById('h-msg-label').textContent='From '+senderName;
           msgSection.style.display='block';
-          msgList.innerHTML=`<div class="msg-bubble" onclick="loadMessages();show('messages-screen');setActiveNav('nav-messages')" style="cursor:pointer">${preview}<div class="msg-meta">${unread>0?unread+' unread message'+(unread>1?'s':''):'Tap to read'} &rarr;</div></div>`;
+          msgList.innerHTML=`<div class="msg-bubble" onclick="loadMessages();show('messages-screen');setActiveNav('nav-messages')" style="cursor:pointer">${preview}<div class="msg-meta">${unread+' unread message'+(unread>1?'s':'')} &rarr;</div></div>`;
         } else {
           msgSection.style.display='none';
         }
@@ -1697,8 +1775,156 @@ async function loadHome(){
       }
     }catch(e){}
     showNotifPrompt();
+    // Special challenges
+    try{
+      const sr=await apiFetch('/challenges/special');
+      const sec=document.getElementById('h-special-section');
+      if(sr.ok){
+        const specials=await sr.json();
+        if(specials&&specials.length>0){
+          const s=specials[0];
+          window._activeSpecial=s;
+          document.getElementById('h-special-title').textContent=s.title||'Special Challenge';
+          document.getElementById('h-special-cost').textContent=s.gamble_amount||30;
+          document.getElementById('h-special-reward').textContent=s.reward_amount||100;
+          if(s.expires_at){
+            const exp=new Date(s.expires_at+'Z');
+            const diffMs=exp-Date.now();
+            const diffH=Math.max(0,Math.floor(diffMs/3600000));
+            const diffM=Math.max(0,Math.floor((diffMs%3600000)/60000));
+            document.getElementById('h-special-expires').textContent=diffH>0?diffH+'h left':diffM+'m left';
+          }
+          sec.style.display='block';
+        } else {
+          sec.style.display='none';
+        }
+      } else {
+        sec.style.display='none';
+      }
+    }catch(e){ document.getElementById('h-special-section').style.display='none'; }
   }catch(e){}
 }
+
+let _activeSpecial=null;
+function _fmtRequirement(text){
+  const paras=text.split(/\n{2,}/).filter(p=>p.trim());
+  return paras.map((p,i)=>{
+    const escaped=_esc(p.trim());
+    const labeled=escaped.replace(/^(Option\s+\d+\))/,'<span style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.4rem">$1</span>');
+    const border=i<paras.length-1?'border-bottom:1px solid rgba(244,239,230,.07);padding-bottom:1rem;':'';
+    return '<p style="margin:0 0 1rem;'+border+'">'+labeled+'</p>';
+  }).join('');
+}
+function openSpecialChallenge(){
+  const s=window._activeSpecial;
+  if(!s)return;
+  if(s.status==='accepted'){
+    document.getElementById('ss-requirement').innerHTML=_fmtRequirement(s.requirement||'');
+    window._ssFile=null;window._ssMediaType='text';
+    document.getElementById('ss-media-lbl').textContent='Tap to attach';
+    document.getElementById('ss-resp').value='';
+    document.getElementById('ss-error').style.display='none';
+    show('special-submit');
+    return;
+  }
+  document.getElementById('sc-title').textContent=s.title||'Special Challenge';
+  document.getElementById('sc-cost-num').textContent=s.gamble_amount||30;
+  document.getElementById('sc-reward-num').textContent=s.reward_amount||100;
+  document.getElementById('sc-accept-cost').textContent=s.gamble_amount||30;
+  document.getElementById('sc-requirement').innerHTML=_fmtRequirement(s.requirement||'');
+  if(s.expires_at){
+    const exp=new Date(s.expires_at+'Z');
+    const diffMs=exp-Date.now();
+    const diffH=Math.max(0,Math.floor(diffMs/3600000));
+    const diffM=Math.max(0,Math.floor((diffMs%3600000)/60000));
+    document.getElementById('sc-expires-line').textContent=diffH>0?diffH+' hours remaining':diffM+' minutes remaining';
+  } else {
+    document.getElementById('sc-expires-line').textContent='';
+  }
+  document.getElementById('sc-error').style.display='none';
+  show('special-challenge');
+}
+
+async function acceptSpecialChallenge(){
+  const s=window._activeSpecial;
+  if(!s)return;
+  document.getElementById('sc-accept-btn').disabled=true;
+  document.getElementById('sc-error').style.display='none';
+  const r=await apiFetch('/challenges/special/'+s.id+'/accept',{method:'POST'});
+  if(r&&r.ok){
+    const d=await r.json();
+    pts=d.points||pts;
+    document.getElementById('h-pts').textContent=pts+' pts';
+    document.getElementById('ss-requirement').innerHTML=_fmtRequirement(s.requirement||'');
+    window._ssFile=null;window._ssMediaType='text';
+    document.getElementById('ss-media-lbl').textContent='Tap to attach';
+    document.getElementById('ss-resp').value='';
+    document.getElementById('ss-error').style.display='none';
+    show('special-submit');
+  } else {
+    const err=r?await r.json().catch(()=>({})):{};
+    const msg=err.detail||'Not enough points to accept.';
+    document.getElementById('sc-error').textContent=msg;
+    document.getElementById('sc-error').style.display='block';
+    document.getElementById('sc-accept-btn').disabled=false;
+  }
+}
+
+async function declineSpecialChallenge(){
+  const s=window._activeSpecial;
+  if(!s)return;
+  await apiFetch('/challenges/special/'+s.id+'/decline',{method:'POST'});
+  window._activeSpecial=null;
+  document.getElementById('h-special-section').style.display='none';
+  show('home');
+}
+
+async function submitSpecialChallenge(){
+  const s=window._activeSpecial;
+  if(!s)return;
+  const btn=document.getElementById('ss-submit-btn');
+  const errEl=document.getElementById('ss-error');
+  if(!window._ssFile){errEl.textContent='Attach a voice note or image first.';errEl.style.display='block';return;}
+  btn.disabled=true;errEl.style.display='none';
+  const fd=new FormData();
+  fd.append('media_file',window._ssFile);
+  fd.append('media_type',window._ssMediaType||'audio');
+  const txt=(document.getElementById('ss-resp').value||'').trim();
+  if(txt)fd.append('response_text',txt);
+  const token=localStorage.getItem('j_token');
+  const r=await fetch(API+'/challenges/special/'+s.id+'/submit',{method:'POST',headers:{'Authorization':'Bearer '+token},body:fd});
+  if(r&&r.ok){
+    const d=await r.json();
+    pts=d.total_points||pts;
+    document.getElementById('h-pts').textContent=pts+' pts';
+    document.getElementById('pts-gained').textContent='+'+d.points_awarded+' pts';
+    document.getElementById('surprise-box').classList.remove('on');
+    window._activeSpecial=null;
+    document.getElementById('h-special-section').style.display='none';
+    show('challenge-complete');
+    document.getElementById('cc-back').onclick=()=>{ show('home'); };
+  } else {
+    const err=r?await r.json().catch(()=>({})):{};
+    errEl.textContent=err.detail||'Submission failed. Try again.';
+    errEl.style.display='block';
+    btn.disabled=false;
+  }
+}
+
+// Special submit media wiring (runs once after DOM load)
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('sc-accept-btn').addEventListener('click',acceptSpecialChallenge);
+  document.getElementById('sc-decline-btn').addEventListener('click',declineSpecialChallenge);
+  document.getElementById('ss-submit-btn').addEventListener('click',submitSpecialChallenge);
+  document.getElementById('ss-mb-audio').addEventListener('click',()=>document.getElementById('ss-fi-audio').click());
+  document.getElementById('ss-mb-video').addEventListener('click',()=>document.getElementById('ss-fi-video').click());
+  document.getElementById('ss-fi-audio').addEventListener('change',function(){
+    if(this.files[0]){window._ssFile=this.files[0];window._ssMediaType='audio';document.getElementById('ss-media-lbl').textContent=this.files[0].name;document.getElementById('ss-mb-audio').classList.add('on');}
+  });
+  document.getElementById('ss-fi-video').addEventListener('change',function(){
+    if(this.files[0]){window._ssFile=this.files[0];window._ssMediaType=this.files[0].type.startsWith('video')?'video':'image';document.getElementById('ss-media-lbl').textContent=this.files[0].name;document.getElementById('ss-mb-video').classList.add('on');}
+  });
+});
 
 async function loadLeaderboard(){
   try{
@@ -2702,11 +2928,33 @@ async function loadExplore(){
 
 async function loadProfile() {
   try {
-    const [meResp, intakeResp, journalResp] = await Promise.all([
+    const [meResp, intakeResp, journalResp, ptsLogResp] = await Promise.all([
       apiFetch('/auth/me'),
       apiFetch('/intake'),
-      apiFetch('/profile/journal')
+      apiFetch('/profile/journal'),
+      apiFetch('/my/points-log')
     ]);
+    const ptsLogEl = document.getElementById('profile-pts-log');
+    if(ptsLogEl && ptsLogResp && ptsLogResp.ok){
+      const log = await ptsLogResp.json();
+      if(!log.length){
+        ptsLogEl.innerHTML = '<div style="color:rgba(244,239,230,.3);font-size:.82rem;font-style:italic">No point activity yet.</div>';
+      } else {
+        ptsLogEl.innerHTML = log.map(e => {
+          const sign = e.delta > 0 ? '+' : '';
+          const col = e.delta > 0 ? 'var(--secondary)' : '#c47a7a';
+          const dt = new Date(e.created_at+'Z');
+          const dateStr = dt.toLocaleDateString('en-GB',{month:'short',day:'numeric'});
+          return `<div style="display:flex;justify-content:space-between;align-items:center;background:rgba(30,24,41,.55);border:1px solid rgba(155,127,166,.13);border-radius:8px;padding:.5rem .85rem">
+            <div>
+              <div style="font-size:.82rem;color:rgba(244,239,230,.75)">${_esc(e.label||e.reason)}</div>
+              <div style="font-size:.65rem;color:rgba(244,239,230,.3);margin-top:.15rem">${dateStr}</div>
+            </div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:${col};white-space:nowrap;margin-left:.75rem">${sign}${e.delta} pts</div>
+          </div>`;
+        }).join('');
+      }
+    }
     const me = meResp.ok ? await meResp.json() : {};
     const intake = intakeResp.ok ? await intakeResp.json() : {};
     const journalData = journalResp.ok ? await journalResp.json() : {entries:[]};
@@ -2990,7 +3238,8 @@ async function showKnowledge() {
     if (_ksData.total_unlocked === 0) {
       document.getElementById('ks-locked').style.display = '';
     } else {
-      _renderKsList();
+      const todayKs = _ksData.sets.find(s => s.is_today);
+      if (todayKs) { _ksOpenReader(todayKs); } else { _renderKsList(); }
     }
   } catch(e) {
     document.getElementById('ks-loading').textContent = 'Could not load. Try again later.';
@@ -3031,7 +3280,12 @@ function _ksOpenReader(ks) {
   reader.style.display = '';
   document.getElementById('ks-reader-set').textContent = 'Knowledge Set ' + ks.set + ' of 14';
   document.getElementById('ks-reader-title').textContent = ks.title;
-  document.getElementById('ks-reader-body').textContent = ks.body;
+  const bodyEl = document.getElementById('ks-reader-body');
+  const paras = ks.body.split(/\n{2,}/).filter(p => p.trim());
+  bodyEl.innerHTML = paras.map(p => {
+    if (p.trim() === '---') return '<hr style="border:none;border-top:1px solid rgba(244,239,230,.12);margin:1.5rem 0">';
+    return '<p style="margin:0 0 1rem">' + _esc(p.trim()) + '</p>';
+  }).join('');
   _ksReaderOpen = true;
   document.querySelector('#knowledge .screen-header .back-btn').onclick = () => {
     _renderKsList();
