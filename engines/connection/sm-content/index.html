@@ -1,544 +1,1173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SM Content Engine. Mexzungu Group</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --pink:#e14b87;
-      --purple:#b482ff;
-      --bg:#0f0f0f;
-      --surface:#181818;
-      --s2:#1e1e1e;
-      --border:#2a2a2a;
-      --text:#e8e8e8;
-      --muted:#888;
-      --conn:#4cc8b4;
-      --val:#f0a030;
-      --care:#b482ff;
-      --green:#4caf7d;
-      --blue:#6498ff;
-      --red:#e05050;
-      --gold:#f0c850;
-    }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
-    body { background:var(--bg); color:var(--text); font-family:'DM Sans',system-ui,sans-serif; font-size:15px; line-height:1.65; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SM Content Engine | MGL Engines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:#e14b87;
+  --bg:#0f0f0f;
+  --surface:#181818;
+  --s2:#1e1e1e;
+  --border:#2a2a2a;
+  --text:#e8e8e8;
+  --muted:#888;
+  --conn:#4cc8b4;
+  --val:#f0a030;
+  --care:#b482ff;
+  --green:#4caf7d;
+}
 
-    h1, h2, h3, .display { font-family:'Cormorant Garamond',Georgia,serif; font-weight:700; letter-spacing:-0.01em; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; overflow-x:auto; white-space:nowrap; }
-    nav .logo { font-family:'DM Sans',sans-serif; font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; flex-shrink:0; }
-    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
-    nav a:hover { color:var(--text); background:var(--s2); }
-    nav .sep { color:var(--border); font-size:11px; }
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.6;
+  min-height:100vh;
+}
 
-    .wrap { max-width:900px; margin:0 auto; padding:0 24px; }
-    section { padding:48px 0; border-bottom:1px solid var(--border); }
-    section:last-child { border-bottom:none; }
+a{color:var(--conn);text-decoration:none}
+a:hover{text-decoration:underline}
 
-    .sec-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--pink); margin-bottom:10px; }
+/* NAV / BREADCRUMB */
+.top-nav{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:14px 24px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.breadcrumb{
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--conn)}
+.breadcrumb .sep{color:var(--border)}
+.breadcrumb .current{color:var(--text);font-weight:600}
 
-    h1 { font-size:44px; line-height:1.05; margin-bottom:14px; }
-    h2 { font-size:28px; line-height:1.15; margin-bottom:18px; }
-    h3 { font-size:19px; line-height:1.25; margin-bottom:10px; color:var(--text); }
-    p { color:#bbb; margin-bottom:14px; font-size:15px; }
-    p:last-child { margin-bottom:0; }
-    strong { color:var(--text); font-weight:600; }
+/* LAYOUT */
+.page-wrap{
+  max-width:960px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
 
-    .breadcrumb { font-size:11px; color:var(--muted); margin-bottom:14px; letter-spacing:.04em; }
-    .breadcrumb a { color:var(--muted); text-decoration:none; }
-    .breadcrumb a:hover { color:var(--text); }
-    .breadcrumb .arr { color:var(--border); margin:0 6px; }
+/* HERO */
+.hero{margin-bottom:40px}
+.engine-eyebrow{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--pink);
+  margin-bottom:10px;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:40px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.1;
+  margin-bottom:16px;
+}
+.hero-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+.hero-meta-item{display:flex;gap:6px;align-items:center}
+.hero-meta-item .lbl{color:var(--muted)}
+.hero-meta-item .val{color:#ccc;font-weight:500}
+.hero-desc{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:2px solid rgba(225,75,135,.4);
+  border-radius:6px;
+  padding:16px 20px;
+  font-size:13px;
+  color:#aaa;
+  line-height:1.65;
+  margin-bottom:16px;
+}
+.hero-desc strong{color:var(--text)}
+.hero-not{
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:12px 16px;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
+.hero-not strong{color:var(--muted);text-transform:uppercase;font-size:10px;letter-spacing:.08em;display:block;margin-bottom:4px}
 
-    .macro-tag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--conn); margin-bottom:14px; }
-    .lead { font-size:17px; color:#ccc; line-height:1.6; margin-bottom:22px; max-width:680px; }
+/* SECTION HEADINGS */
+.section{margin-bottom:48px}
+.section-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:6px;
+  text-transform:uppercase;
+  font-variant:small-caps;
+  letter-spacing:.04em;
+}
+.section-rule{
+  height:1px;
+  background:var(--border);
+  margin-bottom:24px;
+}
 
-    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
-    .chip { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:600; padding:5px 12px; border-radius:20px; letter-spacing:.05em; text-transform:uppercase; }
-    .chip-pink  { background:rgba(225,75,135,.10); color:var(--pink); border:1px solid rgba(225,75,135,.28); }
-    .chip-purple{ background:rgba(180,130,255,.10); color:var(--purple); border:1px solid rgba(180,130,255,.28); }
-    .chip-green { background:rgba(76,175,125,.10); color:var(--green); border:1px solid rgba(76,175,125,.28); }
-    .chip-amber { background:rgba(240,160,48,.10); color:var(--val); border:1px solid rgba(240,160,48,.28); }
-    .chip-teal  { background:rgba(76,200,180,.10); color:var(--conn); border:1px solid rgba(76,200,180,.28); }
+/* KPI CARDS */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:12px;
+}
+.kpi-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px;
+}
+.kpi-num{
+  font-size:10px;
+  font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin-bottom:6px;
+}
+.kpi-name{
+  font-size:14px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:6px;
+  line-height:1.35;
+}
+.kpi-target{
+  font-size:13px;
+  color:var(--green);
+  font-weight:600;
+  margin-bottom:4px;
+}
+.kpi-owner{
+  font-size:11px;
+  color:var(--muted);
+}
 
-    .owner-triad { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:12px; margin-top:22px; }
-    .owner-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
-    .owner-card .role { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:4px; }
-    .owner-card .name { font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:4px; }
-    .owner-card .why { font-size:12px; color:#999; line-height:1.55; }
+/* FLOW DIAGRAM */
+.flow-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:0;overflow-x:auto;padding:24px 0}
+.flow-node{flex-shrink:0;min-width:120px;max-width:160px;text-align:center;padding:12px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface)}
+.flow-node.trigger{border-color:var(--conn);background:rgba(76,200,180,.08)}
+.flow-node.showtime{border-color:var(--pink);background:rgba(225,75,135,.08)}
+.flow-node.cross-engine{border-color:var(--conn);background:rgba(76,200,180,.05)}
+.flow-node.stuck{border-color:var(--val);background:rgba(240,160,48,.08)}
+.flow-node.output{border-color:var(--green);background:rgba(76,175,125,.08)}
+.flow-node .fn-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:5px}
+.flow-node.trigger .fn-label{color:var(--conn)}
+.flow-node.showtime .fn-label{color:var(--pink)}
+.flow-node.output .fn-label{color:var(--green)}
+.flow-node .fn-body{font-size:12px;font-weight:600;color:var(--text);line-height:1.35}
+.flow-node .fn-owner{font-size:10px;color:var(--muted);margin-top:4px}
+.flow-node .fn-sla{font-size:10px;color:var(--val);margin-top:2px}
+.flow-arrow{flex-shrink:0;color:var(--muted);font-size:18px;padding:0 6px;line-height:1}
+.flow-gate-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;margin:0 10px}
+.flow-gate{width:72px;height:72px;transform:rotate(45deg);border:1px solid var(--pink);background:rgba(225,75,135,.08);display:flex;align-items:center;justify-content:center}
+.flow-gate-inner{transform:rotate(-45deg);text-align:center;font-size:9px;font-weight:700;color:var(--pink);padding:2px;line-height:1.3}
+.flow-gate-label{font-size:9px;color:var(--pink);font-weight:700;margin-top:8px;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:640px){.flow-wrap{flex-direction:column;align-items:stretch}.flow-node{max-width:100%}.flow-arrow{transform:rotate(90deg);align-self:center;margin:4px 0}.flow-gate-wrap{margin:8px 0}}
 
-    .hard-rule { background:linear-gradient(135deg, rgba(225,75,135,.08), rgba(180,130,255,.05)); border:1px solid rgba(225,75,135,.35); border-left:4px solid var(--pink); border-radius:8px; padding:22px 24px; margin-top:24px; }
-    .hard-rule .hr-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--pink); margin-bottom:10px; }
-    .hard-rule .hr-title { font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:12px; }
-    .hard-rule p { font-size:14px; color:#ccc; margin-bottom:8px; }
-    .hard-rule .hr-emph { color:var(--pink); font-weight:700; }
+/* STUCK BRANCH NOTE */
+.flow-stuck-note{
+  font-size:11px;
+  color:var(--val);
+  margin-top:12px;
+  padding:8px 12px;
+  background:rgba(240,160,48,.06);
+  border:1px solid rgba(240,160,48,.2);
+  border-radius:5px;
+  line-height:1.5;
+}
 
-    .tbl-wrap { overflow-x:auto; margin-bottom:8px; border:1px solid var(--border); border-radius:8px; }
-    table { width:100%; border-collapse:collapse; font-size:13.5px; }
-    th { background:var(--s2); color:var(--muted); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
-    td { padding:12px 14px; border-bottom:1px solid #1e1e1e; vertical-align:top; color:#bbb; line-height:1.55; }
-    tr:last-child td { border-bottom:none; }
-    tr:hover td { background:rgba(255,255,255,.02); }
-    td strong.class-a { color:var(--green); }
-    td strong.class-b { color:var(--conn); }
-    td strong.class-c { color:var(--gold); }
-    td strong.class-d { color:var(--muted); }
-    td strong.class-e { color:var(--pink); }
-    td code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#ddd; background:#111; padding:1px 6px; border-radius:3px; border:1px solid #222; }
+/* RACI TABLE */
+.raci-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid var(--border)}
+.raci-table{width:100%;border-collapse:collapse;font-size:12px}
+.raci-table th{background:var(--s2);color:var(--muted);font-weight:600;padding:8px 10px;text-align:center;position:sticky;top:48px;z-index:2;border-bottom:2px solid var(--border);white-space:nowrap;font-size:11px}
+.raci-table th:first-child{text-align:left;min-width:140px}
+.raci-table td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle}
+.raci-table td:first-child{text-align:left;font-weight:600;color:var(--text);font-size:12px}
+.raci-table tr:last-child td{border-bottom:none}
+.raci-r{color:var(--green);font-weight:800;font-size:13px}
+.raci-a{color:var(--pink);font-weight:800;font-size:13px}
+.raci-c{color:var(--care);font-weight:700;font-size:13px}
+.raci-i{color:var(--muted);font-size:12px}
+.raci-caption{font-size:11px;color:var(--muted);margin-top:8px}
 
-    .gate { display:inline-block; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; padding:3px 9px; border-radius:3px; text-transform:uppercase; letter-spacing:.06em; }
-    .gate-show { background:rgba(225,75,135,.15); color:var(--pink); }
-    .gate-sc { background:rgba(76,175,125,.12); color:var(--green); }
-    .gate-fa { background:rgba(225,75,135,.12); color:#ff80b0; border:1px solid rgba(225,75,135,.28); }
+/* MICRO-ENGINE MAP */
+.me-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:20px 0}
+.me-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.me-name{font-weight:700;font-size:14px;color:var(--text);margin-bottom:4px}
+.me-owner{font-size:10px;color:var(--pink);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.me-purpose{font-size:13px;color:#aaa;line-height:1.5;margin-bottom:8px}
+.me-feeds{font-size:11px;color:var(--conn);font-weight:600}
+.me-feeds:before{content:'feeds ';color:var(--muted);font-weight:400}
 
-    .al { display:inline-block; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; padding:3px 8px; border-radius:3px; text-transform:uppercase; letter-spacing:.07em; }
-    .al-joni { background:rgba(225,75,135,.12); color:var(--pink); border:1px solid rgba(225,75,135,.28); }
-    .al-grace { background:rgba(76,175,125,.12); color:var(--green); border:1px solid rgba(76,175,125,.28); }
-    .al-freddie { background:rgba(80,210,230,.12); color:#50d2e6; border:1px solid rgba(80,210,230,.28); }
-    .al-pepe { background:rgba(240,160,48,.12); color:var(--val); border:1px solid rgba(240,160,48,.28); }
-    .al-annie { background:rgba(180,130,255,.12); color:var(--purple); border:1px solid rgba(180,130,255,.28); }
-    .al-anselmo { background:rgba(240,200,80,.12); color:var(--gold); border:1px solid rgba(240,200,80,.28); }
-    .al-grohl { background:rgba(100,152,255,.12); color:var(--blue); border:1px solid rgba(100,152,255,.28); }
-    .al-lenny { background:rgba(180,130,255,.12); color:var(--purple); border:1px solid rgba(180,130,255,.28); }
-    .al-janis { background:rgba(225,75,135,.10); color:var(--pink); border:1px solid rgba(225,75,135,.20); }
+/* PHASE ACCORDION */
+.phase-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.phase-card.has-showtime{border-color:rgba(225,75,135,.35)}
+.phase-hd{padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;user-select:none}
+.phase-hd:hover{background:var(--s2)}
+.phase-num{font-size:10px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:.1em;flex-shrink:0;margin-top:3px;min-width:60px}
+.phase-main{flex:1}
+.phase-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
+.phase-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted)}
+.phase-meta-item{display:flex;gap:5px}
+.phase-meta-item .lbl{color:var(--muted)}
+.phase-meta-item .val{color:#bbb;font-weight:500}
+.phase-chevron{color:var(--muted);font-size:12px;flex-shrink:0;margin-top:3px;transition:.2s}
+.phase-hd[aria-expanded=true] .phase-chevron{transform:rotate(180deg)}
+.phase-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.phase-body.open{display:block}
+.stuck-box{background:rgba(240,160,48,.07);border:1px solid rgba(240,160,48,.3);border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13px;color:var(--val);line-height:1.55}
+.stuck-box strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;color:var(--val)}
+.gate-box{background:rgba(225,75,135,.06);border:1px solid rgba(225,75,135,.25);border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13px;color:var(--pink);line-height:1.55}
+.gate-box strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
 
-    details { background:var(--surface); border:1px solid var(--border); border-radius:10px; margin-bottom:12px; overflow:hidden; }
-    details[open] { border-color:rgba(225,75,135,.4); }
-    summary { padding:16px 20px; cursor:pointer; display:flex; align-items:center; gap:14px; list-style:none; font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; user-select:none; }
-    summary::-webkit-details-marker { display:none; }
-    summary::after { content:'+'; margin-left:auto; color:var(--muted); font-size:20px; font-weight:300; transition:transform .2s; }
-    details[open] summary::after { content:'\2212'; }
-    .phase-num { background:rgba(225,75,135,.15); color:var(--pink); border:1px solid rgba(225,75,135,.32); border-radius:5px; padding:3px 10px; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:800; flex-shrink:0; letter-spacing:.05em; }
-    .phase-body { padding:0 20px 22px; }
-    .phase-meta { background:var(--s2); border:1px solid var(--border); border-radius:8px; padding:14px 18px; margin-bottom:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:10px; }
-    .pm-item .pm-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:3px; }
-    .pm-item .pm-val { font-size:13px; color:#ccc; }
-    .phase-body h4 { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:16px 0 8px; }
-    .phase-body ul { padding-left:18px; color:#bbb; font-size:14px; line-height:1.75; }
-    .phase-body ul li { margin-bottom:6px; }
+/* SUB-TASK TABLE */
+.task-table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+.task-table thead th{background:var(--s2);color:var(--muted);font-weight:600;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border)}
+.task-table tbody td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;color:#bbb}
+.task-table tbody td:first-child{color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap}
+.task-table tbody td:nth-child(2){color:var(--text)}
+.task-table tbody tr:last-child td{border-bottom:none}
+.st-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(225,75,135,.12);color:var(--pink);text-transform:uppercase;letter-spacing:.07em;border:1px solid rgba(225,75,135,.2)}
+.sc-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--s2);color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
 
-    .routing-flow { display:flex; flex-wrap:wrap; gap:6px; align-items:center; background:var(--s2); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin:14px 0 6px; }
-    .rf-node { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; color:var(--text); }
-    .rf-node.center { border-color:rgba(225,75,135,.5); color:var(--pink); }
-    .rf-arr { color:var(--pink); font-size:14px; font-weight:700; padding:0 4px; }
-    .routing-caption { font-size:12px; color:var(--muted); margin-bottom:14px; margin-top:4px; }
+/* SHOWTIME INDEX */
+.st-index{background:rgba(225,75,135,.05);border:1px solid rgba(225,75,135,.2);border-radius:8px;padding:20px 24px;margin-top:32px}
+.st-index-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:16px}
+.st-row{display:grid;grid-template-columns:60px 1fr 1fr;gap:16px;padding:10px 0;border-bottom:1px solid rgba(225,75,135,.1);font-size:13px;align-items:start}
+.st-row:last-child{border-bottom:none}
+.st-phase{color:var(--pink);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding-top:2px}
+.st-what{color:var(--text);line-height:1.5}
+.st-unlock{color:var(--muted);font-size:12px;line-height:1.5}
+.st-row-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border) !important;padding-bottom:8px !important}
 
-    .flow-strip { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:0; align-items:stretch; margin-top:20px; }
-    .flow-node { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
-    .flow-node.center { border-color:rgba(225,75,135,.4); background:linear-gradient(180deg, rgba(225,75,135,.08), var(--surface)); }
-    .flow-node .fn-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px; }
-    .flow-node .fn-name { font-family:'Cormorant Garamond',Georgia,serif; font-size:19px; font-weight:700; color:var(--text); margin-bottom:4px; }
-    .flow-node .fn-note { font-size:11px; color:#999; }
-    .flow-arrow { display:flex; align-items:center; justify-content:center; color:var(--pink); font-size:22px; padding:0 8px; }
+/* CROSS-ENGINE HANDOFFS */
+.handoff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media(max-width:640px){.handoff-grid{grid-template-columns:1fr}}
+.handoff-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px}
+.handoff-block.inputs{border-top:3px solid var(--conn)}
+.handoff-block.outputs{border-top:3px solid var(--pink)}
+.handoff-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--conn);margin-bottom:14px}
+.handoff-block.outputs .handoff-title{color:var(--pink)}
+.handoff-item{font-size:13px;color:#aaa;padding:9px 0;border-bottom:1px solid var(--border);line-height:1.5}
+.handoff-item:last-child{border-bottom:none}
+.handoff-item strong{color:var(--text);display:block;font-size:12px;font-weight:600;margin-bottom:2px}
 
-    .foot-nav { display:flex; justify-content:space-between; gap:12px; padding:32px 24px 60px; flex-wrap:wrap; max-width:900px; margin:0 auto; }
-    .foot-nav a { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--muted); text-decoration:none; padding:8px 16px; border:1px solid var(--border); border-radius:6px; transition:.15s; letter-spacing:.03em; }
-    .foot-nav a:hover { color:var(--text); border-color:var(--pink); }
-    .foot-nav a.primary { color:var(--text); border-color:var(--pink); background:rgba(225,75,135,.08); }
+/* EXCEPTION TABLE */
+.exc-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+.exc-table{width:100%;border-collapse:collapse;font-size:12px}
+.exc-table th{background:var(--s2);color:var(--muted);font-weight:600;padding:8px 12px;text-align:left;border-bottom:2px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.exc-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:#aaa;line-height:1.5}
+.exc-table td:first-child{color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap}
+.exc-table td:nth-child(2){color:var(--text);font-weight:500}
+.exc-table td:nth-child(3){color:var(--val)}
+.exc-table td:nth-child(4){color:var(--conn)}
+.exc-table tr:last-child td{border-bottom:none}
 
-    @media (max-width:720px) {
-      h1 { font-size:32px; }
-      h2 { font-size:22px; }
-      section { padding:36px 0; }
-      .flow-strip { grid-template-columns:1fr; }
-      .flow-arrow { transform:rotate(90deg); padding:8px 0; }
-      .routing-flow { flex-direction:column; align-items:flex-start; }
-      .rf-arr { transform:rotate(90deg); padding:2px 0; }
-    }
-  </style>
+/* FOOTER */
+.page-footer{
+  border-top:1px solid var(--border);
+  margin-top:60px;
+  padding:24px 0 0;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* UTILITY */
+.badge{
+  display:inline-block;
+  font-size:10px;
+  font-weight:700;
+  padding:3px 8px;
+  border-radius:4px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+.badge-pink{background:rgba(225,75,135,.12);color:var(--pink);border:1px solid rgba(225,75,135,.25)}
+.badge-conn{background:rgba(76,200,180,.1);color:var(--conn);border:1px solid rgba(76,200,180,.2)}
+.badge-green{background:rgba(76,175,125,.1);color:var(--green);border:1px solid rgba(76,175,125,.2)}
+
+.phase-body .sub-section{margin-top:18px;margin-bottom:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+</style>
 </head>
 <body>
 
-<nav>
-  <span class="logo">SM Content Engine</span>
-  <a href="/engines/">All Engines</a>
-  <span class="sep">|</span>
-  <a href="#overview">Overview</a>
-  <a href="#micro">Micro-Engines</a>
-  <a href="#routing">Routing</a>
-  <a href="#pillars">Pillars</a>
-  <a href="#platforms">Platforms</a>
-  <a href="#phases">Phases</a>
-  <a href="#gates">Gates</a>
-  <a href="#interfaces">Interfaces</a>
+<nav class="top-nav">
+  <div class="breadcrumb">
+    <a href="/engines/">MGL Engines</a>
+    <span class="sep">›</span>
+    <a href="/engines/connection/">Macro Engine I: Connection</a>
+    <span class="sep">›</span>
+    <span class="current">SM Content Engine</span>
+  </div>
 </nav>
 
-<div class="wrap">
+<div class="page-wrap">
 
-  <section id="overview">
-    <div class="breadcrumb">
-      <a href="/engines/">MGL Engines</a><span class="arr">/</span>
-      <a href="/engines/connection/">Macro Engine I: Connection</a><span class="arr">/</span>
-      SM Content Engine
-    </div>
-    <div class="macro-tag">Macro Engine I: Connection. Engine 1 of 4</div>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="engine-eyebrow">Engine 1 of 4 &nbsp;·&nbsp; Macro Engine I: Connection</div>
     <h1>SM Content Engine</h1>
-    <p class="lead">Turns Pepe's expertise and story into consistent public content across LinkedIn, X, Instagram, and the Outlaw Chronicles newsletter. Audience before pipeline. Every downstream conversation starts warmer because this engine ran first.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="lbl">Owner:</span><span class="val">Freddie Mercury (CMO)</span></div>
+      <div class="hero-meta-item"><span class="lbl">Trigger:</span><span class="val">Content calendar cron (Mon 06:30 CET) + Freddie brief</span></div>
+      <div class="hero-meta-item"><span class="lbl">Output:</span><span class="val">Published posts + OC issues + deal signals to CAE</span></div>
+    </div>
+    <div class="hero-desc">
+      <strong>What it owns:</strong> Brief-to-publish lifecycle for all public content. Feedback loop via Annie. Deal-level signal routing to Connection Acquisition Engine.
+    </div>
+    <div class="hero-not">
+      <strong>Not in scope</strong>
+      Replies, DMs, and connections are the SM Engagement Engine. Lead qualification belongs to CAE. Proposals belong to the Proposal Engine.
+    </div>
+  </div>
 
-    <div class="owner-triad">
-      <div class="owner-card">
-        <div class="role">Direction</div>
-        <div class="name">Freddie</div>
-        <div class="why">CMO. Owns calendar, pillar mix, brief per post.</div>
+  <!-- KPIs -->
+  <div class="section">
+    <div class="section-title">Key Performance Indicators</div>
+    <div class="section-rule"></div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-num">KPI 1</div>
+        <div class="kpi-name">Posts published per week</div>
+        <div class="kpi-target">3+ LinkedIn, 3+ X, 2+ Instagram</div>
+        <div class="kpi-owner">Owner: Grace</div>
       </div>
-      <div class="owner-card">
-        <div class="role">Voice</div>
-        <div class="name">Grohl and Lenny</div>
-        <div class="why">Grohl writes flagship. Lenny writes cadence.</div>
+      <div class="kpi-card">
+        <div class="kpi-num">KPI 2</div>
+        <div class="kpi-name">LinkedIn follower growth MoM</div>
+        <div class="kpi-target">5%+ month-over-month</div>
+        <div class="kpi-owner">Owner: Annie</div>
       </div>
-      <div class="owner-card">
-        <div class="role">Deploy</div>
-        <div class="name">Grace</div>
-        <div class="why">Publishes only what has cleared editorial and brand gates.</div>
+      <div class="kpi-card">
+        <div class="kpi-num">KPI 3</div>
+        <div class="kpi-name">Outlaw Chronicles open rate</div>
+        <div class="kpi-target">40%+ per issue</div>
+        <div class="kpi-owner">Owner: Annie</div>
       </div>
     </div>
+  </div>
 
-    <h3 style="margin-top:34px;">Top 3 KPIs</h3>
-    <div class="chips">
-      <span class="chip chip-pink">3+ LinkedIn / 3+ X / 2+ IG posts per week</span>
-      <span class="chip chip-teal">5%+ LinkedIn follower growth MoM</span>
-      <span class="chip chip-green">40%+ Outlaw Chronicles open rate</span>
-    </div>
-  </section>
-
-  <section id="scope">
-    <div class="sec-label">Scope</div>
-    <h2>What this engine owns. What it does not.</h2>
-    <div class="hard-rule">
-      <div class="hr-label">Boundaries</div>
-      <div class="hr-title">Content only. Engagement, acquisition, and proposals live elsewhere.</div>
-      <p><span class="hr-emph">Owns:</span> content calendar, drafting, editorial, brand gate, publishing across LinkedIn, X, Instagram, plus the Outlaw Chronicles newsletter. Owns the feedback loop from Annie back to Freddie.</p>
-      <p><span class="hr-emph">Does not touch:</span> replies to comments, DM responses, connection outreach. Those belong to the SM Engagement Engine.</p>
-      <p><span class="hr-emph">Does not touch:</span> lead qualification, pipeline, proposals, or delivery. Those belong to the Connection Acquisition, Proposal, and Delivery engines.</p>
-      <p>Annie routes deal-level signals from post engagement to CAE. That is the only cross-engine handoff.</p>
-    </div>
-  </section>
-
-  <section id="micro">
-    <div class="sec-label">Structure</div>
-    <h2>Micro-engine map</h2>
-    <p>Seven micro-engines cover the full lifecycle from brief to measurement.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th style="width:22%;">Micro-Engine</th><th style="width:18%;">Owner</th><th>Purpose</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>Flagship Content</strong></td><td><span class="al al-grohl">Grohl</span></td><td>Long-form posts, newsletter anchors, deep thought leadership.</td></tr>
-          <tr><td><strong>Cadence Content</strong></td><td><span class="al al-lenny">Lenny</span></td><td>Regular LinkedIn, X, and IG posts. Weekly volume.</td></tr>
-          <tr><td><strong>Editorial Gate</strong></td><td><span class="al al-joni">Joni</span></td><td>Cuts and tightens every draft before brand gate.</td></tr>
-          <tr><td><strong>Brand Gate</strong></td><td><span class="al al-anselmo">Anselmo</span></td><td>Final check before external. Palette, tone, voice, brand rules.</td></tr>
-          <tr><td><strong>Deployment</strong></td><td><span class="al al-grace">Grace</span></td><td>Schedules and posts via social poster.</td></tr>
-          <tr><td><strong>Analytics</strong></td><td><span class="al al-annie">Annie</span></td><td>Measures all published content. Closes loop to Freddie and Lenny. Routes deal signals to CAE.</td></tr>
-          <tr><td><strong>Outlaw Chronicles</strong></td><td><span class="al al-grohl">Grohl</span> + <span class="al al-joni">Joni</span></td><td>Newsletter: Substack primary, LinkedIn article, website mirror. Bi-weekly.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section id="routing">
-    <div class="sec-label">Flow</div>
-    <h2>Content routing</h2>
-    <p>Every piece follows the same chain. No shortcuts. Editorial and brand gates are non-optional.</p>
-
-    <h3 style="margin-top:22px;">Standard content</h3>
-    <div class="routing-flow">
-      <span class="rf-node">Freddie brief</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Grohl or Lenny draft</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Joni editorial</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Anselmo brand</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node center">Grace deploy</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Annie measure</span>
-    </div>
-    <div class="routing-caption">Freddie briefs. Grohl or Lenny drafts. Joni tightens. Anselmo clears brand. Grace publishes. Annie measures and feeds signal back to Freddie for next week's calendar.</div>
-
-    <h3 style="margin-top:26px;">Outlaw Chronicles newsletter</h3>
-    <div class="routing-flow">
-      <span class="rf-node">Freddie brief + topic</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Grohl full draft (OC guide)</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Joni editorial</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Anselmo brand + OC characters</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node center">Grace: Substack + LinkedIn + web</span>
-      <span class="rf-arr">&#8594;</span>
-      <span class="rf-node">Annie measure</span>
-    </div>
-    <div class="routing-caption">Newsletter uses the same chain but Grohl writes to the OC writing guide. Grace publishes to Substack first, LinkedIn article within 1h, website mirror within 2h. All images served from mexzungu.com/img/social/, never api.mexzungu.com.</div>
-  </section>
-
-  <section id="pillars">
-    <div class="sec-label">Content Strategy</div>
-    <h2>Five content pillars</h2>
-    <p>Every post maps to one pillar. Freddie enforces the mix during Monday planning.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th style="width:22%;">Pillar</th><th>Description</th><th style="width:26%;">Primary formats</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>Deal Structuring</strong></td><td>How deals work. Term sheets, cap tables, SAFEs, governance.</td><td>LinkedIn long-form, OC issues</td></tr>
-          <tr><td><strong>Outlaw Operator</strong></td><td>The unconventional path. Story-led. Barcelona, Africa, Yale, deals.</td><td>LinkedIn storytelling, IG carousel</td></tr>
-          <tr><td><strong>Founder Playbook</strong></td><td>Practical frameworks for Africa and LatAm founders building outside the lines.</td><td>LinkedIn how-to, X threads</td></tr>
-          <tr><td><strong>Market Intelligence</strong></td><td>What is happening in emerging markets, Africa, LatAm, AI and law.</td><td>X commentary, LinkedIn takes</td></tr>
-          <tr><td><strong>Behind the Brand</strong></td><td>Mexzungu studio life. Personal moments. Creative chaos.</td><td>IG stories, IG carousel</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section id="platforms">
-    <div class="sec-label">Platform Rules</div>
-    <h2>How each platform is written</h2>
-    <p>Same message, different packaging. Never copy-paste across platforms.</p>
-
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th style="width:18%;">Platform</th><th style="width:14%;">Cadence</th><th>Rules</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong class="class-a">LinkedIn</strong><br><span style="font-size:11px;color:var(--muted);">Primary</span></td>
-            <td>3+ per week<br><span style="font-size:11px;color:var(--muted);">1 flagship, 2 cadence</span></td>
-            <td>150 to 300 words. White space. Hook in line 1. No em dashes, no corporate language, no generic advice. Hashtags: 3 to 5 at bottom, relevant not trending. No emojis in body; one at end sparingly.</td>
-          </tr>
-          <tr>
-            <td><strong class="class-b">X</strong><br><span style="font-size:11px;color:var(--muted);">Secondary</span></td>
-            <td>3+ per week<br><span style="font-size:11px;color:var(--muted);">mostly cadence</span></td>
-            <td>Short and sharp. Max 1 hashtag. No emojis unless ironic. Threads max 5 posts. CTA only at end of threads.</td>
-          </tr>
-          <tr>
-            <td><strong class="class-c">Instagram</strong><br><span style="font-size:11px;color:var(--muted);">Supporting</span></td>
-            <td>2+ per week<br><span style="font-size:11px;color:var(--muted);">carousels + singles</span></td>
-            <td>Captions 50 to 100 words. Image carries the weight. Hashtags: 5 to 8, mix niche and broad. Grid format 1080x1350 portrait (4:5). No squares.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="hard-rule" style="margin-top:22px;">
-      <div class="hr-label">Cross-posting</div>
-      <div class="hr-title">Never copy-paste. Same message, different packaging.</div>
-      <p><span class="hr-emph">LinkedIn</span> gets the full story. <span class="hr-emph">X</span> gets the sharpest line. <span class="hr-emph">Instagram</span> gets the visual moment.</p>
-      <p>Sequence: LinkedIn first. X within 30 minutes. Instagram within the hour.</p>
-    </div>
-  </section>
-
-  <section id="actors">
-    <div class="sec-label">Actor Map</div>
-    <h2>Who does what</h2>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th style="width:18%;">Actor</th><th style="width:20%;">Role</th><th>Owns</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><span class="al al-freddie">Freddie</span></td><td>CMO, Engine Owner</td><td>Weekly content calendar, pillar mix, brief per post, OC topic selection, Annie feedback loop.</td></tr>
-          <tr><td><span class="al al-grohl">Grohl</span></td><td>Flagship writer</td><td>Long-form LinkedIn, OC issues (full draft to OC writing guide), deep thought leadership.</td></tr>
-          <tr><td><span class="al al-lenny">Lenny</span></td><td>Cadence writer</td><td>Regular LinkedIn, X, and Instagram posts. Weekly volume.</td></tr>
-          <tr><td><span class="al al-joni">Joni</span></td><td>Editorial gate</td><td>Cut, tighten, voice check. No em dashes. Reads-aloud test. Sends to Anselmo.</td></tr>
-          <tr><td><span class="al al-anselmo">Anselmo</span></td><td>Brand gate</td><td>Final external check. Palette, tone, brand voice, no liability, OC character system for newsletter. Writes image brief.</td></tr>
-          <tr><td><span class="al al-grace">Grace</span></td><td>Deploy</td><td>Generates images, schedules via social poster, publishes OC across 3 channels, updates Notion, notifies Annie.</td></tr>
-          <tr><td><span class="al al-annie">Annie</span></td><td>Analytics</td><td>48h post measurement, 6-dim quality score, signal classification, deal signals to CAE, weekly report to Freddie.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section id="phases">
-    <div class="sec-label">Operating Rhythm</div>
-    <h2>Six phases</h2>
-    <p>Phase 0 fires every Monday at 06:30 CET. Phases 1 through 4 run through the week as briefs land. Phase 5 opens 48h after every publish.</p>
-
-    <details open>
-      <summary><span class="phase-num">Phase 0</span> Content calendar management</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Monday 06:30 CET cron + Freddie brief</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-freddie">Freddie</span> calendar. <span class="al al-janis">Janis</span> cron.</div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Week locked. Grohl and Lenny briefed. Notion updated.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>Freddie reads Annie's previous-week report: top posts, worst post, pattern, recommended adjustment.</li>
-          <li>Freddie drafts the week's plan at <code>brain/areas/mexzungu/social-content/calendar.md</code>: pillar mix, format mix, topic angles, OC status.</li>
-          <li>Assign posts. Flagship to Grohl, cadence to Lenny. Brief per post: pillar, format, hook, core takeaway, target length, platform priority.</li>
-          <li>Janis updates Notion content calendar. One page per post, status=Draft. DB: <code>33e43c16-2693-81c2-a7a5-d7eb0943bb64</code>.</li>
-          <li>If OC issue is due: Freddie writes issue brief at <code>brain/areas/mexzungu/social-content/oc-briefs/YYYY-MM-DD.md</code>.</li>
-        </ul>
+  <!-- MICRO-ENGINE MAP -->
+  <div class="section">
+    <div class="section-title">Micro-Engine Map</div>
+    <div class="section-rule"></div>
+    <div class="me-grid">
+      <div class="me-card">
+        <div class="me-name">Flagship Content</div>
+        <div class="me-owner">Grohl</div>
+        <div class="me-purpose">Long-form posts, newsletter anchors, deep thought leadership.</div>
+        <div class="me-feeds">Joni (editorial gate)</div>
       </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 1</span> Production (Grohl or Lenny)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Freddie brief delivered</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-grohl">Grohl</span> flagship. <span class="al al-lenny">Lenny</span> cadence.</div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Draft submitted to Joni.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>Read Freddie's brief. Read <code>tone-profile.md</code> and <code>voice-guide.md</code>. Read OC writing guide if newsletter. No skimming. Mandatory.</li>
-          <li>Write draft in Pepe's voice. Platform rules applied. No em dashes. No corporate language. No generic advice. Path: <code>brain/areas/mexzungu/social-content/drafts/YYYY-MM-DD-[slug].md</code>.</li>
-          <li>Self-check: (1) Does line 1 earn the click? (2) Is there one clear takeaway? (3) Does it sound like Pepe or like a LinkedIn post? Any no = rewrite.</li>
-          <li>Pass draft to Joni. Flag platform, pillar, any Freddie notes on tone.</li>
-        </ul>
+      <div class="me-card">
+        <div class="me-name">Cadence Content</div>
+        <div class="me-owner">Lenny</div>
+        <div class="me-purpose">Regular LinkedIn / X / Instagram posts. Weekly volume maintained.</div>
+        <div class="me-feeds">Joni (editorial gate)</div>
       </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 2</span> Editorial gate (Joni)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Draft from Grohl or Lenny</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-joni">Joni</span></div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Tightened draft passed to Anselmo.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>Read full draft. Cut anything decorative. No sentence without purpose. Cut padding, not substance.</li>
-          <li>Voice check: (1) No em dashes or en dashes. (2) No corporate filler. (3) No generic advice. (4) Hook in line 1. (5) Sounds like the person, not the platform. Hard fails: rewrite offending section before passing.</li>
-          <li>Structural check per platform. LinkedIn: hook + body + takeaway + CTA. X: sharp + one idea. Instagram: image-first, caption supports.</li>
-          <li>Pass tightened draft to Anselmo with platform, pillar, and Freddie direction preserved.</li>
-        </ul>
+      <div class="me-card">
+        <div class="me-name">Editorial Gate</div>
+        <div class="me-owner">Joni</div>
+        <div class="me-purpose">Cuts and tightens all drafts before brand gate. No padding passes.</div>
+        <div class="me-feeds">Anselmo (brand gate)</div>
       </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 3</span> Brand gate (Anselmo)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Tightened draft from Joni</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-anselmo">Anselmo</span></div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Approved draft queued for Grace. Image brief written if needed.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>Brand check: (1) Tone matches brand guide (not law-firm, not influencer). (2) No claims that create liability. (3) No names without Pepe's prior approval. (4) OC character system applied if newsletter. Reference: <code>brain/areas/mexzungu/brand-guidelines.md</code>. Liability flag = <span class="gate gate-show">Showtime</span>.</li>
-          <li>Image brief: if visual needed, write brief for Grace. Format: dimensions, pillar palette, text overlay if any, brand guide reference. Mandatory for OC issues, carousels, and Instagram.</li>
-          <li>Queue approved draft for Grace. Flag platform, scheduled time, image brief attached.</li>
-        </ul>
+      <div class="me-card">
+        <div class="me-name">Brand Gate</div>
+        <div class="me-owner">Anselmo</div>
+        <div class="me-purpose">Final check before anything goes external. Palette, tone, voice.</div>
+        <div class="me-feeds">Grace (deployment)</div>
       </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 4</span> Deployment (Grace)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Approved draft from Anselmo</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-grace">Grace</span></div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Post published. Notion updated. Annie notified.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>Generate image if briefed. <code>generate_image</code> tool. Dimensions per platform (LinkedIn 1200x627, IG 1080x1350). Copy to <code>mexzungu-site/img/social/</code>. Run <code>deploy.sh</code>. Never <code>api.mexzungu.com</code>. Always <code>mexzungu.com/img/social/</code>.</li>
-          <li>Schedule post via social poster. Write to <code>scheduled/</code> with platform, copy, image URL, scheduled time. Social poster cron runs every 15 min Mon-Fri 06:00-19:00 UTC. Weekend posts scheduled for Monday.</li>
-          <li>For OC issues: Substack first (scheduled). LinkedIn Article within 1h. Website mirror within 2h. Run <code>deploy.sh</code> after website write. Path: <code>mexzungu-site/newsletter/YYYY-MM-DD-[slug].md</code>.</li>
-          <li>PATCH Notion: post page status=Published, add published_at, add post URL.</li>
-          <li>Notify Annie: post live, platform, URL, published_at. Annie opens 48h measurement window.</li>
-        </ul>
+      <div class="me-card">
+        <div class="me-name">Deployment</div>
+        <div class="me-owner">Grace</div>
+        <div class="me-purpose">Schedules and posts via social poster cron. Notion updated on publish.</div>
+        <div class="me-feeds">Annie (analytics)</div>
       </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 5</span> Analytics + signal feed (Annie)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Grace notification that post is live</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-annie">Annie</span></div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Performance logged. Freddie briefed. Deal signals routed to CAE.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>48h measurement: check LinkedIn, X, and IG metrics via API. Record impressions, engagements, engagement rate, comments, shares, link clicks, follower delta. If API unavailable, note the limitation. Do not estimate.</li>
-          <li>Quality score: 6-dimension rubric (hook strength, voice fidelity, engagement, pillar alignment, CTA effectiveness, brand consistency). Score 1 to 5 each. Path: <code>brain/areas/mexzungu/social-content/engine-quality-log.md</code>.</li>
-          <li>Signal classification: review comments and DMs. Tag (A) engagement, (B) conversation starter, (C) deal signal. Route deal signals to CAE Phase 0 queue via <code>update_lead</code> or <code>write_brain</code>. <span class="gate gate-sc">Soundcheck</span>. Deal signal = explicit business interest, deal mention, "can we talk?" Not every DM.</li>
-          <li>Weekly summary to Freddie: top 3 posts, worst 1, pattern observation, recommended adjustment for next week. <span class="gate gate-sc">Soundcheck</span>. Freddie reads before next Monday Phase 0.</li>
-          <li>Newsletter performance (48h post-send): open rate, click rate, unsubscribes, replies. Below 35% open rate: flag subject-line hypothesis to Freddie and Grohl. OC benchmark: 40%+ open, 5%+ click.</li>
-        </ul>
+      <div class="me-card">
+        <div class="me-name">Analytics</div>
+        <div class="me-owner">Annie</div>
+        <div class="me-purpose">Measures all published content. Closes feedback loop. Routes deal signals.</div>
+        <div class="me-feeds">Freddie + CAE</div>
       </div>
-    </details>
-  </section>
-
-  <section id="gates">
-    <div class="sec-label">Authority</div>
-    <h2>Gate register</h2>
-    <p>Publishing is Soundcheck once Anselmo clears brand. No Fire Away required for routine calendar posts. Only three items gate the engine.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th>Decision</th><th>Phase</th><th>Gate</th><th>Who unblocks</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Liability claim in content</td><td>3.1</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe explicit before publishing.</td></tr>
-          <tr><td>Brand gate hard fail</td><td>3.1</td><td>Blocks deploy</td><td>Anselmo clears or rewrites.</td></tr>
-          <tr><td>Deal signal routed to CAE</td><td>5.3</td><td><span class="gate gate-sc">Soundcheck</span></td><td>Annie routes autonomously.</td></tr>
-          <tr><td>Standard publishing</td><td>4.2 and 4.3</td><td><span class="gate gate-sc">Soundcheck</span></td><td>Grace deploys autonomously.</td></tr>
-        </tbody>
-      </table>
+      <div class="me-card">
+        <div class="me-name">Outlaw Chronicles</div>
+        <div class="me-owner">Grohl + Joni</div>
+        <div class="me-purpose">Newsletter: Substack + LinkedIn Article + website mirror. Bi-weekly cadence.</div>
+        <div class="me-feeds">Grace (deploy)</div>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <section id="interfaces">
-    <div class="sec-label">Where This Engine Sits</div>
-    <h2>Cross-engine interfaces</h2>
-    <p>SM Content feeds SM Engagement (published post triggers scan) and routes deal signals directly to Connection Acquisition via Annie.</p>
-
-    <div class="flow-strip">
+  <!-- FLOW DIAGRAM -->
+  <div class="section">
+    <div class="section-title">Engine Flow</div>
+    <div class="section-rule"></div>
+    <div class="flow-wrap">
+      <div class="flow-node trigger">
+        <div class="fn-label">Trigger</div>
+        <div class="fn-body">Content Calendar Cron</div>
+        <div class="fn-owner">Mon 06:30 CET / Freddie Brief</div>
+      </div>
+      <div class="flow-arrow">›</div>
       <div class="flow-node">
-        <div class="fn-label">Upstream</div>
-        <div class="fn-name">Freddie brief</div>
-        <div class="fn-note">Monday calendar + ad-hoc briefs open every cycle.</div>
+        <div class="fn-label">Phase 0</div>
+        <div class="fn-body">Manage Calendar</div>
+        <div class="fn-owner">Freddie</div>
+        <div class="fn-sla">2h SLA</div>
       </div>
-      <div class="flow-arrow">&#8594;</div>
-      <div class="flow-node center">
-        <div class="fn-label">This engine</div>
-        <div class="fn-name">SM Content</div>
-        <div class="fn-note">Draft, edit, brand, publish, measure.</div>
-      </div>
-      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-arrow">›</div>
       <div class="flow-node">
-        <div class="fn-label">Downstream</div>
-        <div class="fn-name">SM Engagement + CAE</div>
-        <div class="fn-note">Published post + deal signals from Annie.</div>
+        <div class="fn-label">Phase 1</div>
+        <div class="fn-body">Produce Draft</div>
+        <div class="fn-owner">Grohl / Lenny</div>
+        <div class="fn-sla">24h SLA</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node">
+        <div class="fn-label">Phase 2</div>
+        <div class="fn-body">Editorial Gate</div>
+        <div class="fn-owner">Joni</div>
+        <div class="fn-sla">24h SLA</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-gate-wrap">
+        <div class="flow-gate"><div class="flow-gate-inner">Liability<br>Check</div></div>
+        <div class="flow-gate-label">Showtime</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node showtime">
+        <div class="fn-label">Phase 3</div>
+        <div class="fn-body">Brand Gate</div>
+        <div class="fn-owner">Anselmo</div>
+        <div class="fn-sla">4h SLA</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node">
+        <div class="fn-label">Phase 4</div>
+        <div class="fn-body">Deploy</div>
+        <div class="fn-owner">Grace</div>
+        <div class="fn-sla">1h SLA</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node">
+        <div class="fn-label">Phase 5</div>
+        <div class="fn-body">Measure + Feed Back</div>
+        <div class="fn-owner">Annie</div>
+        <div class="fn-sla">48h SLA</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node output">
+        <div class="fn-label">Output</div>
+        <div class="fn-body">Published post + deal signals to CAE</div>
       </div>
     </div>
+    <div class="flow-stuck-note">
+      STUCK branches: Brand gate fail (Phase 3) and voice check fail (Phase 2) both route back to Phase 1 for rewrite. Engine does not advance until the gate clears.
+    </div>
+  </div>
 
-    <div class="tbl-wrap" style="margin-top:22px;">
-      <table>
+  <!-- RACI MATRIX -->
+  <div class="section">
+    <div class="section-title">RACI Matrix</div>
+    <div class="section-rule"></div>
+    <div class="raci-wrap">
+      <table class="raci-table">
         <thead>
-          <tr><th>Engine</th><th>Direction</th><th>We send</th><th>We receive</th></tr>
+          <tr>
+            <th>Phase</th>
+            <th>Freddie</th>
+            <th>Grohl</th>
+            <th>Lenny</th>
+            <th>Joni</th>
+            <th>Anselmo</th>
+            <th>Grace</th>
+            <th>Annie</th>
+            <th>Janis</th>
+            <th>Pepe</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>SM Engagement Engine</td><td>Downstream</td><td>Published post notification (Grace)</td><td>Nothing. Engagement monitors independently.</td></tr>
-          <tr><td>Connection Acquisition Engine</td><td>Downstream</td><td>Deal-level signals from Annie (Phase 5.3)</td><td>Nothing</td></tr>
-          <tr><td>Proposal Engine</td><td>None</td><td>Nothing</td><td>Nothing</td></tr>
-          <tr><td>Delivery Engines</td><td>None</td><td>Nothing</td><td>Nothing</td></tr>
+          <tr>
+            <td>Calendar Brief</td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">I</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">I</span></td>
+          </tr>
+          <tr>
+            <td>Production</td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+          </tr>
+          <tr>
+            <td>Editorial Gate</td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+          </tr>
+          <tr>
+            <td>Brand Gate</td>
+            <td><span class="raci-i">I</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+          </tr>
+          <tr>
+            <td>Deploy</td>
+            <td><span class="raci-i">I</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="st-badge">ST</span></td>
+          </tr>
+          <tr>
+            <td>Measure</td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">.</span></td>
+            <td><span class="raci-i">I</span></td>
+          </tr>
         </tbody>
       </table>
     </div>
-  </section>
+    <div class="raci-caption">R = Responsible &nbsp;·&nbsp; A = Accountable &nbsp;·&nbsp; C = Consulted &nbsp;·&nbsp; I = Informed &nbsp;·&nbsp; ST = Showtime approval required</div>
+  </div>
 
-</div>
+  <!-- PHASE ACCORDIONS -->
+  <div class="section">
+    <div class="section-title">Phase Detail</div>
+    <div class="section-rule"></div>
 
-<div class="foot-nav">
-  <a href="/engines/connection/" class="primary">Back to Connection</a>
-  <a href="/engines/connection/sm-engagement/">SM Engagement Engine &rarr;</a>
-</div>
+    <!-- Phase 0 -->
+    <div class="phase-card">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 0</div>
+        <div class="phase-main">
+          <div class="phase-title">Manage Calendar</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Freddie</span></div>
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">2h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Monday 06:30 CET cron / Freddie brief</span></div>
+            <div class="phase-meta-item"><span class="lbl">Exit:</span><span class="val">Week content plan locked, Grohl and Lenny briefed, Notion updated</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9660;</div>
+      </div>
+      <div class="phase-body">
+        <div class="sub-section">Sub-tasks</div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Gate</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0.1</td>
+              <td>Review Annie's performance report from previous week. Top posts, worst post, pattern, recommended adjustment.</td>
+              <td>Freddie</td>
+              <td>read_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/engine-quality-log.md</td>
+            </tr>
+            <tr>
+              <td>0.2</td>
+              <td>Draft week's content plan: pillar mix, format mix, topic angles per post, OC issue status.</td>
+              <td>Freddie</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/calendar.md</td>
+            </tr>
+            <tr>
+              <td>0.3</td>
+              <td>Assign posts: flagship to Grohl, cadence to Lenny. Brief per post: pillar, format, hook, core takeaway, target length, platform priority.</td>
+              <td>Freddie</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>0.4</td>
+              <td>Update Notion content calendar: create page per post, status=Draft.</td>
+              <td>Janis</td>
+              <td>Notion API</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>DB: 33e43c16-2693-81c2-a7a5-d7eb0943bb64</td>
+            </tr>
+            <tr>
+              <td>0.5</td>
+              <td>If OC issue due: Freddie writes issue brief for Grohl. Topic, series slot, hook angle, takeaway, CTA.</td>
+              <td>Freddie</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/oc-briefs/YYYY-MM-DD.md</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          Freddie does not write brief by Monday 09:00 CET. Unblock: Lars flags to Pepe via Telegram alerts thread. Engine waits up to 12h before auto-rescheduling to Tuesday.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="phase-card">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-main">
+          <div class="phase-title">Produce Draft</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Grohl (flagship) / Lenny (cadence)</span></div>
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">24h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Freddie brief delivered</span></div>
+            <div class="phase-meta-item"><span class="lbl">Exit:</span><span class="val">Draft submitted to Joni</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9660;</div>
+      </div>
+      <div class="phase-body">
+        <div class="sub-section">Sub-tasks</div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Gate</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.1</td>
+              <td>Read Freddie's brief. Read tone-profile.md and voice-guide.md. Read OC writing guide if newsletter. Mandatory. No draft without these reads.</td>
+              <td>Grohl / Lenny</td>
+              <td>read_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>No draft without mandatory reads.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>Write draft in Pepe's voice. Platform rules applied. No em dashes. No corporate language. No generic advice.</td>
+              <td>Grohl / Lenny</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/drafts/YYYY-MM-DD-[slug].md</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>Self-check before passing: (1) Does line 1 earn the click? (2) Is there one clear takeaway? (3) Does it sound like Pepe or like a LinkedIn post? No = rewrite.</td>
+              <td>Grohl / Lenny</td>
+              <td></td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>Pass draft to Joni. Flag: platform, pillar, any Freddie notes on tone.</td>
+              <td>Grohl / Lenny</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          Grohl or Lenny misses 24h SLA. Unblock: Lars flags immediately. Freddie decides: wait or reassign.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase-card">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-main">
+          <div class="phase-title">Apply Editorial Gate</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Joni</span></div>
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">24h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Draft from Grohl or Lenny</span></div>
+            <div class="phase-meta-item"><span class="lbl">Exit:</span><span class="val">Tightened draft passed to Anselmo</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9660;</div>
+      </div>
+      <div class="phase-body">
+        <div class="sub-section">Sub-tasks</div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Gate</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2.1</td>
+              <td>Read full draft. Cut anything decorative. No sentence without purpose.</td>
+              <td>Joni</td>
+              <td>read_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Cut padding, not substance.</td>
+            </tr>
+            <tr>
+              <td>2.2</td>
+              <td>Voice check: (1) No em dashes or en dashes. (2) No corporate filler. (3) No generic advice. (4) Hook is in line 1. (5) Sounds like the person, not the platform.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Hard fails: rewrite offending section before passing.</td>
+            </tr>
+            <tr>
+              <td>2.3</td>
+              <td>Structural check per platform: LinkedIn (hook + body + takeaway + CTA), X (sharp + one idea), Instagram (image-first, caption supports).</td>
+              <td>Joni</td>
+              <td></td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2.4</td>
+              <td>Pass tightened draft to Anselmo with platform, pillar, and Freddie direction preserved.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          Draft fails voice check on repeated passes. Unblock: Joni escalates to Freddie. Freddie decides whether to rebrief or kill the post.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-card has-showtime">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-main">
+          <div class="phase-title">Apply Brand Gate <span class="badge badge-pink" style="margin-left:8px;vertical-align:middle;font-family:'Inter',sans-serif">Showtime possible</span></div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Anselmo</span></div>
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">4h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Tightened draft from Joni</span></div>
+            <div class="phase-meta-item"><span class="lbl">Exit:</span><span class="val">Approved draft queued for Grace. Image brief written if visual needed.</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9660;</div>
+      </div>
+      <div class="phase-body">
+        <div class="sub-section">Sub-tasks</div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Gate</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3.1</td>
+              <td>Brand check: (1) Tone matches brand guide. (2) No claims that create liability. (3) No names without Pepe's prior approval. (4) OC character system applied if newsletter.</td>
+              <td>Anselmo</td>
+              <td>read_brain</td>
+              <td><span class="st-badge">ST if liability</span></td>
+              <td>Reference: brain/areas/mexzungu/brand-guidelines.md</td>
+            </tr>
+            <tr>
+              <td>3.2</td>
+              <td>Image brief: if post requires visual, write brief for Grace. Format: dimensions, pillar palette, text overlay, brand guide reference. Mandatory for OC issues, carousels, Instagram.</td>
+              <td>Anselmo</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>3.3</td>
+              <td>Queue approved draft for Grace: flag platform, scheduled time, image brief attached.</td>
+              <td>Anselmo</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="gate-box">
+          <strong>Showtime gate: Liability check</strong>
+          If content contains a liability claim: queue for Pepe Showtime. Pepe must explicitly approve before passing to Grace. Never route around this gate. Question: Does this create legal exposure? YES: hold for "very well." NO: clear for Grace.
+        </div>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          Content contains a liability claim. Unblock: Showtime. Pepe must explicitly approve before passing to Grace. Never route around this gate.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase-card">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 4</div>
+        <div class="phase-main">
+          <div class="phase-title">Deploy</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Grace</span></div>
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">1h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Approved draft from Anselmo</span></div>
+            <div class="phase-meta-item"><span class="lbl">Exit:</span><span class="val">Post published. Notion updated. Annie notified.</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9660;</div>
+      </div>
+      <div class="phase-body">
+        <div class="sub-section">Sub-tasks</div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Gate</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>4.1</td>
+              <td>Generate image if briefed: generate_image tool. Dimensions per platform (LinkedIn 1200x627, IG 1080x1350). Copy to mexzungu-site/img/social/. Run deploy.sh.</td>
+              <td>Grace</td>
+              <td>generate_image + Bash</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Never api.mexzungu.com. Always mexzungu.com/img/social/.</td>
+            </tr>
+            <tr>
+              <td>4.2</td>
+              <td>Schedule post via social poster: write to scheduled/ with platform, copy, image URL, scheduled time. Social poster cron picks up every 15 min (Mon-Fri 06:00-19:00 UTC).</td>
+              <td>Grace</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Weekend posts scheduled for Monday.</td>
+            </tr>
+            <tr>
+              <td>4.3</td>
+              <td>For OC issues: Substack first (scheduled). LinkedIn Article within 1h. Website mirror within 2h. Run deploy.sh after website write.</td>
+              <td>Grace</td>
+              <td>Bash</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Website path: mexzungu-site/newsletter/YYYY-MM-DD-[slug].md</td>
+            </tr>
+            <tr>
+              <td>4.4</td>
+              <td>Update Notion: PATCH post page status=Published, add published_at timestamp, add post URL.</td>
+              <td>Grace</td>
+              <td>Notion API</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>4.5</td>
+              <td>Notify Annie: post live, platform, URL, published_at. Annie opens 48h measurement window.</td>
+              <td>Grace</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          Social poster cron not running. Unblock: Bowie alert. Grace manually posts via platform API as fallback.
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase-card">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 5</div>
+        <div class="phase-main">
+          <div class="phase-title">Measure and Feed Back</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Annie</span></div>
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">48h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Grace notification that post is live</span></div>
+            <div class="phase-meta-item"><span class="lbl">Exit:</span><span class="val">Performance report written. Freddie briefed. Deal signals routed to CAE.</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9660;</div>
+      </div>
+      <div class="phase-body">
+        <div class="sub-section">Sub-tasks</div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Gate</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5.1</td>
+              <td>48h measurement: check LinkedIn / X / Instagram metrics via API. Record: impressions, engagements, engagement rate, comments, shares, link clicks, follower delta.</td>
+              <td>Annie</td>
+              <td>Bash (social APIs)</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>If API unavailable: note limitation. Do not estimate.</td>
+            </tr>
+            <tr>
+              <td>5.2</td>
+              <td>Quality score: 6-dimension rubric (hook strength, voice fidelity, engagement, pillar alignment, CTA effectiveness, brand consistency). Score 1-5 each.</td>
+              <td>Annie</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/engine-quality-log.md</td>
+            </tr>
+            <tr>
+              <td>5.3</td>
+              <td>Signal classification: review comments and DMs. Tag: (A) engagement, (B) conversation starter, (C) deal signal. Route deal signals to CAE Phase 0 queue.</td>
+              <td>Annie</td>
+              <td>write_brain + update_lead</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Deal signal = explicit business interest, deal mention, "can we talk?" Not every DM.</td>
+            </tr>
+            <tr>
+              <td>5.4</td>
+              <td>Weekly summary to Freddie: top 3 posts by engagement, worst 1, pattern observation, recommended adjustment for next week.</td>
+              <td>Annie</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Freddie reads before next Monday Phase 0.1.</td>
+            </tr>
+            <tr>
+              <td>5.5</td>
+              <td>Newsletter performance (48h post-send): open rate, click rate, unsubscribes, replies. If open rate below 35%: flag subject line hypothesis to Freddie and Grohl.</td>
+              <td>Annie</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>OC benchmark: 40%+ open rate, 5%+ click rate.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          Social API returns error for 48h+ on metric pull. Unblock: Annie notes in quality log. Retry at 72h. Never estimate metrics.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /phases section -->
+
+  <!-- CROSS-ENGINE HANDOFFS -->
+  <div class="section">
+    <div class="section-title">Cross-Engine Handoffs</div>
+    <div class="section-rule"></div>
+    <div class="handoff-grid">
+      <div class="handoff-block inputs">
+        <div class="handoff-title">Inputs</div>
+        <div class="handoff-item">
+          <strong>From: Freddie (internal)</strong>
+          Signal: Content brief. Data: Topic, hook, platform, pillar, OC brief if newsletter issue is due.
+        </div>
+        <div class="handoff-item">
+          <strong>From: Annie (prior cycle)</strong>
+          Signal: Quality log update. Data: Performance data, pattern observation, recommended adjustment for next calendar cycle.
+        </div>
+      </div>
+      <div class="handoff-block outputs">
+        <div class="handoff-title">Outputs</div>
+        <div class="handoff-item">
+          <strong>To: SM Engagement Engine</strong>
+          Signal: Published post notification. Data: Post URL, platform, published_at. Triggers Phase 0 engagement scan in SM Engagement Engine.
+        </div>
+        <div class="handoff-item">
+          <strong>To: Connection Acquisition Engine</strong>
+          Signal: Deal-level engagement signal. Data: Commenter name, contact info if known, deal signal type, post URL. State=warm, source=sm-content.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOWTIME GATE INDEX -->
+  <div class="section">
+    <div class="section-title">Showtime Gate Index</div>
+    <div class="section-rule"></div>
+    <div class="st-index">
+      <div class="st-index-title">All Showtime Moments in This Engine</div>
+      <div class="st-row st-row-hd">
+        <div class="st-phase">Phase</div>
+        <div class="st-what">Trigger</div>
+        <div class="st-unlock">Unlock condition</div>
+      </div>
+      <div class="st-row">
+        <div class="st-phase">Phase 3</div>
+        <div class="st-what">Liability claim detected in content by Anselmo during brand check. Content cannot proceed until Pepe reviews.</div>
+        <div class="st-unlock">Pepe says "very well." Grace deploys only after explicit approval. No workaround.</div>
+      </div>
+      <div class="st-row">
+        <div class="st-phase">Phase 4 (implicit)</div>
+        <div class="st-what">Publishing is Showtime only when content has NOT cleared brand gate. Standard cleared content: Grace deploys autonomously.</div>
+        <div class="st-unlock">Anselmo's clear is the gate. Cleared content flows to Grace with no further approval needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXCEPTION INDEX -->
+  <div class="section">
+    <div class="section-title">Exception Index</div>
+    <div class="section-rule"></div>
+    <div class="exc-wrap">
+      <table class="exc-table">
+        <thead>
+          <tr>
+            <th>Phase / Step</th>
+            <th>Exception</th>
+            <th>Consequence</th>
+            <th>Resolution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Phase 1 / 1.1</td>
+            <td>Draft started without reading brief</td>
+            <td>Hard block</td>
+            <td>No draft passes Joni without brief reference in file header.</td>
+          </tr>
+          <tr>
+            <td>Phase 2 / 2.2</td>
+            <td>Em dash in draft</td>
+            <td>Voice check fail</td>
+            <td>Rewrite the offending section. Never pass an em dash to Anselmo.</td>
+          </tr>
+          <tr>
+            <td>Phase 3 / 3.1</td>
+            <td>Name used without Pepe approval</td>
+            <td>Brand gate fail</td>
+            <td>Remove name. Flag to Pepe. Do not publish with unapproved names.</td>
+          </tr>
+          <tr>
+            <td>Phase 4 / 4.1</td>
+            <td>Image hosted from api.mexzungu.com</td>
+            <td>Deployment error</td>
+            <td>Move to mexzungu.com/img/social/ and run deploy.sh. Never go live with api.mexzungu.com URL.</td>
+          </tr>
+          <tr>
+            <td>Phase 5 / 5.3</td>
+            <td>Deal signal not routed within 24h</td>
+            <td>Annie audit failure</td>
+            <td>Retroactive route. Flag pattern to Joni. Lars flags if missed 2+ times.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    Mexzungu Group | Engine documentation is a live operational document. Last updated 2026-08-12.
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+function togglePhase(hd) {
+  var expanded = hd.getAttribute('aria-expanded') === 'true';
+  hd.setAttribute('aria-expanded', !expanded);
+  var body = hd.nextElementSibling;
+  if (body && body.classList.contains('phase-body')) {
+    if (expanded) {
+      body.classList.remove('open');
+    } else {
+      body.classList.add('open');
+    }
+  }
+}
+</script>
 
 </body>
 </html>

@@ -1,435 +1,1011 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SM Engagement Engine. Mexzungu Group</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --pink:#e14b87;
-      --purple:#b482ff;
-      --bg:#0f0f0f;
-      --surface:#181818;
-      --s2:#1e1e1e;
-      --border:#2a2a2a;
-      --text:#e8e8e8;
-      --muted:#888;
-      --conn:#4cc8b4;
-      --val:#f0a030;
-      --care:#b482ff;
-      --green:#4caf7d;
-      --blue:#6498ff;
-      --red:#e05050;
-      --gold:#f0c850;
-    }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
-    body { background:var(--bg); color:var(--text); font-family:'DM Sans',system-ui,sans-serif; font-size:15px; line-height:1.65; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SM Engagement Engine | MGL Engines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#e14b87;
+  --bg:#0f0f0f;
+  --surface:#181818;
+  --s2:#1e1e1e;
+  --border:#2a2a2a;
+  --text:#e8e8e8;
+  --muted:#888;
+  --conn:#4cc8b4;
+  --val:#f0a030;
+  --care:#b482ff;
+  --green:#4caf7d;
+}
 
-    h1, h2, h3, .display { font-family:'Cormorant Garamond',Georgia,serif; font-weight:700; letter-spacing:-0.01em; }
+*{box-sizing:border-box;margin:0;padding:0}
 
-    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; overflow-x:auto; white-space:nowrap; }
-    nav .logo { font-family:'DM Sans',sans-serif; font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; flex-shrink:0; }
-    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
-    nav a:hover { color:var(--text); background:var(--s2); }
-    nav .sep { color:var(--border); font-size:11px; }
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.6;
+  min-height:100vh;
+}
 
-    .wrap { max-width:900px; margin:0 auto; padding:0 24px; }
-    section { padding:48px 0; border-bottom:1px solid var(--border); }
-    section:last-child { border-bottom:none; }
+a{color:var(--conn);text-decoration:none}
+a:hover{text-decoration:underline}
 
-    .sec-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--pink); margin-bottom:10px; }
+/* NAV */
+.top-nav{
+  border-bottom:1px solid var(--border);
+  padding:14px 24px;
+  background:var(--surface);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.breadcrumb{
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{color:var(--border)}
+.breadcrumb .current{color:var(--text);font-weight:600}
 
-    h1 { font-size:44px; line-height:1.05; margin-bottom:14px; }
-    h2 { font-size:28px; line-height:1.15; margin-bottom:18px; }
-    h3 { font-size:19px; line-height:1.25; margin-bottom:10px; color:var(--text); }
-    p { color:#bbb; margin-bottom:14px; font-size:15px; }
-    p:last-child { margin-bottom:0; }
-    strong { color:var(--text); font-weight:600; }
+/* LAYOUT */
+.page-wrap{max-width:1100px;margin:0 auto;padding:40px 24px 80px}
 
-    .macro-tag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--conn); margin-bottom:14px; }
-    .lead { font-size:17px; color:#ccc; line-height:1.6; margin-bottom:22px; max-width:680px; }
+/* HEADER */
+.page-header{margin-bottom:40px}
+.engine-tag{
+  display:inline-block;
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--conn);
+  border:1px solid rgba(76,200,180,.3);
+  border-radius:3px;
+  padding:3px 8px;
+  margin-bottom:12px;
+}
+.page-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:38px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.15;
+  margin-bottom:12px;
+}
+.page-subtitle{
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.6;
+  max-width:680px;
+  margin-bottom:20px;
+}
 
-    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
-    .chip { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:600; padding:5px 12px; border-radius:20px; letter-spacing:.05em; text-transform:uppercase; }
-    .chip-pink  { background:rgba(225,75,135,.10); color:var(--pink); border:1px solid rgba(225,75,135,.28); }
-    .chip-purple{ background:rgba(180,130,255,.10); color:var(--purple); border:1px solid rgba(180,130,255,.28); }
-    .chip-green { background:rgba(76,175,125,.10); color:var(--green); border:1px solid rgba(76,175,125,.28); }
-    .chip-amber { background:rgba(240,160,48,.10); color:var(--val); border:1px solid rgba(240,160,48,.28); }
-    .chip-teal  { background:rgba(76,200,180,.10); color:var(--conn); border:1px solid rgba(76,200,180,.28); }
+/* META PILLS */
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+.meta-pill{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:5px 10px;
+  font-size:11px;
+}
+.meta-pill .mp-label{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+.meta-pill .mp-val{color:var(--text);font-weight:500}
 
-    .owner-triad { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:12px; margin-top:22px; }
-    .owner-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
-    .owner-card .role { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:4px; }
-    .owner-card .name { font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:4px; }
-    .owner-card .why { font-size:12px; color:#999; line-height:1.55; }
+/* SCOPE BOX */
+.scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
+@media(max-width:640px){.scope-grid{grid-template-columns:1fr}}
+.scope-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.scope-block.owns{border-top:3px solid var(--green)}
+.scope-block.not-owns{border-top:3px solid var(--border)}
+.scope-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:10px}
+.scope-block.not-owns .scope-title{color:var(--muted)}
+.scope-block li{font-size:13px;color:#aaa;line-height:1.6;margin-left:16px;margin-bottom:4px}
 
-    /* Hard separation callout */
-    .hard-rule { background:linear-gradient(135deg, rgba(225,75,135,.08), rgba(180,130,255,.05)); border:1px solid rgba(225,75,135,.35); border-left:4px solid var(--pink); border-radius:8px; padding:22px 24px; margin-top:24px; }
-    .hard-rule .hr-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--pink); margin-bottom:10px; }
-    .hard-rule .hr-title { font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:12px; }
-    .hard-rule p { font-size:14px; color:#ccc; margin-bottom:8px; }
-    .hard-rule .hr-emph { color:var(--pink); font-weight:700; }
+/* SECTION */
+.section{margin-bottom:48px}
+.section-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:24px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:16px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
 
-    /* Tables */
-    .tbl-wrap { overflow-x:auto; margin-bottom:8px; border:1px solid var(--border); border-radius:8px; }
-    table { width:100%; border-collapse:collapse; font-size:13.5px; }
-    th { background:var(--s2); color:var(--muted); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
-    td { padding:12px 14px; border-bottom:1px solid #1e1e1e; vertical-align:top; color:#bbb; line-height:1.55; }
-    tr:last-child td { border-bottom:none; }
-    tr:hover td { background:rgba(255,255,255,.02); }
-    td strong.class-a { color:var(--green); }
-    td strong.class-b { color:var(--conn); }
-    td strong.class-c { color:var(--gold); }
-    td strong.class-d { color:var(--muted); }
-    td strong.class-e { color:var(--pink); }
+/* KPI */
+.kpi-list{display:flex;flex-direction:column;gap:10px}
+.kpi-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:14px 16px;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+.kpi-num{
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--pink);
+  min-width:24px;
+  margin-top:1px;
+}
+.kpi-body{flex:1}
+.kpi-text{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:3px}
+.kpi-owner{font-size:11px;color:var(--muted)}
+.kpi-owner span{color:var(--pink);font-weight:600}
 
-    /* Gate badges */
-    .gate { display:inline-block; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; padding:3px 9px; border-radius:3px; text-transform:uppercase; letter-spacing:.06em; }
-    .gate-show { background:rgba(225,75,135,.15); color:var(--pink); }
-    .gate-sc { background:rgba(76,175,125,.12); color:var(--green); }
-    .gate-fa { background:rgba(225,75,135,.12); color:#ff80b0; border:1px solid rgba(225,75,135,.28); }
+/* FLOW */
+.flow-wrap{display:flex;align-items:center;flex-wrap:wrap;gap:0;overflow-x:auto;padding:24px 0}
+.flow-node{flex-shrink:0;min-width:120px;max-width:160px;text-align:center;padding:12px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface)}
+.flow-node.trigger{border-color:var(--conn);background:rgba(76,200,180,.08)}
+.flow-node.showtime{border-color:var(--pink);background:rgba(225,75,135,.08)}
+.flow-node.cross-engine{border-color:var(--conn);background:rgba(76,200,180,.05)}
+.flow-node.stuck{border-color:var(--val);background:rgba(240,160,48,.08)}
+.flow-node.output{border-color:var(--green);background:rgba(76,175,125,.08)}
+.flow-node .fn-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:5px}
+.flow-node.trigger .fn-label{color:var(--conn)}
+.flow-node.showtime .fn-label{color:var(--pink)}
+.flow-node.output .fn-label{color:var(--green)}
+.flow-node .fn-body{font-size:12px;font-weight:600;color:var(--text);line-height:1.35}
+.flow-node .fn-owner{font-size:10px;color:var(--muted);margin-top:4px}
+.flow-node .fn-sla{font-size:10px;color:var(--val);margin-top:2px}
+.flow-arrow{flex-shrink:0;color:var(--muted);font-size:18px;padding:0 6px;line-height:1}
+.flow-gate-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;margin:0 10px}
+.flow-gate{width:72px;height:72px;transform:rotate(45deg);border:1px solid var(--pink);background:rgba(225,75,135,.08);display:flex;align-items:center;justify-content:center}
+.flow-gate-inner{transform:rotate(-45deg);text-align:center;font-size:9px;font-weight:700;color:var(--pink);padding:2px;line-height:1.3}
+.flow-gate-label{font-size:9px;color:var(--pink);font-weight:700;margin-top:8px;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:640px){.flow-wrap{flex-direction:column;align-items:stretch}.flow-node{max-width:100%}.flow-arrow{transform:rotate(90deg);align-self:center;margin:4px 0}.flow-gate-wrap{margin:8px 0}}
 
-    /* Actor labels */
-    .al { display:inline-block; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; padding:3px 8px; border-radius:3px; text-transform:uppercase; letter-spacing:.07em; }
-    .al-joni { background:rgba(225,75,135,.12); color:var(--pink); border:1px solid rgba(225,75,135,.28); }
-    .al-grace { background:rgba(76,175,125,.12); color:var(--green); border:1px solid rgba(76,175,125,.28); }
-    .al-freddie { background:rgba(80,210,230,.12); color:#50d2e6; border:1px solid rgba(80,210,230,.28); }
-    .al-pepe { background:rgba(240,160,48,.12); color:var(--val); border:1px solid rgba(240,160,48,.28); }
-    .al-annie { background:rgba(180,130,255,.12); color:var(--purple); border:1px solid rgba(180,130,255,.28); }
-    .al-janis { background:rgba(225,75,135,.10); color:var(--pink); border:1px solid rgba(225,75,135,.20); }
+/* RACI */
+.raci-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid var(--border)}
+.raci-table{width:100%;border-collapse:collapse;font-size:12px}
+.raci-table th{background:var(--s2);color:var(--muted);font-weight:600;padding:8px 10px;text-align:center;position:sticky;top:48px;z-index:2;border-bottom:2px solid var(--border);white-space:nowrap;font-size:11px}
+.raci-table th:first-child{text-align:left;min-width:140px}
+.raci-table td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle}
+.raci-table td:first-child{text-align:left;font-weight:600;color:var(--text);font-size:12px}
+.raci-table tr:last-child td{border-bottom:none}
+.raci-r{color:var(--green);font-weight:800;font-size:13px}
+.raci-a{color:var(--pink);font-weight:800;font-size:13px}
+.raci-c{color:var(--care);font-weight:700;font-size:13px}
+.raci-i{color:var(--muted);font-size:12px}
+.raci-caption{font-size:11px;color:var(--muted);margin-top:8px}
 
-    /* Phase details */
-    details { background:var(--surface); border:1px solid var(--border); border-radius:10px; margin-bottom:12px; overflow:hidden; }
-    details[open] { border-color:rgba(225,75,135,.4); }
-    summary { padding:16px 20px; cursor:pointer; display:flex; align-items:center; gap:14px; list-style:none; font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; user-select:none; }
-    summary::-webkit-details-marker { display:none; }
-    summary::after { content:'+'; margin-left:auto; color:var(--muted); font-size:20px; font-weight:300; transition:transform .2s; }
-    details[open] summary::after { content:'\2212'; }
-    .phase-num { background:rgba(225,75,135,.15); color:var(--pink); border:1px solid rgba(225,75,135,.32); border-radius:5px; padding:3px 10px; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:800; flex-shrink:0; letter-spacing:.05em; }
-    .phase-body { padding:0 20px 22px; }
-    .phase-meta { background:var(--s2); border:1px solid var(--border); border-radius:8px; padding:14px 18px; margin-bottom:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:10px; }
-    .pm-item .pm-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:3px; }
-    .pm-item .pm-val { font-size:13px; color:#ccc; }
-    .phase-body h4 { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:16px 0 8px; }
-    .phase-body ul { padding-left:18px; color:#bbb; font-size:14px; line-height:1.75; }
-    .phase-body ul li { margin-bottom:6px; }
+/* MICRO-ENGINE MAP */
+.me-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:20px 0}
+.me-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.me-name{font-weight:700;font-size:14px;color:var(--text);margin-bottom:4px}
+.me-owner{font-size:10px;color:var(--pink);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.me-purpose{font-size:13px;color:#aaa;line-height:1.5;margin-bottom:8px}
+.me-feeds{font-size:11px;color:var(--conn);font-weight:600}
+.me-feeds:before{content:'feeds ';color:var(--muted);font-weight:400}
 
-    /* Cross-engine flow */
-    .flow-strip { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:0; align-items:stretch; margin-top:20px; }
-    .flow-node { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
-    .flow-node.center { border-color:rgba(225,75,135,.4); background:linear-gradient(180deg, rgba(225,75,135,.08), var(--surface)); }
-    .flow-node .fn-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px; }
-    .flow-node .fn-name { font-family:'Cormorant Garamond',Georgia,serif; font-size:19px; font-weight:700; color:var(--text); margin-bottom:4px; }
-    .flow-node .fn-note { font-size:11px; color:#999; }
-    .flow-arrow { display:flex; align-items:center; justify-content:center; color:var(--pink); font-size:22px; padding:0 8px; }
+/* PHASE ACCORDION */
+.phase-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.phase-card.has-showtime{border-color:rgba(225,75,135,.35)}
+.phase-hd{padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;user-select:none}
+.phase-hd:hover{background:var(--s2)}
+.phase-num{font-size:10px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:.1em;flex-shrink:0;margin-top:3px;min-width:60px}
+.phase-main{flex:1}
+.phase-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
+.phase-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted)}
+.phase-meta-item{display:flex;gap:5px}
+.phase-meta-item .lbl{color:var(--muted)}
+.phase-meta-item .val{color:#bbb;font-weight:500}
+.phase-chevron{color:var(--muted);font-size:12px;flex-shrink:0;margin-top:3px;transition:.2s}
+.phase-hd[aria-expanded=true] .phase-chevron{transform:rotate(180deg)}
+.phase-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.phase-body.open{display:block}
+.stuck-box{background:rgba(240,160,48,.07);border:1px solid rgba(240,160,48,.3);border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13px;color:var(--val);line-height:1.55}
+.stuck-box strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;color:var(--val)}
+.gate-box{background:rgba(225,75,135,.06);border:1px solid rgba(225,75,135,.25);border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13px;color:var(--pink);line-height:1.55}
+.gate-box strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
 
-    /* Foot nav */
-    .foot-nav { display:flex; justify-content:space-between; gap:12px; padding:32px 24px 60px; flex-wrap:wrap; max-width:900px; margin:0 auto; }
-    .foot-nav a { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--muted); text-decoration:none; padding:8px 16px; border:1px solid var(--border); border-radius:6px; transition:.15s; letter-spacing:.03em; }
-    .foot-nav a:hover { color:var(--text); border-color:var(--pink); }
-    .foot-nav a.primary { color:var(--text); border-color:var(--pink); background:rgba(225,75,135,.08); }
+/* SUB-TASK TABLE */
+.task-table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0}
+.task-table thead th{background:var(--s2);color:var(--muted);font-weight:600;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border)}
+.task-table tbody td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;color:#bbb}
+.task-table tbody td:first-child{color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap}
+.task-table tbody td:nth-child(2){color:var(--text)}
+.task-table tbody tr:last-child td{border-bottom:none}
+.st-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(225,75,135,.12);color:var(--pink);text-transform:uppercase;letter-spacing:.07em;border:1px solid rgba(225,75,135,.2)}
+.sc-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--s2);color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
 
-    @media (max-width:720px) {
-      h1 { font-size:32px; }
-      h2 { font-size:22px; }
-      section { padding:36px 0; }
-      .flow-strip { grid-template-columns:1fr; }
-      .flow-arrow { transform:rotate(90deg); padding:8px 0; }
-    }
-  </style>
+/* SHOWTIME INDEX */
+.st-index{background:rgba(225,75,135,.05);border:1px solid rgba(225,75,135,.2);border-radius:8px;padding:20px 24px;margin-top:32px}
+.st-index-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:16px}
+.st-row{display:grid;grid-template-columns:60px 1fr 1fr;gap:16px;padding:10px 0;border-bottom:1px solid rgba(225,75,135,.1);font-size:13px;align-items:start}
+.st-row:last-child{border-bottom:none}
+.st-phase{color:var(--pink);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding-top:2px}
+.st-what{color:var(--text);line-height:1.5}
+.st-unlock{color:var(--muted);font-size:12px;line-height:1.5}
+.st-row-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border) !important;padding-bottom:8px !important}
+
+/* CROSS-ENGINE HANDOFFS */
+.handoff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media(max-width:640px){.handoff-grid{grid-template-columns:1fr}}
+.handoff-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px}
+.handoff-block.inputs{border-top:3px solid var(--conn)}
+.handoff-block.outputs{border-top:3px solid var(--pink)}
+.handoff-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--conn);margin-bottom:14px}
+.handoff-block.outputs .handoff-title{color:var(--pink)}
+.handoff-item{font-size:13px;color:#aaa;padding:9px 0;border-bottom:1px solid var(--border);line-height:1.5}
+.handoff-item:last-child{border-bottom:none}
+.handoff-item strong{color:var(--text);display:block;font-size:12px;font-weight:600;margin-bottom:2px}
+
+/* EXCEPTION TABLE */
+.exc-table{width:100%;border-collapse:collapse;font-size:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.exc-table th{background:var(--s2);color:var(--muted);font-weight:600;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border)}
+.exc-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:#aaa;font-size:13px;line-height:1.5}
+.exc-table td:first-child{color:var(--val);font-weight:600;font-size:11px;white-space:nowrap}
+.exc-table td:nth-child(2){color:var(--text)}
+.exc-table tbody tr:last-child td{border-bottom:none}
+
+/* PHASE BODY SECTIONS */
+.pb-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:18px 0 8px}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:24px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:40px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .page-title{font-size:28px}
+  .st-row{grid-template-columns:50px 1fr;grid-template-rows:auto auto}
+  .st-unlock{grid-column:2}
+}
+@media(max-width:480px){
+  .page-wrap{padding:24px 16px 60px}
+  .top-nav{padding:12px 16px}
+}
+</style>
 </head>
 <body>
 
-<nav>
-  <span class="logo">SM Engagement Engine</span>
-  <a href="/engines/">All Engines</a>
-  <span class="sep">|</span>
-  <a href="#overview">Overview</a>
-  <a href="#rule">Hard Rule</a>
-  <a href="#comments">Comments</a>
-  <a href="#dms">DMs</a>
-  <a href="#phases">Phases</a>
-  <a href="#gates">Gates</a>
-  <a href="#interfaces">Interfaces</a>
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="breadcrumb">
+    <a href="/engines/">MGL Engines</a>
+    <span class="sep">›</span>
+    <a href="/engines/connection/">Macro Engine I: Connection</a>
+    <span class="sep">›</span>
+    <span class="current">SM Engagement Engine</span>
+  </div>
 </nav>
 
-<div class="wrap">
+<!-- PAGE -->
+<div class="page-wrap">
 
-  <section id="overview">
-    <div class="macro-tag">Macro Engine I. Connection</div>
-    <h1>SM Engagement Engine</h1>
-    <p class="lead">Publishing without engagement is broadcasting. The relationship starts in the comments, the deal starts in the DMs. This engine is where audience converts to pipeline.</p>
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="engine-tag">Engine 2 of 4, Macro Engine I: Connection</div>
+    <h1 class="page-title">SM Engagement Engine</h1>
+    <p class="page-subtitle">Monitors all social media engagement across platforms, drafts replies in Pepe's voice, routes deal-level signals to the Connection Acquisition Engine, and manages outbound connection outreach under Showtime protocol.</p>
 
-    <div class="owner-triad">
-      <div class="owner-card">
-        <div class="role">Direction</div>
-        <div class="name">Freddie</div>
-        <div class="why">CMO. Sets voice, cadence, escalation rules.</div>
+    <div class="meta-row">
+      <div class="meta-pill">
+        <span class="mp-label">Owner</span>
+        <span class="mp-val">Freddie (oversight) + Joni (quality) + Grace (execution)</span>
       </div>
-      <div class="owner-card">
-        <div class="role">Quality</div>
-        <div class="name">Joni</div>
-        <div class="why">Drafts every reply and DM in Pepe's voice.</div>
+      <div class="meta-pill">
+        <span class="mp-label">Trigger</span>
+        <span class="mp-val">Post-publish event from SM Content Engine + daily scan 07:30 CET</span>
       </div>
-      <div class="owner-card">
-        <div class="role">Execution</div>
-        <div class="name">Grace</div>
-        <div class="why">Posts what Joni drafts. Never writes.</div>
+      <div class="meta-pill">
+        <span class="mp-label">Output</span>
+        <span class="mp-val">Replies posted, DMs sent, deal signals to CAE</span>
       </div>
     </div>
 
-    <h3 style="margin-top:34px;">Top 3 KPIs</h3>
-    <div class="chips">
-      <span class="chip chip-pink">100% Class A comment replies within 24h</span>
-      <span class="chip chip-teal">100% Class A and B DMs answered within 48h</span>
-      <span class="chip chip-green">2+ CAE leads sourced per month</span>
-    </div>
-  </section>
-
-  <section id="rule">
-    <div class="sec-label">Non-Negotiable</div>
-    <h2>The hard separation</h2>
-    <div class="hard-rule">
-      <div class="hr-label">Roles</div>
-      <div class="hr-title">Joni writes. Grace posts. Neither crosses the line.</div>
-      <p><span class="hr-emph">Joni</span> drafts every reply, every DM, every warm connection message. Every word in Pepe's voice. Every draft read against the voice guide before it lands in the queue.</p>
-      <p><span class="hr-emph">Grace</span> posts what Joni has written. LinkedIn, X, Instagram, DMs. Grace does not edit copy. Grace does not soften tone. Grace does not shorten for character limits without Joni's rewrite.</p>
-      <p>Joni never posts. Grace never writes. This is how the voice stays intact and how the audit trail stays clean.</p>
-    </div>
-  </section>
-
-  <section id="comments">
-    <div class="sec-label">Classification</div>
-    <h2>Comment classes</h2>
-    <p>Joni classifies every comment on Pepe's posts within the daily scan. Reply action follows the class.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th style="width:14%;">Class</th><th style="width:40%;">Definition</th><th>Action</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong class="class-a">A. Substantive</strong></td>
-            <td>Adds perspective, asks a real question, shares relevant experience.</td>
-            <td>Reply required. Joni drafts within 24h. <span class="gate gate-sc">Soundcheck</span></td>
-          </tr>
-          <tr>
-            <td><strong class="class-b">B. Appreciation</strong></td>
-            <td>"Great post", generic agreement, positive emoji.</td>
-            <td>Short warm reply, 1 sentence max. Optional if volume is high. <span class="gate gate-sc">Soundcheck</span></td>
-          </tr>
-          <tr>
-            <td><strong class="class-c">C. Deal signal</strong></td>
-            <td>Asks about working together, mentions a deal, "can we talk?"</td>
-            <td>Joni drafts warm reply, no pitch. Routes contact to CAE queue as state=warm, source=sm-engagement. <span class="gate gate-sc">Soundcheck</span></td>
-          </tr>
-          <tr>
-            <td><strong class="class-d">D. Noise</strong></td>
-            <td>Spam, bots, off-topic promotion.</td>
-            <td>No reply. Log the classification. Ignore.</td>
-          </tr>
-          <tr>
-            <td><strong class="class-e">E. Hostile</strong></td>
-            <td>Critical, challenging, bad-faith.</td>
-            <td>Joni drafts 3 options for Pepe (measured, redirect, no-reply). Never auto-post. <span class="gate gate-show">Showtime</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section id="dms">
-    <div class="sec-label">Classification</div>
-    <h2>DM classes</h2>
-    <p>DMs follow a separate rubric. Business inquiries and sensitive threads route differently.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th style="width:18%;">Class</th><th style="width:40%;">Definition</th><th>Action</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong class="class-a">A. Business inquiry</strong></td>
-            <td>Deal, advisory ask, scope conversation, work-together request.</td>
-            <td>Joni drafts reply. Routes to CAE. <span class="gate gate-sc">Soundcheck</span></td>
-          </tr>
-          <tr>
-            <td><strong class="class-b">B. Genuine connection</strong></td>
-            <td>Intro request, feedback, opinion, personal check-in.</td>
-            <td>Joni drafts reply. CAE only if business interest confirmed later. <span class="gate gate-sc">Soundcheck</span></td>
-          </tr>
-          <tr>
-            <td><strong class="class-c">C. Newsletter reply</strong></td>
-            <td>Response to an Outlaw Chronicles issue or a specific post.</td>
-            <td>Joni drafts personal reply. References what they responded to. <span class="gate gate-sc">Soundcheck</span></td>
-          </tr>
-          <tr>
-            <td><strong class="class-d">D. Spam</strong></td>
-            <td>Cold pitch, irrelevant outreach, service-selling.</td>
-            <td>No reply. Log and drop.</td>
-          </tr>
-          <tr>
-            <td><strong class="class-e">E. Sensitive</strong></td>
-            <td>Requires Pepe's personal judgment, emotional depth, or a real ask.</td>
-            <td>Joni writes a context summary and 2 draft options. Presents on Telegram. <span class="gate gate-show">Showtime</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section id="phases">
-    <div class="sec-label">Operating Rhythm</div>
-    <h2>Four phases</h2>
-    <p>Phase 0 fires every morning at 07:30 CET and on every post-publish event from the SM Content Engine. Phases 1 through 3 execute inside the same daily window.</p>
-
-    <details open>
-      <summary><span class="phase-num">Phase 0</span> Daily engagement scan</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">07:30 CET cron + post-publish event</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-joni">Joni</span> classification. <span class="al al-grace">Grace</span> scrape.</div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">All items classified. Reply queue built. Deal signals flagged to CAE.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
+    <div class="scope-grid">
+      <div class="scope-block owns">
+        <div class="scope-title">What this engine owns</div>
         <ul>
-          <li>Grace scrapes LinkedIn comments and DMs on all posts with activity in the last 24h.</li>
-          <li>Grace pulls X mentions and DMs via API.</li>
-          <li>Grace pulls Instagram comments and DMs via Graph API.</li>
-          <li>Joni classifies every item against the comment and DM rubrics. Writes queue to <code>brain/areas/mexzungu/social-content/engagement-queue/YYYY-MM-DD.md</code>.</li>
-          <li>Joni flags Class C deal signals immediately to the CAE queue. Does not batch.</li>
-          <li>Grace logs total items by class, by platform, deal signals flagged.</li>
+          <li>Comment monitoring across all platforms</li>
+          <li>Reply drafting in Pepe's voice</li>
+          <li>DM management and response drafting</li>
+          <li>Deal signal classification and routing to CAE</li>
+          <li>Connection outreach drafting (Showtime to send)</li>
         </ul>
       </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 1</span> Reply drafting (Joni)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Classification queue from Phase 0</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-joni">Joni</span></div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">All Class A, B, C replies drafted. Queued for Grace to post.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
+      <div class="scope-block not-owns">
+        <div class="scope-title">What this engine does not own</div>
         <ul>
-          <li>Joni reads the original post before drafting any reply. Context first, always.</li>
-          <li>Class A replies. Substantive, in Pepe's voice, adds to the conversation. Max 2 to 3 sentences on LinkedIn. Max 1 sentence on X. Match thread energy.</li>
-          <li>Class B replies. Warm, brief. "Glad it landed." "Exactly." 1 sentence, not generic.</li>
-          <li>Class C replies. Acknowledge, invite conversation, no pitch, no pricing. Move to DM or call. Simultaneously routes contact to CAE.</li>
-          <li>DM responses for Class A and B. Warm, specific, references what they said. Never template.</li>
-          <li>Class E hostile. Joni writes 3 options (measured, redirect, no-reply). Surfaces to Pepe. Never auto-post. <span class="gate gate-show">Showtime</span></li>
-          <li>Queue all drafts for Grace. One file per post or DM thread with draft text, platform, target URL.</li>
+          <li>Creating new feed content (SM Content Engine)</li>
+          <li>Lead qualification after signal (CAE)</li>
+          <li>Proposal creation (Proposal Engine)</li>
+          <li>Publishing original posts of any kind</li>
         </ul>
       </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 2</span> Posting (Grace)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Reply queue from Joni</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-grace">Grace</span></div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">All replies posted. Engagement log updated.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>Post LinkedIn comments via <code>linkedin_playwright.py</code>. Log post URL, comment text, timestamp.</li>
-          <li>Send LinkedIn DMs via the same Playwright surface. Log sender, message, timestamp.</li>
-          <li>Post X replies via X API. Log tweet ID, reply, timestamp.</li>
-          <li>Post Instagram comments via Graph API. Log media ID, comment, timestamp.</li>
-          <li>Append engagement log at <code>brain/areas/mexzungu/social-content/engagement-log.md</code>. Class, platform, whether deal signal routed.</li>
-        </ul>
-      </div>
-    </details>
-
-    <details>
-      <summary><span class="phase-num">Phase 3</span> Connection outreach (Showtime)</summary>
-      <div class="phase-body">
-        <div class="phase-meta">
-          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Pepe request, or Class C warm 7+ days without CAE outbound</div></div>
-          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-joni">Joni</span> draft. <span class="al al-pepe">Pepe</span> Fire Away.</div></div>
-          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Connection message sent. Lead state updated in CAE.</div></div>
-        </div>
-        <h4>Sub-tasks</h4>
-        <ul>
-          <li>Joni drafts a connection note. Warm, specific, 1 to 2 sentences. References what they engaged with. One clear ask or observation. No pitch in the first message.</li>
-          <li>Present to Pepe via Telegram alerts thread. Draft, target name, platform, context. "Fire Away to send."</li>
-          <li>On <span class="gate gate-fa">Fire Away</span>, Grace sends via <code>linkedin_playwright.py</code>, X DM, or IG DM. Logs delivery. Updates CAE to <code>state=warm, source=sm-engagement</code>.</li>
-        </ul>
-      </div>
-    </details>
-  </section>
-
-  <section id="gates">
-    <div class="sec-label">Authority</div>
-    <h2>Gate register</h2>
-    <p>Everything else runs autonomously. Only four decisions gate the engine.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th>Decision</th><th>Phase</th><th>Gate</th><th>Who unblocks</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Connection outreach, first contact</td><td>3.2</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe. Fire Away required.</td></tr>
-          <tr><td>Hostile or negative reply post</td><td>1.6</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe explicit decision.</td></tr>
-          <tr><td>Deal signal routed to CAE</td><td>0.6 and 1.4</td><td><span class="gate gate-sc">Soundcheck</span></td><td>Joni routes autonomously.</td></tr>
-          <tr><td>Standard reply posting</td><td>2.1 through 2.4</td><td><span class="gate gate-sc">Soundcheck</span></td><td>Grace posts autonomously.</td></tr>
-        </tbody>
-      </table>
     </div>
-  </section>
+  </div>
 
-  <section id="interfaces">
-    <div class="sec-label">Where This Engine Sits</div>
-    <h2>Cross-engine interfaces</h2>
-    <p>SM Engagement receives from SM Content, feeds Connection Acquisition. Nothing else.</p>
+  <!-- KPIs -->
+  <div class="section">
+    <h2 class="section-title">KPIs</h2>
+    <div class="kpi-list">
+      <div class="kpi-item">
+        <div class="kpi-num">KPI A</div>
+        <div class="kpi-body">
+          <div class="kpi-text">Comment reply rate on LinkedIn: 100% of substantive comments within 24h.</div>
+          <div class="kpi-owner">Owner: <span>Joni</span></div>
+        </div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">KPI B</div>
+        <div class="kpi-body">
+          <div class="kpi-text">DM response rate: 100% of non-spam DMs within 48h.</div>
+          <div class="kpi-owner">Owner: <span>Joni</span></div>
+        </div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-num">KPI C</div>
+        <div class="kpi-body">
+          <div class="kpi-text">CAE leads sourced from SM Engagement per month: 2 or more.</div>
+          <div class="kpi-owner">Owner: <span>Annie</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div class="flow-strip">
+  <!-- MICRO-ENGINE MAP -->
+  <div class="section">
+    <h2 class="section-title">Micro-Engine Map</h2>
+    <div class="me-grid">
+      <div class="me-card">
+        <div class="me-name">Comment Monitoring</div>
+        <div class="me-owner">Joni</div>
+        <div class="me-purpose">Scans all platforms for new comments. Classifies by type using A-E rubric.</div>
+        <div class="me-feeds">Reply Drafting</div>
+      </div>
+      <div class="me-card">
+        <div class="me-name">Reply Drafting</div>
+        <div class="me-owner">Joni</div>
+        <div class="me-purpose">Writes replies in Pepe's voice for all substantive comments. No templates.</div>
+        <div class="me-feeds">Posting (Grace)</div>
+      </div>
+      <div class="me-card">
+        <div class="me-name">DM Management</div>
+        <div class="me-owner">Joni</div>
+        <div class="me-purpose">Reads and drafts responses to all DMs across platforms. Personal, specific, never templated.</div>
+        <div class="me-feeds">Posting (Grace) + Signal Routing</div>
+      </div>
+      <div class="me-card">
+        <div class="me-name">Connection Outreach</div>
+        <div class="me-owner">Joni</div>
+        <div class="me-purpose">Drafts warm connection requests triggered by engagement signals. Pepe must Fire Away before any send.</div>
+        <div class="me-feeds">Posting (Grace) after Showtime</div>
+      </div>
+      <div class="me-card">
+        <div class="me-name">Signal Routing</div>
+        <div class="me-owner">Joni</div>
+        <div class="me-purpose">Identifies deal-level signals. Routes to CAE immediately. Does not wait for daily batch.</div>
+        <div class="me-feeds">CAE Phase 0</div>
+      </div>
+      <div class="me-card">
+        <div class="me-name">Posting</div>
+        <div class="me-owner">Grace</div>
+        <div class="me-purpose">Posts all replies and DMs. Never writes. Only posts what Joni drafts. Maintains engagement log.</div>
+        <div class="me-feeds">Engagement log</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW DIAGRAM -->
+  <div class="section">
+    <h2 class="section-title">Engine Flow</h2>
+    <div class="flow-wrap">
+      <div class="flow-node trigger">
+        <div class="fn-label">Trigger</div>
+        <div class="fn-body">Post-publish event or daily scan 07:30 CET</div>
+        <div class="fn-owner">SM Content Engine + cron</div>
+      </div>
+      <div class="flow-arrow">&#8250;</div>
       <div class="flow-node">
-        <div class="fn-label">Upstream</div>
-        <div class="fn-name">SM Content</div>
-        <div class="fn-note">Published post event triggers Phase 0 scan.</div>
+        <div class="fn-label">Phase 0</div>
+        <div class="fn-body">Run Engagement Scan</div>
+        <div class="fn-owner">Joni + Grace</div>
+        <div class="fn-sla">SLA: 2h</div>
       </div>
-      <div class="flow-arrow">&#8594;</div>
-      <div class="flow-node center">
-        <div class="fn-label">This engine</div>
-        <div class="fn-name">SM Engagement</div>
-        <div class="fn-note">Reply, DM, warm connection.</div>
-      </div>
-      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-arrow">&#8250;</div>
       <div class="flow-node">
-        <div class="fn-label">Downstream</div>
-        <div class="fn-name">Connection Acquisition</div>
-        <div class="fn-note">Deal signal, state=warm, source=sm-engagement.</div>
+        <div class="fn-label">Phase 1</div>
+        <div class="fn-body">Draft Replies</div>
+        <div class="fn-owner">Joni</div>
+        <div class="fn-sla">SLA: 24h</div>
+      </div>
+      <div class="flow-arrow">&#8250;</div>
+      <div class="flow-gate-wrap">
+        <div class="flow-gate">
+          <div class="flow-gate-inner">Class E hostile?</div>
+        </div>
+        <div class="flow-gate-label">Gate</div>
+      </div>
+      <div class="flow-arrow">&#8250;</div>
+      <div class="flow-node">
+        <div class="fn-label">Phase 2</div>
+        <div class="fn-body">Post Replies</div>
+        <div class="fn-owner">Grace</div>
+        <div class="fn-sla">SLA: 1h</div>
+      </div>
+      <div class="flow-arrow">&#8250;</div>
+      <div class="flow-node output">
+        <div class="fn-label">Output</div>
+        <div class="fn-body">Replies posted + deal signals to CAE</div>
       </div>
     </div>
+    <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+      If Class E detected: surfaces to Pepe via Telegram. Showtime required before any post.
+      Phase 3 (Connection Outreach) triggered separately by Pepe or by a Class C signal warm for 7+ days with no CAE outbound.
+    </div>
+  </div>
 
-    <div class="tbl-wrap" style="margin-top:22px;">
-      <table>
+  <!-- RACI -->
+  <div class="section">
+    <h2 class="section-title">RACI Matrix</h2>
+    <div class="raci-wrap">
+      <table class="raci-table">
         <thead>
-          <tr><th>Engine</th><th>Direction</th><th>We send</th><th>We receive</th></tr>
+          <tr>
+            <th>Phase</th>
+            <th>Freddie</th>
+            <th>Joni</th>
+            <th>Grace</th>
+            <th>Nick</th>
+            <th>Annie</th>
+            <th>Janis</th>
+            <th>Pepe</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>SM Content Engine</td><td>Upstream</td><td>Nothing</td><td>Published post notification. Triggers Phase 0.</td></tr>
-          <tr><td>Connection Acquisition Engine</td><td>Downstream</td><td>Deal signals with state=warm, source=sm-engagement</td><td>Nothing</td></tr>
-          <tr><td>Proposal Engine</td><td>None</td><td>Nothing</td><td>Nothing</td></tr>
-          <tr><td>Delivery Engines</td><td>None</td><td>Nothing</td><td>Nothing</td></tr>
+          <tr>
+            <td>Engagement Scan</td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">I</span></td>
+          </tr>
+          <tr>
+            <td>Classify Signals</td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+          </tr>
+          <tr>
+            <td>Draft Replies</td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+          </tr>
+          <tr>
+            <td>Post Replies</td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+          </tr>
+          <tr>
+            <td>DM Management</td>
+            <td><span class="raci-a">A</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+          </tr>
+          <tr>
+            <td>Signal Route</td>
+            <td><span class="raci-i">I</span></td>
+            <td><span class="raci-r">R</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-c">C</span></td>
+            <td><span class="raci-i">·</span></td>
+            <td><span class="raci-i" style="color:var(--pink);font-weight:700;font-size:11px">ST</span></td>
+          </tr>
         </tbody>
       </table>
     </div>
-  </section>
+    <p class="raci-caption"><span class="raci-r">R</span> = Responsible &nbsp; <span class="raci-a">A</span> = Accountable &nbsp; <span class="raci-c">C</span> = Consulted &nbsp; <span class="raci-i">I</span> = Informed &nbsp; <span style="color:var(--pink);font-weight:700">ST</span> = Showtime required</p>
+  </div>
+
+  <!-- PHASES -->
+  <div class="section">
+    <h2 class="section-title">Phases</h2>
+
+    <!-- PHASE 0 -->
+    <div class="phase-card">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 0</div>
+        <div class="phase-main">
+          <div class="phase-title">Run Engagement Scan</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">2h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Joni (classification), Grace (tool execution)</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">07:30 CET cron + post-publish event</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9662;</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:13px;color:#aaa;margin:16px 0 8px">Exit criteria: all new comments and DMs classified, reply drafts queued, deal signals flagged to CAE.</p>
+        <div class="pb-section-title">Sub-tasks</div>
+        <div style="overflow-x:auto">
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Level</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0.1</td>
+              <td>Scrape LinkedIn comments: all posts with activity in last 24h. Collect commenter name, comment text, timestamp, post URL.</td>
+              <td>Grace</td>
+              <td>linkedin_playwright.py</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>If Playwright session expired: reinitialize. If rate-limited: retry at 09:00 CET.</td>
+            </tr>
+            <tr>
+              <td>0.2</td>
+              <td>Scrape LinkedIn DMs: new unread messages. Collect sender, message, thread.</td>
+              <td>Grace</td>
+              <td>linkedin_playwright.py</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>0.3</td>
+              <td>Check X notifications: mentions and DMs.</td>
+              <td>Grace</td>
+              <td>X API</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>0.4</td>
+              <td>Check Instagram: comments and DMs.</td>
+              <td>Grace</td>
+              <td>IG Graph API</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>0.5</td>
+              <td>Joni classifies each item using comment and DM rubrics (A/B/C/D/E). Writes classification queue to brain.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/engagement-queue/YYYY-MM-DD.md</td>
+            </tr>
+            <tr>
+              <td>0.6</td>
+              <td>Joni flags Class C deal signals immediately to CAE queue. Does not wait for daily batch.</td>
+              <td>Joni</td>
+              <td>write_brain + update_lead</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Route: brain/areas/mexzungu/bd/pipeline.json. state=warm, source=sm-engagement.</td>
+            </tr>
+            <tr>
+              <td>0.7</td>
+              <td>Log engagement scan summary: total items, by class, by platform, deal signals flagged.</td>
+              <td>Grace</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          LinkedIn Playwright session expired before scan completes. Unblock: Grace reinitializes session. Bowie alert if reinitialize fails. Partial scan is better than no scan.
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase-card has-showtime">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-main">
+          <div class="phase-title">Draft Replies</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">24h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Joni</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Classification queue from Phase 0</span></div>
+            <div class="phase-meta-item"><span class="lbl">Showtime:</span><span class="val" style="color:var(--pink)">Class E replies only</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9662;</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:13px;color:#aaa;margin:16px 0 8px">Exit criteria: all Class A, B, C replies drafted and queued for Grace to post.</p>
+        <div class="pb-section-title">Sub-tasks</div>
+        <div style="overflow-x:auto">
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Level</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.1</td>
+              <td>Read the original post before drafting any reply. Context first. Never draft without reading what Pepe published.</td>
+              <td>Joni</td>
+              <td>read_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td>Draft Class A replies: substantive, in Pepe's voice. Adds to the conversation, does not just thank. Max 2-3 sentences LinkedIn, max 1 sentence X. Match thread energy.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Voice rules: tone-profile.md + voice-guide.md. No em dashes. No corporate.</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td>Draft Class B replies: warm, brief. One sentence max. Not generic. Optional if post has 20+ Class B comments.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td>Draft Class C replies: acknowledge, invite conversation. No pitch. No pricing. Move to DM or call. Simultaneously route contact to CAE.</td>
+              <td>Joni</td>
+              <td>write_brain + update_lead</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Example: "Thanks for this. Would love to hear more about what you are building. DM?"</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td>Draft DM responses: Class A and B. Warm, specific, personal. References what they said. Never template.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>1.6</td>
+              <td>Class E (negative/hostile): Joni writes 3 options (measured, redirect, no-reply). Surfaces to Pepe via Telegram.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="st-badge">Showtime</span></td>
+              <td>Never auto-post a hostile reply under any circumstances.</td>
+            </tr>
+            <tr>
+              <td>1.7</td>
+              <td>Queue all drafts for Grace: one file per post/DM thread with draft text, platform, target URL or thread ID.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/reply-queue/YYYY-MM-DD-[slug].md</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          DM backlog exceeds 48h SLA. Unblock: Lars flags to Freddie. Joni runs priority batch (Class A and C first, Class B deferred).
+        </div>
+        <div class="gate-box">
+          <strong>Showtime gate: 1.6</strong>
+          Class E hostile reply detected. Question: auto-post or surface to Pepe? Answer: always surface to Pepe. Never auto-post a hostile reply. Joni drafts 3 options. "Very well" on chosen option unlocks Grace to post.
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-card">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-main">
+          <div class="phase-title">Post Replies</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">1h</span></div>
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Grace</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Reply queue from Joni</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9662;</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:13px;color:#aaa;margin:16px 0 8px">Exit criteria: all replies posted, engagement log updated.</p>
+        <div class="pb-section-title">Sub-tasks</div>
+        <div style="overflow-x:auto">
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Level</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2.1</td>
+              <td>Post LinkedIn comments via linkedin_playwright.py. Log: post URL, comment text, timestamp.</td>
+              <td>Grace</td>
+              <td>linkedin_playwright.py</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>If post no longer accessible: log error, skip.</td>
+            </tr>
+            <tr>
+              <td>2.2</td>
+              <td>Send LinkedIn DMs via linkedin_playwright.py. Log: sender, message, timestamp.</td>
+              <td>Grace</td>
+              <td>linkedin_playwright.py</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2.3</td>
+              <td>Post X replies via X API. Log: tweet ID, reply text, timestamp.</td>
+              <td>Grace</td>
+              <td>X API</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2.4</td>
+              <td>Post Instagram comments via IG Graph API. Log: media ID, comment text, timestamp.</td>
+              <td>Grace</td>
+              <td>IG Graph API</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2.5</td>
+              <td>Update engagement log: date, platform, item type, class, reply posted (Y/N), deal signal routed (Y/N).</td>
+              <td>Grace</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Path: brain/areas/mexzungu/social-content/engagement-log.md</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="stuck-box">
+          <strong>Stuck condition</strong>
+          Class E reply somehow queued for Grace. Unblock: Grace blocks immediately. Flags to Freddie. Never posts Class E without Showtime clearance. Full stop.
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-card has-showtime">
+      <div class="phase-hd" aria-expanded="false" onclick="togglePhase(this)">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-main">
+          <div class="phase-title">Send Connection Outreach</div>
+          <div class="phase-meta">
+            <div class="phase-meta-item"><span class="lbl">SLA:</span><span class="val">2h from Fire Away</span></div>
+            <div class="phase-meta-item"><span class="lbl">Owner:</span><span class="val">Joni (draft), Pepe (Showtime), Grace (execute)</span></div>
+            <div class="phase-meta-item"><span class="lbl">Trigger:</span><span class="val">Pepe request, or Class C warm 7+ days with no CAE outbound</span></div>
+            <div class="phase-meta-item"><span class="lbl">Showtime:</span><span class="val" style="color:var(--pink)">All sends require Fire Away</span></div>
+          </div>
+        </div>
+        <div class="phase-chevron">&#9662;</div>
+      </div>
+      <div class="phase-body">
+        <p style="font-size:13px;color:#aaa;margin:16px 0 8px">Exit criteria: connection message sent, lead state updated in CAE.</p>
+        <div class="pb-section-title">Sub-tasks</div>
+        <div style="overflow-x:auto">
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Task</th>
+              <th>Owner</th>
+              <th>Tool</th>
+              <th>Level</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3.1</td>
+              <td>Joni drafts connection note: warm, specific, 1-2 sentences. References what they engaged with. One clear ask or observation. No pitch in first message.</td>
+              <td>Joni</td>
+              <td>write_brain</td>
+              <td><span class="sc-badge">SC</span></td>
+              <td>Voice rules identical to CAE Phase 2. No corporate. No generic opener.</td>
+            </tr>
+            <tr>
+              <td>3.2</td>
+              <td>Present to Pepe: Telegram with draft, target name, platform, context. "Fire Away to send."</td>
+              <td>Janis</td>
+              <td>Telegram</td>
+              <td><span class="st-badge">Showtime</span></td>
+              <td>Fire Away is the only trigger. Connection outreach = first contact = Showtime. No other phrase activates this.</td>
+            </tr>
+            <tr>
+              <td>3.3</td>
+              <td>On Fire Away: Grace sends via linkedin_playwright.py or X DM or IG DM as appropriate. Log delivery. Update CAE: state=warm, source=sm-engagement.</td>
+              <td>Grace</td>
+              <td>linkedin_playwright.py / X API / IG Graph API</td>
+              <td><span class="st-badge">Showtime</span></td>
+              <td>Fire Away required. Do not send on any other signal.</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="gate-box">
+          <strong>Showtime gate: 3.2</strong>
+          Connection outreach is first contact. Question: has Pepe said "Fire Away"? YES: Grace sends. NO: wait. No other phrase activates this gate. Not "yes," not "looks good," not "send it."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOWTIME INDEX -->
+  <div class="st-index">
+    <div class="st-index-title">Showtime Gate Index</div>
+    <div class="st-row st-row-hd">
+      <div class="st-phase">Phase</div>
+      <div class="st-what">What triggers it</div>
+      <div class="st-unlock">What unlocks it</div>
+    </div>
+    <div class="st-row">
+      <div class="st-phase">1.6</div>
+      <div class="st-what">Hostile or negative (Class E) reply received. Joni surfaces 3 options to Pepe via Telegram.</div>
+      <div class="st-unlock">"Very well" on chosen option unlocks Grace to post. No other phrase.</div>
+    </div>
+    <div class="st-row">
+      <div class="st-phase">3.2</div>
+      <div class="st-what">Connection outreach to a new contact triggered by engagement signal or Pepe request.</div>
+      <div class="st-unlock">"Fire Away" is the only unlock. No other phrase activates this gate.</div>
+    </div>
+  </div>
+
+  <!-- CROSS-ENGINE HANDOFFS -->
+  <div class="section" style="margin-top:48px">
+    <h2 class="section-title">Cross-Engine Handoffs</h2>
+    <div class="handoff-grid">
+      <div class="handoff-block inputs">
+        <div class="handoff-title">Inputs to this engine</div>
+        <div class="handoff-item">
+          <strong>From SM Content Engine (Grace)</strong>
+          Post published notification. Payload: post URL, platform, published_at. Triggers Phase 0 scan immediately.
+        </div>
+      </div>
+      <div class="handoff-block outputs">
+        <div class="handoff-title">Outputs from this engine</div>
+        <div class="handoff-item">
+          <strong>To Connection Acquisition Engine</strong>
+          Deal-level engagement signal (Class C or above). Data: contact name, profile URL if known, signal class, post context. State set to warm, source=sm-engagement. Joni routes immediately without waiting for daily batch.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXCEPTION INDEX -->
+  <div class="section">
+    <h2 class="section-title">Exception Index</h2>
+    <div style="overflow-x:auto">
+    <table class="exc-table">
+      <thead>
+        <tr>
+          <th>Where</th>
+          <th>Condition</th>
+          <th>Response</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Phase 0 / 0.1</td>
+          <td>Playwright rate-limited by LinkedIn</td>
+          <td>Skip LinkedIn for current run</td>
+          <td>Retry at 09:00 CET. Log limitation in scan summary.</td>
+        </tr>
+        <tr>
+          <td>Phase 1 / 1.2</td>
+          <td>Reply sounds like a LinkedIn post, not like Pepe. Voice check fail.</td>
+          <td>Rewrite before queuing</td>
+          <td>Apply tone-profile.md. Never pass a corporate-sounding reply to Grace.</td>
+        </tr>
+        <tr>
+          <td>Phase 1 / 1.6</td>
+          <td>Class E reply auto-posted without Showtime clearance</td>
+          <td>Critical failure. Flag immediately.</td>
+          <td>Freddie flags to Pepe. Never delete without Pepe. Assess damage with Anselmo.</td>
+        </tr>
+        <tr>
+          <td>Phase 2 / 2.1</td>
+          <td>Post deleted by user before Grace can reply</td>
+          <td>Skip</td>
+          <td>Log as inaccessible. No action needed.</td>
+        </tr>
+        <tr>
+          <td>Phase 3 / 3.3</td>
+          <td>Wrong platform DM sent (e.g. LinkedIn instead of X)</td>
+          <td>Cannot undo</td>
+          <td>Flag to Pepe. Note in pipeline log. Damage assessment with Anselmo.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
 
 </div>
 
-<div class="foot-nav">
-  <a href="/engines/connection/" class="primary">Back to Connection</a>
-  <a href="/engines/connection/connection-acquisition/">Connection Acquisition Engine &rarr;</a>
-</div>
+<!-- FOOTER -->
+<footer>
+  Mexzungu Group | Engine documentation is a live operational document. Last updated 2026-08-12.
+</footer>
+
+<script>
+function togglePhase(el) {
+  var expanded = el.getAttribute('aria-expanded') === 'true';
+  el.setAttribute('aria-expanded', !expanded);
+  var body = el.nextElementSibling;
+  if (body && body.classList.contains('phase-body')) {
+    if (expanded) {
+      body.classList.remove('open');
+    } else {
+      body.classList.add('open');
+    }
+  }
+}
+</script>
 
 </body>
 </html>
