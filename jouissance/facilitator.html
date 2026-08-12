@@ -1511,17 +1511,19 @@ const SESSION_PHASES = [
     name: 'Pre-Session Setup',
     start_time: '6:00pm',
     duration_min: 60,
-    notes: `<p><strong>Music setup:</strong> Spotify playlist: <a href="https://open.spotify.com/playlist/1gdco5a3KXJhocUkV0fad6" target="_blank" style="color:var(--accent)">https://open.spotify.com/playlist/1gdco5a3KXJhocUkV0fad6</a>. Start Arrival ambient at 6:30pm. <strong>DO NOT SHUFFLE.</strong></p>
+    notes: `<p><strong>Spotify playlist:</strong> <a href='https://open.spotify.com/playlist/1gdco5a3KXJhocUkV0fad6' target='_blank'>Open playlist</a>. Start Arrival ambient tracks at 6:30pm. DO NOT SHUFFLE.</p>
 <p><strong>Space:</strong></p><ul>
 <li>Furniture pushed to edges or removed</li>
 <li>4 yoga mats in a loose organic cluster near the centre</li>
 <li>Cushions at every mat and along walls</li>
-<li>Candles as the only light source: 15-20 minimum, varied heights. Surfaces only, NOT floor. Check nothing flammable within 30cm of a flame.</li>
-<li>Props tray near wall: oils, blindfolds, rope coiled (visible but not prominent)</li>
+<li>Candles as only light source: 15-20, varied heights. Surfaces only, NOT floor. Nothing flammable within 30cm.</li>
+<li>Props tray: oils, blindfolds, rope coiled, feathers, ice bowl, wax candle, small bowl of chocolate + frozen fruit</li>
+<li>Agathe's provocative picture (burlesque dancer) hung on wall, visible from sharing circle</li>
 <li>Temperature: 23-24 celsius</li>
-<li>Diffuser running from 6:30pm. One scent only: sandalwood, palo santo, or rose. Ambient by 7pm, not sharp.</li>
+<li>Diffuser from 6:30pm (sandalwood, palo santo, or rose)</li>
+<li><strong>Water and glasses IN THE ROOM at all times</strong>, not just at the end</li>
 </ul>
-<p><strong>Pepe and Agathe:</strong> Already changed and settled before anyone arrives. Host energy is set before the door opens. Calm, unhurried, present.</p>`,
+<p><strong>Pepe and Agathe:</strong> Already changed and settled before anyone arrives. Host energy set before door opens.</p>`,
     watch_for: [],
     music: 'No music yet. Start arrival ambient playlist at 6:30pm.',
     script: null
@@ -1532,14 +1534,14 @@ const SESSION_PHASES = [
     name: 'Arrival',
     start_time: '6:30pm',
     duration_min: 30,
-    notes: `<p>Greet them at the door like Pepe at a dinner party. Warm, easy, no ceremony. The session does not begin at the entrance.</p>
-<p>Water on the table. Wine available if Marie wants it, not offered proactively.</p>
-<p>Let conversation flow. 20-30 minutes of real talk. The informality is structural. They cannot open if they feel they are supposed to be opening.</p>
-<p><strong>Cue to move to mats:</strong> Watch for when the energy in the room settles. A natural quiet will come, usually after 20-25 minutes. That is the cue.`,
+    notes: `<p>Greet at the door like Pepe at a dinner party. Warm, easy, no ceremony.</p>
+<p>Water on table. Wine available if Marie wants it, not offered proactively.</p>
+<p>Let conversation flow. 20-30 minutes of real talk. The informality is structural.</p>
+<p><strong>Cue to move to mats:</strong> Watch for when the energy settles. Natural quiet, usually after 20-25 min. That is the cue.</p>`,
     watch_for: [
-      { signal: 'Natural quiet in room', action: 'Energy has settled. That is the cue to move to the mats.' }
+      { signal: 'Natural quiet in room', action: 'Energy settled. Move to mats.' }
     ],
-    music: 'Ambient, no beat. Jon Hopkins: Immunity / Olafur Arnalds: Near Light / Nils Frahm: Says. Volume low enough to talk over.',
+    music: 'Ambient, no beat. Jon Hopkins: Immunity / Olafur Arnalds: Near Light / Nils Frahm: Says. Low volume.',
     script: null
   },
   {
@@ -1547,41 +1549,40 @@ const SESSION_PHASES = [
     phase_num: '2',
     name: 'Opening Container',
     start_time: '7:00pm',
-    duration_min: 50,
-    notes: `<p><strong>Cleansing ritual:</strong> Before the sharing circle, brief physical reset. Each person stands and shakes hands and arms loose for 30 seconds. Then one conscious exhale together. No explanation needed. Clears the body from the day.</p>
-<p><strong>Transition to mats:</strong> "Come. Let us get comfortable." No announcement. No ceremony. Just movement.</p>
-<p><strong>Sharing circle</strong> (before breathwork; verbal processing needs to clear first). Pepe speaks first. Short, direct, warm.</p>
-<p><em>Opening:</em> "What we are doing tonight is not a class and I am not a teacher. We are here because most of us spend a lot of time almost arriving somewhere in our bodies and then managing it before we get there. Tonight we are not going to manage it. We are going to let it happen."</p>
-<p><strong>Agathe speaks (2-3 min):</strong> From her own experience. What it felt like the first time she stopped performing pleasure and actually received it. <em>Frame as ongoing practice, not a one-off. She still struggles with this sometimes. That is the point.</em></p>
-<p><strong>Prompt 1:</strong> "How are you feeling right now? In your body, not in your head." Go around. Short. No analysis.</p>
-<p><strong>Prompt 2:</strong> "What do you want out of tonight?" Short. No elaboration needed.</p>
-<p><strong>Prompt 3:</strong> "What are your current limits?" Listen without comment. Hold space.</p>
-<p>Hold the silence after each answer. Do not move to the next person immediately. Emotion here is correct. Do not fix it. Agathe places a hand on their back. Pepe stays present and still.</p>
-<p><strong>Safety signals (60 seconds, warm not clinical):</strong> Arms crossed = stop touch right now, no explanation needed. YELLOW = slow down or change direction. PURPLE = leaving your body, need grounding. RED = stop completely. Deliver simply. Move on.</p>
-<p><strong>Pre-negotiations (one-on-one, after safety signals, before breathwork):</strong></p>
+    duration_min: 30,
+    notes: `<p><strong>7:00-7:05 Agathe cleansing ritual:</strong> Each person enters ONE BY ONE at the threshold. Sage or palo santo. Both hands at sides, one breath, cross into the room. No explanation needed.</p>
+<p><strong>7:05-7:25 Sharing circle (20 min):</strong></p>
+<p>Pepe speaks first (2-3 min). Short, direct, warm. Then Agathe speaks (2-3 min) from her own experience.</p>
+<p><strong>Safety signals FIRST (60 sec):</strong> Arms crossed = stop touch immediately. Yellow = slow down or change direction. Red = stop completely. The word or gesture is enough.</p>
+<p><strong>Overall rules of the space:</strong></p>
 <ul>
-<li><strong>Agatha scarf:</strong> Agathe confirms verbally with Agatha. "Are you comfortable with the scarf?" Wait for an explicit yes before it enters the session.</li>
-<li><strong>Agathe verbal confirm:</strong> Agathe makes direct verbal contact with each participant before any touch escalation. No assumed consent from group energy.</li>
-<li><strong>Marie tap system:</strong> Remind Marie. Tap hand = more, closed fist = stop. Ask her to demonstrate once so it is in the body, not just the head.</li>
-</ul>`,
+<li>This is a non-bonding experience</li>
+<li>What happens here stays here. What happens to other people, you do not discuss outside.</li>
+<li>We will not move past any boundary without checking in</li>
+<li>You can use a safeword or gesture at any moment</li>
+<li>Nothing is mandatory</li>
+</ul>
+<p><strong>Two body-truth prompts (with Agathe's picture on the wall):</strong> Agathe draws attention to the picture, names it briefly (woman she aspires to be), then two questions. Go around.</p>
+<ol>
+<li>"Have you ever been this wet?"</li>
+<li>"What do you think you need to do to get there?"</li>
+</ol>
+<p>One answer each. Short. No analysis. Hold silence after each. Emotion here is correct. Agathe places a hand on their back. Pepe stays present and still.</p>`,
     watch_for: [
-      { signal: 'Room feels performed', action: 'The sharing prompt breaks it. Hold the silence after each answer.' },
+      { signal: 'Room feels performed', action: 'The body-truth prompts break it. Hold silence after each answer.' },
       { signal: 'Silence after an answer', action: 'Do not fill it. Let it land.' },
-      { signal: 'Emotion or tears', action: 'Do not fix it. Agathe hand on back. Pepe stays present and still.' }
+      { signal: 'Emotion or tears', action: 'Do not fix. Agathe hand on back. Pepe stays present.' }
     ],
     music: 'Sparse: Bonobo (Kiara) / Nicolas Jaar (Space Is Only Noise) / Nils Frahm (All Melody)',
-    script: `<p><em>Transition to mats. No announcement. Just movement:</em></p>
-<blockquote>"Come. Let us get comfortable."</blockquote>
-<p><em>Opening (Pepe speaks first, short and direct):</em></p>
-<blockquote>"What we are doing tonight is not a class and I am not a teacher. These women have done enough classes. We are here because most of us spend a lot of time almost arriving somewhere in our bodies and then managing it before we get there. Tonight we are not going to manage it. We are going to let it happen. That is the only goal. Agathe has been in this space with me a long time. She will tell you what that feels like."</blockquote>
-<p><em>After Agathe speaks. Three sharing prompts, go around for each:</em></p>
-<blockquote>"How are you feeling right now? In your body, not in your head."</blockquote>
-<blockquote>"What do you want out of tonight?"</blockquote>
-<blockquote>"What are your current limits?"</blockquote>
-<p><em>Safety signals. Deliver simply, move on:</em></p>
-<blockquote>"Two things before we begin. Words and a gesture. The gesture: arms crossed in front of your chest, like this, means stop touch, right now, no explanation needed. Anyone who sees it stops immediately. Use it any time.<br><br>The words: Yellow means slow down or change direction, you want to keep going. Purple means you are leaving your body and need to be grounded back. Red means we stop completely, right now.<br><br>You do not need to explain any of them. The word or the gesture is enough. We will watch for both."</blockquote>
-<p><em>Pre-negotiations. One-on-one, quiet, before breathwork:</em></p>
-<p>Agatha: Agathe confirms scarf verbally. Marie: confirm tap system out loud and ask her to demonstrate once.</p>`
+    script: `<p><em>Opening (Pepe, short and direct):</em></p>
+<blockquote>"What we are doing tonight is not a class and I am not a teacher. We are here because most of us spend a lot of time almost arriving somewhere in our bodies and then managing it before we get there. Tonight we are not going to manage it. We are going to let it happen. That is the only goal. Agathe has been in this space with me a long time. She will tell you what that feels like."</blockquote>
+<p><em>Safety signals:</em></p>
+<blockquote>"Two things before we begin. Words and a gesture. The gesture: arms crossed in front of your chest means stop touch, right now, no explanation needed. Anyone who sees it stops immediately. The words: Yellow means slow down or change direction. Red means stop completely, right now. You do not need to explain any of them."</blockquote>
+<p><em>Rules of the space:</em></p>
+<blockquote>"A few things about tonight. This is a non-bonding experience. What happens here stays here. What happens to other people, you do not discuss outside this room. We will not move past any boundary without checking in. You can use a safeword or a gesture at any moment. Nothing is mandatory."</blockquote>
+<p><em>Body-truth prompts (with picture on wall):</em></p>
+<blockquote>"Have you ever been this wet?"</blockquote>
+<blockquote>"What do you think you need to do to get there?"</blockquote>`
   },
   {
     id: 3,
@@ -1589,18 +1590,21 @@ const SESSION_PHASES = [
     name: 'Breathwork',
     start_time: '7:30pm',
     duration_min: 5,
-    notes: `<p>Agathe leads. Pepe holds the space.</p>
-<ol>
-<li><strong>Box breath (2 min):</strong> Inhale 4 counts, hold 2, exhale 6. Eyes closed. Agathe counts softly.</li>
-<li><strong>Circular breath (2 min):</strong> Mouth breathing, continuous, no pause between inhale and exhale. Let the belly move.</li>
-<li><strong>Natural return (1 min):</strong> Return to natural breath. Silence. Feel where you landed.</li>
-</ol>
+    notes: `<p>Agathe leads. Pepe holds space. <strong>No counting. No hold.</strong> Agathe narrates softly, they follow.</p>
+<ul>
+<li>Body scan from feet to head. Slow.</li>
+<li>Feel a heat wave in the mat beneath them. Let the heat rise into the body.</li>
+<li>Golden aura visualization. Light around each person, expanding.</li>
+<li>Breathing through the three main chakras: base (column), heart, head. One breath each, cycled.</li>
+<li>Return to natural breath. Silence.</li>
+</ul>
 <p><strong>No verbal re-entry after breathwork.</strong> Transition to icebreaker with movement only.</p>`,
     watch_for: [
       { signal: 'Tears, shaking, laughter', action: 'Stay with them. Hand on chest or back. "Let it move."' },
-      { signal: 'Hyperventilation', action: 'Agathe: both hands on chest and belly, guide back to slow nasal breath. No announcement to group. Pepe continues holding room.' }
+      { signal: 'Hyperventilation', action: 'Agathe: both hands on chest and belly, guide back to slow nasal breath. No announcement.' }
     ],
-    music: 'Max Richter: On the Nature of Daylight'
+    music: 'Max Richter: On the Nature of Daylight',
+    script: null
   },
   {
     id: 3.5,
@@ -1608,133 +1612,253 @@ const SESSION_PHASES = [
     name: 'Sensual Icebreaker',
     start_time: '7:35pm',
     duration_min: 15,
-    notes: `<p>Agathe facilitates. Pepe participates. No spectators.</p>
-<p><strong>10 slip prompts.</strong> Agathe introduces each one, group tries it:</p>
+    notes: `<p><strong>5 slips only. 1 per person.</strong> All 5 (including Pepe and Agathe) participate. No spectators.</p>
+<p>Pepe explains once: every slip involves another person you find attractive. Always ask permission first. If yes is enthusiastic and clear, proceed. If not, go to someone else without drama.</p>
+<p><strong>The 5 slips:</strong></p>
 <ol>
-<li>Eye contact with someone for 60 seconds. No words.</li>
-<li>Touch your own face slowly for 30 seconds.</li>
-<li>Hands on someone's shoulders. Breathe together for 1 minute.</li>
-<li>Ask someone to put their hand on your heart. Hold. No words.</li>
-<li>Describe out loud where you feel something in your body right now.</li>
-<li>Walk across the room as slowly as possible. Feel the floor.</li>
-<li>Close eyes. Name one sensation. Open them.</li>
-<li>Ask someone: what does your body want right now? Listen without responding.</li>
-<li>Hand on your own belly. Feel it rise and fall three times.</li>
-<li>Sway wherever you are. 30 seconds.</li>
+<li>Make eye contact with someone you find attractive for 60 seconds. No words.</li>
+<li>Touch the face of someone you find attractive as slowly as possible for 60 seconds. Ask permission first.</li>
+<li>Stand behind someone you find attractive. Both hands on their shoulders. Breathe together for 60 seconds. No words.</li>
+<li>Ask someone you find attractive to put their hand on your heart. Hold for 60 seconds. No words.</li>
+<li>Go behind someone you find attractive. Put your nose in their neck and smell it for 60 seconds. No words.</li>
 </ol>
-<p><strong>Transition:</strong> Agathe gestures to mats. No announcement. No words. No verbal re-entry from this point until surrender invitation.</p>`,
+<p><strong>Transition:</strong> Agathe gestures to mats. No words. Blindfolds on. No verbal re-entry until Surrender Invitation.</p>`,
     watch_for: [
-      { signal: 'Someone freezes on a slip', action: 'Agathe: this is play, swap for another.' }
+      { signal: 'Someone declines a permission', action: 'No drama. The initiator moves to another person.' },
+      { signal: 'Someone freezes on their slip', action: 'Agathe: this is play. Gentle nudge or swap.' }
     ],
-    music: 'Continue breathwork ambient. Phase A music starts on transition to mats.',
+    music: 'Continue breathwork ambient (Hammock: Longest Year). Dissolution music starts on transition to mats.',
     script: null
   },
   {
     id: 4,
-    phase_num: 'A',
-    name: 'Phase A - Blindfold and Observation',
+    phase_num: 'A1',
+    name: 'Approach 1 - Proximity + Sound',
     start_time: '7:50pm',
-    duration_min: 20,
-    notes: `<p>Everyone puts on blindfolds. Seated or lying down.</p>
-<p><strong>Approach 1 (proximity only, 4-5 min):</strong> Pepe and Agathe move slowly through the room. No contact. Proximity only. Breath across skin without touching. Room will get very quiet.</p>
-<p><strong>Pepe narrates softly while moving:</strong><br>"Your shoulders dropped about four minutes ago. You probably did not notice."<br>"Your breathing has changed. That is your body deciding something."<br>"Tonight you are not going to try to feel it. It is going to happen to you."</p>
-<p><strong>Approach 2 (one gesture, then withdrawal):</strong> One deliberate gesture to each person. One hand on a shoulder, fingertips along an arm, a touch to a cheek. Slow, complete, present. Then withdraw completely. Hold the absence 30-45 seconds before moving to next person.</p>
-<p><strong>Approach 3 (sustained presence, then full withdrawal):</strong> Pepe or Agathe with each person 2-3 min: scalp, face, neck, arms, hands. Full attention, no agenda. Then both simultaneously stop and sit still in the centre. Complete absence. 90 seconds. Nothing.</p>
-<p>Agathe softly: "Stay with what just happened. Do not follow it. Let it find you." Blindfolds stay on.</p>`,
+    duration_min: 5,
+    notes: `<p>Blindfolds on. Everyone seated or lying down.</p>
+<p>Pepe and Agathe move slowly through the room. <strong>No contact.</strong> Proximity only. Now also make sounds near them:</p>
+<ul>
+<li>Moaning, growling</li>
+<li>Blowing wind across skin</li>
+<li>Breathing them in, audible</li>
+</ul>
+<p>5 min maximum. Room will get very quiet.</p>
+<p><strong>Pepe narrates softly to the room:</strong></p>
+<blockquote>"Your shoulders dropped about four minutes ago. You probably did not notice."<br>"Your breathing has changed. That is your body deciding something."<br>"Tonight you are not going to try to feel it. It is going to happen to you."</blockquote>`,
     watch_for: [
-      { signal: 'Anyone bracing or performing', action: "Pepe's observations are the disarmament. Name what the body is doing. Not what they should feel." },
-      { signal: 'Someone chasing after withdrawal', action: 'Do not return sooner. Hold the absence. The chase reflex has to complete before receiving is possible.' }
+      { signal: 'Anyone bracing or performing', action: "Pepe's observations are the disarmament. Name what the body is doing." }
     ],
-    music: 'Deep pulse begins: Souffles #3 (for Agatha) / FKA Twigs: Two Weeks / James Blake: Retrograde / Massive Attack: Teardrop'
+    music: 'Deep pulse begins: Souffles #3 (for Agatha) / FKA Twigs: Two Weeks / Massive Attack: Teardrop',
+    script: null
   },
   {
     id: 5,
-    phase_num: 'B',
-    name: 'Phase B - Receiving Practice',
-    start_time: '8:10pm',
-    duration_min: 20,
-    notes: `<p><strong>Pairs.</strong> With Agathe as participant there are 4 people, so two pairs work simultaneously.</p>
-<p>One person lies down. The other gives slow, clothed touch: scalp, face, neck, arms, hands, feet. No agenda. The giver practices full attention. The receiver practices receiving without performing.</p>
-<p><strong>Pair time:</strong> 8-10 minutes each. Pepe calls the switch with 30 seconds notice: "Finishing up. One last thing. Then we switch."</p>
-<p><strong>Prompt for giver:</strong> "Your only job is to be completely present with their body. Not to please. To be with."</p>
-<p><strong>Prompt for receiver:</strong> "You do not need to respond or show that you enjoy it. Just feel."</p>
-<p>Key for this crowd: the receiver prompt. They know how to show enjoyment. Ask them to stop and just feel instead. Pepe moves between pairs, adjusting pace, adding presence with proximity.</p>`,
+    phase_num: 'A2',
+    name: 'Approach 2 - Touch + Withdrawal',
+    start_time: '7:55pm',
+    duration_min: 5,
+    notes: `<p>Tools: <strong>feather, soft touch, nail touch, firm touch.</strong> One deliberate gesture per person. Then complete withdrawal.</p>
+<p>Slow, complete, present. Hold the absence 30-45 sec before moving to next person.</p>
+<p>The withdrawal is not a tease. It is the practice. The body that has just been met and then left behind will go looking for that sensation.</p>`,
     watch_for: [
-      { signal: 'Receiver performing / showing enjoyment', action: 'Quiet reminder: "You do not need to respond. Just feel."' }
+      { signal: 'Someone chasing after withdrawal', action: 'Do not return sooner. Hold the absence. Chase reflex has to complete before receiving is possible.' }
     ],
-    music: 'Weighted, slow: Souffles #5 / Hanoi 6 by Unknown Mortal Orchestra / Portishead: Wandering Star / James Blake: Limit to Your Love'
+    music: 'Continue: FKA Twigs / James Blake: Retrograde',
+    script: null
   },
   {
     id: 6,
-    phase_num: 'C',
-    name: 'Phase C - 2 on 1',
-    start_time: '8:30pm',
-    duration_min: 40,
-    notes: `<p><strong>Each person takes a turn at the centre. Roughly 6-7 minutes each.</strong></p>
-<p><strong>Configuration:</strong></p>
+    phase_num: 'A3',
+    name: 'Approach 3 - Ice/Candle + Personal Areas',
+    start_time: '8:00pm',
+    duration_min: 10,
+    notes: `<p><strong>BEFORE starting, in a soft voice, ask two consent questions:</strong></p>
 <ul>
-<li><strong>Marie:</strong> Pepe at head and upper body (voice, presence, face, neck, shoulders). Agathe at lower body. Sensual touch including breasts where arc calls for it. Marie-initiated only: tap signal (tap hand = more, closed fist = stop). Giver waits for Marie's tap before moving to any new zone. Music lowered for verbal check. Silence = stay put.</li>
-<li><strong>Laura and Agatha:</strong> Pepe at lower body. Agathe at head and upper body.</li>
+<li>"Raise your hand if you do not want your boobs touched on top of your clothes."</li>
+<li>"Raise your hand if you do not want to receive candle wax."</li>
 </ul>
-<p><strong>The peak withdrawal (most important moment):</strong> At the moment each person reaches the highest charge of their arc, both Pepe and Agathe simultaneously and completely withdraw. Hands off. Move back. One full minute of nothing. The body that is on the edge and then abandoned has to decide: chase it or surrender to the sensation already there.</p>
-<p>Agathe softly during the withdrawal: "It is already in you. You do not have to go anywhere."</p>`,
+<p>Note who raised their hands. Adjust for each person accordingly.</p>
+<p>Then: <strong>ice and/or candle wax drips.</strong> Touch in more personal areas: neck, inner thighs, belly, lower back. Boobs on top of clothes for anyone who did not opt out.</p>
+<p>Slow. One person at a time, or in parallel between Pepe and Agathe.</p>
+<p><strong>After: PEE BREAK before tying.</strong></p>`,
     watch_for: [
-      { signal: 'Laura reaching, performing, pushing', action: 'Withhold completely. "You are trying to get somewhere. Stay here instead." 90 seconds of nothing.' },
-      { signal: 'Marie staying in her head', action: 'Quiet prompt: "Come back to the feeling."' },
-      { signal: 'Marie sharp or angry', action: 'Agathe: stay close, voice calm. "I am here." Do not fix. The anger comes before the release.' },
-      { signal: 'Agatha/Agathe dynamic opening', action: 'Let it. Pepe holds the container. Do not insert. Amplify what is already happening.' }
+      { signal: 'Someone raised hand for boobs or wax', action: 'Skip that person for that tool. No comment. Continue with others.' },
+      { signal: 'Bodily flinch on wax drip', action: 'Pause. Confirm they want to continue. Silence = pause.' }
     ],
-    music: 'Heavier, slower: Portishead (Wandering Star, Roads) / James Blake: Limit to Your Love / Banks: Goddess'
+    music: 'Massive Attack: Dissolved Girl / James Blake: Retrograde',
+    script: null
+  },
+  {
+    id: 6.5,
+    phase_num: 'Pee',
+    name: 'Pee Break',
+    start_time: '8:10pm',
+    duration_min: 5,
+    notes: `<p>Announce gently: "Before we go further, take a moment. Bathroom if you need it. Water. Come back to your mat."</p>
+<p><strong>Blindfolds can come off for this. Back on before Shibari starts.</strong></p>
+<p>Refill water. Bring ropes near the centre so binding starts smoothly.</p>`,
+    watch_for: [],
+    music: 'Continue low ambient',
+    script: null
   },
   {
     id: 7,
-    phase_num: '7',
-    name: 'Surrender Invitation',
-    start_time: '9:10pm',
+    phase_num: 'Sh',
+    name: 'Shibari - Back to Back Circle',
+    start_time: '8:15pm',
     duration_min: 10,
-    notes: `<p>Pepe speaks. The room has been quiet for a long time. His voice here lands differently than it did at 7pm.</p>
-<blockquote>"I want to name something. There is a part of you that has been managing this experience. Watching to see how you are doing. She has been in every class you have been to. She is smart and she works hard and she has kept you safe. I am asking her to rest now. Not because something is about to happen that you need to manage. Because what is about to happen does not require her. I need you to do nothing. Your body knows exactly what to do. It has been waiting for permission. I have got you. All of you."</blockquote>
-<p><strong>Pause 30-45 seconds after the speech.</strong> This is not filler. The silence is where the invitation lands.</p>
-<p>Then quietly: "Close your eyes. Feel the mat underneath you. Take one breath. Let the exhale be complete."</p>
-<p>Transition to the main course without announcement.</p>`,
-    watch_for: [],
-    music: 'Still: Nils Frahm (Says) or silence'
+    notes: `<p>Blindfolds back on. Agathe facilitates the binding with Pepe.</p>
+<p><strong>All bound together in a circle around Pepe.</strong> Hands bound behind their backs. Back to back with each other. Pepe in the centre.</p>
+<p><strong>Pepe gives orders slowly:</strong></p>
+<ul>
+<li>"Kneel."</li>
+<li>"Sit on your feet."</li>
+<li>"Spread your knees."</li>
+<li>"Wider."</li>
+<li>"Back straight."</li>
+<li>"Head down."</li>
+</ul>
+<p>10 min. Slow. Space between commands.</p>`,
+    watch_for: [
+      { signal: 'Any resistance to being tied', action: 'Untie immediately. No comment. They participate untied. Do not force.' },
+      { signal: 'Agatha - any surprise or forced feel', action: 'Restraint only works if she chose it. Pause. Verbal check.' }
+    ],
+    music: 'Weighted, still: Souffles #5 / Hanoi 6 - Unknown Mortal Orchestra',
+    script: null
   },
   {
     id: 8,
-    phase_num: '8',
-    name: 'Main Course',
-    start_time: '9:20pm',
-    duration_min: 60,
-    notes: `<p><strong>Starts from dissolution state, not from arousal.</strong> Do not escalate. Do not accelerate. The main course is the continuation of what is already happening, without the withdrawals.</p>
-<p><strong>Marie sobriety check (Agathe leads, just before 9:20):</strong> One direct question requiring a full sentence answer: "How are you feeling right now? Are you present?" Clear and coherent: proceed. Anything off: warm presence track only for the rest of the evening.</p>
-<p><strong>Re-consent:</strong> Pepe moves slowly to each person. Direct eye contact. No words usually. She holds it and stays present = yes. Looks away or contracts = give more space. If ambiguous: "Still good?" Wait for a clear yes.</p>
-<p><strong>Voice throughout (primary tool, not to direct, to hold):</strong><br>"I have got you." / "Stay here." / "Do not hold it." / "Good. Just like that." / "You do not have to go anywhere." / "Let it move." / "Stay with me."</p>
-<p><strong>Mushroom protocol (Laura only):</strong> Do not offer before 8:30. Offer only if she is clearly in a receiving state: body soft, inward, not performing or reaching. One offer only. If she declines or hesitates, do not re-offer.</p>
-<p><strong>Rope:</strong> Introduce only when the energy asks for it. Before applying: "May I hold your wrists?" Only a clear yes continues. Silence or ambiguity = pause. The point is the sensation of being held, not restriction.</p>`,
+    phase_num: 'SF',
+    name: 'Silent + Feed',
+    start_time: '8:25pm',
+    duration_min: 9,
+    notes: `<p><strong>8:25-8:30 Silent (5 min):</strong> After the orders, complete silence. Hold them in position. No touch. No sound. Just presence.</p>
+<p><strong>8:30-8:34 Feed (3-4 min):</strong> Pepe, quiet: "Open your mouth. Leave it open."</p>
+<p>Pepe and Agathe feed them one by one: small pieces of chocolate and/or frozen fruit. Slow.</p>`,
     watch_for: [
-      { signal: 'Anyone tensing near the edge', action: '"Do not hold it." / "Stay here." / "I have got you." Do not accelerate. Hold the pace.' },
-      { signal: 'Before applying rope', action: '"May I hold your wrists?" Silence = pause. Only a clear yes continues.' },
-      { signal: 'Agatha - any physical hold', action: 'Must be consensually entered, not a surprise. She chose it. Then it works. Surprise = trigger.' }
+      { signal: 'Someone shakes / cries under silence', action: 'Let it move. Agathe softly nearby, no words. Hold.' }
     ],
-    music: 'Full burn: Sade (No Ordinary Love, By Your Side) / The Weeknd (The Morning) / Lana Del Rey (Ride) / Banks (Beggin for Thread) / Portishead (Roads)'
+    music: 'Still, minimal: Massive Attack: Dissolved Girl',
+    script: null
   },
   {
     id: 9,
-    phase_num: '9',
+    phase_num: 'Ch',
+    name: 'Choice Game',
+    start_time: '8:34pm',
+    duration_min: 15,
+    notes: `<p>Still bound. Still blindfolded. Pepe explains the game once:</p>
+<blockquote>"You are going to choose three things without speaking. First, your executioner. If you want me, bite your lip. If you want Agathe, stick out your tongue. Second, the action: slap or kiss. Show us with your body. Third, the location: neck, ass, or boobs. Show us."</blockquote>
+<p>Pepe and Agathe read each body language cue and execute one by one. Go around all three participants.</p>
+<p><strong>Medium strength.</strong> Not too small. Not too big.</p>
+<p>15 min.</p>
+<p><strong>After: untie + remove blindfolds (1 min). Slowly, quietly. Agathe leads with Pepe. No words.</strong></p>`,
+    watch_for: [
+      { signal: 'Someone gives no signal', action: 'Skip that person for that round. No comment. Continue to next.' },
+      { signal: 'Body language ambiguous', action: 'Choose the softer option (kiss over slap, neck over ass/boobs).' }
+    ],
+    music: 'Slow, deliberate: Portishead: Wandering Star / James Blake: Limit to Your Love',
+    script: null
+  },
+  {
+    id: 10,
+    phase_num: 'HM',
+    name: 'All-on-One Hand Massage',
+    start_time: '8:50pm',
+    duration_min: 20,
+    notes: `<p><strong>Everyone touches one person at a time.</strong> That person chooses back or belly (or both, they can move to switch sides).</p>
+<p><strong>5 minutes each. Three rounds. 20 min total.</strong></p>
+<p>Explore many sensations at once. Sensory overload. The person receiving is the centre of attention. Everyone else uses hands only.</p>
+<p>Arrives at 9:10.</p>`,
+    watch_for: [
+      { signal: 'Receiver performing / showing enjoyment', action: 'Quiet reminder: "You do not need to respond. Just feel."' }
+    ],
+    music: 'Warm, immersive: Banks: Goddess / Sade slower cuts',
+    script: null
+  },
+  {
+    id: 11,
+    phase_num: 'SI',
+    name: 'Surrender Invitation',
+    start_time: '9:10pm',
+    duration_min: 10,
+    notes: `<p><strong>Sequence in order:</strong></p>
+<ol>
+<li><strong>Pee break (gentle):</strong> "Before we go further, take a moment. Bathroom. Water. Come back when you are ready."</li>
+<li><strong>Comfort + layers option:</strong> "We are going to give you the option to get more comfortable and remove as many layers as you want. If your panties are out, then your pussy is up for eating. There will be no penetration unless there is a very nice asking."</li>
+<li><strong>Sensual to sexual transition:</strong> "We are going to open the possibility to move from the sensual realm to the sexual realm. Nothing is mandatory. If you feel uncomfortable, you can leave the room, you can use your safeword red, or you can cross your arms at any moment."</li>
+<li><strong>Drops offer NOW:</strong> Offer mushroom dose to Laura (one offer, no re-offer). Offer to anyone else who has asked for something.</li>
+<li><strong>Surrender speech (Pepe):</strong> see script tab</li>
+<li><strong>Silence 30-45 sec. Landing.</strong> Then quietly: "Close your eyes. Feel the mat underneath you. Take one breath. Let the exhale be complete."</li>
+</ol>
+<p>Transition to main course without announcement.</p>`,
+    watch_for: [
+      { signal: 'Marie sobriety unclear at any point today', action: 'Agathe verbal check. Full sentence answer required. If unclear, warm presence track only for main course.' },
+      { signal: 'Laura declines or hesitates on mushroom', action: 'Do not re-offer. Move on.' }
+    ],
+    music: 'Still: Nils Frahm (Says) or silence',
+    script: `<blockquote>"I want to name something. There is a part of you that has been managing this experience. Watching to see how you are doing. Checking in on what you are feeling and whether you are feeling it correctly. She has been in every swinging club, at every temple, at every sex party, in every tantra class. She is smart and she works hard and she has kept you safe.<br><br>I am asking her to rest now.<br><br>Not because something is about to happen that you need to manage. Because what is about to happen does not require her. What I need from you tonight is not your best performance of receiving. It is not showing me what opening looks like. It is actually nothing. I need you to do nothing. Your body knows exactly what to do. It has been waiting for permission.<br><br>I have got you. All of you. You do not need to make anything happen."</blockquote>`
+  },
+  {
+    id: 12,
+    phase_num: 'MC',
+    name: 'Main Course',
+    start_time: '9:20pm',
+    duration_min: 60,
+    notes: `<p><strong>Starts from dissolution state, not arousal.</strong> Do not escalate. Do not accelerate.</p>
+<p><strong>Marie sobriety check (Agathe, just before 9:20):</strong> "How are you feeling right now? Are you present?" Full sentence required. Off = warm presence only for rest of evening.</p>
+<p><strong>Opening move — undressing to music:</strong></p>
+<blockquote>"Undress slowly, sensually, on the music. As much as you want me to see you."</blockquote>
+<p>Watch what happens. Do not push. This is where the room self-selects.</p>
+<p><strong>Bed sequence (Pepe leads, Agathe holds and supports, Agathe NOT dominant):</strong></p>
+<ul>
+<li><strong>If someone gets to panties or naked first:</strong> They go to the bed. Others touch them, help them get aroused. Then Pepe eats pussy. If Agathe is in directly, start with her. Then Pepe with Agathe as a live scene while narrating to the room what he is witnessing in her surrender.</li>
+<li><strong>If nobody is easy at first:</strong> Pepe goes to the bed. Others fluff him. Room listens to Pepe's narrative and follows his voice.</li>
+<li><strong>If two are open and naked:</strong> Lying close. Fingers and tongue. Agathe helps maintain them when not being eaten. Maybe ask at end: "Do you want a final show?"</li>
+<li><strong>If a girl is only in panties:</strong> Play around but ask for explicit boundaries out loud. Silence is not consent.</li>
+</ul>
+<p><strong>Re-consent (BE VERY DOMINANT HERE):</strong> Pepe moves slowly. Direct eye contact. Held eye contact + present = yes. Looks away/contracts = space. Ambiguous = "Still good?" Wait for clear yes.</p>
+<p><strong>Voice (primary tool, hold, do not direct):</strong> "I have got you." / "Stay here." / "Do not hold it." / "Good. Just like that." / "You do not have to go anywhere." / "Let it move." / "Stay with me."</p>
+<p><strong>Configuration:</strong></p>
+<ul>
+<li><strong>Laura and Agatha:</strong> Pepe delivers oral and direct attention. Agathe in supporting/holding role. If Agathe/Agatha opens, follow it.</li>
+<li><strong>Marie:</strong> Pepe = voice, proximity, face, neck, shoulders. Agathe leads all physical. Breasts within bounds per clearance. No genital contact. No penetration. Marie-initiated tap required before any new zone. Silence is not consent.</li>
+</ul>
+<p><strong>Rope:</strong> Only when energy asks. "May I hold your wrists?" Only a clear yes continues. Silence = pause.</p>`,
+    watch_for: [
+      { signal: 'Anyone tensing near the edge', action: '"Do not hold it." / "Stay here." / "I have got you." Do not accelerate.' },
+      { signal: 'Room self-selects, some stay clothed', action: 'Fine. The clothed body can still hold and witness. Do not push to undress.' },
+      { signal: 'Laura reaching, performing, pushing', action: 'Withhold completely. "You are trying to get somewhere. Stay here instead." 90 sec of nothing.' },
+      { signal: 'Marie staying in her head', action: 'Quiet prompt: "Come back to the feeling."' },
+      { signal: 'Marie sharp or angry', action: 'Agathe: stay close, voice calm. "I am here." Do not fix.' },
+      { signal: 'Agatha - any physical hold', action: 'Must be consensually entered, not surprise. She chose it. Then it works. Surprise = trigger.' },
+      { signal: 'Agatha/Agathe dynamic opening', action: 'Let it. Pepe holds. Do not insert. Amplify what is already happening.' }
+    ],
+    music: 'Full burn: Sade (No Ordinary Love) / The Weeknd (The Morning) / Lana Del Rey (Ride) / Banks (Beggin for Thread) / Portishead (Roads)',
+    script: null
+  },
+  {
+    id: 13,
+    phase_num: 'Int',
     name: 'Integration and Close',
     start_time: '10:20pm',
     duration_min: 40,
-    notes: `<p>Music back to ambient, no pulse. Silence first. Let it work. No talking for several minutes after the arc completes.</p>
-<p>Pepe, quietly: "Stay where you are for a moment. Just breathe."</p>
-<p><strong>Physical grounding:</strong> "Feet flat on the floor or your mat. Palms face down on your thighs. Feel the ground under you." Hold for one minute.</p>
-<p><strong>Closing round:</strong> "Two things. Something you are taking with you tonight. Something you are leaving here." No analysis. No debrief. Each person speaks once. Pepe does not reflect or interpret. The words are enough.</p>
-<p><strong>Relational close:</strong> "Find each person in the room. Just look. Five seconds each." Pepe leads. Eye contact, held, unhurried. No words.</p>
-<p>Pepe to close: "Tonight stays in this room. What you felt is yours."</p>
-<p>Water. Let them move at their own pace. Some will want to stay. Some will need to leave and integrate alone. Both are right. Do not redirect either.</p>
+    notes: `<p>Music back to ambient, no pulse. Silence first. Several minutes after the arc completes.</p>
+<p>Pepe, quietly:</p>
+<blockquote>"Dress back. Sit in the circle. Do not talk while you dress."</blockquote>
+<p><strong>Dressing in silence:</strong> Everyone dresses. No talk. Slow. Reassemble in a circle.</p>
+<p><strong>Hold hands in the circle:</strong> When all 5 are dressed and seated, hold hands, all together. Take some breathing all together. A few full breath cycles. In and out slowly.</p>
+<p><strong>Closing round — two things each:</strong> Each person shares two things. Something they are taking with them. Something they are leaving here. No analysis. No debrief. Each speaks once. Pepe does not reflect or interpret.</p>
+<p><strong>Pepe closes:</strong></p>
+<blockquote>"Tonight stays in this room. What you felt is yours."</blockquote>
+<p>Water is already in the room (has been all evening). Let them drink freely. Let them move at their own pace. Some will want to stay. Some will need to leave.</p>
 <p><strong>Post-session within 24h:</strong> Pepe sends brief individual message to each participant. One sentence acknowledging who they were in the room, not what happened. Marie: text same evening, warm, no reference to session content.</p>`,
-    watch_for: [],
-    music: 'Come down: Olafur Arnalds (Near Light) / Max Richter (Dream 3) / piano ambient'
+    watch_for: [
+      { signal: 'Someone talking while dressing', action: 'Gentle: "Not yet. Dress first. We speak in the circle."' }
+    ],
+    music: 'Come down: Olafur Arnalds (Near Light) / Max Richter (Dream 3) / piano ambient',
+    script: null
   }
 ];
 
