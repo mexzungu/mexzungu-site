@@ -103,10 +103,12 @@
     .tri-meta { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px 10px; margin-bottom:12px; }
     .tri-meta .lbl { display:block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:2px; }
     .tri-meta .mval { font-size:12px; font-weight:600; color:#ccc; }
-    .tri-counts { display:flex; gap:16px; margin-bottom:10px; }
+    .tri-counts { display:flex; gap:16px; margin-bottom:10px; justify-content:center; }
     .tri-counts .cnt-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-right:4px; }
     .tri-counts .cnt-val { font-size:12px; font-weight:600; color:#ccc; }
-    .tri-kpis { display:flex; gap:6px; flex-wrap:wrap; }
+    .tri-kpis { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+    .eng-kpis { padding:12px 16px 10px; border-top:1px solid var(--border); }
+    .eng-kpis .kpi-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:8px; }
     .tri-kpi { background:var(--s2); border:1px solid var(--border); border-radius:6px; padding:6px 10px; display:flex; flex-direction:column; align-items:center; min-width:56px; }
     .tri-kpi .kv { font-size:14px; font-weight:800; letter-spacing:-.02em; margin-bottom:2px; }
     .tri-kpi .kl { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; text-align:center; }
@@ -212,9 +214,6 @@
 <!-- NAV -->
 <nav>
   <span class="logo">MGL</span>
-  <a href="/engines/">Hub</a>
-  <a href="/engines/architecture/">Architecture</a>
-  <a href="/engines/architecture/taxonomy.html">Taxonomy</a>
 </nav>
 
 <!-- =====================
@@ -435,11 +434,21 @@
       </div>
       <div class="eng-body" id="bodyConn">
         <div class="eng-inner">
-          <div style="padding:12px 16px 0;"><a href="/engines/connection/" style="font-size:12px;color:var(--conn);text-decoration:none;font-weight:600;letter-spacing:.04em;">View all 4 engines &rarr;</a></div>
+          <div class="eng-kpis">
+            <div class="kpi-lbl">Top KPIs</div>
+            <div class="tri-kpis">
+              <div class="tri-kpi"><span class="kv">4</span><span class="kl">ELs MTD</span></div>
+              <div class="tri-kpi"><span class="kv">3</span><span class="kl">Pipeline</span></div>
+              <div class="tri-kpi"><span class="kv">18%</span><span class="kl">Conv. rate</span></div>
+              <div class="tri-kpi"><span class="kv">42d</span><span class="kl">Avg. close</span></div>
+              <div class="tri-kpi"><span class="kv">8</span><span class="kl">Posts MTD</span></div>
+            </div>
+          </div>
+          <div style="padding:8px 16px 4px;"><a href="/engines/connection/" style="font-size:12px;color:var(--conn);text-decoration:none;font-weight:600;letter-spacing:.04em;">Look inside this Macro Engine &rarr;</a></div>
           <div class="eng-list">
             <a class="erow" href="/engines/connection/sm-content/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">SM Content Engine <span class="owner owner-p">Freddie</span></div></div></a>
             <a class="erow" href="/engines/connection/sm-engagement/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">SM Engagement Engine <span class="owner owner-p">Joni</span></div></div></a>
-            <a class="erow" href="/engines/bd-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Connection Acquisition Engine <span class="owner owner-p">Jagger</span></div></div></a>
+            <a class="erow" href="/engines/connection/acquisition/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Connection Acquisition Engine <span class="owner owner-p">Jagger</span></div></div></a>
             <a class="erow" href="/engines/connection/proposal/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Proposal Engine <span class="owner owner-p">Prince</span></div></div></a>
           </div>
         </div>
@@ -461,6 +470,16 @@
       </div>
       <div class="eng-body" id="bodyVal">
         <div class="eng-inner">
+          <div class="eng-kpis">
+            <div class="kpi-lbl">Top KPIs</div>
+            <div class="tri-kpis">
+              <div class="tri-kpi"><span class="kv">3</span><span class="kl">Active clients</span></div>
+              <div class="tri-kpi"><span class="kv" style="font-size:11px;">EUR 0</span><span class="kl">Rev. MTD</span></div>
+              <div class="tri-kpi"><span class="kv">83%</span><span class="kl">On-time</span></div>
+              <div class="tri-kpi"><span class="kv">2</span><span class="kl">Inv. outstanding</span></div>
+              <div class="tri-kpi"><span class="kv">8.2</span><span class="kl">Avg. NPS</span></div>
+            </div>
+          </div>
           <div class="eng-list">
             <a class="erow" href="/engines/onboarding-engine/"><span class="sm b-build"></span><div class="erow-inner"><div class="erow-name">Onboarding Engine <span class="owner">Lars</span></div></div></a>
             <a class="erow" href="/engines/fractional-exec-engine/"><span class="sm b-live h-failing"></span><div class="erow-inner"><div class="erow-name">Fractional Exec Engine <span class="owner owner-p">Chrissie</span></div></div></a>
@@ -490,6 +509,16 @@
       </div>
       <div class="eng-body" id="bodyCare">
         <div class="eng-inner">
+          <div class="eng-kpis">
+            <div class="kpi-lbl">Top KPIs</div>
+            <div class="tri-kpis">
+              <div class="tri-kpi"><span class="kv">4.1</span><span class="kl">Health score</span></div>
+              <div class="tri-kpi"><span class="kv">0</span><span class="kl">Referrals MTD</span></div>
+              <div class="tri-kpi"><span class="kv">8.2</span><span class="kl">NPS</span></div>
+              <div class="tri-kpi"><span class="kv">14d</span><span class="kl">Last check-in</span></div>
+              <div class="tri-kpi"><span class="kv">0</span><span class="kl">Re-entries MTD</span></div>
+            </div>
+          </div>
           <div class="eng-list">
             <a class="erow" href="/engines/client-health-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Client Health Engine <span class="owner">Sade</span></div></div></a>
             <a class="erow" href="/engines/success-check-engine/"><span class="sm b-concept"></span><div class="erow-inner"><div class="erow-name">Success Check Engine <span class="owner">Sade</span></div></div></a>
