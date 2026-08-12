@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGL Blueprint | Mexzungu Group</title>
+  <style>
+    :root {
+      --pink:#E14B87; --bg:#0f0f0f; --surface:#181818; --s2:#1e1e1e;
+      --border:#2a2a2a; --text:#e8e8e8; --muted:#666;
+      --conn:#4cc8b4; --val:#f0a030; --care:#b482ff;
+      --green:#4caf7d; --blue:#6498ff; --red:#e05050;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; font-size:15px; line-height:1.6; min-height:100vh; }
+
+    /* NAV */
+    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; }
+    nav .logo { font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; }
+    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
+    nav a:hover { color:var(--text); background:var(--s2); }
+
+    /* STATUS MARKS */
+    .sm { display:inline-block; width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .b-live    { background:var(--green); }
+    .b-build   { background:var(--blue); }
+    .b-concept { background:#444; }
+    .h-healthy { box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--green); }
+    .h-failing  { box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--val); }
+    .h-broken   { box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--red); }
+
+    /* OWNER BADGE */
+    .owner { font-size:9px; font-weight:700; text-transform:uppercase; padding:1px 6px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--muted); }
+    .owner-p { border-color:var(--pink); color:var(--pink); background:rgba(225,75,135,.05); }
+
+    /* SECTION WRAPPER */
+    .section { max-width:860px; margin:0 auto; padding:56px 24px; }
+    .section + .section { padding-top:0; }
+    .section-label { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+    .section-title { font-size:26px; font-weight:800; letter-spacing:-.025em; margin-bottom:6px; }
+    .section-sub { font-size:13px; color:#777; margin-bottom:32px; }
+
+    /* =====================
+       SECTION 1: HERO
+    ===================== */
+    .hero { text-align:center; padding:64px 24px 48px; }
+    .hero-label { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+    .hero-h1 { font-size:48px; font-weight:900; letter-spacing:-.04em; line-height:1.05; margin-bottom:18px; }
+    .hero-h1 .c-conn { color:var(--conn); }
+    .hero-h1 .c-val  { color:var(--val);  }
+    .hero-h1 .c-care { color:var(--care); }
+    .hero-sub { font-size:15px; color:#888; line-height:1.7; max-width:560px; margin:0 auto; }
+
+    @media (max-width:680px) {
+      .hero-h1 { font-size:34px; }
+    }
+
+    /* =====================
+       SECTION 2: LOOP DIAGRAM
+    ===================== */
+    .loop-section { max-width:720px; margin:0 auto; padding:0 24px 56px; }
+    .tri-container { position:relative; padding-bottom:84px; }
+
+    #triSvg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:visible; }
+
+    .tri-row-top { display:flex; justify-content:center; position:relative; z-index:1; }
+    .tri-row-top .macro-card { width:calc(50% - 12px); }
+
+    .tri-gap { height:56px; }
+
+    .tri-row-bot { display:grid; grid-template-columns:1fr 1fr; gap:24px; position:relative; z-index:1; }
+
+    /* MACRO CARD (simplified: no collapsible, no KPIs) */
+    .macro-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+
+    .card-hd { padding:18px 20px 16px; cursor:pointer; user-select:none; transition:background .12s; }
+    .card-hd:hover { background:rgba(255,255,255,.015); }
+
+    .card-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; margin-bottom:5px; text-align:center; }
+    .card-name { font-size:22px; font-weight:800; letter-spacing:-.025em; margin-bottom:12px; text-align:center; }
+    .card-name a { text-decoration:none; color:inherit; cursor:pointer; }
+    .card-name a:hover { opacity:.8; }
+    .card-desc { font-size:12px; color:#888; line-height:1.65; margin-bottom:14px; }
+
+    .card-meta { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px 10px; }
+    .meta-item .lbl { display:block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:2px; }
+    .meta-item .mval { font-size:12px; font-weight:600; color:#ccc; }
+
+    /* ACCENT COLORS */
+    .card-conn { border-top:3px solid var(--conn); }
+    .card-conn .card-type { color:var(--conn); }
+
+    .card-val { border-top:3px solid var(--val); }
+    .card-val .card-type { color:var(--val); }
+
+    .card-care { border-top:3px solid var(--care); }
+    .card-care .card-type { color:var(--care); }
+
+    /* Collapsible loop cards */
+    .card-hint { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-top:14px; }
+    .tri-detail { padding:12px 20px 14px; border-top:1px solid var(--border); }
+    .tri-meta { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px 10px; margin-bottom:12px; }
+    .tri-meta .lbl { display:block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:2px; }
+    .tri-meta .mval { font-size:12px; font-weight:600; color:#ccc; }
+    .tri-counts { display:flex; gap:16px; margin-bottom:10px; }
+    .tri-counts .cnt-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-right:4px; }
+    .tri-counts .cnt-val { font-size:12px; font-weight:600; color:#ccc; }
+    .tri-kpis { display:flex; gap:6px; flex-wrap:wrap; }
+    .tri-kpi { background:var(--s2); border:1px solid var(--border); border-radius:6px; padding:6px 10px; display:flex; flex-direction:column; align-items:center; min-width:56px; }
+    .tri-kpi .kv { font-size:14px; font-weight:800; letter-spacing:-.02em; margin-bottom:2px; }
+    .tri-kpi .kl { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; text-align:center; }
+
+    @media (max-width:680px) {
+      .tri-row-bot { grid-template-columns:1fr; }
+      .tri-row-top .macro-card { width:100%; }
+      .card-meta { grid-template-columns:1fr 1fr; }
+      .tri-gap { height:32px; }
+      #triSvg { display:none; }
+      .tri-container { padding-bottom:0; }
+    }
+
+    /* =====================
+       SECTION 3: CLIENT JOURNEY
+    ===================== */
+    .journey-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:8px; }
+    .journey-row { display:grid; grid-template-columns:repeat(5, 1fr); gap:0; min-width:600px; }
+    .journey-stage { background:var(--surface); border:1px solid var(--border); border-left:none; padding:20px 16px; position:relative; }
+    .journey-stage:first-child { border-left:1px solid var(--border); border-radius:10px 0 0 10px; }
+    .journey-stage:last-child { border-radius:0 10px 10px 0; }
+    .journey-stage .stage-top-border { position:absolute; top:0; left:0; right:0; height:3px; border-radius:2px; }
+
+    .stage-num { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; margin-bottom:10px; }
+    .stage-title { font-size:14px; font-weight:700; margin-bottom:5px; }
+    .stage-tag { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; display:inline-block; }
+    .stage-copy { font-size:11px; color:#888; line-height:1.6; }
+
+    /* Arrow connectors between stages */
+    .journey-arrow { display:flex; align-items:center; justify-content:center; padding:0 4px; font-size:16px; color:#444; background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); min-width:24px; }
+
+    /* Journey as alternating stage + arrow */
+    .journey-row-outer { display:grid; grid-template-columns:1fr 16px 1fr 16px 1fr 16px 1fr 16px 1fr; min-width:620px; gap:0; }
+    .journey-connector { display:flex; align-items:center; justify-content:center; color:#444; font-size:14px; background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+
+    @media (max-width:680px) {
+      .journey-row-outer { min-width:580px; }
+    }
+
+    /* =====================
+       SECTION 4: BLUEPRINT CARDS (collapsible)
+    ===================== */
+    .bp-cards { display:flex; flex-direction:column; gap:16px; }
+
+    .bp-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .bp-card-hd { padding:20px 22px 16px; cursor:pointer; user-select:none; transition:background .12s; }
+    .bp-card-hd:hover { background:rgba(255,255,255,.015); }
+
+    .bp-card-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; margin-bottom:5px; }
+    .bp-card-name { font-size:24px; font-weight:800; letter-spacing:-.025em; margin-bottom:12px; }
+    .bp-card-desc { font-size:13px; color:#888; line-height:1.65; margin-bottom:14px; max-width:640px; }
+
+    .bp-card-meta { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px 10px; max-width:480px; margin-bottom:14px; }
+    .bp-meta-item .lbl { display:block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:2px; }
+    .bp-meta-item .mval { font-size:12px; font-weight:600; color:#ccc; }
+
+    .bp-card-hint { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; }
+    .chev { display:inline-block; font-size:8px; transition:transform .28s ease; }
+    .card-open .chev { transform:rotate(180deg); }
+
+    /* Collapsible engine list */
+    .eng-body { display:grid; grid-template-rows:0fr; transition:grid-template-rows .36s ease; }
+    .card-open .eng-body { grid-template-rows:1fr; }
+    .eng-inner { overflow:hidden; min-height:0; }
+
+    .eng-list { padding:8px 14px 16px; border-top:1px solid var(--border); }
+
+    a.erow { display:flex; align-items:flex-start; gap:8px; padding:7px 8px; border-radius:6px; transition:background .12s; text-decoration:none; color:inherit; }
+    a.erow:hover { background:var(--s2); }
+    a.erow:hover .erow-name { color:var(--text); }
+    .erow-inner { flex:1; }
+    .erow-name { font-size:13px; font-weight:600; transition:color .12s; color:#ccc; }
+
+    /* Blueprint card accent */
+    .bp-conn { border-top:3px solid var(--conn); }
+    .bp-conn .bp-card-type { color:var(--conn); }
+    .bp-val  { border-top:3px solid var(--val); }
+    .bp-val  .bp-card-type { color:var(--val); }
+    .bp-care { border-top:3px solid var(--care); }
+    .bp-care .bp-card-type { color:var(--care); }
+
+    /* =====================
+       SECTION 5: STATUS LEGEND
+    ===================== */
+    .legend-section { max-width:860px; margin:0 auto; padding:32px 24px 64px; }
+    .legend-rows { display:flex; flex-direction:column; gap:20px; margin-top:24px; }
+    .legend-row { display:flex; align-items:center; flex-wrap:wrap; gap:24px; }
+    .legend-row-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); width:80px; flex-shrink:0; }
+    .legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:#aaa; }
+
+    .ld { display:inline-block; width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+    .ld-live    { background:var(--green); }
+    .ld-build   { background:var(--blue); }
+    .ld-concept { background:#444; }
+    .ld-healthy { background:var(--green); box-shadow:0 0 0 2.5px var(--bg),0 0 0 4px var(--green); }
+    .ld-failing  { background:var(--green); box-shadow:0 0 0 2.5px var(--bg),0 0 0 4px var(--val); }
+    .ld-broken   { background:var(--green); box-shadow:0 0 0 2.5px var(--bg),0 0 0 4px var(--red); }
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">MGL</span>
+  <a href="/engines/">Hub</a>
+  <a href="/engines/architecture/">Architecture</a>
+  <a href="/engines/architecture/taxonomy.html">Taxonomy</a>
+</nav>
+
+<!-- =====================
+     SECTION 1: HERO
+===================== -->
+<div class="hero">
+  <div class="hero-label">Mexzungu Group</div>
+  <h1 class="hero-h1">
+    <span class="c-conn">Connect.</span>&nbsp;<span class="c-val">Deliver.</span>&nbsp;<span class="c-care">Care.</span>
+  </h1>
+  <p class="hero-sub">
+    Every MGL client starts in a relationship. Gets real value.
+    Stays in the orbit. Three macro engines, one self-reinforcing loop.
+  </p>
+</div>
+
+<!-- =====================
+     SECTION 2: LOOP DIAGRAM
+===================== -->
+<div class="section" style="padding-top:0;">
+  <div class="section-label" style="text-align:center;">The Loop</div>
+</div>
+
+<div class="loop-section">
+  <div class="tri-container" id="triContainer">
+
+    <svg id="triSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <!-- ROW 1: Connection (centered) -->
+    <div class="tri-row-top">
+      <div class="macro-card card-conn" id="cardConn">
+        <div class="card-hd" onclick="toggleCard('Conn')">
+          <div class="card-type">Macro Engine I</div>
+          <div class="card-name"><a href="#section-conn" onclick="event.stopPropagation()">Connection</a></div>
+          <p class="card-desc">Turns relationships into signed engagements.</p>
+          <div class="card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+        </div>
+        <div class="eng-body">
+          <div class="eng-inner">
+            <div class="tri-detail">
+              <div class="tri-meta">
+                <div><span class="lbl">Owner</span><span class="mval">Jagger</span></div>
+                <div><span class="lbl">Trigger</span><span class="mval">Cron + inbound</span></div>
+                <div><span class="lbl">Output</span><span class="mval">Signed EL</span></div>
+              </div>
+              <div class="tri-counts">
+                <span><span class="cnt-lbl">Engines</span><span class="cnt-val">4</span></span>
+                <span><span class="cnt-lbl">Micro-engines</span><span class="cnt-val">12</span></span>
+              </div>
+              <div class="tri-kpis">
+                <div class="tri-kpi"><span class="kv">4</span><span class="kl">ELs MTD</span></div>
+                <div class="tri-kpi"><span class="kv">3</span><span class="kl">Pipeline</span></div>
+                <div class="tri-kpi"><span class="kv">18%</span><span class="kl">Conv. rate</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP: arrows pass through here -->
+    <div class="tri-gap"></div>
+
+    <!-- ROW 2: Value + Care -->
+    <div class="tri-row-bot">
+
+      <div class="macro-card card-val" id="cardVal">
+        <div class="card-hd" onclick="toggleCard('Val')">
+          <div class="card-type">Macro Engine II</div>
+          <div class="card-name"><a href="#section-val" onclick="event.stopPropagation()">Value</a></div>
+          <p class="card-desc">Delivers the work and collects the fee.</p>
+          <div class="card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+        </div>
+        <div class="eng-body">
+          <div class="eng-inner">
+            <div class="tri-detail">
+              <div class="tri-meta">
+                <div><span class="lbl">Owner</span><span class="mval">Lars</span></div>
+                <div><span class="lbl">Trigger</span><span class="mval">EL signed</span></div>
+                <div><span class="lbl">Output</span><span class="mval">Invoice paid</span></div>
+              </div>
+              <div class="tri-counts">
+                <span><span class="cnt-lbl">Engines</span><span class="cnt-val">8</span></span>
+                <span><span class="cnt-lbl">Micro-engines</span><span class="cnt-val">16</span></span>
+              </div>
+              <div class="tri-kpis">
+                <div class="tri-kpi"><span class="kv">3</span><span class="kl">Active</span></div>
+                <div class="tri-kpi"><span class="kv">EUR 0</span><span class="kl">Rev. MTD</span></div>
+                <div class="tri-kpi"><span class="kv">83%</span><span class="kl">On-time</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="macro-card card-care" id="cardCare">
+        <div class="card-hd" onclick="toggleCard('Care')">
+          <div class="card-type">Macro Engine III</div>
+          <div class="card-name"><a href="#section-care" onclick="event.stopPropagation()">Care</a></div>
+          <p class="card-desc">Converts satisfied clients into referrals and re-entries.</p>
+          <div class="card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+        </div>
+        <div class="eng-body">
+          <div class="eng-inner">
+            <div class="tri-detail">
+              <div class="tri-meta">
+                <div><span class="lbl">Owner</span><span class="mval">Sade</span></div>
+                <div><span class="lbl">Trigger</span><span class="mval">Invoice paid</span></div>
+                <div><span class="lbl">Output</span><span class="mval">Referral / re-entry</span></div>
+              </div>
+              <div class="tri-counts">
+                <span><span class="cnt-lbl">Engines</span><span class="cnt-val">6</span></span>
+                <span><span class="cnt-lbl">Micro-engines</span><span class="cnt-val">10</span></span>
+              </div>
+              <div class="tri-kpis">
+                <div class="tri-kpi"><span class="kv">4.1</span><span class="kl">Health</span></div>
+                <div class="tri-kpi"><span class="kv">0</span><span class="kl">Referrals</span></div>
+                <div class="tri-kpi"><span class="kv">8.2</span><span class="kl">NPS</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =====================
+     SECTION 3: CLIENT JOURNEY
+===================== -->
+<div class="section" style="padding-top:0; padding-bottom:56px;">
+  <div class="section-label">The Client Journey</div>
+  <h2 class="section-title">Five moments that define every engagement</h2>
+
+  <div class="journey-wrap">
+    <div class="journey-row-outer">
+
+      <!-- Stage 1: The Room -->
+      <div class="journey-stage" style="border-radius:10px 0 0 10px; border-left:1px solid var(--border);">
+        <div class="stage-top-border" style="background:var(--conn);"></div>
+        <div class="stage-num" style="background:var(--conn);">1</div>
+        <div class="stage-title" style="color:var(--conn);">The Room</div>
+        <div class="stage-tag" style="color:var(--conn);">Connection</div>
+        <div class="stage-copy">A conversation, a referral, or a post that landed. The relationship starts before the contract does.</div>
+      </div>
+
+      <div class="journey-connector">&#8594;</div>
+
+      <!-- Stage 2: The Agreement -->
+      <div class="journey-stage">
+        <div class="stage-top-border" style="background:var(--conn);"></div>
+        <div class="stage-num" style="background:var(--conn);">2</div>
+        <div class="stage-title" style="color:var(--conn);">The Agreement</div>
+        <div class="stage-tag" style="color:var(--conn);">Connection</div>
+        <div class="stage-copy">Clear scope, fixed terms, signed in days. No ambiguity about what is being built or what it costs.</div>
+      </div>
+
+      <div class="journey-connector">&#8594;</div>
+
+      <!-- Stage 3: The Work -->
+      <div class="journey-stage">
+        <div class="stage-top-border" style="background:var(--val);"></div>
+        <div class="stage-num" style="background:var(--val);">3</div>
+        <div class="stage-title" style="color:var(--val);">The Work</div>
+        <div class="stage-tag" style="color:var(--val);">Value</div>
+        <div class="stage-copy">Advisory, governance, deals, AI systems. The MGL team is operating alongside you, not just advising from a distance.</div>
+      </div>
+
+      <div class="journey-connector">&#8594;</div>
+
+      <!-- Stage 4: The Outcome -->
+      <div class="journey-stage">
+        <div class="stage-top-border" style="background:var(--val);"></div>
+        <div class="stage-num" style="background:var(--val);">4</div>
+        <div class="stage-title" style="color:var(--val);">The Outcome</div>
+        <div class="stage-tag" style="color:var(--val);">Value</div>
+        <div class="stage-copy">A result worth paying for. Decision made, deal closed, or system shipped. Invoice issued and paid.</div>
+      </div>
+
+      <div class="journey-connector">&#8594;</div>
+
+      <!-- Stage 5: The Orbit -->
+      <div class="journey-stage" style="border-radius:0 10px 10px 0;">
+        <div class="stage-top-border" style="background:var(--care);"></div>
+        <div class="stage-num" style="background:var(--care);">5</div>
+        <div class="stage-title" style="color:var(--care);">The Orbit</div>
+        <div class="stage-tag" style="color:var(--care);">Care</div>
+        <div class="stage-copy">You refer others, re-engage on the next problem, stay in the network. The loop never actually closes.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =====================
+     SECTION 4: THE BLUEPRINT
+===================== -->
+<div class="section" style="padding-top:0; padding-bottom:64px;">
+  <div class="section-label">The Blueprint</div>
+  <h2 class="section-title">Three macro engines.</h2>
+  <p class="section-sub">Eighteen delivery engines. One permanent loop.</p>
+
+  <div class="bp-cards">
+
+    <!-- CONNECTION CARD -->
+    <div class="bp-card bp-conn" id="section-conn">
+      <div class="bp-card-hd" onclick="toggleBp('conn')">
+        <div class="bp-card-type">Macro Engine I</div>
+        <div class="bp-card-name">Connection</div>
+        <p class="bp-card-desc">Every client started as a conversation. Connection is the engine that keeps warm relationships flowing into signed engagements and makes sure the funnel never runs dry.</p>
+        <div class="bp-card-meta">
+          <div class="bp-meta-item"><span class="lbl">Owner</span><span class="mval">Jagger</span></div>
+          <div class="bp-meta-item"><span class="lbl">Trigger</span><span class="mval">Cron + inbound</span></div>
+          <div class="bp-meta-item"><span class="lbl">Output</span><span class="mval">Signed EL</span></div>
+        </div>
+        <div class="bp-card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+      </div>
+      <div class="eng-body" id="bodyConn">
+        <div class="eng-inner">
+          <div style="padding:12px 16px 0;"><a href="/engines/connection/" style="font-size:12px;color:var(--conn);text-decoration:none;font-weight:600;letter-spacing:.04em;">View all 4 engines &rarr;</a></div>
+          <div class="eng-list">
+            <a class="erow" href="/engines/connection/sm-content/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">SM Content Engine <span class="owner owner-p">Freddie</span></div></div></a>
+            <a class="erow" href="/engines/connection/sm-engagement/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">SM Engagement Engine <span class="owner owner-p">Joni</span></div></div></a>
+            <a class="erow" href="/engines/bd-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Connection Acquisition Engine <span class="owner owner-p">Jagger</span></div></div></a>
+            <a class="erow" href="/engines/connection/proposal/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Proposal Engine <span class="owner owner-p">Prince</span></div></div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALUE CARD -->
+    <div class="bp-card bp-val" id="section-val">
+      <div class="bp-card-hd" onclick="toggleBp('val')">
+        <div class="bp-card-type">Macro Engine II</div>
+        <div class="bp-card-name">Value</div>
+        <p class="bp-card-desc">A signed agreement is just the ignition. Value is where Mexzungu earns its fees: advisory, governance, AI builds, and deals, from kickoff all the way to paid invoice.</p>
+        <div class="bp-card-meta">
+          <div class="bp-meta-item"><span class="lbl">Owner</span><span class="mval">Lars</span></div>
+          <div class="bp-meta-item"><span class="lbl">Trigger</span><span class="mval">EL signed</span></div>
+          <div class="bp-meta-item"><span class="lbl">Output</span><span class="mval">Invoice paid</span></div>
+        </div>
+        <div class="bp-card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+      </div>
+      <div class="eng-body" id="bodyVal">
+        <div class="eng-inner">
+          <div class="eng-list">
+            <a class="erow" href="/engines/onboarding-engine/"><span class="sm b-build"></span><div class="erow-inner"><div class="erow-name">Onboarding Engine <span class="owner">Lars</span></div></div></a>
+            <a class="erow" href="/engines/fractional-exec-engine/"><span class="sm b-live h-failing"></span><div class="erow-inner"><div class="erow-name">Fractional Exec Engine <span class="owner owner-p">Chrissie</span></div></div></a>
+            <a class="erow" href="/engines/founder-advisory-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Founder Advisory Engine <span class="owner owner-p">Lemmy</span></div></div></a>
+            <a class="erow" href="/engines/investor-advisory-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Investor Advisory Engine <span class="owner owner-p">PJ</span></div></div></a>
+            <a class="erow" href="/engines/deal-closing-engine/"><span class="sm b-live h-failing"></span><div class="erow-inner"><div class="erow-name">Deal Closing Engine <span class="owner owner-p">PJ</span></div></div></a>
+            <a class="erow" href="/engines/governance-engine/"><span class="sm b-build"></span><div class="erow-inner"><div class="erow-name">Governance Engine <span class="owner owner-p">Chrissie</span></div></div></a>
+            <a class="erow" href="/engines/ai-agent-building-engine/"><span class="sm b-build"></span><div class="erow-inner"><div class="erow-name">AI Agent Building Engine <span class="owner owner-p">Bowie</span></div></div></a>
+            <a class="erow" href="/engines/billing-engine/"><span class="sm b-live h-failing"></span><div class="erow-inner"><div class="erow-name">Billing Engine <span class="owner owner-p">Gene</span></div></div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARE CARD -->
+    <div class="bp-card bp-care" id="section-care">
+      <div class="bp-card-hd" onclick="toggleBp('care')">
+        <div class="bp-card-type">Macro Engine III</div>
+        <div class="bp-card-name">Care</div>
+        <p class="bp-card-desc">The work ends. The relationship does not. Care converts satisfied clients into referrals and first engagements into second ones, closing the loop back to Connection.</p>
+        <div class="bp-card-meta">
+          <div class="bp-meta-item"><span class="lbl">Owner</span><span class="mval">Sade</span></div>
+          <div class="bp-meta-item"><span class="lbl">Trigger</span><span class="mval">Invoice paid</span></div>
+          <div class="bp-meta-item"><span class="lbl">Output</span><span class="mval">Referral / re-entry</span></div>
+        </div>
+        <div class="bp-card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+      </div>
+      <div class="eng-body" id="bodyCare">
+        <div class="eng-inner">
+          <div class="eng-list">
+            <a class="erow" href="/engines/client-health-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Client Health Engine <span class="owner">Sade</span></div></div></a>
+            <a class="erow" href="/engines/success-check-engine/"><span class="sm b-concept"></span><div class="erow-inner"><div class="erow-name">Success Check Engine <span class="owner">Sade</span></div></div></a>
+            <a class="erow" href="/engines/referral-engine/"><span class="sm b-build"></span><div class="erow-inner"><div class="erow-name">Referral Engine <span class="owner owner-p">Jagger</span></div></div></a>
+            <a class="erow" href="/engines/reactivation-engine/"><span class="sm b-build"></span><div class="erow-inner"><div class="erow-name">Re-activation Engine <span class="owner">Jagger</span></div></div></a>
+            <a class="erow" href="/engines/infrastructure-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Infrastructure Engine <span class="owner">Bowie</span></div></div></a>
+            <a class="erow" href="/engines/knowledge-engine/"><span class="sm b-live h-healthy"></span><div class="erow-inner"><div class="erow-name">Knowledge Engine <span class="owner">Nina</span></div></div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =====================
+     SECTION 5: STATUS LEGEND
+===================== -->
+<div class="legend-section">
+  <div class="section-label">Status Key</div>
+  <div class="legend-rows">
+    <div class="legend-row">
+      <div class="legend-row-label">Process</div>
+      <div class="legend-item"><span class="ld ld-live"></span> Live</div>
+      <div class="legend-item"><span class="ld ld-build"></span> In Build</div>
+      <div class="legend-item"><span class="ld ld-concept"></span> Concept</div>
+    </div>
+    <div class="legend-row">
+      <div class="legend-row-label">Health</div>
+      <div class="legend-item"><span class="ld ld-healthy"></span> Healthy</div>
+      <div class="legend-item"><span class="ld ld-failing"></span> Degraded</div>
+      <div class="legend-item"><span class="ld ld-broken"></span> Broken</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---- Loop card expand ---- */
+function toggleCard(which) {
+  var card = document.getElementById('card' + which);
+  card.classList.toggle('card-open');
+  setTimeout(drawArrows, 400);
+}
+
+/* ---- Blueprint card expand ---- */
+function toggleBp(which) {
+  var bodyMap = { conn:'bodyConn', val:'bodyVal', care:'bodyCare' };
+  var hdParentMap = { conn:'section-conn', val:'section-val', care:'section-care' };
+  var card = document.getElementById(hdParentMap[which]);
+  card.classList.toggle('card-open');
+}
+
+/* ---- Triangle arrows ---- */
+function drawArrows() {
+  var svg = document.getElementById('triSvg');
+  if (!svg || window.innerWidth <= 680) return;
+
+  var container = document.getElementById('triContainer');
+  var cRect = container.getBoundingClientRect();
+  var W = cRect.width;
+  var H = container.offsetHeight;
+
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.style.width = W + 'px';
+  svg.style.height = H + 'px';
+
+  var connEl = document.getElementById('cardConn');
+  var valEl  = document.getElementById('cardVal');
+  var careEl = document.getElementById('cardCare');
+
+  var cR = connEl.getBoundingClientRect();
+  var vR = valEl.getBoundingClientRect();
+  var rR = careEl.getBoundingClientRect();
+
+  function lx(r) { return r.left - cRect.left; }
+  function ly(r) { return r.top  - cRect.top;  }
+
+  var cX = lx(cR), cY = ly(cR), cW = cR.width, cH = cR.height;
+  var vX = lx(vR), vY = ly(vR), vW = vR.width, vH = vR.height;
+  var rX = lx(rR), rY = ly(rR), rW = rR.width, rH = rR.height;
+
+  var gap = vY - (cY + cH);
+
+  /* Arrow 1: Connection LEFT SIDE -> Value TOP */
+  var a1x1 = cX,             a1y1 = cY + cH * 0.42;
+  var a1x2 = vX + vW * 0.42, a1y2 = vY;
+  var a1cp1x = cX - 72,      a1cp1y = a1y1 + gap * 0.52;
+  var a1cp2x = a1x2 - 18,    a1cp2y = a1y2 - 44;
+
+  /* Arrow 2: Value BOTTOM -> Care BOTTOM (arc below both cards) */
+  var a2x1 = vX + vW * 0.78, a2y1 = vY + vH;
+  var a2x2 = rX + rW * 0.22, a2y2 = rY + rH;
+  var arcD  = Math.max(vY + vH, rY + rH) + 66;
+  var a2cp1x = a2x1 + 32,    a2cp1y = arcD;
+  var a2cp2x = a2x2 - 32,    a2cp2y = arcD;
+
+  /* Arrow 3: Care TOP -> Connection RIGHT SIDE */
+  var a3x1 = rX + rW * 0.58, a3y1 = rY;
+  var a3x2 = cX + cW,        a3y2 = cY + cH * 0.42;
+  var a3cp1x = a3x1 + 18,    a3cp1y = a3y1 - 44;
+  var a3cp2x = cX + cW + 72, a3cp2y = a3y2 + gap * 0.52;
+
+  function pd(x1,y1,c1x,c1y,c2x,c2y,x2,y2) {
+    return 'M'+x1+','+y1+' C'+c1x+','+c1y+' '+c2x+','+c2y+' '+x2+','+y2;
+  }
+
+  var d1 = pd(a1x1,a1y1,a1cp1x,a1cp1y,a1cp2x,a1cp2y,a1x2,a1y2);
+  var d2 = pd(a2x1,a2y1,a2cp1x,a2cp1y,a2cp2x,a2cp2y,a2x2,a2y2);
+  var d3 = pd(a3x1,a3y1,a3cp1x,a3cp1y,a3cp2x,a3cp2y,a3x2,a3y2);
+
+  var defs =
+    '<defs>' +
+      '<filter id="glo" x="-80%" y="-80%" width="260%" height="260%">' +
+        '<feGaussianBlur stdDeviation="8"/>' +
+      '</filter>' +
+      '<marker id="mC" markerWidth="22" markerHeight="16" refX="20" refY="8" orient="auto" markerUnits="userSpaceOnUse">' +
+        '<polygon points="0 2,22 8,0 14" fill="#4cc8b4"/>' +
+      '</marker>' +
+      '<marker id="mV" markerWidth="22" markerHeight="16" refX="20" refY="8" orient="auto" markerUnits="userSpaceOnUse">' +
+        '<polygon points="0 2,22 8,0 14" fill="#f0a030"/>' +
+      '</marker>' +
+      '<marker id="mR" markerWidth="22" markerHeight="16" refX="20" refY="8" orient="auto" markerUnits="userSpaceOnUse">' +
+        '<polygon points="0 2,22 8,0 14" fill="#b482ff"/>' +
+      '</marker>' +
+    '</defs>';
+
+  var refPaths =
+    '<path id="ap1" d="'+d1+'" fill="none" stroke="none"/>' +
+    '<path id="ap2" d="'+d2+'" fill="none" stroke="none"/>' +
+    '<path id="ap3" d="'+d3+'" fill="none" stroke="none"/>';
+
+  var g1 = '<path d="'+d1+'" stroke="#4cc8b4" stroke-width="20" fill="none" opacity=".14" filter="url(#glo)"/>';
+  var g2 = '<path d="'+d2+'" stroke="#f0a030" stroke-width="20" fill="none" opacity=".14" filter="url(#glo)"/>';
+  var g3 = '<path d="'+d3+'" stroke="#b482ff" stroke-width="20" fill="none" opacity=".14" filter="url(#glo)"/>';
+
+  var p1 = '<path d="'+d1+'" stroke="#4cc8b4" stroke-width="7" stroke-linecap="round" fill="none" marker-end="url(#mC)" opacity=".88"/>';
+  var p2 = '<path d="'+d2+'" stroke="#f0a030" stroke-width="7" stroke-linecap="round" fill="none" marker-end="url(#mV)" opacity=".88"/>';
+  var p3 = '<path d="'+d3+'" stroke="#b482ff" stroke-width="7" stroke-linecap="round" fill="none" marker-end="url(#mR)" opacity=".88"/>';
+
+  function dot(pid, col, dur, begin, r, op) {
+    return '<circle r="'+r+'" fill="'+col+'" opacity="'+op+'">' +
+      '<animateMotion dur="'+dur+'s" begin="'+begin+'s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines=".42 0 .58 1">' +
+        '<mpath href="#'+pid+'"/>' +
+      '</animateMotion>' +
+    '</circle>';
+  }
+
+  var dots =
+    dot('ap1','#4cc8b4', 3.8, 0.0, 5, .95) + dot('ap1','#4cc8b4', 5.2, 1.4, 3, .7)  + dot('ap1','#4cc8b4', 4.5, 2.9, 4, .85) + dot('ap1','#4cc8b4', 6.1, 0.9, 3, .6)  + dot('ap1','#4cc8b4', 3.4, 3.7, 6, .9) +
+    dot('ap2','#f0a030', 4.2, 0.5, 4, .9)  + dot('ap2','#f0a030', 3.6, 2.1, 6, .95) + dot('ap2','#f0a030', 5.7, 1.0, 3, .65) + dot('ap2','#f0a030', 4.9, 3.3, 5, .8)  + dot('ap2','#f0a030', 6.3, 0.2, 3, .6) +
+    dot('ap3','#b482ff', 4.0, 1.0, 5, .9)  + dot('ap3','#b482ff', 5.5, 0.4, 3, .7)  + dot('ap3','#b482ff', 3.7, 2.6, 4, .85) + dot('ap3','#b482ff', 6.0, 1.8, 3, .6)  + dot('ap3','#b482ff', 4.8, 3.4, 5, .95);
+
+  svg.innerHTML = defs + refPaths + g1+g2+g3 + p1+p2+p3 + dots;
+}
+
+window.addEventListener('load', function() { setTimeout(drawArrows, 100); });
+window.addEventListener('resize', drawArrows);
+</script>
+</body>
+</html>
