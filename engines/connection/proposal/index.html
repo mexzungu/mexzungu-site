@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal Engine | MGL Engines</title>
+  <style>
+    :root {
+      --pink:#E14B87; --bg:#0f0f0f; --surface:#181818; --s2:#1e1e1e;
+      --border:#2a2a2a; --text:#e8e8e8; --muted:#666;
+      --conn:#4cc8b4; --val:#f0a030; --care:#b482ff;
+      --green:#4caf7d; --blue:#6498ff; --red:#e05050;
+      --purple:#b482ff;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; font-size:15px; line-height:1.6; min-height:100vh; }
+
+    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; }
+    nav .logo { font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; }
+    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
+    nav a:hover { color:var(--text); background:var(--s2); }
+
+    .wrap { max-width:900px; margin:0 auto; padding:0 24px; }
+
+    .hero { text-align:center; padding:56px 24px 32px; max-width:720px; margin:0 auto; }
+    .macro-tag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--conn); margin-bottom:14px; }
+    .status-row { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; }
+    .status-text { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+    .sm { display:inline-block; width:8px; height:8px; border-radius:50%; }
+    .b-concept { background:#444; }
+    .h-concept { box-shadow:0 0 0 2px var(--bg),0 0 0 3px #444; }
+    .engine-name { font-size:44px; font-weight:900; letter-spacing:-.035em; margin-bottom:14px; color:var(--conn); line-height:1.05; }
+    .engine-why { font-size:16px; color:#aaa; line-height:1.65; max-width:600px; margin:0 auto 22px; }
+    .owner-row { font-size:13px; color:var(--muted); }
+    .owner { font-size:10px; font-weight:700; text-transform:uppercase; padding:2px 8px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--muted); margin:0 3px; }
+    .owner-p { border-color:var(--pink); color:var(--pink); background:rgba(225,75,135,.05); }
+
+    .kpi-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:32px auto 0; max-width:720px; }
+    .kpi { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 14px; text-align:center; border-top:3px solid var(--conn); }
+    .kpi-val { font-size:22px; font-weight:800; letter-spacing:-.02em; color:var(--text); margin-bottom:4px; }
+    .kpi-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); }
+
+    .section { padding:48px 0 8px; }
+    .section-label { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+    .section-title { font-size:26px; font-weight:800; letter-spacing:-.025em; margin-bottom:8px; }
+    .section-sub { font-size:13px; color:#777; margin-bottom:28px; }
+
+    .promise { background:linear-gradient(135deg, rgba(225,75,135,.10), rgba(180,130,255,.06)); border:1px solid var(--pink); border-radius:14px; padding:28px 30px; margin:16px 0; }
+    .promise-lbl { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.14em; color:var(--pink); margin-bottom:12px; }
+    .promise-body { font-size:17px; color:var(--text); line-height:1.6; font-weight:500; }
+    .promise-body strong { color:var(--pink); font-weight:700; }
+
+    .flow { display:flex; flex-direction:column; gap:0; margin:8px 0; }
+    .flow-phase { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; display:grid; grid-template-columns:44px 1fr; gap:16px; align-items:start; }
+    .phase-num { width:36px; height:36px; border-radius:50%; background:var(--conn); color:#0f0f0f; font-weight:800; font-size:15px; display:flex; align-items:center; justify-content:center; }
+    .phase-body { padding-top:2px; }
+    .phase-title { font-size:15px; font-weight:700; margin-bottom:4px; letter-spacing:-.01em; }
+    .phase-desc { font-size:13px; color:#999; line-height:1.6; }
+    .phase-desc code { font-family:'SF Mono','Monaco',monospace; font-size:12px; background:var(--s2); padding:1px 6px; border-radius:4px; color:#ddd; }
+    .phase-connector { height:12px; width:2px; background:var(--border); margin-left:22px; }
+
+    .actor-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .actor { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+    .actor-name { font-size:13px; font-weight:700; color:var(--conn); margin-bottom:4px; }
+    .actor-role { font-size:12px; color:#999; line-height:1.55; }
+
+    .tbl { width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin:8px 0; }
+    .tbl th, .tbl td { padding:12px 14px; text-align:left; font-size:13px; border-bottom:1px solid var(--border); }
+    .tbl th { background:var(--s2); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); }
+    .tbl td { color:#ccc; line-height:1.55; vertical-align:top; }
+    .tbl tr:last-child td { border-bottom:none; }
+    .tag-show { display:inline-block; background:rgba(225,75,135,.12); color:var(--pink); font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; text-transform:uppercase; letter-spacing:.08em; border:1px solid rgba(225,75,135,.3); }
+    .tag-sound { display:inline-block; background:rgba(100,152,255,.10); color:var(--blue); font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; text-transform:uppercase; letter-spacing:.08em; border:1px solid rgba(100,152,255,.3); }
+
+    .infra-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .infra { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+    .infra-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--purple); margin-bottom:4px; }
+    .infra-val { font-size:13px; color:#ccc; line-height:1.55; word-break:break-word; }
+    .infra-val code { font-family:'SF Mono','Monaco',monospace; font-size:12px; background:var(--s2); padding:1px 6px; border-radius:4px; color:#ddd; }
+
+    .iface { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:10px; }
+    .iface-flow { display:flex; align-items:center; gap:12px; margin-bottom:6px; font-size:13px; font-weight:600; flex-wrap:wrap; }
+    .iface-arrow { color:var(--conn); font-weight:700; }
+    .iface-desc { font-size:12px; color:#999; line-height:1.55; }
+    .pill { background:var(--s2); border:1px solid var(--border); padding:3px 10px; border-radius:6px; font-size:12px; }
+
+    .foot { text-align:center; padding:40px 24px 60px; }
+    .back-link { display:inline-block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text); text-decoration:none; border:1px solid var(--border); padding:10px 22px; border-radius:8px; transition:.15s; }
+    .back-link:hover { border-color:var(--pink); color:var(--pink); }
+
+    @media (max-width:680px) {
+      .engine-name { font-size:32px; }
+      .kpi-strip { grid-template-columns:1fr; }
+      .actor-grid, .infra-grid { grid-template-columns:1fr; }
+      .flow-phase { grid-template-columns:36px 1fr; gap:12px; padding:14px 16px; }
+      .phase-num { width:30px; height:30px; font-size:13px; }
+      .promise { padding:22px 20px; }
+      .promise-body { font-size:15px; }
+      .tbl { display:block; overflow-x:auto; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">MGL</span>
+  <a href="/engines/">Hub</a>
+  <a href="/engines/blueprint/">Blueprint</a>
+  <a href="/engines/architecture/">Architecture</a>
+</nav>
+
+<div class="hero">
+  <div class="macro-tag">Macro Engine I: Connection</div>
+  <div class="status-row">
+    <span class="sm b-concept h-concept"></span>
+    <span class="status-text">Concept, In Design</span>
+  </div>
+  <h1 class="engine-name">Proposal Engine</h1>
+  <p class="engine-why">Closes the deal. Receives a Go brief, ships a proposal page with the engagement letter embedded inline, detects countersign, hands back to the Connection Acquisition Engine.</p>
+  <div class="owner-row">
+    Direction: <span class="owner owner-p">Prince</span>
+    EL: <span class="owner owner-p">Lemmy</span>
+    Fee: <span class="owner owner-p">Gene</span>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-val">Under 24h</div>
+      <div class="kpi-lbl">Brief to Proposal Live</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">Under 7d</div>
+      <div class="kpi-lbl">Send to Signature</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">60%+</div>
+      <div class="kpi-lbl">Proposal to Close</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="section">
+    <div class="section-label">The Core Promise</div>
+    <div class="promise">
+      <div class="promise-lbl">Non-negotiable</div>
+      <div class="promise-body">
+        The client <strong>never leaves the proposal page to sign</strong>. The engagement letter is embedded directly via a DocuSeal inline widget, so signing happens in the same view where the proposal is read, with no email attachments, no external redirect, and no portal login required.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The Flow</div>
+    <h2 class="section-title">Five phases, one deal closed</h2>
+    <p class="section-sub">Go brief in, countersigned EL out. Every phase is either automated or gated by Fire Away.</p>
+
+    <div class="flow">
+      <div class="flow-phase">
+        <div class="phase-num">1</div>
+        <div class="phase-body">
+          <div class="phase-title">Intake</div>
+          <div class="phase-desc">Go brief received from CAE Phase 5.3. Gene checks fee against approved rate card. Lemmy runs conflict check across active clients. Bruce reviews the framing. Non-standard fee or any conflict escalates to Pepe before build starts.</div>
+        </div>
+      </div>
+      <div class="phase-connector"></div>
+
+      <div class="flow-phase">
+        <div class="phase-num">2</div>
+        <div class="phase-body">
+          <div class="phase-title">Build</div>
+          <div class="phase-desc">Slug generated as <code>client-name-kebab-YYYY-MM</code>. Proposal page deployed at <code>/proposals/[slug]</code>. Sign page deployed at <code>/sign/[slug]</code> with DocuSeal envelope embedded inline. Pre-flight check confirms both pages return 200 and the widget loads.</div>
+        </div>
+      </div>
+      <div class="phase-connector"></div>
+
+      <div class="flow-phase">
+        <div class="phase-num">3</div>
+        <div class="phase-body">
+          <div class="phase-title">Send</div>
+          <div class="phase-desc">Prince drafts the email in Pepe's voice, three to five sentences long with one link and no attachments. Pepe reviews and says Fire Away, which is the only phrase that authorizes the send. On delivery, CRM state moves to proposal and a Notion entry is created.</div>
+        </div>
+      </div>
+      <div class="phase-connector"></div>
+
+      <div class="flow-phase">
+        <div class="phase-num">4</div>
+        <div class="phase-body">
+          <div class="phase-title">Monitoring</div>
+          <div class="phase-desc">DocuSeal webhook fires on every signing event. Day 7 without signature: Lars posts a chase draft, Janis sends after Fire Away. Day 14: Pepe decides to extend, revise, or close. Day 28 still unsigned: lead moves to stale, engine closes, CAE owns re-engagement.</div>
+        </div>
+      </div>
+      <div class="phase-connector"></div>
+
+      <div class="flow-phase">
+        <div class="phase-num">5</div>
+        <div class="phase-body">
+          <div class="phase-title">Close</div>
+          <div class="phase-desc">Countersigned PDF pulled from DocuSeal, filed to client Drive folder as <code>YYYY-MM-DD_[CLIENT]_Engagement-Letter_Signed.pdf</code>. Lemmy contract registry updated. Countersigned EL event emitted to CAE Phase 5.4. Gene writes finance log entry.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Actor Map</div>
+    <h2 class="section-title">Who does what</h2>
+    <p class="section-sub">Eight roles across the engine, each with a specific handoff so no step is left with shared or unclear ownership.</p>
+
+    <div class="actor-grid">
+      <div class="actor">
+        <div class="actor-name">Prince</div>
+        <div class="actor-role">Engine direction. Owns proposal narrative. Ensures the page reads as a deal-closing document, not a scope list.</div>
+      </div>
+      <div class="actor">
+        <div class="actor-name">Lemmy</div>
+        <div class="actor-role">EL structuring. Pulls canonical template. Confirms scope, fee, payment terms, jurisdiction. Runs conflict check.</div>
+      </div>
+      <div class="actor">
+        <div class="actor-name">Gene</div>
+        <div class="actor-role">Fee confirmation. Validates billing type, amount, schedule against approved rates. Flags non-standard terms.</div>
+      </div>
+      <div class="actor">
+        <div class="actor-name">Bruce</div>
+        <div class="actor-role">Framing review. Checks narrative against current MGL positioning before Pepe reviews for send.</div>
+      </div>
+      <div class="actor">
+        <div class="actor-name">Bowie</div>
+        <div class="actor-role">Infrastructure. Manages DocuSeal instance, webhook config, envelope status polling, route availability.</div>
+      </div>
+      <div class="actor">
+        <div class="actor-name">Lars</div>
+        <div class="actor-role">Delivery reliability. Monitors signing status daily. Flags unsigned proposals at Day 7 and Day 14 to alerts thread.</div>
+      </div>
+      <div class="actor">
+        <div class="actor-name">Janis</div>
+        <div class="actor-role">Execution. Builds the page, calls DocuSeal API, monitors webhook, emits countersign event to CAE, writes all logs.</div>
+      </div>
+      <div class="actor">
+        <div class="actor-name">Pepe</div>
+        <div class="actor-role">Showtime gate. Fire Away on every proposal email. Reviews EL terms on any non-standard scope.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Gates</div>
+    <h2 class="section-title">What needs Pepe, what does not</h2>
+    <p class="section-sub">Every proposal email requires an explicit Fire Away from Pepe before it leaves the drafts folder.</p>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Gate</th>
+          <th>Phase</th>
+          <th>Type</th>
+          <th>Trigger</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Non-standard fee</td>
+          <td>1</td>
+          <td><span class="tag-show">Showtime</span></td>
+          <td>Fee deviates from approved rate card</td>
+        </tr>
+        <tr>
+          <td>Conflict of interest</td>
+          <td>1</td>
+          <td><span class="tag-show">Showtime</span></td>
+          <td>Any conflict detected in client registry</td>
+        </tr>
+        <tr>
+          <td>Proposal email send</td>
+          <td>3</td>
+          <td><span class="tag-show">Fire Away</span></td>
+          <td>Every proposal, regardless of client, size, or urgency</td>
+        </tr>
+        <tr>
+          <td>Day 14 stale decision</td>
+          <td>4</td>
+          <td><span class="tag-show">Showtime</span></td>
+          <td>Pepe decides: extend, revise, or close</td>
+        </tr>
+        <tr>
+          <td>Everything else</td>
+          <td>1 to 5</td>
+          <td><span class="tag-sound">Soundcheck</span></td>
+          <td>Janis executes, reports if noteworthy</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Failure Modes</div>
+    <h2 class="section-title">What breaks, how it gets caught</h2>
+    <p class="section-sub">Every failure has a named detection point and a named responder.</p>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Failure</th>
+          <th>Detection</th>
+          <th>Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>DocuSeal embed fails to load</td>
+          <td>Phase 2 pre-flight check</td>
+          <td>Bowie diagnoses. Proposal does not send until resolved.</td>
+        </tr>
+        <tr>
+          <td>Webhook not received after signing</td>
+          <td>Lars Day 7 check</td>
+          <td>Bowie confirms webhook config. Poll DocuSeal API directly for envelope status.</td>
+        </tr>
+        <tr>
+          <td>EL PDF generation error</td>
+          <td>Phase 2 build</td>
+          <td>Lemmy reviews template, regenerates. No send until PDF confirmed valid.</td>
+        </tr>
+        <tr>
+          <td>Client cannot access sign page</td>
+          <td>Client reports</td>
+          <td>Bowie checks routing. Fallback: generate direct DocuSeal signing link.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Infrastructure</div>
+    <h2 class="section-title">What runs this engine</h2>
+    <p class="section-sub">Self-hosted DocuSeal, static proposal pages, one webhook endpoint.</p>
+
+    <div class="infra-grid">
+      <div class="infra">
+        <div class="infra-lbl">Signing Layer</div>
+        <div class="infra-val">DocuSeal, self-hosted on VPS. AGPL licence. Embedded widget renders inline on <code>/sign/[slug]</code>.</div>
+      </div>
+      <div class="infra">
+        <div class="infra-lbl">Webhook Endpoint</div>
+        <div class="infra-val"><code>POST /api/docuseal-webhook</code>. Cloudflare Pages function, proxies to VPS handler.</div>
+      </div>
+      <div class="infra">
+        <div class="infra-lbl">EL Template</div>
+        <div class="infra-val"><code>brain/areas/mexzungu/templates/engagement-letter-template.md</code>. Lemmy owns. Never modified mid-engagement.</div>
+      </div>
+      <div class="infra">
+        <div class="infra-lbl">Signed PDF Naming</div>
+        <div class="infra-val"><code>YYYY-MM-DD_[CLIENT]_Engagement-Letter_Signed.pdf</code>, filed to Mexzungu Group Drive, client subfolder.</div>
+      </div>
+      <div class="infra">
+        <div class="infra-lbl">Proposal Pages</div>
+        <div class="infra-val"><code>mexzungu.com/proposals/[slug]</code>. Static. Deployed via <code>deploy.sh</code>.</div>
+      </div>
+      <div class="infra">
+        <div class="infra-lbl">Sign Pages</div>
+        <div class="infra-val"><code>mexzungu.com/sign/[slug]</code>. Same stack. DocuSeal embed only.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Cross-Engine Interfaces</div>
+    <h2 class="section-title">How this engine connects to CAE</h2>
+    <p class="section-sub">A single inbound trigger opens the engine, a single outbound event closes it.</p>
+
+    <div class="iface">
+      <div class="iface-flow">
+        <span class="pill">CAE Phase 5.3</span>
+        <span class="iface-arrow">&#10132;</span>
+        <span class="pill">Proposal Engine Phase 1</span>
+      </div>
+      <div class="iface-desc"><strong style="color:#ddd;">Payload:</strong> contact, company, scope agreed, billing type, fee, discovery notes. <strong style="color:#ddd;">Trigger:</strong> Go decision confirmed in CAE Discovery phase.</div>
+    </div>
+
+    <div class="iface">
+      <div class="iface-flow">
+        <span class="pill">Proposal Engine Phase 5.3</span>
+        <span class="iface-arrow">&#10132;</span>
+        <span class="pill">CAE Phase 5.4</span>
+      </div>
+      <div class="iface-desc"><strong style="color:#ddd;">Payload:</strong> client ID, signed date, EL Drive link. <strong style="color:#ddd;">Trigger:</strong> DocuSeal countersign webhook received and validated.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">
+  <a href="/engines/connection/" class="back-link">&larr; Back to Connection Macro Engine</a>
+</div>
+
+</body>
+</html>

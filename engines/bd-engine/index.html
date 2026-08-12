@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connection Acquisition Engine | MGL Engines</title>
+  <style>
+    :root { --pink:#E14B87; --bg:#0f0f0f; --surface:#181818; --s2:#1e1e1e; --border:#2a2a2a; --text:#e8e8e8; --muted:#666; --conn:#4cc8b4; --val:#f0a030; --care:#b482ff; --green:#4caf7d; --blue:#6498ff; --red:#e05050; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh; }
+    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; }
+    nav .logo { font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; }
+    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
+    nav a:hover { color:var(--text); background:var(--s2); }
+
+    .moved-banner { background:linear-gradient(135deg, rgba(225,75,135,.14), rgba(76,200,180,.08)); border-bottom:1px solid var(--pink); padding:16px 24px; text-align:center; font-size:14px; color:var(--text); }
+    .moved-banner strong { color:var(--pink); font-weight:700; }
+    .moved-banner a { color:var(--pink); text-decoration:none; font-weight:700; border-bottom:1px dotted var(--pink); }
+    .moved-banner a:hover { color:var(--text); border-bottom-color:var(--text); }
+
+    .page-hd { text-align:center; padding:52px 24px 32px; max-width:640px; margin:0 auto; }
+    .macro-tag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--conn); margin-bottom:14px; }
+    .status-row { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; }
+    .status-text { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+    .sm { display:inline-block; width:8px; height:8px; border-radius:50%; }
+    .b-live { background:var(--green); }
+    .b-build { background:var(--blue); }
+    .b-concept { background:#444; }
+    .h-healthy { box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--green); }
+    .h-failing { box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--val); }
+    .h-broken { box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--red); }
+    .engine-name { font-size:36px; font-weight:800; letter-spacing:-.03em; margin-bottom:14px; color:var(--conn); }
+    .owner-row { font-size:13px; color:var(--muted); }
+    .owner { font-size:10px; font-weight:700; text-transform:uppercase; padding:2px 8px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--muted); margin-left:6px; }
+    .owner-p { border-color:var(--pink); color:var(--pink); background:rgba(225,75,135,.05); }
+    .coming-wrap { display:flex; justify-content:center; padding:0 24px 60px; }
+    .coming-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:44px 40px; text-align:center; max-width:520px; width:100%; }
+    .coming-icon { font-size:32px; margin-bottom:20px; opacity:.4; }
+    .coming-card h2 { font-size:20px; font-weight:700; margin-bottom:12px; }
+    .coming-card p { font-size:14px; color:#999; line-height:1.65; margin-bottom:26px; }
+    .primary-cta { display:inline-block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#0f0f0f; background:var(--pink); text-decoration:none; padding:11px 24px; border-radius:8px; transition:.15s; margin:4px 4px; }
+    .primary-cta:hover { background:#f26aa0; }
+    .back-link { display:inline-block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text); text-decoration:none; border:1px solid var(--border); padding:10px 22px; border-radius:8px; transition:.15s; margin:4px 4px; }
+    .back-link:hover { border-color:var(--muted); }
+    .foot-nav { display:flex; justify-content:center; gap:10px; padding:0 24px 48px; flex-wrap:wrap; }
+    .foot-nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:5px 14px; border:1px solid var(--border); border-radius:6px; transition:.15s; }
+    .foot-nav a:hover { color:var(--text); border-color:#444; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">MGL</span>
+  <a href="/engines/blueprint/">Blueprint</a>
+  <a href="/engines/architecture/">Architecture</a>
+</nav>
+
+<div class="moved-banner">
+  <strong>This page has moved.</strong> Full details for the Connection Acquisition Engine are now at <a href="/engines/connection/connection-acquisition/">/engines/connection/connection-acquisition/</a>
+</div>
+
+<div class="page-hd">
+  <div class="macro-tag">Macro Engine I: Connection</div>
+  <div class="status-row">
+    <span class="sm b-live h-failing"></span>
+    <span class="status-text">Live / Degraded</span>
+  </div>
+  <h1 class="engine-name">Connection Acquisition Engine</h1>
+  <div class="owner-row">Owner: <span class="owner owner-p">Joan</span> Direction: <span class="owner owner-p">Jagger</span></div>
+</div>
+
+<div class="coming-wrap">
+  <div class="coming-card">
+    <div class="coming-icon">&#9881;</div>
+    <h2>The engine formerly known as BD Engine</h2>
+    <p>This page now redirects to the full Connection Acquisition Engine detail view under the Connection macro engine. The full engine breakdown, sub-phases, actor map, KPIs, gates, and failure modes live at the new URL.</p>
+    <a href="/engines/connection/connection-acquisition/" class="primary-cta">Open new page &rarr;</a>
+    <a href="/engines/blueprint/#section-conn" class="back-link">View in Blueprint</a>
+  </div>
+</div>
+
+<div class="foot-nav">
+  <a href="/engines/blueprint/">Back to Blueprint</a>
+  <a href="/engines/connection/">Connection Macro Engine</a>
+  <a href="/engines/content-engine/">Content Engine &rarr;</a>
+</div>
+
+</body>
+</html>
