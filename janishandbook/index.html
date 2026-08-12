@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Janis Handbook | mexzungu.com</title>
+  <style>
+    :root {
+      --pink: #E14B87;
+      --pink-dim: rgba(225,75,135,0.15);
+      --pink-border: rgba(225,75,135,0.3);
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #1a1a1a;
+      --card2: #141414;
+      --border: #2a2a2a;
+      --text: #e5e5e5;
+      --muted: #888888;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* STICKY HEADER */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-header .brand {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pink);
+    }
+    .site-header .back {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s;
+    }
+    .site-header .back:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 1.5rem 3.5rem;
+      text-align: center;
+    }
+    .hero-label {
+      display: inline-block;
+      background: var(--pink-dim);
+      border: 1px solid var(--pink-border);
+      color: var(--pink);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--pink);
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-stat {
+      display: inline-block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 2rem;
+      max-width: 520px;
+      text-align: left;
+    }
+    .hero-stat .big {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--pink);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .hero-stat p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* MAIN WRAPPER */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* SECTION LABELS */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 0.6rem;
+    }
+    section { margin-bottom: 4rem; }
+    section > h2 {
+      font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .section-intro {
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+      max-width: 640px;
+      font-size: 0.95rem;
+    }
+
+    /* RULE CARDS */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 660px) { .rules-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 661px) and (max-width: 860px) { .rules-grid { grid-template-columns: 1fr 1fr; } }
+
+    .rule-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--pink);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .rule-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .rule-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .rule-card p strong { color: var(--text); }
+
+    /* TOKEN BAR CHART */
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 100px;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    @media (max-width: 600px) {
+      .bar-row { grid-template-columns: 1fr; gap: 0.3rem; }
+      .bar-label { font-size: 0.82rem; }
+    }
+    .bar-label {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-align: right;
+    }
+    @media (max-width: 600px) { .bar-label { text-align: left; } }
+    .bar-track {
+      background: var(--border);
+      border-radius: 999px;
+      height: 22px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+    .bar-tokens {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--pink);
+      white-space: nowrap;
+    }
+    .bar-fill.green  { background: var(--green); }
+    .bar-fill.teal   { background: #14b8a6; }
+    .bar-fill.amber  { background: var(--amber); }
+    .bar-fill.orange { background: #f97316; }
+    .bar-fill.red    { background: var(--red); }
+
+    /* EXAMPLES */
+    .examples-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.45rem 0.9rem;
+      transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--pink-dim);
+      border-color: var(--pink-border);
+      color: var(--pink);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .tab-panel.active { grid-template-columns: 1fr; } }
+
+    .example-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .example-card.bad  { border: 1px solid rgba(239,68,68,0.4); }
+    .example-card.good { border: 1px solid rgba(34,197,94,0.4); }
+    .example-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    .bad  .example-badge { background: rgba(239,68,68,0.15); color: var(--red); }
+    .good .example-badge { background: rgba(34,197,94,0.15);  color: var(--green); }
+    .example-card p { font-size: 0.9rem; line-height: 1.55; color: var(--text); }
+    .example-card .why { margin-top: 0.75rem; font-size: 0.8rem; color: var(--muted); }
+
+    /* DOCUMENT WORKFLOW */
+    .workflow-box {
+      background: linear-gradient(135deg, rgba(225,75,135,0.1), rgba(225,75,135,0.03));
+      border: 1px solid var(--pink-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .workflow-box h3 { font-size: 1rem; font-weight: 700; color: var(--pink); margin-bottom: 0.5rem; }
+    .workflow-box p { font-size: 0.92rem; color: var(--muted); line-height: 1.6; }
+    .step-flow {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0;
+    }
+    .step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    .step .step-num {
+      background: var(--pink);
+      color: white;
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .step-arrow { color: var(--muted); font-size: 1rem; }
+    @media (max-width: 600px) {
+      .step-flow { flex-direction: column; align-items: flex-start; }
+      .step-arrow { transform: rotate(90deg); }
+    }
+    .when-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .when-grid { grid-template-columns: 1fr; } }
+    .when-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem;
+    }
+    .when-card h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .when-card.use  h4 { color: var(--green); }
+    .when-card.skip h4 { color: var(--muted); }
+    .when-card ul { list-style: none; }
+    .when-card ul li {
+      font-size: 0.875rem;
+      color: var(--muted);
+      padding: 0.25rem 0 0.25rem 1.1rem;
+      position: relative;
+    }
+    .when-card.use  ul li::before { content: "&#10003;"; color: var(--green); position: absolute; left: 0; font-weight: 700; }
+    .when-card.skip ul li::before { content: "&#10007;"; color: var(--red);   position: absolute; left: 0; font-weight: 700; }
+    .token-math {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+      font-size: 0.9rem;
+    }
+    .token-math .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .token-math .row:last-child { border-bottom: none; }
+    .token-math .row span:first-child { color: var(--muted); }
+    .token-math .row .cost { font-weight: 700; }
+    .token-math .row .cost.bad  { color: var(--red); }
+    .token-math .row .cost.good { color: var(--green); }
+
+    /* BUDGET VISUALIZER */
+    .budget-track {
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0 0;
+    }
+    .budget-zones {
+      display: flex;
+      height: 36px;
+    }
+    .zone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      padding: 0 0.5rem;
+    }
+    .zone.z1 { background: var(--green); width: 80%; }
+    .zone.z2 { background: var(--amber); width: 14%; }
+    .zone.z3 { background: var(--red); width: 6%; }
+    .zone-ticks {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0 1.25rem;
+    }
+    .tick { font-size: 0.72rem; color: var(--muted); }
+    .tick.right { text-align: right; }
+    .tick.center { text-align: center; flex: 1; }
+    .zone-descriptions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    @media (max-width: 600px) { .zone-descriptions { grid-template-columns: 1fr; } }
+    .zone-desc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .zone-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      margin-bottom: 0.6rem;
+    }
+    .zone-desc.z1 .zone-tag { background: rgba(34,197,94,0.15); color: var(--green); }
+    .zone-desc.z2 .zone-tag { background: rgba(245,158,11,0.15); color: var(--amber); }
+    .zone-desc.z3 .zone-tag { background: rgba(239,68,68,0.15);  color: var(--red);   }
+    .zone-desc h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .zone-desc p  { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* STAT CALLOUTS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+    .stat-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-big {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--pink);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+    /* ACCORDION */
+    details {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+    summary {
+      cursor: pointer;
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: "+";
+      color: var(--pink);
+      font-size: 1.2rem;
+      font-weight: 300;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    details[open] summary::after { content: "-"; }
+    details[open] summary { border-bottom: 1px solid var(--border); }
+    .accordion-body {
+      padding: 1rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .accordion-body strong { color: var(--text); }
+    .accordion-body ul { list-style: none; margin-top: 0.5rem; }
+    .accordion-body ul li {
+      padding: 0.25rem 0 0.25rem 1.1rem;
+      position: relative;
+    }
+    .accordion-body ul li::before {
+      content: "&#8594;";
+      color: var(--pink);
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 4rem;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--pink); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- STICKY HEADER -->
+<header class="site-header">
+  <span class="brand">mexzungu.com</span>
+  <a href="https://mexzungu.com" class="back">&#8592; Back to site</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Janis Handbook v2</div>
+  <h1>Work Smarter<br>with <em>Janis</em></h1>
+  <p class="hero-sub">50,000 tokens per day. Use them well.</p>
+  <div class="hero-stat">
+    <div class="big">~9 conversations</div>
+    <p>At 5,500 tokens per message, your daily budget covers about 9 focused conversations. Make each one count.</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- 1. THREE CORE RULES -->
+  <section>
+    <div class="section-label">Core rules</div>
+    <h2>Three rules that change everything</h2>
+    <p class="section-intro">These are not general tips. They are the difference between burning your budget in two messages and getting ten productive tasks done.</p>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <h3>One thing at a time</h3>
+        <p>One topic per message. Not five. When you send five questions at once, Janis has to handle all five in one pass and the answers suffer. <strong>Send one, get a sharp answer, then continue.</strong></p>
+      </div>
+      <div class="rule-card">
+        <h3>Be specific</h3>
+        <p>Not: <em>"fix the website."</em><br><br><strong>Say: "The registration button on the Experiences page is broken on mobile. It shows a blank form when tapped."</strong><br><br>Vague requests produce vague results.</p>
+      </div>
+      <div class="rule-card">
+        <h3>Share links, not text</h3>
+        <p>Pasting 500 words costs <strong>3x more tokens</strong> than sharing a Google Doc link. Janis can read the doc directly. Share the link, save the budget.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 2. TOKEN COST COMPARISON -->
+  <section>
+    <div class="section-label">Token costs</div>
+    <h2>What messages actually cost</h2>
+    <p class="section-intro">Not all messages are equal. A simple question costs a fraction of what a long paste costs. This is the real data.</p>
+
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">Simple question</div>
+        <div class="bar-track">
+          <div class="bar-fill green" style="width: 18.4%"></div>
+        </div>
+        <div class="bar-tokens">2,000 tokens</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Specific task request</div>
+        <div class="bar-track">
+          <div class="bar-fill teal" style="width: 36.8%"></div>
+        </div>
+        <div class="bar-tokens">4,000 tokens</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Average message with context</div>
+        <div class="bar-track">
+          <div class="bar-fill amber" style="width: 50.6%"></div>
+        </div>
+        <div class="bar-tokens">5,500 tokens</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Long paste or complex research</div>
+        <div class="bar-track">
+          <div class="bar-fill orange" style="width: 82.9%"></div>
+        </div>
+        <div class="bar-tokens">9,000 tokens</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Max recorded single message</div>
+        <div class="bar-track">
+          <div class="bar-fill red" style="width: 100%"></div>
+        </div>
+        <div class="bar-tokens" style="color: var(--red)">10,862 tokens</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 3. SIDE-BY-SIDE EXAMPLES -->
+  <section>
+    <div class="section-label">Examples</div>
+    <h2>Bad request vs good request</h2>
+    <p class="section-intro">Same goal. Completely different results. And completely different token cost.</p>
+
+    <div class="examples-tabs">
+      <button class="tab-btn active" onclick="showTab('a', this)">Request clarity</button>
+      <button class="tab-btn" onclick="showTab('b', this)">Links vs paste</button>
+      <button class="tab-btn" onclick="showTab('c', this)">One task at a time</button>
+      <button class="tab-btn" onclick="showTab('d', this)">Giving feedback</button>
+    </div>
+
+    <div id="tab-a" class="tab-panel active">
+      <div class="example-card bad">
+        <span class="example-badge">Bad</span>
+        <p>"fix the website."</p>
+        <p class="why">Which website? Which part? What is broken? Janis has to guess or ask back, burning more tokens either way.</p>
+      </div>
+      <div class="example-card good">
+        <span class="example-badge">Good</span>
+        <p>"The registration button on the Experiences page is not working on mobile. It shows a blank form when tapped."</p>
+        <p class="why">Exact page. Exact element. Exact device. Exact symptom. Janis can act immediately.</p>
+      </div>
+    </div>
+
+    <div id="tab-b" class="tab-panel">
+      <div class="example-card bad">
+        <span class="example-badge">Bad</span>
+        <p>"here is all the text from our brochure [500 words pasted]. Can you summarize?"</p>
+        <p class="why">500 words pasted is roughly 650 tokens of raw text before Janis even starts thinking. Fully avoidable cost.</p>
+      </div>
+      <div class="example-card good">
+        <span class="example-badge">Good</span>
+        <p>"Here is our brochure: [Google Doc link]. Can you summarize it in 3 bullet points?"</p>
+        <p class="why">Link instead of paste. Janis reads it directly. You specify the format. Zero wasted tokens.</p>
+      </div>
+    </div>
+
+    <div id="tab-c" class="tab-panel">
+      <div class="example-card bad">
+        <span class="example-badge">Bad</span>
+        <p>"do all of this: update the about section, add a new event, fix the footer, and change the color of the header."</p>
+        <p class="why">Four tasks at once. Any error on one bleeds into the others. Hard to review, hard to course-correct.</p>
+      </div>
+      <div class="example-card good">
+        <span class="example-badge">Good</span>
+        <p>"One thing: update the About section to say we are now running events in Barcelona."</p>
+        <p class="why">Single task. Clear scope. Janis does it, you review it, then you move to the next one. Faster overall.</p>
+      </div>
+    </div>
+
+    <div id="tab-d" class="tab-panel">
+      <div class="example-card bad">
+        <span class="example-badge">Bad</span>
+        <p>"that was not what I wanted, try again."</p>
+        <p class="why">"Try again" gives Janis nothing to work with. The next version will likely miss in the same direction.</p>
+      </div>
+      <div class="example-card good">
+        <span class="example-badge">Good</span>
+        <p>"The tone was too formal. Can you rewrite it to sound warmer and more personal, like you are talking to a friend?"</p>
+        <p class="why">You name what was wrong and what you want instead. One correction, one better version.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 4. DOCUMENT WORKFLOW -->
+  <section>
+    <div class="section-label">Document workflow</div>
+    <h2>For complex tasks, write it down first</h2>
+    <p class="section-intro">If a task needs 3 or more back-and-forth messages to clarify, it should be a document, not a chat.</p>
+
+    <div class="workflow-box">
+      <h3>How it works</h3>
+      <p>Write your full instructions in a Google Doc. Include all the details: what you want, what to change, what the outcome looks like. Then share the link and say: <strong style="color: var(--text)">"Read this and implement what is there."</strong></p>
+    </div>
+
+    <div class="step-flow">
+      <div class="step"><span class="step-num">1</span> Write spec doc</div>
+      <span class="step-arrow">&#8594;</span>
+      <div class="step"><span class="step-num">2</span> Share the link</div>
+      <span class="step-arrow">&#8594;</span>
+      <div class="step"><span class="step-num">3</span> "Read this and implement"</div>
+      <span class="step-arrow">&#8594;</span>
+      <div class="step"><span class="step-num">4</span> Done</div>
+    </div>
+
+    <div class="token-math">
+      <div class="row">
+        <span>5 clarifying messages back-and-forth</span>
+        <span class="cost bad">~27,500 tokens</span>
+      </div>
+      <div class="row">
+        <span>One message with a document link</span>
+        <span class="cost good">~3,000 tokens</span>
+      </div>
+    </div>
+
+    <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 1.5rem;">The document also survives session resets and gives Janis a stable reference if the task continues later.</p>
+
+    <div class="when-grid">
+      <div class="when-card use">
+        <h4>Use a doc when</h4>
+        <ul>
+          <li>Major website changes</li>
+          <li>Complex event setups</li>
+          <li>Multi-step processes</li>
+          <li>Anything needing more than 2 clarifications</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <h4>Skip the doc when</h4>
+        <ul>
+          <li>Simple questions</li>
+          <li>Quick one-shot fixes</li>
+          <li>You can explain it in 2 sentences</li>
+          <li>The task takes under a minute</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 5. DAILY BUDGET VISUALIZER -->
+  <section>
+    <div class="section-label">Daily budget</div>
+    <h2>Three zones, three behaviors</h2>
+    <p class="section-intro">50,000 tokens resets at midnight CET. Here is what each zone means for how you should work.</p>
+
+    <div class="budget-track">
+      <div class="budget-zones">
+        <div class="zone z1">Full speed (0 to 80%)</div>
+        <div class="zone z2">Warning</div>
+        <div class="zone z3"></div>
+      </div>
+    </div>
+    <div class="zone-ticks" style="margin-top: 4px;">
+      <span class="tick">0</span>
+      <span class="tick center">40K tokens (80%)</span>
+      <span class="tick right">50K</span>
+    </div>
+
+    <div class="zone-descriptions">
+      <div class="zone-desc z1">
+        <span class="zone-tag">Zone 1: 0 to 80%</span>
+        <h4>Full speed</h4>
+        <p>All tasks welcome. Start complex projects here. Morning is the best time for heavy work.</p>
+      </div>
+      <div class="zone-desc z2">
+        <span class="zone-tag">Zone 2: 80 to 100%</span>
+        <h4>Warning. Finish current tasks.</h4>
+        <p>You will get a warning at 40K. Finish what you are working on. Save non-urgent tasks for tomorrow.</p>
+      </div>
+      <div class="zone-desc z3">
+        <span class="zone-tag">Zone 3: 100%</span>
+        <h4>Paused until midnight CET</h4>
+        <p>Budget exhausted. Janis pauses until midnight CET resets the counter. No workaround available.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 6. DATA CALLOUTS -->
+  <section>
+    <div class="section-label">The numbers</div>
+    <h2>Real data from real usage</h2>
+    <p class="section-intro">Not estimates. Actual numbers from Janis token tracking.</p>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-big">21.7%</div>
+        <div class="stat-label">of the daily budget can be consumed by a single long paste. The highest recorded message used 10,862 tokens.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-big">~9</div>
+        <div class="stat-label">focused conversations fit in one daily budget at the average message cost of 5,500 tokens.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-big">3&#215;</div>
+        <div class="stat-label">the token cost of pasting text vs sharing a link. The single biggest avoidable waste.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 7. QUICK TIPS ACCORDION -->
+  <section>
+    <div class="section-label">Quick tips</div>
+    <h2>Common questions, quick answers</h2>
+    <p class="section-intro">Tap any question to expand it.</p>
+
+    <details>
+      <summary>How do I tell Janis what format I want?</summary>
+      <div class="accordion-body">
+        <p>Just say it at the end of your request. The most useful formats:</p>
+        <ul>
+          <li><strong>A numbered list</strong> for steps or options</li>
+          <li><strong>A draft email</strong> for anything going to a person</li>
+          <li><strong>3 bullet points</strong> for summaries</li>
+          <li><strong>A table</strong> for comparisons or structured data</li>
+          <li><strong>A short paragraph</strong> for explanations</li>
+        </ul>
+        <p style="margin-top: 0.75rem;">If you do not specify a format, Janis will pick one. Specifying it means you skip a round-trip correction.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What do I do when a task times out or fails?</summary>
+      <div class="accordion-body">
+        <p>Do not retry the exact same message. That uses the same tokens for the same failure. Instead:</p>
+        <ul>
+          <li>Break the task into a smaller first step</li>
+          <li>Remove any large pastes and replace with links</li>
+          <li>Start a fresh message with only the core request</li>
+          <li>For code or build tasks: send it as a code task via the API instead of chat</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>How do I give useful feedback instead of saying "try again"?</summary>
+      <div class="accordion-body">
+        <p>Name exactly what was wrong, then say what you want instead. The formula:</p>
+        <ul>
+          <li><strong>"The tone was too [X]"</strong> tells Janis what register to aim for</li>
+          <li><strong>"It missed the point about [Y]"</strong> identifies the specific gap</li>
+          <li><strong>"The format was wrong. I wanted [Z]."</strong> specifies the structure</li>
+          <li><strong>"Too long / too short"</strong> gives a word count or structure target</li>
+        </ul>
+        <p style="margin-top: 0.75rem;">The more precise the feedback, the fewer iterations you need.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>When should I start a fresh message vs continue the thread?</summary>
+      <div class="accordion-body">
+        <p>Start a fresh message when:</p>
+        <ul>
+          <li>You are switching to a completely different topic</li>
+          <li>The current thread has gone more than 5 exchanges</li>
+          <li>Janis seems confused by earlier context</li>
+          <li>You want a clean slate without prior assumptions</li>
+        </ul>
+        <p style="margin-top: 0.5rem;">Continue the thread when the new message directly builds on what Janis just did: corrections, refinements, follow-up steps on the same task.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>How do I request research without burning the budget?</summary>
+      <div class="accordion-body">
+        <p>Research scales with scope. A few techniques to keep it lean:</p>
+        <ul>
+          <li><strong>Narrow the scope before asking.</strong> "3 kink educators in Spain" costs less than "research the kink education market."</li>
+          <li><strong>Ask for a summary first.</strong> Get 3 bullet points, then drill into the one that matters.</li>
+          <li><strong>Specify the output format.</strong> A table with 5 rows costs less than an open-ended deep dive.</li>
+          <li><strong>Set a limit.</strong> "Find 3 examples, not 10" keeps the response tight.</li>
+        </ul>
+      </div>
+    </details>
+
+  </section>
+
+</main>
+
+<footer>
+  <p>Janis is built by <a href="https://mexzungu.com">Mexzungu Group</a>. Questions? Ask Janis.</p>
+</footer>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
