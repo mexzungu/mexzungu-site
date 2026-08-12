@@ -1,0 +1,14 @@
+{
+  "name": "Janis Portfolio Operations",
+  "short_name": "Janis",
+  "description": "AI-powered legal and business intelligence for your portfolio",
+  "start_url": "/delta40-demo/",
+  "display": "standalone",
+  "background_color": "#0F0F11",
+  "theme_color": "#7B68EE",
+  "orientation": "any",
+  "icons": [
+    { "src": "/delta40-demo/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/delta40-demo/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

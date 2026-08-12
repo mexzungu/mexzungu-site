@@ -505,31 +505,56 @@
 
   /* SESSION PLAN: SAFETY BAR */
   .sp-safety-bar {
-    background: #FF006E;
+    background: #1a1a2e;
     color: #fff;
     padding: 10px 14px;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
     font-size: 12px;
     font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.08);
   }
   .sp-safety-signal {
     display: flex;
     align-items: center;
     gap: 5px;
-    background: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.1);
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 11px;
     white-space: nowrap;
   }
-  .sp-safety-signal.yellow { background: rgba(255,220,0,0.3); color: #ffe066; }
-  .sp-safety-signal.purple { background: rgba(180,100,255,0.3); color: #d0a0ff; }
-  .sp-safety-signal.red    { background: rgba(255,80,80,0.3);  color: #ffaaaa; }
+  .sp-safety-signal.yellow { background: rgba(255,220,0,0.25); color: #ffe066; }
+  .sp-safety-signal.purple { background: rgba(180,100,255,0.25); color: #d0a0ff; }
+  .sp-safety-signal.red    { background: rgba(255,80,80,0.25);  color: #ffaaaa; }
+
+  /* SESSION PLAN: OVERVIEW */
+  .sp-overview-toggle {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 10px 16px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .sp-overview-toggle:hover { border-color: var(--accent); color: var(--text); }
+
+  /* SESSION PLAN: SCRIPT CARD */
+  .sp-script-card { background: rgba(155,127,166,0.05); }
 
   /* SESSION PLAN: PHASE CARD */
   .sp-phase-card {

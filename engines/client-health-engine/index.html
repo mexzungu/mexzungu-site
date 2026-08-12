@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Health Engine | MGL Engines</title>
+  <style>
+    :root { --pink:#E14B87; --bg:#0f0f0f; --surface:#181818; --s2:#1e1e1e; --border:#2a2a2a; --text:#e8e8e8; --muted:#666; --conn:#4cc8b4; --val:#f0a030; --care:#b482ff; --green:#4caf7d; --blue:#6498ff; --red:#e05050; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh; }
+    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; }
+    nav .logo { font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; }
+    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
+    nav a:hover { color:var(--text); background:var(--s2); }
+    .page-hd { text-align:center; padding:52px 24px 32px; max-width:600px; margin:0 auto; }
+    .macro-tag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--care); margin-bottom:14px; }
+    .status-row { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; }
+    .status-text { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+    .sm { display:inline-block; width:8px; height:8px; border-radius:50%; }
+    .b-live { background:var(--green); }
+    .b-build { background:var(--blue); }
+    .b-concept { background:#444; }
+    .h-healthy { box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--green); }
+    .h-failing { box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--val); }
+    .h-broken { box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--red); }
+    .engine-name { font-size:36px; font-weight:800; letter-spacing:-.03em; margin-bottom:14px; color:var(--care); }
+    .owner-row { font-size:13px; color:var(--muted); }
+    .owner { font-size:10px; font-weight:700; text-transform:uppercase; padding:2px 8px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--muted); margin-left:6px; }
+    .owner-p { border-color:var(--pink); color:var(--pink); background:rgba(225,75,135,.05); }
+    .coming-wrap { display:flex; justify-content:center; padding:0 24px 60px; }
+    .coming-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:48px 40px; text-align:center; max-width:440px; width:100%; }
+    .coming-icon { font-size:32px; margin-bottom:20px; opacity:.4; }
+    .coming-card h2 { font-size:18px; font-weight:700; margin-bottom:12px; }
+    .coming-card p { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:24px; }
+    .back-link { display:inline-block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text); text-decoration:none; border:1px solid var(--border); padding:8px 20px; border-radius:8px; transition:.15s; }
+    .back-link:hover { border-color:var(--muted); }
+    .foot-nav { display:flex; justify-content:center; gap:10px; padding:0 24px 48px; flex-wrap:wrap; }
+    .foot-nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:5px 14px; border:1px solid var(--border); border-radius:6px; transition:.15s; }
+    .foot-nav a:hover { color:var(--text); border-color:#444; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">MGL</span>
+  <a href="/engines/blueprint/">Blueprint</a>
+  <a href="/engines/architecture/">Architecture</a>
+</nav>
+
+<div class="page-hd">
+  <div class="macro-tag">Macro Engine III: Care</div>
+  <div class="status-row">
+    <span class="sm b-live h-healthy"></span>
+    <span class="status-text">Live / Healthy</span>
+  </div>
+  <h1 class="engine-name">Client Health Engine</h1>
+  <div class="owner-row">Owner: <span class="owner">Sade</span></div>
+</div>
+
+<div class="coming-wrap">
+  <div class="coming-card">
+    <div class="coming-icon">&#9881;</div>
+    <h2>Engine page in build</h2>
+    <p>This engine's detail page is being designed. It will include the full engine breakdown, micro-engines, diagrams, flows, and live KPIs.</p>
+    <a href="/engines/blueprint/#section-care" class="back-link">View in Blueprint</a>
+  </div>
+</div>
+
+<div class="foot-nav">
+  <a href="/engines/billing-engine/">&larr; Billing Engine</a>
+  <a href="/engines/blueprint/">Back to Blueprint</a>
+  <a href="/engines/success-check-engine/">Success Check Engine &rarr;</a>
+</div>
+
+</body>
+</html>

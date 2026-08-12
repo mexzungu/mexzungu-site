@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NCA Huesca: Transaction Flow</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: #F4F5F7;
+      padding: 56px 40px;
+      color: #1a1a2e;
+      min-width: 900px;
+    }
+
+    .page { max-width: 1160px; margin: 0 auto; }
+
+    .header { text-align: center; margin-bottom: 52px; }
+    .header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; color: #1a1a2e; margin-bottom: 10px; }
+    .header p { font-size: 14px; color: #888; font-style: italic; }
+
+    .flow-row { display: flex; align-items: flex-start; gap: 0; }
+
+    .connector {
+      flex-shrink: 0; width: 44px;
+      display: flex; align-items: center; justify-content: center;
+      padding-top: 56px;
+    }
+
+    .step {
+      flex: 1; background: white; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+    }
+
+    .step-header { padding: 20px 20px 18px; color: white; }
+    .step-label { font-size: 11px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; opacity: 0.8; margin-bottom: 6px; }
+    .step-title { font-size: 17px; font-weight: 800; line-height: 1.25; }
+    .step-body { padding: 20px; }
+
+    .section { margin-bottom: 18px; }
+    .section:last-child { margin-bottom: 0; }
+
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
+      padding: 4px 9px; border-radius: 6px; margin-bottom: 9px;
+    }
+    .tag-legal { background: #E8F0FE; color: #1A56DB; }
+    .tag-funds { background: #ECFDF5; color: #059669; }
+
+    .section-text { font-size: 13px; color: #3D3D3D; line-height: 1.65; }
+
+    .h1 { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+    .h2 { background: linear-gradient(135deg, #0E7490, #0891B2); }
+    .h3 { background: linear-gradient(135deg, #7C3AED, #6D28D9); }
+    .h4 { background: linear-gradient(135deg, #065F46, #047857); }
+    .h5 { background: linear-gradient(135deg, #166534, #15803D); }
+
+    .vote-note {
+      margin-top: 12px; padding: 10px 12px;
+      background: #F5F3FF; border-left: 3px solid #7C3AED;
+      border-radius: 0 8px 8px 0; font-size: 12px; color: #5B21B6; line-height: 1.5;
+    }
+    .vote-note strong { display: block; margin-bottom: 2px; }
+
+    .failure-section {
+      margin-top: 36px; padding-top: 32px; border-top: 2px dashed #D1D5DB;
+      display: flex; align-items: flex-start; gap: 24px;
+    }
+
+    .fail-label {
+      flex-shrink: 0; padding-top: 4px;
+      font-size: 12px; font-weight: 800; color: #DC2626;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .failure-box {
+      background: white; border: 2px solid #DC2626; border-radius: 14px;
+      padding: 22px 26px; max-width: 520px;
+      box-shadow: 0 2px 12px rgba(220,38,38,0.1);
+    }
+    .failure-box h3 { font-size: 16px; font-weight: 800; color: #DC2626; margin-bottom: 10px; }
+    .failure-box p { font-size: 13px; color: #555; line-height: 1.7; }
+    .red { color: #DC2626; font-weight: 700; }
+
+    .footer { margin-top: 36px; text-align: center; font-size: 12px; color: #9CA3AF; font-style: italic; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="header">
+      <h1>NCA Huesca: Transaction Flow</h1>
+      <p>Path C &mdash; Arrendamiento con Opci&oacute;n de Compra &rarr; GO/NO-GO Vote &rarr; Contrato de Compraventa</p>
+    </div>
+
+    <div class="flow-row">
+
+      <div class="step">
+        <div class="step-header h1">
+          <div class="step-label">Step 1 &middot; Now</div>
+          <div class="step-title">Sign Option Agreement</div>
+        </div>
+        <div class="step-body">
+          <div class="section">
+            <div class="section-tag tag-legal">&#9878; Legal</div>
+            <div class="section-text">Arrendamiento con Opci&oacute;n de Compra signed and registered in the Registro de la Propiedad. Purchase price locked at 900,000 EUR.</div>
+          </div>
+          <div class="section">
+            <div class="section-tag tag-funds">&#8364; Funds</div>
+            <div class="section-text"><strong>18,000&ndash;45,000 EUR</strong> option premium &rarr; Landowners. No other outlay.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+          <line x1="0" y1="8" x2="20" y2="8" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/>
+          <polyline points="14,2 22,8 14,14" fill="none" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="step-header h2">
+          <div class="step-label">Step 2 &middot; October</div>
+          <div class="step-title">Trial Event</div>
+        </div>
+        <div class="step-body">
+          <div class="section">
+            <div class="section-tag tag-legal">&#9878; Legal</div>
+            <div class="section-text">NCA operates the trial event on the Huesca site under the lease right granted by the option agreement.</div>
+          </div>
+          <div class="section">
+            <div class="section-tag tag-funds">&#8364; Funds</div>
+            <div class="section-text">Event operating costs only. No land payment.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+          <line x1="0" y1="8" x2="20" y2="8" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/>
+          <polyline points="14,2 22,8 14,14" fill="none" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="step-header h3">
+          <div class="step-label">Step 3 &middot; Post-October</div>
+          <div class="step-title">GO&thinsp;/&thinsp;NO-GO Vote</div>
+        </div>
+        <div class="step-body">
+          <div class="section">
+            <div class="section-tag tag-legal">&#9878; Legal</div>
+            <div class="section-text">Community votes with real ground truth from October. Board decides based on mandate strength and pledge status.</div>
+          </div>
+          <div class="section">
+            <div class="section-tag tag-funds">&#8364; Funds</div>
+            <div class="section-text">No movement. Decision point only.</div>
+          </div>
+          <div class="vote-note">
+            <strong>YES &rarr; Continue to Steps 4 and 5</strong>
+            NO &rarr; Let option expire. See failure path below.
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+          <line x1="0" y1="8" x2="20" y2="8" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/>
+          <polyline points="14,2 22,8 14,14" fill="none" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="step-header h4">
+          <div class="step-label">Step 4 &middot; Now &rarr; Post-Vote</div>
+          <div class="step-title">Formalize Pledges</div>
+        </div>
+        <div class="step-body">
+          <div class="section">
+            <div class="section-tag tag-legal">&#9878; Legal</div>
+            <div class="section-text">Each pledger signs a <strong>Pr&eacute;stamo</strong> (loan, repaid after closing) or <strong>Donaci&oacute;n</strong> (gift, no repayment).</div>
+          </div>
+          <div class="section">
+            <div class="section-tag tag-funds">&#8364; Funds</div>
+            <div class="section-text"><strong>900,000 EUR</strong> committed as signed legal instruments.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+          <line x1="0" y1="8" x2="20" y2="8" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/>
+          <polyline points="14,2 22,8 14,14" fill="none" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="step">
+        <div class="step-header h5">
+          <div class="step-label">Step 5 &middot; Closing</div>
+          <div class="step-title">NCA Buys Land</div>
+        </div>
+        <div class="step-body">
+          <div class="section">
+            <div class="section-tag tag-legal">&#9878; Legal</div>
+            <div class="section-text">Option exercised. Contrato de Compraventa signed. Land Registry transfer. <strong>NCA holds clean title.</strong></div>
+          </div>
+          <div class="section">
+            <div class="section-tag tag-funds">&#8364; Funds</div>
+            <div class="section-text">
+              <strong>900,000 EUR</strong> &rarr; Landowners<br>
+              <strong>72,000 EUR ITP</strong> &rarr; Tax Authority
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="failure-section">
+      <div class="fail-label">If vote fails &darr;</div>
+      <div class="failure-box">
+        <h3>Option Expires &mdash; NCA Walks</h3>
+        <p>
+          Total loss: <span class="red">18,000&ndash;45,000 EUR</span> in option premium only.
+          No land commitment. No investor exposure. Clean exit.<br><br>
+          This is the designed cost of optionality &mdash; not a failure mode. It is the price of the right to buy without being committed to buying.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      ITP (Impuesto de Transmisiones Patrimoniales) &middot; Arag&oacute;n rate 8% &middot; 8% &times; 900,000 EUR = 72,000 EUR paid by NCA as buyer at closing
+    </div>
+
+  </div>
+</body>
+</html>

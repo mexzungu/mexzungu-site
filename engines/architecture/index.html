@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGL Architecture | Mexzungu Group</title>
+  <style>
+    :root {
+      --pink:#E14B87; --bg:#0f0f0f; --surface:#181818; --s2:#1e1e1e;
+      --border:#2a2a2a; --text:#e8e8e8; --muted:#666;
+      --conn:#4cc8b4; --val:#f0a030; --care:#b482ff;
+      --green:#4caf7d; --blue:#6498ff; --red:#e05050;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; font-size:15px; line-height:1.6; min-height:100vh; }
+
+    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; }
+    nav .logo { font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; }
+    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
+    nav a:hover { color:var(--text); background:var(--s2); }
+
+    /* PAGE HEADER */
+    .page-hd { text-align:center; padding:32px 24px 0; }
+    .page-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .page-title { font-size:32px; font-weight:800; letter-spacing:-.03em; margin-bottom:6px; }
+    .page-sub { font-size:13px; color:#777; }
+
+    /* STATUS MARKS */
+    .sm { display:inline-block; width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .b-live    { background:var(--green); }
+    .b-build   { background:var(--blue); }
+    .b-concept { background:#444; }
+    .h-healthy { box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--green); }
+    .h-failing  { box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--val); }
+    .h-broken   { box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--red); }
+
+    /* OWNER BADGE */
+    .owner { font-size:9px; font-weight:700; text-transform:uppercase; padding:1px 6px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--muted); }
+    .owner-p { border-color:var(--pink); color:var(--pink); background:rgba(225,75,135,.05); }
+
+    /* TRIANGLE SECTION */
+    .loop-section { max-width:860px; margin:28px auto 0; padding:0 24px 56px; }
+    .tri-container { position:relative; padding-bottom:84px; }
+
+    /* SVG overlay */
+    #triSvg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:visible; }
+
+    /* ROW 1: Connection centered, equal width to each bottom card */
+    .tri-row-top { display:flex; justify-content:center; position:relative; z-index:1; }
+    .tri-row-top .macro-card { width:calc(50% - 12px); }
+
+    /* VERTICAL GAP */
+    .tri-gap { height:72px; }
+
+    /* ROW 2: Value + Care equal columns */
+    .tri-row-bot { display:grid; grid-template-columns:1fr 1fr; gap:24px; position:relative; z-index:1; }
+
+    /* MACRO CARD */
+    .macro-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+
+    /* CARD HEADER (always visible) */
+    .card-hd { padding:18px 20px 14px; cursor:pointer; user-select:none; transition:background .12s; }
+    .card-hd:hover { background:rgba(255,255,255,.015); }
+
+    .card-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; margin-bottom:5px; text-align:center; }
+    .card-name { font-size:22px; font-weight:800; letter-spacing:-.025em; margin-bottom:12px; text-align:center; }
+    .card-desc { font-size:12px; color:#888; line-height:1.65; margin-bottom:14px; }
+
+    /* META GRID: 3 columns only (Owner / Trigger / Output) */
+    .card-meta { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px 10px; }
+    .meta-item .lbl { display:block; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:2px; }
+    .meta-item .mval { font-size:12px; font-weight:600; color:#ccc; }
+
+    /* EXPAND HINT */
+    .card-hint { display:flex; justify-content:center; align-items:center; gap:6px; padding:11px 0 0; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; }
+    .chev { display:inline-block; font-size:8px; transition:transform .28s ease; }
+    .card-open .chev { transform:rotate(180deg); }
+
+    /* COLLAPSIBLE BODY: single child enables grid-template-rows trick */
+    .eng-body { display:grid; grid-template-rows:0fr; transition:grid-template-rows .36s ease; }
+    .card-open .eng-body { grid-template-rows:1fr; }
+    .eng-inner { overflow:hidden; min-height:0; }
+
+    /* ENGINE COUNTS (inside collapsible) */
+    .eng-counts { display:flex; gap:16px; padding:8px 20px 0; border-top:1px solid var(--border); }
+    .eng-counts .lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-right:4px; }
+    .eng-counts .val { font-size:12px; font-weight:600; color:#ccc; }
+
+    /* KPI ROW */
+    .card-kpis { display:flex; padding:12px 20px 10px; gap:4px; }
+    .kpi { flex:1; text-align:center; padding:2px 2px 4px; }
+    .kpi-v { display:block; font-size:15px; font-weight:800; letter-spacing:-.02em; line-height:1.2; }
+    .kpi-l { display:block; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; line-height:1.3; margin-top:2px; }
+
+    /* ENGINE LIST */
+    .eng-list { padding:8px 14px 14px; border-top:1px solid var(--border); }
+
+    /* ENGINE ROWS as links */
+    a.erow { display:flex; align-items:flex-start; gap:8px; padding:7px 8px; border-radius:6px; transition:background .12s; text-decoration:none; color:inherit; }
+    a.erow:hover { background:var(--s2); }
+    a.erow:hover .erow-name { color:var(--text); }
+    .erow-inner { flex:1; }
+    .erow-name { font-size:13px; font-weight:600; transition:color .12s; }
+    .erow-subs { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+    .sub-chip { font-size:10px; color:var(--muted); background:var(--bg); border:1px solid var(--border); padding:1px 7px; border-radius:8px; }
+    .sub-chip.live { color:var(--green); border-color:rgba(76,175,125,.25); }
+    .sub-chip.broken { color:var(--red); border-color:rgba(224,80,80,.25); }
+
+    /* ACCENT COLORS */
+    .card-conn { border-top:3px solid var(--conn); }
+    .card-conn .card-type { color:var(--conn); }
+    .card-conn .kpi-v { color:var(--conn); }
+
+    .card-val { border-top:3px solid var(--val); }
+    .card-val .card-type { color:var(--val); }
+    .card-val .kpi-v { color:var(--val); }
+
+    .card-care { border-top:3px solid var(--care); }
+    .card-care .card-type { color:var(--care); }
+    .card-care .kpi-v { color:var(--care); }
+
+    /* CAPTION */
+    .loop-caption { text-align:center; font-size:12px; color:var(--muted); padding:20px 24px 40px; max-width:500px; margin:0 auto; }
+    .loop-caption strong { color:var(--care); }
+
+    @media (max-width:680px) {
+      .tri-row-bot { grid-template-columns:1fr; }
+      .tri-row-top .macro-card { width:100%; }
+      .card-meta { grid-template-columns:1fr 1fr; }
+      .page-title { font-size:26px; }
+      .tri-gap { height:40px; }
+      #triSvg { display:none; }
+      .tri-container { padding-bottom:0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">MGL</span>
+  <a href="/engines/">&larr; Hub</a>
+  <a href="/engines/architecture/taxonomy.html">Full Taxonomy</a>
+</nav>
+
+<div class="page-hd">
+  <div class="page-label">Mexzungu Group</div>
+  <h1 class="page-title">Engine Architecture</h1>
+  <p class="page-sub">Three macro engines. One permanent loop.</p>
+</div>
+
+<div class="loop-section">
+  <div class="tri-container" id="triContainer">
+
+    <svg id="triSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <!-- ROW 1: Connection (centered, equal width to each bottom card) -->
+    <div class="tri-row-top">
+      <div class="macro-card card-conn" id="cardConn">
+        <div class="card-hd" onclick="toggleCard('Conn')">
+          <div class="card-type">Macro Engine I</div>
+          <div class="card-name"><a href="/engines/blueprint/#section-conn" style="color:inherit;text-decoration:none;">Connection</a></div>
+          <p class="card-desc">Every client started as a conversation. Connection is the engine that keeps warm relationships flowing into signed engagements and makes sure the funnel never runs dry.</p>
+          <div class="card-meta">
+            <div class="meta-item"><span class="lbl">Owner</span><span class="mval">Jagger</span></div>
+            <div class="meta-item"><span class="lbl">Trigger</span><span class="mval">Cron + inbound</span></div>
+            <div class="meta-item"><span class="lbl">Output</span><span class="mval">Signed EL</span></div>
+          </div>
+          <div class="card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+        </div>
+        <div class="eng-body" id="bodyConn">
+          <div class="eng-inner">
+            <div class="eng-counts">
+              <span><span class="lbl">Engines</span><span class="val">4</span></span>
+              <span><span class="lbl">Micro-engines</span><span class="val">12</span></span>
+            </div>
+            <div class="card-kpis">
+              <div class="kpi"><span class="kpi-v">4</span><span class="kpi-l">ELs MTD</span></div>
+              <div class="kpi"><span class="kpi-v">3</span><span class="kpi-l">Pipeline</span></div>
+              <div class="kpi"><span class="kpi-v">5/wk</span><span class="kpi-l">Posts</span></div>
+              <div class="kpi"><span class="kpi-v">12</span><span class="kpi-l">Warm contacts</span></div>
+              <div class="kpi"><span class="kpi-v">18%</span><span class="kpi-l">Conv. rate</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAP: arrows pass through here -->
+    <div class="tri-gap"></div>
+
+    <!-- ROW 2: Value + Care (equal size) -->
+    <div class="tri-row-bot">
+
+      <div class="macro-card card-val" id="cardVal">
+        <div class="card-hd" onclick="toggleCard('Val')">
+          <div class="card-type">Macro Engine II</div>
+          <div class="card-name"><a href="/engines/blueprint/#section-val" style="color:inherit;text-decoration:none;">Value</a></div>
+          <p class="card-desc">A signed agreement is just the ignition. Value is where Mexzungu earns its fees: advisory, governance, AI builds, and deals, from kickoff all the way to paid invoice.</p>
+          <div class="card-meta">
+            <div class="meta-item"><span class="lbl">Owner</span><span class="mval">Lars</span></div>
+            <div class="meta-item"><span class="lbl">Trigger</span><span class="mval">EL signed</span></div>
+            <div class="meta-item"><span class="lbl">Output</span><span class="mval">Invoice paid</span></div>
+          </div>
+          <div class="card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+        </div>
+        <div class="eng-body" id="bodyVal">
+          <div class="eng-inner">
+            <div class="eng-counts">
+              <span><span class="lbl">Engines</span><span class="val">8</span></span>
+              <span><span class="lbl">Micro-engines</span><span class="val">16</span></span>
+            </div>
+            <div class="card-kpis">
+              <div class="kpi"><span class="kpi-v">3</span><span class="kpi-l">Active</span></div>
+              <div class="kpi"><span class="kpi-v">12d</span><span class="kpi-l">To invoice</span></div>
+              <div class="kpi"><span class="kpi-v">EUR 0</span><span class="kpi-l">Rev. MTD</span></div>
+              <div class="kpi"><span class="kpi-v">7</span><span class="kpi-l">Open tasks</span></div>
+              <div class="kpi"><span class="kpi-v">83%</span><span class="kpi-l">On-time</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="macro-card card-care" id="cardCare">
+        <div class="card-hd" onclick="toggleCard('Care')">
+          <div class="card-type">Macro Engine III</div>
+          <div class="card-name"><a href="/engines/blueprint/#section-care" style="color:inherit;text-decoration:none;">Care</a></div>
+          <p class="card-desc">The work ends. The relationship does not. Care converts satisfied clients into referrals and first engagements into second ones, closing the loop back to Connection.</p>
+          <div class="card-meta">
+            <div class="meta-item"><span class="lbl">Owner</span><span class="mval">Sade</span></div>
+            <div class="meta-item"><span class="lbl">Trigger</span><span class="mval">Invoice paid</span></div>
+            <div class="meta-item"><span class="lbl">Output</span><span class="mval">Referral / re-entry</span></div>
+          </div>
+          <div class="card-hint"><span class="chev">&#9660;</span>&nbsp;Look Inside</div>
+        </div>
+        <div class="eng-body" id="bodyCare">
+          <div class="eng-inner">
+            <div class="eng-counts">
+              <span><span class="lbl">Engines</span><span class="val">6</span></span>
+              <span><span class="lbl">Micro-engines</span><span class="val">10</span></span>
+            </div>
+            <div class="card-kpis">
+              <div class="kpi"><span class="kpi-v">4.1</span><span class="kpi-l">Health</span></div>
+              <div class="kpi"><span class="kpi-v">0</span><span class="kpi-l">Referrals</span></div>
+              <div class="kpi"><span class="kpi-v">1</span><span class="kpi-l">Re-entries</span></div>
+              <div class="kpi"><span class="kpi-v">8.2</span><span class="kpi-l">NPS</span></div>
+              <div class="kpi"><span class="kpi-v">14mo</span><span class="kpi-l">Avg tenure</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="loop-caption"><strong>Care closes the loop.</strong> Referrals and re-entries flow back into Connection.</p>
+</div>
+
+<script>
+function toggleCard(which) {
+  var card = document.getElementById('card' + which);
+  card.classList.toggle('card-open');
+  setTimeout(drawArrows, 400);
+}
+
+function drawArrows() {
+  var svg = document.getElementById('triSvg');
+  if (!svg || window.innerWidth <= 680) return;
+
+  var container = document.getElementById('triContainer');
+  var cRect = container.getBoundingClientRect();
+  var W = cRect.width;
+  var H = container.offsetHeight;
+
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.style.width = W + 'px';
+  svg.style.height = H + 'px';
+
+  var connEl = document.getElementById('cardConn');
+  var valEl  = document.getElementById('cardVal');
+  var careEl = document.getElementById('cardCare');
+
+  var cR = connEl.getBoundingClientRect();
+  var vR = valEl.getBoundingClientRect();
+  var rR = careEl.getBoundingClientRect();
+
+  function lx(r) { return r.left - cRect.left; }
+  function ly(r) { return r.top  - cRect.top;  }
+
+  var cX = lx(cR), cY = ly(cR), cW = cR.width, cH = cR.height;
+  var vX = lx(vR), vY = ly(vR), vW = vR.width, vH = vR.height;
+  var rX = lx(rR), rY = ly(rR), rW = rR.width, rH = rR.height;
+
+  var gap = vY - (cY + cH);
+
+  /* Arrow 1: Connection LEFT SIDE -> Value TOP */
+  var a1x1 = cX,             a1y1 = cY + cH * 0.42;
+  var a1x2 = vX + vW * 0.42, a1y2 = vY;
+  var a1cp1x = cX - 72,      a1cp1y = a1y1 + gap * 0.52;
+  var a1cp2x = a1x2 - 18,    a1cp2y = a1y2 - 44;
+
+  /* Arrow 2: Value BOTTOM -> Care BOTTOM (arc below both cards) */
+  var a2x1 = vX + vW * 0.78, a2y1 = vY + vH;
+  var a2x2 = rX + rW * 0.22, a2y2 = rY + rH;
+  var arcD  = Math.max(vY + vH, rY + rH) + 66;
+  var a2cp1x = a2x1 + 32,    a2cp1y = arcD;
+  var a2cp2x = a2x2 - 32,    a2cp2y = arcD;
+
+  /* Arrow 3: Care TOP -> Connection RIGHT SIDE */
+  var a3x1 = rX + rW * 0.58, a3y1 = rY;
+  var a3x2 = cX + cW,        a3y2 = cY + cH * 0.42;
+  var a3cp1x = a3x1 + 18,    a3cp1y = a3y1 - 44;
+  var a3cp2x = cX + cW + 72, a3cp2y = a3y2 + gap * 0.52;
+
+  function pd(x1,y1,c1x,c1y,c2x,c2y,x2,y2) {
+    return 'M'+x1+','+y1+' C'+c1x+','+c1y+' '+c2x+','+c2y+' '+x2+','+y2;
+  }
+
+  var d1 = pd(a1x1,a1y1,a1cp1x,a1cp1y,a1cp2x,a1cp2y,a1x2,a1y2);
+  var d2 = pd(a2x1,a2y1,a2cp1x,a2cp1y,a2cp2x,a2cp2y,a2x2,a2y2);
+  var d3 = pd(a3x1,a3y1,a3cp1x,a3cp1y,a3cp2x,a3cp2y,a3x2,a3y2);
+
+  var defs =
+    '<defs>' +
+      '<filter id="glo" x="-80%" y="-80%" width="260%" height="260%">' +
+        '<feGaussianBlur stdDeviation="8"/>' +
+      '</filter>' +
+      '<marker id="mC" markerWidth="22" markerHeight="16" refX="20" refY="8" orient="auto" markerUnits="userSpaceOnUse">' +
+        '<polygon points="0 2,22 8,0 14" fill="#4cc8b4"/>' +
+      '</marker>' +
+      '<marker id="mV" markerWidth="22" markerHeight="16" refX="20" refY="8" orient="auto" markerUnits="userSpaceOnUse">' +
+        '<polygon points="0 2,22 8,0 14" fill="#f0a030"/>' +
+      '</marker>' +
+      '<marker id="mR" markerWidth="22" markerHeight="16" refX="20" refY="8" orient="auto" markerUnits="userSpaceOnUse">' +
+        '<polygon points="0 2,22 8,0 14" fill="#b482ff"/>' +
+      '</marker>' +
+    '</defs>';
+
+  /* Hidden reference paths for animateMotion */
+  var refPaths =
+    '<path id="ap1" d="'+d1+'" fill="none" stroke="none"/>' +
+    '<path id="ap2" d="'+d2+'" fill="none" stroke="none"/>' +
+    '<path id="ap3" d="'+d3+'" fill="none" stroke="none"/>';
+
+  /* Glow haloes rendered first (behind arrows) */
+  var g1 = '<path d="'+d1+'" stroke="#4cc8b4" stroke-width="20" fill="none" opacity=".14" filter="url(#glo)"/>';
+  var g2 = '<path d="'+d2+'" stroke="#f0a030" stroke-width="20" fill="none" opacity=".14" filter="url(#glo)"/>';
+  var g3 = '<path d="'+d3+'" stroke="#b482ff" stroke-width="20" fill="none" opacity=".14" filter="url(#glo)"/>';
+
+  /* Main arrows */
+  var p1 = '<path d="'+d1+'" stroke="#4cc8b4" stroke-width="7" stroke-linecap="round" fill="none" marker-end="url(#mC)" opacity=".88"/>';
+  var p2 = '<path d="'+d2+'" stroke="#f0a030" stroke-width="7" stroke-linecap="round" fill="none" marker-end="url(#mV)" opacity=".88"/>';
+  var p3 = '<path d="'+d3+'" stroke="#b482ff" stroke-width="7" stroke-linecap="round" fill="none" marker-end="url(#mR)" opacity=".88"/>';
+
+  /* Animated dots flowing along paths */
+  function dot(pid, col, dur, begin, r, op) {
+    return '<circle r="'+r+'" fill="'+col+'" opacity="'+op+'">' +
+      '<animateMotion dur="'+dur+'s" begin="'+begin+'s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines=".42 0 .58 1">' +
+        '<mpath href="#'+pid+'"/>' +
+      '</animateMotion>' +
+    '</circle>';
+  }
+
+  var dots =
+    dot('ap1','#4cc8b4', 3.8, 0.0, 5, .95) + dot('ap1','#4cc8b4', 5.2, 1.4, 3, .7)  + dot('ap1','#4cc8b4', 4.5, 2.9, 4, .85) + dot('ap1','#4cc8b4', 6.1, 0.9, 3, .6)  + dot('ap1','#4cc8b4', 3.4, 3.7, 6, .9) +
+    dot('ap2','#f0a030', 4.2, 0.5, 4, .9)  + dot('ap2','#f0a030', 3.6, 2.1, 6, .95) + dot('ap2','#f0a030', 5.7, 1.0, 3, .65) + dot('ap2','#f0a030', 4.9, 3.3, 5, .8)  + dot('ap2','#f0a030', 6.3, 0.2, 3, .6) +
+    dot('ap3','#b482ff', 4.0, 1.0, 5, .9)  + dot('ap3','#b482ff', 5.5, 0.4, 3, .7)  + dot('ap3','#b482ff', 3.7, 2.6, 4, .85) + dot('ap3','#b482ff', 6.0, 1.8, 3, .6)  + dot('ap3','#b482ff', 4.8, 3.4, 5, .95);
+
+  svg.innerHTML = defs + refPaths + g1+g2+g3 + p1+p2+p3 + dots;
+}
+
+window.addEventListener('load', function() { setTimeout(drawArrows, 100); });
+window.addEventListener('resize', drawArrows);
+</script>
+</body>
+</html>

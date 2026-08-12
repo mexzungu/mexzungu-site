@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Jamming Together: Collaborator Economics | Mexzungu Group</title>
+    <meta name="description" content="Model the deal economics before we work together. See exactly how the numbers split under every collaboration scenario.">
+    <meta property="og:title" content="Jamming Together: Collaborator Economics">
+    <meta property="og:description" content="Model how the numbers split before we work together.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mexzungu.com/jamming_together">
+    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://mexzungu.com/jamming_together">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        body { background: #2a1f1a; color: #fafafa; }
+
+        .page-hero { padding: 7rem 2rem 3.5rem; max-width: 900px; margin: 0 auto; }
+        .page-hero .section-label { font-family: var(--sans); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink); margin-bottom: 1rem; display: block; }
+        .page-hero h1 { font-family: var(--heading); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 400; margin-bottom: 1rem; line-height: 1.15; }
+        .page-hero h1 .highlight { color: var(--pink); }
+        .page-hero .hero-sub { color: #9a8f88; max-width: 560px; line-height: 1.7; font-size: 1rem; margin-bottom: 0.75rem; }
+        .hero-intro { color: #9a8f88; max-width: 600px; line-height: 1.7; font-size: 0.92rem; margin-top: 0.5rem; }
+
+        section { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+        .step-header { margin-bottom: 1.75rem; }
+        .step-num { font-family: var(--sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 0.4rem; }
+        .step-title { font-family: var(--heading); font-size: 1.5rem; font-weight: 400; color: #fafafa; margin-bottom: 0.35rem; }
+        .step-desc { color: #9a8f88; font-size: 0.9rem; }
+
+        .modeler-divider { border: none; border-top: 1px solid #4a403a; margin: 2.5rem 0; }
+
+        /* Lane explainer */
+        .lanes-explainer { margin-bottom: 3.5rem; }
+        .lanes-explainer h2 { font-family: var(--heading); font-size: 1.6rem; font-weight: 400; margin-bottom: 0.5rem; }
+        .explainer-lead { color: #9a8f88; font-size: 0.95rem; line-height: 1.65; max-width: 660px; margin-bottom: 2rem; }
+        .lane-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .lane-card { border: 1px solid #4a403a; border-radius: 12px; padding: 1.5rem 1.25rem; background: rgba(255,255,255,0.025); }
+        .lane-badge { font-family: var(--sans); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); font-weight: 700; display: block; margin-bottom: 0.6rem; }
+        .lane-card-title { font-family: var(--sans); font-size: 0.92rem; font-weight: 700; color: #fafafa; margin-bottom: 0.55rem; }
+        .lane-card-desc { font-size: 0.82rem; color: #9a8f88; line-height: 1.58; margin-bottom: 0.9rem; }
+        .lane-formula { font-family: var(--sans); font-size: 0.8rem; font-weight: 700; color: #d4a039; background: rgba(212,160,57,0.08); border-radius: 6px; padding: 0.4rem 0.75rem; display: inline-block; }
+        @media (max-width: 700px) { .lane-cards { grid-template-columns: 1fr; } }
+
+        /* Lane picker */
+        .lane-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        @media (max-width: 700px) { .lane-picker { grid-template-columns: 1fr; } }
+
+        .select-card {
+            border: 1.5px solid #4a403a; border-radius: 10px; padding: 1.4rem 1.1rem;
+            cursor: pointer; transition: border-color 0.18s, background 0.18s, transform 0.15s;
+            background: rgba(255,255,255,0.03); position: relative; user-select: none;
+        }
+        .select-card:hover { border-color: #7a6a62; background: rgba(255,255,255,0.055); transform: translateY(-1px); }
+        .select-card.active { border-color: var(--pink); background: rgba(225,75,135,0.1); }
+        .select-card .card-icon { font-size: 1.7rem; margin-bottom: 0.6rem; display: block; }
+        .select-card .card-label { font-family: var(--sans); font-weight: 700; font-size: 0.9rem; color: #fafafa; margin-bottom: 0.3rem; }
+        .select-card .card-sub { font-size: 0.8rem; color: #9a8f88; line-height: 1.5; }
+        .select-card.active .card-label { color: var(--pink); }
+        .select-card.active::after { content: ''; position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); }
+
+        /* Service cards */
+        .svc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 0.75rem; }
+        @media (max-width: 900px) { .svc-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 560px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+
+        .svc-card { border: 1.5px solid #4a403a; border-radius: 10px; padding: 1rem 0.85rem; cursor: pointer; transition: border-color 0.18s, background 0.18s; background: rgba(255,255,255,0.03); }
+        .svc-card:hover { border-color: #7a6a62; }
+        .svc-card.active { border-color: var(--pink); background: rgba(225,75,135,0.08); }
+        .svc-icon { font-size: 1.3rem; display: block; margin-bottom: 0.4rem; }
+        .svc-name { font-family: var(--sans); font-weight: 700; font-size: 0.8rem; color: #fafafa; margin-bottom: 0.15rem; }
+        .svc-card.active .svc-name { color: var(--pink); }
+        .svc-ref { font-size: 0.7rem; color: #6a5f58; margin-top: 0.2rem; }
+
+        /* Per-service attribution (co-work lane) */
+        .svc-owner-wrap { margin-top: 0.55rem; display: none; }
+        .svc-owner-wrap.show { display: block; }
+        .owner-range-wrap { margin-top: 0.55rem; }
+        .owner-range { width: 100%; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 2px; outline: none; cursor: pointer; background: rgba(212,160,57,0.35); }
+        .owner-range::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: #fafafa; cursor: pointer; border: 2px solid #2a1f1a; box-shadow: 0 0 0 1px rgba(225,75,135,0.6); transition: box-shadow 0.15s; }
+        .owner-range::-webkit-slider-thumb:hover { box-shadow: 0 0 0 3px rgba(225,75,135,0.3); }
+        .owner-range::-moz-range-thumb { width: 13px; height: 13px; border-radius: 50%; background: #fafafa; cursor: pointer; border: 2px solid #2a1f1a; }
+        .owner-range.locked { pointer-events: none; opacity: 0.5; cursor: default; }
+        .owner-pct-row { display: flex; justify-content: space-between; font-family: var(--sans); font-size: 0.67rem; color: #6a5f58; margin-top: 0.25rem; }
+        .owner-pct-mx { color: #d4a039; font-weight: 700; }
+        .owner-pct-you { color: var(--pink); font-weight: 700; }
+
+        /* Inputs */
+        .field-group { margin-bottom: 1.5rem; }
+        .field-label { font-family: var(--sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a8f88; margin-bottom: 0.5rem; display: block; }
+        .input-box { background: rgba(255,255,255,0.06); border: 1px solid #4a403a; border-radius: 8px; padding: 0.65rem 1rem; color: #fafafa; font-family: var(--sans); font-size: 0.9rem; width: 100%; outline: none; transition: border-color 0.15s; }
+        .input-box:focus { border-color: var(--pink); }
+        .input-box::placeholder { color: #6a5f58; }
+        input[type=number]::-webkit-inner-spin-button { opacity: 0.4; }
+        .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 500px) { .fields-row { grid-template-columns: 1fr; } }
+
+        /* Deal type */
+        .deal-type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 0.75rem; }
+        @media (max-width: 560px) { .deal-type-grid { grid-template-columns: 1fr 1fr; } }
+        .deal-card { border: 1.5px solid #4a403a; border-radius: 8px; padding: 0.85rem 0.6rem; cursor: pointer; transition: border-color 0.18s, background 0.18s; background: rgba(255,255,255,0.03); text-align: center; }
+        .deal-card:hover { border-color: #7a6a62; }
+        .deal-card.active { border-color: #d4a039; background: rgba(212,160,57,0.08); }
+        .deal-card .deal-label { font-family: var(--sans); font-weight: 700; font-size: 0.8rem; color: #fafafa; margin-bottom: 0.2rem; }
+        .deal-card.active .deal-label { color: #d4a039; }
+        .deal-card .deal-rate { font-size: 0.73rem; color: #9a8f88; }
+
+        /* Success fee hint */
+        .sfee-callout { background: rgba(212,160,57,0.07); border: 1px solid rgba(212,160,57,0.2); border-radius: 8px; padding: 0.85rem 1rem; margin-top: 0.5rem; font-size: 0.83rem; color: #c4b4ac; line-height: 1.55; }
+        .sfee-callout strong { color: #d4a039; }
+
+        /* Results */
+        .results-panel { background: rgba(255,255,255,0.04); border: 1px solid #4a403a; border-radius: 14px; padding: 2rem 2rem 1.5rem; margin-top: 1.5rem; }
+        .results-panel h3 { font-family: var(--heading); font-size: 1.2rem; font-weight: 400; margin-bottom: 0.2rem; }
+        .results-subtitle { color: #9a8f88; font-size: 0.82rem; margin-bottom: 1.75rem; }
+        .split-bars { margin-bottom: 1.75rem; }
+        .split-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; gap: 0.75rem; }
+        .split-row-label { font-family: var(--sans); font-size: 0.82rem; color: #c4b4ac; white-space: nowrap; min-width: 60px; }
+        .split-bar-wrap { flex: 1; background: rgba(255,255,255,0.07); border-radius: 4px; height: 8px; overflow: hidden; }
+        .split-bar { height: 100%; border-radius: 4px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+        .split-bar.bar-you { background: var(--pink); }
+        .split-bar.bar-us { background: #d4a039; }
+        .split-amount { font-family: var(--sans); font-weight: 700; font-size: 0.9rem; min-width: 80px; text-align: right; }
+        .split-amount.amt-you { color: var(--pink); }
+        .split-amount.amt-us { color: #d4a039; }
+
+        .math-breakdown { border: 1px solid rgba(225,75,135,0.15); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.25rem; }
+        .math-breakdown .mb-label { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a8f88; margin-bottom: 0.65rem; }
+        .math-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: #c4b4ac; margin-bottom: 0.35rem; }
+        .math-row.total-row { border-top: 1px solid #4a403a; margin-top: 0.5rem; padding-top: 0.5rem; font-weight: 700; color: #fafafa; }
+        .math-row .math-val { color: #fafafa; font-family: var(--sans); }
+        .math-row .math-val.you { color: var(--pink); }
+        .math-row .math-val.us { color: #d4a039; }
+        .disclaimer { font-size: 0.75rem; color: #6a5f58; line-height: 1.55; margin-top: 1.25rem; }
+
+        /* Visibility */
+        .step-block.hidden { display: none; }
+        .ref-note { font-size: 0.75rem; color: #6a5f58; line-height: 1.5; margin-top: 0.4rem; }
+        .billing-hint { font-size: 0.8rem; color: #6a5f58; margin-top: 0.35rem; line-height: 1.5; }
+
+        @media (max-width: 600px) {
+            .page-hero { padding: 5rem 1.25rem 2.5rem; }
+            section { padding: 0 1.25rem 3rem; }
+            .results-panel { padding: 1.5rem 1.25rem; }
+            .split-row-label { min-width: 48px; }
+            .split-amount { min-width: 64px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+    <div class="header-inner">
+        <a href="/" class="wordmark" aria-label="Mexzungu home">Mexzungu</a>
+        <nav class="header-nav" aria-label="Main navigation">
+            <a href="/work">Work</a>
+            <a href="/talk_to_pepe" class="cta-link">Talk to Pepe</a>
+        </nav>
+    </div>
+</header>
+
+<div class="page-hero">
+    <span class="section-label">Collaborator Economics</span>
+    <h1>Jamming <span class="highlight">Together</span></h1>
+    <p class="hero-sub">Good partnerships start with clarity. This tool models how the economics work across our three collaboration structures, so we can focus the conversation on the work, not the math.</p>
+    <p class="hero-intro">Numbers are illustrative. Every engagement is priced individually after a proper conversation. The formulas are real, and the intent is always a deal that feels right for both sides.</p>
+</div>
+
+<section>
+
+    <!-- EXPLAINER -->
+    <div class="lanes-explainer">
+        <h2>Three ways to work together</h2>
+        <p class="explainer-lead">Every collaboration is different. The structure depends on your involvement: are you making the connection, bringing the expertise, or working the engagement alongside us?</p>
+
+        <div class="lane-cards">
+            <div class="lane-card">
+                <span class="lane-badge">Referral</span>
+                <div class="lane-card-title">One of us makes the connection</div>
+                <p class="lane-card-desc">Either of us spots the right fit and makes the intro. The referrer steps back, no delivery work required. The other side handles everything, and the referrer earns 10% of Year 1 billings.</p>
+                <span class="lane-formula">10% of Year 1 billings</span>
+            </div>
+            <div class="lane-card">
+                <span class="lane-badge">Advisory</span>
+                <div class="lane-card-title">You bring the expertise</div>
+                <p class="lane-card-desc">You deliver directly to the client under our umbrella. We take care of the infrastructure: contracts, invoicing, admin. You keep most of the upside.</p>
+                <span class="lane-formula">80% to you / 20% studio fee</span>
+            </div>
+            <div class="lane-card">
+                <span class="lane-badge">Co-work</span>
+                <div class="lane-card-title">We work on it together</div>
+                <p class="lane-card-desc">We're both in the room and both doing the work. Fees are distributed based on which services each of us handles. Straightforward, no debate.</p>
+                <span class="lane-formula">Fees split by work distribution</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="modeler-divider">
+
+    <!-- STEP 1: LANE PICKER -->
+    <div id="step1" class="step-block">
+        <div class="step-header">
+            <div class="step-num">Step 1</div>
+            <div class="step-title">Which fits your situation?</div>
+        </div>
+        <div class="lane-picker">
+            <div class="select-card" id="lane-referral" onclick="selectLane('referral', this)">
+                <span class="card-icon">&#128279;</span>
+                <div class="card-label">Referral</div>
+                <div class="card-sub">Either of us makes the connection. The referrer earns 10% of Year 1 billings, no active work needed.</div>
+            </div>
+            <div class="select-card" id="lane-advisory" onclick="selectLane('advisory', this)">
+                <span class="card-icon">&#128161;</span>
+                <div class="card-label">Advisory</div>
+                <div class="card-sub">You deliver to the client. We handle the admin and infrastructure. 80% to you, 20% studio fee.</div>
+            </div>
+            <div class="select-card" id="lane-cowork" onclick="selectLane('cowork', this)">
+                <span class="card-icon">&#129309;</span>
+                <div class="card-label">Co-work</div>
+                <div class="card-sub">We're both on the engagement. Fees go where the work goes.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REFERRAL INPUTS -->
+    <div id="step-referral" class="step-block hidden">
+        <hr class="modeler-divider">
+        <div class="step-header">
+            <div class="step-num">Step 2</div>
+            <div class="step-title">Estimate Year 1 billings</div>
+            <div class="step-desc">What do you expect the engagement to be worth in the first year?</div>
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="ref-sprint">Sprint / Project Fee ($)</label>
+            <input class="input-box" type="number" id="ref-sprint" placeholder="0" min="0" step="500" oninput="recalc()">
+        </div>
+        <div class="fields-row">
+            <div class="field-group">
+                <label class="field-label" for="ref-ret-mo">Monthly Retainer ($)</label>
+                <input class="input-box" type="number" id="ref-ret-mo" placeholder="0" min="0" step="500" oninput="recalc()">
+            </div>
+            <div class="field-group">
+                <label class="field-label" for="ref-ret-months">Duration (months, max 12)</label>
+                <input class="input-box" type="number" id="ref-ret-months" placeholder="12" min="1" max="12" step="1" value="12" oninput="recalc()">
+            </div>
+        </div>
+        <p class="billing-hint">Referral fee is capped at Year 1 billings, even if the engagement runs longer.</p>
+    </div>
+
+    <!-- ADVISORY INPUTS -->
+    <div id="step-advisory" class="step-block hidden">
+        <hr class="modeler-divider">
+        <div class="step-header">
+            <div class="step-num">Step 2</div>
+            <div class="step-title">What services are in scope?</div>
+            <div class="step-desc">Select the services you'll be delivering. Reference amounts auto-populate below.</div>
+        </div>
+        <div class="svc-grid" id="adv-svc-grid">
+            <div class="svc-card" id="adv-svc-va" onclick="toggleAdvSvc('va', this)">
+                <span class="svc-icon">&#128200;</span>
+                <div class="svc-name">Venture Architecture</div>
+                <div class="svc-ref">~$5k sprint / $2.5k/mo</div>
+            </div>
+            <div class="svc-card" id="adv-svc-dc" onclick="toggleAdvSvc('dc', this)">
+                <span class="svc-icon">&#127919;</span>
+                <div class="svc-name">Deal Closing</div>
+                <div class="svc-ref">~$8k sprint</div>
+            </div>
+            <div class="svc-card" id="adv-svc-dp" onclick="toggleAdvSvc('dp', this)">
+                <span class="svc-icon">&#128275;</span>
+                <div class="svc-name">Data Privacy</div>
+                <div class="svc-ref">~$2k/mo retainer</div>
+            </div>
+            <div class="svc-card" id="adv-svc-gc" onclick="toggleAdvSvc('gc', this)">
+                <span class="svc-icon">&#9878;</span>
+                <div class="svc-name">Fractional GC</div>
+                <div class="svc-ref">~$3k/mo retainer</div>
+            </div>
+            <div class="svc-card" id="adv-svc-gov" onclick="toggleAdvSvc('gov', this)">
+                <span class="svc-icon">&#127959;</span>
+                <div class="svc-name">Governance</div>
+                <div class="svc-ref">~$5k sprint / $2k/mo</div>
+            </div>
+        </div>
+        <p class="ref-note">Reference fees are illustrative. Actual pricing is agreed per engagement.</p>
+
+        <hr class="modeler-divider">
+        <div class="step-header">
+            <div class="step-num">Step 3</div>
+            <div class="step-title">Estimate the fees</div>
+        </div>
+        <div class="fields-row">
+            <div class="field-group">
+                <label class="field-label" for="adv-sprint">Sprint / Project Fee ($)</label>
+                <input class="input-box" type="number" id="adv-sprint" placeholder="0" min="0" step="500" oninput="recalc()">
+            </div>
+            <div class="field-group">
+                <label class="field-label" for="adv-ret-mo">Monthly Retainer ($)</label>
+                <input class="input-box" type="number" id="adv-ret-mo" placeholder="0" min="0" step="500" oninput="recalc()">
+            </div>
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="adv-ret-months">Retainer Duration (months, max 12)</label>
+            <input class="input-box" type="number" id="adv-ret-months" placeholder="6" min="1" max="12" step="1" value="6" oninput="recalc()">
+        </div>
+
+        <div id="adv-sfee-section" style="display:none;">
+            <hr class="modeler-divider">
+            <div class="step-header">
+                <div class="step-num">Step 4</div>
+                <div class="step-title">Model the success fee</div>
+                <div class="step-desc">Deal Closing engagements typically carry a success fee. Select the deal type and enter the expected transaction value.</div>
+            </div>
+            <div class="deal-type-grid">
+                <div class="deal-card" id="adv-dt-debt" onclick="selectDealType('adv','debt',this)">
+                    <div class="deal-label">Debt</div><div class="deal-rate">1% of deal size</div>
+                </div>
+                <div class="deal-card" id="adv-dt-equity" onclick="selectDealType('adv','equity',this)">
+                    <div class="deal-label">Equity</div><div class="deal-rate">1.5% of deal size</div>
+                </div>
+                <div class="deal-card" id="adv-dt-ma" onclick="selectDealType('adv','ma',this)">
+                    <div class="deal-label">M&amp;A</div><div class="deal-rate">1.75% of deal size</div>
+                </div>
+                <div class="deal-card" id="adv-dt-none" onclick="selectDealType('adv','none',this)">
+                    <div class="deal-label">No success fee</div><div class="deal-rate">Skip this</div>
+                </div>
+            </div>
+            <div id="adv-deal-size-wrap" class="field-group" style="display:none;">
+                <label class="field-label" for="adv-deal-size">Deal Size ($)</label>
+                <input class="input-box" type="number" id="adv-deal-size" placeholder="1,000,000" min="0" step="50000" oninput="recalc()">
+                <div id="adv-sfee-hint" class="sfee-callout" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CO-WORK INPUTS -->
+    <div id="step-cowork" class="step-block hidden">
+        <hr class="modeler-divider">
+        <div class="step-header">
+            <div class="step-num">Step 2</div>
+            <div class="step-title">What services are in scope?</div>
+            <div class="step-desc">Select all services in this engagement, then assign each one: who handles it?</div>
+        </div>
+        <div class="svc-grid">
+            <div class="svc-card" id="cw-svc-va" onclick="toggleCwSvc('va', this)">
+                <span class="svc-icon">&#128200;</span>
+                <div class="svc-name">Venture Architecture</div>
+                <div class="svc-ref">~$5k sprint / $2.5k/mo</div>
+                <div class="svc-owner-wrap" id="cw-own-va">
+                    <div class="owner-range-wrap">
+                        <input type="range" class="owner-range locked" id="range-va" min="0" max="100" step="10" value="0" disabled>
+                        <div class="owner-pct-row">
+                            <span>Mexzungu <span class="owner-pct-mx" id="pct-mx-va">100%</span></span>
+                            <span>You <span class="owner-pct-you" id="pct-you-va">0%</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="svc-card" id="cw-svc-dc" onclick="toggleCwSvc('dc', this)">
+                <span class="svc-icon">&#127919;</span>
+                <div class="svc-name">Deal Closing</div>
+                <div class="svc-ref">~$8k sprint</div>
+                <div class="svc-owner-wrap" id="cw-own-dc">
+                    <div class="owner-range-wrap">
+                        <input type="range" class="owner-range" id="range-dc" min="0" max="100" step="10" value="100" oninput="setOwnerPct(event,'dc',+this.value)">
+                        <div class="owner-pct-row">
+                            <span>Mexzungu <span class="owner-pct-mx" id="pct-mx-dc">0%</span></span>
+                            <span>You <span class="owner-pct-you" id="pct-you-dc">100%</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="svc-card" id="cw-svc-dp" onclick="toggleCwSvc('dp', this)">
+                <span class="svc-icon">&#128275;</span>
+                <div class="svc-name">Data Privacy</div>
+                <div class="svc-ref">~$2k/mo retainer</div>
+                <div class="svc-owner-wrap" id="cw-own-dp">
+                    <div class="owner-range-wrap">
+                        <input type="range" class="owner-range" id="range-dp" min="0" max="100" step="10" value="100" oninput="setOwnerPct(event,'dp',+this.value)">
+                        <div class="owner-pct-row">
+                            <span>Mexzungu <span class="owner-pct-mx" id="pct-mx-dp">0%</span></span>
+                            <span>You <span class="owner-pct-you" id="pct-you-dp">100%</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="svc-card" id="cw-svc-gc" onclick="toggleCwSvc('gc', this)">
+                <span class="svc-icon">&#9878;</span>
+                <div class="svc-name">Fractional GC</div>
+                <div class="svc-ref">~$3k/mo retainer</div>
+                <div class="svc-owner-wrap" id="cw-own-gc">
+                    <div class="owner-range-wrap">
+                        <input type="range" class="owner-range locked" id="range-gc" min="0" max="100" step="10" value="0" disabled>
+                        <div class="owner-pct-row">
+                            <span>Mexzungu <span class="owner-pct-mx" id="pct-mx-gc">100%</span></span>
+                            <span>You <span class="owner-pct-you" id="pct-you-gc">0%</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="svc-card" id="cw-svc-gov" onclick="toggleCwSvc('gov', this)">
+                <span class="svc-icon">&#127959;</span>
+                <div class="svc-name">Governance</div>
+                <div class="svc-ref">~$5k sprint / $2k/mo</div>
+                <div class="svc-owner-wrap" id="cw-own-gov">
+                    <div class="owner-range-wrap">
+                        <input type="range" class="owner-range" id="range-gov" min="0" max="100" step="10" value="100" oninput="setOwnerPct(event,'gov',+this.value)">
+                        <div class="owner-pct-row">
+                            <span>Mexzungu <span class="owner-pct-mx" id="pct-mx-gov">0%</span></span>
+                            <span>You <span class="owner-pct-you" id="pct-you-gov">100%</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="ref-note">Reference fees are illustrative. Actual pricing is agreed per engagement.</p>
+
+        <hr class="modeler-divider">
+        <div class="step-header">
+            <div class="step-num">Step 3</div>
+            <div class="step-title">Estimate the fees</div>
+        </div>
+        <div class="fields-row">
+            <div class="field-group">
+                <label class="field-label" for="cw-sprint">Sprint / Project Fee ($)</label>
+                <input class="input-box" type="number" id="cw-sprint" placeholder="0" min="0" step="500" oninput="recalc()">
+            </div>
+            <div class="field-group">
+                <label class="field-label" for="cw-ret-mo">Monthly Retainer ($)</label>
+                <input class="input-box" type="number" id="cw-ret-mo" placeholder="0" min="0" step="500" oninput="recalc()">
+            </div>
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="cw-ret-months">Retainer Duration (months, max 12)</label>
+            <input class="input-box" type="number" id="cw-ret-months" placeholder="6" min="1" max="12" step="1" value="6" oninput="recalc()">
+        </div>
+
+        <div id="cw-sfee-section" style="display:none;">
+            <hr class="modeler-divider">
+            <div class="step-header">
+                <div class="step-num">Step 4</div>
+                <div class="step-title">Model the success fee</div>
+                <div class="step-desc">The success fee goes to whoever is handling Deal Closing.</div>
+            </div>
+            <div class="deal-type-grid">
+                <div class="deal-card" id="cw-dt-debt" onclick="selectDealType('cw','debt',this)">
+                    <div class="deal-label">Debt</div><div class="deal-rate">1% of deal size</div>
+                </div>
+                <div class="deal-card" id="cw-dt-equity" onclick="selectDealType('cw','equity',this)">
+                    <div class="deal-label">Equity</div><div class="deal-rate">1.5% of deal size</div>
+                </div>
+                <div class="deal-card" id="cw-dt-ma" onclick="selectDealType('cw','ma',this)">
+                    <div class="deal-label">M&amp;A</div><div class="deal-rate">1.75% of deal size</div>
+                </div>
+                <div class="deal-card" id="cw-dt-none" onclick="selectDealType('cw','none',this)">
+                    <div class="deal-label">No success fee</div><div class="deal-rate">Skip this</div>
+                </div>
+            </div>
+            <div id="cw-deal-size-wrap" class="field-group" style="display:none;">
+                <label class="field-label" for="cw-deal-size">Deal Size ($)</label>
+                <input class="input-box" type="number" id="cw-deal-size" placeholder="1,000,000" min="0" step="50000" oninput="recalc()">
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="step-results" class="step-block hidden">
+        <hr class="modeler-divider">
+        <div class="step-header">
+            <div class="step-num" id="results-step-num">Step 3</div>
+            <div class="step-title">The split</div>
+        </div>
+
+        <div class="results-panel">
+            <h3 id="results-title">Your share</h3>
+            <p class="results-subtitle" id="results-sub"></p>
+
+            <div class="split-bars">
+                <div class="split-row">
+                    <span class="split-row-label">You</span>
+                    <div class="split-bar-wrap"><div class="split-bar bar-you" id="bar-you" style="width:0%"></div></div>
+                    <span class="split-amount amt-you" id="amt-you">$0</span>
+                </div>
+                <div class="split-row">
+                    <span class="split-row-label">Us</span>
+                    <div class="split-bar-wrap"><div class="split-bar bar-us" id="bar-us" style="width:0%"></div></div>
+                    <span class="split-amount amt-us" id="amt-us">$0</span>
+                </div>
+            </div>
+
+            <div class="math-breakdown">
+                <div class="mb-label">Breakdown</div>
+                <div class="math-row" id="mb-sprint-row" style="display:none;">
+                    <span id="mb-sprint-label">Sprint fee</span>
+                    <span class="math-val" id="mb-sprint-val">$0</span>
+                </div>
+                <div class="math-row" id="mb-retainer-row" style="display:none;">
+                    <span id="mb-retainer-label">Retainer</span>
+                    <span class="math-val" id="mb-retainer-val">$0</span>
+                </div>
+                <div class="math-row" id="mb-sfee-row" style="display:none;">
+                    <span id="mb-sfee-label">Success fee</span>
+                    <span class="math-val" id="mb-sfee-val">$0</span>
+                </div>
+                <div class="math-row total-row">
+                    <span>Total engagement value</span>
+                    <span class="math-val" id="mb-total">$0</span>
+                </div>
+                <div class="math-row" id="mb-your-row">
+                    <span id="mb-your-label">Your share</span>
+                    <span class="math-val you" id="mb-your-val">$0</span>
+                </div>
+                <div class="math-row" id="mb-our-row" style="display:none;">
+                    <span id="mb-our-label">Our share</span>
+                    <span class="math-val us" id="mb-our-val">$0</span>
+                </div>
+            </div>
+
+            <p class="disclaimer">Numbers are illustrative. Every engagement is priced in conversation, not by formula. This tool exists to make that conversation easier.</p>
+        </div>
+    </div>
+
+</section>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="/" class="footer-wordmark">Mexzungu</a>
+        <p class="footer-copy">&copy; 2026 Mexzungu Group Ltd. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    const SERVICE_FEES = {
+        va:  { sprint: 5000, retainerMo: 2500 },
+        dc:  { sprint: 8000, retainerMo: 0    },
+        dp:  { sprint: 0,    retainerMo: 2000 },
+        gc:  { sprint: 0,    retainerMo: 3000 },
+        gov: { sprint: 5000, retainerMo: 2000 },
+    };
+    const SFEE_RATES = { debt: 0.01, equity: 0.015, ma: 0.0175, none: 0 };
+
+    let state = {
+        lane: null,
+        advSvcs: new Set(),
+        advDealType: 'none',
+        advSprintEdited: false,
+        advRetEdited: false,
+        cwSvcs: new Set(),
+        cwOwners: { va: 0, dc: 100, dp: 100, gc: 0, gov: 100 },
+        cwDealType: 'none',
+        cwSprintEdited: false,
+        cwRetEdited: false,
+    };
+
+    function selectLane(lane, card) {
+        state.lane = lane;
+        ['lane-referral','lane-advisory','lane-cowork'].forEach(id => document.getElementById(id).classList.remove('active'));
+        card.classList.add('active');
+        ['step-referral','step-advisory','step-cowork','step-results'].forEach(id => document.getElementById(id).classList.add('hidden'));
+
+        if (lane === 'referral') {
+            document.getElementById('step-referral').classList.remove('hidden');
+            document.getElementById('results-step-num').textContent = 'Step 3';
+        } else if (lane === 'advisory') {
+            document.getElementById('step-advisory').classList.remove('hidden');
+            document.getElementById('results-step-num').textContent = 'Step 5';
+        } else {
+            document.getElementById('step-cowork').classList.remove('hidden');
+            document.getElementById('results-step-num').textContent = 'Step 5';
+        }
+        recalc();
+    }
+
+    /* ADVISORY lane */
+    function toggleAdvSvc(key, card) {
+        if (state.advSvcs.has(key)) { state.advSvcs.delete(key); card.classList.remove('active'); }
+        else { state.advSvcs.add(key); card.classList.add('active'); }
+        if (!state.advSprintEdited) {
+            let s = 0; state.advSvcs.forEach(k => { s += SERVICE_FEES[k].sprint; });
+            document.getElementById('adv-sprint').value = s || '';
+        }
+        if (!state.advRetEdited) {
+            let r = 0; state.advSvcs.forEach(k => { r += SERVICE_FEES[k].retainerMo; });
+            document.getElementById('adv-ret-mo').value = r || '';
+        }
+        document.getElementById('adv-sfee-section').style.display = state.advSvcs.has('dc') ? 'block' : 'none';
+        if (!state.advSvcs.has('dc')) {
+            state.advDealType = 'none';
+            ['adv-dt-debt','adv-dt-equity','adv-dt-ma','adv-dt-none'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+            document.getElementById('adv-deal-size-wrap').style.display = 'none';
+        }
+        if (state.advSvcs.size > 0) document.getElementById('step-results').classList.remove('hidden');
+        recalc();
+    }
+    document.getElementById('adv-sprint').addEventListener('input', function() { state.advSprintEdited = true; recalc(); });
+    document.getElementById('adv-ret-mo').addEventListener('input', function() { state.advRetEdited = true; recalc(); });
+
+    /* CO-WORK lane */
+    function toggleCwSvc(key, card) {
+        if (state.cwSvcs.has(key)) {
+            state.cwSvcs.delete(key); card.classList.remove('active');
+            document.getElementById('cw-own-' + key).classList.remove('show');
+        } else {
+            state.cwSvcs.add(key); card.classList.add('active');
+            document.getElementById('cw-own-' + key).classList.add('show');
+        }
+        if (!state.cwSprintEdited) {
+            let s = 0; state.cwSvcs.forEach(k => { s += SERVICE_FEES[k].sprint; });
+            document.getElementById('cw-sprint').value = s || '';
+        }
+        if (!state.cwRetEdited) {
+            let r = 0; state.cwSvcs.forEach(k => { r += SERVICE_FEES[k].retainerMo; });
+            document.getElementById('cw-ret-mo').value = r || '';
+        }
+        document.getElementById('cw-sfee-section').style.display = state.cwSvcs.has('dc') ? 'block' : 'none';
+        if (!state.cwSvcs.has('dc')) {
+            state.cwDealType = 'none';
+            ['cw-dt-debt','cw-dt-equity','cw-dt-ma','cw-dt-none'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+            document.getElementById('cw-deal-size-wrap').style.display = 'none';
+        }
+        if (state.cwSvcs.size > 0) document.getElementById('step-results').classList.remove('hidden');
+        recalc();
+    }
+    function updateRangeGradient(el, pct) {
+        const mx = 100 - pct;
+        el.style.background = `linear-gradient(to right, rgba(212,160,57,0.45) 0%, rgba(212,160,57,0.45) ${mx}%, rgba(225,75,135,0.45) ${mx}%, rgba(225,75,135,0.45) 100%)`;
+    }
+    function setOwnerPct(event, key, pct) {
+        event.stopPropagation();
+        state.cwOwners[key] = pct;
+        document.getElementById('pct-you-' + key).textContent = pct + '%';
+        document.getElementById('pct-mx-' + key).textContent = (100 - pct) + '%';
+        updateRangeGradient(event.target, pct);
+        recalc();
+    }
+    // Init gradients for unlocked sliders on page load
+    ['dc','dp','gov'].forEach(k => {
+        const el = document.getElementById('range-' + k);
+        if (el) updateRangeGradient(el, state.cwOwners[k]);
+    });
+    document.getElementById('cw-sprint').addEventListener('input', function() { state.cwSprintEdited = true; recalc(); });
+    document.getElementById('cw-ret-mo').addEventListener('input', function() { state.cwRetEdited = true; recalc(); });
+
+    function selectDealType(prefix, type, card) {
+        if (prefix === 'adv') state.advDealType = type;
+        else state.cwDealType = type;
+        [prefix+'-dt-debt',prefix+'-dt-equity',prefix+'-dt-ma',prefix+'-dt-none'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('active'); });
+        card.classList.add('active');
+        document.getElementById(prefix + '-deal-size-wrap').style.display = (type !== 'none') ? 'block' : 'none';
+        recalc();
+    }
+
+    function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+    function recalc() {
+        if (!state.lane) return;
+        let sprint = 0, retainerTotal = 0, successFee = 0, total = 0, you = 0, us = 0;
+
+        if (state.lane === 'referral') {
+            sprint = parseFloat(document.getElementById('ref-sprint').value) || 0;
+            const retMo = parseFloat(document.getElementById('ref-ret-mo').value) || 0;
+            const retMos = Math.min(parseInt(document.getElementById('ref-ret-months').value) || 12, 12);
+            retainerTotal = retMo * retMos;
+            total = sprint + retainerTotal;
+            you = total * 0.10;
+            us = total * 0.90;
+            if (total > 0) document.getElementById('step-results').classList.remove('hidden');
+            setResultsHeader('Referral', '10% of everything billed in Year 1. No active delivery required.');
+            document.getElementById('mb-your-label').textContent = 'Your referral fee (10%)';
+            document.getElementById('mb-our-row').style.display = 'none';
+
+        } else if (state.lane === 'advisory') {
+            sprint = parseFloat(document.getElementById('adv-sprint').value) || 0;
+            const retMo = parseFloat(document.getElementById('adv-ret-mo').value) || 0;
+            const retMos = Math.min(parseInt(document.getElementById('adv-ret-months').value) || 6, 12);
+            retainerTotal = retMo * retMos;
+            const rate = SFEE_RATES[state.advDealType] || 0;
+            const dealSize = parseFloat(document.getElementById('adv-deal-size').value) || 0;
+            successFee = rate * dealSize;
+            total = sprint + retainerTotal + successFee;
+            you = total * 0.80;
+            us = total * 0.20;
+            const hint = document.getElementById('adv-sfee-hint');
+            if (successFee > 0) {
+                const typeMap = { debt: 'Debt', equity: 'Equity', ma: 'M&A' };
+                hint.innerHTML = '<strong>' + fmt(successFee) + '</strong> success fee on a ' + fmt(dealSize) + ' ' + (typeMap[state.advDealType]||'') + ' deal. Your 80% cut: <strong>' + fmt(successFee * 0.80) + '</strong>.';
+                hint.style.display = 'block';
+            } else { hint.style.display = 'none'; }
+            setResultsHeader('Advisory', '80% to you / 20% studio fee. You deliver, we handle the infrastructure.');
+            document.getElementById('mb-your-label').textContent = 'Your share (80%)';
+            document.getElementById('mb-our-row').style.display = 'none';
+
+        } else if (state.lane === 'cowork') {
+            sprint = parseFloat(document.getElementById('cw-sprint').value) || 0;
+            const retMo = parseFloat(document.getElementById('cw-ret-mo').value) || 0;
+            const retMos = Math.min(parseInt(document.getElementById('cw-ret-months').value) || 6, 12);
+            retainerTotal = retMo * retMos;
+            const rate = SFEE_RATES[state.cwDealType] || 0;
+            const dealSize = parseFloat(document.getElementById('cw-deal-size').value) || 0;
+            const rawSuccessFee = rate * dealSize;
+            if (state.cwSvcs.has('dc')) successFee = rawSuccessFee;
+            total = sprint + retainerTotal + successFee;
+
+            // Distribute by per-service slider pct (0-100, partner's share)
+            let totalRef = 0;
+            state.cwSvcs.forEach(k => { totalRef += SERVICE_FEES[k].sprint + SERVICE_FEES[k].retainerMo * 6; });
+            let youRef = 0;
+            state.cwSvcs.forEach(k => {
+                const pct = (state.cwOwners[k] ?? 100) / 100;
+                youRef += pct * (SERVICE_FEES[k].sprint + SERVICE_FEES[k].retainerMo * 6);
+            });
+            const yourFraction = totalRef > 0 ? youRef / totalRef : 0;
+            const yourServiceFees = (sprint + retainerTotal) * yourFraction;
+            const dcPct = (state.cwOwners['dc'] ?? 100) / 100;
+            const yourSuccessFee = state.cwSvcs.has('dc') ? successFee * dcPct : 0;
+            you = yourServiceFees + yourSuccessFee;
+            us = total - you;
+
+            setResultsHeader('Co-work', 'Fees split by who handles each service. No studio fee overhead.');
+            document.getElementById('mb-your-label').textContent = 'Your share';
+            document.getElementById('mb-our-row').style.display = 'flex';
+            document.getElementById('mb-our-label').textContent = 'Our share';
+            document.getElementById('mb-our-val').textContent = fmt(us);
+        }
+
+        // Bars
+        const pct = total > 0 ? (you / total) * 100 : 0;
+        document.getElementById('bar-you').style.width = pct + '%';
+        document.getElementById('bar-us').style.width = (100 - pct) + '%';
+        document.getElementById('amt-you').textContent = fmt(you);
+        document.getElementById('amt-us').textContent = fmt(us);
+        document.getElementById('mb-total').textContent = fmt(total);
+        document.getElementById('mb-your-val').textContent = fmt(you);
+
+        // Sprint row
+        const sprintRow = document.getElementById('mb-sprint-row');
+        if (sprint > 0) {
+            sprintRow.style.display = 'flex';
+            document.getElementById('mb-sprint-val').textContent = fmt(sprint);
+        } else { sprintRow.style.display = 'none'; }
+
+        // Retainer row
+        const retRow = document.getElementById('mb-retainer-row');
+        if (retainerTotal > 0) {
+            retRow.style.display = 'flex';
+            let retMos = 6;
+            if (state.lane === 'referral') retMos = Math.min(parseInt(document.getElementById('ref-ret-months').value)||12, 12);
+            else if (state.lane === 'advisory') retMos = Math.min(parseInt(document.getElementById('adv-ret-months').value)||6, 12);
+            else retMos = Math.min(parseInt(document.getElementById('cw-ret-months').value)||6, 12);
+            document.getElementById('mb-retainer-label').textContent = 'Retainer (' + retMos + ' months)';
+            document.getElementById('mb-retainer-val').textContent = fmt(retainerTotal);
+        } else { retRow.style.display = 'none'; }
+
+        // Success fee row
+        const sfeeRow = document.getElementById('mb-sfee-row');
+        if (successFee > 0) {
+            sfeeRow.style.display = 'flex';
+            const typeMap = { debt: 'Debt', equity: 'Equity', ma: 'M&A' };
+            const dt = state.lane === 'advisory' ? state.advDealType : state.cwDealType;
+            document.getElementById('mb-sfee-label').textContent = 'Success fee (' + (typeMap[dt]||'') + ')';
+            document.getElementById('mb-sfee-val').textContent = fmt(successFee);
+        } else { sfeeRow.style.display = 'none'; }
+    }
+
+    function setResultsHeader(title, sub) {
+        document.getElementById('results-title').textContent = title + ': your share';
+        document.getElementById('results-sub').textContent = sub;
+    }
+</script>
+
+</body>
+</html>

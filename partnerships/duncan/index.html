@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Mexzungu Group: Partnership Overview</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --bg:       #0d0d0d;
+            --card:     #1a1a1a;
+            --border:   #2a2a2a;
+            --pink:     #e14b87;
+            --pink-lo:  rgba(225,75,135,0.10);
+            --pink-lo2: rgba(225,75,135,0.20);
+            --text:     #fafafa;
+            --muted:    #9a8f88;
+            --dim:      #6b5e57;
+            --accent:   #e86fa0;
+        }
+
+        /* PASSWORD GATE */
+        #pw-gate {
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 3rem 2.5rem;
+            max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 48px; margin-bottom: 2rem; }
+        .pw-label {
+            font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--pink); font-weight: 600; margin-bottom: 1rem;
+        }
+        .pw-heading {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.5rem; color: var(--text);
+            margin-bottom: 0.5rem; line-height: 1.2;
+        }
+        .pw-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.8rem 1rem; background: var(--bg);
+            border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text); font-size: 1rem; margin-bottom: 1rem;
+            outline: none; box-sizing: border-box;
+        }
+        .pw-input:focus { border-color: var(--pink); }
+        .pw-btn {
+            width: 100%; padding: 0.85rem; background: var(--pink);
+            border: none; border-radius: 8px; color: #fff;
+            font-size: 0.95rem; font-weight: 600; cursor: pointer;
+        }
+        .pw-btn:hover { background: #c93d75; }
+        .pw-error { color: var(--pink); font-size: 0.82rem; margin-top: 0.6rem; display: none; }
+
+        body { background: var(--bg); color: var(--text); margin: 0; font-family: 'Space Grotesk', sans-serif; }
+        #content { display: none; }
+        #content.visible { display: block; }
+
+        /* HEADER */
+        .site-header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .header-inner {
+            max-width: 920px; margin: 0 auto; padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between; height: 60px;
+        }
+        .header-logo { height: 26px; }
+        .header-tag { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); }
+
+        /* SECTIONS */
+        .sec {
+            max-width: 920px; margin: 0 auto; padding: 5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .sec:last-child { border-bottom: none; }
+
+        .eyebrow {
+            font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--pink); font-weight: 600; margin-bottom: 1.2rem;
+        }
+        .heading {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            color: var(--text); line-height: 1.15; margin-bottom: 1.2rem;
+        }
+        .sub { font-size: 1.02rem; color: var(--muted); line-height: 1.7; max-width: 680px; }
+
+        /* HERO TAG */
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--pink-lo); border: 1px solid var(--pink-lo2);
+            border-radius: 20px; padding: 0.35rem 0.9rem;
+            font-size: 0.75rem; color: var(--accent); margin-bottom: 1.5rem;
+        }
+        .hero-dot { width: 6px; height: 6px; background: var(--pink); border-radius: 50%; flex-shrink: 0; }
+
+        /* PRACTICE AREAS */
+        .practice-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1.5rem; margin-top: 3rem;
+        }
+        @media (max-width: 640px) { .practice-grid { grid-template-columns: 1fr; } }
+
+        .practice-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 2rem; display: flex; flex-direction: column;
+        }
+        .pc-tag {
+            font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--pink); font-weight: 600; margin-bottom: 0.75rem;
+        }
+        .pc-name {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.2rem; color: var(--text); margin-bottom: 0.6rem;
+        }
+        .pc-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.5rem; flex: 1; }
+        .pc-lead { font-size: 0.75rem; color: var(--dim); margin-bottom: 1.2rem; }
+        .pc-lead strong { color: var(--muted); }
+
+        .ws-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--border); }
+        .ws-item {
+            padding: 0.8rem 0; border-bottom: 1px solid var(--border);
+            display: grid; grid-template-columns: 1fr auto;
+            gap: 0.5rem; align-items: start;
+        }
+        .ws-item:last-child { border-bottom: none; }
+        .ws-label { font-size: 0.8rem; color: var(--dim); }
+        .ws-type { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+        .ws-price { font-size: 0.88rem; color: var(--text); font-weight: 500; text-align: right; white-space: nowrap; }
+        .ws-price.accent { color: var(--accent); }
+
+        /* OPTIONS */
+        .options-wrap { margin-top: 3rem; }
+        .options-label {
+            font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--dim); margin-bottom: 1.25rem;
+        }
+        .options-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+        }
+        @media (max-width: 720px) { .options-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 420px) { .options-grid { grid-template-columns: 1fr; } }
+
+        .opt-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 1.25rem;
+        }
+        .opt-lbl {
+            font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--pink); font-weight: 600; margin-bottom: 0.45rem;
+        }
+        .opt-name { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+        .opt-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+
+        /* COLLAB */
+        .collab-list { list-style: none; padding: 0; margin: 2.5rem 0 0 0; }
+        .collab-item {
+            display: flex; gap: 1.25rem; padding: 1.4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .collab-item:last-child { border-bottom: none; }
+        .collab-dot {
+            width: 8px; height: 8px; background: var(--pink);
+            border-radius: 50%; flex-shrink: 0; margin-top: 0.45rem;
+        }
+        .collab-body { flex: 1; }
+        .collab-title { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; }
+        .collab-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+        /* BADGES */
+        .badge-row { display: flex; gap: 0.6rem; margin-top: 2rem; flex-wrap: wrap; }
+        .badge {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 0.4rem 1rem;
+            font-size: 0.8rem; color: var(--muted);
+        }
+
+        /* ADMIN FEE NOTE */
+        .admin-note {
+            margin-top: 2rem; background: var(--pink-lo);
+            border: 1px solid var(--pink-lo2); border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+        }
+        .admin-note-label {
+            font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--pink); font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .admin-note-text { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+        /* CTA */
+        .cta-wrap { background: #111; border-top: 1px solid var(--border); }
+        .cta-inner { max-width: 920px; margin: 0 auto; padding: 5rem 2rem 7rem; }
+        .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+        @media (max-width: 560px) { .cta-grid { grid-template-columns: 1fr; } }
+        .cta-item { display: flex; flex-direction: column; gap: 0.35rem; }
+        .cta-lbl { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); }
+        .cta-val { font-size: 1rem; color: var(--text); }
+        .cta-val a { color: var(--pink); text-decoration: none; }
+        .cta-val a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo-pink.png" alt="Mexzungu" class="pw-logo" onerror="this.style.display='none'">
+        <div class="pw-label">Partnership Overview</div>
+        <div class="pw-heading">Mexzungu Group</div>
+        <div class="pw-sub">Pepe Carrillo · Venture Architecture &amp; Capital Closing</div>
+        <input type="password" class="pw-input" id="pw-input" placeholder="Access code" />
+        <button class="pw-btn" onclick="checkPw()">Enter</button>
+        <div class="pw-error" id="pw-error">Wrong code. Try again.</div>
+    </div>
+</div>
+
+<div id="content">
+
+<header class="site-header">
+    <div class="header-inner">
+        <img src="/img/logo-pink.png" alt="Mexzungu" class="header-logo" onerror="this.style.display='none'">
+        <span class="header-tag">Partnership Overview · Duncan Steward</span>
+    </div>
+</header>
+
+<div class="sec" style="padding-top:6rem;">
+    <div class="hero-tag"><span class="hero-dot"></span> Mexzungu Group · For Duncan Steward</div>
+    <div class="heading">Legal architecture, capital closing, governance, and data privacy for founders who are building seriously.</div>
+    <p class="sub">Pepe Carrillo is a corporate lawyer and venture adviser. This page covers what Mexzungu does across its four practice areas, what it costs, and how we can work together on shared opportunities.</p>
+</div>
+
+<div class="sec">
+    <div class="eyebrow">Practice areas</div>
+    <div class="heading">Four practices. Defined scope, defined fees.</div>
+    <p class="sub">Each practice has the same structure: a fixed-fee building workstream, an event-based success workstream, and a monthly fractional workstream. Clients activate any combination.</p>
+
+    <div class="practice-grid">
+
+        <div class="practice-card">
+            <div class="pc-tag">Practice 1</div>
+            <div class="pc-name">Venture Architecture</div>
+            <div class="pc-desc">Entity structure, IP assignment, founder agreements, cap table design, vesting, and investor readiness. Built before the raise so nothing collapses under term sheet pressure.</div>
+            <ul class="ws-list">
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS1 · Architecture Bundle</div>
+                        <div class="ws-type">5 deliverables, billed on delivery</div>
+                    </div>
+                    <div class="ws-price">€7,500 flat</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS2 · Capital Closing</div>
+                        <div class="ws-type">Success fee, nothing until money clears</div>
+                    </div>
+                    <div class="ws-price accent">2% equity / 1% debt</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS3 · Fractional GC</div>
+                        <div class="ws-type">Monthly retainer, 30-day termination</div>
+                    </div>
+                    <div class="ws-price">€1,200 / €2,500 mo</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="practice-card">
+            <div class="pc-tag">Practice 2</div>
+            <div class="pc-name">Governance Advisory</div>
+            <div class="pc-desc">Board cadence, KPI frameworks, committee design, investor-aligned reporting, and founder accountability systems. For companies scaling faster than their governance.</div>
+            <div class="pc-lead">Lead: <strong>Faith Gathoni</strong>, supervised by Pepe</div>
+            <ul class="ws-list">
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS1 · Governance Blueprint</div>
+                        <div class="ws-type">Board setup, KPI pack, reporting architecture</div>
+                    </div>
+                    <div class="ws-price">Scoped per call</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS2 · Project / Diagnostic</div>
+                        <div class="ws-type">6-8 week governance or commercial diagnostic</div>
+                    </div>
+                    <div class="ws-price">Scoped per call</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS3 · Fractional Board Adviser</div>
+                        <div class="ws-type">Monthly retainer, 30-day termination</div>
+                    </div>
+                    <div class="ws-price">€1,200 / €2,500 mo</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="practice-card">
+            <div class="pc-tag">Practice 3</div>
+            <div class="pc-name">Data Privacy (GDPR)</div>
+            <div class="pc-desc">Full GDPR compliance architecture for European and Africa-operating companies. Gap analysis, data mapping, policy stack, DPA templates, and ongoing DPO support.</div>
+            <div class="pc-lead">Lead: <strong>Oana Grigore</strong>, supervised by Pepe</div>
+            <ul class="ws-list">
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS1 · Privacy Architecture Bundle</div>
+                        <div class="ws-type">4 deliverables, billed on delivery</div>
+                    </div>
+                    <div class="ws-price">€5,500 to €8,500</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS2 · Regulatory Events</div>
+                        <div class="ws-type">DPIA, breach response, vendor DPAs</div>
+                    </div>
+                    <div class="ws-price accent">€800 to €3,000 / event</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS3 · Fractional DPO</div>
+                        <div class="ws-type">Monthly retainer, 30-day termination</div>
+                    </div>
+                    <div class="ws-price">€1,200 / €2,200 mo</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="practice-card">
+            <div class="pc-tag">Practice 4</div>
+            <div class="pc-name">Deal Advisory (M&amp;A)</div>
+            <div class="pc-desc">Acquisition, merger, or asset sale. Deal counsel from heads of terms to signed purchase agreement. Cross-border experience across Africa and Europe. Pepe-led.</div>
+            <ul class="ws-list">
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS1 · Deal Setup</div>
+                        <div class="ws-type">Diligence scope, heads of terms</div>
+                    </div>
+                    <div class="ws-price">$0 to $2,500</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS2 · Success Fee</div>
+                        <div class="ws-type">On signed purchase agreement</div>
+                    </div>
+                    <div class="ws-price accent">0.75 to 2% of deal</div>
+                </li>
+                <li class="ws-item">
+                    <div>
+                        <div class="ws-label">WS3 · Deal Counsel Retainer</div>
+                        <div class="ws-type">Monthly while transaction is live</div>
+                    </div>
+                    <div class="ws-price">$1,500 to $3,000 mo</div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="admin-note">
+        <div class="admin-note-label">Monthly administration fee</div>
+        <div class="admin-note-text">Applies while any workstreams are open, across all practices. 1 open workstream: €500/mo. 2: €900/mo. 3: €1,200/mo. Counts across practices. Not negotiable. Stops the day all workstreams close.</div>
+    </div>
+
+    <div class="options-wrap">
+        <div class="options-label">Equity conversion option</div>
+        <p class="sub" style="margin-bottom:0; font-size:0.9rem;">Up to 40% of fees under any workstream may be converted into equity at the price of the next closing round, at the client's election, exercised before invoice. Available across all four practices.</p>
+    </div>
+</div>
+
+<div class="sec">
+    <div class="eyebrow">Payment</div>
+    <div class="heading">Four ways to structure any engagement.</div>
+    <p class="sub">Every proposal includes all options. Clients choose what fits their cash position. Bank hours available on any practice as a standalone engagement.</p>
+
+    <div class="options-grid" style="margin-top:2.5rem;">
+        <div class="opt-card">
+            <div class="opt-lbl">Option A</div>
+            <div class="opt-name">Full Upfront</div>
+            <div class="opt-desc">Full setup fee on signing. Slight discount applies. Maximum certainty for the client.</div>
+        </div>
+        <div class="opt-card">
+            <div class="opt-lbl">Option B</div>
+            <div class="opt-name">On Delivery</div>
+            <div class="opt-desc">Fee split across deliverables. Each payment released when the deliverable is received. No retainer.</div>
+        </div>
+        <div class="opt-card">
+            <div class="opt-lbl">Option C</div>
+            <div class="opt-name">Monthly + Success</div>
+            <div class="opt-desc">Low upfront, monthly retainer, success fee on the closing event. Best for longer arcs.</div>
+        </div>
+        <div class="opt-card">
+            <div class="opt-lbl">Option D</div>
+            <div class="opt-name">Bank Hours</div>
+            <div class="opt-desc">Pre-purchased block of hours at $175 to $200/hr (Europe). Minimum 10h, top-ups available. Optional 1 to 1.5% success fee.</div>
+        </div>
+    </div>
+
+    <div class="badge-row" style="margin-top:2rem;">
+        <div class="badge">Wire (MCB USD)</div>
+        <div class="badge">Payoneer</div>
+        <div class="badge">USDC (Solana)</div>
+        <div class="badge">EUR and USD accepted</div>
+    </div>
+</div>
+
+<div class="sec">
+    <div class="eyebrow">How we work together</div>
+    <div class="heading">Where our work connects.</div>
+    <p class="sub">Duncan works at the capital strategy and investor readiness layer. Mexzungu works at the legal structure and deal close layer. The natural handoff is when a founder has a fundable story and needs the legal architecture to back it up.</p>
+
+    <ul class="collab-list">
+        <li class="collab-item">
+            <span class="collab-dot"></span>
+            <div class="collab-body">
+                <div class="collab-title">Founder referral: fundraising track</div>
+                <div class="collab-desc">Duncan identifies a founder preparing to raise. Mexzungu handles Venture Architecture (WS1) and Capital Closing (WS2). Success fee arrangement structured per engagement, no rigid formula.</div>
+            </div>
+        </li>
+        <li class="collab-item">
+            <span class="collab-dot"></span>
+            <div class="collab-body">
+                <div class="collab-title">Mexzungu referral: governance and investor readiness</div>
+                <div class="collab-desc">Pepe's clients often need board structure, KPI discipline, and investor narrative before the legal work is useful. Duncan's board and commercial advisory expertise is the natural fit there.</div>
+            </div>
+        </li>
+        <li class="collab-item">
+            <span class="collab-dot"></span>
+            <div class="collab-body">
+                <div class="collab-title">Joint mandates: Africa and EMEA</div>
+                <div class="collab-desc">For cross-border mandates where both governance advisory and legal close are needed, a joint scope can be structured from the start. Mexzungu leads legal, Duncan leads capital and governance. One client relationship, shared credit.</div>
+            </div>
+        </li>
+        <li class="collab-item">
+            <span class="collab-dot"></span>
+            <div class="collab-body">
+                <div class="collab-title">Portfolio and existing mandates</div>
+                <div class="collab-desc">If Duncan is already on the board or in a fractional role and a legal need arises, Mexzungu can be brought in as deal counsel or GC without disrupting the existing relationship. Warm handoff, no conflict.</div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="sec">
+    <div class="eyebrow">Best fit</div>
+    <div class="heading">Who Mexzungu works with.</div>
+    <p class="sub">Founders and investors in Africa, Latin America, and EMEA building outside the lines and needing legal and governance that moves at their pace.</p>
+    <div class="badge-row">
+        <div class="badge">Seed to Series B</div>
+        <div class="badge">Africa and EMEA</div>
+        <div class="badge">Fintech and impact</div>
+        <div class="badge">B2B tech and data</div>
+        <div class="badge">Infrastructure</div>
+        <div class="badge">Agritech and climate</div>
+        <div class="badge">Cross-border deals</div>
+    </div>
+</div>
+
+<div class="cta-wrap">
+    <div class="cta-inner">
+        <div class="eyebrow">Contact</div>
+        <div class="heading">Talk to Pepe.</div>
+        <p class="sub">Book directly or reply to the intro thread. Happy to jump on a call to explore a specific opportunity. Free 60-minute Diagnosis Call available for any referral.</p>
+        <div class="cta-grid">
+            <div class="cta-item">
+                <span class="cta-lbl">Book a call</span>
+                <span class="cta-val"><a href="https://pepecarrillo.co/talk-to-pepe">pepecarrillo.co/talk-to-pepe</a></span>
+            </div>
+            <div class="cta-item">
+                <span class="cta-lbl">Email</span>
+                <span class="cta-val"><a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a></span>
+            </div>
+            <div class="cta-item">
+                <span class="cta-lbl">WhatsApp</span>
+                <span class="cta-val"><a href="https://wa.me/13477700838">+1 347 770 0838</a></span>
+            </div>
+            <div class="cta-item">
+                <span class="cta-lbl">LinkedIn</span>
+                <span class="cta-val"><a href="https://linkedin.com/in/pepecarrillo">linkedin.com/in/pepecarrillo</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+    const PW = 'duncan-2026';
+    const KEY = 'mxg_pw_partnerships_duncan';
+    function checkPw() {
+        const val = document.getElementById('pw-input').value.trim();
+        if (val === PW) { sessionStorage.setItem(KEY,'1'); unlock(); }
+        else { document.getElementById('pw-error').style.display = 'block'; }
+    }
+    function unlock() {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('content').classList.add('visible');
+    }
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPw();
+    });
+    if (sessionStorage.getItem(KEY) === '1') unlock();
+</script>
+</body>
+</html>

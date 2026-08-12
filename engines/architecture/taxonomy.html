@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGL Engine Taxonomy</title>
+  <style>
+    :root {
+      --bg:#0f0f0f; --surface:#181818; --s2:#1e1e1e; --border:#2a2a2a;
+      --text:#e8e8e8; --muted:#666;
+      --conn:#4cc8b4; --val:#f0a030; --care:#b482ff;
+      --green:#4caf7d; --blue:#6498ff; --red:#e05050; --pink:#E14B87;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; font-size:14px; line-height:1.6; padding:40px 24px 80px; }
+    .wrap { max-width:960px; margin:0 auto; }
+    nav { margin-bottom:32px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 12px; border-radius:4px; border:1px solid var(--border); transition:.15s; }
+    nav a:hover { color:var(--text); border-color:#444; }
+    h1 { font-size:26px; font-weight:800; letter-spacing:-.03em; margin-bottom:4px; }
+    .sub { color:var(--muted); font-size:12px; margin-bottom:44px; }
+
+    /* STATUS MARK */
+    .sm { display:inline-block; width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+    .b-live    { background:var(--green); }
+    .b-build   { background:var(--blue); }
+    .b-concept { background:#444; }
+    .h-healthy { box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--green); }
+    .h-failing  { box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--val); }
+    .h-broken   { box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--red); }
+
+    /* OWNER */
+    .owner { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:1px 7px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--muted); }
+    .owner-p { border-color:var(--pink); color:var(--pink); background:rgba(225,75,135,.05); }
+
+    /* MACRO */
+    .macro { margin-bottom:44px; }
+    .macro-hd { display:flex; align-items:baseline; gap:12px; padding-bottom:10px; margin-bottom:20px; border-bottom:2px solid var(--border); }
+    .macro-hd h2 { font-size:19px; font-weight:800; letter-spacing:-.02em; }
+    .macro-hd .mtag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; padding:2px 10px; border-radius:20px; }
+    .macro-hd .mdesc { font-size:12px; color:var(--muted); margin-left:auto; }
+
+    .mc-conn .macro-hd { border-color:var(--conn); }
+    .mc-conn .macro-hd h2 { color:var(--conn); }
+    .mc-conn .mtag { color:var(--conn); background:rgba(76,200,180,.08); border:1px solid rgba(76,200,180,.2); }
+    .mc-val  .macro-hd { border-color:var(--val); }
+    .mc-val  .macro-hd h2 { color:var(--val); }
+    .mc-val  .mtag { color:var(--val);  background:rgba(240,160,48,.08);  border:1px solid rgba(240,160,48,.2); }
+    .mc-care .macro-hd { border-color:var(--care); }
+    .mc-care .macro-hd h2 { color:var(--care); }
+    .mc-care .mtag { color:var(--care); background:rgba(180,130,255,.08); border:1px solid rgba(180,130,255,.2); }
+
+    /* ENGINE CARDS */
+    .eng-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:10px; }
+    .eng { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .eng-hd { padding:12px 14px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+    .eng-hd .ename { font-size:13px; font-weight:700; flex:1; }
+    .eng-body { padding:10px 14px 14px; }
+
+    /* MICRO ROWS */
+    .micro { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.03); }
+    .micro:last-child { border-bottom:none; }
+    .micro .mname { font-size:12px; color:#bbb; flex:1; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a href="/engines/">&larr; Hub</a>
+    <a href="/engines/architecture/">Architecture</a>
+    <a href="#conn" style="color:var(--conn)">Connection</a>
+    <a href="#val"  style="color:var(--val)">Value</a>
+    <a href="#care" style="color:var(--care)">Care</a>
+  </nav>
+
+  <h1>MGL Engine Taxonomy</h1>
+  <p class="sub">3 Macro Engines &middot; 18 Engines &middot; 60+ Micro Engines &middot; Updated 2026-08-07</p>
+
+  <!-- CONNECTION -->
+  <div class="macro mc-conn" id="conn">
+    <div class="macro-hd">
+      <h2>Connection</h2>
+      <span class="mtag">Macro I</span>
+      <span class="mdesc">4 Engines &middot; Always-on</span>
+    </div>
+    <div class="eng-grid">
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-failing" title="Live, Failing — WA bridge down 30+ runs"></span>
+          <span class="ename">BD Engine</span>
+          <span class="owner owner-p">Joan</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Signal Detection (email)</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Outreach Cadence</span></div>
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">WA Bridge Scan</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Deal Review Micro Engine</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Closing Protocol</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-broken" title="Live, Broken — no approved posts 7+ days, OC dark 3 weeks"></span>
+          <span class="ename">Content Engine</span>
+          <span class="owner owner-p">Freddie</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">Outlaw Chronicles Newsletter</span></div>
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">LinkedIn Posts</span></div>
+          <div class="micro"><span class="sm b-live h-failing"></span><span class="mname">Instagram Posts</span></div>
+          <div class="micro"><span class="sm b-live h-failing"></span><span class="mname">X Posts</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Substack</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-broken" title="Live, Broken — not scraping or drafting replies"></span>
+          <span class="ename">LinkedIn Engagement Engine</span>
+          <span class="owner owner-p">Freddie</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">Comment Scraper</span></div>
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">Reply Drafter</span></div>
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">DM Monitor</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Engagement Analytics</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-broken" title="Live, Broken — EL generation broken, signing never worked"></span>
+          <span class="ename">Proposal Engine</span>
+          <span class="owner owner-p">Prince</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-failing"></span><span class="mname">Proposal Page Generation</span></div>
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">EL Generation</span></div>
+          <div class="micro"><span class="sm b-live h-broken"></span><span class="mname">E-Signature Integration</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Countersigned Copy Filing</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VALUE -->
+  <div class="macro mc-val" id="val">
+    <div class="macro-hd">
+      <h2>Value</h2>
+      <span class="mtag">Macro II</span>
+      <span class="mdesc">8 Engines &middot; Episodic</span>
+    </div>
+    <div class="eng-grid">
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-build" title="Build"></span>
+          <span class="ename">Onboarding Engine</span>
+          <span class="owner">Lars</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Kickoff Protocol</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Workstream Setup</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Client Registry Update</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-failing" title="Live, Failing — retainer cadence works, invoice chase stalling"></span>
+          <span class="ename">Fractional Exec Engine</span>
+          <span class="owner owner-p">Chrissie</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Retainer Activation</span></div>
+          <div class="micro"><span class="sm b-live h-failing"></span><span class="mname">Monthly Advisory Pack</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Escalation Protocol</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Renewal Management</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-healthy" title="Live, Healthy"></span>
+          <span class="ename">Founder Advisory Engine</span>
+          <span class="owner owner-p">Lemmy</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Venture Architecture</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Cap Table Design</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Operating Agreements</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Investor Readiness Pack</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Fundraising Prep</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-healthy" title="Live, Healthy"></span>
+          <span class="ename">Investor Advisory Engine</span>
+          <span class="owner owner-p">PJ</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Deal Intake (48h SLA)</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Investment Memo</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Investor Advisory Brief</span></div>
+          <div class="micro"><span class="sm b-live h-failing"></span><span class="mname">MiFID II Gate</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Follow-Up &amp; Conversion</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-failing" title="Live, Failing — structuring works, sign-off loop incomplete"></span>
+          <span class="ename">Deal Closing Engine</span>
+          <span class="owner owner-p">PJ</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Deal Structuring</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Due Diligence Coordination</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Document Pack Assembly</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Negotiation Support</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Completion &amp; Sign-off</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-build" title="Build — Faith joining, framework being designed"></span>
+          <span class="ename">Governance Engine</span>
+          <span class="owner owner-p">Chrissie</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Board Pack Assembly</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Resolution Generation</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Minutes &amp; Action Tracking</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Governance Calendar</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Compliance Filings</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-build" title="Build — productized delivery arm not yet scoped"></span>
+          <span class="ename">AI Agent Building Engine</span>
+          <span class="owner owner-p">Bowie</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Client Brief &amp; Intake</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Architecture Design</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Build + Test</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Client Deployment</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Post-Delivery Monitoring</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-failing" title="Live, Failing — Duara outstanding 135+ days"></span>
+          <span class="ename">Billing Engine</span>
+          <span class="owner owner-p">Gene</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Invoice Generation</span></div>
+          <div class="micro"><span class="sm b-live h-failing"></span><span class="mname">Chase Protocol</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Payment Reconciliation</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Financial Summary</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CARE -->
+  <div class="macro mc-care" id="care">
+    <div class="macro-hd">
+      <h2>Care</h2>
+      <span class="mtag">Macro III</span>
+      <span class="mdesc">6 Engines &middot; Always-on</span>
+    </div>
+    <div class="eng-grid">
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-healthy" title="Live, Healthy — client-health-score cron running daily"></span>
+          <span class="ename">Client Health Engine</span>
+          <span class="owner">Sade</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Relationship Temperature</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Billing Friction Tracker</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Engagement Cadence</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Escalation Router</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-concept" title="Concept — not yet built"></span>
+          <span class="ename">Success Check Engine</span>
+          <span class="owner">Sade</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Delivery Survey</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">Gap Analysis</span></div>
+          <div class="micro"><span class="sm b-concept"></span><span class="mname">NPS Capture</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-build" title="Build — collab track live, referral engine around it is not"></span>
+          <span class="ename">Referral Engine</span>
+          <span class="owner owner-p">Jagger</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Collab Track (in BD Engine)</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Intro Tracking</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Success Fee Lifecycle</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-build" title="Build — stale detection exists, revival not productized"></span>
+          <span class="ename">Re-activation Engine</span>
+          <span class="owner">Jagger</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Stale Detection (in BD Engine)</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Revival Protocol</span></div>
+          <div class="micro"><span class="sm b-build"></span><span class="mname">Re-entry Trigger</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-healthy" title="Live, Healthy — 15/15 connector checks green"></span>
+          <span class="ename">Infrastructure Engine</span>
+          <span class="owner">Bowie</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Tools Server</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Cron Orchestration</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Watchdog &amp; Auto-Restart</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">API Token Health</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Backup &amp; Log Rotation</span></div>
+        </div>
+      </div>
+
+      <div class="eng">
+        <div class="eng-hd">
+          <span class="sm b-live h-healthy" title="Live, Healthy — Nina + Yoda janitor running"></span>
+          <span class="ename">Knowledge Engine</span>
+          <span class="owner">Nina</span>
+        </div>
+        <div class="eng-body">
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Dossier Currency Check</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Standing Rules Janitor</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Contradiction Resolution</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Session Handoff Enforcement</span></div>
+          <div class="micro"><span class="sm b-live h-healthy"></span><span class="mname">Skills Audit</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div style="padding-top:24px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:20px;font-size:11px;color:var(--muted)">
+    <div style="display:flex;align-items:center;gap:7px"><span class="sm b-live" style="margin-top:1px"></span> Live</div>
+    <div style="display:flex;align-items:center;gap:7px"><span class="sm b-build" style="margin-top:1px"></span> Build</div>
+    <div style="display:flex;align-items:center;gap:7px"><span class="sm b-concept" style="margin-top:1px"></span> Concept</div>
+    <div style="display:flex;align-items:center;gap:7px"><span class="sm b-live h-healthy" style="margin-top:4px;margin-right:4px"></span> Healthy</div>
+    <div style="display:flex;align-items:center;gap:7px"><span class="sm b-live h-failing" style="margin-top:4px;margin-right:4px"></span> Failing</div>
+    <div style="display:flex;align-items:center;gap:7px"><span class="sm b-live h-broken" style="margin-top:4px;margin-right:4px"></span> Broken</div>
+    <div style="display:flex;align-items:center;gap:7px"><span class="owner owner-p">Name</span> Showtime gate</div>
+  </div>
+</div>
+</body>
+</html>

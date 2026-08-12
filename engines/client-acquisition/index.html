@@ -194,6 +194,7 @@
 <body>
 
 <nav>
+  <a href="/engines/" style="font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; border:1px solid var(--border); margin-right:4px; flex-shrink:0; white-space:nowrap;">&#8592; All Engines</a>
   <span class="logo">Client Acquisition Engine</span>
   <a href="#journey">Journey</a>
   <a href="#kpis">KPIs</a>
@@ -212,7 +213,7 @@
 
 <section id="top">
   <div class="wrap">
-    <div class="sec-label">Mexzungu Group, Delivery Engine</div>
+    <div class="sec-label">Mexzungu Group, Macro Engine</div>
     <h1>Client Acquisition Engine</h1>
     <p>The Client Acquisition Engine is how Mexzungu Group finds, qualifies, and closes every new client. It runs autonomously at 07:00 CET every morning, scanning email and WhatsApp for signals, advancing every live lead on cadence, and queuing every Showtime decision for Pepe. No opportunity falls through. No follow-up depends on anyone remembering.</p>
     <p style="margin-top: 8px;">What follows is the complete specification: every trigger, actor, tool call, gate, and failure mode, from the first piece of content published to the signed engagement letter.</p>
@@ -389,7 +390,7 @@
           <tr><td>WhatsApp signal scan, known leads</td><td><span class="rc rc-r">R</span></td><td><span class="rc rc-i">I</span></td><td><span class="rc rc-a">A</span></td><td></td><td></td><td></td><td><span class="rc rc-c">C</span></td><td></td></tr>
           <tr><td>New lead classification</td><td><span class="rc rc-c">C</span></td><td><span class="rc rc-r">R</span></td><td><span class="rc rc-c">C</span></td><td><span class="rc rc-a">A</span></td><td></td><td></td><td></td><td></td></tr>
           <tr><td>First outreach draft</td><td><span class="rc rc-r">R</span></td><td><span class="rc rc-a">A</span></td><td><span class="rc rc-c">C</span></td><td><span class="rc rc-i">I</span></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>First outreach send</td><td></td><td><span class="rc rc-r">R</span></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>First outreach send</td><td></td><td><span class="rc rc-r">R</span></td><td><span class="rc rc-i">I</span></td><td><span class="rc rc-i">I</span></td><td></td><td><span class="rc rc-i">I</span></td><td></td><td></td></tr>
           <tr><td>Soundcheck follow-up (warm/active/proposal)</td><td><span class="rc rc-r">R</span></td><td><span class="rc rc-i">I</span></td><td><span class="rc rc-a">A</span></td><td></td><td></td><td></td><td></td><td></td></tr>
           <tr><td>Stale lead decision (revive or close)</td><td><span class="rc rc-c">C</span></td><td><span class="rc rc-r">R</span></td><td><span class="rc rc-c">C</span></td><td></td><td></td><td></td><td></td><td></td></tr>
           <tr><td>Status upgrade decision</td><td><span class="rc rc-c">C</span></td><td><span class="rc rc-r">R</span></td><td><span class="rc rc-c">C</span></td><td><span class="rc rc-i">I</span></td><td></td><td></td><td></td><td></td></tr>
@@ -663,7 +664,7 @@ stateDiagram-v2
           <div class="tool-call"><span class="fn">list_leads</span>() <span style="color:#555;"> // full pipeline</span></div>
           <div class="tool-call"><span class="fn">write_brain</span>(<span class="arg">path</span>=<span class="str">"areas/mexzungu/bd-intelligence.md"</span>, <span class="arg">mode</span>=<span class="str">"append"</span>)</div>
           <h4>Sector Coverage Targets</h4>
-          <div class="tool-call">legal advisory / venture architecture / infra-energy LatAm / deal closing Africa+LatAm / data privacy EU</div>
+          <div class="tool-call">founder advisory / venture architecture / infra-energy LatAm / deal closing Africa+LatAm / data privacy EU</div>
           <h4>Urgency Criteria (top 3 surfaced)</h4>
           <div class="tool-call">proposals overdue 7+ days / collabs no placement 60+ days / stale leads 21+ days no Pepe decision</div>
         </div>
