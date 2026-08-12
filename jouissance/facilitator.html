@@ -65,6 +65,9 @@
     max-width: 100%;
     outline: none;
     border-radius: 2px;
+    touch-action: manipulation;
+    -webkit-user-select: text;
+    user-select: text;
   }
   #auth-gate input:focus { border-color: var(--accent); }
   #auth-gate button {
@@ -475,6 +478,249 @@
   }
   #toast.show { opacity: 1; }
 
+  /* MAIN NAV */
+  .main-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .main-tab {
+    padding: 12px 24px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .main-tab.active { color: #FF006E; border-bottom-color: #FF006E; }
+  .main-panel { display: none; }
+  .main-panel.active { display: block; }
+
+  /* SESSION PLAN: SAFETY BAR */
+  .sp-safety-bar {
+    background: #FF006E;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .sp-safety-signal {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.18);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .sp-safety-signal.yellow { background: rgba(255,220,0,0.3); color: #ffe066; }
+  .sp-safety-signal.purple { background: rgba(180,100,255,0.3); color: #d0a0ff; }
+  .sp-safety-signal.red    { background: rgba(255,80,80,0.3);  color: #ffaaaa; }
+
+  /* SESSION PLAN: PHASE CARD */
+  .sp-phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px 16px;
+    margin-bottom: 16px;
+  }
+  .sp-phase-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .sp-phase-num {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sp-start-time { font-size: 12px; color: var(--muted); }
+  .sp-phase-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .sp-duration-badge {
+    background: rgba(155,127,166,0.2);
+    color: var(--accent);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  /* SESSION PLAN: TIMER */
+  .sp-timer { text-align: center; padding: 20px 0 12px; }
+  .sp-timer-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+  .sp-timer-display.expired {
+    color: #FF006E;
+    animation: sp-flash 0.9s ease-in-out infinite;
+  }
+  @keyframes sp-flash { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  .sp-timer-msg {
+    font-size: 11px;
+    color: #FF006E;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    min-height: 16px;
+  }
+  .sp-progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .sp-progress-fill {
+    height: 100%;
+    background: #FF006E;
+    border-radius: 2px;
+    transform-origin: left center;
+    transform: scaleX(1);
+    transition: transform 1s linear;
+  }
+  .sp-timer-btns { display: flex; gap: 12px; justify-content: center; }
+  .sp-btn {
+    padding: 11px 28px;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    min-width: 100px;
+  }
+  .sp-btn-primary { background: #FF006E; color: #fff; }
+  .sp-btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .sp-btn:active { opacity: 0.8; }
+
+  /* SESSION PLAN: NAV */
+  .sp-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+  .sp-nav-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    min-width: 110px;
+  }
+  .sp-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+
+  /* SESSION PLAN: NOTES */
+  .sp-notes-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .sp-notes-title {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .sp-notes-body { font-size: 13px; line-height: 1.7; color: var(--text); }
+  .sp-notes-body ul, .sp-notes-body ol { padding-left: 18px; margin: 8px 0; }
+  .sp-notes-body li { margin-bottom: 5px; }
+  .sp-notes-body p { margin-bottom: 8px; }
+  .sp-notes-body strong { color: rgba(244,239,230,0.9); }
+  .sp-notes-body em { color: var(--muted); }
+  .sp-notes-body blockquote {
+    background: rgba(255,0,110,0.06);
+    padding: 10px 14px;
+    border-radius: 3px;
+    color: var(--muted);
+    font-style: italic;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* SESSION PLAN: WATCH FOR */
+  .sp-watch-item {
+    display: flex;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    align-items: flex-start;
+  }
+  .sp-watch-item:last-child { border-bottom: none; }
+  .sp-watch-signal { color: var(--amber); min-width: 130px; flex-shrink: 0; line-height: 1.4; }
+  .sp-watch-action { color: var(--text); line-height: 1.5; }
+
+  /* SESSION PLAN: MUSIC */
+  .sp-music-card {
+    background: rgba(155,127,166,0.07);
+    border: 1px solid rgba(155,127,166,0.18);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .sp-music-icon { font-size: 15px; flex-shrink: 0; }
+  .sp-music-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+  /* SESSION PLAN: NEXT PHASE */
+  .sp-next-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .sp-next-label { font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 3px; }
+  .sp-next-name { font-size: 15px; color: var(--text); }
+  .sp-next-badge { background: rgba(155,127,166,0.15); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 12px; white-space: nowrap; }
+
   @media (max-width: 768px) {
     main { padding: 16px; }
     .stats-bar { grid-template-columns: repeat(2, 1fr); }
@@ -485,6 +731,10 @@
     .form-row { flex-wrap: wrap; }
     .tabs { overflow-x: auto; flex-wrap: nowrap; }
     .tab { padding: 10px 12px; font-size: 11px; white-space: nowrap; }
+    .sp-timer-display { font-size: 56px; }
+    .sp-phase-name { font-size: 24px; }
+    .sp-watch-signal { min-width: 100px; }
+    .sp-watch-item { flex-direction: column; gap: 4px; }
   }
 </style>
 </head>
@@ -517,6 +767,11 @@
   </header>
 
   <main>
+    <div class="main-nav">
+      <div class="main-tab active" onclick="switchMainTab('overview')">Overview</div>
+      <div class="main-tab" onclick="switchMainTab('session-plan')">Session Plan</div>
+    </div>
+    <div class="main-panel active" id="panel-overview">
     <div class="stats-bar">
       <div class="stat-card">
         <div class="stat-value" id="stat-p">0</div>
@@ -537,8 +792,19 @@
     </div>
 
     <div class="section">
-      <div class="section-title">Participants</div>
-      <div id="participants-list"><div class="loading-msg">Loading...</div></div>
+      <div class="section-title" onclick="toggleParticipants()" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+        <span>Participants</span>
+        <span id="participants-chevron" style="font-size:1.1rem;transition:transform .2s">&#8964;</span>
+      </div>
+      <div id="participants-list" style="display:none"><div class="loading-msg">Loading...</div></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title" onclick="toggleRanking()" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+        <span>Ranking</span>
+        <span id="ranking-chevron" style="font-size:1.1rem;transition:transform .2s">&#8964;</span>
+      </div>
+      <div id="fac-ranking" style="display:none"><div class="loading-msg">Loading...</div></div>
     </div>
 
     <div class="section">
@@ -554,9 +820,68 @@
     </div>
 
     <div class="section">
+      <div class="section-title">Special challenges sent</div>
+      <div id="specials-list"><div class="loading-msg">Loading...</div></div>
+    </div>
+
+    <div class="section">
       <div class="section-title">Pending redemptions</div>
       <div id="all-rd"><div class="loading-msg">Loading...</div></div>
     </div>
+    </div><!-- /panel-overview -->
+
+    <div class="main-panel" id="panel-session-plan">
+
+      <div class="sp-safety-bar">
+        <strong>Safety</strong>
+        <span class="sp-safety-signal">&#x1F91E; Arms crossed = no touch</span>
+        <span class="sp-safety-signal yellow">YELLOW = slow down</span>
+        <span class="sp-safety-signal purple">PURPLE = grounding needed</span>
+        <span class="sp-safety-signal red">RED = full stop</span>
+      </div>
+
+      <div class="sp-phase-card">
+        <div class="sp-phase-meta">
+          <span class="sp-phase-num" id="sp-phase-num">Phase</span>
+          <span class="sp-start-time" id="sp-start-time"></span>
+        </div>
+        <div class="sp-phase-name" id="sp-phase-name">Loading...</div>
+        <div style="margin-bottom:4px"><span class="sp-duration-badge" id="sp-duration-badge">-- min</span></div>
+        <div class="sp-timer">
+          <div class="sp-timer-display" id="sp-timer-display">00:00</div>
+          <div class="sp-timer-msg" id="sp-timer-msg"></div>
+          <div class="sp-progress-bar"><div class="sp-progress-fill" id="sp-progress-fill"></div></div>
+          <div class="sp-timer-btns">
+            <button class="sp-btn sp-btn-primary" id="sp-btn-start" onclick="spTimerStartPause()">START</button>
+            <button class="sp-btn sp-btn-secondary" onclick="spTimerReset()">RESET</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-nav">
+        <button class="sp-nav-btn" id="sp-prev-btn" onclick="spPrevPhase()">&larr; Previous</button>
+        <span id="sp-phase-counter" style="font-size:12px;color:var(--muted);letter-spacing:0.08em"></span>
+        <button class="sp-nav-btn" id="sp-next-btn" onclick="spNextPhase()">Next &rarr;</button>
+      </div>
+
+      <div class="sp-music-card">
+        <span class="sp-music-icon">&#9835;</span>
+        <span class="sp-music-text" id="sp-music"></span>
+      </div>
+
+      <div class="sp-notes-card">
+        <div class="sp-notes-title">Facilitator Notes</div>
+        <div class="sp-notes-body" id="sp-notes"></div>
+      </div>
+
+      <div class="sp-notes-card" id="sp-watchfor-card" style="display:none">
+        <div class="sp-notes-title">Watch For</div>
+        <div id="sp-watchfor"></div>
+      </div>
+
+      <div id="sp-next-container"></div>
+
+    </div><!-- /panel-session-plan -->
   </main>
 </div>
 
@@ -653,7 +978,7 @@ async function boot() {
   document.getElementById('auth-gate').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('facilitator-label').textContent = p?.email || 'Facilitator';
-  await Promise.all([loadStats(), loadParticipants(), loadBroadcasts(), loadRedemptions()]);
+  await Promise.all([loadStats(), loadBroadcasts(), loadRedemptions(), loadSpecials()]);
 }
 
 async function loadStats() {
@@ -666,6 +991,25 @@ async function loadStats() {
     document.getElementById('stat-a').textContent = Math.round(d.avg_points ?? 0);
     document.getElementById('stat-r').textContent = d.pending_redemptions ?? 0;
   } catch {}
+}
+
+async function loadRanking() {
+  const el = document.getElementById('fac-ranking');
+  try {
+    const r = await req('/leaderboard');
+    if (!r || !r.ok) { el.innerHTML = '<div class="empty">Could not load ranking.</div>'; return; }
+    const d = await r.json();
+    const full = d.full_list || [];
+    const medals = ['🥇','🥈','🥉'];
+    el.innerHTML = full.map((m, i) => {
+      const isFac = m.role === 'facilitator' || m.role === 'admin';
+      return `<div style="display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-bottom:1px solid rgba(155,127,166,.1)">
+        <span style="font-size:1.1rem;width:1.5rem;text-align:center">${medals[i] || '<span style="font-size:.75rem;color:var(--muted)">#'+(i+1)+'</span>'}</span>
+        <span style="flex:1;font-size:.9rem${isFac ? ';color:var(--muted)' : ''}">${m.display_name}${isFac ? ' <span style="font-size:.6rem;opacity:.45">✦</span>' : ''}</span>
+        <span style="font-size:.85rem;font-weight:600;color:var(--accent)">${m.points} pts</span>
+      </div>`;
+    }).join('');
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
 }
 
 async function loadParticipants() {
@@ -746,6 +1090,30 @@ function interpretQuiz(testId, scores) {
   return { summary: '', detail: Object.entries(s).map(([k,v])=>`${k}: ${v}`).join(' · '), interp: '' };
 }
 
+function fmtSecs(s) {
+  s = s || 0;
+  if (s < 60) return s + 's';
+  if (s < 3600) return Math.floor(s/60) + 'm ' + (s%60) + 's';
+  return Math.floor(s/3600) + 'h ' + Math.floor((s%3600)/60) + 'm';
+}
+
+function buildScreenTime(p) {
+  const total = p.screen_time_total || 0;
+  const sessions = p.screen_time_sessions || 0;
+  const byDay = p.screen_time_by_day || [];
+  const summary = `<div style="display:flex;gap:2rem;padding:.75rem 0 1rem">
+    <div><div style="font-size:1.4rem;font-weight:600;color:var(--accent)">${fmtSecs(total)}</div><div style="font-size:.75rem;color:var(--muted);margin-top:2px">total time</div></div>
+    <div><div style="font-size:1.4rem;font-weight:600;color:var(--accent)">${byDay.length}</div><div style="font-size:.75rem;color:var(--muted);margin-top:2px">days logged in</div></div>
+  </div>`;
+  if (!byDay.length) return summary + '<div class="empty">No session data.</div>';
+  const rows = byDay.map(d => `<div style="display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--border)">
+    <div style="font-size:.7rem;color:var(--muted);width:90px">${d.day}</div>
+    <div style="font-size:.85rem;color:var(--text);flex:1">${fmtSecs(d.seconds)}</div>
+    <div style="font-size:.75rem;color:var(--muted)">${d.sessions} session${d.sessions!==1?'s':''}</div>
+  </div>`).join('');
+  return summary + `<div style="border-top:1px solid var(--border)">${rows}</div>`;
+}
+
 function buildCard(p) {
   const init = (p.name || p.email || '?')[0].toUpperCase();
   const hasPend = p.pending_redemptions && p.pending_redemptions.length;
@@ -779,6 +1147,20 @@ function buildCard(p) {
     </div>`;
   }).join('');
   const qaHtml = (regQHtml + profileHtml + kyHtml) || '<div class="empty">Profile not yet complete.</div>';
+
+  const ALL_MODULES = ['The Body as Portal','The Language of Desire','Energy and Presence','Surrender and Safety','Integration and Practice'];
+  const completedModuleIds = new Set((p.quiz_completions||[]).map(q=>q.module_id));
+  const readModules = p.module_reads || {};
+  const moduleHtml = ALL_MODULES.map((title,i)=>{
+    const mid = i+1; const read = readModules[mid]; const done = completedModuleIds.has(mid);
+    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <div title="Opened" style="width:22px;text-align:center;font-size:13px;opacity:${read?1:.15}">👁</div>
+      <div title="Quiz done" style="width:22px;text-align:center;font-size:11px;font-weight:600;color:var(--green);opacity:${done?1:.15}">✓</div>
+      <div style="flex:1;font-size:.85rem;opacity:${read||done?1:.4}">${title}</div>
+      ${read?`<div style="font-size:.72rem;opacity:.35">${fmtDate(read)}</div>`:''}
+    </div>`;
+  }).join('');
+  const knowledgeHtml = `<div style="padding:4px 0">${moduleHtml}</div>`;
 
   const respHtml = (p.recent_responses || []).length
     ? (p.recent_responses || []).map(r =>
@@ -826,19 +1208,37 @@ function buildCard(p) {
       <div class="tabs">
         <div class="tab active" onclick="tab(event,'tp${p.id}')">Profile</div>
         <div class="tab" onclick="tab(event,'tr${p.id}')">Submissions</div>
+        <div class="tab" onclick="tab(event,'tk${p.id}')">Knowledge</div>
         <div class="tab" onclick="tab(event,'trd${p.id}')">Rewards</div>
         <div class="tab" onclick="tab(event,'tc${p.id}')">Specials</div>
+        <div class="tab" onclick="tab(event,'tst${p.id}')">Screen time</div>
       </div>
       <div class="tab-panel active" id="tp${p.id}"><div class="qa-list">${qaHtml}</div></div>
       <div class="tab-panel" id="tr${p.id}">${respHtml}</div>
+      <div class="tab-panel" id="tk${p.id}">${knowledgeHtml}</div>
       <div class="tab-panel" id="trd${p.id}">${rdHtml}</div>
+      <div class="tab-panel" id="tst${p.id}">${buildScreenTime(p)}</div>
       <div class="tab-panel" id="tc${p.id}">
         <div class="custom-form">
-          <textarea id="ct${p.id}" placeholder="Write a personal challenge for ${nm||em.split('@')[0]}..."></textarea>
-          <div class="form-row">
-            <input type="number" id="cp${p.id}" placeholder="bonus pts" min="0" max="50">
-            <button class="btn-send" onclick="sendChallenge(${p.id},'${nm||em.split('@')[0]}')">Send to ${nm||em.split('@')[0]}</button>
+          <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.4);margin-bottom:.4rem">Special challenge title</div>
+          <input type="text" id="sct${p.id}" placeholder="What is the challenge?" style="width:100%;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.6rem .75rem;font-size:.88rem;font-family:inherit;box-sizing:border-box">
+          <div style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.4);margin:.8rem 0 .4rem">What counts as done (what I need from ${nm||em.split('@')[0]})</div>
+          <textarea id="scr${p.id}" placeholder="Voice note of at least 60 seconds describing..." style="min-height:90px"></textarea>
+          <div style="display:flex;gap:.75rem;align-items:center;margin-top:.4rem">
+            <div style="flex:1">
+              <div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.35);margin-bottom:.3rem">Cost (pts)</div>
+              <input type="number" id="scc${p.id}" value="30" min="1" max="200" style="width:100%;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.5rem .75rem;font-size:.88rem;font-family:inherit;box-sizing:border-box">
+            </div>
+            <div style="flex:1">
+              <div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.35);margin-bottom:.3rem">Reward (pts)</div>
+              <input type="number" id="scw${p.id}" value="100" min="1" max="500" style="width:100%;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.5rem .75rem;font-size:.88rem;font-family:inherit;box-sizing:border-box">
+            </div>
+            <div style="flex:1">
+              <div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,239,230,.35);margin-bottom:.3rem">Duration (hours)</div>
+              <input type="number" id="scd${p.id}" value="24" min="1" max="72" style="width:100%;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.2);border-radius:6px;color:#f4efe6;padding:.5rem .75rem;font-size:.88rem;font-family:inherit;box-sizing:border-box">
+            </div>
           </div>
+          <button class="btn-send" style="margin-top:.75rem" onclick="sendSpecialChallenge(${p.id},'${nm||em.split('@')[0]}')">Send special challenge to ${nm||em.split('@')[0]}</button>
         </div>
       </div>
     </div>
@@ -846,6 +1246,26 @@ function buildCard(p) {
 }
 
 function toggle(id) { document.getElementById('pc'+id).classList.toggle('open'); }
+
+let _participantsLoaded = false;
+function toggleParticipants() {
+  const el = document.getElementById('participants-list');
+  const ch = document.getElementById('participants-chevron');
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  ch.style.transform = open ? '' : 'rotate(180deg)';
+  if (!open && !_participantsLoaded) { _participantsLoaded = true; loadParticipants(); }
+}
+
+let _rankingLoaded = false;
+function toggleRanking() {
+  const el = document.getElementById('fac-ranking');
+  const ch = document.getElementById('ranking-chevron');
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  ch.style.transform = open ? '' : 'rotate(180deg)';
+  if (!open && !_rankingLoaded) { _rankingLoaded = true; loadRanking(); }
+}
 
 function tab(e, panelId) {
   const body = e.target.closest('.participant-body');
@@ -855,19 +1275,22 @@ function tab(e, panelId) {
   document.getElementById(panelId).classList.add('active');
 }
 
-async function sendChallenge(pid, name) {
-  const text = document.getElementById('ct'+pid).value.trim();
-  const pts = parseInt(document.getElementById('cp'+pid).value) || 0;
-  if (!text) { toast('Write the challenge first.'); return; }
-  const dayNum = Math.max(1, Math.min(14, Math.ceil((Date.now() - new Date('2026-08-01').getTime()) / 86400000) + 1));
-  const r = await req('/admin/challenge/custom', {
+async function sendSpecialChallenge(pid, name) {
+  const title = (document.getElementById('sct'+pid).value || '').trim();
+  const requirement = (document.getElementById('scr'+pid).value || '').trim();
+  const cost = parseInt(document.getElementById('scc'+pid).value) || 30;
+  const reward = parseInt(document.getElementById('scw'+pid).value) || 100;
+  const duration = parseInt(document.getElementById('scd'+pid).value) || 24;
+  if (!title) { toast('Add a challenge title first.'); return; }
+  if (!requirement) { toast('Add what counts as done first.'); return; }
+  const r = await req('/admin/challenge/special', {
     method: 'POST',
-    body: JSON.stringify({ participant_id: pid, day_number: dayNum, challenge_title: text.substring(0, 60), challenge_description: text })
+    body: JSON.stringify({ title, gamble_amount: cost, reward_amount: reward, duration_hours: duration, assignments: [{ participant_id: pid, requirement }] })
   });
   if (!r || !r.ok) { toast('Failed to send.'); return; }
-  document.getElementById('ct'+pid).value = '';
-  document.getElementById('cp'+pid).value = '';
-  toast(`Challenge sent to ${name}.`);
+  document.getElementById('sct'+pid).value = '';
+  document.getElementById('scr'+pid).value = '';
+  toast(`Sent to ${name}. ${duration}h window. Stake ${cost} pts, win ${reward} pts.`);
 }
 
 async function loadBroadcasts() {
@@ -897,6 +1320,64 @@ async function sendBroadcast() {
   document.getElementById('bc-text').value = '';
   toast('Broadcast sent to all participants.');
   loadBroadcasts(); loadStats();
+}
+
+async function loadSpecials() {
+  const el = document.getElementById('specials-list');
+  try {
+    const r = await req('/admin/challenge/special');
+    if (!r || !r.ok) { el.innerHTML = '<div class="empty">No special challenges sent yet.</div>'; return; }
+    const data = await r.json();
+    if (!data.length) { el.innerHTML = '<div class="empty">No special challenges sent yet.</div>'; return; }
+    const statusColor = { pending: 'var(--muted)', accepted: 'var(--amber)', completed: '#7ac4a0', declined: '#c47a7a' };
+    el.innerHTML = data.map(ch => {
+      const exp = new Date(ch.expires_at + 'Z');
+      const now = Date.now();
+      const diffH = Math.max(0, Math.floor((exp - now) / 3600000));
+      const expired = exp < now;
+      const rows = ch.assignments.map(a => {
+        let submissionHtml = '';
+        if (a.status === 'completed') {
+          if (a.submission_file_path) {
+            const fname = a.submission_file_path.split('/').pop();
+            const tok = localStorage.getItem('j_fac_token') || '';
+            const fileUrl = `/jouissance/admin/uploads/${a.participant_id}/${fname}?token=${encodeURIComponent(tok)}`;
+            const isImg = /\.(jpe?g|png|gif|webp)$/i.test(fname);
+            const isAudio = /\.(mp3|m4a|ogg|wav|aac)$/i.test(fname);
+            if (isImg) {
+              submissionHtml = `<a href="${fileUrl}" target="_blank" style="color:var(--pink);font-size:.8rem;display:block;margin-top:.4rem">View image</a>`;
+            } else if (isAudio) {
+              submissionHtml = `<audio controls style="width:160px;margin-top:.4rem"><source src="${fileUrl}"></audio>`;
+            } else {
+              submissionHtml = `<a href="${fileUrl}" target="_blank" style="color:var(--pink);font-size:.8rem">View file</a>`;
+            }
+          }
+          if (a.response) {
+            submissionHtml += `<div style="font-size:.8rem;color:var(--muted);margin-top:.3rem;font-style:italic">"${esc(a.response)}"</div>`;
+          }
+        }
+        return `<tr>
+          <td>${esc(a.display_name || a.email || '')}</td>
+          <td style="color:${statusColor[a.status]||'var(--muted)'}">${a.status}</td>
+          <td style="color:var(--muted);font-size:.8rem">${a.accepted_at ? fmtDate(a.accepted_at) : '-'}</td>
+          <td style="color:var(--muted);font-size:.8rem">${a.completed_at ? fmtDate(a.completed_at) : '-'}</td>
+          <td>${submissionHtml || '-'}</td>
+        </tr>`;
+      }).join('');
+      return `<div style="margin-bottom:1.5rem;padding:1rem 1.1rem;border:1px solid rgba(255,255,255,.1);border-radius:8px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.6rem">
+          <div style="font-weight:600">${esc(ch.title)}</div>
+          <div style="font-size:.75rem;color:${expired?'#c47a7a':'var(--muted)'}">
+            ${expired ? 'Expired' : diffH + 'h left'} &nbsp;·&nbsp; ${ch.gamble_amount} pts in / ${ch.reward_amount} pts out
+          </div>
+        </div>
+        <table class="rd-table" style="width:100%">
+          <thead><tr><th>Participant</th><th>Status</th><th>Accepted</th><th>Completed</th><th>Submission</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+    }).join('');
+  } catch(e) { el.innerHTML = '<div class="empty">Could not load.</div>'; }
 }
 
 async function loadRedemptions() {
@@ -963,6 +1444,332 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('auth-gate').style.display !== 'none') doLogin();
 });
 
+// ===== MAIN NAV =====
+function switchMainTab(tab) {
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  const tabEl = document.querySelector(`.main-tab[onclick*="'${tab}'"]`);
+  if (tabEl) tabEl.classList.add('active');
+  const panelEl = document.getElementById('panel-' + tab);
+  if (panelEl) panelEl.classList.add('active');
+}
+
+// ===== SESSION PLAN =====
+const SESSION_PHASES = [
+  {
+    id: 0,
+    phase_num: 'Setup',
+    name: 'Pre-Session Setup',
+    start_time: '6:00pm',
+    duration_min: 60,
+    notes: `<p><strong>Space:</strong></p><ul>
+<li>Furniture pushed to edges or removed</li>
+<li>4 yoga mats in a loose organic cluster near the centre</li>
+<li>Cushions at every mat and along walls</li>
+<li>Candles as the only light source: 15-20 minimum, varied heights. Surfaces only, NOT floor. Check nothing flammable within 30cm of a flame.</li>
+<li>Props tray near wall: oils, blindfolds, rope coiled (visible but not prominent)</li>
+<li>Temperature: 23-24 celsius</li>
+<li>Diffuser running from 6:30pm. One scent only: sandalwood, palo santo, or rose. Ambient by 7pm, not sharp.</li>
+</ul>
+<p><strong>Pepe and Agathe:</strong> Already changed and settled before anyone arrives. Host energy is set before the door opens. Calm, unhurried, present.</p>`,
+    watch_for: [],
+    music: 'No music yet. Start arrival ambient playlist at 6:30pm.'
+  },
+  {
+    id: 1,
+    phase_num: '1',
+    name: 'Arrival',
+    start_time: '6:30pm',
+    duration_min: 30,
+    notes: `<p>Greet them at the door like Pepe at a dinner party. Warm, easy, no ceremony. The session does not begin at the entrance.</p>
+<p>Water on the table. Wine available if Marie wants it, not offered proactively.</p>
+<p>Let conversation flow. 20-30 minutes of real talk. The informality is structural. They cannot open if they feel they are supposed to be opening.</p>
+<p><strong>Cue to move to mats:</strong> Watch for when the energy in the room settles. A natural quiet will come, usually after 20-25 minutes. That is the cue.`,
+    watch_for: [
+      { signal: 'Natural quiet in room', action: 'Energy has settled. That is the cue to move to the mats.' }
+    ],
+    music: 'Ambient, no beat. Jon Hopkins: Immunity / Olafur Arnalds: Near Light / Nils Frahm: Says. Volume low enough to talk over.'
+  },
+  {
+    id: 2,
+    phase_num: '2',
+    name: 'Opening Container',
+    start_time: '7:00pm',
+    duration_min: 30,
+    notes: `<p><strong>Transition to mats:</strong> "Come. Let us get comfortable." No announcement. No ceremony. Just movement.</p>
+<p><strong>Sharing circle</strong> (before breathwork - verbal processing needs to clear first). Pepe speaks first. Short, direct, warm.</p>
+<p><em>Opening:</em> "What we are doing tonight is not a class and I am not a teacher. We are here because most of us spend a lot of time almost arriving somewhere in our bodies and then managing it before we get there. Tonight we are not going to manage it. We are going to let it happen."</p>
+<p><strong>Agathe speaks (2-3 min):</strong> From her own experience. What it felt like the first time she stopped performing pleasure and actually received it.</p>
+<p><strong>Prompt 1:</strong> "In my body right now, I feel..." Go around. Short. No analysis.</p>
+<p><strong>Prompt 2:</strong> "What is one thing you have almost let yourself feel but pulled back from at the last moment?"</p>
+<p>Hold the silence after each answer. Do not move to the next person immediately. Emotion here is correct. Do not fix it. Agathe places a hand on their back. Pepe stays present and still.</p>
+<p><strong>Safety signals (60 seconds, warm not clinical):</strong> Arms crossed = stop touch right now, no explanation needed. YELLOW = slow down or change direction. PURPLE = leaving your body, need grounding. RED = stop completely. Deliver simply. Move on.</p>`,
+    watch_for: [
+      { signal: 'Room feels performed', action: 'The sharing prompt breaks it. Hold the silence after each answer.' },
+      { signal: 'Silence after an answer', action: 'Do not fill it. Let it land.' },
+      { signal: 'Emotion or tears', action: 'Do not fix it. Agathe hand on back. Pepe stays present and still.' }
+    ],
+    music: 'Sparse: Bonobo (Kiara) / Nicolas Jaar (Space Is Only Noise) / Nils Frahm (All Melody)'
+  },
+  {
+    id: 3,
+    phase_num: '3',
+    name: 'Breathwork',
+    start_time: '7:30pm',
+    duration_min: 20,
+    notes: `<p><strong>Purpose:</strong> Get them out of their heads and past language. Agathe leads. Pepe holds the space.</p>
+<ol>
+<li><strong>Grounding breath (7 min):</strong> Inhale 4 counts, hold 2, exhale 6. Eyes closed. Agathe counts softly. Pepe does not touch anyone yet. Presence only.</li>
+<li><strong>Connected circular breath (6 min):</strong> Mouth breathing, continuous, no pause between inhale and exhale. "Let the breath be fuller. Let your belly move. Let your chest open." Someone may feel tingling, tears, involuntary movement. This is correct. "Whatever you feel, let it move through."</li>
+<li><strong>Landing (5-7 min):</strong> Return to natural breath. Silence. Both sit completely still. "Notice where you are still holding. Let that place go." Do not rush the transition.</li>
+</ol>
+<p><strong>No verbal re-entry after breathwork.</strong> Transition to Phase A with movement only. The fewer words from here until the surrender invitation, the better.</p>`,
+    watch_for: [
+      { signal: 'Tears, shaking, laughter', action: 'Stay with them. Hand on chest or back. "Let it move."' },
+      { signal: 'Hyperventilation', action: 'Agathe: both hands on chest and belly, guide back to slow nasal breath. No announcement to group. Pepe continues holding room.' }
+    ],
+    music: 'Ritualistic, still: Max Richter (On the Nature of Daylight) / Brian Eno (An Ending) / Hammock (Longest Year)'
+  },
+  {
+    id: 4,
+    phase_num: 'A',
+    name: 'Phase A - Blindfold and Observation',
+    start_time: '7:50pm',
+    duration_min: 20,
+    notes: `<p>Everyone puts on blindfolds. Seated or lying down.</p>
+<p><strong>Approach 1 (proximity only, 4-5 min):</strong> Pepe and Agathe move slowly through the room. No contact. Proximity only. Breath across skin without touching. Room will get very quiet.</p>
+<p><strong>Pepe narrates softly while moving:</strong><br>"Your shoulders dropped about four minutes ago. You probably did not notice."<br>"Your breathing has changed. That is your body deciding something."<br>"Tonight you are not going to try to feel it. It is going to happen to you."</p>
+<p><strong>Approach 2 (one gesture, then withdrawal):</strong> One deliberate gesture to each person. One hand on a shoulder, fingertips along an arm, a touch to a cheek. Slow, complete, present. Then withdraw completely. Hold the absence 30-45 seconds before moving to next person.</p>
+<p><strong>Approach 3 (sustained presence, then full withdrawal):</strong> Pepe or Agathe with each person 2-3 min: scalp, face, neck, arms, hands. Full attention, no agenda. Then both simultaneously stop and sit still in the centre. Complete absence. 90 seconds. Nothing.</p>
+<p>Agathe softly: "Stay with what just happened. Do not follow it. Let it find you." Blindfolds stay on.</p>`,
+    watch_for: [
+      { signal: 'Anyone bracing or performing', action: "Pepe's observations are the disarmament. Name what the body is doing. Not what they should feel." },
+      { signal: 'Someone chasing after withdrawal', action: 'Do not return sooner. Hold the absence. The chase reflex has to complete before receiving is possible.' }
+    ],
+    music: 'Deep pulse begins: Souffles #3 (for Agatha) / FKA Twigs: Two Weeks / James Blake: Retrograde / Massive Attack: Teardrop'
+  },
+  {
+    id: 5,
+    phase_num: 'B',
+    name: 'Phase B - Receiving Practice',
+    start_time: '8:10pm',
+    duration_min: 20,
+    notes: `<p><strong>Pairs.</strong> With Agathe as participant there are 4 people, so two pairs work simultaneously.</p>
+<p>One person lies down. The other gives slow, clothed touch: scalp, face, neck, arms, hands, feet. No agenda. The giver practices full attention. The receiver practices receiving without performing.</p>
+<p><strong>Pair time:</strong> 8-10 minutes each. Pepe calls the switch with 30 seconds notice: "Finishing up. One last thing. Then we switch."</p>
+<p><strong>Prompt for giver:</strong> "Your only job is to be completely present with their body. Not to please. To be with."</p>
+<p><strong>Prompt for receiver:</strong> "You do not need to respond or show that you enjoy it. Just feel."</p>
+<p>Key for this crowd: the receiver prompt. They know how to show enjoyment. Ask them to stop and just feel instead. Pepe moves between pairs, adjusting pace, adding presence with proximity.</p>`,
+    watch_for: [
+      { signal: 'Receiver performing / showing enjoyment', action: 'Quiet reminder: "You do not need to respond. Just feel."' }
+    ],
+    music: 'Weighted, slow: Souffles #5 / Hanoi 6 by Unknown Mortal Orchestra / Portishead: Wandering Star / James Blake: Limit to Your Love'
+  },
+  {
+    id: 6,
+    phase_num: 'C',
+    name: 'Phase C - 2 on 1',
+    start_time: '8:30pm',
+    duration_min: 40,
+    notes: `<p><strong>Each person takes a turn at the centre. Roughly 6-7 minutes each.</strong></p>
+<p><strong>Configuration:</strong></p>
+<ul>
+<li><strong>Marie:</strong> Pepe at head and upper body (voice, presence, face, neck, shoulders). Agathe at lower body. Sensual touch including breasts where arc calls for it. Marie-initiated only: tap signal (tap hand = more, closed fist = stop). Giver waits for Marie's tap before moving to any new zone. Music lowered for verbal check. Silence = stay put.</li>
+<li><strong>Laura and Agatha:</strong> Pepe at lower body. Agathe at head and upper body.</li>
+</ul>
+<p><strong>The peak withdrawal (most important moment):</strong> At the moment each person reaches the highest charge of their arc, both Pepe and Agathe simultaneously and completely withdraw. Hands off. Move back. One full minute of nothing. The body that is on the edge and then abandoned has to decide: chase it or surrender to the sensation already there.</p>
+<p>Agathe softly during the withdrawal: "It is already in you. You do not have to go anywhere."</p>`,
+    watch_for: [
+      { signal: 'Laura reaching, performing, pushing', action: 'Withhold completely. "You are trying to get somewhere. Stay here instead." 90 seconds of nothing.' },
+      { signal: 'Marie staying in her head', action: 'Quiet prompt: "Come back to the feeling."' },
+      { signal: 'Marie sharp or angry', action: 'Agathe: stay close, voice calm. "I am here." Do not fix. The anger comes before the release.' },
+      { signal: 'Agatha/Agathe dynamic opening', action: 'Let it. Pepe holds the container. Do not insert. Amplify what is already happening.' }
+    ],
+    music: 'Heavier, slower: Portishead (Wandering Star, Roads) / James Blake: Limit to Your Love / Banks: Goddess'
+  },
+  {
+    id: 7,
+    phase_num: '7',
+    name: 'Surrender Invitation',
+    start_time: '9:10pm',
+    duration_min: 10,
+    notes: `<p>Pepe speaks. The room has been quiet for a long time. His voice here lands differently than it did at 7pm.</p>
+<blockquote>"I want to name something. There is a part of you that has been managing this experience. Watching to see how you are doing. She has been in every class you have been to. She is smart and she works hard and she has kept you safe. I am asking her to rest now. Not because something is about to happen that you need to manage. Because what is about to happen does not require her. I need you to do nothing. Your body knows exactly what to do. It has been waiting for permission. I have got you. All of you."</blockquote>
+<p><strong>Pause 30-45 seconds after the speech.</strong> This is not filler. The silence is where the invitation lands.</p>
+<p>Then quietly: "Close your eyes. Feel the mat underneath you. Take one breath. Let the exhale be complete."</p>
+<p>Transition to the main course without announcement.</p>`,
+    watch_for: [],
+    music: 'Still: Nils Frahm (Says) or silence'
+  },
+  {
+    id: 8,
+    phase_num: '8',
+    name: 'Main Course',
+    start_time: '9:20pm',
+    duration_min: 60,
+    notes: `<p><strong>Starts from dissolution state, not from arousal.</strong> Do not escalate. Do not accelerate. The main course is the continuation of what is already happening, without the withdrawals.</p>
+<p><strong>Marie sobriety check (Agathe leads, just before 9:20):</strong> One direct question requiring a full sentence answer: "How are you feeling right now? Are you present?" Clear and coherent: proceed. Anything off: warm presence track only for the rest of the evening.</p>
+<p><strong>Re-consent:</strong> Pepe moves slowly to each person. Direct eye contact. No words usually. She holds it and stays present = yes. Looks away or contracts = give more space. If ambiguous: "Still good?" Wait for a clear yes.</p>
+<p><strong>Voice throughout (primary tool, not to direct, to hold):</strong><br>"I have got you." / "Stay here." / "Do not hold it." / "Good. Just like that." / "You do not have to go anywhere." / "Let it move." / "Stay with me."</p>
+<p><strong>Mushroom protocol (Laura only):</strong> Do not offer before 8:30. Offer only if she is clearly in a receiving state: body soft, inward, not performing or reaching. One offer only. If she declines or hesitates, do not re-offer.</p>
+<p><strong>Rope:</strong> Introduce only when the energy asks for it. Before applying: "May I hold your wrists?" Only a clear yes continues. Silence or ambiguity = pause. The point is the sensation of being held, not restriction.</p>`,
+    watch_for: [
+      { signal: 'Anyone tensing near the edge', action: '"Do not hold it." / "Stay here." / "I have got you." Do not accelerate. Hold the pace.' },
+      { signal: 'Before applying rope', action: '"May I hold your wrists?" Silence = pause. Only a clear yes continues.' },
+      { signal: 'Agatha - any physical hold', action: 'Must be consensually entered, not a surprise. She chose it. Then it works. Surprise = trigger.' }
+    ],
+    music: 'Full burn: Sade (No Ordinary Love, By Your Side) / The Weeknd (The Morning) / Lana Del Rey (Ride) / Banks (Beggin for Thread) / Portishead (Roads)'
+  },
+  {
+    id: 9,
+    phase_num: '9',
+    name: 'Integration and Close',
+    start_time: '10:20pm',
+    duration_min: 40,
+    notes: `<p>Music back to ambient, no pulse. Silence first. Let it work. No talking for several minutes after the arc completes.</p>
+<p>Pepe, quietly: "Stay where you are for a moment. Just breathe."</p>
+<p><strong>Physical grounding:</strong> "Feet flat on the floor or your mat. Palms face down on your thighs. Feel the ground under you." Hold for one minute.</p>
+<p><strong>Closing round:</strong> "Two things. Something you are taking with you tonight. Something you are leaving here." No analysis. No debrief. Each person speaks once. Pepe does not reflect or interpret. The words are enough.</p>
+<p><strong>Relational close:</strong> "Find each person in the room. Just look. Five seconds each." Pepe leads. Eye contact, held, unhurried. No words.</p>
+<p>Pepe to close: "Tonight stays in this room. What you felt is yours."</p>
+<p>Water. Let them move at their own pace. Some will want to stay. Some will need to leave and integrate alone. Both are right. Do not redirect either.</p>
+<p><strong>Post-session within 24h:</strong> Pepe sends brief individual message to each participant. One sentence acknowledging who they were in the room, not what happened. Marie: text same evening, warm, no reference to session content.</p>`,
+    watch_for: [],
+    music: 'Come down: Olafur Arnalds (Near Light) / Max Richter (Dream 3) / piano ambient'
+  }
+];
+
+let spCurrentPhase = 0;
+let spTimerSeconds = 0;
+let spTimerTotal = 0;
+let spTimerRunning = false;
+let spTimerInterval = null;
+
+function switchMainTab(tab) {
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  const tabEl = document.querySelector(`.main-tab[onclick*="'${tab}'"]`);
+  if (tabEl) tabEl.classList.add('active');
+  const panelEl = document.getElementById('panel-' + tab);
+  if (panelEl) panelEl.classList.add('active');
+}
+
+function spRenderPhase() {
+  const p = SESSION_PHASES[spCurrentPhase];
+  if (!p) return;
+
+  document.getElementById('sp-phase-num').textContent = 'Phase ' + p.phase_num;
+  document.getElementById('sp-phase-name').textContent = p.name;
+  document.getElementById('sp-start-time').textContent = p.start_time;
+  document.getElementById('sp-duration-badge').textContent = p.duration_min + ' min';
+  document.getElementById('sp-phase-counter').textContent = (spCurrentPhase + 1) + ' / ' + SESSION_PHASES.length;
+  document.getElementById('sp-notes').innerHTML = p.notes;
+  document.getElementById('sp-music').textContent = p.music;
+
+  const wfCard = document.getElementById('sp-watchfor-card');
+  const wfEl = document.getElementById('sp-watchfor');
+  if (p.watch_for && p.watch_for.length) {
+    wfCard.style.display = 'block';
+    wfEl.innerHTML = p.watch_for.map(w =>
+      '<div class="sp-watch-item"><div class="sp-watch-signal">&#9889; ' + esc(w.signal) + '</div><div class="sp-watch-action">' + esc(w.action) + '</div></div>'
+    ).join('');
+  } else {
+    wfCard.style.display = 'none';
+  }
+
+  const nextEl = document.getElementById('sp-next-container');
+  const next = SESSION_PHASES[spCurrentPhase + 1];
+  if (next) {
+    nextEl.innerHTML = '<div class="sp-next-card"><div><div class="sp-next-label">Up next</div><div class="sp-next-name">' + esc(next.name) + '</div><div style="font-size:12px;color:var(--muted);margin-top:2px">' + esc(next.start_time) + '</div></div><span class="sp-next-badge">' + next.duration_min + ' min</span></div>';
+  } else {
+    nextEl.innerHTML = '<div class="sp-next-card" style="justify-content:center;color:var(--muted);font-style:italic;font-size:13px">End of session</div>';
+  }
+
+  document.getElementById('sp-prev-btn').disabled = spCurrentPhase === 0;
+  document.getElementById('sp-next-btn').disabled = spCurrentPhase === SESSION_PHASES.length - 1;
+
+  spTimerStop();
+  spTimerTotal = p.duration_min * 60;
+  const saved = localStorage.getItem('sp_timer_' + spCurrentPhase);
+  spTimerSeconds = saved !== null ? parseInt(saved) : spTimerTotal;
+  document.getElementById('sp-btn-start').textContent = 'START';
+  spRenderTimer();
+  localStorage.setItem('sp_phase', spCurrentPhase);
+}
+
+function spRenderTimer() {
+  const s = Math.max(0, spTimerSeconds);
+  const mins = Math.floor(s / 60);
+  const secs = s % 60;
+  const display = document.getElementById('sp-timer-display');
+  const msg = document.getElementById('sp-timer-msg');
+  const fill = document.getElementById('sp-progress-fill');
+
+  display.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+
+  if (s <= 0 && spTimerTotal > 0) {
+    display.classList.add('expired');
+    msg.textContent = 'TIME - move to next phase';
+  } else {
+    display.classList.remove('expired');
+    msg.textContent = '';
+  }
+
+  const pct = spTimerTotal > 0 ? s / spTimerTotal : 1;
+  fill.style.transform = 'scaleX(' + pct + ')';
+}
+
+function spTimerStartPause() {
+  if (spTimerRunning) {
+    spTimerStop();
+    document.getElementById('sp-btn-start').textContent = 'RESUME';
+  } else {
+    if (spTimerSeconds <= 0) return;
+    spTimerRunning = true;
+    document.getElementById('sp-btn-start').textContent = 'PAUSE';
+    spTimerInterval = setInterval(function() {
+      if (spTimerSeconds > 0) {
+        spTimerSeconds--;
+        localStorage.setItem('sp_timer_' + spCurrentPhase, spTimerSeconds);
+        spRenderTimer();
+      } else {
+        spTimerStop();
+        document.getElementById('sp-btn-start').textContent = 'START';
+        spRenderTimer();
+      }
+    }, 1000);
+  }
+}
+
+function spTimerStop() {
+  spTimerRunning = false;
+  if (spTimerInterval) { clearInterval(spTimerInterval); spTimerInterval = null; }
+}
+
+function spTimerReset() {
+  spTimerStop();
+  spTimerSeconds = SESSION_PHASES[spCurrentPhase].duration_min * 60;
+  spTimerTotal = spTimerSeconds;
+  localStorage.setItem('sp_timer_' + spCurrentPhase, spTimerSeconds);
+  document.getElementById('sp-btn-start').textContent = 'START';
+  spRenderTimer();
+}
+
+function spPrevPhase() {
+  if (spCurrentPhase > 0) { spCurrentPhase--; spRenderPhase(); }
+}
+
+function spNextPhase() {
+  if (spCurrentPhase < SESSION_PHASES.length - 1) { spCurrentPhase++; spRenderPhase(); }
+}
+
+function spInit() {
+  const saved = localStorage.getItem('sp_phase');
+  spCurrentPhase = saved !== null ? parseInt(saved) : 0;
+  if (spCurrentPhase < 0 || spCurrentPhase >= SESSION_PHASES.length) spCurrentPhase = 0;
+  spRenderPhase();
+}
+
 // Auto-login if valid token stored
 (async () => {
   if (!token) return;
@@ -972,6 +1779,8 @@ document.addEventListener('keydown', e => {
   if (p.role !== 'facilitator' && p.role !== 'admin') { localStorage.removeItem('j_fac_token'); return; }
   boot();
 })();
+
+spInit();
 </script>
 </body>
 </html>
