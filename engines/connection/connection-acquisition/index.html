@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connection Acquisition Engine. Mexzungu Group</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink:#e14b87;
+      --purple:#b482ff;
+      --bg:#0f0f0f;
+      --surface:#181818;
+      --s2:#1e1e1e;
+      --border:#2a2a2a;
+      --text:#e8e8e8;
+      --muted:#888;
+      --conn:#4cc8b4;
+      --val:#f0a030;
+      --care:#b482ff;
+      --green:#4caf7d;
+      --blue:#6498ff;
+      --red:#e05050;
+      --gold:#f0c850;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'DM Sans',system-ui,sans-serif; font-size:15px; line-height:1.65; }
+
+    h1, h2, h3, .display { font-family:'Cormorant Garamond',Georgia,serif; font-weight:700; letter-spacing:-0.01em; }
+
+    nav { position:sticky; top:0; z-index:100; background:rgba(15,15,15,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; gap:8px; overflow-x:auto; white-space:nowrap; }
+    nav .logo { font-family:'DM Sans',sans-serif; font-weight:700; color:var(--pink); font-size:14px; margin-right:12px; flex-shrink:0; }
+    nav a { font-size:12px; color:var(--muted); text-decoration:none; padding:4px 10px; border-radius:4px; transition:.15s; }
+    nav a:hover { color:var(--text); background:var(--s2); }
+    nav .sep { color:var(--border); font-size:11px; }
+
+    .breadcrumb { max-width:900px; margin:0 auto; padding:18px 24px 0; font-size:12px; color:var(--muted); }
+    .breadcrumb a { color:var(--muted); text-decoration:none; }
+    .breadcrumb a:hover { color:var(--pink); }
+    .breadcrumb .sep { margin:0 8px; color:var(--border); }
+    .breadcrumb .here { color:var(--text); }
+
+    .wrap { max-width:900px; margin:0 auto; padding:0 24px; }
+    section { padding:48px 0; border-bottom:1px solid var(--border); }
+    section:last-child { border-bottom:none; }
+
+    .sec-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--pink); margin-bottom:10px; }
+
+    h1 { font-size:44px; line-height:1.05; margin-bottom:14px; }
+    h2 { font-size:28px; line-height:1.15; margin-bottom:18px; }
+    h3 { font-size:19px; line-height:1.25; margin-bottom:10px; color:var(--text); }
+    p { color:#bbb; margin-bottom:14px; font-size:15px; }
+    p:last-child { margin-bottom:0; }
+    strong { color:var(--text); font-weight:600; }
+    code { font-family:'Menlo','Monaco',monospace; font-size:12.5px; background:var(--s2); border:1px solid var(--border); border-radius:4px; padding:1px 6px; color:#ccc; }
+
+    .macro-tag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--conn); margin-bottom:14px; }
+    .lead { font-size:17px; color:#ccc; line-height:1.6; margin-bottom:22px; max-width:680px; }
+
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .chip { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:600; padding:5px 12px; border-radius:20px; letter-spacing:.05em; text-transform:uppercase; }
+    .chip-pink  { background:rgba(225,75,135,.10); color:var(--pink); border:1px solid rgba(225,75,135,.28); }
+    .chip-purple{ background:rgba(180,130,255,.10); color:var(--purple); border:1px solid rgba(180,130,255,.28); }
+    .chip-green { background:rgba(76,175,125,.10); color:var(--green); border:1px solid rgba(76,175,125,.28); }
+    .chip-amber { background:rgba(240,160,48,.10); color:var(--val); border:1px solid rgba(240,160,48,.28); }
+    .chip-teal  { background:rgba(76,200,180,.10); color:var(--conn); border:1px solid rgba(76,200,180,.28); }
+
+    .owner-triad { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:12px; margin-top:22px; }
+    .owner-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+    .owner-card .role { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:4px; }
+    .owner-card .name { font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .owner-card .why { font-size:12px; color:#999; line-height:1.55; }
+
+    .hard-rule { background:linear-gradient(135deg, rgba(225,75,135,.08), rgba(180,130,255,.05)); border:1px solid rgba(225,75,135,.35); border-left:4px solid var(--pink); border-radius:8px; padding:22px 24px; margin-top:24px; }
+    .hard-rule .hr-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--pink); margin-bottom:10px; }
+    .hard-rule .hr-title { font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:12px; }
+    .hard-rule p { font-size:14px; color:#ccc; margin-bottom:8px; }
+    .hard-rule .hr-emph { color:var(--pink); font-weight:700; }
+
+    .tbl-wrap { overflow-x:auto; margin-bottom:8px; border:1px solid var(--border); border-radius:8px; }
+    table { width:100%; border-collapse:collapse; font-size:13.5px; }
+    th { background:var(--s2); color:var(--muted); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    td { padding:12px 14px; border-bottom:1px solid #1e1e1e; vertical-align:top; color:#bbb; line-height:1.55; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:rgba(255,255,255,.02); }
+    td strong.state-new { color:var(--muted); }
+    td strong.state-qual { color:var(--gold); }
+    td strong.state-warm { color:var(--conn); }
+    td strong.state-active { color:var(--blue); }
+    td strong.state-prop { color:var(--purple); }
+    td strong.state-stale { color:var(--val); }
+    td strong.state-won { color:var(--green); }
+    td strong.state-lost { color:var(--red); }
+    td strong.state-collab { color:var(--pink); }
+
+    .gate { display:inline-block; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; padding:3px 9px; border-radius:3px; text-transform:uppercase; letter-spacing:.06em; }
+    .gate-show { background:rgba(225,75,135,.15); color:var(--pink); }
+    .gate-sc { background:rgba(76,175,125,.12); color:var(--green); }
+    .gate-fa { background:rgba(225,75,135,.12); color:#ff80b0; border:1px solid rgba(225,75,135,.28); }
+
+    .al { display:inline-block; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; padding:3px 8px; border-radius:3px; text-transform:uppercase; letter-spacing:.07em; margin:1px 2px; }
+    .al-jagger { background:rgba(225,75,135,.12); color:var(--pink); border:1px solid rgba(225,75,135,.28); }
+    .al-joan { background:rgba(76,200,180,.12); color:var(--conn); border:1px solid rgba(76,200,180,.28); }
+    .al-bruce { background:rgba(100,152,255,.12); color:var(--blue); border:1px solid rgba(100,152,255,.28); }
+    .al-lemmy { background:rgba(224,80,80,.12); color:var(--red); border:1px solid rgba(224,80,80,.28); }
+    .al-gene { background:rgba(240,200,80,.12); color:var(--gold); border:1px solid rgba(240,200,80,.28); }
+    .al-lars { background:rgba(240,160,48,.12); color:var(--val); border:1px solid rgba(240,160,48,.28); }
+    .al-bowie { background:rgba(180,130,255,.12); color:var(--purple); border:1px solid rgba(180,130,255,.28); }
+    .al-sade { background:rgba(76,175,125,.12); color:var(--green); border:1px solid rgba(76,175,125,.28); }
+    .al-janis { background:rgba(225,75,135,.10); color:var(--pink); border:1px solid rgba(225,75,135,.20); }
+    .al-pepe { background:rgba(240,160,48,.15); color:var(--val); border:1px solid rgba(240,160,48,.32); }
+
+    .actor-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:12px; margin-top:18px; }
+    .actor-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+    .actor-card .ac-name { font-family:'Cormorant Garamond',Georgia,serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:2px; }
+    .actor-card .ac-role { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--pink); margin-bottom:8px; }
+    .actor-card .ac-desc { font-size:13px; color:#aaa; line-height:1.55; }
+
+    details { background:var(--surface); border:1px solid var(--border); border-radius:10px; margin-bottom:12px; overflow:hidden; }
+    details[open] { border-color:rgba(225,75,135,.4); }
+    summary { padding:16px 20px; cursor:pointer; display:flex; align-items:center; gap:14px; list-style:none; font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; user-select:none; }
+    summary::-webkit-details-marker { display:none; }
+    summary::after { content:'+'; margin-left:auto; color:var(--muted); font-size:20px; font-weight:300; transition:transform .2s; }
+    details[open] summary::after { content:'\2212'; }
+    .phase-num { background:rgba(225,75,135,.15); color:var(--pink); border:1px solid rgba(225,75,135,.32); border-radius:5px; padding:3px 10px; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:800; flex-shrink:0; letter-spacing:.05em; }
+    .phase-body { padding:0 20px 22px; }
+    .phase-meta { background:var(--s2); border:1px solid var(--border); border-radius:8px; padding:14px 18px; margin-bottom:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:10px; }
+    .pm-item .pm-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:3px; }
+    .pm-item .pm-val { font-size:13px; color:#ccc; }
+    .phase-body h4 { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:16px 0 8px; }
+    .phase-body ul { padding-left:18px; color:#bbb; font-size:14px; line-height:1.75; }
+    .phase-body ul li { margin-bottom:6px; }
+
+    .flow-strip { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:0; align-items:stretch; margin-top:20px; }
+    .flow-node { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
+    .flow-node.center { border-color:rgba(225,75,135,.4); background:linear-gradient(180deg, rgba(225,75,135,.08), var(--surface)); }
+    .flow-node .fn-label { font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px; }
+    .flow-node .fn-name { font-family:'Cormorant Garamond',Georgia,serif; font-size:19px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .flow-node .fn-note { font-size:11px; color:#999; }
+    .flow-arrow { display:flex; align-items:center; justify-content:center; color:var(--pink); font-size:22px; padding:0 8px; }
+
+    .foot-nav { display:flex; justify-content:space-between; gap:12px; padding:32px 24px 60px; flex-wrap:wrap; max-width:900px; margin:0 auto; }
+    .foot-nav a { font-family:'DM Sans',sans-serif; font-size:12px; color:var(--muted); text-decoration:none; padding:8px 16px; border:1px solid var(--border); border-radius:6px; transition:.15s; letter-spacing:.03em; }
+    .foot-nav a:hover { color:var(--text); border-color:var(--pink); }
+    .foot-nav a.primary { color:var(--text); border-color:var(--pink); background:rgba(225,75,135,.08); }
+
+    @media (max-width:720px) {
+      h1 { font-size:32px; }
+      h2 { font-size:22px; }
+      section { padding:36px 0; }
+      .flow-strip { grid-template-columns:1fr; }
+      .flow-arrow { transform:rotate(90deg); padding:8px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Connection Acquisition Engine</span>
+  <a href="/engines/">All Engines</a>
+  <span class="sep">|</span>
+  <a href="#overview">Overview</a>
+  <a href="#states">Pipeline States</a>
+  <a href="#actors">Actors</a>
+  <a href="#phases">Phases</a>
+  <a href="#showtime">Showtime</a>
+  <a href="#interfaces">Interfaces</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="/engines/">MGL Engines</a>
+  <span class="sep">/</span>
+  <a href="/engines/connection/">Macro Engine I: Connection</a>
+  <span class="sep">/</span>
+  <span class="here">Connection Acquisition Engine</span>
+</div>
+
+<div class="wrap">
+
+  <section id="overview">
+    <div class="macro-tag">Macro Engine I: Connection. Engine 3 of 4</div>
+    <h1>Connection Acquisition Engine</h1>
+    <p class="lead">Turns relationships into signed engagements. Runs every morning at 07:00 CET. Owns everything from the moment a signal appears to the moment a countersigned EL lands in Lemmy's registry.</p>
+
+    <div class="owner-triad">
+      <div class="owner-card">
+        <div class="role">Direction</div>
+        <div class="name">Jagger</div>
+        <div class="why">CGO. Sets pipeline targets, sector priorities, cadence rules.</div>
+      </div>
+      <div class="owner-card">
+        <div class="role">Execution</div>
+        <div class="name">Joan</div>
+        <div class="why">Lead generation lead. Owns qualification, discovery, proposal handoff.</div>
+      </div>
+      <div class="owner-card">
+        <div class="role">Gate</div>
+        <div class="name">Pepe</div>
+        <div class="why">Showtime authority. Fire Away on first contact, close, EL send, referral ask.</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:34px;">Top 3 KPIs</h3>
+    <div class="chips">
+      <span class="chip chip-pink">2+ ELs signed per month</span>
+      <span class="chip chip-teal">80%+ qualification to first contact rate</span>
+      <span class="chip chip-green">Under 30 days first contact to Go decision</span>
+    </div>
+
+    <h3 style="margin-top:34px;">What this engine owns</h3>
+    <ul style="padding-left:20px; color:#bbb; font-size:14.5px; line-height:1.8; margin-top:8px;">
+      <li>Signal detection across every channel (email, WhatsApp personal, LinkedIn DMs, referrals, deal reviews).</li>
+      <li>Lead qualification and pipeline classification.</li>
+      <li>First contact (Showtime, Fire Away only).</li>
+      <li>Relationship warming cadence.</li>
+      <li>Discovery conversations and Go / No-Go decision.</li>
+      <li>Proposal handoff to the Proposal Engine and countersigned EL event receipt.</li>
+      <li>CRM update and Delivery ExCo notification on close.</li>
+      <li>Connection Preservation: D30 referral ask (Showtime), D90 and D365 warm pings (Soundcheck).</li>
+    </ul>
+
+    <h3 style="margin-top:28px;">What it does NOT own</h3>
+    <ul style="padding-left:20px; color:#999; font-size:14.5px; line-height:1.8; margin-top:8px;">
+      <li>Content creation and publishing. Owned by SM Content Engine (Freddie).</li>
+      <li>Post-publish engagement on all platforms. Owned by SM Engagement Engine (Freddie).</li>
+      <li>Proposal build, EL drafting, inline signing, countersign detection. Owned by Proposal Engine (Prince).</li>
+      <li>Client delivery after EL signed. Owned by Founders or Investors Delivery Engine.</li>
+      <li>Invoice generation and chasing. Owned by Billing Engine (Gene).</li>
+    </ul>
+  </section>
+
+  <section id="states">
+    <div class="sec-label">Classification</div>
+    <h2>Pipeline states</h2>
+    <p>Nine states. Every lead sits in exactly one. Advancement and cadence rules are the same for every lead in a given state.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:12%;">State</th><th style="width:34%;">Definition</th><th style="width:26%;">Advance gate</th><th>Cadence rule</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong class="state-new">new</strong></td>
+            <td>Lead entered, no outreach yet.</td>
+            <td><span class="gate gate-show">Showtime</span> first contact</td>
+            <td>Showtime queue after 3 days.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-qual">qualified</strong></td>
+            <td>Reviewed by Joan and Bruce, confirmed by Pepe. First outreach pending.</td>
+            <td><span class="gate gate-show">Showtime</span> first contact</td>
+            <td>Showtime immediately.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-warm">warm</strong></td>
+            <td>Initial contact made, interest unconfirmed.</td>
+            <td><span class="gate gate-sc">Soundcheck</span> at Day 14</td>
+            <td>Auto check-in, update next_action_date +14.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-active">active</strong></td>
+            <td>Two-way dialogue, deal possible.</td>
+            <td><span class="gate gate-sc">Soundcheck</span> at Day 14</td>
+            <td>Auto topic check-in, update +14.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-prop">proposal</strong></td>
+            <td>Proposal Engine called; proposal deployed.</td>
+            <td><span class="gate gate-sc">Soundcheck</span> at Day 7</td>
+            <td>Auto proposal chase, update +7.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-stale">stale</strong></td>
+            <td>Gone cold (28+ days warm, 21+ days proposal).</td>
+            <td><span class="gate gate-show">Showtime</span> revival after 30d</td>
+            <td>Telegram alert to Pepe, update +7.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-won">won</strong></td>
+            <td>EL countersigned. Handed to Delivery ExCo.</td>
+            <td>None</td>
+            <td>None. Engine complete.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-lost">lost</strong></td>
+            <td>Explicitly declined or Pepe closed.</td>
+            <td>None</td>
+            <td>None.</td>
+          </tr>
+          <tr>
+            <td><strong class="state-collab">collab</strong></td>
+            <td>Collaborator track (placed contact, not client).</td>
+            <td>Phase-based markers in notes</td>
+            <td>D30 / D60 / D90 triggers.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px; font-size:13px; color:#999;">Pipeline data: <code>brain/areas/mexzungu/bd/pipeline.json</code>. Append-only log: <code>brain/areas/mexzungu/bd/pipeline-log.md</code>. CRM: Jagger's <code>track_lead</code> / <code>update_lead</code> / <code>list_leads</code>.</p>
+  </section>
+
+  <section id="actors">
+    <div class="sec-label">Roles</div>
+    <h2>Actor map</h2>
+    <p>Ten actors touch this engine. Every sub-task has exactly one owner. Cross-persona handoffs are explicit.</p>
+    <div class="actor-grid">
+      <div class="actor-card">
+        <div class="ac-role">Direction</div>
+        <div class="ac-name">Jagger</div>
+        <div class="ac-desc">Sets pipeline targets, sector priorities, cadence rules. Reviews Monday BD Pulse. Approves sector gap decisions. Reviews stale-lead upgrade vs. close decisions.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Execution Lead</div>
+        <div class="ac-name">Joan</div>
+        <div class="ac-desc">Owns signal queue review, lead qualification, sector gap identification, briefing Pepe on new qualified signals. Passes discovery-ready leads to Bruce.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Strategic Fit</div>
+        <div class="ac-name">Bruce</div>
+        <div class="ac-desc">Pre-qualifies leads against MGL positioning. Runs scenario stress-test before any first contact on complex deals. Owns discovery brief.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Conflict + EL</div>
+        <div class="ac-name">Lemmy</div>
+        <div class="ac-desc">Drafts EL from canonical template. Runs conflict check before any first contact. Reviews and clears EL terms.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Pricing</div>
+        <div class="ac-name">Gene</div>
+        <div class="ac-desc">Confirms fee structure and payment options for each engagement type. Writes billing schedule to finance log on close.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">SLA</div>
+        <div class="ac-name">Lars</div>
+        <div class="ac-desc">Monitors engine run completion rate. Flags any sub-task exceeding 48h SLA. Escalation owner when no Pepe response on Showtime after 72h.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Infrastructure</div>
+        <div class="ac-name">Bowie</div>
+        <div class="ac-desc">Maintains the cron job, WA bridge status, and pipeline.json schema integrity. On-call for any tool failure during engine run.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Relationship Health</div>
+        <div class="ac-name">Sade</div>
+        <div class="ac-desc">Monitors post-first-contact warmth on all warm and active leads. Flags deteriorating signals before they go stale.</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Execution</div>
+        <div class="ac-name">Janis</div>
+        <div class="ac-desc">Runs all tool calls. Logs all state transitions. Writes all drafts. Fires the cron sequence. Queues all Showtime items to Telegram alerts thread (thread_id=7).</div>
+      </div>
+      <div class="actor-card">
+        <div class="ac-role">Showtime Gate</div>
+        <div class="ac-name">Pepe</div>
+        <div class="ac-desc">Approves first contacts. Approves proposals. Approves EL send. Sets pricing on non-standard deals. Decides revival vs. close on stale. Fire Away is the only send trigger.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="phases">
+    <div class="sec-label">Operating Rhythm</div>
+    <h2>Six phases</h2>
+    <p>Phase 0 fires every morning at 07:00 CET and on every inbound signal event. Phases 1 through 5 are event-triggered. Phase 6 runs as a deferred background loop.</p>
+
+    <details open>
+      <summary><span class="phase-num">Phase 0</span> Signal Sweep</summary>
+      <div class="phase-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">07:00 CET cron + inbound event on any channel</div></div>
+          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-janis">Janis</span> execution. <span class="al al-joan">Joan</span> classification. <span class="al al-jagger">Jagger</span> sector priority.</div></div>
+          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Signal queue reviewed. Leads created or discarded. Engine run log written.</div></div>
+        </div>
+        <h4>Sub-tasks</h4>
+        <ul>
+          <li><strong>0.1</strong> <span class="al al-bowie">Bowie</span> WA bridge status check. If degraded, log to run report and proceed with reduced-confidence signals. Never abort the run.</li>
+          <li><strong>0.2</strong> Scan WhatsApp personal for inbound business signals. Keywords: deal, invest, legal, contract, raise, structure, advisory, founder, cap table, term sheet, introduce, work together. Window: last 24h.</li>
+          <li><strong>0.3</strong> Scan email (all 4 accounts) for signals. Keywords: partnership, collaboration, proposal, scope, retainer, advisory, counsel, introduction, recommendation. Window: last 24h.</li>
+          <li><strong>0.4</strong> Check referral signals: scan WhatsApp for "I wanted to introduce," "thought of you," "someone who could help" from existing contacts and clients.</li>
+          <li><strong>0.5</strong> Check deal review outputs. Zone 2 or Zone 3 investor from last 48h is eligible for enrollment if not already in pipeline.</li>
+          <li><strong>0.6</strong> Scan existing pipeline for cadence triggers: for each lead, check days_since_last_contact against state threshold. Build action queue.</li>
+          <li><strong>0.7</strong> Joan classifies each new signal: (A) new lead, (B) update existing, (C) discard. 3-question filter: (1) Does Pepe know them? (2) Is there a plausible engagement? (3) Is this MGL's market? Log every discard reason. Never delete the signal record.</li>
+          <li><strong>0.8</strong> Cross-check candidates against pipeline and client registry to avoid duplicates. If duplicate: merge into existing record.</li>
+          <li><strong>0.9</strong> <span class="al al-lemmy">Lemmy</span> conflict check on new candidates: search client registry, active investments, CRM for target company or key person. If conflict: <span class="gate gate-show">Showtime</span> flag to Pepe before any contact.</li>
+          <li><strong>0.10</strong> Write engine run log: signals detected, new leads, updated leads, Showtime items queued, cadence actions fired, discards. Path: <code>brain/areas/mexzungu/bd/engine-runs/YYYY-MM-DD.md</code></li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="phase-num">Phase 1</span> Qualification</summary>
+      <div class="phase-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">New signal classified as lead candidate in Phase 0</div></div>
+          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-joan">Joan</span> review. <span class="al al-bruce">Bruce</span> strategic fit. <span class="al al-jagger">Jagger</span> pipeline decision.</div></div>
+          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Lead discarded with documented reason, or enrolled state=new + Showtime first contact queued.</div></div>
+        </div>
+        <h4>Sub-tasks</h4>
+        <ul>
+          <li><strong>1.1</strong> Joan deep review: research contact on web (background, company, role, recent news). Look for African / LatAm presence, deal stage, funding, governance needs, AI readiness. Never refuse on missing data.</li>
+          <li><strong>1.2</strong> Check <code>brain/contacts/</code> and Google Contacts for any prior Pepe interaction with this contact or their company. Surface history to Joan before she writes the brief.</li>
+          <li><strong>1.3</strong> Bruce strategic fit assessment: MGL positioning fit, deal type within active practice capacity, timing. If capacity constrained: flag to Lars. Do not kill the lead.</li>
+          <li><strong>1.4</strong> Joan writes qualification brief. 1 page max. Contact background, deal thesis, why now, suggested engagement type, estimated value, risk factors, Pepe relationship distance. Path: <code>brain/areas/mexzungu/bd/quals/YYYY-MM-DD-[slug].md</code></li>
+          <li><strong>1.5</strong> Jagger reviews qualification brief. Approves enrollment or marks state=hold with a reason. 30-day review reminder on hold. Never mark as lost prematurely.</li>
+          <li><strong>1.6</strong> Create lead in CRM: <code>track_lead</code> with all available fields. State = new. Minimum required: name, company, deal_type, contact method, notes.</li>
+          <li><strong>1.7</strong> <span class="gate gate-show">Showtime</span> queue: draft first contact message in Pepe's voice. Send to Telegram alerts (thread_id=7) with lead context and proposed message. Wait for Fire Away.</li>
+          <li><strong>1.8</strong> Log qualification decision to pipeline-log.md: date, lead, enrolled/discarded, reason. Append-only.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="phase-num">Phase 2</span> First Contact (Showtime)</summary>
+      <div class="phase-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Pepe says "Fire Away" on the queued draft</div></div>
+          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-janis">Janis</span> execution. <span class="al al-lemmy">Lemmy</span> channel and compliance. <span class="al al-pepe">Pepe</span> Fire Away.</div></div>
+          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">First contact sent. State = warm. Acknowledgment window started.</div></div>
+        </div>
+        <h4>Sub-tasks</h4>
+        <ul>
+          <li><strong>2.1</strong> Confirm channel. Default: WhatsApp personal (search_contacts for number). Fallback: email if no WA number known. Never cold email without confirming no WA alternative exists.</li>
+          <li><strong>2.2</strong> Confirm draft is in Pepe's voice. Rules: warm not sycophantic, specific not generic, references something real (mutual contact, deal, article, event), one clear ask or observation. No pitch. Max 3 sentences. Never present a substandard draft.</li>
+          <li><strong>2.3</strong> Lemmy compliance check: no regulated advice, no representations about deals, no unintended obligations. If flag: rewrite. Flag type to Pepe in the Showtime note.</li>
+          <li><strong>2.4</strong> <span class="gate gate-show">Showtime</span> queue to Telegram thread_id=7. Format: "FIRST CONTACT: [Name] / [Company]. [Channel]. Draft: [message]. Type 'Fire Away' to send." Fire Away is the only trigger.</li>
+          <li><strong>2.5</strong> Send on <span class="gate gate-fa">Fire Away</span>: <code>send_whatsapp</code> or <code>send_email</code> via <code>build_email_html</code>. Log delivery timestamp. If send fails: retry once. If second failure: Bowie alert.</li>
+          <li><strong>2.6</strong> Update CRM: state=warm, last_contact=today, next_action_date=+14, notes="First contact sent [DATE] via [channel]."</li>
+          <li><strong>2.7</strong> Log to pipeline-log.md: first contact sent, channel, date, response window opened.</li>
+          <li><strong>2.8</strong> Start acknowledgment monitor: internal calendar event only. If no response in 14 days, trigger Phase 3 follow-up cadence. No invite to contact.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="phase-num">Phase 3</span> Relationship Warming</summary>
+      <div class="phase-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Response received, or 14-day cadence trigger</div></div>
+          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-sade">Sade</span> health. <span class="al al-janis">Janis</span> cadence. <span class="al al-joan">Joan</span> value delivery.</div></div>
+          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Two-way dialogue confirmed. State = active. Discovery brief drafted.</div></div>
+        </div>
+        <h4>Sub-tasks</h4>
+        <ul>
+          <li><strong>3.1</strong> Response detection: scan WhatsApp and email daily for any reply. On receipt: log immediately and pause cadence timer. Use <code>wa_conversation</code> for full thread context before drafting any reply.</li>
+          <li><strong>3.2</strong> Classify response tone: positive (interest, question, gratitude), neutral (acknowledged), negative (not interested), no response (cadence continues). Negative advances to Phase 6.</li>
+          <li><strong>3.3</strong> Draft warm reply (positive or neutral): acknowledge, add value, no pitch yet. Reply in-thread. Reply-all if email. <span class="gate gate-sc">Soundcheck</span></li>
+          <li><strong>3.4</strong> Value delivery: if contact has a visible deal, challenge, or initiative in public sources, Joan flags it for Pepe as a brief Soundcheck observation. No ask. Only when genuine. Do not manufacture connection.</li>
+          <li><strong>3.5</strong> Day-14 cadence (no response): Janis auto-sends check-in via same channel as first contact. Update next_action_date +14. If warm 28+ days: state=stale + <span class="gate gate-show">Showtime</span> revival alert.</li>
+          <li><strong>3.6</strong> Sade health monitoring: scan each warm and active lead weekly for response rate, time to reply, warmth of tone. Flag declining temperature. If critical: draft Pepe-direct recovery message for Showtime.</li>
+          <li><strong>3.7</strong> Discovery trigger: when contact signals a specific need (deal question, scope ask, challenge mentioned), Joan marks discovery-ready and moves to Phase 4. State = active. Do not advance without a confirmed need.</li>
+          <li><strong>3.8</strong> Update pipeline-log.md at every touchpoint. Append-only.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="phase-num">Phase 4</span> Discovery + Go Decision</summary>
+      <div class="phase-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">State = active. Contact has signaled a specific need.</div></div>
+          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-joan">Joan</span> brief. <span class="al al-bruce">Bruce</span> strategic. <span class="al al-pepe">Pepe</span> discovery call.</div></div>
+          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Discovery brief complete. Engagement confirmed. Go / No-Go made.</div></div>
+        </div>
+        <h4>Sub-tasks</h4>
+        <ul>
+          <li><strong>4.1</strong> Joan reads full WhatsApp and email thread to date. No skimming. Extracts: stated problem, deal stage, urgency, stakeholders, prior advisors, budget signals, timeline. Full-read rule: no summary as substitute for source.</li>
+          <li><strong>4.2</strong> Joan drafts discovery brief. 2 pages max. Problem diagnosis, deal type recommendation, practice lead assignment, suggested scope, value range, key risks, questions for discovery call. Path: <code>brain/areas/mexzungu/bd/discovery/YYYY-MM-DD-[slug].md</code></li>
+          <li><strong>4.3</strong> Bruce strategic layer: reviews brief. Adds competitive context, timing signal, scenario stress-test (3 questions: deal falls through, competitor gets there first, client can't pay). Appends to brief file.</li>
+          <li><strong>4.4</strong> Practice lead assignment. Joan and Bruce agree by deal type: Venture Architecture (Joan), Equity (Tina), Debt (PJ), M&amp;A (Aretha), Asset deals (Chrissie), AI Ops (Kim). Multi-practice: name lead + co-lead.</li>
+          <li><strong>4.5</strong> Lemmy pre-clearance if new company: 5-step conflict check. (1) Client registry. (2) Active investments. (3) Drive search. (4) CRM. (5) Contacts database. <span class="gate gate-show">Showtime</span> if any conflict. Do not schedule call until CLEAR.</li>
+          <li><strong>4.6</strong> Discovery call scheduling per calendar-events.md: full location, full agenda, attendees, prep docs linked. <span class="gate gate-show">Showtime</span> if new contact. Fire Away before sending invite.</li>
+          <li><strong>4.7</strong> Pre-call prep to Pepe: Telegram brief max 5 lines. Who they are, what they want, what we think the deal is, what to listen for, suggested scope. Send to main Telegram, not alerts.</li>
+          <li><strong>4.8</strong> Post-call debrief: 1-page summary written within 4h of call end. Path: <code>brain/areas/mexzungu/bd/discovery/YYYY-MM-DD-[slug]-debrief.md</code>. If not written in 24h: Lars flags Pepe.</li>
+          <li><strong>4.9</strong> Go / No-Go: Joan + Bruce produce a one-line recommendation. Pepe confirms in Telegram. <span class="gate gate-sc">Soundcheck</span>. No-Go advances to Phase 6. Go advances to Phase 5.</li>
+          <li><strong>4.10</strong> Update CRM: discovery brief path, practice lead, engagement type, value estimate, Go/No-Go.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="phase-num">Phase 5</span> Proposal Handoff + Close</summary>
+      <div class="phase-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">Go decision confirmed. Scope and engagement type agreed.</div></div>
+          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-gene">Gene</span> fee. <span class="al al-joan">Joan</span> brief. <span class="al al-janis">Janis</span> handoff and state management.</div></div>
+          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Proposal Engine called. On countersigned EL: CRM won, Delivery ExCo notified, preservation triggers scheduled.</div></div>
+        </div>
+        <h4>Sub-tasks</h4>
+        <ul>
+          <li><strong>5.1</strong> Gene fee confirmation: apply pricing matrix. Confirm fee structure, 3 payment options (upfront / milestone / retainer + success). Bank hours option mandatory. <span class="gate gate-show">Showtime</span> if non-standard. Pepe sets pricing when matrix cannot resolve.</li>
+          <li><strong>5.2</strong> Joan writes proposal brief for Proposal Engine: client name, engagement type, scope summary, discovery brief path, practice lead, confirmed fee structure, payment options, timeline, tone notes. Path: <code>brain/areas/mexzungu/bd/proposal-briefs/YYYY-MM-DD-[slug].md</code></li>
+          <li><strong>5.3</strong> Trigger Proposal Engine: Joan passes proposal-brief.md path to Prince. CAE enters waiting state. Proposal Engine owns proposal build, EL auto-generation from client selections, DocuSeal inline signing, countersign detection. CAE does not touch the proposal or EL.</li>
+          <li><strong>5.4</strong> On countersigned EL event: update CRM state=won, last_contact=today. Update <code>clients/registry.md</code> (status: Active). Write "EL fully executed [date]" to pipeline-log.md. Mark contact referral-source-eligible. If event does not arrive within 48h of expected: Lars flags Joan. Joan pings Prince directly.</li>
+          <li><strong>5.5</strong> Lars triggers delivery handoff: Telegram OPS message. "[Client] EL signed. Scope: [1-liner]. Type: [practice]. Owner: [practice lead]. Kickoff by [date]." Founders Delivery Engine takes over. <span class="gate gate-sc">Soundcheck</span></li>
+          <li><strong>5.6</strong> Schedule deferred Phase 6 triggers: internal calendar events for D30 referral ask (Showtime), D90 warm ping (Soundcheck), D365 warm ping (Soundcheck). Also for No-Go contacts from earlier phases. No invites to contact.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="phase-num">Phase 6</span> Connection Preservation</summary>
+      <div class="phase-body">
+        <div class="phase-meta">
+          <div class="pm-item"><div class="pm-label">Trigger</div><div class="pm-val">No-Go at any phase, or D30 / D90 / D365 calendar trigger, or state=lost</div></div>
+          <div class="pm-item"><div class="pm-label">Owner</div><div class="pm-val"><span class="al al-jagger">Jagger</span> network. <span class="al al-sade">Sade</span> health. <span class="al al-joan">Joan</span> value.</div></div>
+          <div class="pm-item"><div class="pm-label">Exit</div><div class="pm-val">Ongoing background loop. No fixed end.</div></div>
+        </div>
+        <h4>Sub-tasks</h4>
+        <ul>
+          <li><strong>6.1</strong> Graceful close message on No-Go or walk: Joan drafts warm, brief. No pitch, no explanation, no apology. Leave the door open. <span class="gate gate-show">Showtime</span> Fire Away.</li>
+          <li><strong>6.2</strong> Contact preserved in CRM: state = lost or collab. Notes record why and when. Never delete.</li>
+          <li><strong>6.3</strong> D30 referral ask (won contacts only, once per engagement): Joan drafts a soft referral ask. "Who else in your network is building something similar where this kind of support would help?" <span class="gate gate-show">Showtime</span> Fire Away. If declined or ignored: never repeat.</li>
+          <li><strong>6.4</strong> D90 / D365 warm pings: auto-send lightweight check-in only if a genuine hook exists (news, deal signal, congratulations). No hook: skip that cycle. Do not manufacture connection. <span class="gate gate-sc">Soundcheck</span></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section id="showtime">
+    <div class="sec-label">Authority</div>
+    <h2>Showtime gates</h2>
+    <p>Everything else runs autonomously. Only these decisions require Pepe.</p>
+
+    <div class="hard-rule">
+      <div class="hr-label">Fire Away Rule</div>
+      <div class="hr-title">First contact. Stale revival. EL send. Day-30 referral ask.</div>
+      <p>The engine can qualify, warm, monitor, and pass to Proposal without a single Showtime trigger. But four moments always stop at Pepe.</p>
+      <p><span class="hr-emph">First contact.</span> Every new lead's first message stops in the Telegram alerts thread until Pepe says "Fire Away."</p>
+      <p><span class="hr-emph">Stale revival.</span> When a warm lead crosses 28 days silent, Janis flags. Pepe decides: kill or revive.</p>
+      <p><span class="hr-emph">EL send.</span> Proposal Engine owns the flow, but Pepe's Fire Away releases every EL.</p>
+      <p><span class="hr-emph">Day-30 referral ask.</span> One shot per engagement. Pepe approves the ask or it never fires.</p>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:22px;">
+      <table>
+        <thead>
+          <tr><th>Decision</th><th>Phase</th><th>Gate</th><th>Unblock</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Conflict check CLEAR</td><td>0.9 / 4.5</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe explicit</td></tr>
+          <tr><td>First contact</td><td>1.7</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe Fire Away</td></tr>
+          <tr><td>Discovery call invite (new contact)</td><td>4.6</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe Fire Away</td></tr>
+          <tr><td>Fee confirmation (non-standard)</td><td>5.1</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe explicit</td></tr>
+          <tr><td>Stale revival</td><td>3.5</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe explicit</td></tr>
+          <tr><td>Graceful close message</td><td>6.1</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe Fire Away</td></tr>
+          <tr><td>Referral ask (D30)</td><td>6.3</td><td><span class="gate gate-show">Showtime</span></td><td>Pepe Fire Away</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="interfaces">
+    <div class="sec-label">Where This Engine Sits</div>
+    <h2>Cross-engine interfaces</h2>
+    <p>Receives signals from SM Content (Annie) and SM Engagement (Joni). Triggers Proposal Engine on Go. Receives countersign event back. Hands off to Delivery Engines.</p>
+
+    <div class="flow-strip">
+      <div class="flow-node">
+        <div class="fn-label">Upstream</div>
+        <div class="fn-name">SM Content + Engagement</div>
+        <div class="fn-note">Annie deal signals + Joni Class C DMs feed Phase 0 queue.</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-node center">
+        <div class="fn-label">This engine</div>
+        <div class="fn-name">Connection Acquisition</div>
+        <div class="fn-note">Qualify, warm, discovery, Go decision.</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-node">
+        <div class="fn-label">Downstream</div>
+        <div class="fn-name">Proposal Engine</div>
+        <div class="fn-note">proposal-brief.md handed off. Countersigned EL event returns.</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:22px;">
+      <table>
+        <thead>
+          <tr><th>Engine</th><th>Direction</th><th>We send</th><th>We receive</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SM Content Engine</td><td>Upstream</td><td>Nothing</td><td>High-engagement contact signals for Phase 0 (via Annie).</td></tr>
+          <tr><td>SM Engagement Engine</td><td>Upstream</td><td>Nothing</td><td>DMs and Class C connection requests as Phase 0 signals (state=warm, via Joni).</td></tr>
+          <tr><td>Proposal Engine</td><td>Called sub-engine</td><td>proposal-brief.md path (Phase 5.3)</td><td>Countersigned EL event (Phase 5.4)</td></tr>
+          <tr><td>Investors Delivery Engine</td><td>Upstream feeder</td><td>Nothing</td><td>Zone 2 / Zone 3 investor flagged as Phase 0 candidate.</td></tr>
+          <tr><td>Founders Delivery Engine</td><td>Downstream</td><td>Delivery handoff ping (Phase 5.5)</td><td>Nothing. Engine hands off and exits.</td></tr>
+          <tr><td>Client Health Engine</td><td>Parallel</td><td>CRM state updates</td><td>Relationship temperature signals (Phases 3 and 6).</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<div class="foot-nav">
+  <a href="/engines/connection/sm-engagement/">&larr; SM Engagement Engine</a>
+  <a href="/engines/connection/" class="primary">Back to Connection</a>
+  <a href="/engines/connection/proposal/">Proposal Engine &rarr;</a>
+</div>
+
+</body>
+</html>
