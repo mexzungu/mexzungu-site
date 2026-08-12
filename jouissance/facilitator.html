@@ -531,6 +531,7 @@
   .sp-safety-signal.yellow { background: rgba(255,220,0,0.25); color: #ffe066; }
   .sp-safety-signal.purple { background: rgba(180,100,255,0.25); color: #d0a0ff; }
   .sp-safety-signal.red    { background: rgba(255,80,80,0.25);  color: #ffaaaa; }
+  .sp-safety-signal.teal   { background: rgba(0,200,200,0.2);   color: #66e0e0; }
 
   /* SESSION PLAN: OVERVIEW */
   .sp-overview-toggle {
@@ -859,10 +860,28 @@
 
       <div class="sp-safety-bar">
         <strong>Safety</strong>
-        <span class="sp-safety-signal">&#x1F91E; Arms crossed = no touch</span>
+        <span class="sp-safety-signal teal">&#x1F91E; Arms crossed = no touch</span>
         <span class="sp-safety-signal yellow">YELLOW = slow down</span>
         <span class="sp-safety-signal purple">PURPLE = grounding needed</span>
         <span class="sp-safety-signal red">RED = full stop</span>
+      </div>
+
+      <button class="sp-overview-toggle" onclick="spToggleOverview()" id="sp-overview-btn">
+        <span>Session Overview</span>
+        <span id="sp-overview-chevron">&#8964;</span>
+      </button>
+      <div id="sp-overview-table" style="display:none;margin-bottom:20px">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border)">
+              <th style="text-align:left;padding:8px 12px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400">Phase</th>
+              <th style="text-align:left;padding:8px 12px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400">Time</th>
+              <th style="text-align:center;padding:8px 12px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400">Dur</th>
+              <th style="text-align:left;padding:8px 12px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400">Objective</th>
+            </tr>
+          </thead>
+          <tbody id="sp-overview-body"></tbody>
+        </table>
       </div>
 
       <div class="sp-phase-card">
@@ -902,6 +921,11 @@
       <div class="sp-notes-card" id="sp-watchfor-card" style="display:none">
         <div class="sp-notes-title">Watch For</div>
         <div id="sp-watchfor"></div>
+      </div>
+
+      <div class="sp-notes-card" id="sp-script-card" style="display:none;border-color:rgba(155,127,166,0.3)">
+        <div class="sp-notes-title" style="color:var(--accent)">Script</div>
+        <div class="sp-notes-body" id="sp-script"></div>
       </div>
 
       <div id="sp-next-container"></div>
@@ -1487,7 +1511,8 @@ const SESSION_PHASES = [
     name: 'Pre-Session Setup',
     start_time: '6:00pm',
     duration_min: 60,
-    notes: `<p><strong>Space:</strong></p><ul>
+    notes: `<p><strong>Music setup:</strong> Spotify playlist: <a href="https://open.spotify.com/playlist/1gdco5a3KXJhocUkV0fad6" target="_blank" style="color:var(--accent)">https://open.spotify.com/playlist/1gdco5a3KXJhocUkV0fad6</a>. Start Arrival ambient at 6:30pm. <strong>DO NOT SHUFFLE.</strong></p>
+<p><strong>Space:</strong></p><ul>
 <li>Furniture pushed to edges or removed</li>
 <li>4 yoga mats in a loose organic cluster near the centre</li>
 <li>Cushions at every mat and along walls</li>
@@ -1498,7 +1523,8 @@ const SESSION_PHASES = [
 </ul>
 <p><strong>Pepe and Agathe:</strong> Already changed and settled before anyone arrives. Host energy is set before the door opens. Calm, unhurried, present.</p>`,
     watch_for: [],
-    music: 'No music yet. Start arrival ambient playlist at 6:30pm.'
+    music: 'No music yet. Start arrival ambient playlist at 6:30pm.',
+    script: null
   },
   {
     id: 1,
@@ -1513,47 +1539,95 @@ const SESSION_PHASES = [
     watch_for: [
       { signal: 'Natural quiet in room', action: 'Energy has settled. That is the cue to move to the mats.' }
     ],
-    music: 'Ambient, no beat. Jon Hopkins: Immunity / Olafur Arnalds: Near Light / Nils Frahm: Says. Volume low enough to talk over.'
+    music: 'Ambient, no beat. Jon Hopkins: Immunity / Olafur Arnalds: Near Light / Nils Frahm: Says. Volume low enough to talk over.',
+    script: null
   },
   {
     id: 2,
     phase_num: '2',
     name: 'Opening Container',
     start_time: '7:00pm',
-    duration_min: 30,
-    notes: `<p><strong>Transition to mats:</strong> "Come. Let us get comfortable." No announcement. No ceremony. Just movement.</p>
-<p><strong>Sharing circle</strong> (before breathwork - verbal processing needs to clear first). Pepe speaks first. Short, direct, warm.</p>
+    duration_min: 50,
+    notes: `<p><strong>Cleansing ritual:</strong> Before the sharing circle, brief physical reset. Each person stands and shakes hands and arms loose for 30 seconds. Then one conscious exhale together. No explanation needed. Clears the body from the day.</p>
+<p><strong>Transition to mats:</strong> "Come. Let us get comfortable." No announcement. No ceremony. Just movement.</p>
+<p><strong>Sharing circle</strong> (before breathwork; verbal processing needs to clear first). Pepe speaks first. Short, direct, warm.</p>
 <p><em>Opening:</em> "What we are doing tonight is not a class and I am not a teacher. We are here because most of us spend a lot of time almost arriving somewhere in our bodies and then managing it before we get there. Tonight we are not going to manage it. We are going to let it happen."</p>
-<p><strong>Agathe speaks (2-3 min):</strong> From her own experience. What it felt like the first time she stopped performing pleasure and actually received it.</p>
-<p><strong>Prompt 1:</strong> "In my body right now, I feel..." Go around. Short. No analysis.</p>
-<p><strong>Prompt 2:</strong> "What is one thing you have almost let yourself feel but pulled back from at the last moment?"</p>
+<p><strong>Agathe speaks (2-3 min):</strong> From her own experience. What it felt like the first time she stopped performing pleasure and actually received it. <em>Frame as ongoing practice, not a one-off. She still struggles with this sometimes. That is the point.</em></p>
+<p><strong>Prompt 1:</strong> "How are you feeling right now? In your body, not in your head." Go around. Short. No analysis.</p>
+<p><strong>Prompt 2:</strong> "What do you want out of tonight?" Short. No elaboration needed.</p>
+<p><strong>Prompt 3:</strong> "What are your current limits?" Listen without comment. Hold space.</p>
 <p>Hold the silence after each answer. Do not move to the next person immediately. Emotion here is correct. Do not fix it. Agathe places a hand on their back. Pepe stays present and still.</p>
-<p><strong>Safety signals (60 seconds, warm not clinical):</strong> Arms crossed = stop touch right now, no explanation needed. YELLOW = slow down or change direction. PURPLE = leaving your body, need grounding. RED = stop completely. Deliver simply. Move on.</p>`,
+<p><strong>Safety signals (60 seconds, warm not clinical):</strong> Arms crossed = stop touch right now, no explanation needed. YELLOW = slow down or change direction. PURPLE = leaving your body, need grounding. RED = stop completely. Deliver simply. Move on.</p>
+<p><strong>Pre-negotiations (one-on-one, after safety signals, before breathwork):</strong></p>
+<ul>
+<li><strong>Agatha scarf:</strong> Agathe confirms verbally with Agatha. "Are you comfortable with the scarf?" Wait for an explicit yes before it enters the session.</li>
+<li><strong>Agathe verbal confirm:</strong> Agathe makes direct verbal contact with each participant before any touch escalation. No assumed consent from group energy.</li>
+<li><strong>Marie tap system:</strong> Remind Marie. Tap hand = more, closed fist = stop. Ask her to demonstrate once so it is in the body, not just the head.</li>
+</ul>`,
     watch_for: [
       { signal: 'Room feels performed', action: 'The sharing prompt breaks it. Hold the silence after each answer.' },
       { signal: 'Silence after an answer', action: 'Do not fill it. Let it land.' },
       { signal: 'Emotion or tears', action: 'Do not fix it. Agathe hand on back. Pepe stays present and still.' }
     ],
-    music: 'Sparse: Bonobo (Kiara) / Nicolas Jaar (Space Is Only Noise) / Nils Frahm (All Melody)'
+    music: 'Sparse: Bonobo (Kiara) / Nicolas Jaar (Space Is Only Noise) / Nils Frahm (All Melody)',
+    script: `<p><em>Transition to mats. No announcement. Just movement:</em></p>
+<blockquote>"Come. Let us get comfortable."</blockquote>
+<p><em>Opening (Pepe speaks first, short and direct):</em></p>
+<blockquote>"What we are doing tonight is not a class and I am not a teacher. These women have done enough classes. We are here because most of us spend a lot of time almost arriving somewhere in our bodies and then managing it before we get there. Tonight we are not going to manage it. We are going to let it happen. That is the only goal. Agathe has been in this space with me a long time. She will tell you what that feels like."</blockquote>
+<p><em>After Agathe speaks. Three sharing prompts, go around for each:</em></p>
+<blockquote>"How are you feeling right now? In your body, not in your head."</blockquote>
+<blockquote>"What do you want out of tonight?"</blockquote>
+<blockquote>"What are your current limits?"</blockquote>
+<p><em>Safety signals. Deliver simply, move on:</em></p>
+<blockquote>"Two things before we begin. Words and a gesture. The gesture: arms crossed in front of your chest, like this, means stop touch, right now, no explanation needed. Anyone who sees it stops immediately. Use it any time.<br><br>The words: Yellow means slow down or change direction, you want to keep going. Purple means you are leaving your body and need to be grounded back. Red means we stop completely, right now.<br><br>You do not need to explain any of them. The word or the gesture is enough. We will watch for both."</blockquote>
+<p><em>Pre-negotiations. One-on-one, quiet, before breathwork:</em></p>
+<p>Agatha: Agathe confirms scarf verbally. Marie: confirm tap system out loud and ask her to demonstrate once.</p>`
   },
   {
     id: 3,
     phase_num: '3',
     name: 'Breathwork',
     start_time: '7:30pm',
-    duration_min: 20,
-    notes: `<p><strong>Purpose:</strong> Get them out of their heads and past language. Agathe leads. Pepe holds the space.</p>
+    duration_min: 5,
+    notes: `<p>Agathe leads. Pepe holds the space.</p>
 <ol>
-<li><strong>Grounding breath (7 min):</strong> Inhale 4 counts, hold 2, exhale 6. Eyes closed. Agathe counts softly. Pepe does not touch anyone yet. Presence only.</li>
-<li><strong>Connected circular breath (6 min):</strong> Mouth breathing, continuous, no pause between inhale and exhale. "Let the breath be fuller. Let your belly move. Let your chest open." Someone may feel tingling, tears, involuntary movement. This is correct. "Whatever you feel, let it move through."</li>
-<li><strong>Landing (5-7 min):</strong> Return to natural breath. Silence. Both sit completely still. "Notice where you are still holding. Let that place go." Do not rush the transition.</li>
+<li><strong>Box breath (2 min):</strong> Inhale 4 counts, hold 2, exhale 6. Eyes closed. Agathe counts softly.</li>
+<li><strong>Circular breath (2 min):</strong> Mouth breathing, continuous, no pause between inhale and exhale. Let the belly move.</li>
+<li><strong>Natural return (1 min):</strong> Return to natural breath. Silence. Feel where you landed.</li>
 </ol>
-<p><strong>No verbal re-entry after breathwork.</strong> Transition to Phase A with movement only. The fewer words from here until the surrender invitation, the better.</p>`,
+<p><strong>No verbal re-entry after breathwork.</strong> Transition to icebreaker with movement only.</p>`,
     watch_for: [
       { signal: 'Tears, shaking, laughter', action: 'Stay with them. Hand on chest or back. "Let it move."' },
       { signal: 'Hyperventilation', action: 'Agathe: both hands on chest and belly, guide back to slow nasal breath. No announcement to group. Pepe continues holding room.' }
     ],
-    music: 'Ritualistic, still: Max Richter (On the Nature of Daylight) / Brian Eno (An Ending) / Hammock (Longest Year)'
+    music: 'Max Richter: On the Nature of Daylight'
+  },
+  {
+    id: 3.5,
+    phase_num: 'Ice',
+    name: 'Sensual Icebreaker',
+    start_time: '7:35pm',
+    duration_min: 15,
+    notes: `<p>Agathe facilitates. Pepe participates. No spectators.</p>
+<p><strong>10 slip prompts.</strong> Agathe introduces each one, group tries it:</p>
+<ol>
+<li>Eye contact with someone for 60 seconds. No words.</li>
+<li>Touch your own face slowly for 30 seconds.</li>
+<li>Hands on someone's shoulders. Breathe together for 1 minute.</li>
+<li>Ask someone to put their hand on your heart. Hold. No words.</li>
+<li>Describe out loud where you feel something in your body right now.</li>
+<li>Walk across the room as slowly as possible. Feel the floor.</li>
+<li>Close eyes. Name one sensation. Open them.</li>
+<li>Ask someone: what does your body want right now? Listen without responding.</li>
+<li>Hand on your own belly. Feel it rise and fall three times.</li>
+<li>Sway wherever you are. 30 seconds.</li>
+</ol>
+<p><strong>Transition:</strong> Agathe gestures to mats. No announcement. No words. No verbal re-entry from this point until surrender invitation.</p>`,
+    watch_for: [
+      { signal: 'Someone freezes on a slip', action: 'Agathe: this is play, swap for another.' }
+    ],
+    music: 'Continue breathwork ambient. Phase A music starts on transition to mats.',
+    script: null
   },
   {
     id: 4,
