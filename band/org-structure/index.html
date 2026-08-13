@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Band — Mexzungu Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #222;
+    --text: #f0f0f0;
+    --muted: #666;
+    --pink: #ff3d9a;
+    --pink-dim: rgba(255,61,154,0.10);
+    --mgmt: #ff3d9a;
+    --delivery: #c026d3;
+    --practice: #7c3aed;
+    --eng: #2563eb;
+    --content: #16a34a;
+    --ops: #b45309;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 2.5rem 1rem 5rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  header h1 span { color: var(--pink); }
+
+  header p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Tree layout */
+  .org { display: flex; flex-direction: column; align-items: center; }
+
+  .vline {
+    width: 1px; height: 2rem;
+    background: var(--border);
+    margin: 0 auto;
+  }
+
+  .hfork {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .branch { display: flex; flex-direction: column; align-items: center; }
+
+  .tier-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 2rem;
+    position: relative;
+  }
+
+  .tier-row::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 2rem;
+    background: var(--border);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 0.9rem;
+    width: 155px;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+
+  .card:hover {
+    border-color: #333;
+    transform: translateY(-2px);
+  }
+
+  .card.pepe {
+    border-color: var(--pink);
+    background: var(--pink-dim);
+    width: 210px;
+    text-align: center;
+  }
+
+  .card.janis {
+    border-color: var(--pink);
+    background: var(--pink-dim);
+    width: 180px;
+  }
+
+  .name { font-size: 1rem; font-weight: 600; line-height: 1.2; }
+  .real { font-size: 0.62rem; color: var(--muted); margin-top: 0.15rem; }
+  .title { font-size: 0.68rem; color: var(--pink); margin-top: 0.4rem; font-weight: 500; line-height: 1.3; }
+
+  .tier-badge {
+    display: inline-block;
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    color: #fff;
+  }
+
+  .kpis { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.2rem; }
+
+  .kpi {
+    font-size: 0.54rem;
+    color: #777;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid #222;
+    border-radius: 3px;
+    padding: 0.15rem 0.35rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bg-pink    { background: var(--mgmt); }
+  .bg-purple  { background: var(--delivery); }
+  .bg-violet  { background: var(--practice); }
+  .bg-blue    { background: var(--eng); }
+  .bg-green   { background: var(--content); }
+  .bg-amber   { background: var(--ops); }
+  .bg-special { background: var(--pink); }
+
+  footer {
+    text-align: center;
+    margin-top: 5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  footer strong { color: var(--pink); }
+
+  @media (max-width: 600px) {
+    .hfork { gap: 1.5rem; }
+    .card { width: 140px; }
+    .card.pepe { width: 180px; }
+    .card.janis { width: 160px; }
+    header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>The <span>Band</span></h1>
+  <p>Mexzungu Group &middot; Operating Structure</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--mgmt)"></div>Management ExCo</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--delivery)"></div>Delivery ExCo</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--practice)"></div>Practice Leads</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--eng)"></div>Engineering Band</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--content)"></div>Content Team</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--ops)"></div>Operating Team</div>
+</div>
+
+<div class="org">
+
+  <!-- L0: Pepe -->
+  <div class="card pepe">
+    <div class="name">Pepe</div>
+    <div class="real">Jose Carrillo Perez</div>
+    <div class="title">The Chair</div>
+    <span class="tier-badge bg-special">Founder</span>
+  </div>
+
+  <div class="vline"></div>
+
+  <!-- L1: Janis -->
+  <div class="card janis">
+    <div class="name">Janis</div>
+    <div class="real">AI Operating Partner</div>
+    <div class="title">Chief of Staff</div>
+    <span class="tier-badge bg-special">Interface</span>
+  </div>
+
+  <div class="vline"></div>
+
+  <!-- L2: Lars + Bruce -->
+  <div class="hfork">
+
+    <!-- ===== LARS BRANCH ===== -->
+    <div class="branch">
+      <div class="card">
+        <div class="name">Lars</div>
+        <div class="real">Lars Ulrich</div>
+        <div class="title">Head of Management</div>
+        <span class="tier-badge bg-pink">Mgmt ExCo</span>
+        <div class="kpis">
+          <span class="kpi">scorecard_cadence</span>
+          <span class="kpi">overdue_item_age_max</span>
+        </div>
+      </div>
+
+      <!-- Lars direct reports -->
+      <div class="tier-row">
+
+        <!-- Freddie + Content Team -->
+        <div class="branch">
+          <div class="card">
+            <div class="name">Freddie</div>
+            <div class="real">Farrokh Bulsara</div>
+            <div class="title">Chief Marketing Officer</div>
+            <span class="tier-badge bg-pink">Mgmt ExCo</span>
+            <div class="kpis">
+              <span class="kpi">content_rhythm_health</span>
+              <span class="kpi">content_queue_depth</span>
+            </div>
+          </div>
+          <div class="tier-row" style="gap:0.5rem;">
+            <div class="card">
+              <div class="name">Lenny</div>
+              <div class="real">Leonard Kravitz</div>
+              <div class="title">Content Producer</div>
+              <span class="tier-badge bg-green">Content</span>
+              <div class="kpis"><span class="kpi">Unproduced Brief Age</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Grohl</div>
+              <div class="real">Dave Grohl</div>
+              <div class="title">Content Producer</div>
+              <span class="tier-badge bg-green">Content</span>
+              <div class="kpis"><span class="kpi">Brief-to-Draft Latency</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Joni</div>
+              <div class="real">Joni Mitchell</div>
+              <div class="title">Editor</div>
+              <span class="tier-badge bg-green">Content</span>
+              <div class="kpis"><span class="kpi">Editorial Queue Age</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Nick</div>
+              <div class="real">Nick Cave</div>
+              <div class="title">Editor</div>
+              <span class="tier-badge bg-green">Content</span>
+              <div class="kpis"><span class="kpi">Editorial Gate Throughput</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Anselmo</div>
+              <div class="real">Philip Anselmo</div>
+              <div class="title">Brand Police</div>
+              <span class="tier-badge bg-green">Content</span>
+              <div class="kpis"><span class="kpi">Brand Gate Throughput</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Grace</div>
+              <div class="real">Grace Jones</div>
+              <div class="title">Brand Operator</div>
+              <span class="tier-badge bg-green">Content</span>
+              <div class="kpis"><span class="kpi">Post Deploy Success Rate</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Annie</div>
+              <div class="real">Annie Lennox</div>
+              <div class="title">Analytics Operator</div>
+              <span class="tier-badge bg-green">Content</span>
+              <div class="kpis"><span class="kpi">Engagement Rate</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gene -->
+        <div class="card">
+          <div class="name">Gene</div>
+          <div class="real">Chaim Witz</div>
+          <div class="title">Chief Financial Officer</div>
+          <span class="tier-badge bg-pink">Mgmt ExCo</span>
+          <div class="kpis">
+            <span class="kpi">weekly_financial_health</span>
+            <span class="kpi">invoice_chase_coverage</span>
+          </div>
+        </div>
+
+        <!-- Bowie + Engineering Band -->
+        <div class="branch">
+          <div class="card">
+            <div class="name">Bowie</div>
+            <div class="real">David Robert Jones</div>
+            <div class="title">Chief Technology Officer</div>
+            <span class="tier-badge bg-pink">Mgmt ExCo</span>
+            <div class="kpis">
+              <span class="kpi">infrastructure_health</span>
+              <span class="kpi">skills_audit_currency</span>
+            </div>
+          </div>
+          <div class="tier-row" style="gap:0.5rem;">
+            <div class="card">
+              <div class="name">Iggy</div>
+              <div class="real">James Osterberg</div>
+              <div class="title">DevOps Engineer</div>
+              <span class="tier-badge bg-blue">Engineering</span>
+              <div class="kpis"><span class="kpi">Tools Server Uptime</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Jack</div>
+              <div class="real">John Anthony Gillis</div>
+              <div class="title">Backend Engineer</div>
+              <span class="tier-badge bg-blue">Engineering</span>
+              <div class="kpis"><span class="kpi">Tool Registry Coverage</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Nile</div>
+              <div class="real">Nile Rodgers Jr.</div>
+              <div class="title">Frontend Engineer</div>
+              <span class="tier-badge bg-blue">Engineering</span>
+              <div class="kpis"><span class="kpi">Deploy Completion Rate</span></div>
+            </div>
+            <div class="card">
+              <div class="name">Lou</div>
+              <div class="real">Lewis Allan Reed</div>
+              <div class="title">QA Engineer</div>
+              <span class="tier-badge bg-blue">Engineering</span>
+              <div class="kpis"><span class="kpi">Test Coverage Rate</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nina -->
+        <div class="card">
+          <div class="name">Nina</div>
+          <div class="real">Eunice Waymon</div>
+          <div class="title">Head of Knowledge</div>
+          <span class="tier-badge bg-pink">Mgmt ExCo</span>
+          <div class="kpis">
+            <span class="kpi">knowledge_library_health</span>
+            <span class="kpi">after_action_coverage</span>
+          </div>
+        </div>
+
+        <!-- Jagger -->
+        <div class="card">
+          <div class="name">Jagger</div>
+          <div class="real">Michael Jagger</div>
+          <div class="title">Chief Growth Officer</div>
+          <span class="tier-badge bg-pink">Mgmt ExCo</span>
+          <div class="kpis">
+            <span class="kpi">pipeline_health</span>
+            <span class="kpi">outreach_attempts_weekly</span>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /Lars branch -->
+
+    <!-- ===== BRUCE BRANCH ===== -->
+    <div class="branch">
+      <div class="card">
+        <div class="name">Bruce</div>
+        <div class="real">Paul Bruce Dickinson</div>
+        <div class="title">Head of Delivery</div>
+        <span class="tier-badge bg-purple">Delivery ExCo</span>
+        <div class="kpis">
+          <span class="kpi">quarterly_ooda_filed</span>
+          <span class="kpi">architecture_briefs_current</span>
+        </div>
+      </div>
+
+      <!-- Bruce direct reports -->
+      <div class="tier-row">
+
+        <!-- Lemmy -->
+        <div class="card">
+          <div class="name">Lemmy</div>
+          <div class="real">Ian Fraser Kilmister</div>
+          <div class="title">Chief Legal Officer</div>
+          <span class="tier-badge bg-purple">Delivery ExCo</span>
+          <div class="kpis">
+            <span class="kpi">Contract Coverage Rate</span>
+            <span class="kpi">EL Signed Before Work</span>
+          </div>
+        </div>
+
+        <!-- Prince -->
+        <div class="card">
+          <div class="name">Prince</div>
+          <div class="real">Prince Rogers Nelson</div>
+          <div class="title">Head of Excellence</div>
+          <span class="tier-badge bg-purple">Delivery ExCo</span>
+          <div class="kpis">
+            <span class="kpi">Zero Unreviewed Shipments</span>
+            <span class="kpi">First-Pass Clear Rate</span>
+          </div>
+        </div>
+
+        <!-- Sade + Sheryl -->
+        <div class="branch">
+          <div class="card">
+            <div class="name">Sade</div>
+            <div class="real">Helen Folasade Adu</div>
+            <div class="title">Head of Client Success</div>
+            <span class="tier-badge bg-purple">Delivery ExCo</span>
+            <div class="kpis">
+              <span class="kpi">Zero Clients Over 14 Days</span>
+              <span class="kpi">Onboarding Arc Completion</span>
+            </div>
+          </div>
+          <div class="tier-row">
+            <div class="card">
+              <div class="name">Sheryl</div>
+              <div class="real">Sheryl Crow</div>
+              <div class="title">Client Success Operator</div>
+              <span class="tier-badge bg-amber">Operating</span>
+              <div class="kpis"><span class="kpi">Active Client Check-In</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ozzy -->
+        <div class="card">
+          <div class="name">Ozzy</div>
+          <div class="real">John Michael Osbourne</div>
+          <div class="title">Scenario Planner</div>
+          <span class="tier-badge bg-amber">Operating</span>
+          <div class="kpis">
+            <span class="kpi">Showtime Decision Coverage</span>
+            <span class="kpi">Scenario Turnaround Time</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Practice Leads row (all report to Bruce) -->
+      <div class="tier-row" style="gap:0.5rem; max-width:1100px;">
+        <div class="card">
+          <div class="name">Joan</div>
+          <div class="real">Joan Marie Larkin</div>
+          <div class="title">Venture Architecture Lead</div>
+          <span class="tier-badge bg-violet">Practice</span>
+          <div class="kpis"><span class="kpi">Architecture Brief Currency</span></div>
+        </div>
+        <div class="card">
+          <div class="name">Tina</div>
+          <div class="real">Anna Mae Bullock</div>
+          <div class="title">Equity Desk Lead</div>
+          <span class="tier-badge bg-violet">Practice</span>
+          <div class="kpis"><span class="kpi">Gene Model Gate Compliance</span></div>
+        </div>
+        <div class="card">
+          <div class="name">PJ</div>
+          <div class="real">Polly Jean Harvey</div>
+          <div class="title">Debt Desk Lead</div>
+          <span class="tier-badge bg-violet">Practice</span>
+          <div class="kpis"><span class="kpi">Debt Advisory Accuracy</span></div>
+        </div>
+        <div class="card">
+          <div class="name">Aretha</div>
+          <div class="real">Aretha Louise Franklin</div>
+          <div class="title">M&amp;A Desk Lead</div>
+          <span class="tier-badge bg-violet">Practice</span>
+          <div class="kpis"><span class="kpi">Four-Test Completion Rate</span></div>
+        </div>
+        <div class="card">
+          <div class="name">Chrissie</div>
+          <div class="real">Christine Hynde</div>
+          <div class="title">Asset Deals Lead</div>
+          <span class="tier-badge bg-violet">Practice</span>
+          <div class="kpis"><span class="kpi">Five-Layer Due Diligence</span></div>
+        </div>
+        <div class="card">
+          <div class="name">Kim</div>
+          <div class="real">Kim Gordon</div>
+          <div class="title">AI Ops Practice Lead</div>
+          <span class="tier-badge bg-violet">Practice</span>
+          <div class="kpis"><span class="kpi">Dossier Calibration Coverage</span></div>
+        </div>
+      </div>
+
+    </div><!-- /Bruce branch -->
+
+  </div><!-- /hfork -->
+
+</div><!-- /org -->
+
+<footer>
+  <strong>29 personas. 6 tiers. Pepe holds the chair.</strong><br>
+  Mexzungu Group &nbsp;&middot;&nbsp; Generated 2026-08-13
+</footer>
+
+</body>
+</html>
