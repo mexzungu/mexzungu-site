@@ -290,7 +290,7 @@ function makeNode(id) {
 
   // Card (anchor)
   const card = document.createElement('a');
-  card.href = '/band/profile?name=' + encodeURIComponent(n.name);
+  card.href = 'https://api.mexzungu.com/band/profile?name=' + encodeURIComponent(n.name);
   card.className = 'card';
   card.setAttribute('aria-label', n.name + ', ' + n.title);
 
