@@ -1197,19 +1197,38 @@ function buildCard(p) {
   }).join('');
   const qaHtml = (regQHtml + profileHtml + kyHtml) || '<div class="empty">Profile not yet complete.</div>';
 
-  const ALL_MODULES = ['The Body as Portal','The Language of Desire','Energy and Presence','Surrender and Safety','Integration and Practice'];
-  const completedModuleIds = new Set((p.quiz_completions||[]).map(q=>q.module_id));
-  const readModules = p.module_reads || {};
-  const moduleHtml = ALL_MODULES.map((title,i)=>{
-    const mid = i+1; const read = readModules[mid]; const done = completedModuleIds.has(mid);
-    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
-      <div title="Opened" style="width:22px;text-align:center;font-size:13px;opacity:${read?1:.15}">👁</div>
-      <div title="Quiz done" style="width:22px;text-align:center;font-size:11px;font-weight:600;color:var(--green);opacity:${done?1:.15}">✓</div>
-      <div style="flex:1;font-size:.85rem;opacity:${read||done?1:.4}">${title}</div>
-      ${read?`<div style="font-size:.72rem;opacity:.35">${fmtDate(read)}</div>`:''}
-    </div>`;
-  }).join('');
-  const knowledgeHtml = `<div style="padding:4px 0">${moduleHtml}</div>`;
+  const DAILY_READINGS = [
+    {date:'2026-08-01',title:'Why most people have never actually received pleasure'},
+    {date:'2026-08-02',title:'The performance trap'},
+    {date:'2026-08-03',title:'What your body already knows'},
+    {date:'2026-08-04',title:'Breath is not technique. It is permission.'},
+    {date:'2026-08-05',title:'The thing you have never asked for out loud'},
+    {date:'2026-08-06',title:'Why I slow down instead of speeding up'},
+    {date:'2026-08-07',title:'Wanting without chasing'},
+    {date:'2026-08-08',title:'The difference between sensation and experience'},
+    {date:'2026-08-09',title:'What I am actually listening for'},
+    {date:'2026-08-10',title:'The withdrawal'},
+    {date:'2026-08-11',title:'Surrender is not passive. It is the hardest thing.'},
+    {date:'2026-08-12',title:'What the body remembers'},
+    {date:'2026-08-13',title:'A note before tomorrow'},
+    {date:'2026-08-14',title:'Tonight'},
+  ];
+  const theoryReads = p.theory_reads || {};
+  const theoryQuizDone = new Set((p.theory_quiz_completions||[]).map(q=>q.date_key));
+  const knowledgeHtml = `<div style="padding:4px 0">
+    <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.4;padding:4px 0 6px">Daily Readings</div>
+    ${DAILY_READINGS.map(({date,title})=>{
+      const ts = theoryReads[date];
+      const quizDone = theoryQuizDone.has(date);
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div title="Opened" style="width:22px;text-align:center;font-size:13px;opacity:${ts?1:.15}">👁</div>
+        <div title="Quiz done" style="width:22px;text-align:center;font-size:11px;font-weight:600;color:var(--green);opacity:${quizDone?1:.15}">✓</div>
+        <div style="width:52px;font-size:.72rem;opacity:.45;flex-shrink:0">${date.slice(5)}</div>
+        <div style="flex:1;font-size:.85rem;opacity:${ts||quizDone?1:.4}">${esc(title)}</div>
+        ${ts?`<div style="font-size:.72rem;opacity:.35">${fmtDate(ts)}</div>`:''}
+      </div>`;
+    }).join('')}
+  </div>`;
 
   const respHtml = (p.recent_responses || []).length
     ? (p.recent_responses || []).map(r =>
@@ -1402,7 +1421,8 @@ async function loadSpecials() {
             }
           }
           if (a.response) {
-            submissionHtml += `<div style="font-size:.8rem;color:var(--muted);margin-top:.3rem;font-style:italic">"${esc(a.response)}"</div>`;
+            const ctId = `${ch.id}-${a.participant_id}`;
+            submissionHtml += `<div style="font-size:.8rem;color:var(--muted);margin-top:.3rem;font-style:italic">"${collapsibleText(a.response, ctId, 12)}"</div>`;
           }
         }
         return `<tr>
@@ -1471,6 +1491,15 @@ async function fulfill(id, btn) {
 function esc(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function collapsibleText(text, id, wordLimit) {
+  wordLimit = wordLimit || 12;
+  const words = text.trim().split(/\s+/);
+  if (words.length <= wordLimit) return `<span>${esc(text)}</span>`;
+  const short = esc(words.slice(0, wordLimit).join(' '));
+  const full = esc(text);
+  return `<span id="ct-short-${id}">${short}&hellip; <span onclick="document.getElementById('ct-short-${id}').style.display='none';document.getElementById('ct-full-${id}').style.display='inline'" style="color:var(--pink);cursor:pointer;font-style:normal;font-size:.75rem">Read more</span></span><span id="ct-full-${id}" style="display:none">${full} <span onclick="document.getElementById('ct-full-${id}').style.display='none';document.getElementById('ct-short-${id}').style.display='inline'" style="color:var(--pink);cursor:pointer;font-style:normal;font-size:.75rem">Read less</span></span>`;
 }
 
 function fmtDate(iso) {
@@ -1898,6 +1927,15 @@ function spRenderPhase() {
     ).join('');
   } else {
     wfCard.style.display = 'none';
+  }
+
+  const scriptCard = document.getElementById('sp-script-card');
+  const scriptEl = document.getElementById('sp-script');
+  if (p.script) {
+    scriptCard.style.display = 'block';
+    scriptEl.innerHTML = p.script;
+  } else {
+    scriptCard.style.display = 'none';
   }
 
   const nextEl = document.getElementById('sp-next-container');
