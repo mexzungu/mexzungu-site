@@ -1657,6 +1657,7 @@ async function loadHome(){
       if(theory){
         document.getElementById('theory-title').textContent=theory.title;
         document.getElementById('theory-body').textContent=theory.body;
+        try{const dateStr=new Date().toISOString().slice(0,10);apiFetch('/theory/mark-read',{method:'POST',body:JSON.stringify({date_key:dateStr})});}catch(e){}
         const ts=document.getElementById('h-theory-section');
         if(ts)ts.style.display='';
         // Show "Past readings" toggle if there are past days
@@ -2838,12 +2839,40 @@ async function loadOngoingChallenges(){
   const el=document.getElementById('ws-ongoing-list');
   if(!el)return;
   try{
-    const r=await apiFetch('/challenges');
+    const r=await apiFetch('/challenges/ongoing');
     if(!r.ok)return;
     const d=await r.json();
-    const ongoing=(d.challenges||d||[]).filter(c=>c.phase==='ongoing');
-    el.innerHTML=ongoing.map(c=>`<div style="padding:.75rem 0;border-bottom:1px solid rgba(155,127,166,.12)"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;margin-bottom:.25rem">${c.title}</div><div style="font-size:.82rem;color:rgba(244,239,230,.5);line-height:1.65">${c.description}</div><div style="font-size:.75rem;color:var(--secondary);margin-top:.3rem">+${c.points_value} pts</div></div>`).join('')||'<div style="color:var(--muted)">Ongoing practices loading...</div>';
+    const challenges=d.challenges||[];
+    if(!challenges.length){el.innerHTML='<div style="color:var(--muted)">Practices will appear here.</div>';return;}
+    el.innerHTML=challenges.map(c=>{
+      const done=c.completed;
+      return `<div id="oc-${c.id}" style="padding:1rem 0;border-bottom:1px solid rgba(155,127,166,.12)">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;margin-bottom:.35rem">${esc(c.title)}${done?' <span style="font-size:.7rem;color:var(--secondary);font-style:normal">done</span>':''}</div>
+        <div style="font-size:.82rem;color:rgba(244,239,230,.5);line-height:1.65;margin-bottom:.5rem">${esc(c.description)}</div>
+        ${done?`<div style="font-size:.75rem;color:var(--secondary)">+${c.points_value||2} pts earned</div>`:`
+        <textarea id="oc-txt-${c.id}" placeholder="Write your reflection here..." style="width:100%;min-height:80px;background:rgba(155,127,166,.08);border:1px solid rgba(155,127,166,.25);border-radius:6px;color:var(--cream);padding:.5rem;font-size:.82rem;resize:vertical;box-sizing:border-box"></textarea>
+        <button onclick="submitOngoing(${c.id})" style="margin-top:.4rem;background:var(--secondary);color:#fff;border:none;border-radius:6px;padding:.35rem .9rem;font-size:.8rem;cursor:pointer">Submit</button>
+        <div id="oc-err-${c.id}" style="color:#e88;font-size:.75rem;margin-top:.25rem"></div>`}
+      </div>`;
+    }).join('');
   }catch(e){el.innerHTML='<div style="color:var(--muted)">Practices will appear here.</div>';}
+}
+async function submitOngoing(id){
+  const txt=document.getElementById('oc-txt-'+id);
+  const err=document.getElementById('oc-err-'+id);
+  if(!txt)return;
+  if(txt.value.trim().length<80){if(err)err.textContent='Please write at least 80 characters.';return;}
+  if(err)err.textContent='';
+  const r=await apiFetch('/challenges/ongoing/'+id+'/complete',{method:'POST',body:JSON.stringify({response:txt.value.trim()})});
+  if(r.ok){
+    const d=await r.json();
+    const card=document.getElementById('oc-'+id);
+    if(card){const btn=card.querySelector('button');const ta=card.querySelector('textarea');if(btn)btn.remove();if(ta)ta.remove();if(err)err.remove();const doneTag=card.querySelector('[style*="Cormorant"]');if(doneTag)doneTag.innerHTML+=' <span style="font-size:.7rem;color:var(--secondary);font-style:normal">done</span>';card.insertAdjacentHTML('beforeend',`<div style="font-size:.75rem;color:var(--secondary)">+${d.points_awarded||2} pts earned</div>`);}
+    if(d.total_points!==undefined){pts=d.total_points;const pe=document.getElementById('pts-display');if(pe)pe.textContent=pts+' pts';}
+  }else{
+    const d=await r.json().catch(()=>({}));
+    if(err)err.textContent=d.detail||'Could not submit. Try again.';
+  }
 }
 initWorkshop();
 
