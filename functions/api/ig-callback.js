@@ -51,10 +51,23 @@ export async function onRequest(context) {
   const finalToken = d2.access_token || shortToken;
   const expiry     = d2.expires_in ? `${Math.round(d2.expires_in / 86400)} days` : "short-lived only";
 
+  let vpsSaveStatus = "";
+  try {
+    const saveResp = await fetch("https://api.mexzungu.com/instagram/save-token", {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "X-IG-Secret": "igSaveSecret2026"},
+      body: JSON.stringify({access_token: finalToken, user_id: userId, expires_in: d2.expires_in || 0})
+    });
+    vpsSaveStatus = saveResp.ok ? "Token saved to VPS automatically." : `VPS save failed: ${saveResp.status} - copy token manually below.`;
+  } catch(e) {
+    vpsSaveStatus = `VPS save error: ${e.message} - copy token manually below.`;
+  }
+
   return html(`
     <h1 style="color:#E14B87">Instagram Token Ready</h1>
     <p><b>User ID:</b> ${userId}</p>
     <p><b>Expires:</b> ${expiry}</p>
+    <p style="color:${vpsSaveStatus.startsWith('Token saved') ? '#4caf50' : '#ff9800'}">${vpsSaveStatus}</p>
     <p><b>Token (copy this):</b></p>
     <textarea rows="5" style="width:100%;font-size:13px;padding:8px" onclick="this.select()">${finalToken}</textarea>
     <br><br>
