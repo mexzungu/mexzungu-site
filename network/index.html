@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>The Network. Mexzungu Group AI Team</title>
+  <meta name="description" content="29 AI personas powering Mexzungu Group. ExCo, Practice Leads, Engineering Band, Content Team. A real-time force-directed network.">
+  <meta property="og:title" content="The Network. Mexzungu Group AI Team">
+  <meta property="og:description" content="29 AI personas. One operating system. See how they connect.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mexzungu.com/network">
+  <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://mexzungu.com/network">
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="manifest" href="/manifest.json">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <style>
+    :root {
+      --pink: #E91E8C;
+      --pink-dim: rgba(233,30,140,0.15);
+      --pink-border: rgba(233,30,140,0.3);
+      --gold: #FFD700;
+      --gold-dim: rgba(255,215,0,0.12);
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --surface2: #1e1e1e;
+      --surface3: #252525;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --muted2: #555;
+
+      --layer-exco: #E91E8C;
+      --layer-mgmt: #e9607e;
+      --layer-delivery: #e9819e;
+      --layer-practice: #a855d4;
+      --layer-engineering: #818cf8;
+      --layer-content: #2dd4bf;
+      --layer-pepe: #FFD700;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Nav */
+    nav {
+      position: relative;
+      z-index: 50;
+      background: rgba(13,13,13,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .nav-logo img { height: 28px; }
+    .nav-title { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav-title span { color: var(--pink); }
+    .nav-sep { color: var(--border); }
+    .nav-back {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: color .15s, border-color .15s;
+    }
+    .nav-back:hover { color: var(--text); border-color: var(--muted2); }
+
+    /* Toolbar */
+    .toolbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .search-wrap { position: relative; flex: 0 0 210px; }
+    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    #search {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 12px;
+      padding: 6px 10px 6px 32px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    #search:focus { border-color: var(--pink); }
+    #search::placeholder { color: var(--muted2); }
+
+    .filter-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-left: 4px; }
+    .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pill {
+      font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+      border: 1px solid transparent; cursor: pointer; transition: all .15s; user-select: none; letter-spacing: 0.04em;
+    }
+    .pill.active  { opacity: 1; }
+    .pill.inactive { opacity: 0.35; }
+    .pill[data-layer="pepe"]        { background: rgba(255,215,0,0.1); color: var(--layer-pepe); border-color: rgba(255,215,0,0.2); }
+    .pill[data-layer="exco"]        { background: rgba(233,30,140,0.1); color: var(--layer-exco); border-color: rgba(233,30,140,0.2); }
+    .pill[data-layer="mgmt"]        { background: rgba(233,96,126,0.1); color: var(--layer-mgmt); border-color: rgba(233,96,126,0.2); }
+    .pill[data-layer="delivery"]    { background: rgba(233,129,158,0.1); color: var(--layer-delivery); border-color: rgba(233,129,158,0.2); }
+    .pill[data-layer="practice"]    { background: rgba(168,85,212,0.1); color: var(--layer-practice); border-color: rgba(168,85,212,0.2); }
+    .pill[data-layer="engineering"] { background: rgba(129,140,248,0.1); color: var(--layer-engineering); border-color: rgba(129,140,248,0.2); }
+    .pill[data-layer="content"]     { background: rgba(45,212,191,0.1); color: var(--layer-content); border-color: rgba(45,212,191,0.2); }
+
+    .toolbar-right { margin-left: auto; display: flex; gap: 8px; }
+    .btn-icon {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+      color: var(--muted); cursor: pointer; padding: 6px 10px; font-size: 11px;
+      display: flex; align-items: center; gap: 5px; transition: all .15s; font-family: inherit;
+    }
+    .btn-icon:hover { color: var(--text); border-color: var(--muted2); }
+
+    /* Main */
+    .main-wrap { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+    /* Graph */
+    #graph-container { flex: 1; position: relative; overflow: hidden; }
+    #graph-svg { width: 100%; height: 100%; cursor: grab; }
+    #graph-svg:active { cursor: grabbing; }
+
+    .link { fill: none; }
+    .link.type-reports { stroke: rgba(255,255,255,0.1); stroke-width: 1; }
+    .link.type-cross   { stroke: rgba(233,30,140,0.3); stroke-width: 1; stroke-dasharray: 4 3; }
+    .link.type-chain   { stroke: rgba(255,215,0,0.25); stroke-width: 1.5; }
+    .link.highlighted  { stroke-opacity: 1 !important; stroke-width: 2 !important; }
+    .link.dimmed       { opacity: 0.05; }
+
+    .node-group { cursor: pointer; }
+    .node-circle { transition: filter .2s; }
+    .node-group:hover .node-circle,
+    .node-group.hovered .node-circle { filter: drop-shadow(0 0 10px currentColor); }
+    .node-group.dimmed { opacity: 0.1; }
+
+    .node-label {
+      fill: rgba(232,232,232,0.9);
+      font-size: 9px; font-weight: 700;
+      font-family: 'Inter', system-ui, sans-serif;
+      text-anchor: middle; pointer-events: none; letter-spacing: 0.04em;
+    }
+    .node-label.tiny { font-size: 8px; }
+
+    @keyframes pulse-ring {
+      0%   { r: 26px; stroke-opacity: 0.6; }
+      100% { r: 44px; stroke-opacity: 0; }
+    }
+    .pulse-ring { fill: none; stroke: var(--gold); stroke-width: 1.5; animation: pulse-ring 2.2s ease-out infinite; }
+
+    /* Tooltip */
+    #tooltip {
+      position: absolute; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 14px; font-size: 12px; pointer-events: none;
+      opacity: 0; transition: opacity .12s; max-width: 230px; z-index: 10;
+    }
+    #tooltip.visible { opacity: 1; }
+    #tooltip .tt-name { font-weight: 700; color: var(--pink); margin-bottom: 2px; font-size: 13px; }
+    #tooltip .tt-title { color: var(--muted); font-size: 11px; margin-bottom: 5px; }
+    #tooltip .tt-domain { color: #bbb; font-size: 11px; line-height: 1.5; }
+
+    /* Side Panel */
+    #side-panel {
+      width: 340px; flex-shrink: 0; background: var(--surface);
+      border-left: 1px solid var(--border); overflow-y: auto;
+      transform: translateX(100%); transition: transform .3s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+    }
+    #side-panel.open { transform: translateX(0); }
+
+    .panel-header {
+      padding: 18px 18px 14px; position: sticky; top: 0;
+      background: var(--surface); z-index: 2; border-bottom: 1px solid var(--border);
+    }
+    .panel-close {
+      position: absolute; top: 12px; right: 12px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 6px; color: var(--muted);
+      cursor: pointer; width: 28px; height: 28px; display: flex; align-items: center;
+      justify-content: center; font-size: 16px; transition: all .15s;
+    }
+    .panel-close:hover { color: var(--text); }
+
+    .panel-badge {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 3px 8px; border-radius: 20px; display: inline-block; margin-bottom: 10px;
+    }
+    .panel-name { font-size: 26px; font-weight: 800; color: var(--pink); letter-spacing: -0.02em; margin-bottom: 2px; }
+    .panel-title-text { font-size: 13px; color: var(--muted); }
+
+    .panel-body { padding: 18px; display: flex; flex-direction: column; gap: 18px; }
+    .ps-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 8px; }
+    .ps-text { font-size: 13px; color: #bbb; line-height: 1.6; }
+    .ps-question {
+      font-size: 13px; font-style: italic; color: var(--gold);
+      padding: 10px 14px; background: var(--gold-dim); border-left: 2px solid var(--gold);
+      border-radius: 0 6px 6px 0; line-height: 1.5;
+    }
+
+    .conn-list { display: flex; flex-direction: column; gap: 6px; }
+    .conn-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+      background: var(--surface2); border-radius: 6px; border: 1px solid var(--border);
+      cursor: pointer; transition: border-color .15s; font-size: 12px; text-align: left; width: 100%;
+      font-family: inherit; color: var(--text);
+    }
+    .conn-item:hover { border-color: var(--muted2); }
+    .conn-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .conn-meta { color: var(--muted); font-size: 11px; margin-left: auto; white-space: nowrap; }
+
+    /* Legend */
+    #legend {
+      position: absolute; bottom: 16px; left: 16px; background: rgba(18,18,18,0.92);
+      border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px;
+      font-size: 11px; z-index: 5; backdrop-filter: blur(8px);
+    }
+    .leg-title { font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-size: 10px; }
+    .leg-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; color: #aaa; }
+    .leg-item:last-child { margin-bottom: 0; }
+    .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .leg-line { width: 22px; height: 1px; }
+    .leg-line.reports { background: rgba(255,255,255,0.25); }
+    .leg-line.cross { border-top: 1px dashed rgba(233,30,140,0.6); }
+    .leg-line.chain { background: rgba(255,215,0,0.4); height: 1.5px; }
+
+    .node-count { position: absolute; top: 14px; right: 14px; font-size: 11px; color: var(--muted); z-index: 5; }
+    .node-count span { color: var(--text); font-weight: 700; }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+      nav { padding: 8px 12px; gap: 10px; }
+      .nav-title { display: none; }
+      .toolbar { padding: 8px 10px; gap: 7px; }
+      .filter-label { display: none; }
+      .search-wrap { flex: 1 1 140px; }
+      #side-panel {
+        position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: 72vh;
+        transform: translateY(100%); border-left: none;
+        border-top: 1px solid var(--border); border-radius: 16px 16px 0 0;
+      }
+      #side-panel.open { transform: translateY(0); }
+      #legend { display: none; }
+    }
+
+    #side-panel::-webkit-scrollbar { width: 4px; }
+    #side-panel::-webkit-scrollbar-track { background: transparent; }
+    #side-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+  <span class="nav-sep">›</span>
+  <div class="nav-title">The <span>Network</span></div>
+  <a href="/team" class="nav-back">← The MGL Org</a>
+</nav>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input id="search" type="text" placeholder="Find a persona…" autocomplete="off">
+  </div>
+  <span class="filter-label">Layers:</span>
+  <div class="filter-pills" id="filter-pills">
+    <span class="pill active" data-layer="pepe">Pepe</span>
+    <span class="pill active" data-layer="exco">ExCo</span>
+    <span class="pill active" data-layer="mgmt">Mgmt</span>
+    <span class="pill active" data-layer="delivery">Delivery</span>
+    <span class="pill active" data-layer="practice">Practice</span>
+    <span class="pill active" data-layer="engineering">Engineering</span>
+    <span class="pill active" data-layer="content">Content</span>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn-icon" id="btn-reset">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M3.05 11A9 9 0 1 1 5.4 4.4"/><path d="M3 3v5h5"/>
+      </svg>
+      Reset
+    </button>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div id="graph-container">
+    <svg id="graph-svg"></svg>
+    <div id="tooltip"></div>
+    <div class="node-count"><span id="vis-count">30</span> nodes</div>
+    <div id="legend">
+      <div class="leg-title">Legend</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--layer-pepe)"></div>Pepe (Principal)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--layer-exco)"></div>ExCo (7)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--layer-mgmt)"></div>Management ExCo (1)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--layer-delivery)"></div>Delivery ExCo (2)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--layer-practice)"></div>Practice Leads (6)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--layer-engineering)"></div>Engineering Band (4)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--layer-content)"></div>Content Team (9)</div>
+      <div style="margin-top:10px; border-top:1px solid var(--border); padding-top:10px;">
+        <div class="leg-item"><div class="leg-line reports"></div>Reports to</div>
+        <div class="leg-item"><div class="leg-line cross"></div>Cross-functional</div>
+        <div class="leg-item"><div class="leg-line chain"></div>Workflow chain</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="side-panel">
+    <div class="panel-header">
+      <button class="panel-close" id="panel-close-btn">&#x2715;</button>
+      <div class="panel-badge" id="panel-badge"></div>
+      <div class="panel-name" id="panel-name"></div>
+      <div class="panel-title-text" id="panel-title"></div>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+
+const COLORS = {
+  pepe:        '#FFD700',
+  exco:        '#E91E8C',
+  mgmt:        '#e9607e',
+  delivery:    '#e9819e',
+  practice:    '#a855d4',
+  engineering: '#818cf8',
+  content:     '#2dd4bf',
+};
+
+const LAYER_LABELS = {
+  pepe: 'Principal', exco: 'ExCo', mgmt: 'Management ExCo',
+  delivery: 'Delivery ExCo', practice: 'Practice Lead',
+  engineering: 'Engineering Band', content: 'Content Team',
+};
+
+const NODES = [
+  { id:'pepe',     label:'Pepe',    layer:'pepe',        r:24,
+    title:'Founder & Principal',
+    domain:'Direction, strategy, deals, final authority on all Showtime decisions.',
+    question:'"What is the highest-leverage move here?"',
+    reportsTo: null, crossFunctional: false },
+
+  { id:'lars',     label:'Lars',    layer:'exco',        r:17,
+    title:'COO',
+    domain:'Execution, delivery, task tracking, and operating rhythm across all clients.',
+    question:'"Who owns this, and when is it due?"',
+    reportsTo:'pepe' },
+  { id:'freddie',  label:'Freddie', layer:'exco',        r:17,
+    title:'CMO',
+    domain:'Social media, content engine, brand guidelines, website, public presence.',
+    question:'"Will this make someone stop scrolling?"',
+    reportsTo:'pepe' },
+  { id:'gene',     label:'Gene',    layer:'exco',        r:17,
+    title:'CFO',
+    domain:'Invoices, expenses, financial summaries, deal structure and economics.',
+    question:'"What\'s the deal? Where\'s the money?"',
+    reportsTo:'pepe' },
+  { id:'bowie',    label:'Bowie',   layer:'exco',        r:17,
+    title:'CTO',
+    domain:'Tools server, infrastructure, cron jobs, architecture decisions.',
+    question:'"Is this the simplest thing that could work?"',
+    reportsTo:'pepe' },
+  { id:'jagger',   label:'Jagger',  layer:'exco',        r:17,
+    title:'CGO',
+    domain:'Pipeline, CRM, contacts, warm intros, BD development.',
+    question:'"How does this grow something?"',
+    reportsTo:'pepe' },
+  { id:'bruce',    label:'Bruce',   layer:'exco',        r:17,
+    title:'CSO',
+    domain:'Strategy, competitive intelligence, morning briefings, pattern recognition.',
+    question:'"What\'s the second-order effect?"',
+    reportsTo:'pepe' },
+  { id:'lemmy',    label:'Lemmy',   layer:'exco',        r:17,
+    title:'CLO',
+    domain:'Contracts, legal exposure, NCA compliance, IP protection.',
+    question:'"What\'s our exposure, and how do we flip it?"',
+    reportsTo:'pepe' },
+
+  { id:'nina',     label:'Nina',    layer:'mgmt',        r:14,
+    title:'Chief Knowledge Officer',
+    domain:'Dossier currency, contradiction resolution, after-action reviews.',
+    question:'"Is this the most current picture we have?"',
+    reportsTo:'bruce' },
+
+  { id:'prince',   label:'Prince',  layer:'delivery',    r:14,
+    title:'Head of Excellence',
+    domain:'Quality gate on all client deliverables before they leave the building.',
+    question:'"Is this really the best we can do?"',
+    reportsTo:'lars' },
+  { id:'sade',     label:'Sade',    layer:'delivery',    r:14,
+    title:'Head of Client Success',
+    domain:'Relationship health, engagement cadence, client friction signals.',
+    question:'"When did we last check in, and did they feel it?"',
+    reportsTo:'lars' },
+
+  { id:'joan',     label:'Joan',    layer:'practice',    r:14,
+    title:'Head of Lead Generation',
+    domain:'Lead generation, BD pipeline, initial prospect qualification.',
+    question:'"Who needs us right now, and what\'s the in?"',
+    reportsTo:'lars' },
+  { id:'tina',     label:'Tina',    layer:'practice',    r:14,
+    title:'Head of Equity & Valuations',
+    domain:'Equity structures, cap tables, valuations, ESOP design.',
+    question:'"Is this cap table survivable at Series B?"',
+    reportsTo:'lars' },
+  { id:'pj',       label:'PJ',      layer:'practice',    r:14,
+    title:'Head of Deal Execution',
+    domain:'Deal closing, signature coordination, final negotiation push.',
+    question:'"What\'s left between here and signed?"',
+    reportsTo:'lars' },
+  { id:'aretha',   label:'Aretha',  layer:'practice',    r:14,
+    title:'Head of Regulatory Compliance',
+    domain:'Regulatory compliance, jurisdiction risk mapping, legal exposure.',
+    question:'"Which regulator are we about to surprise?"',
+    reportsTo:'lars' },
+  { id:'chrissie', label:'Chrissie',layer:'practice',    r:14,
+    title:'Head of Governance',
+    domain:'Governance frameworks, board structures, shareholder agreements.',
+    question:'"Who controls this if the founders fall out?"',
+    reportsTo:'lars' },
+  { id:'kim',      label:'Kim',     layer:'practice',    r:14,
+    title:'Head of QA',
+    domain:'Quality audits across all practice output. Does not take client actions.',
+    question:'"Has anyone actually checked this?"',
+    reportsTo:'lars' },
+
+  { id:'iggy',     label:'Iggy',    layer:'engineering', r:13,
+    title:'Automation Engineer',
+    domain:'Automation builds, cron orchestration, systems integration.',
+    question:'"Can we make this run without anyone touching it?"',
+    reportsTo:'bowie' },
+  { id:'jack',     label:'Jack',    layer:'engineering', r:13,
+    title:'Integration Test Engineer',
+    domain:'Integration testing, API contracts, token health monitoring.',
+    question:'"Did we test this against the live endpoint?"',
+    reportsTo:'bowie' },
+  { id:'nile',     label:'Nile',    layer:'engineering', r:13,
+    title:'API Integration Specialist',
+    domain:'Third-party integrations: Google, Meta, OpenAI, Cloudflare.',
+    question:'"Which API rate limit are we about to hit?"',
+    reportsTo:'bowie' },
+  { id:'lou',      label:'Lou',     layer:'engineering', r:13,
+    title:'Test Coverage Engineer',
+    domain:'Test coverage, quality gates, coverage.py, green builds.',
+    question:'"What\'s the coverage number, and what\'s uncovered?"',
+    reportsTo:'bowie' },
+
+  { id:'joni',     label:'Joni',    layer:'content',     r:15,
+    title:'Creative Director',
+    domain:'Creative direction, content voice, brief-setting, decides what gets made.',
+    question:'"What are we actually trying to make people feel?"',
+    reportsTo:'freddie' },
+  { id:'grohl',    label:'Grohl',   layer:'content',     r:13,
+    title:'Senior Content Producer',
+    domain:'Long-form content, LinkedIn articles, newsletter issues.',
+    question:'"Does this have a real point of view?"',
+    reportsTo:'joni' },
+  { id:'lenny',    label:'Lenny',   layer:'content',     r:13,
+    title:'Copywriter',
+    domain:'Short-form copy, social captions, ad copy, punchy hooks.',
+    question:'"Can this be said in half the words?"',
+    reportsTo:'joni' },
+  { id:'nick',     label:'Nick',    layer:'content',     r:13,
+    title:'Editor',
+    domain:'Tightens and cuts all copy before Brand Police review.',
+    question:'"What can we cut without losing the point?"',
+    reportsTo:'joni' },
+  { id:'anselmo',  label:'Anselmo', layer:'content',     r:13,
+    title:'Brand Police',
+    domain:'Final brand gate before anything goes external. No exceptions.',
+    question:'"Does this sound like us, or like everyone else?"',
+    reportsTo:'freddie' },
+  { id:'grace',    label:'Grace',   layer:'content',     r:11,
+    title:'Content Analyst',
+    domain:'Performance data, content ROI, audience signals and trends.',
+    question:'"What does the data say about what\'s actually working?"',
+    reportsTo:'freddie' },
+  { id:'annie',    label:'Annie',   layer:'content',     r:11,
+    title:'Measurement & Reporting',
+    domain:'Weekly performance reports, engine quality log, metrics tracking.',
+    question:'"Are the numbers moving in the right direction?"',
+    reportsTo:'freddie' },
+  { id:'sheryl',   label:'Sheryl',  layer:'content',     r:11,
+    title:'Client Success Monitor',
+    domain:'Flags relationship friction, cold relationships, billing gaps.',
+    question:'"Who haven\'t we heard from in too long?"',
+    reportsTo:'freddie' },
+  { id:'ozzy',     label:'Ozzy',    layer:'content',     r:13,
+    title:'Scenario Planner',
+    domain:'Stress-tests every major decision three levels deep. Cross-functional.',
+    question:'"What\'s the worst realistic outcome, and are we ready for it?"',
+    reportsTo:'freddie', crossFunctional: true },
+];
+
+// Build edges
+const edgeSet = new Set();
+const LINKS = [];
+
+function addEdge(a, b, type) {
+  const key = [a,b].sort().join('|') + type;
+  if (edgeSet.has(key)) return;
+  edgeSet.add(key);
+  LINKS.push({ source:a, target:b, type });
+}
+
+// Reports-to hierarchy
+NODES.forEach(n => {
+  if (n.reportsTo) addEdge(n.id, n.reportsTo, 'reports');
+});
+
+// Cross-functional: Ozzy to all ExCo
+['lars','freddie','gene','bowie','jagger','bruce','lemmy'].forEach(id => addEdge('ozzy', id, 'cross'));
+
+// Lemmy co-owns Delivery ExCo + Practice
+['prince','sade','pj','aretha','chrissie'].forEach(id => addEdge('lemmy', id, 'cross'));
+
+// Content chain
+addEdge('joni','grohl','chain'); addEdge('joni','lenny','chain');
+addEdge('grohl','nick','chain'); addEdge('lenny','nick','chain');
+addEdge('nick','anselmo','chain'); addEdge('anselmo','pepe','chain');
+
+// Deal chain
+addEdge('joan','gene','chain'); addEdge('gene','pj','chain'); addEdge('pj','lemmy','chain');
+
+// Jagger -> Joan
+addEdge('jagger','joan','cross');
+
+// Kim audits practice
+['joan','tina','pj','aretha','chrissie'].forEach(id => addEdge('kim', id, 'cross'));
+
+// Sade <-> Sheryl
+addEdge('sade','sheryl','cross');
+
+// ── Graph engine ──────────────────────────────────────────────────────────────
+
+const nodeMap = {};
+NODES.forEach(n => { nodeMap[n.id] = n; });
+
+const neighborMap = {};
+NODES.forEach(n => { neighborMap[n.id] = new Set(); });
+LINKS.forEach(l => { neighborMap[l.source].add(l.target); neighborMap[l.target].add(l.source); });
+
+const svg     = d3.select('#graph-svg');
+const gc      = document.getElementById('graph-container');
+const tt      = document.getElementById('tooltip');
+const panel   = document.getElementById('side-panel');
+const visCount= document.getElementById('vis-count');
+
+let activeLayers = new Set(['pepe','exco','mgmt','delivery','practice','engineering','content']);
+let selectedId   = null;
+let sim, gLinks, gNodes, zoomBeh;
+
+function layerColor(l) { return COLORS[l] || '#888'; }
+
+function init() {
+  svg.selectAll('*').remove();
+  const W = gc.clientWidth, H = gc.clientHeight;
+
+  // Defs / arrow markers
+  const defs = svg.append('defs');
+  const markerDefs = [
+    { id:'arr-reports', color:'rgba(255,255,255,0.3)' },
+    { id:'arr-cross',   color:'rgba(233,30,140,0.5)' },
+    { id:'arr-chain',   color:'rgba(255,215,0,0.5)' },
+    { id:'arr-reports-hl', color:'rgba(255,255,255,0.8)' },
+    { id:'arr-cross-hl',   color:'rgba(233,30,140,1)' },
+    { id:'arr-chain-hl',   color:'rgba(255,215,0,1)' },
+  ];
+  markerDefs.forEach(m => {
+    defs.append('marker').attr('id', m.id)
+      .attr('viewBox','0 -5 10 10').attr('refX',20).attr('refY',0)
+      .attr('markerWidth',5).attr('markerHeight',5).attr('orient','auto')
+      .append('path').attr('d','M0,-5L10,0L0,5').attr('fill', m.color);
+  });
+
+  const g = svg.append('g').attr('id','zoom-g');
+
+  zoomBeh = d3.zoom().scaleExtent([0.15,4])
+    .on('zoom', e => g.attr('transform', e.transform));
+  svg.call(zoomBeh).on('click', () => deselect());
+
+  document.getElementById('btn-reset').onclick = () => {
+    svg.transition().duration(500)
+      .call(zoomBeh.transform, d3.zoomIdentity.translate(W/2, H/2).scale(0.8));
+  };
+
+  const activeNodes = NODES.filter(n => activeLayers.has(n.layer));
+  const activeIds   = new Set(activeNodes.map(n => n.id));
+  const activeLinks = LINKS.filter(l =>
+    activeIds.has(typeof l.source === 'object' ? l.source.id : l.source) &&
+    activeIds.has(typeof l.target === 'object' ? l.target.id : l.target)
+  );
+
+  visCount.textContent = activeNodes.length;
+
+  // Deep clone node data for simulation
+  const simNodes = activeNodes.map(n => Object.assign({}, n));
+  const nodeById  = {};
+  simNodes.forEach(n => { nodeById[n.id] = n; });
+
+  const simLinks = activeLinks.map(l => ({
+    source: typeof l.source === 'object' ? l.source.id : l.source,
+    target: typeof l.target === 'object' ? l.target.id : l.target,
+    type: l.type,
+  }));
+
+  sim = d3.forceSimulation(simNodes)
+    .force('link', d3.forceLink(simLinks).id(d => d.id)
+      .distance(d => {
+        const s = d.source.id || d.source, t = d.target.id || d.target;
+        if (s === 'pepe' || t === 'pepe') return 130;
+        const sl = nodeById[s]?.layer, tl = nodeById[t]?.layer;
+        if (sl === 'exco' || tl === 'exco') return 95;
+        if (d.type === 'chain') return 60;
+        return 75;
+      })
+      .strength(0.55))
+    .force('charge', d3.forceManyBody().strength(d => {
+      if (d.id === 'pepe') return -900;
+      if (d.layer === 'exco') return -350;
+      if (d.layer === 'content' || d.layer === 'engineering') return -150;
+      return -200;
+    }))
+    .force('center', d3.forceCenter(0,0))
+    .force('collision', d3.forceCollide(d => d.r + 12))
+    .alphaDecay(0.025);
+
+  // Pin Pepe
+  const pepe = simNodes.find(n => n.id === 'pepe');
+  if (pepe) { pepe.fx = 0; pepe.fy = 0; }
+
+  // Draw links
+  gLinks = g.append('g').selectAll('line')
+    .data(simLinks).join('line')
+    .attr('class', d => `link type-${d.type}`)
+    .attr('marker-end', d => `url(#arr-${d.type})`);
+
+  // Draw nodes
+  gNodes = g.append('g').selectAll('g')
+    .data(simNodes).join('g')
+    .attr('class','node-group')
+    .attr('data-id', d => d.id)
+    .call(d3.drag()
+      .on('start', (e,d) => {
+        if (!e.active) sim.alphaTarget(0.2).restart();
+        if (d.id !== 'pepe') { d.fx = d.x; d.fy = d.y; }
+      })
+      .on('drag', (e,d) => { if (d.id !== 'pepe') { d.fx = e.x; d.fy = e.y; } })
+      .on('end', (e,d) => {
+        if (!e.active) sim.alphaTarget(0);
+        if (d.id !== 'pepe') { d.fx = null; d.fy = null; }
+      })
+    );
+
+  // Pepe pulse ring
+  gNodes.filter(d => d.id === 'pepe')
+    .append('circle').attr('class','pulse-ring').attr('r',28);
+
+  // Circle fill
+  gNodes.append('circle')
+    .attr('class','node-circle')
+    .attr('r', d => d.r)
+    .attr('fill', d => `${layerColor(d.layer)}1a`)
+    .attr('stroke', d => layerColor(d.layer))
+    .attr('stroke-width', d => d.id === 'pepe' ? 2.5 : 1.5)
+    .style('color', d => layerColor(d.layer));
+
+  // Label
+  gNodes.append('text')
+    .attr('class', d => `node-label${d.r < 13 ? ' tiny' : ''}`)
+    .attr('dy','0.35em')
+    .text(d => d.label);
+
+  // Interactions
+  gNodes
+    .on('mouseenter', (e,d) => { showTT(e,d); highlight(d.id); })
+    .on('mousemove', moveTT)
+    .on('mouseleave', (e,d) => { hideTT(); if (selectedId !== d.id) resetHL(); })
+    .on('click', (e,d) => { e.stopPropagation(); pick(d.id); });
+
+  sim.on('tick', () => {
+    gLinks
+      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    gNodes.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+
+  svg.call(zoomBeh.transform, d3.zoomIdentity.translate(W/2, H/2).scale(0.8));
+
+  // Gentle life after stabilisation
+  sim.on('end', () => {
+    setInterval(() => sim.alpha(0.01).restart(), 5000);
+  });
+}
+
+// Tooltip
+function showTT(e, d) {
+  tt.innerHTML = `<div class="tt-name">${d.label}</div><div class="tt-title">${d.title}</div><div class="tt-domain">${d.domain.substring(0,90)}${d.domain.length>90?'…':''}</div>`;
+  tt.classList.add('visible');
+  moveTT(e);
+}
+function moveTT(e) {
+  const r = gc.getBoundingClientRect();
+  let x = e.clientX - r.left + 14, y = e.clientY - r.top - 14;
+  if (x + 240 > r.width) x -= 260;
+  if (y + 110 > r.height) y -= 120;
+  tt.style.left = x+'px'; tt.style.top = y+'px';
+}
+function hideTT() { tt.classList.remove('visible'); }
+
+// Highlight
+function highlight(id) {
+  if (!gNodes) return;
+  const nb = neighborMap[id] || new Set();
+  gNodes.classed('dimmed', d => d.id !== id && !nb.has(d.id));
+  gLinks.classed('dimmed', l => {
+    const s = l.source.id||l.source, t = l.target.id||l.target;
+    return s !== id && t !== id;
+  }).classed('highlighted', l => {
+    const s = l.source.id||l.source, t = l.target.id||l.target;
+    return s === id || t === id;
+  });
+}
+function resetHL() {
+  if (!gNodes) return;
+  gNodes.classed('dimmed', false);
+  gLinks.classed('dimmed', false).classed('highlighted', false);
+}
+
+// Selection
+function pick(id) {
+  selectedId = id;
+  highlight(id);
+  openPanel(nodeMap[id]);
+}
+function deselect() { selectedId = null; resetHL(); closePanel(); }
+
+// Panel
+function openPanel(d) {
+  const badge = document.getElementById('panel-badge');
+  const c = layerColor(d.layer);
+  badge.textContent = LAYER_LABELS[d.layer] || d.layer;
+  badge.style.cssText = `background:${c}18; color:${c}; border:1px solid ${c}33;`;
+  document.getElementById('panel-name').textContent = d.label;
+  document.getElementById('panel-title').textContent = d.title;
+
+  // Connections
+  const allConns = new Set();
+  LINKS.forEach(l => {
+    const s = typeof l.source==='object'?l.source.id:l.source;
+    const t = typeof l.target==='object'?l.target.id:l.target;
+    if (s === d.id && nodeMap[t]) allConns.add(t);
+    if (t === d.id && nodeMap[s]) allConns.add(s);
+  });
+
+  const connHtml = [...allConns].map(cid => {
+    const cn = nodeMap[cid];
+    const cc = layerColor(cn.layer);
+    return `<button class="conn-item" onclick="window.pickNode('${cid}')">
+      <div class="conn-dot" style="background:${cc}"></div>
+      <div><strong>${cn.label}</strong>, ${cn.title}</div>
+      <div class="conn-meta">${LAYER_LABELS[cn.layer]}</div>
+    </button>`;
+  }).join('');
+
+  const rto = d.reportsTo ? nodeMap[d.reportsTo] : null;
+
+  document.getElementById('panel-body').innerHTML = `
+    <div>
+      <div class="ps-label">Domain</div>
+      <p class="ps-text">${d.domain}</p>
+    </div>
+    <div>
+      <div class="ps-label">Signature question</div>
+      <div class="ps-question">${d.question}</div>
+    </div>
+    ${rto ? `<div>
+      <div class="ps-label">Reports to</div>
+      <button class="conn-item" onclick="window.pickNode('${rto.id}')">
+        <div class="conn-dot" style="background:${layerColor(rto.layer)}"></div>
+        <div><strong>${rto.label}</strong>, ${rto.title}</div>
+        <div class="conn-meta">${LAYER_LABELS[rto.layer]}</div>
+      </button>
+    </div>` : ''}
+    ${d.crossFunctional ? `<div>
+      <div class="ps-label">Role type</div>
+      <p class="ps-text">Cross-functional. Connects to all ExCo members and is invoked for every major Showtime decision.</p>
+    </div>` : ''}
+    <div>
+      <div class="ps-label">Connections (${allConns.size})</div>
+      <div class="conn-list">${connHtml}</div>
+    </div>
+  `;
+  panel.classList.add('open');
+}
+function closePanel() { panel.classList.remove('open'); }
+
+window.pickNode = function(id) {
+  if (!activeLayers.has(nodeMap[id]?.layer)) return;
+  pick(id); highlight(id);
+};
+
+document.getElementById('panel-close-btn').onclick = deselect;
+
+// Layer filters
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const layer = pill.dataset.layer;
+    if (activeLayers.has(layer)) {
+      if (activeLayers.size === 1) return;
+      activeLayers.delete(layer);
+      pill.classList.replace('active','inactive');
+    } else {
+      activeLayers.add(layer);
+      pill.classList.replace('inactive','active');
+    }
+    deselect(); init();
+  });
+});
+
+// Search
+const searchEl = document.getElementById('search');
+searchEl.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (!q) { resetHL(); return; }
+  const matched = NODES
+    .filter(n => activeLayers.has(n.layer) &&
+      (n.label.toLowerCase().includes(q) || n.title.toLowerCase().includes(q) || n.domain.toLowerCase().includes(q)))
+    .map(n => n.id);
+  if (matched.length === 1) { pick(matched[0]); return; }
+  if (matched.length > 1 && gNodes) {
+    const ms = new Set(matched);
+    gNodes.classed('dimmed', d => !ms.has(d.id));
+    gLinks.classed('dimmed', l => {
+      const s = l.source.id||l.source, t = l.target.id||l.target;
+      return !ms.has(s) && !ms.has(t);
+    });
+  }
+});
+searchEl.addEventListener('keydown', e => { if (e.key==='Escape') { searchEl.value=''; resetHL(); } });
+
+// Resize
+let resT;
+window.addEventListener('resize', () => { clearTimeout(resT); resT = setTimeout(init,200); });
+
+init();
+</script>
+</body>
+</html>
