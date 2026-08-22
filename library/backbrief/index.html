@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Backbrief | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root{--pink:#e14b87;--pink-light:#e86fa0;--bg:#0d0d0d;--surface:#181818;--surface2:#222;--border:#2a2a2a;--text:#e8e8e8;--muted:#888;--heading:'RocknRoll One','Space Grotesk',sans-serif;--sans:'Space Grotesk',system-ui,sans-serif;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;background:rgba(225,75,135,0.08);border:1px solid rgba(225,75,135,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--pink);margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.01em;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;} p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+
+    /* Steps */
+    .steps{display:flex;flex-direction:column;gap:0;margin:20px 0;}
+    .step{display:grid;grid-template-columns:40px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);}
+    .step:last-child{border-bottom:none;}
+    .step-circle{width:36px;height:36px;border-radius:50%;background:rgba(225,75,135,0.1);border:2px solid rgba(225,75,135,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--pink);flex-shrink:0;}
+    .step-content .step-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .step-content .step-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+    /* Template */
+    .template{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .template-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px;}
+    .template-body{font-family:monospace;font-size:13px;color:#c8c8c8;line-height:1.9;white-space:pre-wrap;}
+
+    /* Responses */
+    .responses{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;}
+    .resp-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;}
+    .resp-trigger{font-family:var(--heading);font-size:1rem;margin-bottom:6px;}
+    .resp-trigger.go{color:#4caf7d;} .resp-trigger.adj{color:#f0a030;} .resp-trigger.more{color:#6498ff;}
+    .resp-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+
+    /* Example */
+    .example-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .ex-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+    .ex-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;padding:3px 8px;border-radius:4px;}
+    .ex-badge.janis{background:rgba(225,75,135,0.1);color:var(--pink);}
+    .ex-badge.pepe{background:rgba(240,160,48,0.1);color:#f0a030;}
+    .ex-text{font-size:13px;color:#bbb;line-height:1.7;}
+
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+    @media(max-width:640px){.responses{grid-template-columns:1fr;} h1{font-size:1.7rem;} .wrap{padding:0 16px;} .header{padding:48px 0 36px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/library/showtime-soundcheck/" class="nav-link">Showtime</a>
+</nav>
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> The Backbrief</div>
+    <div class="owner-chip">Owner: Janis &nbsp;&middot;&nbsp; Showtime protocol</div>
+    <h1>The <em>Backbrief</em></h1>
+    <p class="tagline">The communication protocol for Showtime decisions. Janis has already done the thinking. Pepe reviews judgment, not work.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">What It Is</div>
+    <h2>Structured intent declaration</h2>
+    <p>The Backbrief is the communication format Janis uses when a Showtime item is ready to execute. Instead of asking "what should I do?", Janis presents what she has already decided, why she decided it, and what she needs Pepe to confirm.</p>
+    <p>It makes Pepe the reviewer of judgment rather than the originator of decisions. This is the IBL principle in action: the authority lives where the information is.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Why It Matters</div>
+    <p>Traditional assistant models waste the principal's time by pushing thinking upward. "Should I reply to Victoria?" is a failed Backbrief. "I intend to reply to Victoria confirming Friday, aligned with the board resolution. Fire Away?" is correct. The first forces Pepe to think. The second just requires a signal.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Five Elements</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <div class="step-content">
+          <div class="step-name">Situation</div>
+          <div class="step-desc">What Janis sees. The facts as they exist. No interpretation yet.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-content">
+          <div class="step-name">Assessment</div>
+          <div class="step-desc">What Janis thinks the situation means. The interpretation.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-content">
+          <div class="step-name">Intent</div>
+          <div class="step-desc">What Janis plans to do. Specific and actionable, not vague.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-content">
+          <div class="step-name">Reasoning</div>
+          <div class="step-desc">Why this serves the strategic goal for this client or domain.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">5</div>
+        <div class="step-content">
+          <div class="step-name">Constraints checked</div>
+          <div class="step-desc">What risks were considered and how they were weighed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Template</div>
+    <div class="template">
+      <div class="template-label">Full Backbrief (for heavy Showtime items)</div>
+      <div class="template-body">Situation: [what I see — facts only]
+
+Assessment: [what this means — my interpretation]
+
+Intent: I intend to [specific action].
+
+Reasoning: [why this serves the strategic goal / client relationship / stated priority]
+
+Constraints checked: [risks considered, alternatives weighed, edge cases flagged]
+
+[Draft / attachment / relevant file attached]
+
+Fire Away?</div>
+    </div>
+    <div class="template">
+      <div class="template-label">Light Backbrief (for routine Showtime items)</div>
+      <div class="template-body">I intend to [action]. [One sentence of reasoning]. Draft attached. Fire Away?</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Pepe's Responses</div>
+    <div class="responses">
+      <div class="resp-card">
+        <div class="resp-trigger go">"Fire Away."</div>
+        <div class="resp-desc">Execute exactly as stated. No changes. Go.</div>
+      </div>
+      <div class="resp-card">
+        <div class="resp-trigger adj">Redirect</div>
+        <div class="resp-desc">Adjust the intent based on Pepe's guidance. Re-state if the change is significant.</div>
+      </div>
+      <div class="resp-card">
+        <div class="resp-trigger more">"Tell me more."</div>
+        <div class="resp-desc">Provide deeper analysis before proceeding. This is not a no.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Real Example</div>
+    <div class="example-box">
+      <div class="ex-header"><span class="ex-badge janis">Janis</span></div>
+      <div class="ex-text">Situation: Victoria emailed Thursday asking for the updated ICA draft with recovery waterfall changes. It has been 48 hours.<br><br>Assessment: She is waiting on us. The waterfall changes were resolved in the board call. Delay signals poor operational control.<br><br>Intent: I intend to send Victoria the updated ICA draft with the recovery waterfall language incorporated per the March board resolution.<br><br>Reasoning: She asked for it Thursday. The changes align with the board resolution. The 48-hour cooling period has passed. Draft attached.<br><br>Constraints checked: Lemmy reviewed. No outstanding red flags. CC list includes Daphne as she was on the original thread.<br><br>Fire Away?</div>
+    </div>
+    <div class="example-box">
+      <div class="ex-header"><span class="ex-badge pepe">Pepe</span></div>
+      <div class="ex-text">Fire Away.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/ibl/" class="rel-link">🧭 Intent-Based Leadership</a>
+      <a href="/library/showtime-soundcheck/" class="rel-link">🎬 Showtime vs Soundcheck</a>
+      <a href="/library/decision-memos/" class="rel-link">📋 Decision Memos</a>
+    </div>
+  </div>
+</div>
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>

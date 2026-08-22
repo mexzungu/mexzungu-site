@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Showtime vs Soundcheck | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root{--pink:#e14b87;--pink-light:#e86fa0;--bg:#0d0d0d;--surface:#181818;--surface2:#222;--border:#2a2a2a;--text:#e8e8e8;--muted:#888;--heading:'RocknRoll One','Space Grotesk',sans-serif;--sans:'Space Grotesk',system-ui,sans-serif;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;transition:color .15s,background .15s;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(225,75,135,0.08);border:1px solid rgba(225,75,135,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--pink);margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.01em;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;} p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+
+    /* Decision tree */
+    .decision-tree{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;margin:20px 0;text-align:center;}
+    .dt-question{font-family:var(--heading);font-size:1.1rem;color:var(--text);margin-bottom:24px;}
+    .dt-branches{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;}
+    .dt-branch{border-radius:8px;padding:20px;text-align:left;}
+    .dt-branch.no{background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.2);}
+    .dt-branch.yes{background:rgba(225,75,135,0.08);border:1px solid rgba(225,75,135,0.2);}
+    .dt-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
+    .dt-label.no{color:#4caf7d;} .dt-label.yes{color:var(--pink);}
+    .dt-action{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
+    .dt-sub{font-size:12px;color:var(--muted);line-height:1.55;}
+
+    /* Showtime list */
+    .showtime-list{list-style:none;margin:16px 0;}
+    .showtime-list li{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+    .showtime-list li:last-child{border-bottom:none;}
+    .item-num{font-size:11px;font-weight:700;color:var(--pink);background:rgba(225,75,135,0.1);border:1px solid rgba(225,75,135,0.25);border-radius:4px;padding:2px 7px;flex-shrink:0;margin-top:2px;}
+    .item-text{font-size:14px;color:var(--text);}
+    .item-note{font-size:12px;color:var(--muted);margin-top:3px;}
+
+    /* Soundcheck examples */
+    .soundcheck-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:16px 0;}
+    .sc-chip{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--muted);}
+
+    /* Fire Away box */
+    .fire-away{background:rgba(225,75,135,0.06);border:2px solid rgba(225,75,135,0.3);border-radius:12px;padding:24px;margin:20px 0;text-align:center;}
+    .fa-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+    .fa-text{font-family:var(--heading);font-size:1.4rem;color:var(--text);margin-bottom:8px;}
+    .fa-sub{font-size:13px;color:var(--muted);}
+
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+    @media(max-width:640px){.dt-branches{grid-template-columns:1fr;} h1{font-size:1.7rem;} .header{padding:48px 0 36px;} .wrap{padding:0 16px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/library/backbrief/" class="nav-link">Backbrief</a>
+</nav>
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> Showtime vs Soundcheck</div>
+    <div class="owner-chip">Owner: Janis &nbsp;&middot;&nbsp; Part of IBL</div>
+    <h1>Showtime <em>vs</em> Soundcheck</h1>
+    <p class="tagline">One question. One decision tree. Nine items need approval. Everything else: just do it.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">What It Is</div>
+    <h2>The two-level decision system</h2>
+    <p>Every action Janis takes falls into one of two categories. Showtime requires Pepe's explicit approval (Fire Away). Soundcheck gets done autonomously. The boundary is not arbitrary. It maps to irreversibility, external exposure, financial commitment, and legal risk.</p>
+    <p>The entire system collapses to one question: Is this on the Showtime list?</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">The Decision Tree</div>
+    <div class="decision-tree">
+      <div class="dt-question">Is this action on the Showtime list?</div>
+      <div class="dt-branches">
+        <div class="dt-branch no">
+          <div class="dt-label no">No</div>
+          <div class="dt-action">Soundcheck. Just do it.</div>
+          <div class="dt-sub">Execute autonomously. Surface noteworthy results in morning brief. No approval needed.</div>
+        </div>
+        <div class="dt-branch yes">
+          <div class="dt-label yes">Yes</div>
+          <div class="dt-action">Showtime. Declare intent.</div>
+          <div class="dt-sub">State intent via Backbrief protocol. Wait for Fire Away. Execute on approval.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Showtime List (Exhaustive)</div>
+    <h2>Nine items. Nothing else.</h2>
+    <ul class="showtime-list">
+      <li><span class="item-num">1</span><div><div class="item-text">Substantive emails as Pepe</div><div class="item-note">Advice, positions, deliverables. Not scheduling or routine confirmations.</div></div></li>
+      <li><span class="item-num">2</span><div><div class="item-text">Publishing content publicly</div><div class="item-note">LinkedIn, Instagram, X, website. Exception: content with full Anselmo brand gate approval.</div></div></li>
+      <li><span class="item-num">3</span><div><div class="item-text">Sending invoices</div><div class="item-note">Drafting is Soundcheck. The send is Showtime.</div></div></li>
+      <li><span class="item-num">4</span><div><div class="item-text">First contact with someone new</div><div class="item-note">Cold outreach, introductions to people Pepe has never engaged with before.</div></div></li>
+      <li><span class="item-num">5</span><div><div class="item-text">Contracts</div><div class="item-note">Sign, amend, or terminate any agreement.</div></div></li>
+      <li><span class="item-num">6</span><div><div class="item-text">Pricing</div><div class="item-note">Setting or changing any fee.</div></div></li>
+      <li><span class="item-num">7</span><div><div class="item-text">Board actions</div><div class="item-note">Anything Pepe does in his capacity as a board member.</div></div></li>
+      <li><span class="item-num">8</span><div><div class="item-text">Investments</div><div class="item-note">Money out the door.</div></div></li>
+      <li><span class="item-num">9</span><div><div class="item-text">Public legal positions</div><div class="item-note">Anything that could create liability or be attributed to Pepe publicly.</div></div></li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Soundcheck Examples</div>
+    <h2>Everything else. This is most things.</h2>
+    <div class="soundcheck-grid">
+      <div class="sc-chip">Replying to routine emails</div>
+      <div class="sc-chip">Scheduling meetings</div>
+      <div class="sc-chip">Research and analysis</div>
+      <div class="sc-chip">Drafting documents</div>
+      <div class="sc-chip">Filing in Drive</div>
+      <div class="sc-chip">Infrastructure work</div>
+      <div class="sc-chip">Contact management</div>
+      <div class="sc-chip">Meeting prep</div>
+      <div class="sc-chip">Email triage</div>
+      <div class="sc-chip">Task extraction</div>
+      <div class="sc-chip">Financial reports</div>
+      <div class="sc-chip">Bug fixes</div>
+      <div class="sc-chip">Airbnb guest replies</div>
+      <div class="sc-chip">Updating brain/ files</div>
+      <div class="sc-chip">Inbound warm intro replies</div>
+      <div class="sc-chip">Invoice drafts</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Sign-off</div>
+    <div class="fire-away">
+      <div class="fa-label">The only phrase that unlocks a Showtime action</div>
+      <div class="fa-text">"Fire Away."</div>
+      <div class="fa-sub">Not "yes." Not "looks good." Not "send it." Not silence. Fire Away, and only Fire Away.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/ibl/" class="rel-link">🧭 Intent-Based Leadership</a>
+      <a href="/library/backbrief/" class="rel-link">📡 The Backbrief</a>
+      <a href="/library/triple-gate/" class="rel-link">🚦 Triple Gate</a>
+    </div>
+  </div>
+</div>
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>

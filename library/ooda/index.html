@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OODA Loop | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root{--pink:#e14b87;--pink-light:#e86fa0;--bg:#0d0d0d;--surface:#181818;--surface2:#222;--border:#2a2a2a;--text:#e8e8e8;--muted:#888;--heading:'RocknRoll One','Space Grotesk',sans-serif;--sans:'Space Grotesk',system-ui,sans-serif;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;background:rgba(240,160,48,0.08);border:1px solid rgba(240,160,48,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:#f0a030;margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;} p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+
+    /* OODA loop visual */
+    .ooda-loop{position:relative;margin:32px 0;padding:24px 0;}
+    .ooda-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+    .ooda-step{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 16px;text-align:center;position:relative;}
+    .ooda-letter{font-family:var(--heading);font-size:2rem;margin-bottom:4px;line-height:1;}
+    .ooda-letter.o1{color:var(--pink);}
+    .ooda-letter.o2{color:#f0a030;}
+    .ooda-letter.d{color:#6498ff;}
+    .ooda-letter.a{color:#4caf7d;}
+    .ooda-word{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
+    .ooda-desc{font-size:11px;color:var(--muted);line-height:1.55;}
+    .loop-arrow{text-align:center;font-size:12px;color:var(--muted);margin-top:12px;letter-spacing:0.05em;}
+
+    /* Application table */
+    .app-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;}
+    .app-table th{text-align:left;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);}
+    .app-table td{padding:12px 12px;border-bottom:1px solid var(--border);color:#bbb;vertical-align:top;}
+    .app-table tr:last-child td{border-bottom:none;}
+    .app-table .phase{font-weight:700;color:var(--text);}
+
+    /* Template */
+    .template{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .template-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px;}
+    .template-body{font-family:monospace;font-size:13px;color:#c8c8c8;line-height:1.9;white-space:pre-wrap;}
+    .tpink{color:var(--pink);}
+
+    /* Example */
+    .example{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .ex-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:14px;}
+    .ex-row{display:grid;grid-template-columns:80px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+    .ex-row:last-child{border-bottom:none;}
+    .ex-phase{font-weight:700;} .ex-phase.o1{color:var(--pink);} .ex-phase.o2{color:#f0a030;} .ex-phase.d{color:#6498ff;} .ex-phase.a{color:#4caf7d;}
+    .ex-content{color:#bbb;}
+
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+    @media(max-width:640px){.ooda-steps{grid-template-columns:1fr 1fr;} .ex-row{grid-template-columns:60px 1fr;} h1{font-size:1.7rem;} .wrap{padding:0 16px;} .header{padding:48px 0 36px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/library/decision-memos/" class="nav-link">Decision Memos</a>
+</nav>
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> OODA Loop</div>
+    <div class="owner-chip">Owner: Bruce (CSO) &nbsp;&middot;&nbsp; Adapted from Boyd</div>
+    <h1>OODA <em>Loop</em></h1>
+    <p class="tagline">Observe, Orient, Decide, Act. The decision-speed framework used by Bruce across competitive analysis, client intelligence, and deal timing.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">What It Is</div>
+    <h2>Speed of decision as competitive advantage</h2>
+    <p>The OODA Loop was developed by military strategist John Boyd for aerial combat. The principle: the side that cycles through Observe-Orient-Decide-Act faster than the opponent keeps the opponent inside their own loop. The opponent is always reacting to the last thing you did, not what you are doing now.</p>
+    <p>Bruce adapts it for consulting operations. Fast intelligence cycles, sharp orientation to what the data means, clear decisions, immediate action. When a client or competitor is still processing last month, MGL is already acting on this week.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Why It Matters</div>
+    <p>Most firms are slow because they confuse analysis with orientation. They observe, then observe more, then debate whether they observed correctly. The OODA Loop forces a move from observation to decision. Incomplete information acted on fast beats perfect information acted on late. Speed creates options. Paralysis closes them.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Loop</div>
+    <div class="ooda-steps">
+      <div class="ooda-step">
+        <div class="ooda-letter o1">O</div>
+        <div class="ooda-word">Observe</div>
+        <div class="ooda-desc">Gather raw information. Market signals, client behavior, competitor moves, regulatory shifts, deal terms.</div>
+      </div>
+      <div class="ooda-step">
+        <div class="ooda-letter o2">O</div>
+        <div class="ooda-word">Orient</div>
+        <div class="ooda-desc">Analyze and interpret through context. What does this mean for the client? For the deal? For the competitive position?</div>
+      </div>
+      <div class="ooda-step">
+        <div class="ooda-letter d">D</div>
+        <div class="ooda-word">Decide</div>
+        <div class="ooda-desc">Select a course of action from the available options. Don't optimize indefinitely. Decide and move.</div>
+      </div>
+      <div class="ooda-step">
+        <div class="ooda-letter a">A</div>
+        <div class="ooda-word">Act</div>
+        <div class="ooda-desc">Execute. Then immediately loop back to Observe. The action generates new information. The cycle continues.</div>
+      </div>
+    </div>
+    <div class="loop-arrow">&#8594; loops back to Observe &#8594;</div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">MGL Application</div>
+    <table class="app-table">
+      <tr><th>Context</th><th>Observe</th><th>Orient</th><th>Decide</th><th>Act</th></tr>
+      <tr>
+        <td class="phase">Client health</td>
+        <td>Client goes quiet. Stops responding.</td>
+        <td>Historical: this precedes a budget review or a change in internal champion.</td>
+        <td>Proactive outreach before they initiate.</td>
+        <td>Sade sends a touch-base. Pepe reviews if RED.</td>
+      </tr>
+      <tr>
+        <td class="phase">Deal timing</td>
+        <td>Competitor closes a similar deal in the same market.</td>
+        <td>Our target client is likely aware. May now have a reference point for terms.</td>
+        <td>Accelerate outreach. Lead with differentiation.</td>
+        <td>Jagger sends updated positioning. Pepe schedules call.</td>
+      </tr>
+      <tr>
+        <td class="phase">Regulatory shift</td>
+        <td>New regulation published affecting client sector.</td>
+        <td>Immediate compliance gap for 2 active clients. 1 prospective client affected.</td>
+        <td>Proactive brief to active clients. Outreach hook for prospect.</td>
+        <td>Lemmy drafts brief. Aretha reviews. Janis sends.</td>
+      </tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Template</div>
+    <div class="template">
+      <div class="template-label">Bruce's OODA briefing format</div>
+      <div class="template-body"><span class="tpink">Observe:</span> [What we see — facts, signals, raw data. No interpretation yet.]
+
+<span class="tpink">Orient:</span> [What this means — interpreted through client context, market position, and strategic goals.]
+
+<span class="tpink">Decide:</span> [Recommended course of action. One option. State it clearly.]
+
+<span class="tpink">Act:</span> [Who does what by when. Specific owner, specific timeline.]</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Real Example: Kabisa</div>
+    <div class="example">
+      <div class="ex-label">OODA cycle on a stalling deal</div>
+      <div class="ex-row"><span class="ex-phase o1">Observe</span><div class="ex-content">Kabisa has not responded to the revised term sheet in 11 days. Last response was a one-liner. Deal was previously moving fast.</div></div>
+      <div class="ex-row"><span class="ex-phase o2">Orient</span><div class="ex-content">11 days of silence on a previously active deal usually means a competing term sheet arrived, an internal champion changed, or budget got frozen. Most likely: competing offer.</div></div>
+      <div class="ex-row"><span class="ex-phase d">Decide</span><div class="ex-content">Don't follow up on the term sheet directly. Send a value-add touchpoint instead. Reframe without appearing desperate.</div></div>
+      <div class="ex-row"><span class="ex-phase a">Act</span><div class="ex-content">Jagger sends a brief on a relevant regulatory development in Rwanda that directly affects Kabisa's sector. Opens a new conversation. Pepe follows up in 48h if no response.</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/decision-memos/" class="rel-link">📋 Decision Memos</a>
+      <a href="/library/cats-traps/" class="rel-link">🏗️ CATs and TRAPs</a>
+      <a href="/library/1-3-1/" class="rel-link">🔢 The 1:3:1 Framework</a>
+    </div>
+  </div>
+</div>
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>

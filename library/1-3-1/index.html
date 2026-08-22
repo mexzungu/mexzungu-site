@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 1:3:1 Framework | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root{--pink:#e14b87;--pink-light:#e86fa0;--bg:#0d0d0d;--surface:#181818;--surface2:#222;--border:#2a2a2a;--text:#e8e8e8;--muted:#888;--heading:'RocknRoll One','Space Grotesk',sans-serif;--sans:'Space Grotesk',system-ui,sans-serif;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;background:rgba(225,75,135,0.08);border:1px solid rgba(225,75,135,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--pink);margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.01em;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;} p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+
+    /* Big number display */
+    .number-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;margin:24px 0;align-items:stretch;}
+    .nf-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px 20px;text-align:center;}
+    .nf-num{font-family:var(--heading);font-size:2.5rem;color:var(--pink);line-height:1;margin-bottom:8px;}
+    .nf-label{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .nf-desc{font-size:11px;color:var(--muted);}
+    .nf-sep{display:flex;align-items:center;justify-content:center;padding:0 12px;font-size:20px;color:var(--border);}
+
+    /* Template */
+    .template{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .template-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px;}
+    .template-body{font-family:monospace;font-size:13px;color:#c8c8c8;line-height:1.9;white-space:pre-wrap;}
+    .pink{color:var(--pink);}
+
+    /* Before/after */
+    .ba{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+    .ba-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;}
+    .ba-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+    .ba-label.bad{color:#e05050;} .ba-label.good{color:#4caf7d;}
+    .ba-text{font-family:monospace;font-size:12px;color:#aaa;line-height:1.7;white-space:pre-wrap;}
+
+    /* Who uses it */
+    .users{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:16px 0;}
+    .user-chip{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 14px;}
+    .user-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
+    .user-domain{font-size:11px;color:var(--muted);}
+
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+    @media(max-width:640px){.number-flow{grid-template-columns:1fr;} .nf-sep{display:none;} .ba{grid-template-columns:1fr;} h1{font-size:1.7rem;} .wrap{padding:0 16px;} .header{padding:48px 0 36px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/library/decision-memos/" class="nav-link">Decision Memos</a>
+</nav>
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> The 1:3:1 Framework</div>
+    <div class="owner-chip">Owner: Bowie (CTO) &nbsp;&middot;&nbsp; Core Infra</div>
+    <h1>The <em>1:3:1</em> Framework</h1>
+    <p class="tagline">One problem. Three options. One recommendation. The MGL standard for surfacing any issue that needs a decision.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">What It Is</div>
+    <h2>The format for every escalation</h2>
+    <p>1:3:1 is how MGL reports problems. Not raw logs. Not data dumps. Not Slack pings with a timestamp and a question mark. One problem stated plainly, three real options, one recommendation with a reason. That is everything needed to make a good decision fast.</p>
+    <p>If a problem is truly zero-action, say nothing. 1:3:1 is for things that require someone to act or decide.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">The Structure</div>
+    <div class="number-flow">
+      <div class="nf-block">
+        <div class="nf-num">1</div>
+        <div class="nf-label">Problem</div>
+        <div class="nf-desc">One sentence. Plain English. What broke, what is silent, what is wrong.</div>
+      </div>
+      <div class="nf-sep">:</div>
+      <div class="nf-block">
+        <div class="nf-num">3</div>
+        <div class="nf-label">Options</div>
+        <div class="nf-desc">Three real choices. Each different. Each with what it costs or risks.</div>
+      </div>
+      <div class="nf-sep">:</div>
+      <div class="nf-block">
+        <div class="nf-num">1</div>
+        <div class="nf-label">Recommendation</div>
+        <div class="nf-desc">Pick one. Say why. One sentence is enough.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Template</div>
+    <div class="template">
+      <div class="template-body"><span class="pink">[PROBLEM]</span>
+One sentence. What broke, what is silent, what is wrong. Plain English. No jargon. No raw timestamps.
+
+<span class="pink">[OPTIONS]</span>
+1. First option. What it involves. How long it takes. What it costs or risks.
+2. Second option. Same structure.
+3. Third option. Same structure.
+
+<span class="pink">[RECOMMENDATION]</span>
+Option X. One sentence on why.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Concrete Example</div>
+    <div class="ba">
+      <div class="ba-box">
+        <div class="ba-label bad">Before (raw dump)</div>
+        <div class="ba-text">STALE P1 JOBS:
+pipeline-tracker: silent 48.0h
+(threshold 36.0h)</div>
+      </div>
+      <div class="ba-box">
+        <div class="ba-label good">After (1:3:1)</div>
+        <div class="ba-text">[PROBLEM]
+pipeline-tracker has been silent for 48 hours. It should run every 24 hours.
+
+[OPTIONS]
+1. Restart the cron. Takes 5 min. Fine if failure was one-off.
+2. Check logs for last error before restarting. Takes 15 min. Finds root cause.
+3. Check if the data source itself is down first. Takes 5 min. Rules out cascade.
+
+[RECOMMENDATION]
+Option 2. A blind restart fixes nothing if the script errored. Read the log first.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Hard Rules</div>
+    <h2>What makes a 1:3:1 valid</h2>
+    <p>The PROBLEM line is one sentence. If you need two, you have not thought it through yet. Options must be meaningfully different. Do not use "do nothing" as a filler option. The RECOMMENDATION must pick one and say why, even briefly. No raw log data, no JSON, no cron timestamps in the output.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Who Uses It</div>
+    <div class="users">
+      <div class="user-chip"><div class="user-name">Bowie</div><div class="user-domain">Infra and cron health alerts</div></div>
+      <div class="user-chip"><div class="user-name">Lars</div><div class="user-domain">Delivery and task blockers</div></div>
+      <div class="user-chip"><div class="user-name">Gene</div><div class="user-domain">Payment and invoice issues</div></div>
+      <div class="user-chip"><div class="user-name">Sade</div><div class="user-domain">Client health flags</div></div>
+      <div class="user-chip"><div class="user-name">Jagger</div><div class="user-domain">Pipeline stalls</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/decision-memos/" class="rel-link">📋 Decision Memos</a>
+      <a href="/library/showtime-soundcheck/" class="rel-link">🎬 Showtime vs Soundcheck</a>
+      <a href="/library/backbrief/" class="rel-link">📡 The Backbrief</a>
+    </div>
+  </div>
+</div>
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>

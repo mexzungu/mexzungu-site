@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decision Memos | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root{--pink:#e14b87;--pink-light:#e86fa0;--bg:#0d0d0d;--surface:#181818;--surface2:#222;--border:#2a2a2a;--text:#e8e8e8;--muted:#888;--heading:'RocknRoll One','Space Grotesk',sans-serif;--sans:'Space Grotesk',system-ui,sans-serif;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;background:rgba(100,152,255,0.08);border:1px solid rgba(100,152,255,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:#6498ff;margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;} p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+
+    /* Five sections */
+    .five-sections{display:flex;flex-direction:column;gap:10px;margin:20px 0;}
+    .fs-item{display:grid;grid-template-columns:32px 1fr;gap:16px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;}
+    .fs-num{font-size:12px;font-weight:800;color:var(--pink);width:24px;text-align:center;margin-top:2px;}
+    .fs-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .fs-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+
+    /* Template */
+    .template{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .template-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px;}
+    .template-body{font-family:monospace;font-size:13px;color:#c8c8c8;line-height:1.9;white-space:pre-wrap;}
+    .tpink{color:var(--pink);}
+
+    /* Routing table */
+    .rtable{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;}
+    .rtable th{text-align:left;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);}
+    .rtable td{padding:11px 12px;border-bottom:1px solid var(--border);color:#bbb;vertical-align:top;}
+    .rtable tr:last-child td{border-bottom:none;}
+    .rtable .dtype{font-weight:700;color:var(--text);}
+    .rtable .persona{color:var(--pink);}
+
+    /* Hard rules */
+    .rules{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
+    .rule{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;display:flex;gap:12px;}
+    .rule-icon{font-size:16px;flex-shrink:0;}
+    .rule-text{font-size:13px;color:#bbb;line-height:1.6;}
+
+    /* Ozzy block */
+    .ozzy{background:rgba(224,80,80,0.06);border:1px solid rgba(224,80,80,0.2);border-radius:10px;padding:20px;margin:16px 0;}
+    .ozzy-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#e05050;margin-bottom:10px;}
+    .ozzy-questions{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .ozzy-questions li{font-size:13px;color:#bbb;padding-left:16px;position:relative;}
+    .ozzy-questions li::before{content:'"';position:absolute;left:0;color:#e05050;}
+
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+    @media(max-width:640px){h1{font-size:1.7rem;} .wrap{padding:0 16px;} .header{padding:48px 0 36px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/library/backbrief/" class="nav-link">Backbrief</a>
+</nav>
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> Decision Memos</div>
+    <div class="owner-chip">Owner: Ozzy &nbsp;&middot;&nbsp; All Showtime decisions</div>
+    <h1>Decision <em>Memos</em></h1>
+    <p class="tagline">Five sections. Options in a matrix. One owner. One date. One recommendation. The MGL standard for any brief or strategic recommendation.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">What It Is</div>
+    <h2>Structure for any recommendation</h2>
+    <p>A Decision Memo is the MGL format for presenting any strategic recommendation, scenario analysis, or Showtime-level brief to Pepe. It is not a template you fill in. It is a thinking discipline: start with the ideal outcome, work through the landscape and problem, present options as a comparison, land on a single recommendation with a named owner and a date.</p>
+    <p>Lead with the destination, not the background. Pepe should know what success looks like in the first sentence.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Why It Matters</div>
+    <p>Most recommendations fail not because they are wrong but because they are structured backwards. Problem first, options buried, recommendation ambiguous. The MGL memo inverts this: lead with what winning looks like. Everything else is context for why the recommendation gets you there.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Five Sections</div>
+    <div class="five-sections">
+      <div class="fs-item">
+        <div class="fs-num">1</div>
+        <div>
+          <div class="fs-name">What success looks like</div>
+          <div class="fs-desc">The ideal outcome. Numbered sentences. Lead with this. Not background. Not context. The destination.</div>
+        </div>
+      </div>
+      <div class="fs-item">
+        <div class="fs-num">2</div>
+        <div>
+          <div class="fs-name">The landscape</div>
+          <div class="fs-desc">Context. What is true right now. Numbered sentences. Market, relationship, regulatory, financial state.</div>
+        </div>
+      </div>
+      <div class="fs-item">
+        <div class="fs-num">3</div>
+        <div>
+          <div class="fs-name">The problem</div>
+          <div class="fs-desc">What is wrong or blocking success. Numbered sentences. Be specific. "Significant risk" is not specific. "50k exposure if they claim breach" is.</div>
+        </div>
+      </div>
+      <div class="fs-item">
+        <div class="fs-num">4</div>
+        <div>
+          <div class="fs-name">The options</div>
+          <div class="fs-desc">Solutions presented as a comparison matrix. Table with rows: instrument, outcome, pros/cons, verdict. Never options as prose paragraphs.</div>
+        </div>
+      </div>
+      <div class="fs-item">
+        <div class="fs-num">5</div>
+        <div>
+          <div class="fs-name">The recommendation</div>
+          <div class="fs-desc">Which option and why. Numbered sentences. One owner. One date. Ends with "What this means for you" — specific and named, not abstract.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Template</div>
+    <div class="template">
+      <div class="template-body"><span class="tpink">What success looks like</span>
+1. [Ideal outcome, sentence form]
+2. [Secondary success criterion]
+
+<span class="tpink">The landscape</span>
+1. [Current fact]
+2. [Relevant context]
+
+<span class="tpink">The problem</span>
+1. [What is wrong or blocking]
+2. [Specific exposure or constraint]
+
+<span class="tpink">The options</span>
+| Option | Instrument | Outcome | Pros | Cons | Verdict |
+|--------|-----------|---------|------|------|---------|
+| A      | ...       | ...     | ...  | ...  | ...     |
+| B      | ...       | ...     | ...  | ...  | ...     |
+| C      | ...       | ...     | ...  | ...  | ...     |
+
+<span class="tpink">The recommendation</span>
+1. Option [X]. Reason: [one sentence].
+2. Owner: [name]. Date: [specific date].
+
+What this means for you: [direct, specific, named implication]</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Routing by Decision Type</div>
+    <table class="rtable">
+      <tr><th>Decision type</th><th>Personas to invoke</th></tr>
+      <tr><td class="dtype">Strategic direction, market entry</td><td class="persona">Bruce (CSO) + Ozzy</td></tr>
+      <tr><td class="dtype">Financial commitments, pricing</td><td class="persona">Gene (CFO) + Ozzy</td></tr>
+      <tr><td class="dtype">Legal exposure, contracts</td><td class="persona">Lemmy (CLO) + Ozzy</td></tr>
+      <tr><td class="dtype">Growth, pipeline, BD</td><td class="persona">Jagger (CGO) + Bruce</td></tr>
+      <tr><td class="dtype">Content strategy, brand</td><td class="persona">Freddie (CMO) + Anselmo</td></tr>
+      <tr><td class="dtype">Infrastructure, tooling</td><td class="persona">Bowie (CTO)</td></tr>
+      <tr><td class="dtype">Any Showtime decision</td><td class="persona">Ozzy stress-test first</td></tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Ozzy's Stress-Test (Mandatory for Showtime)</div>
+    <div class="ozzy">
+      <div class="ozzy-label">Before presenting any Showtime recommendation, Ozzy runs these four questions</div>
+      <ul class="ozzy-questions">
+        <li>And then what?" — three levels deep</li>
+        <li>What does the competitor do if they see this plan?"</li>
+        <li>What breaks first if this goes wrong?"</li>
+        <li>What is the asymmetric downside?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Hard Rules</div>
+    <div class="rules">
+      <div class="rule"><div class="rule-icon">&#x2717;</div><div class="rule-text">Never use uppercase template labels (SITUATION / OPTIONS / RECOMMENDATION). These read as a form, not a memo.</div></div>
+      <div class="rule"><div class="rule-icon">&#x2717;</div><div class="rule-text">Never present options as prose paragraphs. Always a comparison matrix table.</div></div>
+      <div class="rule"><div class="rule-icon">&#x2717;</div><div class="rule-text">Never end without naming one owner and one date. "Next steps" with no owner is not a recommendation.</div></div>
+      <div class="rule"><div class="rule-icon">&#x2713;</div><div class="rule-text">Adapt section headers to the reader. Music metaphors for NCA board. Descriptive labels for investors and legal memos.</div></div>
+      <div class="rule"><div class="rule-icon">&#x2713;</div><div class="rule-text">Always end with "What this means for you" — specific, named, actionable. Not abstract takeaways.</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/backbrief/" class="rel-link">📡 The Backbrief</a>
+      <a href="/library/1-3-1/" class="rel-link">🔢 The 1:3:1 Framework</a>
+      <a href="/library/ooda/" class="rel-link">🔄 OODA Loop</a>
+      <a href="/library/showtime-soundcheck/" class="rel-link">🎬 Showtime vs Soundcheck</a>
+    </div>
+  </div>
+</div>
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>

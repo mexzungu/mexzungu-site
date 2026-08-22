@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Triple Gate | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root{--pink:#e14b87;--pink-light:#e86fa0;--bg:#0d0d0d;--surface:#181818;--surface2:#222;--border:#2a2a2a;--text:#e8e8e8;--muted:#888;--heading:'RocknRoll One','Space Grotesk',sans-serif;--sans:'Space Grotesk',system-ui,sans-serif;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;background:rgba(225,75,135,0.08);border:1px solid rgba(225,75,135,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--pink);margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;} p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+
+    /* Gates */
+    .gates{display:flex;flex-direction:column;gap:16px;margin:24px 0;}
+    .gate{display:grid;grid-template-columns:56px 1fr;gap:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;align-items:start;transition:border-color .2s;}
+    .gate:hover{border-color:var(--pink);}
+    .gate-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-size:1.3rem;font-weight:700;flex-shrink:0;}
+    .gate-1 .gate-num{background:rgba(225,75,135,0.1);color:var(--pink);border:2px solid rgba(225,75,135,0.3);}
+    .gate-2 .gate-num{background:rgba(240,160,48,0.1);color:#f0a030;border:2px solid rgba(240,160,48,0.3);}
+    .gate-3 .gate-num{background:rgba(76,175,125,0.1);color:#4caf7d;border:2px solid rgba(76,175,125,0.3);}
+    .gate-question{font-family:var(--heading);font-size:1rem;color:var(--text);margin-bottom:8px;}
+    .gate-detail{font-size:13px;color:var(--muted);line-height:1.6;}
+    .gate-action{margin-top:10px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;}
+    .gate-1 .gate-action{color:var(--pink);}
+    .gate-2 .gate-action{color:#f0a030;}
+    .gate-3 .gate-action{color:#4caf7d;}
+
+    /* Template */
+    .template{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .template-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px;}
+    .template-body{font-family:monospace;font-size:13px;color:#c8c8c8;line-height:1.9;white-space:pre-wrap;}
+    .tpink{color:var(--pink);} .tamber{color:#f0a030;} .tgreen{color:#4caf7d;}
+
+    /* When applied */
+    .when-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:16px 0;}
+    .when-chip{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--muted);}
+
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+    @media(max-width:640px){.gate{grid-template-columns:1fr;} .gate-num{width:40px;height:40px;font-size:1.1rem;} h1{font-size:1.7rem;} .wrap{padding:0 16px;} .header{padding:48px 0 36px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/library/showtime-soundcheck/" class="nav-link">Showtime</a>
+</nav>
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> The Triple Gate</div>
+    <div class="owner-chip">Owner: Janis &nbsp;&middot;&nbsp; Output quality control</div>
+    <h1>The <em>Triple Gate</em></h1>
+    <p class="tagline">Before presenting anything: three checks, in order. The gate that separates good enough from the best we can do.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">What It Is</div>
+    <h2>Three questions before any output leaves</h2>
+    <p>The Triple Gate is the mandatory quality check that runs before Janis presents anything to Pepe. It applies to every output: email drafts, memos, social posts, contract summaries, research reports, code, decisions. No exceptions.</p>
+    <p>It is not a review process. It is an internal checkpoint that runs before the work is shown. The goal is to eliminate the "good enough" reflex and replace it with a discipline of self-competition.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Why It Matters</div>
+    <p>First drafts carry the bias of the person who wrote them. Without external pressure, quality tends toward what is comfortable, not what is excellent. Gate 2 introduces artificial competition. It forces Janis to ask whether a competitor would produce something better, and to steal what they would do differently. Gate 3 is the second pass that kills what slipped through.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Three Gates</div>
+    <div class="gates">
+      <div class="gate gate-1">
+        <div class="gate-num">1</div>
+        <div>
+          <div class="gate-question">Is this the best we can do?</div>
+          <div class="gate-detail">Not "is it good enough." The best. First-pass work is rarely the best. If the answer is "probably not," revise before moving to Gate 2.</div>
+          <div class="gate-action">Stop. Improve. Then continue.</div>
+        </div>
+      </div>
+      <div class="gate gate-2">
+        <div class="gate-num">2</div>
+        <div>
+          <div class="gate-question">What would ChatGPT / Gemini / Copilot do differently?</div>
+          <div class="gate-detail">Simulate the competitor. Would they produce a better structure, sharper insight, more concrete recommendation? Identify what they would do better. Then steal it. This gate is not about them. It is about using external pressure to find the lazy parts of our own output.</div>
+          <div class="gate-action">Steal what's better. Incorporate it.</div>
+        </div>
+      </div>
+      <div class="gate gate-3">
+        <div class="gate-num">3</div>
+        <div>
+          <div class="gate-question">Really the best? Second pass.</div>
+          <div class="gate-detail">After Gate 2 improvements, one more pass. Cut the filler. Sharpen the language. Kill the lazy parts. If it passes this gate, it is ready.</div>
+          <div class="gate-action">Kill the lazy parts. Ship.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Template</div>
+    <div class="template">
+      <div class="template-body"><span class="tpink">Gate 1:</span> Is this the best we can do? If no, revise. If yes, proceed.
+
+<span class="tamber">Gate 2:</span> What would ChatGPT / Gemini / Copilot do differently?
+          Identify improvements. Incorporate them. Then proceed.
+
+<span class="tgreen">Gate 3:</span> Really the best? Second pass. Kill the lazy parts. Ship.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">When It Applies</div>
+    <div class="when-grid">
+      <div class="when-chip">Email drafts to clients</div>
+      <div class="when-chip">Contract summaries</div>
+      <div class="when-chip">Social media posts</div>
+      <div class="when-chip">Decision memos</div>
+      <div class="when-chip">Research reports</div>
+      <div class="when-chip">Strategic briefs</div>
+      <div class="when-chip">Meeting prep notes</div>
+      <div class="when-chip">Any Showtime output</div>
+      <div class="when-chip">Newsletter drafts</div>
+      <div class="when-chip">Proposal documents</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/showtime-soundcheck/" class="rel-link">🎬 Showtime vs Soundcheck</a>
+      <a href="/library/decision-memos/" class="rel-link">📋 Decision Memos</a>
+      <a href="/library/backbrief/" class="rel-link">📡 The Backbrief</a>
+    </div>
+  </div>
+</div>
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>

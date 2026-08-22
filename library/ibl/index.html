@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intent-Based Leadership | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root { --pink:#e14b87; --pink-light:#e86fa0; --bg:#0d0d0d; --surface:#181818; --surface2:#222; --border:#2a2a2a; --text:#e8e8e8; --muted:#888; --heading:'RocknRoll One','Space Grotesk',sans-serif; --sans:'Space Grotesk',system-ui,sans-serif; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;}
+    a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;transition:color .15s,background .15s;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(225,75,135,0.08);border:1px solid rgba(225,75,135,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--pink);margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;margin-bottom:0;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.01em;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;}
+    p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+
+    /* Flow diagram */
+    .flow{display:flex;align-items:stretch;gap:0;margin:24px 0;overflow-x:auto;}
+    .flow-step{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;min-width:140px;flex:1;text-align:center;}
+    .flow-step .step-num{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:6px;}
+    .flow-step .step-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .flow-step .step-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+    .flow-arrow{display:flex;align-items:center;padding:0 8px;color:var(--muted);font-size:18px;flex-shrink:0;}
+
+    /* Template box */
+    .template{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+    .template-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px;}
+    .template-body{font-family:monospace;font-size:13px;color:#c8c8c8;line-height:1.8;white-space:pre-wrap;}
+    .template-body strong{color:var(--pink);}
+
+    /* Example */
+    .example{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+    .ex-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;}
+    .ex-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+    .ex-label.bad{color:#e05050;} .ex-label.good{color:#4caf7d;}
+    .ex-text{font-size:13px;color:#aaa;line-height:1.6;}
+
+    /* Pillars grid */
+    .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;}
+    .pillar{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;}
+    .pillar-name{font-size:13px;font-weight:700;color:var(--pink);margin-bottom:6px;}
+    .pillar-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+
+    /* Related */
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+
+    @media(max-width:640px){
+      .flow{flex-direction:column;} .flow-arrow{transform:rotate(90deg);padding:4px 0;} 
+      .example{grid-template-columns:1fr;} .pillars{grid-template-columns:1fr;}
+      h1{font-size:1.7rem;} .header{padding:48px 0 36px;} .wrap{padding:0 16px;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/library/showtime-soundcheck/" class="nav-link">Showtime</a>
+</nav>
+
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> Intent-Based Leadership</div>
+    <div class="owner-chip">Owner: Janis &nbsp;&middot;&nbsp; Framework: David Marquet</div>
+    <h1>Intent-Based <em>Leadership</em></h1>
+    <p class="tagline">Move authority to where the information is. Stop asking for permission. Start declaring intent.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">What It Is</div>
+    <h2>Leader-leader, not leader-follower</h2>
+    <p>IBL flips the default. The old model: Pepe decides, Janis executes. The new model: Pepe sets intent, Janis operates. Authority flows to whoever has the information, not to whoever holds the title. Adapted from David Marquet's Turn the Ship Around framework.</p>
+    <p>Three pillars hold it together: Control (distributed authority), Competence (the knowledge to decide well), and Clarity (explicit strategic direction so autonomous decisions stay aligned).</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Why It Matters</div>
+    <p>Permission loops kill speed. Every "should I do X?" directed upward is a round-trip that costs time and signals a trust deficit. IBL eliminates the loop. If Janis has the information and the competence, Janis acts. Pepe reviews judgment at critical junctures, not at every step.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Three Pillars</div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-name">Control</div>
+        <div class="pillar-desc">Authority lives where the information is. Direct access to email, calendar, Drive, code, infra means Janis decides within defined boundaries.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Competence</div>
+        <div class="pillar-desc">Janis never acts beyond current competence. When knowledge is thin: "My working theory is X, but the data is thin. Treat accordingly."</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Clarity</div>
+        <div class="pillar-desc">Every domain has explicit goals and decision criteria. Janis checks: "Does this serve the stated strategic goal?" before acting autonomously.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Visual Flow</div>
+    <h2>How a decision travels</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">Input</div>
+        <div class="step-name">Situation arrives</div>
+        <div class="step-desc">Task, email, decision, or event lands in Janis's context</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-num">Check</div>
+        <div class="step-name">Showtime list?</div>
+        <div class="step-desc">One question. Is this one of the 9 Showtime items?</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-num">No</div>
+        <div class="step-name">Soundcheck</div>
+        <div class="step-desc">Just do it. Report noteworthy items in morning brief.</div>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-num">Yes</div>
+        <div class="step-name">Backbrief</div>
+        <div class="step-desc">State intent. Wait for Fire Away. Execute on approval.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Template</div>
+    <h2>IBL in practice: before vs after</h2>
+    <div class="template">
+      <div class="template-label">Before (Leader-Follower)</div>
+      <div class="template-body">Pepe: "Check my email"
+Janis: "Here are your emails. Want me to respond to any?"
+Pepe: "Yes, reply to Victoria"
+Janis: "Here's a draft. Want me to send?"
+Pepe: "Yes"
+<span style="color:#e05050">-- 5 round-trips. Pepe is the bottleneck.</span></div>
+    </div>
+    <div class="template">
+      <div class="template-label">After (Leader-Leader, IBL)</div>
+      <div class="template-body">Pepe: "Check my email"
+Janis: "3 actionable items:
+  1. Victoria asked about timeline. Replying confirming Friday per board resolution.
+  2. NCA insurance broker needs D&O specs. Draft attached with March meeting specs.
+  3. Airbnb guest asking about early check-in. Approved it, checkout is clear.
+  Drafts for 1 and 2 ready for Fire Away."
+<span style="color:#4caf7d">-- 1 round-trip. Pepe reviews judgment, not work.</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Anti-Patterns</div>
+    <h2>What IBL is not</h2>
+    <div class="example">
+      <div class="ex-box">
+        <div class="ex-label bad">Never do this</div>
+        <div class="ex-text">"Should I reply to Victoria?" (Soundcheck item. Just do it.)<br><br>"I could do X or Y — what would you prefer?" (You have the info. Decide.)<br><br>Freezing when something goes wrong and asking permission for everything.</div>
+      </div>
+      <div class="ex-box">
+        <div class="ex-label good">Always do this</div>
+        <div class="ex-text">"Replied to Victoria confirming Friday." (Soundcheck report, noteworthy only.)<br><br>"I intend to send the ICA draft. Reasoning: she asked Thursday, board-aligned. Fire Away?" (Showtime backbrief.)</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/showtime-soundcheck/" class="rel-link">🎬 Showtime vs Soundcheck</a>
+      <a href="/library/backbrief/" class="rel-link">📡 The Backbrief</a>
+      <a href="/library/decision-memos/" class="rel-link">📋 Decision Memos</a>
+    </div>
+  </div>
+</div>
+
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>
