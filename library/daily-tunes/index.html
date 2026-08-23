@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Tunes — MGL Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#e14b87;--bg:#0d0d0d;--surface:#181818;--border:#2a2a2a;--text:#d4d4d4;--muted:#888;--heading:'RocknRoll One',sans-serif;--body:'Space Grotesk',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.7}
+a{color:var(--pink);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{background:rgba(13,13,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-brand{font-family:var(--heading);font-size:1.1rem;color:#fff;letter-spacing:.5px}
+.nav-brand span{color:var(--pink)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff;text-decoration:none}
+main{max-width:800px;margin:0 auto;padding:48px 24px 96px}
+.breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:32px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--pink)}
+h1{font-family:var(--heading);font-size:2.2rem;color:#fff;line-height:1.2;margin-bottom:8px}
+h1 em{color:var(--pink);font-style:normal}
+.owner-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:6px 14px;font-size:.8rem;color:var(--muted);margin-bottom:40px;flex-wrap:wrap}
+.owner-chip strong{color:#fff}
+.sec-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+h2{font-family:var(--heading);font-size:1.3rem;color:#fff;margin-bottom:16px}
+p{margin-bottom:16px;color:var(--text)}
+ul,ol{margin:0 0 20px 20px;color:var(--text)}
+li{margin-bottom:8px}
+section{margin-bottom:48px;padding-top:24px;border-top:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th{text-align:left;font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:.875rem;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.template{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;font-family:'Space Mono',monospace,var(--body);font-size:.82rem;white-space:pre-wrap;line-height:1.5}
+.time-pill{display:inline-block;background:var(--pink);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:12px;margin-right:8px}
+.run-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0}
+.run-block h3{font-family:var(--heading);font-size:1rem;color:#fff;margin-bottom:12px}
+.run-block ul{margin-bottom:0}
+.alert-list li{padding:8px 0;border-bottom:1px solid var(--border)}
+.alert-list li:last-child{border-bottom:none}
+.related{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
+.rel-link{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);color:var(--text);font-size:.9rem}
+.rel-link:last-child{border-bottom:none}
+.rel-link:hover{color:var(--pink);text-decoration:none}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+@media(max-width:600px){h1{font-size:1.6rem}main{padding:32px 16px 64px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">MGL<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/library/">Library</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+<main>
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/library/">Library</a> / Daily Tunes</div>
+  <h1>Daily Tunes <em>the system heartbeat</em></h1>
+  <div class="owner-chip">G3 &nbsp;·&nbsp; Owner: <strong>Lars (COO) + Bowie (CTO)</strong> &nbsp;·&nbsp; Updated 2026-08-23</div>
+
+  <section>
+    <div class="sec-label">What It Is</div>
+    <h2>The Pulse</h2>
+    <p>Daily Tunes is the heartbeat of Janis infrastructure. It runs twice a day: <strong>06:15 CET</strong> and <strong>19:00 CET</strong>. Every run checks system health, synthesizes what happened since the last check, and surfaces what Pepe needs to know.</p>
+    <p>It is not a report. It is a pulse. A report is produced after someone asks. A pulse runs whether anyone asks or not. If Daily Tunes stops running, something is wrong. That is the point.</p>
+    <table>
+      <tr><th>Role</th><th>Owner</th><th>Responsibility</th></tr>
+      <tr><td>Infrastructure</td><td>Bowie</td><td>Cron jobs run, tools server stays up, logs captured</td></tr>
+      <tr><td>Content assembly</td><td>Lars</td><td>Brief is structured correctly, items are prioritized</td></tr>
+      <tr><td>Routing</td><td>Janis</td><td>Brief reaches Pepe via Telegram, on time, in the right channel</td></tr>
+      <tr><td>Escalation</td><td>Bowie (infra) / Lars (content)</td><td>Flags resolved or escalated before the next run</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">06:15 CET Run</div>
+    <h2>Morning Check</h2>
+    <div class="run-block">
+      <h3>What it checks</h3>
+      <ul>
+        <li>Overnight cron health &mdash; any failures, timeouts, or stalled processes since 19:00 run</li>
+        <li>Email triage &mdash; what came into all 4 inboxes overnight that is time-sensitive</li>
+        <li>Calendar &mdash; today's schedule, conflicts, missing prep, invites needing response</li>
+        <li>Client signals &mdash; any inbound from active clients requiring same-day response</li>
+        <li>Finance &mdash; new transactions, payment failures, or invoices that moved overnight</li>
+        <li>Social queue &mdash; what is scheduled to publish today, is the queue stocked</li>
+        <li>BD pipeline &mdash; any leads that need a follow-up today</li>
+        <li>Open flags from previous day &mdash; unresolved items from yesterday's evening check</li>
+      </ul>
+    </div>
+    <p>Output: a structured brief posted to the Janis Telegram channel by <strong>06:30 CET</strong>.</p>
+    <div class="template">MORNING BRIEF [DATE]
+
+TODAY
+- [calendar item] [time]
+- [calendar item] [time]
+
+ACTION REQUIRED
+1. [item requiring Pepe decision or action, with deadline]
+2. [item]
+
+OVERNIGHT FLAGS
+- [cron failure or infra issue, if any]
+- [email requiring same-day response]
+
+PUBLISHING TODAY
+- [post title / platform]
+
+PIPELINE
+- [lead name, stage, next action due today]
+
+FINANCE
+- [any payment or invoice movement]
+
+CLEAN: [yes / no &mdash; if no, list what is not clean]</div>
+    <p>Pepe acts on ACTION REQUIRED items. Everything else is for awareness. If he sees nothing under ACTION REQUIRED and CLEAN is yes, his day starts free.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">19:00 CET Run</div>
+    <h2>Evening Check</h2>
+    <div class="run-block">
+      <h3>What it checks</h3>
+      <ul>
+        <li>Cron jobs since morning &mdash; did everything scheduled during the day complete?</li>
+        <li>Email triage &mdash; what came in during business hours not already handled?</li>
+        <li>Tasks &mdash; what was supposed to be done today that is not done?</li>
+        <li>Client communications &mdash; any threads needing response before tomorrow?</li>
+        <li>Content &mdash; did scheduled posts publish correctly? Any failures?</li>
+        <li>Finance &mdash; any transactions or payments that cleared today?</li>
+        <li>Infrastructure &mdash; any service restarts, errors, or anomalies in logs</li>
+        <li>Prep for tomorrow &mdash; anything Pepe needs to know before his next morning</li>
+      </ul>
+    </div>
+    <p>Output: a structured close-of-day post by <strong>19:15 CET</strong>.</p>
+    <div class="template">EVENING BRIEF [DATE]
+
+TODAY: CLOSED
+- [completed items]
+
+OPEN ITEMS
+- [not done today, carrying to tomorrow, with owner]
+
+TOMORROW
+- [calendar items]
+- [deadlines]
+
+INFRA
+- [any service anomaly or cron failure today]
+
+PUBLISHING TOMORROW
+- [scheduled content]
+
+EOD STATUS: [CLEAN / FLAGS]</div>
+  </section>
+
+  <section>
+    <div class="sec-label">Immediate Alerts</div>
+    <h2>What Triggers an Alert Outside the Schedule</h2>
+    <ul class="alert-list">
+      <li>Tools server health check fails</li>
+      <li>A cron job not seen for more than 2x its scheduled interval (e.g., a 2-hour job not seen for 4+ hours)</li>
+      <li>Any email from an active client containing: urgent, deadline, ASAP, or similar time markers</li>
+      <li>A payment failure or returned payment notification</li>
+      <li>Any calendar conflict for an event within 24 hours</li>
+      <li>Social post that was scheduled but failed to publish</li>
+    </ul>
+    <p>Immediate alerts are separate from the Daily Tunes briefs. They do not wait for 06:15 or 19:00.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">Health Signals</div>
+    <h2>What a Healthy Run Looks Like</h2>
+    <table>
+      <tr><th>Signal</th><th>Healthy Threshold</th></tr>
+      <tr><td>Brief posts on time</td><td>Within 15 minutes of scheduled run (06:30 and 19:15 CET)</td></tr>
+      <tr><td>ACTION REQUIRED volume</td><td>No more than 3 items on a typical day</td></tr>
+      <tr><td>CLEAN status</td><td>At least 4 out of 5 weekdays</td></tr>
+      <tr><td>INFRA section</td><td>Empty at least 90% of the time</td></tr>
+      <tr><td>Content queue</td><td>Stocked 3+ days ahead</td></tr>
+      <tr><td>Carry-forward items</td><td>No item carries forward more than 2 days without resolution</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">When Daily Tunes Fails</div>
+    <h2>Recovery Scenarios</h2>
+    <table>
+      <tr><th>Scenario</th><th>Response</th></tr>
+      <tr><td>Brief does not post by expected time</td><td>Janis checks cron log. Bowie restarts, posts manual brief. Pepe gets one note: "Daily Tunes delayed, manual brief posted now."</td></tr>
+      <tr><td>Brief posts with errors (wrong date, missing section)</td><td>Lars corrects and reposts. Alert to Pepe only if error was in an ACTION REQUIRED item.</td></tr>
+      <tr><td>Cron consistently failing across multiple runs</td><td>Bowie investigates. If not resolved within one run cycle, Pepe is notified: what failed, what was tried, what is needed.</td></tr>
+      <tr><td>Pepe stops responding to ACTION REQUIRED</td><td>Lars flags on day 3. One Telegram note: "Three ACTION REQUIRED items unacknowledged. Reply with item number to action or defer."</td></tr>
+    </table>
+  </section>
+
+  <div class="related">
+    <div class="sec-label">Related</div>
+    <a class="rel-link" href="/library/team-cadence/">Team Cadence <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/exco-cadence/">ExCo Meeting Cadence <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/service-restart/">Service Restart Protocol <span>&rarr;</span></a>
+  </div>
+</main>
+<footer>MGL Library &nbsp;&middot;&nbsp; G3 &nbsp;&middot;&nbsp; Updated 2026-08-23</footer>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BD Engine | MGL Library</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root{--pink:#e14b87;--pink-light:#e86fa0;--bg:#0d0d0d;--surface:#181818;--surface2:#222;--border:#2a2a2a;--text:#e8e8e8;--muted:#888;--heading:'RocknRoll One','Space Grotesk',sans-serif;--sans:'Space Grotesk',system-ui,sans-serif;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+    a{color:var(--pink);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-light);}
+    nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .nav-logo{font-family:var(--heading);font-weight:700;color:#e8e8e8;font-size:14px;} .nav-logo span{color:var(--pink);}
+    .nav-sep{color:var(--border);}
+    .nav-link{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:4px;}
+    .nav-link:hover{color:var(--text);background:var(--surface2);}
+    .wrap{max-width:780px;margin:0 auto;padding:0 24px;}
+    .header{padding:64px 0 48px;}
+    .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:var(--muted);} .breadcrumb a:hover{color:var(--pink);}
+    .owner-chip{display:inline-flex;align-items:center;background:rgba(225,75,135,0.08);border:1px solid rgba(225,75,135,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--pink);margin-bottom:16px;}
+    h1{font-family:var(--heading);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:12px;line-height:1.15;}
+    h1 em{color:var(--pink);font-style:normal;}
+    .tagline{font-size:1rem;color:var(--muted);max-width:560px;}
+    .divider{border:none;border-top:1px solid var(--border);margin:40px 0;}
+    .section{margin-bottom:48px;}
+    h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.01em;}
+    p{color:#bbb;margin-bottom:14px;font-size:14px;} p:last-child{margin-bottom:0;}
+    .sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink);margin-bottom:8px;}
+    ul,ol{color:#bbb;font-size:14px;padding-left:20px;margin-bottom:14px;}
+    li{margin-bottom:6px;line-height:1.6;}
+    strong{color:var(--text);}
+    code{font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 6px;border-radius:3px;color:#c8c8c8;}
+    table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+    thead th{text-align:left;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;}
+    tbody td{padding:10px 14px;border-bottom:1px solid var(--border);color:#bbb;vertical-align:top;}
+    tbody tr:last-child td{border-bottom:none;}
+    .related{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+    .rel-link{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--text);transition:border-color .2s;}
+    .rel-link:hover{border-color:var(--pink);color:var(--pink);}
+    footer{text-align:center;padding:36px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+    footer a{color:var(--muted);} footer a:hover{color:var(--pink);}
+    @media(max-width:640px){h1{font-size:1.7rem;} .wrap{padding:0 16px;} .header{padding:48px 0 36px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Mexzungu <span>Group</span></a>
+  <span class="nav-sep">|</span>
+  <a href="/library/" class="nav-link">Library</a>
+</nav>
+<div class="wrap">
+  <div class="header">
+    <div class="breadcrumb"><a href="/library/">Library</a> <span>/</span> BD Engine</div>
+    <div class="owner-chip">Owner: Jagger &nbsp;&middot;&nbsp; Chief Growth Officer</div>
+    <h1>The BD <em>Engine</em></h1>
+    <p class="tagline">How the pipeline and outreach protocol works. From first signal to signed engagement letter.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Overview</div>
+    <h2>What the BD Engine does</h2>
+    <p>The BD Engine runs daily. It scans email, WhatsApp, and the CRM for signals, updates lead status, fires outreach at the right moments, and keeps Pepe focused on the highest-leverage conversations.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">How Leads Enter</div>
+    <h2>Four entry channels</h2>
+    <p><strong>Inbound warm intros.</strong> Someone in Pepe's network introduces a prospect by email or WhatsApp. Highest-quality source. Leads from warm intros get priority qualification and same-day response.</p>
+    <p><strong>Referrals from existing clients or partners.</strong> Similar to warm intros but originate from an ongoing client relationship. High conversion historically.</p>
+    <p><strong>Events and conferences.</strong> A connection made at a startup event, investor dinner, or legal conference. Enters via business card exchange or LinkedIn connection followed by an email or DM.</p>
+    <p><strong>LinkedIn.</strong> Prospects who engage with Pepe's content, reply to outreach, or request connection with a clear business signal. Lower trust signal than a warm intro but still viable.</p>
+    <p>When a signal is detected, the BD Engine creates a lead record using the <code>track_lead</code> tool. Contact files are created at <code>brain/contacts/[name].md</code>.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Qualification</div>
+    <h2>Who makes it into the CRM</h2>
+    <ul>
+      <li><strong>Fit:</strong> Does the prospect's need map to a Mexzungu practice area? Legal structuring, governance, deal closing, cross-border transactions, regulatory work, training.</li>
+      <li><strong>Stage:</strong> Is the company at a stage where advisory creates leverage? Early-stage startups with legal gaps, mid-stage companies closing rounds, nonprofits with governance needs.</li>
+      <li><strong>Geography:</strong> Africa, LatAm, Europe. Spanish-speaking markets especially.</li>
+      <li><strong>Signal quality:</strong> A direct request, a specific question, or a referral from someone Pepe knows. Vague connection requests without a message do not qualify.</li>
+    </ul>
+    <p>If the lead passes the filter, it enters the CRM with status <code>new</code>.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Outreach Cadence</div>
+    <h2>When Janis acts vs. waits for Fire Away</h2>
+    <p><strong>Inbound warm intros: Soundcheck. Auto-reply within 24 hours.</strong> When someone messages Pepe after being introduced by an existing contact, Janis replies autonomously. No Fire Away required. Reply format: acknowledge the intro, express interest, close with scheduling link.</p>
+    <p><strong>Cold outreach: always Showtime.</strong> Any first contact with someone Pepe has never engaged with before requires Fire Away. Channel preference is WhatsApp first, email second.</p>
+    <table>
+      <thead><tr><th>Days Since Last Contact</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>7 days</td><td>Soundcheck follow-up if conversation is active</td></tr>
+        <tr><td>13 days</td><td>Stale flag appears in morning brief</td></tr>
+        <tr><td>30+ days</td><td>Lead marked stale in CRM</td></tr>
+        <tr><td>90-127 days no activity</td><td>Auto-close candidate, Pepe notified for decision</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">The Warm Intro Rule</div>
+    <h2>Why speed on warm intros matters</h2>
+    <p>Response speed on a warm intro is itself a signal of competence. Waiting for approval loses deals. This is a Fire Away carve-out that exists for exactly that reason.</p>
+    <ol>
+      <li>Reply within 24 hours. Janis drafts and sends autonomously.</li>
+      <li>Reply format: warm acknowledgment + clear ask for a call + scheduling link.</li>
+      <li>Reply from Pepe's primary account unless the intro came via a specific account context.</li>
+    </ol>
+    <p>Cold outreach from Pepe to someone new is always Showtime. The carve-out applies only to inbound leads.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">CRM Tools</div>
+    <h2>Lead statuses and tools</h2>
+    <ul>
+      <li><code>track_lead</code>: creates a new lead record with initial status, channel, and contact info</li>
+      <li><code>update_lead</code>: updates status, last contact date, next action date, and notes</li>
+      <li><code>pipeline_summary</code>: snapshot of the full pipeline, used in the morning brief</li>
+    </ul>
+    <p>Lead statuses in order: <code>new</code>, <code>contacted</code>, <code>proposal</code>, <code>negotiation</code>, <code>active</code> (client won), <code>lost</code> (closed out). Stale is a flag that can appear on any status.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Handoff to Deal Execution</div>
+    <h2>When Jagger hands to PJ</h2>
+    <p>When a lead converts to a confirmed engagement, Jagger hands off to PJ (Deal Execution Practice Lead). The handoff package includes: lead history and contact notes, proposed engagement structure, draft engagement letter trigger to Lemmy, and first deliverable timeline. PJ owns the deal from signed EL forward.</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">Morning Brief</div>
+    <h2>What Pepe sees each day</h2>
+    <ol>
+      <li>Number of active leads by stage</li>
+      <li>Overdue follow-ups requiring Fire Away, with draft text ready</li>
+      <li>Stale leads with days-since-contact count</li>
+      <li>Auto-close warnings at 7-day and 3-day intervals before close</li>
+      <li>Any new inbound signals detected since the previous run</li>
+    </ol>
+    <p>Pepe's job in the morning brief is to read the SHOWTIME queue and say Fire Away on the items he wants to move. Everything else runs without him.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="sec-label">Related Frameworks</div>
+    <div class="related">
+      <a href="/library/showtime-soundcheck/" class="rel-link">🎬 Showtime vs Soundcheck</a>
+      <a href="/library/backbrief/" class="rel-link">📡 The Backbrief</a>
+      <a href="/library/invoice-to-cash/" class="rel-link">💰 Invoice to Cash</a>
+    </div>
+  </div>
+</div>
+<footer><a href="/library/">MGL Library</a> &nbsp;&middot;&nbsp; <a href="/">mexzungu.com</a></footer>
+</body>
+</html>

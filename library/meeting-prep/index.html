@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meeting Prep Guide — MGL Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#e14b87;--bg:#0d0d0d;--surface:#181818;--border:#2a2a2a;--text:#d4d4d4;--muted:#888;--heading:'RocknRoll One',sans-serif;--body:'Space Grotesk',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.7}
+a{color:var(--pink);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{background:rgba(13,13,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-brand{font-family:var(--heading);font-size:1.1rem;color:#fff;letter-spacing:.5px}
+.nav-brand span{color:var(--pink)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff;text-decoration:none}
+main{max-width:800px;margin:0 auto;padding:48px 24px 96px}
+.breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:32px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--pink)}
+h1{font-family:var(--heading);font-size:2.2rem;color:#fff;line-height:1.2;margin-bottom:8px}
+h1 em{color:var(--pink);font-style:normal}
+.owner-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:6px 14px;font-size:.8rem;color:var(--muted);margin-bottom:40px;flex-wrap:wrap}
+.owner-chip strong{color:#fff}
+.sec-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+h2{font-family:var(--heading);font-size:1.3rem;color:#fff;margin-bottom:16px}
+p{margin-bottom:16px;color:var(--text)}
+ul,ol{margin:0 0 20px 20px;color:var(--text)}
+li{margin-bottom:8px}
+section{margin-bottom:48px;padding-top:24px;border-top:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th{text-align:left;font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:.875rem;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.template{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;font-size:.85rem;line-height:1.6}
+.template-section{border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:12px}
+.template-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.template-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:6px}
+.good-bad{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.good-bad-col h3{font-family:var(--heading);font-size:.95rem;margin-bottom:8px}
+.good-bad-col.good h3{color:#4caf50}
+.good-bad-col.bad h3{color:#e14b87}
+.good-bad-col ul{font-size:.875rem}
+.related{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
+.rel-link{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);color:var(--text);font-size:.9rem}
+.rel-link:last-child{border-bottom:none}
+.rel-link:hover{color:var(--pink);text-decoration:none}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+@media(max-width:600px){h1{font-size:1.6rem}main{padding:32px 16px 64px}.good-bad{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">MGL<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/library/">Library</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+<main>
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/library/">Library</a> / Meeting Prep Guide</div>
+  <h1>Meeting Prep Guide <em>the pre-call research protocol</em></h1>
+  <div class="owner-chip">Client Operations 5.8 &nbsp;·&nbsp; Owner: <strong>Sade (Client Success)</strong> &nbsp;·&nbsp; Updated 2026-08-23</div>
+
+  <section>
+    <div class="sec-label">The Principle</div>
+    <h2>Every Call Should Feel Briefed</h2>
+    <p>Every call Pepe walks into should feel like a call with someone who already knows the situation. Not because Pepe memorizes notes, but because Janis pulls the relevant context 30 minutes before the call starts and surfaces it in a format that takes two minutes to read.</p>
+    <p>The meeting-prep cron runs every 30 minutes during waking hours. It scans the calendar for calls starting within the next 30 to 60 minutes and fires a prep brief to Pepe on Telegram.</p>
+    <table>
+      <tr><th>Trigger</th><th>Condition</th></tr>
+      <tr><td>Default trigger</td><td>Any calendar event with a video link (Meet, Zoom, Teams) or marked as call, discovery, client meeting, or intro</td></tr>
+      <tr><td>Manual trigger</td><td>Pepe messages "prep me for [name/company]" at any time</td></tr>
+      <tr><td>No prep needed</td><td>Internal async items, reminders, and blocked time</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">Research Sequence</div>
+    <h2>What Janis Pulls</h2>
+    <ol>
+      <li><strong>Email history (last 30 days)</strong> &mdash; All four inboxes searched for the counterparty's name and email domain. Last substantive exchange summarized in two sentences: what was asked, what was said, what is open.</li>
+      <li><strong>Contact profile (Google Contacts)</strong> &mdash; Full contact record pulled: name, company, title, phone, notes. If a contact file exists in brain/contacts/, read it for relationship context and standing notes.</li>
+      <li><strong>Client overview</strong> &mdash; If active client or prospect, their overview.md is read. Extract: current status, open items, billing situation, any flags.</li>
+      <li><strong>Open tasks and tickets</strong> &mdash; Lars's ticket system checked for any open items tagged to this client. Overdue items flagged prominently.</li>
+      <li><strong>Recent WhatsApp or Telegram thread</strong> &mdash; Personal and business WhatsApp searched. If active conversation, the last few messages take priority over email.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec-label">Brief Format</div>
+    <h2>The Four-Section Structure</h2>
+    <p>Every prep brief follows the same four-section structure. No exceptions. The entire brief fits in a single Telegram message.</p>
+    <div class="template">
+      <div class="template-section">
+        <div class="template-label">Headline</div>
+        <p style="margin:0;font-size:.875rem">One sentence: who the call is with, what it is about, when it starts.<br><em>"Call with Victoria Peill (Duara) in 30 min. Topic: Q3 billing and Stella SAFE assignment."</em></p>
+      </div>
+      <div class="template-section">
+        <div class="template-label">Key Context</div>
+        <p style="margin:0;font-size:.875rem">Three to five bullet points. Relationship history, last exchange summary, outstanding commitments from either side.</p>
+      </div>
+      <div class="template-section">
+        <div class="template-label">Open Items</div>
+        <p style="margin:0;font-size:.875rem">Flat list of anything open, overdue, or promised but not yet delivered. If nothing open: "No open items."</p>
+      </div>
+      <div class="template-section">
+        <div class="template-label">Suggested Agenda</div>
+        <p style="margin:0;font-size:.875rem">Two to three talking points based on open items and context. Not a script, a frame. Pepe uses these or ignores them.</p>
+      </div>
+    </div>
+    <p><strong>Delivery:</strong> Telegram, plain text, no bold markdown, no hash headers. Readable on a phone screen. If the brief does not fit in one Telegram message, it is too long.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">New Contacts</div>
+    <h2>Extended Research Protocol</h2>
+    <p>When Pepe has a call with someone not yet in Google Contacts, Janis runs extended research before the brief:</p>
+    <ul>
+      <li><strong>LinkedIn:</strong> current role, company, background, recent public posts (Playwright scraping where needed)</li>
+      <li><strong>Company search:</strong> company name, size, location, funding history if applicable, recent news (Google, Crunchbase, LinkedIn company page)</li>
+      <li><strong>Mutual connections:</strong> Google Contacts searched for anyone at the same company or shared network. Warm context is leverage.</li>
+      <li><strong>Source of intro:</strong> who made the introduction, when, and what was said. Sets the relational frame.</li>
+    </ul>
+    <p>Extended brief is allowed to be slightly longer than the standard brief, but must still fit in two Telegram messages maximum.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">Quality Standard</div>
+    <h2>Good Brief vs. Bad Brief</h2>
+    <div class="good-bad">
+      <div class="good-bad-col good">
+        <h3>Good brief</h3>
+        <ul>
+          <li>Takes 90 seconds to read</li>
+          <li>Contains one or two things Pepe could not have remembered without it</li>
+          <li>Has at least one open item surfaced</li>
+          <li>Suggested agenda reflects actual relationship context</li>
+          <li>Accurate: dates, names, amounts verified against source files</li>
+        </ul>
+      </div>
+      <div class="good-bad-col bad">
+        <h3>Bad brief</h3>
+        <ul>
+          <li>Restates what Pepe already knows from the calendar invite</li>
+          <li>Three paragraphs of background on a 2-year client</li>
+          <li>No open items listed despite overdue invoices</li>
+          <li>Suggested agenda does not match the actual call context</li>
+          <li>Late, or missing entirely</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Edge Cases</div>
+    <h2>What to Do When</h2>
+    <table>
+      <tr><th>Scenario</th><th>Response</th></tr>
+      <tr><td>Call Pepe did not book</td><td>Still trigger prep. Source of the calendar event does not matter.</td></tr>
+      <tr><td>Confidential or sensitive call</td><td>Prep brief still sent. Be more careful about what is included, not whether to send.</td></tr>
+      <tr><td>Call reschedules within the 30-minute window</td><td>Update and resend the brief.</td></tr>
+      <tr><td>Call cancels</td><td>No action needed.</td></tr>
+      <tr><td>Back-to-back meetings</td><td>Send the brief as early as possible with a note: "Early prep &mdash; you have back-to-back at [time]."</td></tr>
+      <tr><td>Limited context available</td><td>Say so clearly in the brief. Never fabricate. "Limited context available &mdash; new contact, no prior email history."</td></tr>
+    </table>
+  </section>
+
+  <div class="related">
+    <div class="sec-label">Related</div>
+    <a class="rel-link" href="/library/backbrief/">Backbrief Protocol <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/bd-engine/">BD Engine Guide <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/daily-tunes/">Daily Tunes <span>&rarr;</span></a>
+  </div>
+</main>
+<footer>MGL Library &nbsp;&middot;&nbsp; Client Operations 5.8 &nbsp;&middot;&nbsp; Updated 2026-08-23</footer>
+</body>
+</html>

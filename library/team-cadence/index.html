@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Team Cadence — MGL Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#e14b87;--bg:#0d0d0d;--surface:#181818;--border:#2a2a2a;--text:#d4d4d4;--muted:#888;--heading:'RocknRoll One',sans-serif;--body:'Space Grotesk',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.7}
+a{color:var(--pink);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{background:rgba(13,13,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-brand{font-family:var(--heading);font-size:1.1rem;color:#fff;letter-spacing:.5px}
+.nav-brand span{color:var(--pink)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff;text-decoration:none}
+main{max-width:800px;margin:0 auto;padding:48px 24px 96px}
+.breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:32px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--pink)}
+h1{font-family:var(--heading);font-size:2.2rem;color:#fff;line-height:1.2;margin-bottom:8px}
+h1 em{color:var(--pink);font-style:normal}
+.owner-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:6px 14px;font-size:.8rem;color:var(--muted);margin-bottom:40px;flex-wrap:wrap}
+.owner-chip strong{color:#fff}
+.sec-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+h2{font-family:var(--heading);font-size:1.3rem;color:#fff;margin-bottom:16px}
+p{margin-bottom:16px;color:var(--text)}
+ul,ol{margin:0 0 20px 20px;color:var(--text)}
+li{margin-bottom:8px}
+section{margin-bottom:48px;padding-top:24px;border-top:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th{text-align:left;font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:.875rem;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.rhythm-item{display:flex;gap:16px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
+.rhythm-item:last-child{border-bottom:none}
+.rhythm-time{min-width:80px;font-family:var(--heading);font-size:.85rem;color:var(--pink)}
+.rhythm-body strong{display:block;color:#fff;font-size:.875rem;margin-bottom:2px}
+.rhythm-body p{margin:0;font-size:.825rem;color:var(--muted)}
+.related{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
+.rel-link{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);color:var(--text);font-size:.9rem}
+.rel-link:last-child{border-bottom:none}
+.rel-link:hover{color:var(--pink);text-decoration:none}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+@media(max-width:600px){h1{font-size:1.6rem}main{padding:32px 16px 64px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">MGL<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/library/">Library</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+<main>
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/library/">Library</a> / Team Cadence</div>
+  <h1>Team Cadence <em>when the org runs</em></h1>
+  <div class="owner-chip">Operations &nbsp;·&nbsp; Owner: <strong>Lars (COO)</strong> &nbsp;·&nbsp; Updated 2026-08-23</div>
+
+  <section>
+    <div class="sec-label">Daily Rhythm</div>
+    <h2>Every Weekday</h2>
+    <div>
+      <div class="rhythm-item">
+        <div class="rhythm-time">06:15</div>
+        <div class="rhythm-body"><strong>Daily Tunes &mdash; Morning Brief</strong><p>Janis compiles overnight check: cron health, email, calendar, client signals, finance, social queue, BD pipeline. Posted to Telegram by 06:30.</p></div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-time">06:30</div>
+        <div class="rhythm-body"><strong>Drive Sync</strong><p>Full Drive index and mirror run. New documents filed, stale links flagged.</p></div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-time">Every 30min</div>
+        <div class="rhythm-body"><strong>Email Triage</strong><p>All 4 inboxes scanned. Time-sensitive items flagged. Draft replies auto-prepared for warm leads and client requests.</p></div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-time">Every 2h</div>
+        <div class="rhythm-body"><strong>Task Tracker</strong><p>Lars scans all open tickets. Overdue items flagged. Blockers surfaced to relevant persona.</p></div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-time">Every 4h</div>
+        <div class="rhythm-body"><strong>Finance Filer</strong><p>Gene reconciles new transactions against Budget Bakers. Flags any payment failures or missing receipts.</p></div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-time">19:00</div>
+        <div class="rhythm-body"><strong>Daily Tunes &mdash; Evening Brief</strong><p>Day review: what closed, what carries forward, what is on for tomorrow. EOD status posted to Telegram by 19:15.</p></div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-time">22:00</div>
+        <div class="rhythm-body"><strong>EOD Tally</strong><p>Final daily summary. Tasks completed, tickets closed, any uncaptured items from evening check.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Weekly Rhythm</div>
+    <h2>What Each Persona Runs Weekly</h2>
+    <table>
+      <tr><th>Persona</th><th>Output</th><th>Timing</th></tr>
+      <tr><td>Freddie (CMO)</td><td>Content calendar for next week. Social queue stocked 3+ days ahead.</td><td>Friday afternoon</td></tr>
+      <tr><td>Jagger (CGO)</td><td>Pipeline summary. Stale leads flagged. SHOWTIME queue with draft outreach.</td><td>Monday morning</td></tr>
+      <tr><td>Gene (CFO)</td><td>Weekly financial scorecard. Outstanding invoices. P&amp;L variance.</td><td>Friday</td></tr>
+      <tr><td>Lars (COO)</td><td>ExCo pulse. Open tickets vs. closed. Carry-forward items from previous week.</td><td>Monday 09:00 check-in</td></tr>
+      <tr><td>Bowie (CTO)</td><td>Infrastructure health report. Cron job uptime. Service restart log.</td><td>Monday</td></tr>
+      <tr><td>Bruce (CSO)</td><td>Competitive intel digest. Signal scan from Friday run.</td><td>Friday 06:00</td></tr>
+      <tr><td>Annie (Analytics)</td><td>Content performance report. What beat benchmark. What underperformed.</td><td>Friday, fed back to Freddie</td></tr>
+      <tr><td>Sade (Client Success)</td><td>Client health flags. Any relationship signal requiring attention.</td><td>Daily passive, weekly summary</td></tr>
+      <tr><td>Nina (Knowledge)</td><td>Library index update. New docs filed. Stale docs flagged for review.</td><td>Weekly sweep</td></tr>
+      <tr><td>Lemmy (CLO)</td><td>Contract watchdog. Expiring or missing contracts surfaced.</td><td>Monday 08:00</td></tr>
+      <tr><td>Ozzy (Scenario)</td><td>On-demand stress-test for any Showtime decision queued for the week.</td><td>As needed</td></tr>
+      <tr><td>Kim (QA)</td><td>Engine audit run if scheduled. Build verification on any deployed changes.</td><td>As needed</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">Monthly Rhythm</div>
+    <h2>What Happens Every Month</h2>
+    <ul>
+      <li><strong>Financial close (Gene)</strong> &mdash; Full P&amp;L reconciliation. Invoice tracker vs. actual payments. Budget Bakers reconciled. Overdue invoice escalations confirmed.</li>
+      <li><strong>KPI review (Lars + Gene)</strong> &mdash; Revenue vs. target, pipeline velocity, content performance benchmark, client health scores. Pre-read for Monthly ExCo Review.</li>
+      <li><strong>Content strategy (Freddie + Annie)</strong> &mdash; Performance data from previous month informs next month's content calendar. Format mix reviewed and adjusted.</li>
+      <li><strong>Client health scores (Sade + Sheryl)</strong> &mdash; Each active client receives a health score. RED/YELLOW/GREEN status updated. Flags escalated to Pepe directly.</li>
+      <li><strong>Monthly ExCo Review (Lars)</strong> &mdash; First Monday of the month. 90 minutes. Pepe is in the room and makes the decisions.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-label">Quarterly Rhythm</div>
+    <h2>What Happens Every Quarter</h2>
+    <ul>
+      <li><strong>OODA Retro (Bruce + Lars)</strong> &mdash; Last Friday of the quarter. Full observe-orient-decide-act loop analysis. What did we observe, what did we orient around, what did we decide, what did we act on.</li>
+      <li><strong>Roadmap review (Lars + Bowie + Freddie)</strong> &mdash; Infrastructure roadmap, content roadmap, BD roadmap reviewed and updated based on quarter results.</li>
+      <li><strong>Persona calibration (Nina)</strong> &mdash; Any persona dossiers updated based on decisions made during the quarter. New rules, updated operating parameters.</li>
+      <li><strong>Cash monitor (Gene)</strong> &mdash; Quarterly cash position review. Runway, receivables, projected inflows for the next quarter.</li>
+    </ul>
+  </section>
+
+  <div class="related">
+    <div class="sec-label">Related</div>
+    <a class="rel-link" href="/library/daily-tunes/">Daily Tunes <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/exco-cadence/">ExCo Meeting Cadence <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/content-engine/">Content Engine Workflow <span>&rarr;</span></a>
+  </div>
+</main>
+<footer>MGL Library &nbsp;&middot;&nbsp; Operations &nbsp;&middot;&nbsp; Updated 2026-08-23</footer>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Invoice to Cash — MGL Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#e14b87;--bg:#0d0d0d;--surface:#181818;--border:#2a2a2a;--text:#d4d4d4;--muted:#888;--heading:'RocknRoll One',sans-serif;--body:'Space Grotesk',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.7}
+a{color:var(--pink);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{background:rgba(13,13,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-brand{font-family:var(--heading);font-size:1.1rem;color:#fff;letter-spacing:.5px}
+.nav-brand span{color:var(--pink)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff;text-decoration:none}
+main{max-width:800px;margin:0 auto;padding:48px 24px 96px}
+.breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:32px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--pink)}
+h1{font-family:var(--heading);font-size:2.2rem;color:#fff;line-height:1.2;margin-bottom:8px}
+h1 em{color:var(--pink);font-style:normal}
+.owner-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:6px 14px;font-size:.8rem;color:var(--muted);margin-bottom:40px;flex-wrap:wrap}
+.owner-chip strong{color:#fff}
+.sec-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+h2{font-family:var(--heading);font-size:1.3rem;color:#fff;margin-bottom:16px}
+p{margin-bottom:16px;color:var(--text)}
+ul,ol{margin:0 0 20px 20px;color:var(--text)}
+li{margin-bottom:8px}
+section{margin-bottom:48px;padding-top:24px;border-top:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th{text-align:left;font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:.875rem;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.rule-box{background:var(--surface);border:1px solid var(--pink);border-radius:8px;padding:20px;margin:16px 0}
+.rule-label{color:var(--pink);font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.limits-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.limit-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px}
+.limit-val{font-family:var(--heading);font-size:1.4rem;color:var(--pink);margin-bottom:4px}
+.limit-label{font-size:.8rem;color:var(--muted)}
+.related{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
+.rel-link{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);color:var(--text);font-size:.9rem}
+.rel-link:last-child{border-bottom:none}
+.rel-link:hover{color:var(--pink);text-decoration:none}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+@media(max-width:600px){h1{font-size:1.6rem}main{padding:32px 16px 64px}.limits-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">MGL<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/library/">Library</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+<main>
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/library/">Library</a> / Invoice to Cash</div>
+  <h1>Invoice to Cash <em>how we get paid</em></h1>
+  <div class="owner-chip">Core Finance &nbsp;·&nbsp; Owner: <strong>Gene (CFO)</strong> &nbsp;·&nbsp; Updated 2026-08-23</div>
+
+  <section>
+    <div class="sec-label">The Gold Rule</div>
+    <h2>Non-Negotiable</h2>
+    <div class="rule-box">
+      <div class="rule-label">Gold Rule</div>
+      <p style="margin:0">We never bill clients for correcting our own mistakes. This includes: reformatting errors, deleted documents we caused, mislabeling, reversed edits, or any rework due to Janis error. Cut those hours before presenting any invoice. Zero exceptions.</p>
+    </div>
+    <p>The second non-negotiable: drafting an invoice is Soundcheck. Sending an invoice is Showtime. Gene prepares, Pepe says Fire Away.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">Trigger Conditions</div>
+    <h2>When Invoicing Runs</h2>
+    <table>
+      <tr><th>Billing Type</th><th>Trigger</th><th>Timing</th></tr>
+      <tr><td>Retainer</td><td>First of each month, regardless of deliverables</td><td>Invoice raised on the 1st, due on the 15th</td></tr>
+      <tr><td>Deal-closing / Success fee</td><td>Milestone event occurs (term sheet signed, closing confirmed, etc.)</td><td>Invoice raised within 48 hours of milestone</td></tr>
+      <tr><td>Sweet equity</td><td>Cap table entry confirmed in writing</td><td>No invoice &mdash; equity conversion memo instead</td></tr>
+      <tr><td>Ad hoc / Project</td><td>Deliverable accepted by client</td><td>Invoice raised within 24 hours of acceptance</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">Billing Schedules</div>
+    <h2>By Client</h2>
+    <table>
+      <tr><th>Client</th><th>Structure</th><th>Notes</th></tr>
+      <tr><td>Duara</td><td>Monthly retainer + ad hoc work</td><td>Gold Rule applies strictly &mdash; never bill own errors. Three simultaneous roles tracked separately.</td></tr>
+      <tr><td>HavenPay</td><td>Deal-closing success fee</td><td>Triggered on deal close event. Gene monitors deal progress via Jagger.</td></tr>
+      <tr><td>Kabisa</td><td>Success fee</td><td>Triggered on defined milestones per EL.</td></tr>
+      <tr><td>LADX</td><td>Sweet equity</td><td>No cash invoices. Cap table position confirmed in writing.</td></tr>
+      <tr><td>Tonza Energy</td><td>Success fee</td><td>Per EL signed 2026-08-07. Gene monitors for trigger events.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">Chase Cadence</div>
+    <h2>When Invoices Go Unpaid</h2>
+    <table>
+      <tr><th>Day</th><th>Action</th><th>Owner</th></tr>
+      <tr><td>Day 0</td><td>Invoice sent with payment details and due date</td><td>Gene (Soundcheck send)</td></tr>
+      <tr><td>Day 14</td><td>Friendly reminder &mdash; "Just checking in" tone</td><td>Gene (Soundcheck)</td></tr>
+      <tr><td>Day 21</td><td>Firm reminder &mdash; payment terms referenced</td><td>Gene (Soundcheck)</td></tr>
+      <tr><td>Day 30</td><td>Escalation flag to Pepe &mdash; draft escalation email prepared for Fire Away</td><td>Gene escalates to Pepe</td></tr>
+      <tr><td>Day 45+</td><td>Lemmy engaged for legal review of options</td><td>Gene + Lemmy</td></tr>
+    </table>
+    <p>Friendly chasers at Day 14 and 21 are Soundcheck. Gene sends autonomously and logs to the finance tracker. Day 30 escalation requires Pepe's Fire Away before sending.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">Hard Limits</div>
+    <h2>Loop Constraints</h2>
+    <div class="limits-grid">
+      <div class="limit-item">
+        <div class="limit-val">20</div>
+        <div class="limit-label">Maximum invoices processed per run</div>
+      </div>
+      <div class="limit-item">
+        <div class="limit-val">5 min</div>
+        <div class="limit-label">Maximum runtime per loop execution</div>
+      </div>
+      <div class="limit-item">
+        <div class="limit-val">3</div>
+        <div class="limit-label">Retry attempts before flagging</div>
+      </div>
+      <div class="limit-item">
+        <div class="limit-val">3 fails</div>
+        <div class="limit-label">Consecutive failures trigger full halt and Pepe alert</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Escalation Path</div>
+    <h2>Who Handles What</h2>
+    <ul>
+      <li><strong>Gene</strong> &mdash; owns invoice preparation, routine chasers, finance tracking, and loop health</li>
+      <li><strong>Pepe</strong> &mdash; approves sends (Fire Away), handles Day 30+ escalation letters</li>
+      <li><strong>Lemmy</strong> &mdash; engaged at Day 45+ for legal review of delinquent invoices</li>
+    </ul>
+    <p>Gene surfaces all outstanding invoices in the monthly ExCo Review. No invoice should be surprised at the 45-day mark &mdash; it should already be on Pepe's radar from Day 30.</p>
+  </section>
+
+  <div class="related">
+    <div class="sec-label">Related</div>
+    <a class="rel-link" href="/library/bd-engine/">BD Engine Guide <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/exco-cadence/">ExCo Meeting Cadence <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/backbrief/">Backbrief Protocol <span>&rarr;</span></a>
+  </div>
+</main>
+<footer>MGL Library &nbsp;&middot;&nbsp; Core Finance &nbsp;&middot;&nbsp; Updated 2026-08-23</footer>
+</body>
+</html>

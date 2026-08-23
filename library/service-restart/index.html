@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Service Restart Protocol — MGL Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#e14b87;--bg:#0d0d0d;--surface:#181818;--border:#2a2a2a;--text:#d4d4d4;--muted:#888;--heading:'RocknRoll One',sans-serif;--body:'Space Grotesk',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.7}
+a{color:var(--pink);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{background:rgba(13,13,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-brand{font-family:var(--heading);font-size:1.1rem;color:#fff;letter-spacing:.5px}
+.nav-brand span{color:var(--pink)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff;text-decoration:none}
+main{max-width:800px;margin:0 auto;padding:48px 24px 96px}
+.breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:32px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--pink)}
+h1{font-family:var(--heading);font-size:2.2rem;color:#fff;line-height:1.2;margin-bottom:8px}
+h1 em{color:var(--pink);font-style:normal}
+.owner-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:6px 14px;font-size:.8rem;color:var(--muted);margin-bottom:40px;flex-wrap:wrap}
+.owner-chip strong{color:#fff}
+.sec-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+h2{font-family:var(--heading);font-size:1.3rem;color:#fff;margin-bottom:16px}
+p{margin-bottom:16px;color:var(--text)}
+ul,ol{margin:0 0 20px 20px;color:var(--text)}
+li{margin-bottom:8px}
+section{margin-bottom:48px;padding-top:24px;border-top:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th{text-align:left;font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:.875rem;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.codeblock{background:#111;border:1px solid var(--border);border-radius:6px;padding:14px 16px;font-family:'Space Mono',monospace,var(--body);font-size:.82rem;line-height:1.6;color:#d4d4d4;margin:12px 0;overflow-x:auto}
+.codeblock .comment{color:var(--muted)}
+.codeblock .cmd{color:var(--pink)}
+.health-chip{display:inline-block;background:var(--surface);border:1px solid #4caf50;border-radius:4px;padding:4px 10px;font-size:.8rem;color:#4caf50;font-family:monospace}
+.error-type{color:var(--pink);font-weight:600;font-size:.875rem}
+.related{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
+.rel-link{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);color:var(--text);font-size:.9rem}
+.rel-link:last-child{border-bottom:none}
+.rel-link:hover{color:var(--pink);text-decoration:none}
+footer{text-align:center;padding:32px;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+@media(max-width:600px){h1{font-size:1.6rem}main{padding:32px 16px 64px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">MGL<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/library/">Library</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+<main>
+  <div class="breadcrumb"><a href="/">Home</a> / <a href="/library/">Library</a> / Service Restart Protocol</div>
+  <h1>Service Restart Protocol <em>when something breaks, fix it right</em></h1>
+  <div class="owner-chip">G10 &nbsp;·&nbsp; Owner: <strong>Iggy (Infrastructure)</strong> &nbsp;·&nbsp; Updated 2026-08-23</div>
+
+  <section>
+    <div class="sec-label">The Four Services</div>
+    <h2>What Runs Janis</h2>
+    <table>
+      <tr><th>Service</th><th>Unit Name</th><th>Port</th><th>What It Does</th></tr>
+      <tr><td>Janis Tools</td><td>janis-tools</td><td>8741</td><td>Core tools server. 74 registered tools. All API calls route through here.</td></tr>
+      <tr><td>Kellen Dashboard</td><td>janis-kellen</td><td>8742</td><td>Kellen's operational dashboard. Client tracking, task management.</td></tr>
+      <tr><td>Main Dashboard</td><td>janis-dashboard</td><td>8743</td><td>Pepe-facing dashboard. Pipeline, finance, client health at a glance.</td></tr>
+      <tr><td>Dashboard Hub</td><td>janis-hub</td><td>8744</td><td>Hub router. Aggregates dashboard feeds, handles session routing.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">Restart Commands</div>
+    <h2>How to Restart Each Service</h2>
+    <p><strong>Standard restart (janis-tools):</strong></p>
+    <div class="codeblock">systemctl --user restart janis-tools && sleep 5 && curl -s http://127.0.0.1:8741/health</div>
+    <p><strong>Expected healthy response:</strong> <span class="health-chip">{"status":"ok","tools":74}</span></p>
+    <p><strong>Full stack restart:</strong></p>
+    <div class="codeblock">systemctl --user restart janis-tools janis-kellen janis-dashboard janis-hub</div>
+    <p><strong>Check status of all services:</strong></p>
+    <div class="codeblock">systemctl --user status janis-tools janis-kellen janis-dashboard janis-hub</div>
+    <p><strong>View live logs:</strong></p>
+    <div class="codeblock">journalctl --user -u janis-tools -f</div>
+    <p><strong>Mandatory restart rule:</strong> Any modification to <code>tools_server.py</code>, <code>kellen_dashboard.py</code>, <code>dashboard.py</code>, or <code>dashboard_hub.py</code> must be followed by a service restart and health check confirmation before the task is considered complete.</p>
+  </section>
+
+  <section>
+    <div class="sec-label">Error Patterns</div>
+    <h2>Common Errors and What They Mean</h2>
+    <table>
+      <tr><th>Error</th><th>Cause</th><th>Fix</th></tr>
+      <tr>
+        <td><span class="error-type">ModuleNotFoundError</span></td>
+        <td>Python dependency missing or wrong venv active</td>
+        <td>Check venv activation. Run <code>pip install -r requirements.txt</code> in the correct venv.</td>
+      </tr>
+      <tr>
+        <td><span class="error-type">Address already in use</span></td>
+        <td>Previous process did not fully terminate on the port</td>
+        <td>Kill the lingering process: <code>lsof -ti:8741 | xargs kill -9</code> then restart.</td>
+      </tr>
+      <tr>
+        <td><span class="error-type">SyntaxError</span></td>
+        <td>Code change introduced a Python syntax error</td>
+        <td>Run <code>python3 -m py_compile janis/tools_server.py</code> to identify the line. Fix before restart.</td>
+      </tr>
+      <tr>
+        <td><span class="error-type">ImportError</span></td>
+        <td>Circular import or missing module in updated code</td>
+        <td>Check recent file changes. Identify the new import path that fails. Often a missing <code>__init__.py</code> or renamed file.</td>
+      </tr>
+      <tr>
+        <td>Health check returns <code>tools: 0</code></td>
+        <td>TOOL_REGISTRY failed to load &mdash; usually a JSON parse error or missing file</td>
+        <td>Check <code>janis/tool_registry.json</code> syntax. Validate with <code>python3 -c "import json; json.load(open('janis/tool_registry.json'))"</code>.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">Log Locations</div>
+    <h2>Where to Look</h2>
+    <table>
+      <tr><th>Log</th><th>Path</th></tr>
+      <tr><td>Tools server runtime log</td><td>brain/logs/tools-server.log</td></tr>
+      <tr><td>Tools server error log</td><td>brain/logs/tools-server-error.log</td></tr>
+      <tr><td>Systemd journal (live)</td><td>journalctl --user -u janis-tools -f</td></tr>
+      <tr><td>Systemd journal (recent 100 lines)</td><td>journalctl --user -u janis-tools -n 100</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-label">Escalation Path</div>
+    <h2>Who Handles What</h2>
+    <ul>
+      <li><strong>Iggy</strong> &mdash; first responder for all service restarts and error pattern diagnosis</li>
+      <li><strong>Bowie</strong> &mdash; escalation when Iggy cannot resolve. Bowie makes architectural decisions about root cause fixes.</li>
+      <li><strong>Jack</strong> &mdash; called in when the error is in backend API logic or tool implementation, not infra</li>
+      <li><strong>Pepe</strong> &mdash; notified only when Bowie cannot resolve autonomously. Message format: "What failed / What was tried / What is needed."</li>
+    </ul>
+    <p>Never notify Pepe before Iggy and Bowie have both looked at it. One restart and a health check is not "tried everything."</p>
+  </section>
+
+  <div class="related">
+    <div class="sec-label">Related</div>
+    <a class="rel-link" href="/library/daily-tunes/">Daily Tunes <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/team-cadence/">Team Cadence <span>&rarr;</span></a>
+    <a class="rel-link" href="/library/backbrief/">Backbrief Protocol <span>&rarr;</span></a>
+  </div>
+</main>
+<footer>MGL Library &nbsp;&middot;&nbsp; G10 &nbsp;&middot;&nbsp; Updated 2026-08-23</footer>
+</body>
+</html>
