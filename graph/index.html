@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGL Knowledge Graph | Mexzungu Group</title>
+  <meta name="description" content="Force-directed knowledge graph of the MGL operating system: 29 personas, loops, and tools.">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    :root {
+      --pink: #e14b87;
+      --pink-light: #e86fa0;
+      --blue: #4c9fff;
+      --amber: #f0a030;
+      --bg: #0d0d0d;
+      --surface: #181818;
+      --surface2: #222222;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --heading: 'RocknRoll One', 'Space Grotesk', sans-serif;
+      --sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; }
+    a { color: var(--pink); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--pink-light); }
+
+    nav { position: relative; z-index: 100; background: rgba(13,13,13,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; flex-shrink: 0; }
+    .nav-logo { font-family: var(--heading); font-weight: 700; color: #e8e8e8; font-size: 14px; }
+    .nav-logo span { color: var(--pink); }
+    .nav-sep { color: var(--border); }
+    .nav-link { font-size: 12px; color: var(--muted); padding: 4px 10px; border-radius: 4px; transition: color .15s, background .15s; }
+    .nav-link:hover { color: var(--text); background: var(--surface2); }
+    .nav-link.active { color: var(--pink); }
+
+    #canvas-wrap { flex: 1; position: relative; overflow: hidden; }
+    svg { width: 100%; height: 100%; display: block; }
+
+    /* Controls overlay */
+    #controls { position: absolute; top: 16px; right: 16px; z-index: 50; display: flex; flex-direction: column; gap: 10px; width: 200px; }
+    .ctrl-panel { background: rgba(24,24,24,0.92); border: 1px solid var(--border); border-radius: 10px; padding: 14px; backdrop-filter: blur(8px); }
+    .ctrl-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
+    .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer; }
+    .filter-row:last-child { margin-bottom: 0; }
+    .filter-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .filter-label { font-size: 12px; color: var(--text); flex: 1; }
+    .filter-count { font-size: 11px; color: var(--muted); }
+    .filter-row input[type=checkbox] { display: none; }
+    .filter-row.dimmed .filter-label { color: var(--muted); }
+    .filter-row.dimmed .filter-dot { opacity: 0.3; }
+
+    /* Search */
+    #search-wrap { position: absolute; top: 16px; left: 16px; z-index: 50; width: 220px; }
+    #search { width: 100%; background: rgba(24,24,24,0.92); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 13px; color: var(--text); font-family: var(--sans); outline: none; backdrop-filter: blur(8px); transition: border-color 0.2s; }
+    #search::placeholder { color: var(--muted); }
+    #search:focus { border-color: var(--pink); }
+    #search-count { font-size: 11px; color: var(--muted); margin-top: 6px; padding-left: 2px; }
+
+    /* Tooltip */
+    #tooltip { position: absolute; pointer-events: none; background: rgba(24,24,24,0.96); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 12px; line-height: 1.5; max-width: 200px; z-index: 200; display: none; }
+    #tooltip .tt-name { font-family: var(--heading); font-size: 13px; color: var(--text); margin-bottom: 2px; }
+    #tooltip .tt-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    #tooltip .tt-type.persona { color: var(--pink); }
+    #tooltip .tt-type.loop { color: var(--blue); }
+    #tooltip .tt-type.tool { color: var(--amber); }
+    #tooltip .tt-title { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    #tooltip .tt-engine { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    /* Legend */
+    #legend { position: absolute; bottom: 16px; left: 16px; z-index: 50; }
+    .legend-panel { background: rgba(24,24,24,0.88); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; backdrop-filter: blur(8px); display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .leg-item { display: flex; align-items: center; gap: 6px; }
+    .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .leg-label { font-size: 11px; color: var(--muted); }
+
+    /* Edge type legend */
+    #edge-legend { position: absolute; bottom: 16px; right: 16px; z-index: 50; }
+
+    @media (max-width: 640px) {
+      #controls { width: 160px; right: 8px; top: 8px; }
+      #search-wrap { width: 160px; left: 8px; top: 8px; }
+      .ctrl-panel { padding: 10px; }
+      #legend { bottom: 8px; left: 8px; }
+      .legend-panel { gap: 10px; padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Mexzungu<span>.</span></a>
+  <span class="nav-sep">/</span>
+  <a href="/library/" class="nav-link">Library</a>
+  <a href="/graph/" class="nav-link active">Graph</a>
+</nav>
+
+<div id="canvas-wrap">
+  <svg id="graph-svg"></svg>
+
+  <div id="search-wrap">
+    <input id="search" type="search" placeholder="Search nodes..." autocomplete="off">
+    <div id="search-count"></div>
+  </div>
+
+  <div id="controls">
+    <div class="ctrl-panel">
+      <div class="ctrl-title">Filter</div>
+      <label class="filter-row" id="filter-persona">
+        <input type="checkbox" checked data-type="persona">
+        <span class="filter-dot" style="background:#e14b87"></span>
+        <span class="filter-label">Personas</span>
+        <span class="filter-count" id="count-persona">0</span>
+      </label>
+      <label class="filter-row" id="filter-loop">
+        <input type="checkbox" checked data-type="loop">
+        <span class="filter-dot" style="background:#4c9fff"></span>
+        <span class="filter-label">Loops</span>
+        <span class="filter-count" id="count-loop">0</span>
+      </label>
+      <label class="filter-row" id="filter-tool">
+        <input type="checkbox" checked data-type="tool">
+        <span class="filter-dot" style="background:#f0a030"></span>
+        <span class="filter-label">Tools</span>
+        <span class="filter-count" id="count-tool">0</span>
+      </label>
+    </div>
+  </div>
+
+  <div id="legend">
+    <div class="legend-panel">
+      <div class="leg-item"><div class="leg-dot" style="background:#e14b87"></div><span class="leg-label">Persona</span></div>
+      <div class="leg-item"><div class="leg-dot" style="background:#4c9fff"></div><span class="leg-label">Loop</span></div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f0a030"></div><span class="leg-label">Tool</span></div>
+    </div>
+  </div>
+
+  <div id="tooltip">
+    <div class="tt-name"></div>
+    <div class="tt-type"></div>
+    <div class="tt-title"></div>
+    <div class="tt-engine"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+const NODES = [{"id": "annie", "name": "Annie", "type": "persona", "title": "Analytics and Performance Operator", "macro_engine": "", "url": "/agents/annie"}, {"id": "anselmo", "name": "Anselmo", "type": "persona", "title": "Brand Police", "macro_engine": "", "url": "/agents/anselmo"}, {"id": "aretha", "name": "Aretha", "type": "persona", "title": "M&A Desk Lead", "macro_engine": "", "url": "/agents/aretha"}, {"id": "bowie", "name": "Bowie", "type": "persona", "title": "Chief Technology Officer", "macro_engine": "", "url": "/agents/bowie"}, {"id": "bruce", "name": "Bruce", "type": "persona", "title": "Head of Delivery", "macro_engine": "", "url": "/agents/bruce"}, {"id": "chrissie", "name": "Chrissie", "type": "persona", "title": "Asset Deals Lead", "macro_engine": "", "url": "/agents/chrissie"}, {"id": "freddie", "name": "Freddie", "type": "persona", "title": "Chief Marketing Officer", "macro_engine": "", "url": "/agents/freddie"}, {"id": "gene", "name": "Gene", "type": "persona", "title": "Chief Financial Officer", "macro_engine": "", "url": "/agents/gene"}, {"id": "grace", "name": "Grace", "type": "persona", "title": "Brand Operator", "macro_engine": "", "url": "/agents/grace"}, {"id": "grohl", "name": "Grohl", "type": "persona", "title": "Content Producer", "macro_engine": "", "url": "/agents/grohl"}, {"id": "iggy", "name": "Iggy", "type": "persona", "title": "DevOps and Infrastructure Engineer", "macro_engine": "", "url": "/agents/iggy"}, {"id": "jack", "name": "Jack", "type": "persona", "title": "Backend and API Engineer", "macro_engine": "", "url": "/agents/jack"}, {"id": "jagger", "name": "Jagger", "type": "persona", "title": "Chief Growth Officer", "macro_engine": "", "url": "/agents/jagger"}, {"id": "joan", "name": "Joan", "type": "persona", "title": "Venture Architecture Practice Lead", "macro_engine": "", "url": "/agents/joan"}, {"id": "joni", "name": "Joni", "type": "persona", "title": "Editor", "macro_engine": "", "url": "/agents/joni"}, {"id": "kim", "name": "Kim", "type": "persona", "title": "AI Operations Practice Lead", "macro_engine": "", "url": "/agents/kim"}, {"id": "lars", "name": "Lars", "type": "persona", "title": "Head of Management", "macro_engine": "", "url": "/agents/lars"}, {"id": "lemmy", "name": "Lemmy", "type": "persona", "title": "Chief Legal Officer", "macro_engine": "", "url": "/agents/lemmy"}, {"id": "lenny", "name": "Lenny", "type": "persona", "title": "Content Producer", "macro_engine": "", "url": "/agents/lenny"}, {"id": "lou", "name": "Lou", "type": "persona", "title": "QA and Testing Engineer", "macro_engine": "", "url": "/agents/lou"}, {"id": "nick", "name": "Nick", "type": "persona", "title": "Editor", "macro_engine": "", "url": "/agents/nick"}, {"id": "nile", "name": "Nile", "type": "persona", "title": "Frontend and UX Engineer", "macro_engine": "", "url": "/agents/nile"}, {"id": "nina", "name": "Nina", "type": "persona", "title": "Head of Knowledge", "macro_engine": "", "url": "/agents/nina"}, {"id": "ozzy", "name": "Ozzy", "type": "persona", "title": "Scenario Planner", "macro_engine": "", "url": "/agents/ozzy"}, {"id": "pj", "name": "PJ", "type": "persona", "title": "Debt Desk Lead", "macro_engine": "", "url": "/agents/pj"}, {"id": "prince", "name": "Prince", "type": "persona", "title": "Head of Excellence", "macro_engine": "", "url": "/agents/prince"}, {"id": "sade", "name": "Sade", "type": "persona", "title": "Head of Client Success", "macro_engine": "", "url": "/agents/sade"}, {"id": "sheryl", "name": "Sheryl", "type": "persona", "title": "Client Success Operator", "macro_engine": "", "url": "/agents/sheryl"}, {"id": "tina", "name": "Tina", "type": "persona", "title": "Equity Desk Lead", "macro_engine": "", "url": "/agents/tina"}, {"id": "loop-agent-building-engine", "name": "agent-building-engine", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-alexandria-sync", "name": "alexandria-sync", "type": "loop", "macro_engine": "Core", "owner": "nina", "url": ""}, {"id": "loop-annie-kpis", "name": "annie-kpis", "type": "loop", "macro_engine": "", "owner": "annie", "url": ""}, {"id": "loop-anselmo-kpis", "name": "anselmo-kpis", "type": "loop", "macro_engine": "", "owner": "anselmo", "url": ""}, {"id": "loop-aretha-kpis", "name": "aretha-kpis", "type": "loop", "macro_engine": "", "owner": "aretha", "url": ""}, {"id": "loop-bd-engine", "name": "bd-engine", "type": "loop", "macro_engine": "Connection", "owner": "jagger", "url": ""}, {"id": "loop-billing-invoice-engine", "name": "billing-invoice-engine", "type": "loop", "macro_engine": "Core", "owner": "gene", "url": ""}, {"id": "loop-bowie-infra-tracker", "name": "bowie-infra-tracker", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-bowie-kpis", "name": "bowie-kpis", "type": "loop", "macro_engine": "", "owner": "bowie", "url": ""}, {"id": "loop-bruce-kpis", "name": "bruce-kpis", "type": "loop", "macro_engine": "", "owner": "bruce", "url": ""}, {"id": "loop-chrissie-kpis", "name": "chrissie-kpis", "type": "loop", "macro_engine": "", "owner": "chrissie", "url": ""}, {"id": "loop-commission-verifier", "name": "commission-verifier", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-commissions-calibration", "name": "commissions-calibration", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-commissions-migration", "name": "commissions-migration", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-comms-redesign", "name": "comms-redesign", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-connector-probe", "name": "connector-probe", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-cron-health-engine", "name": "cron-health-engine", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-daily-journal-prep", "name": "daily-journal-prep", "type": "loop", "macro_engine": "LFE-Soul", "owner": "nickcave", "url": ""}, {"id": "loop-delta40-upgrade-design", "name": "delta40-upgrade-design", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-engine-architecture-improver", "name": "engine-architecture-improver", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-engine-auditor", "name": "engine-auditor", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-freddie-kpis", "name": "freddie-kpis", "type": "loop", "macro_engine": "", "owner": "freddie", "url": ""}, {"id": "loop-gene-kpis", "name": "gene-kpis", "type": "loop", "macro_engine": "", "owner": "gene", "url": ""}, {"id": "loop-grace-kpis", "name": "grace-kpis", "type": "loop", "macro_engine": "", "owner": "grace", "url": ""}, {"id": "loop-grohl-kpis", "name": "grohl-kpis", "type": "loop", "macro_engine": "", "owner": "grohl", "url": ""}, {"id": "loop-havenpay-monitor", "name": "havenpay-monitor", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-iggy-kpis", "name": "iggy-kpis", "type": "loop", "macro_engine": "", "owner": "iggy", "url": ""}, {"id": "loop-inter-agent-harness-design", "name": "inter-agent-harness-design", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-invoice-to-cash", "name": "invoice-to-cash", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-jack-kpis", "name": "jack-kpis", "type": "loop", "macro_engine": "", "owner": "jack", "url": ""}, {"id": "loop-jagger-kpis", "name": "jagger-kpis", "type": "loop", "macro_engine": "", "owner": "jagger", "url": ""}, {"id": "loop-janis-kpis", "name": "janis-kpis", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-joan-kpis", "name": "joan-kpis", "type": "loop", "macro_engine": "", "owner": "joan", "url": ""}, {"id": "loop-joni-kpis", "name": "joni-kpis", "type": "loop", "macro_engine": "", "owner": "joni", "url": ""}, {"id": "loop-kim-kpis", "name": "kim-kpis", "type": "loop", "macro_engine": "", "owner": "kim", "url": ""}, {"id": "loop-knowledge-engine", "name": "knowledge-engine", "type": "loop", "macro_engine": "Core", "owner": "nina", "url": ""}, {"id": "loop-kpi-measurement", "name": "kpi-measurement", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-lars-kpis", "name": "lars-kpis", "type": "loop", "macro_engine": "", "owner": "lars", "url": ""}, {"id": "loop-lemmy-kpis", "name": "lemmy-kpis", "type": "loop", "macro_engine": "", "owner": "lemmy", "url": ""}, {"id": "loop-lenny-kpis", "name": "lenny-kpis", "type": "loop", "macro_engine": "", "owner": "lenny", "url": ""}, {"id": "loop-lfe-investment-engine", "name": "lfe-investment-engine", "type": "loop", "macro_engine": "Core", "owner": "gene", "url": ""}, {"id": "loop-lfe-properties-engine", "name": "lfe-properties-engine", "type": "loop", "macro_engine": "Core", "owner": "gene", "url": ""}, {"id": "loop-lfe-tax-engine", "name": "lfe-tax-engine", "type": "loop", "macro_engine": "Core", "owner": "gene", "url": ""}, {"id": "loop-lfe-travel-engine", "name": "lfe-travel-engine", "type": "loop", "macro_engine": "Core", "owner": "lars", "url": ""}, {"id": "loop-loop-maker-v2", "name": "loop-maker-v2", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-loop-registry-engine", "name": "loop-registry-engine", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-lou-kpis", "name": "lou-kpis", "type": "loop", "macro_engine": "", "owner": "lou", "url": ""}, {"id": "loop-mgl-app-dev", "name": "mgl-app-dev", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-mgl-avatar-generator", "name": "mgl-avatar-generator", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-mgl-council", "name": "mgl-council", "type": "loop", "macro_engine": "Core", "owner": "lars", "url": ""}, {"id": "loop-mgl-delivery-engines", "name": "mgl-delivery-engines", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-mgl-induction", "name": "mgl-induction", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-mgl-maverick-designer", "name": "mgl-maverick-designer", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-mgl-org-loop", "name": "mgl-org-loop", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-mmm-researcher", "name": "mmm-researcher", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-nick-kpis", "name": "nick-kpis", "type": "loop", "macro_engine": "", "owner": "nick", "url": ""}, {"id": "loop-nile-kpis", "name": "nile-kpis", "type": "loop", "macro_engine": "", "owner": "nile", "url": ""}, {"id": "loop-nina-kpis", "name": "nina-kpis", "type": "loop", "macro_engine": "", "owner": "nina", "url": ""}, {"id": "loop-nina-loop", "name": "nina-loop", "type": "loop", "macro_engine": "", "owner": "nina", "url": ""}, {"id": "loop-notion-purge", "name": "notion-purge", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-oc-approver-portal", "name": "oc-approver-portal", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-oc-publication", "name": "oc-publication", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-ozzy-kpis", "name": "ozzy-kpis", "type": "loop", "macro_engine": "", "owner": "ozzy", "url": ""}, {"id": "loop-pepecarrillo-site-audit", "name": "pepecarrillo-site-audit", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-per-body-fitness-engine", "name": "per-body-fitness-engine", "type": "loop", "macro_engine": "LFE-Body", "owner": "gwen", "url": ""}, {"id": "loop-per-body-medical-engine", "name": "per-body-medical-engine", "type": "loop", "macro_engine": "LFE-Body", "owner": "gwen", "url": ""}, {"id": "loop-per-body-nutrition-engine", "name": "per-body-nutrition-engine", "type": "loop", "macro_engine": "LFE-Body", "owner": "gwen", "url": ""}, {"id": "loop-per-body-recovery-engine", "name": "per-body-recovery-engine", "type": "loop", "macro_engine": "LFE-Body", "owner": "gwen", "url": ""}, {"id": "loop-per-body-sleep-engine", "name": "per-body-sleep-engine", "type": "loop", "macro_engine": "LFE-Body", "owner": "gwen", "url": ""}, {"id": "loop-per-mind-arts-engine", "name": "per-mind-arts-engine", "type": "loop", "macro_engine": "LFE-Mind", "owner": "sting", "url": ""}, {"id": "loop-per-mind-contemplative-engine", "name": "per-mind-contemplative-engine", "type": "loop", "macro_engine": "LFE-Mind", "owner": "sting", "url": ""}, {"id": "loop-per-mind-language-engine", "name": "per-mind-language-engine", "type": "loop", "macro_engine": "LFE-Mind", "owner": "sting", "url": ""}, {"id": "loop-per-mind-reading-engine", "name": "per-mind-reading-engine", "type": "loop", "macro_engine": "LFE-Mind", "owner": "sting", "url": ""}, {"id": "loop-per-mind-skills-engine", "name": "per-mind-skills-engine", "type": "loop", "macro_engine": "LFE-Mind", "owner": "sting", "url": ""}, {"id": "loop-per-soul-closeness-engine", "name": "per-soul-closeness-engine", "type": "loop", "macro_engine": "LFE-Soul", "owner": "nickcave", "url": ""}, {"id": "loop-per-soul-journal-engine", "name": "per-soul-journal-engine", "type": "loop", "macro_engine": "LFE-Soul", "owner": "nickcave", "url": ""}, {"id": "loop-per-soul-narrative-engine", "name": "per-soul-narrative-engine", "type": "loop", "macro_engine": "LFE-Soul", "owner": "nickcave", "url": ""}, {"id": "loop-per-soul-relationship-engine", "name": "per-soul-relationship-engine", "type": "loop", "macro_engine": "LFE-Soul", "owner": "nickcave", "url": ""}, {"id": "loop-per-soul-shadow-engine", "name": "per-soul-shadow-engine", "type": "loop", "macro_engine": "LFE-Soul", "owner": "nickcave", "url": ""}, {"id": "loop-per-soul-therapy-engine", "name": "per-soul-therapy-engine", "type": "loop", "macro_engine": "LFE-Soul", "owner": "nickcave", "url": ""}, {"id": "loop-person-profile-loop", "name": "person-profile-loop", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-persona-daily-pulse", "name": "persona-daily-pulse", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-pj-kpis", "name": "pj-kpis", "type": "loop", "macro_engine": "", "owner": "pj", "url": ""}, {"id": "loop-prince-kpis", "name": "prince-kpis", "type": "loop", "macro_engine": "", "owner": "prince", "url": ""}, {"id": "loop-sade-kpis", "name": "sade-kpis", "type": "loop", "macro_engine": "", "owner": "sade", "url": ""}, {"id": "loop-scheduling-agent", "name": "scheduling-agent", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-session-plan-improver", "name": "session-plan-improver", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-sheryl-kpis", "name": "sheryl-kpis", "type": "loop", "macro_engine": "", "owner": "sheryl", "url": ""}, {"id": "loop-slack-bowie-health", "name": "slack-bowie-health", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-slack-bruce-pulse", "name": "slack-bruce-pulse", "type": "loop", "macro_engine": "Value", "owner": "bruce", "url": ""}, {"id": "loop-slack-freddie-weekly", "name": "slack-freddie-weekly", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-slack-gene-monthly", "name": "slack-gene-monthly", "type": "loop", "macro_engine": "Core", "owner": "gene", "url": ""}, {"id": "loop-slack-jagger-weekly", "name": "slack-jagger-weekly", "type": "loop", "macro_engine": "Connection", "owner": "jagger", "url": ""}, {"id": "loop-slack-lars-daily", "name": "slack-lars-daily", "type": "loop", "macro_engine": "Core", "owner": "lars", "url": ""}, {"id": "loop-slack-lemmy-weekly", "name": "slack-lemmy-weekly", "type": "loop", "macro_engine": "Core", "owner": "lemmy", "url": ""}, {"id": "loop-slack-nina-weekly", "name": "slack-nina-weekly", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-slack-personas", "name": "slack-personas", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-slack-prince-daily", "name": "slack-prince-daily", "type": "loop", "macro_engine": "Core", "owner": "prince", "url": ""}, {"id": "loop-slack-routing-calibrator", "name": "slack-routing-calibrator", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-slack-sade-daily", "name": "slack-sade-daily", "type": "loop", "macro_engine": "Care", "owner": "sade", "url": ""}, {"id": "loop-slack-sade-health", "name": "slack-sade-health", "type": "loop", "macro_engine": "Care", "owner": "sade", "url": ""}, {"id": "loop-slack-sheryl-daily", "name": "slack-sheryl-daily", "type": "loop", "macro_engine": "Care", "owner": "sheryl", "url": ""}, {"id": "loop-sm-analytics-engine", "name": "sm-analytics-engine", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-sm-brand-gate-engine", "name": "sm-brand-gate-engine", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-sm-cadence-content-engine", "name": "sm-cadence-content-engine", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-sm-deployment-engine", "name": "sm-deployment-engine", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-sm-editorial-gate-engine", "name": "sm-editorial-gate-engine", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-sm-flagship-content-engine", "name": "sm-flagship-content-engine", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-sm-freddie-calendar-engine", "name": "sm-freddie-calendar-engine", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-sm-oc-engine", "name": "sm-oc-engine", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-sm-research-engine", "name": "sm-research-engine", "type": "loop", "macro_engine": "Connection", "owner": "freddie", "url": ""}, {"id": "loop-sm-strategy-builder", "name": "sm-strategy-builder", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-system-reliability", "name": "system-reliability", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-terminal-notification-routing", "name": "terminal-notification-routing", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "loop-tina-kpis", "name": "tina-kpis", "type": "loop", "macro_engine": "", "owner": "tina", "url": ""}, {"id": "loop-tom-kpis", "name": "tom-kpis", "type": "loop", "macro_engine": "", "owner": "", "url": ""}, {"id": "loop-zombie-hunter", "name": "zombie-hunter", "type": "loop", "macro_engine": "Core", "owner": "bowie", "url": ""}, {"id": "tool-get_emails", "name": "get_emails", "type": "tool", "url": ""}, {"id": "tool-send_email", "name": "send_email", "type": "tool", "url": ""}, {"id": "tool-draft_email_reply", "name": "draft_email_reply", "type": "tool", "url": ""}, {"id": "tool-get_calendar", "name": "get_calendar", "type": "tool", "url": ""}, {"id": "tool-create_calendar_event", "name": "create_calendar_event", "type": "tool", "url": ""}, {"id": "tool-search_drive", "name": "search_drive", "type": "tool", "url": ""}, {"id": "tool-list_shared_drives", "name": "list_shared_drives", "type": "tool", "url": ""}, {"id": "tool-list_drive_folder", "name": "list_drive_folder", "type": "tool", "url": ""}, {"id": "tool-upload_to_drive", "name": "upload_to_drive", "type": "tool", "url": ""}, {"id": "tool-create_drive_folder", "name": "create_drive_folder", "type": "tool", "url": ""}, {"id": "tool-read_doc", "name": "read_doc", "type": "tool", "url": ""}, {"id": "tool-create_deck_from_template", "name": "create_deck_from_template", "type": "tool", "url": ""}, {"id": "tool-export_deck_as_pdf", "name": "export_deck_as_pdf", "type": "tool", "url": ""}, {"id": "tool-search_web", "name": "search_web", "type": "tool", "url": ""}, {"id": "tool-read_brain", "name": "read_brain", "type": "tool", "url": ""}, {"id": "tool-write_brain", "name": "write_brain", "type": "tool", "url": ""}, {"id": "tool-search_whatsapp", "name": "search_whatsapp", "type": "tool", "url": ""}, {"id": "tool-search_whatsapp_personal", "name": "search_whatsapp_personal", "type": "tool", "url": ""}, {"id": "tool-wa_last_contact", "name": "wa_last_contact", "type": "tool", "url": ""}, {"id": "tool-wa_recent_contacts", "name": "wa_recent_contacts", "type": "tool", "url": ""}, {"id": "tool-wa_conversation", "name": "wa_conversation", "type": "tool", "url": ""}, {"id": "tool-wa_bridge_status", "name": "wa_bridge_status", "type": "tool", "url": ""}, {"id": "tool-wa_get_pdf", "name": "wa_get_pdf", "type": "tool", "url": ""}, {"id": "tool-wa_recent_docs", "name": "wa_recent_docs", "type": "tool", "url": ""}, {"id": "tool-send_whatsapp", "name": "send_whatsapp", "type": "tool", "url": ""}, {"id": "tool-relay_queue_add", "name": "relay_queue_add", "type": "tool", "url": ""}, {"id": "tool-relay_queue_mark_delivered", "name": "relay_queue_mark_delivered", "type": "tool", "url": ""}, {"id": "tool-relay_queue_mark_promised", "name": "relay_queue_mark_promised", "type": "tool", "url": ""}, {"id": "tool-relay_queue_mark_failed", "name": "relay_queue_mark_failed", "type": "tool", "url": ""}, {"id": "tool-transcribe_audio", "name": "transcribe_audio", "type": "tool", "url": ""}, {"id": "tool-extract_pdf_text", "name": "extract_pdf_text", "type": "tool", "url": ""}, {"id": "tool-extract_zip_text", "name": "extract_zip_text", "type": "tool", "url": ""}, {"id": "tool-read_sheet", "name": "read_sheet", "type": "tool", "url": ""}, {"id": "tool-read_slides", "name": "read_slides", "type": "tool", "url": ""}, {"id": "tool-read_drive_file", "name": "read_drive_file", "type": "tool", "url": ""}, {"id": "tool-move_drive_file", "name": "move_drive_file", "type": "tool", "url": ""}, {"id": "tool-rename_drive_file", "name": "rename_drive_file", "type": "tool", "url": ""}, {"id": "tool-trash_drive_file", "name": "trash_drive_file", "type": "tool", "url": ""}, {"id": "tool-download_drive_file", "name": "download_drive_file", "type": "tool", "url": ""}, {"id": "tool-create_github_file", "name": "create_github_file", "type": "tool", "url": ""}, {"id": "tool-list_github_files", "name": "list_github_files", "type": "tool", "url": ""}, {"id": "tool-unified_search", "name": "unified_search", "type": "tool", "url": ""}, {"id": "tool-run_task", "name": "run_task", "type": "tool", "url": ""}, {"id": "tool-search_contacts", "name": "search_contacts", "type": "tool", "url": ""}, {"id": "tool-create_contact", "name": "create_contact", "type": "tool", "url": ""}, {"id": "tool-update_contact", "name": "update_contact", "type": "tool", "url": ""}, {"id": "tool-check_contacts", "name": "check_contacts", "type": "tool", "url": ""}, {"id": "tool-auto_file", "name": "auto_file", "type": "tool", "url": ""}, {"id": "tool-download_email_attachment", "name": "download_email_attachment", "type": "tool", "url": ""}, {"id": "tool-find_and_download_attachments", "name": "find_and_download_attachments", "type": "tool", "url": ""}, {"id": "tool-send_for_signature", "name": "send_for_signature", "type": "tool", "url": ""}, {"id": "tool-get_signature_status", "name": "get_signature_status", "type": "tool", "url": ""}, {"id": "tool-list_signature_documents", "name": "list_signature_documents", "type": "tool", "url": ""}, {"id": "tool-generate_image", "name": "generate_image", "type": "tool", "url": ""}, {"id": "tool-generate_image_with_refs", "name": "generate_image_with_refs", "type": "tool", "url": ""}, {"id": "tool-analyse_image", "name": "analyse_image", "type": "tool", "url": ""}, {"id": "tool-telegram_dm_conversation", "name": "telegram_dm_conversation", "type": "tool", "url": ""}, {"id": "tool-search_telegram_personal", "name": "search_telegram_personal", "type": "tool", "url": ""}, {"id": "tool-list_telegram_inbox", "name": "list_telegram_inbox", "type": "tool", "url": ""}, {"id": "tool-tg_conversation", "name": "tg_conversation", "type": "tool", "url": ""}, {"id": "tool-tg_last_contact", "name": "tg_last_contact", "type": "tool", "url": ""}, {"id": "tool-tg_recent_contacts", "name": "tg_recent_contacts", "type": "tool", "url": ""}, {"id": "tool-send_voice_note", "name": "send_voice_note", "type": "tool", "url": ""}, {"id": "tool-search_flights", "name": "search_flights", "type": "tool", "url": ""}, {"id": "tool-scan_tasks", "name": "scan_tasks", "type": "tool", "url": ""}, {"id": "tool-complete_task", "name": "complete_task", "type": "tool", "url": ""}, {"id": "tool-ticket_create", "name": "ticket_create", "type": "tool", "url": ""}, {"id": "tool-ticket_update", "name": "ticket_update", "type": "tool", "url": ""}, {"id": "tool-ticket_close", "name": "ticket_close", "type": "tool", "url": ""}, {"id": "tool-ticket_list", "name": "ticket_list", "type": "tool", "url": ""}, {"id": "tool-ticket_stats", "name": "ticket_stats", "type": "tool", "url": ""}, {"id": "tool-track_lead", "name": "track_lead", "type": "tool", "url": ""}, {"id": "tool-update_lead", "name": "update_lead", "type": "tool", "url": ""}, {"id": "tool-list_leads", "name": "list_leads", "type": "tool", "url": ""}, {"id": "tool-pipeline_summary", "name": "pipeline_summary", "type": "tool", "url": ""}, {"id": "tool-crm_add_contact", "name": "crm_add_contact", "type": "tool", "url": ""}, {"id": "tool-crm_log", "name": "crm_log", "type": "tool", "url": ""}, {"id": "tool-crm_deal", "name": "crm_deal", "type": "tool", "url": ""}, {"id": "tool-crm_update_deal", "name": "crm_update_deal", "type": "tool", "url": ""}, {"id": "tool-crm_show", "name": "crm_show", "type": "tool", "url": ""}, {"id": "tool-crm_pipeline", "name": "crm_pipeline", "type": "tool", "url": ""}, {"id": "tool-crm_hot", "name": "crm_hot", "type": "tool", "url": ""}, {"id": "tool-crm_cold", "name": "crm_cold", "type": "tool", "url": ""}, {"id": "tool-crm_summary", "name": "crm_summary", "type": "tool", "url": ""}, {"id": "tool-register_contract", "name": "register_contract", "type": "tool", "url": ""}, {"id": "tool-update_contract", "name": "update_contract", "type": "tool", "url": ""}, {"id": "tool-list_contracts", "name": "list_contracts", "type": "tool", "url": ""}, {"id": "tool-contract_alerts", "name": "contract_alerts", "type": "tool", "url": ""}, {"id": "tool-get_financial_summary", "name": "get_financial_summary", "type": "tool", "url": ""}, {"id": "tool-generate_therapy_report", "name": "generate_therapy_report", "type": "tool", "url": ""}, {"id": "tool-send_message_to_lume", "name": "send_message_to_lume", "type": "tool", "url": ""}, {"id": "tool-read_messages_from_lume", "name": "read_messages_from_lume", "type": "tool", "url": ""}, {"id": "tool-run_invoice_chase", "name": "run_invoice_chase", "type": "tool", "url": ""}, {"id": "tool-generate_weekly_scorecard", "name": "generate_weekly_scorecard", "type": "tool", "url": ""}, {"id": "tool-create_odoo_vendor_bill", "name": "create_odoo_vendor_bill", "type": "tool", "url": ""}, {"id": "tool-file_amazon_expenses", "name": "file_amazon_expenses", "type": "tool", "url": ""}, {"id": "tool-sync_tasks", "name": "sync_tasks", "type": "tool", "url": ""}, {"id": "tool-complete_google_task", "name": "complete_google_task", "type": "tool", "url": ""}, {"id": "tool-list_google_tasks", "name": "list_google_tasks", "type": "tool", "url": ""}, {"id": "tool-generate_ui", "name": "generate_ui", "type": "tool", "url": ""}, {"id": "tool-send_whatsapp_audio", "name": "send_whatsapp_audio", "type": "tool", "url": ""}, {"id": "tool-delete_whatsapp_message", "name": "delete_whatsapp_message", "type": "tool", "url": ""}, {"id": "tool-edit_whatsapp_message", "name": "edit_whatsapp_message", "type": "tool", "url": ""}, {"id": "tool-read_chatgpt_url", "name": "read_chatgpt_url", "type": "tool", "url": ""}, {"id": "tool-read_chatgpt_export", "name": "read_chatgpt_export", "type": "tool", "url": ""}, {"id": "tool-list_chatgpt_export", "name": "list_chatgpt_export", "type": "tool", "url": ""}, {"id": "tool-spotify_search", "name": "spotify_search", "type": "tool", "url": ""}, {"id": "tool-spotify_create_playlist", "name": "spotify_create_playlist", "type": "tool", "url": ""}, {"id": "tool-spotify_add_tracks", "name": "spotify_add_tracks", "type": "tool", "url": ""}, {"id": "tool-spotify_get_playlist", "name": "spotify_get_playlist", "type": "tool", "url": ""}, {"id": "tool-spotify_playlist_tracks", "name": "spotify_playlist_tracks", "type": "tool", "url": ""}, {"id": "tool-spotify_remove_tracks", "name": "spotify_remove_tracks", "type": "tool", "url": ""}, {"id": "tool-spotify_clear_playlist", "name": "spotify_clear_playlist", "type": "tool", "url": ""}, {"id": "tool-spotify_rename_playlist", "name": "spotify_rename_playlist", "type": "tool", "url": ""}, {"id": "tool-spotify_list_playlists", "name": "spotify_list_playlists", "type": "tool", "url": ""}, {"id": "tool-spotify_reorder_track", "name": "spotify_reorder_track", "type": "tool", "url": ""}, {"id": "tool-photos_find_duplicates", "name": "photos_find_duplicates", "type": "tool", "url": ""}, {"id": "tool-photos_find_documents", "name": "photos_find_documents", "type": "tool", "url": ""}, {"id": "tool-list_photos", "name": "list_photos", "type": "tool", "url": ""}, {"id": "tool-search_photos", "name": "search_photos", "type": "tool", "url": ""}, {"id": "tool-get_photo", "name": "get_photo", "type": "tool", "url": ""}, {"id": "tool-photos_audit", "name": "photos_audit", "type": "tool", "url": ""}, {"id": "tool-photos_travel_calendar", "name": "photos_travel_calendar", "type": "tool", "url": ""}, {"id": "tool-ah_search_product", "name": "ah_search_product", "type": "tool", "url": ""}, {"id": "tool-ah_add_to_list", "name": "ah_add_to_list", "type": "tool", "url": ""}, {"id": "tool-check_product_availability", "name": "check_product_availability", "type": "tool", "url": ""}, {"id": "tool-search_verified_product", "name": "search_verified_product", "type": "tool", "url": ""}, {"id": "tool-get_garmin_data", "name": "get_garmin_data", "type": "tool", "url": ""}, {"id": "tool-push_garmin_workout", "name": "push_garmin_workout", "type": "tool", "url": ""}, {"id": "tool-get_oura_data", "name": "get_oura_data", "type": "tool", "url": ""}, {"id": "tool-add_cloud_test_user", "name": "add_cloud_test_user", "type": "tool", "url": ""}, {"id": "tool-log_trigger", "name": "log_trigger", "type": "tool", "url": ""}, {"id": "tool-get_triggers", "name": "get_triggers", "type": "tool", "url": ""}, {"id": "tool-add_to_signoff_queue", "name": "add_to_signoff_queue", "type": "tool", "url": ""}, {"id": "tool-search_food_mfp", "name": "search_food_mfp", "type": "tool", "url": ""}, {"id": "tool-log_food_mfp", "name": "log_food_mfp", "type": "tool", "url": ""}, {"id": "tool-mnemo_store", "name": "mnemo_store", "type": "tool", "url": ""}, {"id": "tool-mnemo_recall", "name": "mnemo_recall", "type": "tool", "url": ""}, {"id": "tool-mnemo_stats", "name": "mnemo_stats", "type": "tool", "url": ""}, {"id": "tool-mnemo_link", "name": "mnemo_link", "type": "tool", "url": ""}];
+const EDGES = [{"source": "annie", "target": "freddie", "type": "reports-to"}, {"source": "anselmo", "target": "tool-read_brain", "type": "owns"}, {"source": "anselmo", "target": "tool-generate_image", "type": "owns"}, {"source": "anselmo", "target": "tool-unified_search", "type": "owns"}, {"source": "anselmo", "target": "freddie", "type": "reports-to"}, {"source": "aretha", "target": "tool-read_brain", "type": "owns"}, {"source": "aretha", "target": "tool-unified_search", "type": "owns"}, {"source": "aretha", "target": "tool-read_doc", "type": "owns"}, {"source": "aretha", "target": "tool-list_contracts", "type": "owns"}, {"source": "aretha", "target": "bruce", "type": "reports-to"}, {"source": "bowie", "target": "lars", "type": "reports-to"}, {"source": "chrissie", "target": "tool-read_brain", "type": "owns"}, {"source": "chrissie", "target": "tool-unified_search", "type": "owns"}, {"source": "chrissie", "target": "tool-read_doc", "type": "owns"}, {"source": "chrissie", "target": "tool-list_contracts", "type": "owns"}, {"source": "chrissie", "target": "bruce", "type": "reports-to"}, {"source": "freddie", "target": "tool-generate_image", "type": "owns"}, {"source": "freddie", "target": "lars", "type": "reports-to"}, {"source": "gene", "target": "tool-get_financial_summary", "type": "owns"}, {"source": "gene", "target": "tool-run_invoice_chase", "type": "owns"}, {"source": "gene", "target": "tool-generate_weekly_scorecard", "type": "owns"}, {"source": "gene", "target": "lars", "type": "reports-to"}, {"source": "grace", "target": "freddie", "type": "reports-to"}, {"source": "grohl", "target": "tool-read_brain", "type": "owns"}, {"source": "grohl", "target": "tool-read_brain", "type": "owns"}, {"source": "grohl", "target": "tool-unified_search", "type": "owns"}, {"source": "grohl", "target": "tool-generate_image", "type": "owns"}, {"source": "grohl", "target": "freddie", "type": "reports-to"}, {"source": "iggy", "target": "tool-run_task", "type": "owns"}, {"source": "iggy", "target": "bowie", "type": "reports-to"}, {"source": "jack", "target": "tool-run_task", "type": "owns"}, {"source": "jack", "target": "tool-unified_search", "type": "owns"}, {"source": "jack", "target": "bowie", "type": "reports-to"}, {"source": "jagger", "target": "tool-pipeline_summary", "type": "owns"}, {"source": "jagger", "target": "tool-track_lead", "type": "owns"}, {"source": "jagger", "target": "tool-update_lead", "type": "owns"}, {"source": "jagger", "target": "tool-list_leads", "type": "owns"}, {"source": "jagger", "target": "tool-search_contacts", "type": "owns"}, {"source": "jagger", "target": "tool-create_contact", "type": "owns"}, {"source": "jagger", "target": "tool-update_contact", "type": "owns"}, {"source": "jagger", "target": "tool-wa_recent_contacts", "type": "owns"}, {"source": "jagger", "target": "tool-search_whatsapp_personal", "type": "owns"}, {"source": "jagger", "target": "lars", "type": "reports-to"}, {"source": "joan", "target": "tool-read_brain", "type": "owns"}, {"source": "joan", "target": "tool-list_contracts", "type": "owns"}, {"source": "joan", "target": "tool-unified_search", "type": "owns"}, {"source": "joan", "target": "tool-read_doc", "type": "owns"}, {"source": "joan", "target": "bruce", "type": "reports-to"}, {"source": "joni", "target": "freddie", "type": "reports-to"}, {"source": "kim", "target": "tool-read_brain", "type": "owns"}, {"source": "kim", "target": "tool-unified_search", "type": "owns"}, {"source": "kim", "target": "tool-read_doc", "type": "owns"}, {"source": "kim", "target": "tool-run_task", "type": "owns"}, {"source": "kim", "target": "bruce", "type": "reports-to"}, {"source": "lemmy", "target": "bruce", "type": "reports-to"}, {"source": "lenny", "target": "freddie", "type": "reports-to"}, {"source": "lou", "target": "bowie", "type": "reports-to"}, {"source": "nick", "target": "tool-read_brain", "type": "owns"}, {"source": "nick", "target": "tool-unified_search", "type": "owns"}, {"source": "nick", "target": "freddie", "type": "reports-to"}, {"source": "nile", "target": "bowie", "type": "reports-to"}, {"source": "nina", "target": "tool-unified_search", "type": "owns"}, {"source": "nina", "target": "tool-read_brain", "type": "owns"}, {"source": "nina", "target": "tool-search_drive", "type": "owns"}, {"source": "nina", "target": "tool-read_doc", "type": "owns"}, {"source": "nina", "target": "lars", "type": "reports-to"}, {"source": "ozzy", "target": "tool-unified_search", "type": "owns"}, {"source": "ozzy", "target": "tool-read_brain", "type": "owns"}, {"source": "ozzy", "target": "bruce", "type": "reports-to"}, {"source": "pj", "target": "tool-read_brain", "type": "owns"}, {"source": "pj", "target": "tool-list_contracts", "type": "owns"}, {"source": "pj", "target": "tool-unified_search", "type": "owns"}, {"source": "pj", "target": "tool-read_doc", "type": "owns"}, {"source": "pj", "target": "bruce", "type": "reports-to"}, {"source": "prince", "target": "bruce", "type": "reports-to"}, {"source": "sade", "target": "bruce", "type": "reports-to"}, {"source": "sheryl", "target": "tool-get_emails", "type": "owns"}, {"source": "sheryl", "target": "tool-get_calendar", "type": "owns"}, {"source": "sheryl", "target": "tool-search_whatsapp", "type": "owns"}, {"source": "sheryl", "target": "tool-get_financial_summary", "type": "owns"}, {"source": "sheryl", "target": "tool-read_brain", "type": "owns"}, {"source": "sheryl", "target": "tool-unified_search", "type": "owns"}, {"source": "sheryl", "target": "sade", "type": "reports-to"}, {"source": "tina", "target": "tool-read_brain", "type": "owns"}, {"source": "tina", "target": "tool-list_contracts", "type": "owns"}, {"source": "tina", "target": "tool-unified_search", "type": "owns"}, {"source": "tina", "target": "tool-read_doc", "type": "owns"}, {"source": "tina", "target": "bruce", "type": "reports-to"}, {"source": "nina", "target": "loop-alexandria-sync", "type": "owns"}, {"source": "annie", "target": "loop-annie-kpis", "type": "owns"}, {"source": "anselmo", "target": "loop-anselmo-kpis", "type": "owns"}, {"source": "aretha", "target": "loop-aretha-kpis", "type": "owns"}, {"source": "jagger", "target": "loop-bd-engine", "type": "owns"}, {"source": "gene", "target": "loop-billing-invoice-engine", "type": "owns"}, {"source": "bowie", "target": "loop-bowie-infra-tracker", "type": "owns"}, {"source": "bowie", "target": "loop-bowie-kpis", "type": "owns"}, {"source": "bruce", "target": "loop-bruce-kpis", "type": "owns"}, {"source": "chrissie", "target": "loop-chrissie-kpis", "type": "owns"}, {"source": "bowie", "target": "loop-commission-verifier", "type": "owns"}, {"source": "bowie", "target": "loop-commissions-calibration", "type": "owns"}, {"source": "bowie", "target": "loop-connector-probe", "type": "owns"}, {"source": "bowie", "target": "loop-cron-health-engine", "type": "owns"}, {"source": "bowie", "target": "loop-engine-auditor", "type": "owns"}, {"source": "freddie", "target": "loop-freddie-kpis", "type": "owns"}, {"source": "gene", "target": "loop-gene-kpis", "type": "owns"}, {"source": "grace", "target": "loop-grace-kpis", "type": "owns"}, {"source": "grohl", "target": "loop-grohl-kpis", "type": "owns"}, {"source": "iggy", "target": "loop-iggy-kpis", "type": "owns"}, {"source": "jack", "target": "loop-jack-kpis", "type": "owns"}, {"source": "jagger", "target": "loop-jagger-kpis", "type": "owns"}, {"source": "joan", "target": "loop-joan-kpis", "type": "owns"}, {"source": "joni", "target": "loop-joni-kpis", "type": "owns"}, {"source": "kim", "target": "loop-kim-kpis", "type": "owns"}, {"source": "nina", "target": "loop-knowledge-engine", "type": "owns"}, {"source": "lars", "target": "loop-lars-kpis", "type": "owns"}, {"source": "lemmy", "target": "loop-lemmy-kpis", "type": "owns"}, {"source": "lenny", "target": "loop-lenny-kpis", "type": "owns"}, {"source": "gene", "target": "loop-lfe-investment-engine", "type": "owns"}, {"source": "gene", "target": "loop-lfe-properties-engine", "type": "owns"}, {"source": "gene", "target": "loop-lfe-tax-engine", "type": "owns"}, {"source": "lars", "target": "loop-lfe-travel-engine", "type": "owns"}, {"source": "bowie", "target": "loop-loop-registry-engine", "type": "owns"}, {"source": "lou", "target": "loop-lou-kpis", "type": "owns"}, {"source": "bowie", "target": "loop-mgl-avatar-generator", "type": "owns"}, {"source": "lars", "target": "loop-mgl-council", "type": "owns"}, {"source": "bowie", "target": "loop-mgl-org-loop", "type": "owns"}, {"source": "freddie", "target": "loop-mmm-researcher", "type": "owns"}, {"source": "nick", "target": "loop-nick-kpis", "type": "owns"}, {"source": "nile", "target": "loop-nile-kpis", "type": "owns"}, {"source": "nina", "target": "loop-nina-kpis", "type": "owns"}, {"source": "nina", "target": "loop-nina-loop", "type": "owns"}, {"source": "bowie", "target": "loop-oc-approver-portal", "type": "owns"}, {"source": "ozzy", "target": "loop-ozzy-kpis", "type": "owns"}, {"source": "bowie", "target": "loop-persona-daily-pulse", "type": "owns"}, {"source": "pj", "target": "loop-pj-kpis", "type": "owns"}, {"source": "prince", "target": "loop-prince-kpis", "type": "owns"}, {"source": "sade", "target": "loop-sade-kpis", "type": "owns"}, {"source": "sheryl", "target": "loop-sheryl-kpis", "type": "owns"}, {"source": "bowie", "target": "loop-slack-bowie-health", "type": "owns"}, {"source": "bruce", "target": "loop-slack-bruce-pulse", "type": "owns"}, {"source": "freddie", "target": "loop-slack-freddie-weekly", "type": "owns"}, {"source": "gene", "target": "loop-slack-gene-monthly", "type": "owns"}, {"source": "jagger", "target": "loop-slack-jagger-weekly", "type": "owns"}, {"source": "lars", "target": "loop-slack-lars-daily", "type": "owns"}, {"source": "lemmy", "target": "loop-slack-lemmy-weekly", "type": "owns"}, {"source": "bowie", "target": "loop-slack-nina-weekly", "type": "owns"}, {"source": "prince", "target": "loop-slack-prince-daily", "type": "owns"}, {"source": "bowie", "target": "loop-slack-routing-calibrator", "type": "owns"}, {"source": "sade", "target": "loop-slack-sade-daily", "type": "owns"}, {"source": "sade", "target": "loop-slack-sade-health", "type": "owns"}, {"source": "sheryl", "target": "loop-slack-sheryl-daily", "type": "owns"}, {"source": "freddie", "target": "loop-sm-analytics-engine", "type": "owns"}, {"source": "freddie", "target": "loop-sm-brand-gate-engine", "type": "owns"}, {"source": "freddie", "target": "loop-sm-cadence-content-engine", "type": "owns"}, {"source": "freddie", "target": "loop-sm-editorial-gate-engine", "type": "owns"}, {"source": "freddie", "target": "loop-sm-flagship-content-engine", "type": "owns"}, {"source": "freddie", "target": "loop-sm-freddie-calendar-engine", "type": "owns"}, {"source": "freddie", "target": "loop-sm-research-engine", "type": "owns"}, {"source": "bowie", "target": "loop-system-reliability", "type": "owns"}, {"source": "bowie", "target": "loop-terminal-notification-routing", "type": "owns"}, {"source": "tina", "target": "loop-tina-kpis", "type": "owns"}, {"source": "bowie", "target": "loop-zombie-hunter", "type": "owns"}];
+
+// Node style maps
+const NODE_COLOR = { persona: '#e14b87', loop: '#4c9fff', tool: '#f0a030' };
+const NODE_RADIUS = { persona: 12, loop: 7, tool: 5 };
+const EDGE_COLOR = { 'owns': '#555', 'reports-to': '#e14b87aa', 'triggers': '#4c9fff33', 'feeds-into': '#f0a03033' };
+
+// State
+const visibleTypes = { persona: true, loop: true, tool: true };
+let searchQuery = '';
+
+// Update counts
+const typeCounts = {};
+NODES.forEach(n => { typeCounts[n.type] = (typeCounts[n.type] || 0) + 1; });
+['persona','loop','tool'].forEach(t => {
+  const el = document.getElementById('count-' + t);
+  if (el) el.textContent = typeCounts[t] || 0;
+});
+
+// SVG setup
+const svg = d3.select('#graph-svg');
+const wrap = document.getElementById('canvas-wrap');
+let W = wrap.clientWidth, H = wrap.clientHeight;
+
+const g = svg.append('g');
+
+// Zoom
+const zoom = d3.zoom()
+  .scaleExtent([0.1, 8])
+  .on('zoom', e => g.attr('transform', e.transform));
+svg.call(zoom);
+
+// Arrow marker
+svg.append('defs').append('marker')
+  .attr('id', 'arrow')
+  .attr('viewBox', '0 -4 8 8')
+  .attr('refX', 18)
+  .attr('refY', 0)
+  .attr('markerWidth', 5)
+  .attr('markerHeight', 5)
+  .attr('orient', 'auto')
+  .append('path')
+  .attr('d', 'M0,-4L8,0L0,4')
+  .attr('fill', '#555');
+
+// Build graph
+let nodeMap = {};
+NODES.forEach(n => nodeMap[n.id] = n);
+
+let linkSel, nodeSel, labelSel;
+
+function getVisibleNodes() {
+  const q = searchQuery.toLowerCase();
+  return NODES.filter(n => {
+    if (!visibleTypes[n.type]) return false;
+    if (q && !n.name.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function getVisibleEdges(visNodes) {
+  const ids = new Set(visNodes.map(n => n.id));
+  return EDGES.filter(e => ids.has(e.source.id || e.source) && ids.has(e.target.id || e.target));
+}
+
+// Simulation
+const simulation = d3.forceSimulation()
+  .force('link', d3.forceLink().id(d => d.id).distance(d => {
+    if (d.source.type === 'persona' && d.target.type === 'persona') return 100;
+    return 60;
+  }))
+  .force('charge', d3.forceManyBody().strength(d => {
+    if (d.type === 'persona') return -250;
+    if (d.type === 'loop') return -80;
+    return -40;
+  }))
+  .force('center', d3.forceCenter(W / 2, H / 2))
+  .force('collide', d3.forceCollide().radius(d => NODE_RADIUS[d.type] + 4))
+  .on('tick', ticked);
+
+function initGraph() {
+  g.selectAll('*').remove();
+
+  const visNodes = getVisibleNodes();
+  const visEdges = getVisibleEdges(visNodes);
+
+  // Update search count
+  const sc = document.getElementById('search-count');
+  if (searchQuery) {
+    sc.textContent = visNodes.length + ' of ' + NODES.length + ' shown';
+  } else {
+    sc.textContent = '';
+  }
+
+  linkSel = g.append('g').attr('class', 'links')
+    .selectAll('line')
+    .data(visEdges)
+    .join('line')
+    .attr('stroke', d => EDGE_COLOR[d.type] || '#444')
+    .attr('stroke-width', d => d.type === 'reports-to' ? 1.5 : 1)
+    .attr('marker-end', d => d.type === 'reports-to' ? 'url(#arrow)' : null)
+    .attr('opacity', 0.7);
+
+  nodeSel = g.append('g').attr('class', 'nodes')
+    .selectAll('circle')
+    .data(visNodes)
+    .join('circle')
+    .attr('r', d => NODE_RADIUS[d.type])
+    .attr('fill', d => NODE_COLOR[d.type])
+    .attr('stroke', '#0d0d0d')
+    .attr('stroke-width', 1.5)
+    .attr('opacity', d => searchQuery && !d.name.toLowerCase().includes(searchQuery.toLowerCase()) ? 0.15 : 1)
+    .style('cursor', d => d.url ? 'pointer' : 'default')
+    .on('mouseover', showTooltip)
+    .on('mousemove', moveTooltip)
+    .on('mouseout', hideTooltip)
+    .on('click', (e, d) => { if (d.url) window.open(d.url, '_blank'); })
+    .call(d3.drag()
+      .on('start', dragStart)
+      .on('drag', dragged)
+      .on('end', dragEnd));
+
+  // Labels only for personas
+  labelSel = g.append('g').attr('class', 'labels')
+    .selectAll('text')
+    .data(visNodes.filter(n => n.type === 'persona'))
+    .join('text')
+    .text(d => d.name)
+    .attr('font-size', '10px')
+    .attr('font-family', "'Space Grotesk', sans-serif")
+    .attr('fill', '#ccc')
+    .attr('text-anchor', 'middle')
+    .attr('dy', d => NODE_RADIUS[d.type] + 12)
+    .attr('pointer-events', 'none');
+
+  simulation.nodes(visNodes);
+  simulation.force('link').links(visEdges);
+  simulation.alpha(0.6).restart();
+}
+
+function ticked() {
+  if (linkSel) {
+    linkSel
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y);
+  }
+  if (nodeSel) {
+    nodeSel.attr('cx', d => d.x).attr('cy', d => d.y);
+  }
+  if (labelSel) {
+    labelSel.attr('x', d => d.x).attr('y', d => d.y);
+  }
+}
+
+function dragStart(e, d) {
+  if (!e.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x; d.fy = d.y;
+}
+function dragged(e, d) { d.fx = e.x; d.fy = e.y; }
+function dragEnd(e, d) {
+  if (!e.active) simulation.alphaTarget(0);
+  d.fx = null; d.fy = null;
+}
+
+// Tooltip
+const tt = document.getElementById('tooltip');
+function showTooltip(e, d) {
+  tt.querySelector('.tt-name').textContent = d.name;
+  const typeEl = tt.querySelector('.tt-type');
+  typeEl.textContent = d.type;
+  typeEl.className = 'tt-type ' + d.type;
+  const titleEl = tt.querySelector('.tt-title');
+  titleEl.textContent = d.title || (d.type === 'loop' ? 'Automation loop' : '');
+  const engEl = tt.querySelector('.tt-engine');
+  engEl.textContent = d.macro_engine ? 'Engine: ' + d.macro_engine : '';
+  tt.style.display = 'block';
+  moveTooltip(e);
+}
+function moveTooltip(e) {
+  const x = e.offsetX + 14, y = e.offsetY - 10;
+  tt.style.left = Math.min(x, W - 220) + 'px';
+  tt.style.top = Math.max(y, 10) + 'px';
+}
+function hideTooltip() { tt.style.display = 'none'; }
+
+// Filters
+document.querySelectorAll('.filter-row input[type=checkbox]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const type = cb.dataset.type;
+    visibleTypes[type] = cb.checked;
+    cb.closest('.filter-row').classList.toggle('dimmed', !cb.checked);
+    initGraph();
+  });
+});
+
+// Search
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  initGraph();
+});
+
+// Resize
+window.addEventListener('resize', () => {
+  W = wrap.clientWidth; H = wrap.clientHeight;
+  simulation.force('center', d3.forceCenter(W / 2, H / 2));
+  simulation.alpha(0.1).restart();
+});
+
+// Init
+initGraph();
+
+// Fit on first stable tick
+simulation.on('end', () => {
+  const ns = simulation.nodes();
+  if (!ns.length) return;
+  const xs = ns.map(n => n.x), ys = ns.map(n => n.y);
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const pad = 60;
+  const scaleX = (W - pad*2) / (maxX - minX || 1);
+  const scaleY = (H - pad*2) / (maxY - minY || 1);
+  const scale = Math.min(scaleX, scaleY, 2);
+  const tx = W/2 - scale * (minX + maxX) / 2;
+  const ty = H/2 - scale * (minY + maxY) / 2;
+  svg.transition().duration(800).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+});
+</script>
+</body>
+</html>
