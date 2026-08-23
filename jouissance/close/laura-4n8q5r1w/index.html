@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0D0A12">
+<title>jouissance · para Laura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0D0A12;--text:#F4EFE6;--accent:#9B7FA6;--secondary:#C5873A;--border:#1E1829;--muted:rgba(244,239,230,.45)}
+html{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;font-size:clamp(15px,4vw,18px);line-height:1.7}
+body{min-height:100vh;background:var(--bg);padding-bottom:4rem}
+
+.container{max-width:480px;margin:0 auto;padding:0 1.5rem}
+
+.wordmark-wrap{text-align:center;padding:2.5rem 0 1.5rem}
+.wordmark{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--accent);font-size:1.8rem;letter-spacing:.06em}
+
+.divider{height:1px;background:var(--border);margin:2rem 0}
+
+.personal-header{text-align:center;padding:1rem 0 1.5rem}
+.for-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.8rem;line-height:1.2;margin-bottom:.75rem}
+.cohort-dates{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+.section-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;display:block}
+
+.stats-row{display:flex;gap:1rem;margin-bottom:2.5rem}
+.stat-card{flex:1;border:1px solid var(--border);border-radius:4px;padding:1.1rem .8rem;text-align:center;background:rgba(30,24,41,.4)}
+.stat-number{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--secondary);font-size:2rem;line-height:1;display:block;margin-bottom:.35rem}
+.stat-label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);line-height:1.3}
+
+.quotes-section{margin-bottom:2.5rem}
+.quote-block{border:1px solid rgba(155,127,166,.22);border-radius:4px;padding:1.25rem 1.25rem 1rem;margin-bottom:1rem;background:rgba(155,127,166,.04)}
+.quote-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;line-height:1.6;color:var(--text);margin-bottom:.6rem}
+.quote-source{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+.pull-quotes-section{margin-bottom:2.5rem}
+.pull-quote{border-left:2px solid var(--accent);padding:.9rem 1rem .9rem 1.25rem;margin-bottom:1.1rem;background:rgba(155,127,166,.05);border-radius:0 4px 4px 0}
+.pull-quote-meta{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(155,127,166,.6);margin-bottom:.5rem}
+.pull-quote-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;line-height:1.6;color:var(--text)}
+
+.insight-section{margin-bottom:2.5rem}
+.insight-text{color:rgba(244,239,230,.78);font-size:.95rem;line-height:1.85}
+.insight-text p+p{margin-top:1.1rem}
+
+.prize-section{margin-bottom:2rem}
+.points-balance{text-align:center;margin-bottom:1.75rem}
+.points-number{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--secondary);font-size:3rem;line-height:1;display:block}
+.points-label{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
+
+.prize-cards{display:flex;flex-direction:column;gap:.85rem;margin-bottom:1.75rem}
+.prize-card{border-radius:4px;padding:1.1rem 1.15rem;position:relative;cursor:pointer;transition:background .25s}
+.prize-card.affordable{border:1px solid var(--accent);background:rgba(155,127,166,.06)}
+.prize-card.affordable.selected{background:rgba(155,127,166,.14)}
+.prize-card.reach{border:1px solid var(--secondary);background:rgba(197,135,58,.05);opacity:.82}
+.prize-card.reach.selected{background:rgba(197,135,58,.12);opacity:1}
+.prize-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.4rem}
+.prize-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;line-height:1.3;flex:1}
+.prize-pts{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--secondary);font-size:1rem;white-space:nowrap}
+.prize-desc{font-size:.82rem;color:var(--muted);line-height:1.55}
+.reach-badge{display:inline-block;margin-top:.55rem;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--secondary);border:1px solid rgba(197,135,58,.45);border-radius:20px;padding:.2rem .65rem}
+.prize-selector-label{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;display:block}
+.prize-radio{position:absolute;opacity:0;width:0;height:0}
+.selected-ring{position:absolute;inset:0;border-radius:4px;pointer-events:none;transition:box-shadow .2s}
+.prize-card.selected .selected-ring{box-shadow:0 0 0 1px var(--accent) inset}
+.prize-card.reach.selected .selected-ring{box-shadow:0 0 0 1px var(--secondary) inset}
+
+.wa-section{margin-top:2rem}
+.wa-note{font-size:.78rem;color:var(--muted);text-align:center;margin-bottom:.9rem;line-height:1.5}
+.wa-btn{display:block;width:100%;padding:1.1rem 1.5rem;background:#25D366;color:#fff;border:none;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:400;letter-spacing:.05em;text-align:center;text-decoration:none;cursor:pointer;transition:background .25s;min-height:52px}
+.wa-btn:hover{background:#1ebe59}
+
+.final-challenge{border:1px solid var(--border);border-radius:4px;padding:2rem 1.5rem;margin-bottom:2rem;background:rgba(30,24,41,.3)}
+.final-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.9rem;line-height:1.2;margin-bottom:1rem;text-align:center}
+.final-text{font-size:.9rem;color:rgba(244,239,230,.72);line-height:1.75;margin-bottom:1.5rem;text-align:center}
+
+.bottom-space{height:3rem}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="wordmark-wrap">
+    <span class="wordmark">jouissance</span>
+  </div>
+
+  <div class="personal-header">
+    <div class="for-name">Para Laura</div>
+    <div class="cohort-dates">1 de agosto · 13 de agosto, 2026</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <span class="section-label">Tu recorrido</span>
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-number">10</span>
+      <span class="stat-label">retos completados</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">96</span>
+      <span class="stat-label">puntos restantes</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="quotes-section">
+    <span class="section-label">Lo que escribiste</span>
+
+    <div class="quote-block">
+      <div class="quote-text">"I learned early that sex could give me power, attention and love from men."</div>
+      <div class="quote-source">Día 11 · historia vieja, nombrada con precisión</div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"I started by judging my body and automatically trying to make attractive poses. Then I forced myself to just stand there and look."</div>
+      <div class="quote-source">Día 10 · el espejo</div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"I got anxiety. Felt good to do nothing but still having parasite negative thoughts."</div>
+      <div class="quote-source">Día 7 · incluso el descanso es político para ti</div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">"I'm coming with curiosity and openness. And maybe some reserve."</div>
+      <div class="quote-source">Día 1 · nombraste tus propios límites antes que nosotros</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pull-quotes-section">
+    <span class="section-label">De los materiales</span>
+
+    <div class="pull-quote">
+      <div class="pull-quote-meta">Día 2</div>
+      <div class="pull-quote-text">"You can't be in sensation and monitoring sensation at the same time. The monitoring is a second-order process. It runs on top of experience. And when it's running, experience goes thin."</div>
+    </div>
+
+    <div class="pull-quote">
+      <div class="pull-quote-meta">Día 5</div>
+      <div class="pull-quote-text">"Strategy and surrender cannot run at the same time."</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="insight-section">
+    <span class="section-label">Lo que vimos en ti</span>
+    <div class="insight-text">
+      <p>Llegaste cargando el interior más complejo de cualquier persona en esta cohorte. No porque seas más complicada que las demás. Porque llevas tiempo haciendo este trabajo en tu cabeza, y llegaste con él ya nombrado.</p>
+
+      <p>Las tres historias viejas que escribiste el Día 11 fueron extraordinarias por su precisión, más que por su peso. Sabes exactamente lo que has cargado y de dónde viene. Esa claridad es tuya, y también es lo que hace el camino hacia adelante ligeramente más difícil: cuando puedes nombrar el mecanismo, también puedes manejarlo. Y manejar es lo opuesto a rendirse.</p>
+
+      <p>El ejercicio del espejo te mostró algo. Notaste el reflejo del juicio, "automatically trying to make attractive poses", y lo detuviste. La mayoría de las personas no lo notan en absoluto. Tú lo notaste y elegiste diferente, en tiempo real.</p>
+
+      <p>Llegaste "not as open as usual." Esa reserva habla de inteligencia, de que no te abres para cualquier cosa. El hecho de que te hayas abierto en absoluto fue el hallazgo.</p>
+
+      <p>Lo que te llevas es el permiso de quedarte consciente y aun así llegar. Las dos cosas al mismo tiempo.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="prize-section">
+    <span class="section-label">Para tus puntos</span>
+
+    <div class="points-balance">
+      <span class="points-number">96</span>
+      <div class="points-label">puntos disponibles</div>
+    </div>
+
+    <div class="prize-cards" id="prize-cards">
+
+      <label class="prize-card affordable" data-pts="80" data-name="Carta de Consejo Sexual" id="card-1">
+        <input type="radio" name="prize" class="prize-radio" value="Carta de Consejo Sexual" data-gap="0">
+        <div class="selected-ring"></div>
+        <div class="prize-card-header">
+          <span class="prize-name">Carta de Consejo Sexual</span>
+          <span class="prize-pts">80 pts</span>
+        </div>
+        <div class="prize-desc">No es consejo genérico. Una carta escrita para tu arquitectura específica: cómo recibir cuando has aprendido que recibir es político.</div>
+      </label>
+
+      <label class="prize-card affordable" data-pts="50" data-name="Carta de Agathe" id="card-2">
+        <input type="radio" name="prize" class="prize-radio" value="Carta de Agathe" data-gap="0">
+        <div class="selected-ring"></div>
+        <div class="prize-card-header">
+          <span class="prize-name">Carta de Agathe</span>
+          <span class="prize-pts">50 pts</span>
+        </div>
+        <div class="prize-desc">Agathe ha hecho su propia versión de esta reconciliación: entre conciencia política y entrega erótica. Te contará cómo le fue.</div>
+      </label>
+
+      <label class="prize-card reach" data-pts="140" data-name="Entrevista de Placer (30 min)" id="card-3">
+        <input type="radio" name="prize" class="prize-radio" value="Entrevista de Placer (30 min)" data-gap="44">
+        <div class="selected-ring"></div>
+        <div class="prize-card-header">
+          <span class="prize-name">Entrevista de Placer (30 min)</span>
+          <span class="prize-pts">140 pts</span>
+        </div>
+        <div class="prize-desc">Una conversación privada sobre los patrones que nombraste. Los escribiste claramente. Podemos ir más profundo.</div>
+        <span class="reach-badge">44 pts para llegar</span>
+      </label>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="final-challenge">
+    <div class="final-title">Un último reto</div>
+    <div class="final-text">Si hay un premio que está justo fuera de tu alcance, podemos diseñar un reto más para ti. Dinos a qué apuntas.</div>
+
+    <span class="prize-selector-label">Selecciona tu premio</span>
+    <div class="prize-cards" id="wa-prize-selector" style="margin-bottom:1.25rem">
+
+      <label class="prize-card affordable" data-pts="80" data-name="Carta de Consejo Sexual" id="wa-card-1">
+        <input type="radio" name="wa-prize" class="prize-radio" value="Carta de Consejo Sexual" data-gap="0">
+        <div class="selected-ring"></div>
+        <div class="prize-card-header">
+          <span class="prize-name">Carta de Consejo Sexual</span>
+          <span class="prize-pts">80 pts</span>
+        </div>
+      </label>
+
+      <label class="prize-card affordable" data-pts="50" data-name="Carta de Agathe" id="wa-card-2">
+        <input type="radio" name="wa-prize" class="prize-radio" value="Carta de Agathe" data-gap="0">
+        <div class="selected-ring"></div>
+        <div class="prize-card-header">
+          <span class="prize-name">Carta de Agathe</span>
+          <span class="prize-pts">50 pts</span>
+        </div>
+      </label>
+
+      <label class="prize-card reach" data-pts="140" data-name="Entrevista de Placer (30 min)" id="wa-card-3">
+        <input type="radio" name="wa-prize" class="prize-radio" value="Entrevista de Placer (30 min)" data-gap="44" checked>
+        <div class="selected-ring"></div>
+        <div class="prize-card-header">
+          <span class="prize-name">Entrevista de Placer (30 min)</span>
+          <span class="prize-pts">140 pts</span>
+        </div>
+        <span class="reach-badge">44 pts para llegar</span>
+      </label>
+
+    </div>
+
+    <div class="wa-note">Tu balance actual: <strong style="color:var(--secondary)">96 puntos</strong></div>
+    <a id="wa-link" href="#" class="wa-btn" target="_blank" rel="noopener">Escríbeme por WhatsApp</a>
+  </div>
+
+  <div class="bottom-space"></div>
+
+</div>
+
+<script>
+(function(){
+  var BALANCE = 96;
+  var WA_NUMBER = "34617000000";
+
+  function updateWaLink(){
+    var checked = document.querySelector('#wa-prize-selector input[name="wa-prize"]:checked');
+    if(!checked) return;
+    var prize = checked.value;
+    var pts = parseInt(checked.closest('.prize-card').getAttribute('data-pts'));
+    var actualGap = pts > BALANCE ? pts - BALANCE : 0;
+    var msg;
+    if(actualGap > 0){
+      msg = "Hola Pepe, quiero el último reto de Jouissance. Estoy apuntando a " + prize + ". Me faltan " + actualGap + " puntos.";
+    } else {
+      msg = "Hola Pepe, quiero canjear mis puntos en Jouissance. Tengo 96 puntos y quiero el premio: " + prize + ".";
+    }
+    document.getElementById('wa-link').href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+  }
+
+  function initCards(containerId){
+    var cards = document.querySelectorAll('#' + containerId + ' .prize-card');
+    cards.forEach(function(card){
+      card.addEventListener('click', function(){
+        var inp = card.querySelector('input[type="radio"]');
+        inp.checked = true;
+        var allCards = document.querySelectorAll('#' + containerId + ' .prize-card');
+        allCards.forEach(function(c){ c.classList.remove('selected'); });
+        card.classList.add('selected');
+        if(containerId === 'wa-prize-selector') updateWaLink();
+      });
+    });
+  }
+
+  initCards('prize-cards');
+  initCards('wa-prize-selector');
+
+  // Pre-select Entrevista de Placer (reach prize) in WA selector
+  var reachCard = document.querySelector('#wa-prize-selector .prize-card.reach');
+  if(reachCard) reachCard.classList.add('selected');
+
+  updateWaLink();
+})();
+</script>
+</body>
+</html>
