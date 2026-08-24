@@ -168,6 +168,7 @@ nav{
 .legend-swatch.owns{background:#4c9fff}
 .legend-swatch.collab{background:rgba(0,212,170,.45)}
 .legend-swatch.wf{border-top:2px dashed rgba(0,212,170,.7);height:0}
+.legend-engine{width:10px;height:10px;border-radius:2px;flex-shrink:0;opacity:0.55}
 </style>
 </head>
 <body>
@@ -191,6 +192,8 @@ nav{
   <button class="pill active" data-mode="org">Org</button>
   <button class="pill" data-mode="ops">Ops</button>
   <button class="pill" data-mode="full">Full</button>
+  <span style="width:1px;background:rgba(100,140,255,.18);align-self:stretch;margin:4px 2px"></span>
+  <button id="hull-toggle" class="pill active">Engines</button>
 </div>
 
 <svg id="graph"></svg>
@@ -219,9 +222,17 @@ nav{
   <div class="legend-item"><div class="legend-swatch owns"></div>Owns</div>
   <div class="legend-item"><div class="legend-swatch collab"></div>Collaborates</div>
   <div class="legend-item"><div class="legend-swatch wf"></div>Workflow</div>
+  <div class="legend-item" style="margin-top:8px;padding-top:7px;border-top:1px solid rgba(100,140,255,.1)"><span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,216,240,.25)">Macro Engines</span></div>
+  <div class="legend-item"><div class="legend-engine" style="background:#e14b87"></div>Connection</div>
+  <div class="legend-item"><div class="legend-engine" style="background:#4c9fff"></div>Value</div>
+  <div class="legend-item"><div class="legend-engine" style="background:#00d4aa"></div>Care</div>
+  <div class="legend-item"><div class="legend-engine" style="background:#888888"></div>Core</div>
+  <div class="legend-item"><div class="legend-engine" style="background:#ff9f43"></div>Body</div>
+  <div class="legend-item"><div class="legend-engine" style="background:#a29bfe"></div>Mind</div>
+  <div class="legend-item"><div class="legend-engine" style="background:#fd79a8"></div>Soul</div>
 </div>
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="/graph/d3.v7.min.js"></script>
 <script>
 (function () {
   'use strict';
@@ -232,9 +243,21 @@ nav{
   var selectedNode = null;
 
   var svgSel, gEl, zoomBeh, sim;
-  var gGlow, gCollab, gWorkflow, gFg, gNodes;
+  var gHulls, gGlow, gCollab, gWorkflow, gFg, gNodes;
+  var hullsVisible = true;
+  var _hullTickN = 0;
 
   var C = { persona: '#e14b87', loop: '#4c9fff', tool: '#00d4aa' };
+
+  var ENGINE_COLORS = {
+    'Connection': { color: '#e14b87', fillOp: 0.06, strokeOp: 0.25 },
+    'Value':      { color: '#4c9fff', fillOp: 0.06, strokeOp: 0.25 },
+    'Care':       { color: '#00d4aa', fillOp: 0.06, strokeOp: 0.25 },
+    'Core':       { color: '#888888', fillOp: 0.04, strokeOp: 0.15 },
+    'Body':       { color: '#ff9f43', fillOp: 0.06, strokeOp: 0.20 },
+    'Mind':       { color: '#a29bfe', fillOp: 0.06, strokeOp: 0.20 },
+    'Soul':       { color: '#fd79a8', fillOp: 0.06, strokeOp: 0.20 },
+  };
 
   var RADIUS = {
     org:  { persona: 22, loop: 0, tool: 0 },
@@ -310,6 +333,7 @@ nav{
     });
 
     gEl       = svgSel.append('g').attr('class', 'main-g');
+    gHulls    = gEl.append('g').attr('class', 'g-hulls');
     gGlow     = gEl.append('g');
     gCollab   = gEl.append('g');
     gWorkflow = gEl.append('g');
@@ -336,6 +360,8 @@ nav{
       autoFit(W, H);
       sim.on('end.autofit', null);
     });
+
+    sim.on('end.hulls', function() { updateHulls(); });
 
     document.getElementById('loading').style.display = 'none';
   }
@@ -386,6 +412,8 @@ nav{
     drawEdges(visEdges, showCollab);
     drawNodes(visNodes);
     sim.alpha(0.6).restart();
+    _hullTickN = 0;
+    updateHulls();
   }
 
   function drawEdges(structEdges, showCollab) {
@@ -546,6 +574,110 @@ nav{
 
     gNodes.selectAll('g.nd')
       .attr('transform', function(d) { return 'translate('+(d.x||0)+','+(d.y||0)+')'; });
+
+    _hullTickN++;
+    if (_hullTickN % 10 === 0) updateHulls();
+  }
+
+  function updateHulls() {
+    if (!gHulls) return;
+    if (!hullsVisible) { gHulls.selectAll('*').remove(); return; }
+
+    var visNodes = sim.nodes();
+    var PAD = 32;
+
+    var groups = {};
+    for (var i = 0; i < visNodes.length; i++) {
+      var d = visNodes[i];
+      var eng = d.macro_engine;
+      if (!eng || !ENGINE_COLORS[eng]) continue;
+      if (!groups[eng]) groups[eng] = [];
+      groups[eng].push(d);
+    }
+
+    var engines      = Object.keys(groups);
+    var hullEngines  = engines.filter(function(e) { return groups[e].length >= 3; });
+    var smallEngines = engines.filter(function(e) { return groups[e].length < 3; });
+
+    gHulls.selectAll('path.hull').data(hullEngines, function(e) { return e; }).join(
+      function(enter) {
+        return enter.append('path').attr('class', 'hull')
+          .attr('stroke-width', 1.5).attr('stroke-linejoin', 'round').attr('pointer-events', 'none');
+      },
+      function(update) { return update; },
+      function(exit)   { return exit.remove(); }
+    )
+    .attr('fill',         function(e) { return ENGINE_COLORS[e].color; })
+    .attr('fill-opacity', function(e) { return ENGINE_COLORS[e].fillOp; })
+    .attr('stroke',       function(e) { return ENGINE_COLORS[e].color; })
+    .attr('stroke-opacity', function(e) { return ENGINE_COLORS[e].strokeOp; })
+    .attr('d', function(e) {
+      var pts  = groups[e].map(function(d) { return [d.x || 0, d.y || 0]; });
+      var hull = d3.polygonHull(pts);
+      if (!hull) return null;
+      var cx = 0, cy = 0;
+      for (var k = 0; k < hull.length; k++) { cx += hull[k][0]; cy += hull[k][1]; }
+      cx /= hull.length; cy /= hull.length;
+      var padded = hull.map(function(p) {
+        var dx = p[0] - cx, dy = p[1] - cy;
+        var len = Math.sqrt(dx*dx + dy*dy) || 1;
+        return [p[0] + dx/len*PAD, p[1] + dy/len*PAD];
+      });
+      return 'M' + padded.map(function(p) { return p[0].toFixed(1)+','+p[1].toFixed(1); }).join('L') + 'Z';
+    });
+
+    gHulls.selectAll('circle.hull-c').data(smallEngines, function(e) { return e; }).join(
+      function(enter) {
+        return enter.append('circle').attr('class', 'hull-c')
+          .attr('stroke-width', 1.5).attr('pointer-events', 'none');
+      },
+      function(update) { return update; },
+      function(exit)   { return exit.remove(); }
+    )
+    .attr('fill',         function(e) { return ENGINE_COLORS[e].color; })
+    .attr('fill-opacity', function(e) { return ENGINE_COLORS[e].fillOp; })
+    .attr('stroke',       function(e) { return ENGINE_COLORS[e].color; })
+    .attr('stroke-opacity', function(e) { return ENGINE_COLORS[e].strokeOp; })
+    .attr('cx', function(e) {
+      var ns = groups[e], cx = 0;
+      ns.forEach(function(d) { cx += d.x || 0; });
+      return cx / ns.length;
+    })
+    .attr('cy', function(e) {
+      var ns = groups[e], cy = 0;
+      ns.forEach(function(d) { cy += d.y || 0; });
+      return cy / ns.length;
+    })
+    .attr('r', function(e) {
+      var ns = groups[e];
+      if (ns.length === 1) return PAD + 20;
+      var dx = (ns[1].x||0) - (ns[0].x||0), dy = (ns[1].y||0) - (ns[0].y||0);
+      return Math.sqrt(dx*dx + dy*dy) / 2 + PAD;
+    });
+
+    gHulls.selectAll('text.hull-label').data(engines, function(e) { return e; }).join(
+      function(enter) {
+        return enter.append('text').attr('class', 'hull-label')
+          .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+          .attr('font-size', '11').attr('font-weight', '600').attr('letter-spacing', '2')
+          .attr('pointer-events', 'none').style('text-transform', 'uppercase');
+      },
+      function(update) { return update; },
+      function(exit)   { return exit.remove(); }
+    )
+    .attr('fill',         function(e) { return ENGINE_COLORS[e].color; })
+    .attr('fill-opacity', 0.5)
+    .attr('x', function(e) {
+      var ns = groups[e], cx = 0;
+      ns.forEach(function(d) { cx += d.x || 0; });
+      return cx / ns.length;
+    })
+    .attr('y', function(e) {
+      var ns = groups[e], cy = 0;
+      ns.forEach(function(d) { cy += d.y || 0; });
+      return cy / ns.length;
+    })
+    .text(function(e) { return e.toUpperCase(); });
   }
 
   function selectNode(node) {
@@ -700,6 +832,12 @@ nav{
     });
 
     document.getElementById('panel-close').addEventListener('click', deselect);
+
+    document.getElementById('hull-toggle').addEventListener('click', function() {
+      hullsVisible = !hullsVisible;
+      this.classList.toggle('active', hullsVisible);
+      updateHulls();
+    });
 
     document.getElementById('search-box').addEventListener('input', function(e) {
       var q = e.target.value.trim().toLowerCase();
