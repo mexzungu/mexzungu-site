@@ -1027,9 +1027,7 @@ document.addEventListener('DOMContentLoaded',function(){(function(){
       if(vbtn){ vbtn.style.color="#a0c0ff"; vbtn.style.borderColor="rgba(100,140,255,.5)"; vbtn.style.boxShadow="0 0 12px rgba(100,140,255,.3)"; }
       rec.onresult = function(e){
         var q = e.results[0][0].transcript;
-        if(hudText) hudText.textContent = "“" + q + "”
-
-Thinking…";
+        if(hudText) hudText.textContent = "'"' + q + '"\n\nThinking...';
         if(vbtn){ vbtn.style.color="rgba(200,216,240,.4)"; vbtn.style.borderColor="rgba(100,140,255,.15)"; vbtn.style.boxShadow=""; }
         fetch("https://api.mexzungu.com/graph/ask", {
           method: "POST",
