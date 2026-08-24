@@ -813,6 +813,8 @@ document.addEventListener('DOMContentLoaded',function(){(function(){
     var mh = '<div class="meta-row"><div class="meta-key">Type</div>' +
              '<div class="meta-value"><span class="type-badge '+node.type+'">'+node.type+'</span></div></div>';
     if (node.title)       mh += mRow('Role',   node.title);
+    if (node.description) mh += mRow('About',  node.description);
+    if (node.status)      mh += mRow('Status', node.status === 'ACTIVE' ? '<span style="color:#00d4aa;font-weight:700">ACTIVE</span>' : '<span style="color:rgba(200,216,240,.3)">PAUSED</span>');
     if (node.owner)       mh += mRow('Owner',  node.owner);
     if (node.macro_engine && node.macro_engine !== '') mh += mRow('Engine', node.macro_engine);
     document.getElementById('panel-meta').innerHTML = mh;

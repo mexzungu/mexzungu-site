@@ -6,7 +6,8 @@
       "type": "persona",
       "title": "Analytics and Performance Operator",
       "macro_engine": "Connection",
-      "url": "/agents/annie"
+      "url": "/agents/annie",
+      "description": "Analytics. Measures performance, closes feedback loop back to Freddie every Friday."
     },
     {
       "id": "anselmo",
@@ -14,7 +15,8 @@
       "type": "persona",
       "title": "Brand Police",
       "macro_engine": "Connection",
-      "url": "/agents/anselmo"
+      "url": "/agents/anselmo",
+      "description": "Brand gate. Final check before anything goes external. Palette, tone, voice alignment. Hard block on liability flags."
     },
     {
       "id": "aretha",
@@ -22,7 +24,8 @@
       "type": "persona",
       "title": "M&A Desk Lead",
       "macro_engine": "Value",
-      "url": "/agents/aretha"
+      "url": "/agents/aretha",
+      "description": "M&A desk lead. Regulatory compliance, cross-border transaction mechanics."
     },
     {
       "id": "bowie",
@@ -30,7 +33,8 @@
       "type": "persona",
       "title": "Chief Technology Officer",
       "macro_engine": "Core",
-      "url": "/agents/bowie"
+      "url": "/agents/bowie",
+      "description": "Infrastructure and tools. Tools server, cron jobs, VPS architecture. Manages the full engineering band."
     },
     {
       "id": "bruce",
@@ -38,7 +42,8 @@
       "type": "persona",
       "title": "Head of Delivery",
       "macro_engine": "Core",
-      "url": "/agents/bruce"
+      "url": "/agents/bruce",
+      "description": "Strategy and competitive intelligence. Research lead on all projects. OODA analysis, market positioning."
     },
     {
       "id": "chrissie",
@@ -46,7 +51,8 @@
       "type": "persona",
       "title": "Asset Deals Lead",
       "macro_engine": "Value",
-      "url": "/agents/chrissie"
+      "url": "/agents/chrissie",
+      "description": "Asset deals lead. Governance, shareholder agreements, corporate structure."
     },
     {
       "id": "freddie",
@@ -54,7 +60,8 @@
       "type": "persona",
       "title": "Chief Marketing Officer",
       "macro_engine": "Connection",
-      "url": "/agents/freddie"
+      "url": "/agents/freddie",
+      "description": "Content strategy and brand direction. Runs the full content engine from research through deploy and analytics."
     },
     {
       "id": "gene",
@@ -62,7 +69,8 @@
       "type": "persona",
       "title": "Chief Financial Officer",
       "macro_engine": "Core",
-      "url": "/agents/gene"
+      "url": "/agents/gene",
+      "description": "Finance, invoicing, deal structure, P&L. Invoice Tracker, Budget Bakers integration, weekly scorecard."
     },
     {
       "id": "grace",
@@ -70,7 +78,8 @@
       "type": "persona",
       "title": "Brand Operator",
       "macro_engine": "Connection",
-      "url": "/agents/grace"
+      "url": "/agents/grace",
+      "description": "Deployment. Schedules and posts all content via social poster cron. Autonomous after Anselmo approval."
     },
     {
       "id": "grohl",
@@ -78,7 +87,8 @@
       "type": "persona",
       "title": "Content Producer",
       "macro_engine": "Connection",
-      "url": "/agents/grohl"
+      "url": "/agents/grohl",
+      "description": "Flagship content. Deep pieces, newsletter anchors, Outlaw Chronicles. Long-form thought leadership."
     },
     {
       "id": "iggy",
@@ -86,7 +96,8 @@
       "type": "persona",
       "title": "DevOps and Infrastructure Engineer",
       "macro_engine": "Core",
-      "url": "/agents/iggy"
+      "url": "/agents/iggy",
+      "description": "DevOps and Infrastructure. VPS ops, systemd services, deployment scripts. Routed by Bowie."
     },
     {
       "id": "jack",
@@ -94,7 +105,8 @@
       "type": "persona",
       "title": "Backend and API Engineer",
       "macro_engine": "Core",
-      "url": "/agents/jack"
+      "url": "/agents/jack",
+      "description": "Backend and API engineer. Tools server, FastAPI, Python scripts. Routed by Bowie."
     },
     {
       "id": "jagger",
@@ -102,7 +114,8 @@
       "type": "persona",
       "title": "Chief Growth Officer",
       "macro_engine": "Connection",
-      "url": "/agents/jagger"
+      "url": "/agents/jagger",
+      "description": "Business development. Pipeline management, relationship portfolio, warm lead tracking and intake."
     },
     {
       "id": "joan",
@@ -110,7 +123,8 @@
       "type": "persona",
       "title": "Venture Architecture Practice Lead",
       "macro_engine": "Connection",
-      "url": "/agents/joan"
+      "url": "/agents/joan",
+      "description": "BD pipeline management. Venture architecture, deal origination, prospect research and qualification."
     },
     {
       "id": "joni",
@@ -118,7 +132,8 @@
       "type": "persona",
       "title": "Editor",
       "macro_engine": "Connection",
-      "url": "/agents/joni"
+      "url": "/agents/joni",
+      "description": "Editorial gate. Cuts and tightens all content before brand review. Applies Triple Gate."
     },
     {
       "id": "kim",
@@ -126,7 +141,8 @@
       "type": "persona",
       "title": "AI Operations Practice Lead",
       "macro_engine": "Core",
-      "url": "/agents/kim"
+      "url": "/agents/kim",
+      "description": "AI Operations Practice Lead. QA and engine audit. Runs the engine-auditor loop."
     },
     {
       "id": "lars",
@@ -134,7 +150,8 @@
       "type": "persona",
       "title": "Head of Management",
       "macro_engine": "Core",
-      "url": "/agents/lars"
+      "url": "/agents/lars",
+      "description": "Owns execution and delivery. PM on every build. Task tracking, daily rhythm, escalation routing."
     },
     {
       "id": "lemmy",
@@ -142,7 +159,8 @@
       "type": "persona",
       "title": "Chief Legal Officer",
       "macro_engine": "Value",
-      "url": "/agents/lemmy"
+      "url": "/agents/lemmy",
+      "description": "Contracts, legal exposure, NCA compliance, IP. Every legal action clears through Lemmy."
     },
     {
       "id": "lenny",
@@ -150,7 +168,8 @@
       "type": "persona",
       "title": "Content Producer",
       "macro_engine": "Connection",
-      "url": "/agents/lenny"
+      "url": "/agents/lenny",
+      "description": "Cadence content. Regular posts across LinkedIn, X, Instagram. Consistent output engine."
     },
     {
       "id": "lou",
@@ -158,7 +177,8 @@
       "type": "persona",
       "title": "QA and Testing Engineer",
       "macro_engine": "Core",
-      "url": "/agents/lou"
+      "url": "/agents/lou",
+      "description": "QA and Testing. Test suites, Playwright, coverage reports. Routed by Bowie."
     },
     {
       "id": "nick",
@@ -166,7 +186,8 @@
       "type": "persona",
       "title": "Editor",
       "macro_engine": "Connection",
-      "url": "/agents/nick"
+      "url": "/agents/nick",
+      "description": "Editor alongside Joni. Handles social DMs and comment replies in SM engagement."
     },
     {
       "id": "nile",
@@ -174,7 +195,8 @@
       "type": "persona",
       "title": "Frontend and UX Engineer",
       "macro_engine": "Core",
-      "url": "/agents/nile"
+      "url": "/agents/nile",
+      "description": "Frontend and UX. mexzungu-site, dashboards, UI components. Routed by Bowie."
     },
     {
       "id": "nina",
@@ -182,7 +204,8 @@
       "type": "persona",
       "title": "Head of Knowledge",
       "macro_engine": "Core",
-      "url": "/agents/nina"
+      "url": "/agents/nina",
+      "description": "Single source of truth. Persona dossiers, knowledge base architecture, PARKED-IDEAS ownership."
     },
     {
       "id": "ozzy",
@@ -190,7 +213,8 @@
       "type": "persona",
       "title": "Scenario Planner",
       "macro_engine": "Core",
-      "url": "/agents/ozzy"
+      "url": "/agents/ozzy",
+      "description": "Scenario stress-testing. \"And then what?\" x3 on every Showtime decision. Always runs solo first."
     },
     {
       "id": "pj",
@@ -198,7 +222,8 @@
       "type": "persona",
       "title": "Debt Desk Lead",
       "macro_engine": "Value",
-      "url": "/agents/pj"
+      "url": "/agents/pj",
+      "description": "Debt desk lead. Loan terms, debt structures, investment tracking and loan ledger."
     },
     {
       "id": "prince",
@@ -206,7 +231,8 @@
       "type": "persona",
       "title": "Head of Excellence",
       "macro_engine": "Value",
-      "url": "/agents/prince"
+      "url": "/agents/prince",
+      "description": "Client deliverable quality gate. Pre-send review on all outgoing work. Holds the excellence bar."
     },
     {
       "id": "sade",
@@ -214,7 +240,8 @@
       "type": "persona",
       "title": "Head of Client Success",
       "macro_engine": "Care",
-      "url": "/agents/sade"
+      "url": "/agents/sade",
+      "description": "Strategic client health. Monitors relationship signals and friction passively. Flags in daily briefing."
     },
     {
       "id": "sheryl",
@@ -222,7 +249,8 @@
       "type": "persona",
       "title": "Client Success Operator",
       "macro_engine": "Care",
-      "url": "/agents/sheryl"
+      "url": "/agents/sheryl",
+      "description": "Client success ops. Day-to-day delivery health monitoring, operational friction tracking."
     },
     {
       "id": "tina",
@@ -230,7 +258,8 @@
       "type": "persona",
       "title": "Equity Desk Lead",
       "macro_engine": "Value",
-      "url": "/agents/tina"
+      "url": "/agents/tina",
+      "description": "Equity desk lead. Cap tables, equity structures, SAFE analysis, investor rights."
     },
     {
       "id": "loop-agent-building-engine",
@@ -238,7 +267,8 @@
       "type": "loop",
       "macro_engine": "Value",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-alexandria-sync",
@@ -246,7 +276,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "nina",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-annie-kpis",
@@ -254,7 +285,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "annie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-anselmo-kpis",
@@ -262,7 +294,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "anselmo",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-aretha-kpis",
@@ -270,7 +303,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "aretha",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-bd-engine",
@@ -278,7 +312,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "jagger",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "loop-billing-invoice-engine",
@@ -286,7 +321,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "gene",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "loop-bowie-infra-tracker",
@@ -294,7 +330,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-bowie-kpis",
@@ -302,7 +339,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-bruce-kpis",
@@ -310,7 +348,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bruce",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-chrissie-kpis",
@@ -318,7 +357,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "chrissie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-commission-verifier",
@@ -326,7 +366,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-commissions-calibration",
@@ -334,7 +375,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-commissions-migration",
@@ -342,7 +384,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-comms-redesign",
@@ -350,7 +393,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-connector-probe",
@@ -358,7 +402,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-cron-health-engine",
@@ -366,7 +411,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-daily-journal-prep",
@@ -374,7 +420,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "nickcave",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "loop-delta40-upgrade-design",
@@ -382,7 +429,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-engine-architecture-improver",
@@ -390,7 +438,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-engine-auditor",
@@ -398,7 +447,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-freddie-kpis",
@@ -406,7 +456,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-gene-kpis",
@@ -414,7 +465,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "gene",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-grace-kpis",
@@ -422,7 +474,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "grace",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-grohl-kpis",
@@ -430,7 +483,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "grohl",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-havenpay-monitor",
@@ -438,7 +492,8 @@
       "type": "loop",
       "macro_engine": "Care",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "loop-iggy-kpis",
@@ -446,7 +501,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "iggy",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-inter-agent-harness-design",
@@ -454,7 +510,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-invoice-to-cash",
@@ -462,7 +519,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "loop-jack-kpis",
@@ -470,7 +528,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "jack",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-jagger-kpis",
@@ -478,7 +537,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "jagger",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-janis-kpis",
@@ -486,7 +546,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-joan-kpis",
@@ -494,7 +555,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "joan",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-joni-kpis",
@@ -502,7 +564,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "joni",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-kim-kpis",
@@ -510,7 +573,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "kim",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-knowledge-engine",
@@ -518,7 +582,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "nina",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "loop-kpi-measurement",
@@ -526,7 +591,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lars-kpis",
@@ -534,7 +600,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lars",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lemmy-kpis",
@@ -542,7 +609,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lemmy",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lenny-kpis",
@@ -550,7 +618,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lenny",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lfe-investment-engine",
@@ -558,7 +627,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "gene",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lfe-properties-engine",
@@ -566,7 +636,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "gene",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lfe-tax-engine",
@@ -574,7 +645,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "gene",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lfe-travel-engine",
@@ -582,7 +654,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lars",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-loop-maker-v2",
@@ -590,7 +663,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-loop-registry-engine",
@@ -598,7 +672,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-lou-kpis",
@@ -606,7 +681,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lou",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mgl-app-dev",
@@ -614,7 +690,8 @@
       "type": "loop",
       "macro_engine": "Value",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mgl-avatar-generator",
@@ -622,7 +699,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mgl-council",
@@ -630,7 +708,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lars",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mgl-delivery-engines",
@@ -638,7 +717,8 @@
       "type": "loop",
       "macro_engine": "Value",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mgl-induction",
@@ -646,7 +726,8 @@
       "type": "loop",
       "macro_engine": "Value",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mgl-maverick-designer",
@@ -654,7 +735,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mgl-org-loop",
@@ -662,7 +744,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-mmm-researcher",
@@ -670,7 +753,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-nick-kpis",
@@ -678,7 +762,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "nick",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-nile-kpis",
@@ -686,7 +771,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "nile",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-nina-kpis",
@@ -694,7 +780,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "nina",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-nina-loop",
@@ -702,7 +789,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "nina",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-notion-purge",
@@ -710,7 +798,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-oc-approver-portal",
@@ -718,7 +807,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-oc-publication",
@@ -726,7 +816,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-ozzy-kpis",
@@ -734,7 +825,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "ozzy",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-pepecarrillo-site-audit",
@@ -742,7 +834,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-body-fitness-engine",
@@ -750,7 +843,8 @@
       "type": "loop",
       "macro_engine": "Body",
       "owner": "gwen",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-body-medical-engine",
@@ -758,7 +852,8 @@
       "type": "loop",
       "macro_engine": "Body",
       "owner": "gwen",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-body-nutrition-engine",
@@ -766,7 +861,8 @@
       "type": "loop",
       "macro_engine": "Body",
       "owner": "gwen",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-body-recovery-engine",
@@ -774,7 +870,8 @@
       "type": "loop",
       "macro_engine": "Body",
       "owner": "gwen",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-body-sleep-engine",
@@ -782,7 +879,8 @@
       "type": "loop",
       "macro_engine": "Body",
       "owner": "gwen",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-mind-arts-engine",
@@ -790,7 +888,8 @@
       "type": "loop",
       "macro_engine": "Mind",
       "owner": "sting",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-mind-contemplative-engine",
@@ -798,7 +897,8 @@
       "type": "loop",
       "macro_engine": "Mind",
       "owner": "sting",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-mind-language-engine",
@@ -806,7 +906,8 @@
       "type": "loop",
       "macro_engine": "Mind",
       "owner": "sting",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-mind-reading-engine",
@@ -814,7 +915,8 @@
       "type": "loop",
       "macro_engine": "Mind",
       "owner": "sting",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-mind-skills-engine",
@@ -822,7 +924,8 @@
       "type": "loop",
       "macro_engine": "Mind",
       "owner": "sting",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-soul-closeness-engine",
@@ -830,7 +933,8 @@
       "type": "loop",
       "macro_engine": "Soul",
       "owner": "nickcave",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-soul-journal-engine",
@@ -838,7 +942,8 @@
       "type": "loop",
       "macro_engine": "Soul",
       "owner": "nickcave",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-soul-narrative-engine",
@@ -846,7 +951,8 @@
       "type": "loop",
       "macro_engine": "Soul",
       "owner": "nickcave",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-soul-relationship-engine",
@@ -854,7 +960,8 @@
       "type": "loop",
       "macro_engine": "Soul",
       "owner": "nickcave",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-soul-shadow-engine",
@@ -862,7 +969,8 @@
       "type": "loop",
       "macro_engine": "Soul",
       "owner": "nickcave",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-per-soul-therapy-engine",
@@ -870,7 +978,8 @@
       "type": "loop",
       "macro_engine": "Soul",
       "owner": "nickcave",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-person-profile-loop",
@@ -878,7 +987,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-persona-daily-pulse",
@@ -886,7 +996,8 @@
       "type": "loop",
       "macro_engine": "Care",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-pj-kpis",
@@ -894,7 +1005,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "pj",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-prince-kpis",
@@ -902,7 +1014,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "prince",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sade-kpis",
@@ -910,7 +1023,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "sade",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-scheduling-agent",
@@ -918,7 +1032,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "loop-session-plan-improver",
@@ -926,7 +1041,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sheryl-kpis",
@@ -934,7 +1050,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "sheryl",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-bowie-health",
@@ -942,7 +1059,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-bruce-pulse",
@@ -950,7 +1068,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bruce",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-freddie-weekly",
@@ -958,7 +1077,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-gene-monthly",
@@ -966,7 +1086,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "gene",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-jagger-weekly",
@@ -974,7 +1095,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "jagger",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-lars-daily",
@@ -982,7 +1104,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lars",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-lemmy-weekly",
@@ -990,7 +1113,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "lemmy",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-nina-weekly",
@@ -998,7 +1122,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-personas",
@@ -1006,7 +1131,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-prince-daily",
@@ -1014,7 +1140,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "prince",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-routing-calibrator",
@@ -1022,7 +1149,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-sade-daily",
@@ -1030,7 +1158,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "sade",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-sade-health",
@@ -1038,7 +1167,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "sade",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-slack-sheryl-daily",
@@ -1046,7 +1176,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "sheryl",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-analytics-engine",
@@ -1054,7 +1185,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-brand-gate-engine",
@@ -1062,7 +1194,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-cadence-content-engine",
@@ -1070,7 +1203,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-deployment-engine",
@@ -1078,7 +1212,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-editorial-gate-engine",
@@ -1086,7 +1221,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-flagship-content-engine",
@@ -1094,7 +1230,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-freddie-calendar-engine",
@@ -1102,7 +1239,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-oc-engine",
@@ -1110,7 +1248,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-research-engine",
@@ -1118,7 +1257,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "freddie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-sm-strategy-builder",
@@ -1126,7 +1266,8 @@
       "type": "loop",
       "macro_engine": "Connection",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-system-reliability",
@@ -1134,7 +1275,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-terminal-notification-routing",
@@ -1142,7 +1284,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-tina-kpis",
@@ -1150,7 +1293,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "tina",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-tom-kpis",
@@ -1158,7 +1302,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "",
-      "url": ""
+      "url": "",
+      "status": "PAUSED"
     },
     {
       "id": "loop-zombie-hunter",
@@ -1166,7 +1311,8 @@
       "type": "loop",
       "macro_engine": "Core",
       "owner": "bowie",
-      "url": ""
+      "url": "",
+      "status": "ACTIVE"
     },
     {
       "id": "tool-get_emails",
@@ -2154,7 +2300,8 @@
       "type": "persona",
       "title": "Chief Wellness Officer",
       "macro_engine": "Body",
-      "url": "/agents/gwen"
+      "url": "/agents/gwen",
+      "description": "Chief Wellness Officer. Body engine: fitness, nutrition, medical, sleep, recovery."
     },
     {
       "id": "janis",
@@ -2162,7 +2309,8 @@
       "type": "persona",
       "title": "Chief of Staff",
       "macro_engine": "Core",
-      "url": "/agents/janis"
+      "url": "/agents/janis",
+      "description": "Coordinates the whole machine. IBL operating model, 9-item Showtime gate, daily briefing, infrastructure ownership."
     },
     {
       "id": "kellen",
@@ -2170,7 +2318,8 @@
       "type": "persona",
       "title": "AI Operations Manager",
       "macro_engine": "Core",
-      "url": "/agents/kellen"
+      "url": "/agents/kellen",
+      "description": "AI Operations Manager. Human-in-the-loop for Playwright automation, form submissions, phone calls."
     },
     {
       "id": "nick-cave",
@@ -2178,7 +2327,8 @@
       "type": "persona",
       "title": "Soul Engine Co-lead / Inner Work",
       "macro_engine": "Soul",
-      "url": "/agents/nick-cave"
+      "url": "/agents/nick-cave",
+      "description": "Soul engine co-lead. Inner work, therapy, shadow work, narrative identity."
     },
     {
       "id": "stevie",
@@ -2186,7 +2336,8 @@
       "type": "persona",
       "title": "Soul Engine Co-lead / Relationships",
       "macro_engine": "Soul",
-      "url": "/agents/stevie"
+      "url": "/agents/stevie",
+      "description": "Soul engine co-lead. Relationships, connection, closeness, relational health."
     },
     {
       "id": "sting",
@@ -2194,7 +2345,8 @@
       "type": "persona",
       "title": "Chief Evolution Officer",
       "macro_engine": "Mind",
-      "url": "/agents/sting"
+      "url": "/agents/sting",
+      "description": "Chief Evolution Officer. Mind engine: arts, contemplative practice, language, reading, skills."
     },
     {
       "id": "quincy",
@@ -2202,7 +2354,8 @@
       "type": "persona",
       "title": "Research Orchestrator",
       "macro_engine": "Core",
-      "url": "/agents/quincy"
+      "url": "/agents/quincy",
+      "description": "Research Orchestrator. Leads research phase on all projects. Dispatches specialists, synthesizes findings."
     }
   ],
   "edges": [
