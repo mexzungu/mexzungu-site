@@ -2197,12 +2197,12 @@
       "url": "/agents/sting"
     },
     {
-      "id": "tom",
-      "name": "Tom",
+      "id": "quincy",
+      "name": "Quincy",
       "type": "persona",
-      "title": "Disruptor in Residence",
+      "title": "Research Orchestrator",
       "macro_engine": "Core",
-      "url": "/agents/tom"
+      "url": "/agents/quincy"
     }
   ],
   "edges": [
