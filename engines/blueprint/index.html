@@ -176,36 +176,6 @@
 </head>
 <body>
 <div id="perspective-grid" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden"><div style="position:absolute;bottom:0;left:-50%;width:200%;height:65%;background-image:linear-gradient(rgba(100,140,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(100,140,255,.035) 1px,transparent 1px);background-size:60px 60px;transform:perspective(500px) rotateX(62deg);transform-origin:center bottom"></div></div>
-<canvas id="particle-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
-<script>
-document.addEventListener('DOMContentLoaded',function(){(function(){
-  var c=document.getElementById('particle-canvas'),ctx=c.getContext('2d'),W,H,mouse={x:0,y:0};
-  var COLORS=['rgba(100,140,255,.25)','rgba(225,75,135,.12)'];
-  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
-  resize();window.addEventListener('resize',resize);
-  var pts=[];
-  for(var i=0;i<80;i++){pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:1+Math.random(),col:COLORS[Math.random()<.6?0:1]});}
-  window.addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY;});
-  function frame(){
-    ctx.clearRect(0,0,W,H);
-    for(var i=0;i<pts.length;i++){
-      var p=pts[i];
-      p.vx+=(mouse.x-p.x)*.0001;p.vy+=(mouse.y-p.y)*.0001;
-      p.x+=p.vx;p.y+=p.vy;
-      p.vx*=.99;p.vy*=.99;
-      if(p.x<0){p.x=0;p.vx*=-1;}if(p.x>W){p.x=W;p.vx*=-1;}
-      if(p.y<0){p.y=0;p.vy*=-1;}if(p.y>H){p.y=H;p.vy*=-1;}
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col;ctx.fill();
-      for(var j=i+1;j<pts.length;j++){
-        var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<100){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='rgba(100,140,255,.05)';ctx.lineWidth=.5;ctx.stroke();}
-      }
-    }
-    requestAnimationFrame(frame);
-  }
-  frame();
-})();});
-</script>
 <div id="scanlines" style="position:fixed;inset:0;z-index:500;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px)"></div>
 <div style="position:fixed;top:8px;left:8px;width:20px;height:20px;border-top:1px solid rgba(100,140,255,.2);border-left:1px solid rgba(100,140,255,.2);z-index:600;pointer-events:none"></div>
 <div style="position:fixed;top:8px;right:8px;width:20px;height:20px;border-top:1px solid rgba(100,140,255,.2);border-right:1px solid rgba(100,140,255,.2);z-index:600;pointer-events:none"></div>

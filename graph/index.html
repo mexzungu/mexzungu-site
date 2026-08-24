@@ -1011,7 +1011,7 @@ document.addEventListener('DOMContentLoaded',function(){(function(){
   (function(){
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     var vbtn = document.getElementById("voice-btn");
-    if (!SR) { if(vbtn) vbtn.style.display="none"; return; }
+    if (!SR) { return; }  /* button stays visible even without SR */
     var rec = new SR();
     rec.continuous = false; rec.interimResults = false; rec.lang = "en-US";
     var listening = false;
