@@ -1010,24 +1010,61 @@ document.addEventListener('DOMContentLoaded',function(){(function(){
 
   (function(){
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var hud = null, hudText = null;
     var vbtn = document.getElementById("voice-btn");
-    if (!SR) { return; }  /* button stays visible even without SR */
-    var rec = new SR();
-    rec.continuous = false; rec.interimResults = false; rec.lang = "en-US";
-    var listening = false;
-    rec.onresult = function(e){
-      var txt = e.results[0][0].transcript;
-      var sb = document.getElementById("search-box");
-      if(sb){ sb.value = txt; sb.dispatchEvent(new Event("input")); }
-    };
-    rec.onend = function(){ listening=false; vbtn.style.color="rgba(200,216,240,.4)"; vbtn.style.borderColor="rgba(100,140,255,.15)"; vbtn.style.boxShadow=""; };
-    vbtn.addEventListener("click", function(){
-      if(listening){ rec.stop(); }
-      else { rec.start(); listening=true; vbtn.style.color="#e14b87"; vbtn.style.borderColor="rgba(225,75,135,.4)"; vbtn.style.boxShadow="0 0 12px rgba(225,75,135,.2)"; }
+    var rec = null, listening = false;
+    function ensureHud(){
+      hud = document.getElementById("janis-hud");
+      hudText = document.getElementById("janis-hud-text");
+    }
+    function startListening(){
+      ensureHud();
+      if(listening) return;
+      if(!SR){ if(hud){hudText.textContent="Voice not supported in this browser.";hud.style.display="block";} return; }
+      if(!rec){ rec = new SR(); rec.lang="en-US"; rec.interimResults=false; rec.maxAlternatives=1; }
+      listening = true;
+      if(hud){ hudText.textContent="Listening..."; hud.style.display="block"; }
+      if(vbtn){ vbtn.style.color="#a0c0ff"; vbtn.style.borderColor="rgba(100,140,255,.5)"; vbtn.style.boxShadow="0 0 12px rgba(100,140,255,.3)"; }
+      rec.onresult = function(e){
+        var q = e.results[0][0].transcript;
+        if(hudText) hudText.textContent = "“" + q + "”
+
+Thinking…";
+        if(vbtn){ vbtn.style.color="rgba(200,216,240,.4)"; vbtn.style.borderColor="rgba(100,140,255,.15)"; vbtn.style.boxShadow=""; }
+        fetch("https://api.mexzungu.com/graph/ask", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          credentials: "include",
+          body: JSON.stringify({question: q})
+        }).then(function(r){ return r.json(); }).then(function(d){
+          if(hudText) hudText.textContent = d.answer || "No answer.";
+        }).catch(function(err){
+          if(hudText) hudText.textContent = "Error: " + err.message;
+        });
+      };
+      rec.onerror = function(e){
+        if(hudText) hudText.textContent = "Error: " + e.error;
+        if(vbtn){ vbtn.style.color="rgba(200,216,240,.4)"; vbtn.style.borderColor="rgba(100,140,255,.15)"; vbtn.style.boxShadow=""; }
+        listening = false;
+      };
+      rec.onend = function(){
+        listening = false;
+        if(vbtn){ vbtn.style.color="rgba(200,216,240,.4)"; vbtn.style.borderColor="rgba(100,140,255,.15)"; vbtn.style.boxShadow=""; }
+      };
+      rec.start();
+    }
+    document.addEventListener("keydown", function(e){
+      if(e.code === "Space" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA"){
+        e.preventDefault(); startListening();
+      }
+      if(e.code === "Escape"){ ensureHud(); if(hud) hud.style.display="none"; }
     });
+    if(vbtn){ vbtn.addEventListener("click", startListening); }
   })();
 
 })();
 </script>
+<div id="janis-hud" style="display:none;position:fixed;bottom:90px;right:24px;width:320px;background:rgba(8,12,28,.94);border:1px solid rgba(100,140,255,.35);border-radius:12px;padding:16px 18px;box-shadow:0 0 40px rgba(100,140,255,.12);z-index:9999;backdrop-filter:blur(20px);"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6480ff,#a060ff);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0;">J</div><span style="color:#a0b4ff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Janis</span><button onclick="document.getElementById('janis-hud').style.display='none'" style="margin-left:auto;background:none;border:none;color:rgba(100,140,255,.6);cursor:pointer;font-size:18px;line-height:1;padding:0;">&#x2715;</button></div><div id="janis-hud-text" style="color:#e0e8ff;font-size:13px;line-height:1.6;min-height:40px;white-space:pre-wrap;">Listening...</div></div>
+<div id="mic-hint" style="position:fixed;bottom:28px;right:24px;color:rgba(100,140,255,.4);font-size:10px;letter-spacing:.12em;text-transform:uppercase;pointer-events:none;z-index:9998;">SPACE — talk to Janis</div>
 </body>
 </html>
