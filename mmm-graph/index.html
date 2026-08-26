@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MMM Graph | Margarita Moreno Mena</title>
+<meta name="description" content="Grafo de conocimiento del proyecto Biscabuela: personas, lugares, eventos y fechas alrededor de Margarita Moreno Mena.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#080a14;color:#c8d8f0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;overflow:hidden;height:100vh;width:100vw}
+
+#grid-overlay{
+  position:fixed;inset:0;
+  background-image:linear-gradient(rgba(100,140,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(100,140,255,.04) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none;z-index:0
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;height:52px;
+  background:rgba(8,10,20,.94);border-bottom:1px solid rgba(100,140,255,.12);
+  display:flex;align-items:center;padding:0 20px;z-index:100;
+  backdrop-filter:blur(12px);gap:14px
+}
+.nav-title{
+  font-size:15px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:#e14b87;text-shadow:0 0 24px rgba(225,75,135,.7)
+}
+#subtitle-chip{
+  font-size:11px;color:rgba(200,216,240,.55);
+  background:rgba(100,140,255,.08);border:1px solid rgba(100,140,255,.15);
+  border-radius:20px;padding:3px 10px;letter-spacing:.04em;white-space:nowrap
+}
+#nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+#search-box{
+  background:rgba(255,255,255,.04);border:1px solid rgba(100,140,255,.15);
+  border-radius:6px;color:#c8d8f0;font-size:12px;padding:5px 10px;
+  width:200px;outline:none;transition:border-color .2s
+}
+#search-box:focus{border-color:rgba(225,75,135,.5)}
+#search-box::placeholder{color:rgba(200,216,240,.28)}
+#stats-chip{
+  font-size:10px;color:rgba(200,216,240,.4);
+  border:1px solid rgba(100,140,255,.12);
+  border-radius:12px;padding:3px 8px;letter-spacing:.03em
+}
+
+#type-filters{
+  position:fixed;top:64px;left:50%;transform:translateX(-50%);
+  display:flex;gap:2px;background:rgba(8,10,20,.82);
+  border:1px solid rgba(100,140,255,.14);border-radius:20px;padding:3px;z-index:100;
+  backdrop-filter:blur(8px)
+}
+.type-chip{
+  background:transparent;border:none;color:rgba(200,216,240,.55);
+  font-size:11px;font-weight:700;letter-spacing:.06em;padding:5px 16px;
+  border-radius:16px;cursor:pointer;transition:background-color .2s,color .2s,text-shadow .2s,border-color .2s;text-transform:uppercase;white-space:nowrap
+}
+.type-chip:hover{color:#fff}
+.type-chip.active[data-type="person"]{background:rgba(225,75,135,.16);color:#e14b87;text-shadow:0 0 10px rgba(225,75,135,.45)}
+.type-chip.active[data-type="place"]{background:rgba(76,159,255,.16);color:#4c9fff;text-shadow:0 0 10px rgba(76,159,255,.45)}
+.type-chip.active[data-type="event"]{background:rgba(0,212,170,.16);color:#00d4aa;text-shadow:0 0 10px rgba(0,212,170,.45)}
+.type-chip.active[data-type="date"]{background:rgba(255,188,66,.16);color:#ffbc42;text-shadow:0 0 10px rgba(255,188,66,.45)}
+.type-chip.active[data-type="all"]{background:rgba(200,216,240,.12);color:#fff}
+
+#graph{position:fixed;inset:52px 0 0 0;width:100%;height:calc(100vh - 52px);z-index:1}
+
+.node circle{cursor:pointer}
+.node text{
+  font-size:10px;font-weight:600;fill:rgba(200,216,240,.75);pointer-events:none;
+  text-anchor:middle;letter-spacing:.02em
+}
+.node.dim circle{opacity:.15}
+.node.dim text{opacity:.1}
+.node.selected circle{stroke:#fff !important;stroke-width:2.5 !important;filter:drop-shadow(0 0 8px currentColor)}
+.node.neighbor circle{stroke:rgba(255,255,255,.6);stroke-width:2}
+
+.link{stroke-opacity:.28;stroke-width:1;fill:none;transition:stroke-opacity .2s}
+.link.dim{stroke-opacity:.04}
+.link.highlight{stroke-opacity:.9;stroke-width:1.8}
+
+#panel{
+  position:fixed;top:52px;right:0;bottom:0;width:340px;
+  background:rgba(8,10,20,.96);border-left:1px solid rgba(100,140,255,.14);
+  padding:20px;overflow-y:auto;z-index:90;backdrop-filter:blur(14px);
+  transform:translateX(100%);transition:transform .28s ease
+}
+#panel.open{transform:translateX(0)}
+#panel-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+#panel-name{font-size:19px;font-weight:800;color:#fff;letter-spacing:.01em;flex:1;line-height:1.2}
+#panel-close{
+  background:none;border:none;color:rgba(200,216,240,.5);
+  font-size:22px;cursor:pointer;padding:0 4px;line-height:1
+}
+#panel-close:hover{color:#fff}
+.type-badge{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid;margin-bottom:12px
+}
+.type-badge.person{color:#e14b87;border-color:rgba(225,75,135,.45);background:rgba(225,75,135,.08)}
+.type-badge.place{color:#4c9fff;border-color:rgba(76,159,255,.45);background:rgba(76,159,255,.08)}
+.type-badge.event{color:#00d4aa;border-color:rgba(0,212,170,.45);background:rgba(0,212,170,.08)}
+.type-badge.date{color:#ffbc42;border-color:rgba(255,188,66,.45);background:rgba(255,188,66,.08)}
+
+.panel-section{margin-top:16px}
+.panel-section h4{
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;
+  color:rgba(200,216,240,.4);margin-bottom:8px
+}
+.panel-desc{font-size:12px;color:#c8d8f0;line-height:1.55}
+
+.conn-row{
+  display:flex;align-items:center;gap:8px;padding:7px 10px;
+  background:rgba(255,255,255,.02);border:1px solid rgba(100,140,255,.08);
+  border-radius:6px;margin-bottom:4px;cursor:pointer;transition:all .18s
+}
+.conn-row:hover{background:rgba(225,75,135,.06);border-color:rgba(225,75,135,.25)}
+.conn-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.conn-dot.person{background:#e14b87}
+.conn-dot.place{background:#4c9fff}
+.conn-dot.event{background:#00d4aa}
+.conn-dot.date{background:#ffbc42}
+.conn-name{font-size:12px;color:#c8d8f0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conn-rel{font-size:10px;color:rgba(200,216,240,.4);font-style:italic;flex-shrink:0}
+.conn-evidence{
+  font-size:10px;color:rgba(200,216,240,.35);
+  padding:2px 12px 8px 22px;font-style:italic;line-height:1.4;
+  border-left:1px solid rgba(100,140,255,.06);margin-left:14px
+}
+
+#legend{
+  position:fixed;bottom:14px;left:14px;z-index:90;
+  background:rgba(8,10,20,.88);border:1px solid rgba(100,140,255,.14);
+  border-radius:10px;padding:10px 12px;font-size:10px;
+  backdrop-filter:blur(8px);display:flex;gap:14px;align-items:center
+}
+.legend-item{display:flex;align-items:center;gap:5px;color:rgba(200,216,240,.75);letter-spacing:.03em}
+.legend-dot{width:9px;height:9px;border-radius:50%}
+
+#hint{
+  position:fixed;bottom:14px;right:14px;z-index:90;
+  font-size:10px;color:rgba(200,216,240,.35);letter-spacing:.04em;
+  background:rgba(8,10,20,.6);padding:6px 10px;border-radius:8px
+}
+
+#loading{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#080a14;z-index:200;color:rgba(200,216,240,.6);font-size:14px;
+  letter-spacing:.08em;text-transform:uppercase
+}
+#loading.hidden{display:none}
+
+@media(max-width:768px){
+  #search-box{width:120px}
+  #panel{width:88vw}
+  #type-filters{top:60px}
+  .nav-title{font-size:13px}
+  #stats-chip{display:none}
+  #legend{font-size:9px;padding:8px}
+}
+</style>
+</head>
+<body>
+
+<div id="grid-overlay"></div>
+
+<nav>
+  <span class="nav-title">MMM Graph</span>
+  <span id="subtitle-chip">Proyecto Biscabuela. Margarita Moreno Mena</span>
+  <div id="nav-right">
+    <input id="search-box" type="text" placeholder="Buscar nodo...">
+    <span id="stats-chip"></span>
+  </div>
+</nav>
+
+<div id="type-filters">
+  <button class="type-chip active" data-type="all">Todos</button>
+  <button class="type-chip active" data-type="person">Personas</button>
+  <button class="type-chip active" data-type="place">Lugares</button>
+  <button class="type-chip active" data-type="event">Eventos</button>
+  <button class="type-chip active" data-type="date">Fechas</button>
+</div>
+
+<svg id="graph"></svg>
+
+<aside id="panel">
+  <div id="panel-head">
+    <h2 id="panel-name">Nodo</h2>
+    <button id="panel-close">&times;</button>
+  </div>
+  <span id="panel-type" class="type-badge person">person</span>
+  <div class="panel-section" id="panel-desc-section">
+    <h4>Descripcion</h4>
+    <div id="panel-desc" class="panel-desc"></div>
+  </div>
+  <div class="panel-section">
+    <h4 id="panel-conn-heading">Conexiones (0)</h4>
+    <div id="panel-connections"></div>
+  </div>
+</aside>
+
+<div id="legend">
+  <span class="legend-item"><span class="legend-dot" style="background:#e14b87"></span>Persona</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#4c9fff"></span>Lugar</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#00d4aa"></span>Evento</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#ffbc42"></span>Fecha</span>
+</div>
+
+<div id="hint">Click nodo. Scroll zoom. Arrastra fondo</div>
+
+<div id="loading">Cargando grafo...</div>
+
+<script src="./d3.v7.min.js"></script>
+<script>
+const TYPE_COLOR = {
+  person: '#e14b87',
+  place: '#4c9fff',
+  event: '#00d4aa',
+  date: '#ffbc42',
+};
+
+const state = {
+  nodes: [], links: [],
+  activeTypes: new Set(['person','place','event','date']),
+  selected: null,
+  nodeById: new Map(),
+  neighborsOf: new Map(),
+};
+
+fetch('./data.json')
+  .then(r => r.json())
+  .then(data => {
+    state.nodes = data.nodes.map(n => ({...n}));
+    state.links = data.edges.map(e => ({...e}));
+    state.nodes.forEach(n => state.nodeById.set(n.id, n));
+    state.links.forEach(l => {
+      if (!state.neighborsOf.has(l.source)) state.neighborsOf.set(l.source, new Set());
+      if (!state.neighborsOf.has(l.target)) state.neighborsOf.set(l.target, new Set());
+      state.neighborsOf.get(l.source).add(l.target);
+      state.neighborsOf.get(l.target).add(l.source);
+    });
+    document.getElementById('stats-chip').textContent = data.nodes.length + ' nodos. ' + data.edges.length + ' lazos';
+    render();
+    document.getElementById('loading').classList.add('hidden');
+  })
+  .catch(err => {
+    document.getElementById('loading').textContent = 'Error al cargar: ' + err.message;
+  });
+
+const svg = d3.select('#graph');
+const width = () => window.innerWidth;
+const height = () => window.innerHeight - 52;
+
+const g = svg.append('g');
+const linkGroup = g.append('g').attr('class', 'links');
+const nodeGroup = g.append('g').attr('class', 'nodes');
+
+const zoom = d3.zoom().scaleExtent([0.15, 4]).on('zoom', ev => g.attr('transform', ev.transform));
+svg.call(zoom);
+
+let sim = null;
+
+function render() {
+  const nodes = state.nodes.filter(n => state.activeTypes.has(n.type));
+  const nodeIds = new Set(nodes.map(n => n.id));
+  const links = state.links.filter(l => nodeIds.has(l.source.id || l.source) && nodeIds.has(l.target.id || l.target));
+
+  if (sim) sim.stop();
+
+  sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(60).strength(0.25))
+    .force('charge', d3.forceManyBody().strength(-140))
+    .force('center', d3.forceCenter(width()/2, height()/2))
+    .force('collide', d3.forceCollide().radius(d => radius(d) + 4));
+
+  const linkSel = linkGroup.selectAll('line').data(links, d => (d.source.id||d.source)+'|'+(d.target.id||d.target)+'|'+d.type);
+  linkSel.exit().remove();
+  const linkEnter = linkSel.enter().append('line')
+    .attr('class', 'link')
+    .attr('stroke', d => TYPE_COLOR[state.nodeById.get(d.source.id||d.source)?.type] || '#888');
+  const linkAll = linkEnter.merge(linkSel);
+
+  const nodeSel = nodeGroup.selectAll('.node').data(nodes, d => d.id);
+  nodeSel.exit().remove();
+  const nodeEnter = nodeSel.enter().append('g').attr('class', 'node').call(drag(sim));
+  nodeEnter.append('circle')
+    .attr('r', d => radius(d))
+    .attr('fill', d => TYPE_COLOR[d.type])
+    .attr('fill-opacity', 0.85)
+    .attr('stroke', d => TYPE_COLOR[d.type])
+    .attr('stroke-opacity', 0.9)
+    .attr('stroke-width', 1);
+  nodeEnter.append('text').attr('dy', d => radius(d) + 11).text(d => d.name);
+  nodeEnter.on('click', (ev, d) => { ev.stopPropagation(); select(d.id); });
+  const nodeAll = nodeEnter.merge(nodeSel);
+
+  svg.on('click', () => clearSelection());
+
+  sim.on('tick', () => {
+    linkAll
+      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    nodeAll.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+}
+
+function radius(d) {
+  const degree = (state.neighborsOf.get(d.id) || new Set()).size;
+  return 4 + Math.min(degree, 14) * 0.9;
+}
+
+function drag(sim) {
+  return d3.drag()
+    .on('start', (ev, d) => { if (!ev.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+    .on('drag', (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
+    .on('end', (ev, d) => { if (!ev.active) sim.alphaTarget(0); d.fx = null; d.fy = null; });
+}
+
+function select(id) {
+  state.selected = id;
+  const nb = state.neighborsOf.get(id) || new Set();
+  d3.selectAll('.node').classed('selected', d => d.id === id).classed('neighbor', d => nb.has(d.id)).classed('dim', d => d.id !== id && !nb.has(d.id));
+  d3.selectAll('.link')
+    .classed('highlight', d => (d.source.id||d.source) === id || (d.target.id||d.target) === id)
+    .classed('dim', d => (d.source.id||d.source) !== id && (d.target.id||d.target) !== id);
+  showPanel(id);
+}
+
+function clearSelection() {
+  state.selected = null;
+  d3.selectAll('.node').classed('selected', false).classed('neighbor', false).classed('dim', false);
+  d3.selectAll('.link').classed('highlight', false).classed('dim', false);
+  document.getElementById('panel').classList.remove('open');
+}
+
+function showPanel(id) {
+  const n = state.nodeById.get(id);
+  if (!n) return;
+  document.getElementById('panel-name').textContent = n.name;
+  const badge = document.getElementById('panel-type');
+  badge.textContent = n.type;
+  badge.className = 'type-badge ' + n.type;
+
+  const descEl = document.getElementById('panel-desc');
+  const descSection = document.getElementById('panel-desc-section');
+  if (n.description) {
+    descEl.textContent = n.description;
+    descSection.style.display = '';
+  } else {
+    descSection.style.display = 'none';
+  }
+
+  const conns = [];
+  state.links.forEach(l => {
+    const sid = l.source.id || l.source;
+    const tid = l.target.id || l.target;
+    if (sid === id) conns.push({node: state.nodeById.get(tid), rel: l.type, direction: 'out', evidence: l.evidence, source_file: l.source_file});
+    else if (tid === id) conns.push({node: state.nodeById.get(sid), rel: l.type, direction: 'in', evidence: l.evidence, source_file: l.source_file});
+  });
+  conns.sort((a,b) => (a.node?.name||'').localeCompare(b.node?.name||''));
+
+  document.getElementById('panel-conn-heading').textContent = `Conexiones (${conns.length})`;
+  const container = document.getElementById('panel-connections');
+  container.innerHTML = '';
+  conns.forEach(c => {
+    if (!c.node) return;
+    const row = document.createElement('div');
+    row.className = 'conn-row';
+    row.innerHTML = `<span class="conn-dot ${c.node.type}"></span><span class="conn-name">${escapeHtml(c.node.name)}</span><span class="conn-rel">${c.direction==='out' ? '&rarr;' : '&larr;'} ${escapeHtml(c.rel)}</span>`;
+    row.onclick = (ev) => { ev.stopPropagation(); select(c.node.id); };
+    container.appendChild(row);
+    if (c.evidence) {
+      const evEl = document.createElement('div');
+      evEl.className = 'conn-evidence';
+      evEl.textContent = c.evidence + (c.source_file ? ' [' + c.source_file + ']' : '');
+      container.appendChild(evEl);
+    }
+  });
+
+  document.getElementById('panel').classList.add('open');
+}
+
+function escapeHtml(s) {
+  return (s||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]);
+}
+
+document.querySelectorAll('.type-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.type;
+    if (t === 'all') {
+      const wantAll = !btn.classList.contains('active');
+      state.activeTypes = wantAll ? new Set(['person','place','event','date']) : new Set();
+      document.querySelectorAll('.type-chip').forEach(b => {
+        const bt = b.dataset.type;
+        b.classList.toggle('active', wantAll);
+      });
+    } else {
+      btn.classList.toggle('active');
+      if (btn.classList.contains('active')) state.activeTypes.add(t);
+      else state.activeTypes.delete(t);
+      const allActive = ['person','place','event','date'].every(x => state.activeTypes.has(x));
+      document.querySelector('.type-chip[data-type="all"]').classList.toggle('active', allActive);
+    }
+    render();
+  });
+});
+
+document.getElementById('search-box').addEventListener('input', ev => {
+  const q = ev.target.value.trim().toLowerCase();
+  if (!q) {
+    d3.selectAll('.node').classed('dim', false);
+    return;
+  }
+  d3.selectAll('.node').classed('dim', d => {
+    const hay = (d.name + ' ' + (d.aliases||[]).join(' ') + ' ' + (d.description||'')).toLowerCase();
+    return !hay.includes(q);
+  });
+});
+
+document.getElementById('search-box').addEventListener('keydown', ev => {
+  if (ev.key === 'Enter') {
+    const q = ev.target.value.trim().toLowerCase();
+    if (!q) return;
+    const hit = state.nodes.find(n => n.name.toLowerCase().includes(q) || (n.aliases||[]).some(a => a.toLowerCase().includes(q)));
+    if (hit) select(hit.id);
+  }
+});
+
+document.getElementById('panel-close').addEventListener('click', () => clearSelection());
+
+window.addEventListener('resize', () => {
+  if (sim) {
+    sim.force('center', d3.forceCenter(width()/2, height()/2));
+    sim.alpha(0.3).restart();
+  }
+});
+</script>
+</body>
+</html>
