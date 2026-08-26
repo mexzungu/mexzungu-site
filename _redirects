@@ -13,6 +13,8 @@
 /dispatches/* /outlaw-chronicles/:splat 301
 /about /meet-the-band 301
 /about/ /meet-the-band/ 301
+/band/org-structure /meet-the-band/org-structure 301
+/band/org-structure/ /meet-the-band/org-structure/ 301
 /talk_to_pepe /lets-jam 301
 /talk_to_pepe/ /lets-jam/ 301
 
@@ -54,3 +56,8 @@
 # BD function renamed to Client Acquisition Engine
 /bd-function /engines/client-acquisition/ 301
 /bd-function/* /engines/client-acquisition/ 301
+
+# MMM graph moved to pepecarrillo.co (personal project, not Mexzungu)
+/mmm-graph https://pepecarrillo.co/mmm-graph/ 301
+/mmm-graph/ https://pepecarrillo.co/mmm-graph/ 301
+/mmm-graph/* https://pepecarrillo.co/mmm-graph/:splat 301
