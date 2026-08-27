@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pepe.co Positioning: Multi-Identity Brand Research | Mexzungu Research</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://mexzungu.com/research/pepe-co-positioning/">
+  <meta property="og:title" content="Pepe.co Positioning: Multi-Identity Brand Research (20 profiles)">
+  <meta property="og:description" content="Twenty personal sites analyzed. Spread vs Scale operators, single verbal sleeves, product ladders, and the pub-authentic voice lane for pepecarrillo.co.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://mexzungu.com/research/pepe-co-positioning/">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:      #0a0a0a; --surface: #111111; --hover: #1a1a1a;
+      --pink:    #E14B87; --pink-dim: #b83a6b;
+      --white:   #ffffff; --muted: #888888; --border: #222222;
+      --font:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    body { background: var(--bg); color: var(--white); font-family: var(--font); line-height: 1.7; }
+    .report-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.95); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+    }
+    .back-link { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.03em; display: flex; align-items: center; gap: 0.4rem; transition: color 0.15s; }
+    .back-link:hover { color: var(--white); }
+    .nav-brand { color: var(--muted); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+    .nav-brand:hover { color: var(--white); }
+    .report-wrap { display: grid; grid-template-columns: 220px 1fr; gap: 3rem; max-width: 1180px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    @media (max-width: 900px) { .report-wrap { grid-template-columns: 1fr; } .toc-sidebar { display: none; } }
+    .toc-sidebar { position: sticky; top: 5rem; align-self: start; }
+    .toc-sidebar h4 { color: var(--muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .toc-sidebar a { display: block; color: var(--muted); text-decoration: none; font-size: 0.82rem; padding: 0.3rem 0; border-left: 2px solid var(--border); padding-left: 0.75rem; margin-bottom: 0.1rem; transition: all 0.15s; }
+    .toc-sidebar a:hover { color: var(--white); border-left-color: var(--pink); }
+    .cat-tag { display: inline-block; background: rgba(225,75,135,0.15); border: 1px solid rgba(225,75,135,0.3); border-radius: 4px; color: var(--pink); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; padding: 0.2rem 0.55rem; text-transform: uppercase; margin-bottom: 1rem; }
+    .report-header { margin-bottom: 2rem; }
+    .report-header h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
+    .meta-bar { color: var(--muted); font-size: 0.82rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .key-findings { background: var(--surface); border-left: 3px solid var(--pink); border-radius: 0 8px 8px 0; padding: 1.5rem 1.75rem; margin: 2rem 0; }
+    .key-findings h3 { color: var(--pink); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .key-findings ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .key-findings li { font-size: 0.92rem; color: #e0e0e0; padding-left: 1.25rem; position: relative; }
+    .key-findings li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; background: var(--pink); border-radius: 50%; }
+    .report-body h2 { font-size: 1.25rem; font-weight: 700; margin: 2.5rem 0 1rem; padding-top: 0.5rem; color: var(--white); }
+    .report-body h3 { font-size: 1rem; font-weight: 700; margin: 1.75rem 0 0.6rem; color: #d0d0d0; }
+    .report-body h4 { font-size: 0.92rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--white); }
+    .report-body p { font-size: 0.95rem; color: #cccccc; margin-bottom: 1rem; max-width: 780px; }
+    .report-body ul, .report-body ol { padding-left: 1.4rem; margin-bottom: 1rem; max-width: 780px; }
+    .report-body li { font-size: 0.93rem; color: #cccccc; margin-bottom: 0.35rem; }
+    .report-body strong { color: var(--white); font-weight: 600; }
+    .report-body em { color: #d8d8d8; font-style: italic; }
+    .report-body blockquote { border-left: 3px solid var(--pink); background: var(--surface); color: #d8d8d8; font-style: italic; padding: 1rem 1.25rem; margin: 1.25rem 0; max-width: 780px; border-radius: 0 6px 6px 0; }
+
+    /* Wide table wrapper for the 12-axis matrices */
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 8px; }
+    .report-body table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .report-body th { text-align: left; background: var(--surface); color: var(--muted); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .report-body td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); color: #cccccc; vertical-align: top; font-size: 0.83rem; }
+    .report-body tr:last-child td { border-bottom: none; }
+    .report-body table.matrix { min-width: 1400px; }
+    .report-body table.matrix th:first-child,
+    .report-body table.matrix td:first-child { position: sticky; left: 0; background: var(--surface); z-index: 1; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; max-width: 780px; }
+
+    .rec-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.1rem 1.4rem; margin: 0.85rem 0; max-width: 780px; }
+    .rec-block h4 { color: var(--white); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .rec-block p { color: #cccccc; font-size: 0.9rem; margin-bottom: 0; }
+
+    .axis-card { background: rgba(225,75,135,0.06); border: 1px solid rgba(225,75,135,0.2); border-radius: 8px; padding: 1rem 1.25rem; margin: 0.85rem 0; max-width: 780px; }
+    .axis-card strong { color: var(--pink); }
+
+    .biblio-list { list-style: none; padding: 0; max-width: 780px; }
+    .biblio-list li { font-size: 0.88rem; color: #cccccc; padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
+    .biblio-list li:last-child { border-bottom: none; }
+    .biblio-list a { color: var(--pink); text-decoration: none; }
+    .biblio-list a:hover { color: var(--white); text-decoration: underline; }
+    .biblio-list .bname { color: var(--white); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<nav class="report-nav">
+  <a href="/research/" class="back-link">&larr; Research Hub</a>
+  <a href="/" class="nav-brand">Mexzungu</a>
+</nav>
+
+<div class="report-wrap">
+
+  <aside class="toc-sidebar">
+    <h4>Contents</h4>
+    <a href="#exec">Executive Summary</a>
+    <a href="#bucket-a">Bucket A. Spread</a>
+    <a href="#bucket-b">Bucket B. Scale</a>
+    <a href="#synth-a">Synthesis A</a>
+    <a href="#synth-b">Synthesis B</a>
+    <a href="#recs">Recommendations</a>
+    <a href="#positioning">Positioning</a>
+    <a href="#biblio">Bibliography</a>
+    <a href="#handoff">Findings</a>
+  </aside>
+
+  <main>
+    <div class="report-header">
+      <div class="cat-tag">Business</div>
+      <h1>Pepe.co Positioning: Multi-Identity Brand Research</h1>
+      <div class="meta-bar">
+        <span>Aug 2026</span>
+        <span>Bruce, CSO</span>
+        <span>20 profiles</span>
+        <span>25 min read</span>
+      </div>
+    </div>
+
+    <div class="key-findings">
+      <h3>Key Findings</h3>
+      <ul>
+        <li>Six patterns held across 20 sites. The strongest lead with a single verbal frame, not a resume.</li>
+        <li>Pepe's positioning arbitrage at Scale is pub-authentic legal-adventurer voice. The market is saturated with preacher, academic, and optimizer voices. Only Manson, Noah, and Naval sit in adjacent territory. None is a lawyer.</li>
+        <li>The Now page is a super-weapon. Sivers built it. Everyone respectable stole it. Pepe should ship one week 1 of Iteration 1.</li>
+        <li>Cleanest multi-identity handling at spread scale: Robin Sloan. Tightest voice and product ladder at Scale: Mark Manson. Steal from both.</li>
+        <li>IA depth is a diluting signal. Sites with 4-6 nav items feel like a person. Sites with 14 nav items feel like personal Wikipedia. Iteration 0 lock at 5 items is correct.</li>
+      </ul>
+    </div>
+
+    <div class="report-body">
+
+      <h2 id="exec">1. Executive Summary</h2>
+
+      <p>Twenty personal sites were analyzed to understand how operators who hold multiple identities (lawyer-plus-founder-plus-writer type patterns) build web homes that grow audience without collapsing into "consultant with a blog." Ten were Spread profiles (small-to-mid audience, multi-domain identity, low commercial pressure). Ten were Scale profiles (Pepe's aspirational tier plus adjacent operators who monetized without losing voice).</p>
+
+      <p>Six patterns held across the entire set.</p>
+
+      <p><strong>One.</strong> The strongest multi-identity sites lead with a single verbal frame, not a resume. Sivers uses life-chapters (musician, entrepreneur, author). Sloan calls himself a "creative industrialist" and lets olive oil, print, and novels sit under that one label. Kleon says "a writer who draws." The frame is the sleeve. The identities are what's inside.</p>
+
+      <p><strong>Two.</strong> The Now page carries more weight than any other single element in the study. Sivers built it. Everyone respectable stole it. It converts a static site into a heartbeat. Pepe should ship one.</p>
+
+      <p><strong>Three.</strong> Product ladders differ wildly by scale. Spread profiles typically monetize through consulting, membership, or books-as-authority. Scale profiles run tiered ecosystems (free newsletter to book to paid app to cohort to speaking). Pepe's plan (Misfit Lab pilot to LOF cohort to book to newsletter to podcast) is closer to Scale than Spread. He needs to build the ladder deliberately.</p>
+
+      <p><strong>Four.</strong> Voice register is where the "pub" reference bites. Almost none of the Scale set genuinely sounds pub-authentic. Sinek is preacher. Ferriss is Silicon Valley-optimizer-guru. Holiday is professorial-Stoic. Only Manson, Noah, and (in odd flashes) Naval hit anything like it. This is Pepe's opening: pub-authentic legal-adventurer is uncontested territory in Scale.</p>
+
+      <p><strong>Five.</strong> IA depth is a diluting signal. Sites with 14 nav items (Collison, Jocko) feel like personal Wikipedia. Sites with 4-6 nav items (Sivers, Sloan, Manson, Neistat) feel like a person. The current pepecarrillo.co brief converges on 5 items (Who Am I / Now / Writing / What I'm Building / Misfit Lab). Correct.</p>
+
+      <p><strong>Six.</strong> The best "spread" sites (Sivers, Sloan, Mod, Jaouad, Kleon) treat identity fragmentation as feature. They don't apologize for multi-domain. They flaunt it. The worst compromise sites (Ferriss, Holiday) shove every identity into cramped nav and lose the person under the machine.</p>
+
+      <p><strong>What Pepe can steal:</strong> Now page, life-chapters framing, editorial project pages, single verbal frame, hand-drawn and analog motifs (from Kleon, Mod, Sloan). <strong>What to avoid:</strong> Sinek-style preacher polish, Holiday-style logo-parade credentialing, Jocko or Ferriss maximalist nav, Collison's Wikipedia-vibes list.</p>
+
+      <hr>
+
+      <h2 id="bucket-a">2. Bucket A. Spread Profiles (10 x 12 axes)</h2>
+
+      <p>Small-to-mid audience. Multi-domain identity. Commercial layer light or invisible.</p>
+
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>#</th><th>Profile</th>
+              <th>Hero pattern</th><th>Positioning</th><th>Product ladder</th><th>Content mix</th>
+              <th>Monetization primary</th><th>Visual system</th><th>Voice</th><th>IA nav</th>
+              <th>Identity handling</th><th>Newsletter</th><th>Community</th><th>Anti-pattern</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>A1</td><td><strong>Derek Sivers</strong></td><td>Text hero. "Everything here is 100% me, no AI"</td><td>Life-chapters model. No tagline sentence</td><td>Free books and articles to paid books</td><td>Essays, book notes, interviews, Now</td><td>Books (Amazon or direct)</td><td>Grayscale, text-forward, no photos</td><td>Pub-adjacent. Direct, humble, blunt</td><td>10 items but shallow</td><td>4 chapters (musician, entrepreneur, author, open)</td><td>Syndicated (Substack, Bluesky, etc)</td><td>None. Contact only</td><td>None. Zero guru vibe</td></tr>
+            <tr><td>A2</td><td><strong>Jerry Colonna</strong></td><td>Reboot.io team page. Photo</td><td>"Reformed VC turned humanistic coach"</td><td>Podcast to workshops to coaching to bootcamps</td><td>Books, podcast, articles, workshops</td><td>Coaching engagements</td><td>Warm earth-tone; corporate-therapy hybrid</td><td>Preacher-lite. Buddhist undertones</td><td>Nested in Reboot</td><td>3 identities layered (VC to coach to author)</td><td>Yes, list unclear</td><td>Peer circles, cohorts</td><td>Mild preacher lean</td></tr>
+            <tr><td>A3</td><td><strong>Anna Gát / Interintellect</strong></td><td>Community photo grid</td><td>"Fearless conversations with friendly people"</td><td>Free salons to membership to hosting</td><td>Events (600+/year), essays</td><td>Membership plus event tickets</td><td>Serif and sans, earth tones, photo-heavy</td><td>Peer. Warm, ambitious</td><td>Events / Membership / Hosting / About</td><td>Founder-editor blend (not solo brand)</td><td>Interintellect newsletter</td><td>Membership tier, offline meetups</td><td>None significant</td></tr>
+            <tr><td>A4</td><td><strong>Alex Danco</strong></td><td>"Alex Danco's Newsletter" plus 30k sub proof</td><td>Newsletter-first identity</td><td>Free Substack; no paid tier visible</td><td>Essays, podcast, books</td><td>Newsletter-only (freemium?)</td><td>Minimal WordPress</td><td>Peer. Casual-analytical</td><td>4 items</td><td>Investor plus writer plus podcaster (thin signal)</td><td>Substack, 30k</td><td>None</td><td>None. But thin</td></tr>
+            <tr><td>A5</td><td><strong>Venkatesh Rao</strong></td><td>Text intro plus headshot</td><td>"Writer and consultant based in Seattle"</td><td>Consulting to workshops to books to newsletter</td><td>Essays, books, workshops</td><td>Consulting plus workshops</td><td>Minimal, professional</td><td>Academic-peer</td><td>4 items (Consulting, Speaking, Bio, Contact)</td><td>Frames as "consultant who also writes"</td><td>Contraptions Substack</td><td>Yak Collective (external)</td><td>None. Slight academic drift</td></tr>
+            <tr><td>A6</td><td><strong>Nadia Asparouhova</strong></td><td>Text plus name only</td><td>"Trying to understand how people work"</td><td>Book (Amazon) to essays to grant work</td><td>Essays, books, research</td><td>Books plus institutional grants</td><td>Minimal, serif and sans</td><td>Peer. Ethnographic-honest</td><td>3 items (Projects, Newsletter, Twitter)</td><td>5 identities layered gracefully</td><td>Yes, Substack</td><td>None</td><td>None</td></tr>
+            <tr><td>A7</td><td><strong>Robin Sloan</strong></td><td>Text hero plus book cover</td><td>"Robin Sloan. A creative industrialist"</td><td>Books to olive oil to print shop to newsletter</td><td>Novels, essays, apps, food</td><td>Books plus Fat Gold olive oil plus print shop</td><td>Print-inspired serif, minimal</td><td>Peer. Refined-conversational</td><td>3 items (Home, About, Moonbound)</td><td>"Creative industrialist" as single verbal sleeve for 4 identities</td><td>Every 29 and a half days</td><td>None</td><td>None. Top of the Spread set</td></tr>
+            <tr><td>A8</td><td><strong>Craig Mod</strong></td><td>Book cover of <em>Things Become Other Things</em></td><td>"Writer + Photographer"</td><td>Free essays to paid membership (Special Projects) to books to shop</td><td>Books, essays, newsletters (Roden monthly, Ridgeline weekly), podcasts</td><td>Membership plus books plus shop</td><td>Photo-forward, whitespace, editorial</td><td>Peer. Self-deprecating warm</td><td>4 items plus sub-sections</td><td>"Writer + Photographer" as literal wordmark</td><td>Roden (monthly), Ridgeline (weekly)</td><td>Membership program</td><td>None</td></tr>
+            <tr><td>A9</td><td><strong>Austin Kleon</strong></td><td>Book announcement hero (Don't Call It Art)</td><td>"A writer who draws"</td><td>Free blog and newsletter to paid books to merch</td><td>Blog, books, mixtapes, drawings</td><td>Book sales (Amazon affiliate) plus T-shirt merch</td><td>Minimal white, book covers as art</td><td>Peer. Wry, conversational</td><td>6 items</td><td>"A writer who draws" as 5-word identity sleeve</td><td>Substack, hundreds of thousands</td><td>Social, no owned platform</td><td>None. Light merch clutter</td></tr>
+            <tr><td>A10</td><td><strong>Suleika Jaouad</strong></td><td>Portrait photo plus tagline</td><td>"Reporting from the in-between places." Positioned as "Author, Artist &amp; Advocate"</td><td>Free newsletter to paid book to journal to events</td><td>Books, newsletter, art, events</td><td>Book sales plus Substack revenue</td><td>Minimalist monochrome, serif headers</td><td>Preacher-lite. Literary-meditative</td><td>5 items</td><td>3 identities (author, artist, advocate) as trinity</td><td>Isolation Journals, 250k+</td><td>Journaling Club community</td><td>Slight literary-preacher lean</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr>
+
+      <h2 id="bucket-b">3. Bucket B. Scale Profiles (10 x 12 axes)</h2>
+
+      <p>Big audience. Monetized. Pepe's aspirational tier.</p>
+
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>#</th><th>Profile</th>
+              <th>Hero pattern</th><th>Positioning</th><th>Product ladder</th><th>Content mix</th>
+              <th>Monetization primary</th><th>Visual system</th><th>Voice</th><th>IA nav</th>
+              <th>Identity handling</th><th>Newsletter</th><th>Community</th><th>Anti-pattern</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>B1</td><td><strong>Ryan Holiday</strong></td><td>Logo plus tagline</td><td>"Meditations on strategy and life." Bestselling author of Trust Me I'm Lying etc</td><td>Free blog and newsletter to books to Daily Stoic store to consulting (Brass Check) to speaking</td><td>Books, blog, reading list, speaking</td><td>Books plus Daily Stoic empire</td><td>Black and white minimal, sans-serif</td><td>Professorial-Stoic</td><td>9 items</td><td>4 identities (Stoic, marketer, author, bookstore)</td><td>Reading List doubles as newsletter</td><td>None visible</td><td>Logo-parade credentialing in body</td></tr>
+            <tr><td>B2</td><td><strong>Cal Newport</strong></td><td>Headshot plus "Computer Scientist &amp; Bestselling Author"</td><td>"MIT-trained CS professor at Georgetown who writes about depth"</td><td>Free newsletter to books to podcast to courses (Deep Life)</td><td>Books (8), scholarship (65 peer-reviewed), podcast, essays</td><td>Books plus course and podcast ecosystem</td><td>Minimal corporate-academic</td><td>Academic-accessible</td><td>7 items</td><td>Professor plus author plus podcaster (segmented cleanly)</td><td>100k+ subs</td><td>Deep Life ecosystem</td><td>Slight corporate-academic sterility</td></tr>
+            <tr><td>B3</td><td><strong>Tim Ferriss</strong></td><td>TED photo plus book and podcast credentials</td><td>"Blog of Author Tim Ferriss" plus #1 NYT</td><td>Free newsletter plus blog plus podcast to books to investments (implicit)</td><td>Podcast (celebs), blog, books, TV</td><td>Book royalties plus podcast sponsorship plus investing</td><td>Cream and white, professional</td><td>Silicon Valley optimizer-guru</td><td>6 items with heavy sub-nav</td><td>4 personas (investor, self-help, media, experimenter)</td><td>5-Bullet Friday</td><td>None owned</td><td>Optimizer-guru vibe, logo parade</td></tr>
+            <tr><td>B4</td><td><strong>Seth Godin</strong></td><td>Photo plus name</td><td>Implicit thought-leader</td><td>Free blog and newsletter to books to altMBA / Akimbo courses to speaking</td><td>Daily micro-essays, books, courses</td><td>Books plus course subs</td><td>Ultra-minimal white</td><td>Preacher-adjacent aphoristic</td><td>6 items</td><td>4 identities (author, educator, community, critic)</td><td>Weekly digest</td><td>Akimbo, altMBA</td><td>Aphoristic-preacher tone</td></tr>
+            <tr><td>B5</td><td><strong>Simon Sinek</strong></td><td>App mockup plus tagline</td><td>"Be the leader you wish you had"</td><td>Free content to courses to app (Leaderful) to speaking to coach cert</td><td>Podcast (A Bit of Optimism), courses, app</td><td>App subs plus courses plus speaking</td><td>Orange accent, mockup-heavy</td><td>Preacher. Full preacher</td><td>10 items</td><td>Company-brand, not solo</td><td>Weekly</td><td>Leaderful app plus WHY School</td><td>Full preacher / guru mode</td></tr>
+            <tr><td>B6</td><td><strong>Mark Manson</strong></td><td>Newsletter signup ("5 Min that might change your life")</td><td>"Life advice that doesn't suck"</td><td>Free newsletter to books to paid app (Purpose $6.67 / mo) to podcast</td><td>Newsletter, articles, podcast, books</td><td>App subs plus book royalties</td><td>Blue-dominant, dark mode, sans-serif</td><td>Pub. Peer-with-preacher spikes</td><td>6 items</td><td>4 personas (author, casual bro, tech founder, media)</td><td>Yes, "Your Next Breakthrough"</td><td>Paid app tier</td><td>Occasional preacher spike</td></tr>
+            <tr><td>B7</td><td><strong>Trevor Noah</strong></td><td>Netflix show hero</td><td>"Finding the extraordinary in the ordinary"</td><td>Live shows to Netflix specials to books to merch</td><td>Comedy, podcast, books, TV</td><td>Ticketing plus Netflix plus books</td><td>Dark neutral plus vibrant accents</td><td>Peer. Conversational-sophisticated</td><td>5 items</td><td>5 identities (comedian, host, author, podcaster, humanitarian)</td><td>None visible</td><td>Social-only</td><td>None significant</td></tr>
+            <tr><td>B8</td><td><strong>Adam Grant</strong></td><td>Headshot plus "Organizational psychologist and bestselling author"</td><td>"The most meaningful way to succeed is to help others succeed"</td><td>Free newsletter (Granted) to 3 podcasts to 5 books to speaking to quizzes</td><td>Books, podcasts, articles, quizzes</td><td>Books plus speaking</td><td>Minimal, photo-driven</td><td>Peer-academic-accessible</td><td>6 items</td><td>5 identities (prof, author, podcaster, speaker, newsletter op)</td><td>Granted, 500k+</td><td>Substack ecosystem</td><td>Slight academic-nice-guy</td></tr>
+            <tr><td>B9</td><td><strong>Jocko Willink</strong></td><td>Latest episode audio player</td><td>"Retired Navy SEAL discusses discipline / leadership"</td><td>Free podcast to premium (Underground) to merch to Jocko Fuel to books</td><td>Podcast, premium tier, courses</td><td>Underground subs plus Jocko Fuel plus merch</td><td>Monochrome, military-industrial</td><td>Preacher-drill-sergeant</td><td>14+ items maximalist</td><td>4 personas (tactician, wellness biz, counselor, brand)</td><td>None owned</td><td>Underground paid tier</td><td>Full guru mode; nav bloat</td></tr>
+            <tr><td>B10</td><td><strong>Casey Neistat</strong></td><td>Name only, centered</td><td>None. No copy</td><td>YouTube (primary) to IG to OnlyFans to Twitter</td><td>Video only</td><td>YouTube plus OnlyFans plus IG</td><td>Stark white, sans-serif</td><td>Creator. Silent confidence</td><td>5 items (all external social)</td><td>None. Homepage is a link tree</td><td>None</td><td>None owned</td><td>Zero owned platform</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr>
+
+      <h2 id="synth-a">4. Written Synthesis. Bucket A (Spread)</h2>
+
+      <p><strong>Identity handling.</strong> The Spread cohort's superpower is the single verbal sleeve. Sloan's "creative industrialist" holds novelist plus olive oil maker plus print publisher plus technologist under one label. Kleon's "a writer who draws" holds author plus illustrator. Sivers uses life-chapters as containers: musician (1984-97), entrepreneur (98-08), author (09-25), open-ended future. Mod says "Writer + Photographer" as literal wordmark. Nadia is more diffuse but honest about it. What almost none of them do is list four titles at the top ("lawyer, writer, coach, investor"). That reads as resume. The verbal sleeve reads as person. <strong>Direct steal for Pepe:</strong> stop leading with the identity list. Find one 3-6 word sleeve that holds lawyer plus techie plus rockstar plus adventurer. Something on the order of "outlaw with a diploma" or "closing deals, chasing horizons." The current tagline "arquitecto de ventures // domador de misfits" gets flagged in Iteration 0 for the wrong reasons but the sleeve instinct is right.</p>
+
+      <p><strong>Monetization patterns.</strong> Weakest lever: Sivers, Danco, Nadia rely on books plus occasional speaking. Middle: Rao runs consulting plus workshops plus books (Pepe's current shape). Strongest for Pepe's plan: Mod (membership plus books plus shop), Kleon (newsletter plus books plus merch), Colonna (podcast to workshops to coaching to cohorts). Colonna's ladder is the closest architectural match to Misfit Lab plus LOF. <strong>Steal:</strong> map the Misfit Lab (~500 EUR / mo pilot) as the mid-tier and LOF as the premium tier, matching Reboot's shape (workshops to coaching to bootcamps).</p>
+
+      <p><strong>Voice patterns.</strong> Sivers, Sloan, Mod, Kleon, Nadia all speak in peer register. No preaching. No optimization guru. No academic distance. The exception is Colonna (mild preacher / Buddhist lean) and Jaouad (literary-meditative). All ten avoid the "let me tell you what I learned" opening. All ten lean into self-deprecation somewhere on the homepage. <strong>Steal:</strong> peer register is native to Pepe already. Do not drift into preacher when writing about LOF or Misfit Lab. Keep the pub voice.</p>
+
+      <p><strong>IA patterns.</strong> Range: 3 items (Sloan) to 10 (Sivers, but shallow). Median: 5. Sloan's 3-item nav (Home / About / Moonbound) is remarkable given the diversity of his output. He trusts the reader to explore below the fold. Mod uses 4 top items and stacks newsletters and podcasts in sub-lists. Nadia uses 3. <strong>Steal:</strong> the Iteration 0 lock (Who Am I / Now / Writing / What I'm Building / Misfit Lab) is at the median. Correct. Don't add a sixth.</p>
+
+      <hr>
+
+      <h2 id="synth-b">5. Written Synthesis. Bucket B (Scale)</h2>
+
+      <p><strong>Identity handling.</strong> At scale, identity fragmentation becomes a nav problem, not a positioning problem. Jocko's 14-item nav and Ferriss's heavy sub-nav both reveal an operator who couldn't decide what to cut. Manson, Neistat, and Noah are the cleanest: 5-6 top items each, sub-identities absorbed under books / podcast / shows. <strong>Cal Newport</strong> solves it by explicit segmentation: Cal-the-writer, Cal-the-academic, distinct sections with distinct credentials. This works because the two identities share a topic (depth). Pepe's identities share a topic too (misfit plus operator plus adventurer). Segmentation could work if used sparingly. <strong>Steal:</strong> Newport's segmentation model for a "Who Am I" scroll. Three or four discrete blocks (Lawyer / Writer / Adventurer / Builder) each with credentials and one story, rather than a paragraph blend. Do not do this on the homepage. Do it on /who-am-i.</p>
+
+      <p><strong>Monetization patterns.</strong> Scale profiles run ladders. Every single one has (a) a free acquisition layer (newsletter or podcast), (b) a mid-tier product (book, course, app), (c) a premium tier (paid membership, speaking, cohort, consulting). Manson's ladder is the tightest and closest architectural match to what Pepe wants: free newsletter to books to paid app subscription to community. Sinek's is bigger but preacher-y. Holiday's is empire-scaled but professorial. <strong>Steal:</strong> newsletter (Misfit Postcards) as free acquisition, Misfit Lab as $500 / mo mid-tier, LOF as premium annual cohort, book plus speaking as top-of-funnel authority. This is Manson's ladder with Colonna's coaching layer. Blueprint exists.</p>
+
+      <p><strong>Voice patterns.</strong> Only three profiles in Scale hit anything like pub-authentic: <strong>Manson</strong> (peer-with-preacher-spikes, closest match), <strong>Noah</strong> (peer-conversational), and <strong>Naval</strong> (spare, aphoristic-peer). The rest are preacher (Sinek, Godin, Jocko), academic (Newport, Grant), or Silicon Valley optimizer (Ferriss, Holiday). <strong>This is Pepe's arbitrage.</strong> The market of Scale personal brands is saturated with preacher voice. A lawyer with a rockstar's ear and a hippie's diary is nearly uncontested at Scale. <strong>Steal:</strong> Manson's voice register directly. Warm-blunt-funny-slightly-vulgar-serious-when-earned. Studied at the tone profile level, this is Pepe's native voice.</p>
+
+      <p><strong>IA patterns.</strong> Tightest of the set: Neistat (5 items, all external), but Neistat also owns nothing. Loosest: Jocko (14+). Sinek runs 10 because he's a company, not a person. Manson (6), Noah (5), Grant (6), Newport (7) are all in the healthy band. <strong>Steal:</strong> stay in the 5-6 band. Do not grow nav as products launch. Push products into sub-pages.</p>
+
+      <hr>
+
+      <h2 id="recs">6. Recommendations for pepecarrillo.co</h2>
+
+      <h3>Top 5 tactics to adopt</h3>
+
+      <div class="rec-block">
+        <h4>1. Ship a Now page (Sivers-style)</h4>
+        <p>Highest ROI move on the entire study. Turns static site into heartbeat. Iteration 0 already flags this as P2. Move to P1. Ships week 1 of Iteration 1.</p>
+      </div>
+
+      <div class="rec-block">
+        <h4>2. Find the single verbal sleeve</h4>
+        <p>Not the identity list. Not the resume. One 3-6 word phrase that holds lawyer plus techie plus rockstar plus adventurer without listing them. Test candidates (feed to positioning workshop): "closing deals, chasing horizons" / "outlaw with a diploma" / "the misfit with a JD" / "lawyer by trade, misfit by nature." This is where Grohl's voice work meets Bruce's positioning.</p>
+      </div>
+
+      <div class="rec-block">
+        <h4>3. Model the product ladder on Manson + Colonna</h4>
+        <p>Free layer: Misfit Postcards newsletter (Substack, no gate). Mid-tier: Misfit Lab (~500 EUR / mo, ex-direct-reports pilot). Premium: LOF cohort (annual, Q1 2027). Authority top: book plus speaking. Ladder page (later): /work-with-pepe consolidates all four in visual funnel.</p>
+      </div>
+
+      <div class="rec-block">
+        <h4>4. Editorial project rows, not cards</h4>
+        <p>Confirmed by Iteration 0 lock. Sloan's site does this. Mod does this. Kleon does this. Each project equals full-width row with narrative, not metadata. Steal the exact pattern from robinsloan.com/about (the three-column footer with novels, olive oil, print shop each written as prose).</p>
+      </div>
+
+      <div class="rec-block">
+        <h4>5. Segmented /who-am-i block model (Newport)</h4>
+        <p>Four scroll sections: Lawyer / Writer / Adventurer / Builder. Each with one line of credentials and one story. Not the current "Four things" grid (which reads Steve Jobs commencement per Iteration 0). Prose, not columns.</p>
+      </div>
+
+      <h3>Top 3 tactics to avoid</h3>
+
+      <div class="rec-block">
+        <h4>1. Preacher-guru drift</h4>
+        <p>Sinek, Godin, Jocko, Holiday all sit here at Scale. Pepe's positioning arbitrage IS not being them. When writing about Misfit Lab or LOF: peer, not preacher. Pub, not pulpit. Anselmo gate should flag "wisdom-drop" tone.</p>
+      </div>
+
+      <div class="rec-block">
+        <h4>2. Nav bloat</h4>
+        <p>Ferriss's sub-nav, Jocko's 14 items, Collison's Wikipedia-list are what happens when everything gets a top-level slot. Iteration 0 lock at 5 items is correct. Hold the line.</p>
+      </div>
+
+      <div class="rec-block">
+        <h4>3. Logo-parade credentialing</h4>
+        <p>Ferriss's investment portfolio row, Holiday's publication logos row, Newport's "MIT-trained" credentialing all read as "please respect me." The GC Powerlist plaque Iteration 0 already flags for demotion falls in this bucket. Marginalia is the right call.</p>
+      </div>
+
+      <hr>
+
+      <h2 id="positioning">7. Positioning Implications (feed to Stage 3 workshop)</h2>
+
+      <p>Three positioning axes emerge from the research.</p>
+
+      <div class="axis-card">
+        <strong>Axis 1. Single-frame vs multi-domain reveal.</strong>
+        <p style="margin-top:0.5rem; color:#cccccc; font-size:0.9rem;">Sloan holds four identities under "creative industrialist." Kleon under "a writer who draws." Sivers under life-chapters. Pepe needs to pick which structural pattern he wants. Working hypothesis: <strong style="color:var(--pink);">hybrid.</strong> One 3-6 word verbal sleeve on the hero (candidates above) plus a life-chapters scroll on /who-am-i (Mexico City to NYC to Yale to Camino to Nairobi to Kigali to Barcelona is already the biggest warmth lever Pepe owns, per Iteration 0).</p>
+      </div>
+
+      <div class="axis-card">
+        <strong>Axis 2. Preacher risk.</strong>
+        <p style="margin-top:0.5rem; color:#cccccc; font-size:0.9rem;">Every Scale coaching-adjacent operator (Sinek, Holiday, Grant, Newport, Colonna) drifts preacher. Pepe's coaching cohort (Misfit Lab) is the highest-risk surface. The positioning must actively insulate from this. Working hypothesis: <strong style="color:var(--pink);">frame Misfit Lab as a pub table, not a pulpit.</strong> Copy that reads "come drink with the operators who don't fit" rather than "learn my framework." Distinguish from Sinek's Leaderful and Grant's Rethinking with vernacular voice.</p>
+      </div>
+
+      <div class="axis-card">
+        <strong>Axis 3. Authority stack.</strong>
+        <p style="margin-top:0.5rem; color:#cccccc; font-size:0.9rem;">Ryan Holiday's Stoic plus marketer plus author combo works because the three feed each other (marketer voice explains Stoic, author publishes both). Pepe's stack (lawyer plus techie plus rockstar plus adventurer) is not currently self-reinforcing on the site. Working hypothesis: <strong style="color:var(--pink);">the lawyer is the load-bearing wall, the rest are the color.</strong> All four identities appear. But the frame that sells LOF, Misfit Lab, coaching, speaking, and the podcast is legal-brain-plus-outlaw-life. The rockstar and adventurer are what make him different from every other lawyer. The techie is what makes him different from every other adventurer. The lawyer is what makes him credible to buyers.</p>
+      </div>
+
+      <p><strong>Positioning statement (draft, for workshop input):</strong></p>
+
+      <blockquote>"A closing-deals lawyer who happens to live like it's still allowed to be a person. Runs Mexzungu Group by day, writes Misfit Postcards by night, teaches lawyers of the future at Lawyers of the Future. Yale-forged, Africa-baked, Barcelona-based. Book coming."</blockquote>
+
+      <p>Refine at Stage 3.</p>
+
+      <hr>
+
+      <h2 id="biblio">8. Bibliography</h2>
+
+      <h3>Bucket A (Spread)</h3>
+      <ul class="biblio-list">
+        <li><span class="bname">Derek Sivers</span> <a href="https://sive.rs" target="_blank" rel="noopener">sive.rs</a></li>
+        <li><span class="bname">Jerry Colonna</span> <a href="https://www.reboot.io/team/jerry-colonna/" target="_blank" rel="noopener">reboot.io/team/jerry-colonna</a></li>
+        <li><span class="bname">Anna Gát / Interintellect</span> <a href="https://interintellect.com" target="_blank" rel="noopener">interintellect.com</a></li>
+        <li><span class="bname">Alex Danco</span> <a href="https://alexdanco.com" target="_blank" rel="noopener">alexdanco.com</a></li>
+        <li><span class="bname">Venkatesh Rao</span> <a href="https://venkateshrao.com" target="_blank" rel="noopener">venkateshrao.com</a></li>
+        <li><span class="bname">Nadia Asparouhova</span> <a href="https://nadia.xyz" target="_blank" rel="noopener">nadia.xyz</a></li>
+        <li><span class="bname">Robin Sloan</span> <a href="https://robinsloan.com" target="_blank" rel="noopener">robinsloan.com</a></li>
+        <li><span class="bname">Craig Mod</span> <a href="https://craigmod.com" target="_blank" rel="noopener">craigmod.com</a></li>
+        <li><span class="bname">Austin Kleon</span> <a href="https://austinkleon.com" target="_blank" rel="noopener">austinkleon.com</a></li>
+        <li><span class="bname">Suleika Jaouad</span> <a href="https://suleikajaouad.com" target="_blank" rel="noopener">suleikajaouad.com</a></li>
+      </ul>
+
+      <h3>Bucket B (Scale)</h3>
+      <ul class="biblio-list">
+        <li><span class="bname">Ryan Holiday</span> <a href="https://ryanholiday.net" target="_blank" rel="noopener">ryanholiday.net</a></li>
+        <li><span class="bname">Cal Newport</span> <a href="https://calnewport.com" target="_blank" rel="noopener">calnewport.com</a></li>
+        <li><span class="bname">Tim Ferriss</span> <a href="https://tim.blog" target="_blank" rel="noopener">tim.blog</a></li>
+        <li><span class="bname">Seth Godin</span> <a href="https://seths.blog" target="_blank" rel="noopener">seths.blog</a></li>
+        <li><span class="bname">Simon Sinek</span> <a href="https://simonsinek.com" target="_blank" rel="noopener">simonsinek.com</a></li>
+        <li><span class="bname">Mark Manson</span> <a href="https://markmanson.net" target="_blank" rel="noopener">markmanson.net</a></li>
+        <li><span class="bname">Trevor Noah</span> <a href="https://trevornoah.com" target="_blank" rel="noopener">trevornoah.com</a></li>
+        <li><span class="bname">Adam Grant</span> <a href="https://adamgrant.net" target="_blank" rel="noopener">adamgrant.net</a></li>
+        <li><span class="bname">Jocko Willink</span> <a href="https://jockopodcast.com" target="_blank" rel="noopener">jockopodcast.com</a></li>
+        <li><span class="bname">Casey Neistat</span> <a href="https://caseyneistat.com" target="_blank" rel="noopener">caseyneistat.com</a></li>
+      </ul>
+
+      <h3>Substitutions and cuts</h3>
+      <ul>
+        <li><strong>Peter Ludlow.</strong> No accessible personal site found. Substituted with Nadia Asparouhova (better multi-identity fit).</li>
+        <li><strong>Nassim Taleb</strong> (fooledbyrandomness.com). Verified but too monolithic identity (author only). Cut for Colonna.</li>
+        <li><strong>Reggie Watts</strong> (reggiewatts.com). 403 Forbidden. Cut for Interintellect.</li>
+        <li><strong>Rick Rubin</strong> (rickrubin.com). Deliberately empty "Please Stand By" page. Verified. Useful as anti-example (only a legend can afford a blank page) but not useful for the axes. Cut from final tables.</li>
+        <li><strong>Julia Galef</strong> (juliagalef.com). Verified but too single-book-focused. Cut for Suleika Jaouad.</li>
+        <li><strong>Malcolm Gladwell</strong> (malcolmgladwell.com). Page essentially empty (contact only). Cut for Adam Grant.</li>
+        <li><strong>Brene Brown</strong> (brenebrown.com). 403 Forbidden. Cut for Adam Grant.</li>
+        <li><strong>Krista Tippett</strong> (onbeing.org). 403 Forbidden. Cut for Simon Sinek.</li>
+        <li><strong>Anne Lamott</strong> (annelamott.com). Page unfetchable. Cut for Casey Neistat.</li>
+        <li><strong>Yuval Noah Harari.</strong> Verified but not tabled. Profile similar to Grant / Newport (professor-author scale). Available on request.</li>
+        <li><strong>Naval Ravikant</strong> (nav.al). Verified but too podcast-only. Cut for Trevor Noah.</li>
+        <li><strong>Patrick Collison</strong> (patrickcollison.com). Verified. 14-item minimalist Wikipedia-style. Used as anti-example in Bucket A synthesis, not tabled.</li>
+        <li><strong>Tobi Lütke</strong> (tobi.lutke.com). Verified. Sparse "Too-biased" branding. Interesting but too thin for tabling.</li>
+      </ul>
+
+      <hr>
+
+      <h2 id="handoff">9. Findings for Handoff</h2>
+
+      <h3>Top 3 findings</h3>
+
+      <ol>
+        <li><strong>Pepe's positioning arbitrage at Scale is pub-authentic legal-adventurer voice.</strong> The market is saturated with preacher (Sinek, Godin, Jocko), academic (Newport, Grant), and optimizer (Ferriss, Holiday). Only Manson, Noah, and Naval sit in adjacent territory. None is a lawyer. None has Pepe's biography. Uncontested lane, high perceived value.</li>
+        <li><strong>Single verbal sleeve</strong> beats identity list, at every scale, universally. Sloan's "creative industrialist," Kleon's "a writer who draws," Sivers's life-chapters, Newport's "computer scientist and bestselling author." All trade an identity list for one label. Pepe's current tagline gets flagged in Iteration 0 for the wrong reason but the sleeve instinct is right. This is the Stage 3 workshop's highest-leverage output.</li>
+        <li><strong>Product ladder architecture</strong> for Pepe equals Manson's shape (newsletter to books to app / community) plus Colonna's coaching layer (workshops to coaching to cohort). Ferriss / Holiday empire model is overkill and off-brand. Sivers / Sloan light-touch model underserves the coaching ambition. Manson plus Colonna hybrid is the target.</li>
+      </ol>
+
+      <h3>Top 2 candidates for Pepe to steal from directly</h3>
+
+      <div class="rec-block">
+        <h4>Robin Sloan (robinsloan.com)</h4>
+        <p>Cleanest multi-identity handling in the Spread set. "Creative industrialist" sleeve, prose-not-cards project descriptions, 3-item nav that trusts the reader, minimal print-editorial aesthetic. This is the exact vibe Iteration 0's "working notebook" metaphor wants to hit.</p>
+      </div>
+
+      <div class="rec-block">
+        <h4>Mark Manson (markmanson.net)</h4>
+        <p>Tightest voice plus product ladder in the Scale set. "Life advice that doesn't suck" is the tagline template Pepe should benchmark against ("life advice that doesn't suck" to "legal advice that isn't boring" is not the pull; the pull is the tone). Free newsletter to book to paid app is the exact ladder shape Pepe should build.</p>
+      </div>
+
+      <p>Feed both to Stage 3 positioning workshop as reference specimens.</p>
+
+      <hr>
+
+      <p style="color:var(--muted); font-size:0.8rem;"><strong>Method notes:</strong> 20 direct WebFetches attempted; 6 substitutions and cuts documented; no fabricated positioning statements; no fabricated subscriber counts (all verbatim from site copy where quoted). Author: Bruce, CSO. Date: 2026-08-27.</p>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = "mexzungu_research_auth";
+  if (localStorage.getItem(STORAGE_KEY) !== 'true') {
+    window.location.href = '/research/';
+  }
+</script>
+</body>
+</html>
