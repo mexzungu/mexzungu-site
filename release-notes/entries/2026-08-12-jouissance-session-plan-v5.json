@@ -1,0 +1,18 @@
+{
+  "id": "jouissance-session-plan-v5",
+  "title": "Jouissance session plan v5.0 rebuilt from a full facilitator design session.",
+  "type": "New",
+  "area": "ClientOps",
+  "shipped_by": "Jack",
+  "attribution_public": false,
+  "shipped_at": "2026-08-12",
+  "summary": "Was: session plan v4 read like a workshop deck. Now: v5 is a runnable facilitator script.",
+  "body_md": "Session plan v5.0 for Jouissance is a full redesign from a two-person design session with the facilitator. It is written as a runnable script, not a slide deck. Each block has a time, a purpose, a facilitator prompt, and a failure mode. Ready for pilot delivery.",
+  "why_this_way": "A session plan that reads like a deck gets ignored in the room. A plan written like a script gets used. This is the difference between a document and a tool.",
+  "links": [],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass",
+  "broadcast": false,
+  "schema_version": 1
+}

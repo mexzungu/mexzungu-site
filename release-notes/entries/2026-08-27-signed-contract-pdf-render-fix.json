@@ -1,0 +1,18 @@
+{
+  "id": "signed-contract-pdf-render-fix",
+  "title": "Signed contracts now render and ship from the mexzungu account.",
+  "type": "Fixed",
+  "area": "Legal",
+  "shipped_by": "Lemmy",
+  "attribution_public": false,
+  "shipped_at": "2026-08-27",
+  "summary": "Was: signed PDFs failed to attach. Now: they render and ship as a warm branded email.",
+  "body_md": "The signing flow at /sign was rendering the PDF but the mail step used the wrong sender. Fixed the sender routing and rebuilt the email template. Every signed contract now leaves as a branded email from the mexzungu account with the signed PDF attached.",
+  "why_this_way": "Signing is the moment the client trusts us most. A broken confirmation email undoes that. Fixed same day we caught it.",
+  "links": [],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass",
+  "broadcast": false,
+  "schema_version": 1
+}

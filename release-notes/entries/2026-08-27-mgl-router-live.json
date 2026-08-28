@@ -1,0 +1,18 @@
+{
+  "id": "mgl-router-live",
+  "title": "MGL router dispatches with a bar-gate, digest, escalation, and a decision ledger.",
+  "type": "New",
+  "area": "Infra",
+  "shipped_by": "Jack",
+  "attribution_public": false,
+  "shipped_at": "2026-08-27",
+  "summary": "Was: ad-hoc routing. Now: every dispatch is gated, digested, escalated, logged.",
+  "body_md": "The MGL router now sits between incoming work and the persona teams. It runs a bar-gate on every request (kill or pass), summarizes into a digest for Pepe, escalates when the confidence drop is too high, and writes every decision to a ledger that Nina audits weekly.",
+  "why_this_way": "The team keeps growing. Without a dispatch layer, every request becomes a Pepe interruption. With it, only the ones that need Pepe reach Pepe.",
+  "links": [],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass",
+  "broadcast": false,
+  "schema_version": 1
+}

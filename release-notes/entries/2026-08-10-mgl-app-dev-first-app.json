@@ -1,0 +1,18 @@
+{
+  "id": "mgl-app-dev-first-app",
+  "title": "The mgl-app-dev engine shipped its first end-to-end app.",
+  "type": "New",
+  "area": "Infra",
+  "shipped_by": "Bowie",
+  "attribution_public": true,
+  "shipped_at": "2026-08-10",
+  "summary": "Was: no on-demand app builder. Now: intake to live in one engine, first app built and shipped.",
+  "body_md": "The mgl-app-dev engine now runs the full on-demand app build cycle. Intake, registry check, brief, knowledge load, build via the web studio, layer-1 verify, registry update, knowledge handoff. First app built and shipped end to end. Reusable for any small internal tool that fits the tier profile.",
+  "why_this_way": "Small tools kept dying in the gap between idea and build. The engine closes that gap. Anything that fits Tier 1 or Tier 2 can now go from ask to shipped without a full project spin-up.",
+  "links": [],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass|anselmo:attribution-opt-in",
+  "broadcast": true,
+  "schema_version": 1
+}

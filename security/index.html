@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Security. Mexzungu Group.</title>
+    <meta name="description" content="Your data is safer here than at most law firms. Isolated per-client instances, encrypted at rest with EU-held keys, DPA signed at onboarding.">
+    <meta name="author" content="Pepe Carrillo">
+    <link rel="canonical" href="https://mexzungu.com/security/">
+    <meta property="og:title" content="Security. Mexzungu Group.">
+    <meta property="og:description" content="Your data is safer here than at most law firms. Isolated per-client instances, encrypted at rest with EU-held keys.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mexzungu.com/security/">
+    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        .sec-hero {
+            padding: 5rem 2rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .sec-hero h1 {
+            font-family: var(--heading, 'Anton', 'Arial Black', sans-serif);
+            font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+            line-height: 1.05;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .sec-hero h1 .sec-pink { color: var(--pink); }
+        .sec-hero .sec-lead {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin-bottom: 1.5rem;
+            max-width: 720px;
+        }
+        .sec-hero .sec-sub {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+        .sec-hero .sec-cta {
+            display: inline-flex;
+            align-items: center;
+            background: var(--pink);
+            color: #fff;
+            padding: 0.85rem 1.5rem;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform var(--ease-default), background var(--ease-default);
+        }
+        .sec-hero .sec-cta:hover { background: var(--pink-dark); transform: translateY(-1px); }
+        .sec-accent-bar {
+            max-width: 900px;
+            margin: 0 auto;
+            height: 4px;
+            background: var(--pink);
+            border-radius: 2px;
+        }
+        .sec-body {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+        .sec-section { padding: 2rem 0; border-top: 1px solid var(--border); }
+        .sec-section:first-child { border-top: none; padding-top: 0.5rem; }
+        .sec-section h2 {
+            font-family: var(--heading, 'Anton', 'Arial Black', sans-serif);
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .sec-section p, .sec-section li { color: var(--text-primary); line-height: 1.6; margin-bottom: 0.75rem; }
+        .sec-section ul { padding-left: 1.2rem; margin-bottom: 1rem; }
+        .sec-section li { margin-bottom: 0.5rem; }
+        .sec-section strong { color: var(--text-primary); }
+
+        .sec-subprocessors {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        .sec-subprocessors th, .sec-subprocessors td {
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        .sec-subprocessors th {
+            background: #f7f5f2;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .sec-subprocessors td { color: var(--text-primary); }
+        .sec-table-wrap { overflow-x: auto; }
+
+        .sec-incident-empty {
+            background: #f7f5f2;
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .sec-improve {
+            background: #fbe0ec;
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            margin-top: 1rem;
+        }
+        .sec-improve h3 {
+            font-family: var(--heading, 'Anton', 'Arial Black', sans-serif);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: #a11f5c;
+        }
+        .sec-improve-item {
+            padding: 0.5rem 0;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            font-size: 0.9rem;
+        }
+        .sec-improve-item:first-of-type { border-top: none; }
+        .sec-improve-item .sec-improve-meta {
+            font-size: 0.72rem;
+            color: #7a1a45;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 0.15rem;
+        }
+        .sec-improve-item a { color: #a11f5c; font-weight: 700; text-decoration: none; }
+        .sec-improve-item a:hover { text-decoration: underline; }
+
+        .sec-footer-cta {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            background: var(--black);
+            color: #fff;
+        }
+        .sec-footer-cta a {
+            color: var(--pink);
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 0.75rem;
+        }
+        .sec-footer-cta a:hover { text-decoration: underline; }
+
+        @media (max-width: 640px) {
+            .sec-hero { padding: 3.5rem 1.25rem 2rem; }
+            .sec-hero h1 { font-size: 2rem; }
+            .sec-body { padding: 1.5rem 1.25rem 3rem; }
+            .sec-section h2 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="#main" class="skip-nav">Skip to content</a>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li class="nav-dropdown">
+            <a href="/what-we-do">What We Do</a>
+            <ul class="nav-dropdown-menu">
+                <li class="nav-group-label">For Founders</li>
+                <li><a href="/venture-architecture"><span class="nav-outcome">Structure a Company</span><span class="nav-product">Venture Architecture</span></a></li>
+                <li><a href="/data-privacy"><span class="nav-outcome">Handle Data &amp; Privacy</span><span class="nav-product">Privacy Architect</span></a></li>
+                <li><a href="/ai-ninja-factory"><span class="nav-outcome">Go AI-Native</span><span class="nav-product">AI Ninja Factory</span></a></li>
+                <li class="nav-group-label nav-group-sep">For Investors</li>
+                <li><a href="/investors"><span class="nav-outcome">Review a Deal</span><span class="nav-product">Mexzungu x Investors</span></a></li>
+            </ul>
+        </li>
+        <li><a href="/release-notes/">Release Notes</a></li>
+        <li><a href="/security/" class="active">Security</a></li>
+        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+        <li><a href="/lets-jam" class="nav-cta">Let's Jam</a></li>
+    </ul>
+</nav>
+
+<main id="main">
+
+<section class="sec-hero">
+    <h1>Your data is safer here than at <span class="sec-pink">most law firms.</span></h1>
+    <p class="sec-lead">Isolated per-client instances. Encrypted at rest with keys held in the EU. DPA signed at onboarding. Zero cross-client contamination. Every AI output disclaimed. The boutique firm sharing your NDA over WhatsApp does none of this.</p>
+    <p class="sec-sub">Trust is table stakes. We treat it as the moat.</p>
+    <a href="/lets-jam?topic=security" class="sec-cta">Ask your security question &rarr;</a>
+</section>
+
+<div class="sec-accent-bar"></div>
+
+<div class="sec-body">
+
+<section class="sec-section" id="data-we-handle">
+    <h2>1. Data we handle</h2>
+    <p>What comes in, what stays, what leaves.</p>
+    <ul>
+        <li><strong>Client legal work.</strong> Contracts, cap tables, deal documents, engagement letters, memos. Received via email, uploaded to Drive, drafted in Docs. Stored in per-client folders on Google Workspace (EU multi-region), mirrored nightly to Hetzner (Falkenstein DE), backed up weekly to Backblaze B2 (Amsterdam NL).</li>
+        <li><strong>Client and prospect communications.</strong> Email threads, WhatsApp messages, Telegram messages, call notes. Stored in the operational stack for the duration of the engagement plus retention floor.</li>
+        <li><strong>Financial records.</strong> Invoices, expenses, wire records, tax filings. Stored per Ley General Tributaria and Codigo de Comercio.</li>
+        <li><strong>Operational metadata.</strong> Timestamps, task states, gate outcomes, system logs. Not personal data in most cases. Used for reliability and audit.</li>
+        <li><strong>Personal communications and journal.</strong> Pepe's own comms, therapy notes, journal entries. Not client data, but treated with the same encryption posture.</li>
+    </ul>
+    <p>Client documents are never submitted to any third-party model provider for training. Not now, not ever. This is written into every engagement letter under the AI Use clause.</p>
+</section>
+
+<section class="sec-section" id="how-we-protect">
+    <h2>2. How we protect it</h2>
+    <p>Principles here. Detailed technical controls live in the internal controls register, audited quarterly by Kim.</p>
+    <ul>
+        <li><strong>Encryption at rest.</strong> Data in the operational stack is encrypted at rest with AES-256. Backup archives are encrypted with independently-managed keys before leaving primary storage.</li>
+        <li><strong>Encryption in transit.</strong> TLS 1.3 for all external traffic. Certificate rotation automated.</li>
+        <li><strong>Key custody.</strong> Backup encryption keys are held under a Shamir 3-of-5 split with custodians in Barcelona and elsewhere in the EU. No single person can decrypt our archive stack alone. Any three custodians can reconstruct if needed.</li>
+        <li><strong>Per-client isolation.</strong> Each client's data lives in a dedicated folder tree on Google Workspace, a dedicated row space on our internal databases keyed on client_id, and dedicated access rules on Cloudflare Access. Cross-client access requires an explicit code path that logs the access.</li>
+        <li><strong>Access control.</strong> Human access to client data goes through Cloudflare Access + Google Workspace 2FA. Programmatic access uses short-lived tokens.</li>
+        <li><strong>AI use.</strong> Every AI output that touches client data is disclaimed and logged. No client document is submitted to any third-party model provider for training. Prompt data uses zero-retention API tiers where available.</li>
+    </ul>
+    <p>We are structured to comply with GDPR Article 5 obligations of confidentiality, integrity, storage limitation, and lawful cross-border transfer. Compliance is a state a regulator declares. We can show the architecture and the audits that support the claim.</p>
+</section>
+
+<section class="sec-section" id="where-data-lives">
+    <h2>3. Where data lives</h2>
+    <p>Full subprocessor list. Updated whenever a subprocessor is added, removed, or changes region. Last updated: 2026-08-28.</p>
+    <div class="sec-table-wrap">
+    <table class="sec-subprocessors">
+        <thead>
+            <tr>
+                <th>Subprocessor</th>
+                <th>Purpose</th>
+                <th>Location</th>
+                <th>Data class</th>
+                <th>Transfer basis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Hetzner Online GmbH</td><td>Compute + primary storage</td><td>Falkenstein, DE</td><td>All operational data</td><td>EU-only. DPA signed.</td></tr>
+            <tr><td>Backblaze Inc. (B2)</td><td>Cold backup, encrypted archive</td><td>EU-Central-003 Amsterdam, NL</td><td>Encrypted archives only</td><td>Data at rest in EU. Corporate HQ US. SCCs + AES-256 client-side (EDPB Rec 01/2020 Use Case 3).</td></tr>
+            <tr><td>Google LLC (Workspace)</td><td>Email, Drive, Docs, Calendar</td><td>US + EU multi-region</td><td>Client comms, documents, calendar</td><td>Google-signed DPA + SCCs + Google Cloud EU data-residency commitments.</td></tr>
+            <tr><td>Anthropic PBC</td><td>Claude API (Janis AI layer)</td><td>US</td><td>Prompt content (may include client data via context)</td><td>SCCs + zero-retention API mode where enabled. Prompt data not used for training.</td></tr>
+            <tr><td>Cloudflare Inc.</td><td>CDN, DNS, Access, Tunnel</td><td>EU + US anycast</td><td>Site traffic, auth tokens</td><td>SCCs + Cloudflare DPA. EU data localization suite enabled where available.</td></tr>
+            <tr><td>OpenAI OpCo LLC</td><td>Image generation, Whisper transcription</td><td>US</td><td>Voice notes, image prompts</td><td>SCCs + API-tier zero-retention. Client-privileged material not sent.</td></tr>
+            <tr><td>WhatsApp / Meta Platforms Ireland Ltd</td><td>WhatsApp Business Cloud API</td><td>IE + US</td><td>Message content, media</td><td>Meta EU controller + SCCs for US onward.</td></tr>
+            <tr><td>Telegram FZ-LLC</td><td>Telegram Bot + MTProto userbot</td><td>AE (Dubai) + global</td><td>Message content</td><td>No SCCs available. Consent + minimisation basis. Client data not routed here.</td></tr>
+            <tr><td>GitHub Inc.</td><td>Code + version control</td><td>US</td><td>Source code, non-secret configs</td><td>SCCs + Microsoft DPA. Secrets scanning enabled.</td></tr>
+            <tr><td>Codeberg e.V.</td><td>Secondary git mirror</td><td>DE</td><td>Same as GitHub</td><td>EU-only. Non-profit.</td></tr>
+            <tr><td>Budget Bakers s.r.o. (Wallet API)</td><td>Personal finance ingest</td><td>CZ</td><td>Transaction metadata</td><td>EU-only. Read-only integration.</td></tr>
+            <tr><td>Tavily AI</td><td>Web search</td><td>US</td><td>Search queries</td><td>SCCs. Client data not routed here.</td></tr>
+            <tr><td>Resend</td><td>Release-notes digest email</td><td>US + EU</td><td>Subscriber email addresses only</td><td>SCCs. DKIM/SPF configured.</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem;">Pending review before addition: agentmail.to (Lume operator relay). Row added once transfer basis confirmed.</p>
+</section>
+
+<section class="sec-section" id="retention">
+    <h2>4. Retention</h2>
+    <ul>
+        <li><strong>Client legal work and matter files.</strong> 6 years post matter close, then 4 years cold archive, then destruction. Basis: Codigo Deontologico art. 21 + Codigo Civil art. 1964.</li>
+        <li><strong>Financial records.</strong> 10 years. Basis: Ley General Tributaria art. 66 + Codigo de Comercio art. 30.</li>
+        <li><strong>Personal communications and journal.</strong> 3 years full-fidelity, then summary metadata only.</li>
+        <li><strong>Health data.</strong> 5 years post-treatment. Basis: Ley 41/2002 art. 17.</li>
+        <li><strong>Infrastructure secrets.</strong> Current plus one rotation only.</li>
+    </ul>
+    <p>Data subjects may request erasure at any time under GDPR Article 17. Erasure from live systems happens within 30 days. Erasure from backups happens on natural rotation, tracked in our erasure log. Maximum time to full erasure across all systems: 7 years.</p>
+</section>
+
+<section class="sec-section" id="incident-history">
+    <h2>5. Incident history</h2>
+    <p>We publish every confirmed security incident affecting our stack. Terse honesty over silence.</p>
+    <div class="sec-incident-empty">No security incidents reported to date.</div>
+    <p style="font-size: 0.9rem; color: var(--text-muted);">If and when an incident occurs, we publish here with date, one-sentence description, discovery + resolution timeline, data class affected, notifications sent, root cause, remediation, and related release-notes entry.</p>
+</section>
+
+<section class="sec-section" id="how-we-improve">
+    <h2>6. How we improve</h2>
+    <p>Security is not a page. It is a habit. Every security-relevant shipment lands in release-notes.</p>
+    <div class="sec-improve" id="sec-improve-widget">
+        <h3>Recent security shipments</h3>
+        <div id="sec-improve-list">Loading recent shipments.</div>
+    </div>
+</section>
+
+<section class="sec-section" id="responsible-disclosure">
+    <h2>7. Responsible disclosure</h2>
+    <p><strong>Reporting a security issue.</strong> Email <a href="mailto:security@mexzungu.com" style="color: var(--pink);">security@mexzungu.com</a>. Encrypt sensitive reports with our PGP key (link coming; contact us in the meantime). We acknowledge within 72 hours. We aim to remediate confirmed issues within 30 days, or publicly disclose the timeline for a longer fix.</p>
+    <p><strong>Safe harbor.</strong> We will not pursue legal action against researchers who: act in good faith, do not access, modify, or destroy data belonging to third parties, do not degrade service for other users, and give us a reasonable window to remediate before public disclosure (default: 90 days).</p>
+    <p><strong>Out of scope.</strong> Denial of service, social engineering of staff, physical attacks, spam, and volumetric attacks.</p>
+    <p><strong>No bug bounty.</strong> We do not currently offer monetary rewards. We publicly acknowledge researchers (with consent) in our disclosure log.</p>
+</section>
+
+<section class="sec-section" id="international-transfers">
+    <h2>8. International data transfers</h2>
+    <p>Some of our subprocessors have corporate presence in the United States or process data in US regions. For each such transfer we rely on:</p>
+    <ol>
+        <li>Standard Contractual Clauses (EU Commission Decision 2021/914),</li>
+        <li>supplementary technical measures per EDPB Recommendations 01/2020, and</li>
+        <li>where used, client-side encryption with keys held only in the EU, rendering transferred data non-personal in the hands of the recipient per Case C-582/14 (Breyer).</li>
+    </ol>
+    <p>Per-subprocessor details in the table above. A copy of our Transfer Impact Assessment is available to enterprise clients on request under NDA.</p>
+</section>
+
+<section class="sec-section" id="ai-use">
+    <h2>9. AI use policy</h2>
+    <p>We use AI in every part of our stack. Every AI output that touches client data is disclaimed and logged. No client document is submitted to any third-party model provider for training. Client-privileged material is not routed to any provider without a zero-retention API tier.</p>
+    <p style="font-size: 0.9rem; color: var(--text-muted);">Full AI Use Policy publishing separately.</p>
+</section>
+
+</div>
+
+</main>
+
+<div class="sec-footer-cta">
+    See how we build.
+    <a href="/engines/">Engines &rarr;</a>
+    <a href="/release-notes/">Release Notes &rarr;</a>
+</div>
+
+<footer>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size: 0.85rem;">
+            <a href="/release-notes/" style="color: var(--gold);">Release Notes</a> &middot;
+            <a href="/security/" style="color: var(--gold);">Security</a> &middot;
+            <a href="/privacy/" style="color: var(--gold);">Privacy</a> &middot;
+            <a href="/terms/" style="color: var(--gold);">Terms</a>
+        </span>
+    </div>
+    <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice.</div>
+</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+
+(function() {
+    const listEl = document.getElementById('sec-improve-list');
+    if (!listEl) return;
+
+    function escapeHtml(s) {
+        return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    fetch('/release-notes/entries/index.json', { cache: 'no-store' })
+        .then(r => r.ok ? r.json() : Promise.reject('index unreachable'))
+        .then(idx => {
+            const files = Array.isArray(idx) ? idx : (idx.entries || []);
+            const paths = files.map(f => typeof f === 'string' ? f : f.file || f.id);
+            return Promise.all(paths.slice(0, 30).map(p =>
+                fetch('/release-notes/entries/' + p, { cache: 'no-store' })
+                    .then(r => r.ok ? r.json() : null)
+                    .catch(() => null)
+            ));
+        })
+        .then(entries => {
+            const security = entries
+                .filter(e => e && e.type === 'Security' && e.audience === 'public' && e.status === 'published')
+                .slice(0, 3);
+            if (!security.length) {
+                listEl.innerHTML = '<div style="color: #7a1a45; font-size: 0.9rem;">No security shipments to display yet. Watch this space.</div>';
+                return;
+            }
+            listEl.innerHTML = security.map(e => `
+                <div class="sec-improve-item">
+                    <div class="sec-improve-meta">${escapeHtml(e.shipped_at)}</div>
+                    <div>${escapeHtml(e.summary || e.title)}</div>
+                    <a href="/release-notes/#${escapeHtml(e.id)}">Read more &rarr;</a>
+                </div>
+            `).join('');
+        })
+        .catch(() => {
+            listEl.innerHTML = '<div style="color: #7a1a45; font-size: 0.9rem;">Feed unavailable. Try refreshing.</div>';
+        });
+})();
+</script>
+</body>
+</html>

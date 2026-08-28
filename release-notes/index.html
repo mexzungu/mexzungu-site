@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Release Notes. Mexzungu Group.</title>
+    <meta name="description" content="What we shipped this week. Most firms send you an invoice. We send you a changelog.">
+    <meta name="author" content="Pepe Carrillo">
+    <link rel="canonical" href="https://mexzungu.com/release-notes/">
+    <link rel="alternate" type="application/atom+xml" title="Mexzungu release notes" href="https://mexzungu.com/release-notes/rss.xml">
+    <meta property="og:title" content="Release Notes. Mexzungu Group.">
+    <meta property="og:description" content="What we shipped this week. Most firms send you an invoice. We send you a changelog.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mexzungu.com/release-notes/">
+    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        .rn-hero {
+            padding: 5rem 2rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .rn-hero h1 {
+            font-family: var(--heading, 'Anton', 'Arial Black', sans-serif);
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            line-height: 1.02;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .rn-hero h1 .rn-hero-pink { color: var(--pink); }
+        .rn-hero .rn-hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        .rn-hero .rn-hero-cta-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .rn-hero .rn-hero-cta {
+            display: inline-flex;
+            align-items: center;
+            background: var(--pink);
+            color: #fff;
+            padding: 0.85rem 1.5rem;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform var(--ease-default), background var(--ease-default);
+        }
+        .rn-hero .rn-hero-cta:hover { background: var(--pink-dark); transform: translateY(-1px); }
+        .rn-hero .rn-hero-rss {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+        }
+        .rn-hero .rn-hero-rss:hover { color: var(--pink); border-color: var(--pink); }
+
+        .rn-filters {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 1rem;
+        }
+        .rn-filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .rn-filter-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-right: 0.5rem;
+        }
+        .rn-chip {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--ease-default);
+            font-family: inherit;
+        }
+        .rn-chip:hover { border-color: var(--pink); color: var(--pink); }
+        .rn-chip.rn-chip-active {
+            background: var(--black);
+            color: #fff;
+            border-color: var(--black);
+        }
+        .rn-chip.rn-chip-active:hover { background: var(--pink); border-color: var(--pink); color: #fff; }
+
+        .rn-feed {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1rem 2rem 3rem;
+        }
+        .rn-entry {
+            padding: 1.75rem 0;
+            border-top: 1px solid var(--border);
+        }
+        .rn-entry:first-child { border-top: none; }
+        .rn-entry-meta {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+            font-size: 0.8rem;
+        }
+        .rn-tag {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .rn-tag-type-New       { background: #d8f0e2; color: #1e6b40; }
+        .rn-tag-type-Improved  { background: #d8e8f5; color: #1c4d7a; }
+        .rn-tag-type-Fixed     { background: #f7ebd0; color: #7a5a17; }
+        .rn-tag-type-Security  { background: #fbe0ec; color: #a11f5c; }
+        .rn-tag-type-Deprecated{ background: #e5e5e5; color: #555; }
+        .rn-tag-area {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+        }
+        .rn-date {
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace;
+            font-size: 0.78rem;
+        }
+        .rn-attribution {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+        .rn-entry-title {
+            font-family: var(--heading, 'Anton', 'Arial Black', sans-serif);
+            font-size: 1.5rem;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .rn-entry-summary {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.55;
+            margin-bottom: 0.75rem;
+        }
+        .rn-more-toggle {
+            background: none;
+            border: none;
+            color: var(--pink);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+        }
+        .rn-more-toggle:hover { text-decoration: underline; }
+        .rn-entry-body {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.25rem;
+            background: #f7f5f2;
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        .rn-entry-body.rn-open { display: block; }
+        .rn-entry-body p { margin-bottom: 0.75rem; }
+        .rn-entry-body p:last-child { margin-bottom: 0; }
+        .rn-why {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--border);
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        .rn-links {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+        }
+        .rn-links a { color: var(--pink); text-decoration: none; }
+        .rn-links a:hover { text-decoration: underline; }
+
+        .rn-empty {
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .rn-subscribe {
+            max-width: 900px;
+            margin: 2rem auto 0;
+            padding: 2rem;
+            background: #f7f5f2;
+            border-radius: var(--radius-md);
+        }
+        .rn-subscribe h2 {
+            font-family: var(--heading, 'Anton', 'Arial Black', sans-serif);
+            font-size: 1.4rem;
+            margin-bottom: 0.4rem;
+        }
+        .rn-subscribe p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+        .rn-subscribe form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .rn-subscribe input[type=email] {
+            flex: 1;
+            min-width: 220px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .rn-subscribe button {
+            padding: 0.75rem 1.5rem;
+            background: var(--black);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .rn-subscribe button:hover { background: var(--pink); }
+        .rn-subscribe-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+        .rn-footer-cta {
+            position: sticky;
+            bottom: 0;
+            background: var(--black);
+            color: #fff;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 0.95rem;
+            margin-top: 2rem;
+            z-index: 40;
+        }
+        .rn-footer-cta a {
+            color: var(--pink);
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 0.5rem;
+        }
+        .rn-footer-cta a:hover { text-decoration: underline; }
+
+        @media (max-width: 640px) {
+            .rn-hero { padding: 3rem 1.25rem 2rem; }
+            .rn-filters, .rn-feed { padding-left: 1.25rem; padding-right: 1.25rem; }
+            .rn-subscribe { margin-left: 1.25rem; margin-right: 1.25rem; padding: 1.5rem; }
+            .rn-entry-title { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="#main" class="skip-nav">Skip to content</a>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li class="nav-dropdown">
+            <a href="/what-we-do">What We Do</a>
+            <ul class="nav-dropdown-menu">
+                <li class="nav-group-label">For Founders</li>
+                <li><a href="/venture-architecture"><span class="nav-outcome">Structure a Company</span><span class="nav-product">Venture Architecture</span></a></li>
+                <li><a href="/data-privacy"><span class="nav-outcome">Handle Data &amp; Privacy</span><span class="nav-product">Privacy Architect</span></a></li>
+                <li><a href="/ai-ninja-factory"><span class="nav-outcome">Go AI-Native</span><span class="nav-product">AI Ninja Factory</span></a></li>
+                <li class="nav-group-label nav-group-sep">For Investors</li>
+                <li><a href="/investors"><span class="nav-outcome">Review a Deal</span><span class="nav-product">Mexzungu x Investors</span></a></li>
+            </ul>
+        </li>
+        <li><a href="/release-notes/" class="active">Release Notes</a></li>
+        <li><a href="/security/">Security</a></li>
+        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+        <li><a href="/lets-jam" class="nav-cta">Let's Jam</a></li>
+    </ul>
+</nav>
+
+<main id="main">
+
+<section class="rn-hero">
+    <h1>What we shipped <span class="rn-hero-pink">this week.</span></h1>
+    <p class="rn-hero-sub">Most firms send you an invoice. We send you a changelog. Every shipment dated, named, and public.</p>
+    <div class="rn-hero-cta-row">
+        <a href="/lets-jam" class="rn-hero-cta">See what we could ship for you &rarr;</a>
+        <a href="/release-notes/rss.xml" class="rn-hero-rss" aria-label="RSS feed">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-3.368c10.58.046 19.152 8.594 19.183 19.188h4.817c-.03-13.231-10.755-23.954-24-24v4.812z"/></svg>
+            RSS
+        </a>
+    </div>
+</section>
+
+<section class="rn-filters">
+    <div class="rn-filter-group" data-filter-family="type">
+        <span class="rn-filter-label">Type</span>
+        <button class="rn-chip rn-chip-active" data-filter-type="all">All</button>
+        <button class="rn-chip" data-filter-type="New">New</button>
+        <button class="rn-chip" data-filter-type="Improved">Improved</button>
+        <button class="rn-chip" data-filter-type="Fixed">Fixed</button>
+        <button class="rn-chip" data-filter-type="Security">Security</button>
+        <button class="rn-chip" data-filter-type="Deprecated">Deprecated</button>
+    </div>
+    <div class="rn-filter-group" data-filter-family="area">
+        <span class="rn-filter-label">Area</span>
+        <button class="rn-chip rn-chip-active" data-filter-area="all">All</button>
+        <button class="rn-chip" data-filter-area="ClientOps">ClientOps</button>
+        <button class="rn-chip" data-filter-area="Content">Content</button>
+        <button class="rn-chip" data-filter-area="Infra">Infra</button>
+        <button class="rn-chip" data-filter-area="Legal">Legal</button>
+        <button class="rn-chip" data-filter-area="Finance">Finance</button>
+        <button class="rn-chip" data-filter-area="Websites">Websites</button>
+    </div>
+</section>
+
+<section class="rn-feed" id="rn-feed">
+    <div class="rn-empty" id="rn-loading">Loading shipments.</div>
+</section>
+
+<section class="rn-subscribe">
+    <h2>Get the weekly digest.</h2>
+    <p>One email on Fridays. What shipped, what changed. Unsubscribe any time.</p>
+    <form onsubmit="rnSubscribe(event)">
+        <input type="email" id="rn-email" placeholder="you@company.com" required>
+        <button type="submit" id="rn-btn">Subscribe</button>
+    </form>
+    <p class="rn-subscribe-note" id="rn-msg">Double opt-in. Your address stays on our stack. See <a href="/security/" style="color:var(--pink);">/security</a>.</p>
+</section>
+
+</main>
+
+<div class="rn-footer-cta">
+    See what we could ship for you.
+    <a href="/lets-jam">Let's Jam &rarr;</a>
+</div>
+
+<footer>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size: 0.85rem;">
+            <a href="/release-notes/" style="color: var(--gold);">Release Notes</a> &middot;
+            <a href="/security/" style="color: var(--gold);">Security</a> &middot;
+            <a href="/privacy/" style="color: var(--gold);">Privacy</a> &middot;
+            <a href="/terms/" style="color: var(--gold);">Terms</a>
+        </span>
+    </div>
+    <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice.</div>
+</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+
+(function() {
+    const feedEl = document.getElementById('rn-feed');
+    const loadingEl = document.getElementById('rn-loading');
+    let entries = [];
+    let currentType = 'all';
+    let currentArea = 'all';
+
+    function escapeHtml(s) {
+        return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function fmtDate(iso) {
+        try {
+            const d = new Date(iso + 'T12:00:00');
+            return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+        } catch { return iso; }
+    }
+
+    function renderBodyMarkdown(md) {
+        if (!md) return '';
+        return escapeHtml(md)
+            .split(/\n\s*\n/)
+            .map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>')
+            .join('');
+    }
+
+    function renderEntry(e) {
+        const attribution = e.attribution_public ? `<span class="rn-attribution">Shipped by ${escapeHtml(e.shipped_by)}</span>` : '';
+        const linksHtml = (e.links && e.links.length) ? e.links.filter(l => l.kind !== 'commit').map(l => {
+            const href = l.href.startsWith('/') || l.href.startsWith('http') ? l.href : '#' + l.href;
+            return `<a href="${escapeHtml(href)}">${escapeHtml(l.label || l.href)}</a>`;
+        }).join('') : '';
+        const why = e.why_this_way ? `<div class="rn-why">${escapeHtml(e.why_this_way)}</div>` : '';
+        const bodyExpandable = e.body_md || e.why_this_way || linksHtml;
+        return `
+            <article class="rn-entry" id="${escapeHtml(e.id)}" data-type="${escapeHtml(e.type)}" data-area="${escapeHtml(e.area)}">
+                <div class="rn-entry-meta">
+                    <span class="rn-tag rn-tag-type-${escapeHtml(e.type)}">${escapeHtml(e.type)}</span>
+                    <span class="rn-tag rn-tag-area">${escapeHtml(e.area)}</span>
+                    <span class="rn-date" title="${escapeHtml(e.shipped_at)}">${fmtDate(e.shipped_at)}</span>
+                    ${attribution}
+                </div>
+                <h3 class="rn-entry-title">${escapeHtml(e.title)}</h3>
+                <p class="rn-entry-summary">${escapeHtml(e.summary)}</p>
+                ${bodyExpandable ? `<button class="rn-more-toggle" onclick="rnToggle('${escapeHtml(e.id)}')">More &rarr;</button>` : ''}
+                ${bodyExpandable ? `<div class="rn-entry-body" id="body-${escapeHtml(e.id)}">
+                    ${renderBodyMarkdown(e.body_md)}
+                    ${why}
+                    ${linksHtml ? `<div class="rn-links">${linksHtml}</div>` : ''}
+                </div>` : ''}
+            </article>
+        `;
+    }
+
+    function applyFilters() {
+        const filtered = entries.filter(e =>
+            (currentType === 'all' || e.type === currentType) &&
+            (currentArea === 'all' || e.area === currentArea)
+        );
+        if (!filtered.length) {
+            feedEl.innerHTML = '<div class="rn-empty">No entries match those filters.</div>';
+            return;
+        }
+        feedEl.innerHTML = filtered.map(renderEntry).join('');
+    }
+
+    window.rnToggle = function(id) {
+        const el = document.getElementById('body-' + id);
+        if (el) el.classList.toggle('rn-open');
+    };
+
+    function syncUrl() {
+        const params = new URLSearchParams();
+        if (currentType !== 'all') params.set('type', currentType);
+        if (currentArea !== 'all') params.set('area', currentArea);
+        const qs = params.toString();
+        const url = window.location.pathname + (qs ? '?' + qs : '');
+        history.replaceState(null, '', url);
+    }
+
+    function readUrl() {
+        const p = new URLSearchParams(window.location.search);
+        const t = p.get('type');
+        const a = p.get('area');
+        if (t) currentType = t;
+        if (a) currentArea = a;
+    }
+
+    function activateChip(family, value) {
+        document.querySelectorAll(`[data-filter-family="${family}"] .rn-chip`).forEach(btn => {
+            btn.classList.toggle('rn-chip-active', btn.dataset['filter' + (family[0].toUpperCase() + family.slice(1))] === value);
+        });
+    }
+
+    document.querySelectorAll('[data-filter-family="type"] .rn-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentType = btn.dataset.filterType;
+            activateChip('type', currentType);
+            syncUrl();
+            applyFilters();
+        });
+    });
+    document.querySelectorAll('[data-filter-family="area"] .rn-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentArea = btn.dataset.filterArea;
+            activateChip('area', currentArea);
+            syncUrl();
+            applyFilters();
+        });
+    });
+
+    async function loadEntries() {
+        readUrl();
+        activateChip('type', currentType);
+        activateChip('area', currentArea);
+        try {
+            const idxRes = await fetch('/release-notes/entries/index.json', { cache: 'no-cache' });
+            if (!idxRes.ok) throw new Error('index fetch failed');
+            const idx = await idxRes.json();
+            const files = idx.entries || [];
+            const loaded = await Promise.all(files.map(async fn => {
+                try {
+                    const r = await fetch('/release-notes/entries/' + fn, { cache: 'no-cache' });
+                    if (!r.ok) return null;
+                    return await r.json();
+                } catch { return null; }
+            }));
+            entries = loaded.filter(e => e && e.status === 'published' && e.audience === 'public');
+            entries.sort((a, b) => b.shipped_at.localeCompare(a.shipped_at));
+            applyFilters();
+            if (window.location.hash) {
+                const target = document.getElementById(window.location.hash.slice(1));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    const body = document.getElementById('body-' + window.location.hash.slice(1));
+                    if (body) body.classList.add('rn-open');
+                }
+            }
+        } catch (err) {
+            feedEl.innerHTML = '<div class="rn-empty">Feed unavailable right now. Try again in a moment.</div>';
+        }
+    }
+
+    loadEntries();
+})();
+
+async function rnSubscribe(e) {
+    e.preventDefault();
+    const btn = document.getElementById('rn-btn');
+    const msg = document.getElementById('rn-msg');
+    const email = document.getElementById('rn-email').value;
+    btn.textContent = 'Subscribing.';
+    btn.disabled = true;
+    // TODO: wire /api/release-notes/subscribe once Cloudflare D1 + Resend endpoint exists (pipeline.md section 8).
+    try {
+        const res = await fetch('/api/release-notes/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, source: 'release-notes' })
+        });
+        if (res.ok) {
+            msg.textContent = "Check your inbox to confirm.";
+            btn.textContent = "You're in.";
+        } else {
+            throw new Error();
+        }
+    } catch {
+        msg.textContent = "Endpoint not wired yet. Email janis@mexzungu.com to get on the list.";
+        btn.textContent = 'Try again';
+    }
+    document.getElementById('rn-email').value = '';
+    setTimeout(() => { btn.textContent = 'Subscribe'; btn.disabled = false; }, 4000);
+}
+</script>
+</body>
+</html>

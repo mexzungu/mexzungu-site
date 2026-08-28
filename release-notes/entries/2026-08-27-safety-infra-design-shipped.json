@@ -1,0 +1,20 @@
+{
+  "id": "safety-infra-design-shipped",
+  "title": "Safety infrastructure design shipped.",
+  "type": "New",
+  "area": "Infra",
+  "shipped_by": "Bowie",
+  "attribution_public": true,
+  "shipped_at": "2026-08-27",
+  "summary": "Nine specialists now audit the whole stack every week.",
+  "body_md": "Every Monday at 03:00 CET, nine agents wake up and score six safety dimensions across our operational stack. Kim runs QA. Bowie runs infra. Iggy runs DevOps. Lou runs QA gates. Lemmy runs legal exposure. Nina runs knowledge integrity. Ozzy stress-tests everything. They do not stop until every dimension scores at least 4.0. Then they produce a design doc and an implementation plan, filed in the loop for review.",
+  "why_this_way": "We used to catch incidents after they hit. Now we catch them before. The loop only runs on demand or on the Monday cron. It does not touch production without a human gate. That is the trade. Safety without runaway agents.",
+  "links": [
+    { "kind": "external", "href": "/security", "label": "How we protect data" }
+  ],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass|anselmo:attribution-opt-in",
+  "broadcast": true,
+  "schema_version": 1
+}

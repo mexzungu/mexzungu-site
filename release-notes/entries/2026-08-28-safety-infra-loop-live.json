@@ -1,0 +1,20 @@
+{
+  "id": "safety-infra-loop-live",
+  "title": "Safety infrastructure loop is live under the reliability watcher.",
+  "type": "Improved",
+  "area": "Infra",
+  "shipped_by": "Bowie",
+  "attribution_public": false,
+  "shipped_at": "2026-08-28",
+  "summary": "Was: design doc only. Now: the loop runs and files its own reports.",
+  "body_md": "The safety infrastructure loop from yesterday is now live. It sits under the reliability watcher and produces a signed report every run. The report goes into the loop's own history file, and any dimension below threshold triggers a rewrite pass before Pepe sees the output.",
+  "why_this_way": "Design without execution is a doc. Execution without gates is chaos. This loop is both, done in that order, on purpose.",
+  "links": [
+    { "kind": "related-entry", "href": "safety-infra-design-shipped", "label": "Design shipped 2026-08-27" }
+  ],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass",
+  "broadcast": false,
+  "schema_version": 1
+}

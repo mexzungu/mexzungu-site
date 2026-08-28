@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mexzungu Release Notes</title>
+  <subtitle>What we shipped. Dated, named, and public.</subtitle>
+  <link href="https://mexzungu.com/release-notes/rss.xml" rel="self"/>
+  <link href="https://mexzungu.com/release-notes/"/>
+  <id>https://mexzungu.com/release-notes/</id>
+  <updated>2026-08-28T12:00:00Z</updated>
+  <author>
+    <name>Mexzungu Group</name>
+    <email>janis@mexzungu.com</email>
+  </author>
+  <rights>© 2026 Mexzungu Group Ltd</rights>
+
+  <entry>
+    <title>Safety infrastructure loop is live under the reliability watcher.</title>
+    <link href="https://mexzungu.com/release-notes/#safety-infra-loop-live"/>
+    <id>https://mexzungu.com/release-notes/#safety-infra-loop-live</id>
+    <updated>2026-08-28T12:00:00Z</updated>
+    <published>2026-08-28T12:00:00Z</published>
+    <category term="Improved"/>
+    <category term="Infra"/>
+    <summary>Was: design doc only. Now: the loop runs and files its own reports.</summary>
+    <content type="html"><![CDATA[<p>The safety infrastructure loop from yesterday is now live. It sits under the reliability watcher and produces a signed report every run. The report goes into the loop's own history file, and any dimension below threshold triggers a rewrite pass before Pepe sees the output.</p><p><em>Design without execution is a doc. Execution without gates is chaos. This loop is both, done in that order, on purpose.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>Watchdog dedups alerts on a 2h window and auto-timeouts stale tasks after 6h.</title>
+    <link href="https://mexzungu.com/release-notes/#watchdog-dedup-and-zombie-timeout"/>
+    <id>https://mexzungu.com/release-notes/#watchdog-dedup-and-zombie-timeout</id>
+    <updated>2026-08-28T12:00:00Z</updated>
+    <published>2026-08-28T12:00:00Z</published>
+    <category term="Fixed"/>
+    <category term="Infra"/>
+    <summary>Was: watchdog noise flooded OPS. Now: one alert per task per 2h, stale entries auto-clean.</summary>
+    <content type="html"><![CDATA[<p>The watchdog was surfacing the same failure repeatedly. Added a 2h dedup window keyed on task id plus failure signature. Added auto-timeout for tasks stuck longer than 6h. Added stale-entry cleanup on every watchdog run so the queue does not grow unbounded.</p><p><em>Alert noise is worse than no alert. When Pepe sees the same message six times, the seventh one that actually matters gets ignored. Dedup and timeout are the two moves that keep the signal above the noise.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>Safety infrastructure design shipped.</title>
+    <link href="https://mexzungu.com/release-notes/#safety-infra-design-shipped"/>
+    <id>https://mexzungu.com/release-notes/#safety-infra-design-shipped</id>
+    <updated>2026-08-27T12:00:00Z</updated>
+    <published>2026-08-27T12:00:00Z</published>
+    <category term="New"/>
+    <category term="Infra"/>
+    <summary>Nine specialists now audit the whole stack every week.</summary>
+    <content type="html"><![CDATA[<p>Every Monday at 03:00 CET, nine agents wake up and score six safety dimensions across our operational stack. Kim runs QA. Bowie runs infra. Iggy runs DevOps. Lou runs QA gates. Lemmy runs legal exposure. Nina runs knowledge integrity. Ozzy stress-tests everything. They do not stop until every dimension scores at least 4.0. Then they produce a design doc and an implementation plan, filed in the loop for review.</p><p><em>We used to catch incidents after they hit. Now we catch them before. The loop only runs on demand or on the Monday cron. It does not touch production without a human gate. That is the trade. Safety without runaway agents.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>MGL router dispatches with a bar-gate, digest, escalation, and a decision ledger.</title>
+    <link href="https://mexzungu.com/release-notes/#mgl-router-live"/>
+    <id>https://mexzungu.com/release-notes/#mgl-router-live</id>
+    <updated>2026-08-27T12:00:00Z</updated>
+    <published>2026-08-27T12:00:00Z</published>
+    <category term="New"/>
+    <category term="Infra"/>
+    <summary>Was: ad-hoc routing. Now: every dispatch is gated, digested, escalated, logged.</summary>
+    <content type="html"><![CDATA[<p>The MGL router now sits between incoming work and the persona teams. It runs a bar-gate on every request (kill or pass), summarizes into a digest for Pepe, escalates when the confidence drop is too high, and writes every decision to a ledger that Nina audits weekly.</p><p><em>The team keeps growing. Without a dispatch layer, every request becomes a Pepe interruption. With it, only the ones that need Pepe reach Pepe.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>MGL Telegram groups nuked and rebuilt. Loops rewired.</title>
+    <link href="https://mexzungu.com/release-notes/#mgl-telegram-redesign"/>
+    <id>https://mexzungu.com/release-notes/#mgl-telegram-redesign</id>
+    <updated>2026-08-27T12:00:00Z</updated>
+    <published>2026-08-27T12:00:00Z</published>
+    <category term="Improved"/>
+    <category term="Infra"/>
+    <summary>Was: 5 legacy Telegram groups with drift. Now: 3 clean groups, every loop rewired.</summary>
+    <content type="html"><![CDATA[<p>The MGL Telegram surface was carrying six months of drift: dead groups, orphan threads, loops posting to wrong destinations. Killed the 5 legacy groups, rebuilt 3 clean groups (Ops, Council, JANIS), rewired every loop's routing config to match. Full mapping documented in the telegram-groups source of truth.</p><p><em>Communication surface drift is a bigger risk than most infra drift. When the wrong loop posts to the wrong channel, the wrong human acts on it. The 3-group model is smaller, cleaner, and easier to audit.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>Signed contracts now render and ship from the mexzungu account.</title>
+    <link href="https://mexzungu.com/release-notes/#signed-contract-pdf-render-fix"/>
+    <id>https://mexzungu.com/release-notes/#signed-contract-pdf-render-fix</id>
+    <updated>2026-08-27T12:00:00Z</updated>
+    <published>2026-08-27T12:00:00Z</published>
+    <category term="Fixed"/>
+    <category term="Legal"/>
+    <summary>Was: signed PDFs failed to attach. Now: they render and ship as a warm branded email.</summary>
+    <content type="html"><![CDATA[<p>The signing flow at /sign was rendering the PDF but the mail step used the wrong sender. Fixed the sender routing and rebuilt the email template. Every signed contract now leaves as a branded email from the mexzungu account with the signed PDF attached.</p><p><em>Signing is the moment the client trusts us most. A broken confirmation email undoes that. Fixed same day we caught it.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>Messaging reliability prober catches WhatsApp and app health regressions early.</title>
+    <link href="https://mexzungu.com/release-notes/#messaging-reliability-prober"/>
+    <id>https://mexzungu.com/release-notes/#messaging-reliability-prober</id>
+    <updated>2026-08-27T12:00:00Z</updated>
+    <published>2026-08-27T12:00:00Z</published>
+    <category term="New"/>
+    <category term="Infra"/>
+    <summary>Was: silent bridge failures. Now: a prober pings every messaging path on a short cycle.</summary>
+    <content type="html"><![CDATA[<p>New prober loop runs a health check on every messaging path (WhatsApp business, WhatsApp personal, Telegram bot, Telegram userbot, app health endpoints) on a short cycle. Any failure short-circuits into an alert so the bridge does not sit dead for hours before someone notices.</p><p><em>The last WhatsApp bridge outage went unnoticed for three hours because nothing was actively watching it. The prober is small, cheap, and pays back the first time a bridge silently dies.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>Content chain now runs the full L3 gate before anything publishes.</title>
+    <link href="https://mexzungu.com/release-notes/#content-chain-l3-gate-wired"/>
+    <id>https://mexzungu.com/release-notes/#content-chain-l3-gate-wired</id>
+    <updated>2026-08-14T12:00:00Z</updated>
+    <published>2026-08-14T12:00:00Z</published>
+    <category term="New"/>
+    <category term="Content"/>
+    <summary>Was: content published from any persona at will. Now: a 3-gate chain runs before every publish.</summary>
+    <content type="html"><![CDATA[<p>Every piece of content produced by the content engine now passes a three-stage gate before it goes live. Voice (Freddie). Brand (Anselmo). Legal-liability (Anselmo B6). Only content marked APPROVED at all three gates publishes autonomously. Everything else stops for a human. The chain runs on-loop, unattended, and posts pass through in minutes when they are clean.</p><p><em>Autonomy without gates is a legal problem waiting to happen. Gates without autonomy is a bottleneck. The chain is the smallest structure that does both.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>Jouissance session plan v5.0 rebuilt from a full facilitator design session.</title>
+    <link href="https://mexzungu.com/release-notes/#jouissance-session-plan-v5"/>
+    <id>https://mexzungu.com/release-notes/#jouissance-session-plan-v5</id>
+    <updated>2026-08-12T12:00:00Z</updated>
+    <published>2026-08-12T12:00:00Z</published>
+    <category term="New"/>
+    <category term="ClientOps"/>
+    <summary>Was: session plan v4 read like a workshop deck. Now: v5 is a runnable facilitator script.</summary>
+    <content type="html"><![CDATA[<p>Session plan v5.0 for Jouissance is a full redesign from a two-person design session with the facilitator. It is written as a runnable script, not a slide deck. Each block has a time, a purpose, a facilitator prompt, and a failure mode. Ready for pilot delivery.</p><p><em>A session plan that reads like a deck gets ignored in the room. A plan written like a script gets used. This is the difference between a document and a tool.</em></p>]]></content>
+  </entry>
+
+  <entry>
+    <title>The mgl-app-dev engine shipped its first end-to-end app.</title>
+    <link href="https://mexzungu.com/release-notes/#mgl-app-dev-first-app"/>
+    <id>https://mexzungu.com/release-notes/#mgl-app-dev-first-app</id>
+    <updated>2026-08-10T12:00:00Z</updated>
+    <published>2026-08-10T12:00:00Z</published>
+    <category term="New"/>
+    <category term="Infra"/>
+    <summary>Was: no on-demand app builder. Now: intake to live in one engine, first app built and shipped.</summary>
+    <content type="html"><![CDATA[<p>The mgl-app-dev engine now runs the full on-demand app build cycle. Intake, registry check, brief, knowledge load, build via the web studio, layer-1 verify, registry update, knowledge handoff. First app built and shipped end to end. Reusable for any small internal tool that fits the tier profile.</p><p><em>Small tools kept dying in the gap between idea and build. The engine closes that gap. Anything that fits Tier 1 or Tier 2 can now go from ask to shipped without a full project spin-up.</em></p>]]></content>
+  </entry>
+
+</feed>

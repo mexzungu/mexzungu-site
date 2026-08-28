@@ -1,0 +1,18 @@
+{
+  "id": "messaging-reliability-prober",
+  "title": "Messaging reliability prober catches WhatsApp and app health regressions early.",
+  "type": "New",
+  "area": "Infra",
+  "shipped_by": "Jack",
+  "attribution_public": false,
+  "shipped_at": "2026-08-27",
+  "summary": "Was: silent bridge failures. Now: a prober pings every messaging path on a short cycle.",
+  "body_md": "New prober loop runs a health check on every messaging path (WhatsApp business, WhatsApp personal, Telegram bot, Telegram userbot, app health endpoints) on a short cycle. Any failure short-circuits into an alert so the bridge does not sit dead for hours before someone notices.",
+  "why_this_way": "The last WhatsApp bridge outage went unnoticed for three hours because nothing was actively watching it. The prober is small, cheap, and pays back the first time a bridge silently dies.",
+  "links": [],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass",
+  "broadcast": false,
+  "schema_version": 1
+}

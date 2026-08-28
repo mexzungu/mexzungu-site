@@ -1,0 +1,18 @@
+{
+  "id": "content-chain-l3-gate-wired",
+  "title": "Content chain now runs the full L3 gate before anything publishes.",
+  "type": "New",
+  "area": "Content",
+  "shipped_by": "Freddie",
+  "attribution_public": true,
+  "shipped_at": "2026-08-14",
+  "summary": "Was: content published from any persona at will. Now: a 3-gate chain runs before every publish.",
+  "body_md": "Every piece of content produced by the content engine now passes a three-stage gate before it goes live. Voice (Freddie). Brand (Anselmo). Legal-liability (Anselmo B6). Only content marked APPROVED at all three gates publishes autonomously. Everything else stops for a human. The chain runs on-loop, unattended, and posts pass through in minutes when they are clean.",
+  "why_this_way": "Autonomy without gates is a legal problem waiting to happen. Gates without autonomy is a bottleneck. The chain is the smallest structure that does both.",
+  "links": [],
+  "audience": "public",
+  "status": "published",
+  "gate_notes": "freddie:pass|anselmo:pass|lemmy:pass|ozzy:pass|anselmo:attribution-opt-in",
+  "broadcast": true,
+  "schema_version": 1
+}
