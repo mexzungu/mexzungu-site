@@ -45,10 +45,6 @@
 /confluence https://societas.mexzungu.com/confluence 301
 /confluence/* https://societas.mexzungu.com/confluence/:splat 301
 
-# ES Data Privacy — redirect to EN until translation is ready
-/es/data-privacy /data-privacy 302
-/es/data-privacy/ /data-privacy/ 302
-
 # Arte redirected to Juego de las Mijagas
 /arte /juegodemijagas 301
 /arte/ /juegodemijagas/ 301
@@ -61,3 +57,5 @@
 /mmm-graph https://pepecarrillo.co/mmm-graph/ 301
 /mmm-graph/ https://pepecarrillo.co/mmm-graph/ 301
 /mmm-graph/* https://pepecarrillo.co/mmm-graph/:splat 301
+/sign/referral /collaborators/referral-agreement 301
+/sign/referral/ /collaborators/referral-agreement/ 301
