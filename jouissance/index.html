@@ -562,20 +562,6 @@ textarea:focus{border-color:var(--accent)}
       <div class="daily-msg-text" id="h-daily-msg-text"></div>
       <div class="daily-msg-attr">Pepe</div>
     </div>
-    <div id="h-special-section" style="display:none;margin-bottom:1.25rem">
-      <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:.9rem">For you</div>
-      <div class="chal-card" id="h-special-card" onclick="openSpecialChallenge()" style="border-color:rgba(225,75,135,.35);background:rgba(225,75,135,.05);cursor:pointer">
-        <div class="diff-badge" style="background:rgba(225,75,135,.15);color:#e14b87;border-color:rgba(225,75,135,.25);margin-bottom:.6rem">Special</div>
-        <div class="chal-card-title" id="h-special-title"></div>
-        <div style="display:flex;gap:.75rem;align-items:center;margin-top:.8rem">
-          <span style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(225,75,135,.75)">Stake <span id="h-special-cost">30</span> pts</span>
-          <span style="color:rgba(244,239,230,.25);font-size:.8rem">·</span>
-          <span style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(155,127,166,.75)">Win <span id="h-special-reward">100</span> pts</span>
-          <span style="color:rgba(244,239,230,.25);font-size:.8rem">·</span>
-          <span style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,239,230,.35)" id="h-special-expires"></span>
-        </div>
-      </div>
-    </div>
     <div id="h-challenges-section" style="display:none">
       <div style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,230,.28);margin-bottom:1.1rem">Today's Rituals</div>
       <div class="chal-card" id="h-chal-easy">
@@ -615,6 +601,11 @@ textarea:focus{border-color:var(--accent)}
       <div id="h-history-list" style="display:none;margin-top:.65rem"></div>
     </div>
     <div class="no-chal" id="h-no-chal" style="display:none">Your space is waiting for you.</div>
+    <div id="h-bonus-cta" style="margin-top:1.5rem;padding:1.1rem 1rem;border:1px solid rgba(155,127,166,.25);border-radius:8px;background:rgba(155,127,166,.05);text-align:center">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--accent);line-height:1.3;margin-bottom:.35rem">Want more points?</div>
+      <div style="font-size:.82rem;color:rgba(244,239,230,.65);line-height:1.55;margin-bottom:.85rem">Ask Pepe for a bonus challenge tailored to you. Tell him what you're aiming for.</div>
+      <a href="https://wa.me/23055068793?text=Hi+Pepe,+can+I+get+a+bonus+challenge+for+extra+points?" target="_blank" rel="noopener" style="display:inline-block;padding:.65rem 1.4rem;background:var(--accent);color:#0a0f1e;text-decoration:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500">Message Pepe on WhatsApp</a>
+    </div>
     <div class="presence-line" id="h-presence"></div>
     <div id="notif-prompt" class="notif-prompt" style="display:none">
       <div class="notif-prompt-text">Get notified when new challenges, rewards and content become available for you.</div>
@@ -1776,33 +1767,6 @@ async function loadHome(){
       }
     }catch(e){}
     showNotifPrompt();
-    // Special challenges
-    try{
-      const sr=await apiFetch('/challenges/special');
-      const sec=document.getElementById('h-special-section');
-      if(sr.ok){
-        const specials=await sr.json();
-        if(specials&&specials.length>0){
-          const s=specials[0];
-          window._activeSpecial=s;
-          document.getElementById('h-special-title').textContent=s.title||'Special Challenge';
-          document.getElementById('h-special-cost').textContent=s.gamble_amount||30;
-          document.getElementById('h-special-reward').textContent=s.reward_amount||100;
-          if(s.expires_at){
-            const exp=new Date(s.expires_at+'Z');
-            const diffMs=exp-Date.now();
-            const diffH=Math.max(0,Math.floor(diffMs/3600000));
-            const diffM=Math.max(0,Math.floor((diffMs%3600000)/60000));
-            document.getElementById('h-special-expires').textContent=diffH>0?diffH+'h left':diffM+'m left';
-          }
-          sec.style.display='block';
-        } else {
-          sec.style.display='none';
-        }
-      } else {
-        sec.style.display='none';
-      }
-    }catch(e){ document.getElementById('h-special-section').style.display='none'; }
   }catch(e){}
 }
 
