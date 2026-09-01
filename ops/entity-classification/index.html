@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0d0d">
+<title>Entity Classification | Mexzungu Group Ops</title>
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/style.css?v=10">
+<style>
+body{background:#0d0d0d;color:#e0e0e0}
+.page-nav{padding:0.75rem 2rem;border-bottom:1px solid #1a1a1a;display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap}
+.page-nav a{font-size:0.75rem;color:#555;text-decoration:none;padding:0.2rem 0.6rem;border:1px solid #222;border-radius:4px;transition:.15s}
+.page-nav a:hover{color:#e0e0e0;border-color:#444}
+.page-nav .sep{color:#333;font-size:0.75rem}
+.ops-header{background:#0d0d0d;padding:2.5rem 2rem 2rem;text-align:center;border-bottom:2px solid #E14B87}
+.ops-header .label{font-size:0.7rem;letter-spacing:.15em;text-transform:uppercase;color:#E14B87;font-weight:600;margin-bottom:0.75rem}
+.ops-header h1{font-size:clamp(1.6rem,4vw,2.4rem);color:#fff;margin-bottom:0.5rem;font-weight:800}
+.ops-header p{color:#888;font-size:0.9rem;max-width:560px;margin:0 auto}
+.body{max-width:860px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.section{margin-bottom:2.5rem}
+.section-title{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#E14B87;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #1a1a1a}
+.type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:1.5rem}
+.type-card{background:#111;border:1px solid #1e1e1e;border-radius:8px;padding:1.25rem}
+.type-card.project{border-color:#166534}
+.type-card.cluster{border-color:#1d4ed8}
+.type-card.orbit{border-color:#7e22ce}
+.type-label{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:0.5rem}
+.label-project{color:#4ade80}
+.label-cluster{color:#60a5fa}
+.label-orbit{color:#c084fc}
+.type-name{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:0.5rem}
+.type-def{font-size:0.82rem;color:#888;line-height:1.5;margin-bottom:0.75rem}
+.type-done{font-size:0.72rem;padding:0.2rem 0.6rem;border-radius:4px;display:inline-block;margin-bottom:0.75rem}
+.done-yes{background:#0f2a1a;color:#4ade80;border:1px solid #166534}
+.done-no{background:#1a1a1a;color:#666;border:1px solid #333}
+.type-examples{font-size:0.72rem;color:#555;font-family:monospace}
+.type-examples span{display:block;margin-top:0.2rem}
+.subtypes-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.subtypes-table th{text-align:left;padding:0.5rem 0.75rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#555;border-bottom:1px solid #222}
+.subtypes-table td{padding:0.6rem 0.75rem;border-bottom:1px solid #141414;vertical-align:top}
+.subtypes-table tr:last-child td{border-bottom:none}
+.sub-tag{font-size:0.65rem;font-weight:700;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:3px}
+.sub-client{color:#4ade80;background:#0f2a1a;border:1px solid #166534}
+.sub-life{color:#60a5fa;background:#0f1a2a;border:1px solid #1d4ed8}
+.sub-internal{color:#c084fc;background:#1a0f1a;border:1px solid #7e22ce}
+.trigger{font-size:0.82rem;color:#888;margin-top:0.25rem}
+.mono{font-family:monospace;color:#555;font-size:0.72rem}
+.tree{background:#0a0a0a;border:1px solid #1e1e1e;border-radius:6px;padding:1.25rem 1.5rem;font-family:monospace;font-size:0.78rem;line-height:2;color:#888}
+.tree .q{color:#e0e0e0;font-weight:600;font-family:inherit}
+.tree .ans{color:#E14B87}
+.tree .result{color:#4ade80;font-weight:600}
+.rules-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.rules-table th{text-align:left;padding:0.5rem 0.75rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#555;border-bottom:1px solid #222}
+.rules-table td{padding:0.65rem 0.75rem;border-bottom:1px solid #141414;vertical-align:top;line-height:1.5}
+.rules-table tr:last-child td{border-bottom:none}
+.rules-table .signal{color:#e0e0e0}
+.rules-table .creates{font-size:0.72rem;font-family:monospace}
+.creates-project{color:#4ade80}
+.creates-cluster{color:#60a5fa}
+.creates-orbit{color:#c084fc}
+.checklist{list-style:none;padding:0;margin:0}
+.checklist-group{margin-bottom:1.5rem}
+.checklist-head{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:0.6rem;padding-bottom:0.4rem;border-bottom:1px solid #1a1a1a}
+.checklist li{font-size:0.82rem;color:#888;padding:0.3rem 0;display:flex;gap:0.6rem;align-items:baseline}
+.checklist li::before{content:"□";color:#333;flex-shrink:0;font-size:0.9rem}
+.checklist li code{background:#111;border:1px solid #222;border-radius:3px;padding:0.1rem 0.4rem;font-size:0.72rem;color:#888;font-family:monospace}
+.nope-list{list-style:none;padding:0;margin:0}
+.nope-list li{font-size:0.82rem;color:#888;padding:0.35rem 0;display:flex;gap:0.6rem;align-items:baseline;border-bottom:1px solid #0f0f0f}
+.nope-list li:last-child{border-bottom:none}
+.nope-list li::before{content:"x";color:#7f1d1d;flex-shrink:0;font-size:0.75rem;font-weight:700}
+.naming-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.naming-table th{text-align:left;padding:0.5rem 0.75rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#555;border-bottom:1px solid #222}
+.naming-table td{padding:0.6rem 0.75rem;border-bottom:1px solid #141414;font-family:monospace;font-size:0.75rem;color:#888}
+.naming-table tr:last-child td{border-bottom:none}
+.naming-table td:first-child{color:#e0e0e0;font-weight:600;font-family:inherit;font-size:0.82rem}
+.example-slug{color:#E14B87}
+@media(max-width:600px){.type-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page-nav">
+  <a href="/">Home</a>
+  <span class="sep">/</span>
+  <a href="/ops/projects/">Projects</a>
+  <span class="sep">/</span>
+  <a href="/engines/">Engines</a>
+  <span class="sep">/</span>
+  <a href="/engines/directory/">Directory</a>
+  <span class="sep">/</span>
+  <a href="/engines/library/">Library</a>
+</div>
+<div class="ops-header">
+  <div class="label">Ops Reference</div>
+  <h1>Entity Classification</h1>
+  <p>What counts as a Task, a Project, a Cluster, or an Orbit. The rubric Janis uses to decide what gets created and how.</p>
+</div>
+<div class="body">
+
+  <div class="section">
+    <div class="section-title">The Three Types</div>
+    <div class="type-grid">
+      <div class="type-card project">
+        <div class="type-label label-project">Project</div>
+        <div class="type-name">Discrete deliverable</div>
+        <div class="type-def">A specific output with a clear done state. Lives inside a cluster. Has a deadline. Has an owner.</div>
+        <div class="type-done done-yes">Has a done state</div>
+        <div class="type-examples">
+          <span>Einat's website</span>
+          <span>Treebeard loan</span>
+          <span>NCA trademark filing</span>
+        </div>
+      </div>
+      <div class="type-card cluster">
+        <div class="type-label label-cluster">Cluster</div>
+        <div class="type-name">Ongoing context zone</div>
+        <div class="type-def">A persistent area that is loaded and managed, not completed. Contains projects and threads. Never finishes.</div>
+        <div class="type-done done-no">No done state</div>
+        <div class="type-examples">
+          <span>duara</span>
+          <span>nca</span>
+          <span>health</span>
+          <span>janis</span>
+        </div>
+      </div>
+      <div class="type-card orbit">
+        <div class="type-label label-orbit">Orbit</div>
+        <div class="type-name">Person-centric context</div>
+        <div class="type-def">A context file for a specific person. Tracks relationship, interactions, backlinks to relevant clusters.</div>
+        <div class="type-done done-no">No done state</div>
+        <div class="type-examples">
+          <span>victoria-peill</span>
+          <span>dominion-paul</span>
+          <span>noah-walakira</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Cluster Subtypes</div>
+    <table class="subtypes-table">
+      <thead><tr><th>Subtype</th><th>Trigger</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="sub-tag sub-client">Client</span></td>
+          <td class="trigger">External entity with billing or pro-bono engagement letter relationship</td>
+          <td class="mono">duara, kabisa, nca, kleos</td>
+        </tr>
+        <tr>
+          <td><span class="sub-tag sub-life">Life</span></td>
+          <td class="trigger">Personal life domain with multiple ongoing threads</td>
+          <td class="mono">love, health, properties, creative</td>
+        </tr>
+        <tr>
+          <td><span class="sub-tag sub-internal">Internal</span></td>
+          <td class="trigger">Internal business infrastructure workstream</td>
+          <td class="mono">janis, mgl, ai-ninja, panda</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Decision Tree</div>
+    <div class="tree">
+      <div><span class="q">New entity mentioned</span></div>
+      <div>&nbsp;</div>
+      <div><span class="ans">Is it a named person?</span></div>
+      <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">ORBIT</span> &nbsp; brain/contacts/[name].md</div>
+      <div>&nbsp;</div>
+      <div><span class="ans">Does it have a specific deliverable with a clear done state?</span></div>
+      <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">PROJECT</span> &nbsp; inside an existing cluster</div>
+      <div>&nbsp;</div>
+      <div><span class="ans">Is it an external entity (client, partner, counterparty)?</span></div>
+      <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">CLIENT CLUSTER</span></div>
+      <div>&nbsp;</div>
+      <div><span class="ans">Is it a personal life domain?</span></div>
+      <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">LIFE CLUSTER</span></div>
+      <div>&nbsp;</div>
+      <div><span class="ans">Is it an internal business workstream?</span></div>
+      <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">INTERNAL CLUSTER</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Auto-Trigger Rules</div>
+    <p style="font-size:0.8rem;color:#555;margin-bottom:1rem">Janis creates these without being asked.</p>
+    <table class="rules-table">
+      <thead><tr><th>Signal</th><th>Creates</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="signal">"We signed an EL with [X]" or "[X] is a client"</td>
+          <td><span class="creates creates-cluster">CLIENT CLUSTER</span></td>
+          <td style="color:#555;font-size:0.75rem">Immediate, no confirmation</td>
+        </tr>
+        <tr>
+          <td class="signal">"Build / draft / write [deliverable] for [cluster]"</td>
+          <td><span class="creates creates-project">PROJECT</span></td>
+          <td style="color:#555;font-size:0.75rem">Immediate, no confirmation</td>
+        </tr>
+        <tr>
+          <td class="signal">New person referenced 2+ times in different contexts</td>
+          <td><span class="creates creates-orbit">ORBIT</span></td>
+          <td style="color:#555;font-size:0.75rem">Immediate, no confirmation</td>
+        </tr>
+        <tr>
+          <td class="signal">New BD prospect, proposal sent</td>
+          <td><span class="creates creates-cluster">CLIENT CLUSTER</span> <span style="color:#555;font-size:0.72rem">(pipeline status)</span></td>
+          <td style="color:#555;font-size:0.75rem">Immediate, no confirmation</td>
+        </tr>
+        <tr>
+          <td class="signal">New personal domain with 3+ active threads</td>
+          <td><span class="creates creates-cluster">LIFE CLUSTER</span></td>
+          <td style="color:#555;font-size:0.75rem">Ask Pepe first</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Infrastructure Checklists</div>
+    <div class="checklist-group">
+      <div class="checklist-head" style="color:#4ade80">Project</div>
+      <ul class="checklist">
+        <li>Row in <code>memory/tasks_active.md</code> with deadline</li>
+        <li>Drive subfolder: <code>[Client Folder]/[YYYY-MM_project-name]/</code></li>
+        <li>Workstream row in parent cluster's Workstreams table</li>
+        <li>Log entry in parent's <code>email-log.md</code> or <code>deal-log.md</code></li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <div class="checklist-head" style="color:#60a5fa">Client Cluster</div>
+      <ul class="checklist">
+        <li><code>brain/clusters/[slug].md</code> from clusters/_template.md</li>
+        <li><code>brain/clients/[slug]/overview.md</code> with YAML frontmatter</li>
+        <li><code>brain/clients/[slug]/email-log.md</code> (empty, header only)</li>
+        <li>Drive folder in the correct shared drive</li>
+        <li>Google Contacts: search first, create only if missing</li>
+        <li>Contract registered via Lemmy if EL exists</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <div class="checklist-head" style="color:#c084fc">Orbit (person)</div>
+      <ul class="checklist">
+        <li><code>brain/contacts/[name].md</code></li>
+        <li>Google Contacts entry. search_contacts first, create only if missing</li>
+        <li>Backlink added to all relevant cluster files</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What Does Not Get Created</div>
+    <ul class="nope-list">
+      <li>Notion tasks. Tasks live in <code>memory/tasks_active.md</code> only.</li>
+      <li>Standalone project files outside a parent cluster. Projects live inside clusters.</li>
+      <li>Duplicate contact files. One canonical <code>brain/contacts/[name].md</code> per person.</li>
+      <li>A cluster for a named person. That is an orbit.</li>
+      <li>An orbit for an entity. That is a cluster.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Naming Conventions</div>
+    <table class="naming-table">
+      <thead><tr><th>Type</th><th>Format</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Client Cluster</td>
+          <td>lowercase-hyphenated</td>
+          <td><span class="example-slug">house-of-kleos</span> &nbsp; <span class="example-slug">duara</span> &nbsp; <span class="example-slug">ladx</span></td>
+        </tr>
+        <tr>
+          <td>Life Cluster</td>
+          <td>single word or short phrase</td>
+          <td><span class="example-slug">love</span> &nbsp; <span class="example-slug">health</span> &nbsp; <span class="example-slug">properties</span></td>
+        </tr>
+        <tr>
+          <td>Internal Cluster</td>
+          <td>single word</td>
+          <td><span class="example-slug">janis</span> &nbsp; <span class="example-slug">mgl</span> &nbsp; <span class="example-slug">panda</span></td>
+        </tr>
+        <tr>
+          <td>Orbit</td>
+          <td>firstname-lastname</td>
+          <td><span class="example-slug">victoria-peill</span> &nbsp; <span class="example-slug">dominion-paul</span></td>
+        </tr>
+        <tr>
+          <td>Project</td>
+          <td>YYYY-MM_descriptor</td>
+          <td><span class="example-slug">2026-06_einat-website</span> &nbsp; <span class="example-slug">2026-05_treebeard-loan</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

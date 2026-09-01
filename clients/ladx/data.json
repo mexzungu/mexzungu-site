@@ -1,0 +1,197 @@
+{
+  "_note": "LADX client hub. Share: mexzungu.com/clients/ladx/?token=Outlaw-ladx-2026",
+
+  "meta": {
+    "token":          "Outlaw-ladx-2026",
+    "client":         "LADX",
+    "tagline":        "Cross-border logistics for African trade. Lagos, Kigali, and beyond.",
+    "engagement":     "Director / Advisory. Sweet equity",
+    "status_summary": "Active director. Bi-weekly cadence live",
+    "accent_color":   "#8b5cf6",
+    "pm":             "Pepe Carrillo",
+    "pm_email":       "pepe@mexzungu.com",
+    "updated":        "2026-08-28"
+  },
+
+  "awaiting": [
+    {
+      "label":  "Full Laddex Trade project proposal",
+      "detail": "Scope, structure, business model. Needed to advise on whether to launch Laddex Trade as a division of LADX or a separate entity. Blocks the structural recommendation.",
+      "cta":    "Send proposal",
+      "link":   "mailto:pepe@mexzungu.com?subject=Laddex%20Trade%20Proposal"
+    },
+    {
+      "label":  "Skill-gap requirements list",
+      "detail": "Written list of the professional skill sets and experiences missing from the LADX team. Replaces the co-founder search with a targeted hiring or contracting plan.",
+      "cta":    "Send skill-gap list",
+      "link":   "mailto:pepe@mexzungu.com?subject=LADX%20Skill%20Gaps"
+    }
+  ],
+
+  "workstreams": [
+    {
+      "code":        "WS1",
+      "title":       "Director & Board Support",
+      "description": "Ongoing directorship. Bi-weekly working sessions (Fri 11:15 CET), ad-hoc guidance between calls, strategic decisions, and standard fiduciary oversight as director.",
+      "deliverable": "Continuous director presence, meeting minutes, decisions of record",
+      "status":      "in-progress",
+      "eta":         null,
+      "updated":     "2026-08-28"
+    },
+    {
+      "code":        "WS2",
+      "title":       "Corporate Governance & Risk",
+      "description": "Board-level oversight of legal exposure and corporate hygiene. Includes ex-employee data deletion incident (Sept to Dec 2025 backend data), formal consent processes for marketing assets, and standard governance discipline as company scales.",
+      "deliverable": "Risk register, evidence file for ex-employee incident, standard governance artifacts",
+      "status":      "in-progress",
+      "eta":         null,
+      "updated":     "2026-08-28"
+    },
+    {
+      "code":        "WS3",
+      "title":       "Laddex Trade Structure",
+      "description": "Director-level input on whether Laddex Trade (B2B cross-border sourcing + AI compliance) launches as a LADX division or a separate entity. Blocked pending full project proposal from Dominion.",
+      "deliverable": "Structure memo + entity recommendation",
+      "status":      "blocked",
+      "eta":         "Once proposal received",
+      "updated":     "2026-08-28"
+    },
+    {
+      "code":        "WS4",
+      "title":       "Hunga Grant Monitoring",
+      "description": "Laddex qualified for Stage 2 of Hunga startup competition. 50M RWF grant on the line. Director-level monitoring, structural response ready if grant closes.",
+      "deliverable": "Trigger-point tracker + response plan",
+      "status":      "in-progress",
+      "eta":         null,
+      "updated":     "2026-08-28"
+    },
+    {
+      "code":        "WS5",
+      "title":       "Sweet-Equity Engagement Letter",
+      "description": "Formalize the current director/sweat-equity arrangement in writing. Prior Advisory EL from Dec 2024 was superseded. Current arrangement is informal. Locks scope, equity mechanics, term, exit.",
+      "deliverable": "Signed sweet-equity director EL",
+      "status":      "not-started",
+      "eta":         "Sept",
+      "updated":     "2026-08-28"
+    }
+  ],
+
+  "tasks": [
+    {
+      "title":  "Send Laddex Trade project proposal",
+      "note":   "Scope, structure, business model. Needed before Sept 11.",
+      "owner":  "Dominion",
+      "eta":    "before 2026-09-11",
+      "status": "pending"
+    },
+    {
+      "title":  "Send skill-gap requirements list",
+      "note":   "Bulleted list of missing skills or experiences on the LADX team.",
+      "owner":  "Dominion",
+      "eta":    "before 2026-09-11",
+      "status": "pending"
+    },
+    {
+      "title":  "Confirm ex-employee access revoked across all systems",
+      "note":   "Not just obvious ones. GitHub, hosting, databases, cloud consoles, third-party SaaS.",
+      "owner":  "Dominion",
+      "eta":    "ASAP",
+      "status": "pending"
+    },
+    {
+      "title":  "Document scope of Sept to Dec 2025 deleted backend data",
+      "note":   "Files, tables, commits, timestamps. Have new lead engineer produce the inventory.",
+      "owner":  "Dominion",
+      "eta":    "before 2026-09-11",
+      "status": "pending"
+    },
+    {
+      "title":  "Retain a Kigali family lawyer for prenup",
+      "note":   "See prenup guidance outline. Fiancé retains his own separate lawyer.",
+      "owner":  "Dominion",
+      "eta":    "This month",
+      "status": "pending"
+    },
+    {
+      "title":  "Draft sweet-equity director EL",
+      "note":   "Formalize the current arrangement. Scope, equity mechanics, term, exit.",
+      "owner":  "Pepe",
+      "eta":    "Sept",
+      "status": "pending"
+    },
+    {
+      "title":  "Bi-weekly director session. Fri 11:15 CET, first live slot Sept 11",
+      "note":   "Google Meet: https://meet.google.com/nww-pxhh-rah",
+      "owner":  "Both",
+      "eta":    "recurring",
+      "status": "in-progress"
+    }
+  ],
+
+  "documents": {
+    "engagement": [
+      {
+        "title": "Prior Advisory EL (Dec 2024, superseded)",
+        "date":  "2024-12-17",
+        "type":  "PDF",
+        "link":  "https://drive.google.com/file/d/17pr7YKPgNrBnzr2rqWv4Ucafe8c07VVY/view"
+      },
+      {
+        "title": "Advisory EL Amendment (Sept 2025)",
+        "date":  "2025-09-12",
+        "type":  "PDF",
+        "link":  "https://drive.google.com/file/d/17DwCkzGDzcPRWu88ulgFT8_8JqUqe-mZ/view"
+      },
+      {
+        "title": "LadX Termination Agreement (2026)",
+        "date":  "2026-06-27",
+        "type":  "PDF",
+        "link":  "https://drive.google.com/file/d/1H6Dr-VFHnx8jOpGfGrBMQkkiAUajOcHw/view"
+      }
+    ],
+    "deliverables": [
+      {
+        "title": "Photo, Video and Likeness Consent Template",
+        "date":  "2026-08-28",
+        "type":  "PDF",
+        "link":  "https://drive.google.com/file/d/1b5v_b8RkRHtijt-V93Gui-lWFuh3CJQY/view"
+      },
+      {
+        "title": "Prenup Guidance Outline",
+        "date":  "2026-08-28",
+        "type":  "PDF",
+        "link":  "https://drive.google.com/file/d/1LItK7nrYMeRKciiT-clx57L2HlwPe-_0/view"
+      }
+    ],
+    "reference": [
+      {
+        "title": "LadX Drive Folder (Mexzungu Group)",
+        "date":  "2026-03-27",
+        "type":  "Link",
+        "link":  "https://drive.google.com/drive/folders/18d8BWGZ-o7UpNRoD-7-t6fPEewrPF3tc"
+      },
+      {
+        "title": "Aug 19 Session Notes (Gemini)",
+        "date":  "2026-08-19",
+        "type":  "Doc",
+        "link":  "https://docs.google.com/document/d/1YEyI6lD9d-ZNO8Cdk_AlVPbdIgw7vspgZZ196RqVvak/edit"
+      },
+      {
+        "title": "LadX Cap Table",
+        "date":  "2026-05-07",
+        "type":  "Sheet",
+        "link":  "https://docs.google.com/spreadsheets/d/1ftiDOACFfuTICVTmWzhfkGGpgeIxg-1N/edit"
+      }
+    ]
+  },
+
+  "billing": [
+    {
+      "description": "Sweet-equity director consideration",
+      "amount":      "TBD (equity)",
+      "status":      "upcoming",
+      "due":         null,
+      "note":        "Equity mechanics to be locked in new EL. No cash retainer, no hourly."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <!--
+    Leopard-corner v2: rounded-square tan pelt swatch with dark-brown rosette spots.
+    Reads as pelt swatch on black bg (was tribal before because spots floated on transparent).
+    Palette: tan #C9A24A base, dark brown #4A3520 spot ring, near-black #0A0A0A spot center.
+  -->
+  <defs>
+    <!-- Rosette spot: brown irregular ring with black center. -->
+    <symbol id="rosette-a" overflow="visible">
+      <path d="M -9 -2 Q -6 -9 2 -8 Q 9 -4 8 3 Q 4 9 -3 8 Q -10 4 -9 -2 Z"
+            fill="none" stroke="#4A3520" stroke-width="3" transform="rotate(15)"/>
+      <circle cx="0" cy="0" r="2.4" fill="#0A0A0A"/>
+    </symbol>
+    <symbol id="rosette-b" overflow="visible">
+      <path d="M -7 -3 Q -4 -8 3 -6 Q 8 -2 6 4 Q 2 8 -4 6 Q -8 2 -7 -3 Z"
+            fill="none" stroke="#4A3520" stroke-width="2.6" transform="rotate(-30)"/>
+      <circle cx="0" cy="0" r="2" fill="#0A0A0A"/>
+    </symbol>
+    <symbol id="rosette-c" overflow="visible">
+      <path d="M -10 -4 Q -6 -10 4 -9 Q 11 -3 9 5 Q 4 10 -5 8 Q -11 3 -10 -4 Z"
+            fill="none" stroke="#4A3520" stroke-width="3.2" transform="rotate(35)"/>
+      <circle cx="0" cy="1" r="2.6" fill="#0A0A0A"/>
+    </symbol>
+    <!-- Small solid brown dot (fill spots between rosettes for pelt texture). -->
+    <symbol id="dot-small" overflow="visible">
+      <circle cx="0" cy="0" r="2.2" fill="#4A3520"/>
+    </symbol>
+  </defs>
+
+  <!-- Tan pelt swatch background, rounded corners (~14px radius) for pelt-swatch feel. -->
+  <rect x="4" y="4" width="112" height="112" rx="14" ry="14" fill="#C9A24A"/>
+
+  <!-- 7 rosette spots + 3 filler dots. Irregular placement, feels organic. -->
+  <use href="#rosette-c" x="24" y="26"/>
+  <use href="#rosette-a" x="60" y="20"/>
+  <use href="#rosette-b" x="94" y="34"/>
+  <use href="#dot-small" x="42" y="48"/>
+  <use href="#rosette-a" x="28" y="60"/>
+  <use href="#rosette-c" x="70" y="62"/>
+  <use href="#dot-small" x="102" y="70"/>
+  <use href="#rosette-b" x="38" y="90"/>
+  <use href="#rosette-a" x="76" y="94"/>
+  <use href="#dot-small" x="18" y="96"/>
+</svg>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Clusters and Projects | Mexzungu Group Ops</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        .ops-header { background: var(--black); padding: 3rem 2rem 2rem; text-align: center; border-bottom: 2px solid var(--pink); }
+        .ops-header .label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 0.75rem; }
+        .ops-header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); color: #fff; margin-bottom: 0.5rem; }
+        .ops-header p { color: var(--mist); font-size: 0.95rem; max-width: 600px; margin: 0 auto; }
+        .ops-meta { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.25rem; flex-wrap: wrap; }
+        .ops-meta span { font-size: 0.75rem; color: var(--stone); font-family: monospace; }
+        .ops-meta span strong { color: var(--gold); }
+        .universe-label { max-width: 1000px; margin: 2rem auto 0.5rem; padding: 0 1.5rem; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); font-weight: 700; }
+        details.cluster-section { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; border-bottom: 1px solid #151515; }
+        details.cluster-section summary.cluster-header { list-style: none; cursor: pointer; padding: 1.25rem 0; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; user-select: none; }
+        details.cluster-section summary.cluster-header::-webkit-details-marker { display: none; }
+        details.cluster-section summary.cluster-header::after { content: "\25B8"; color: var(--stone); font-size: 0.85rem; margin-left: auto; transition: transform 0.2s; flex-shrink: 0; }
+        details.cluster-section[open] summary.cluster-header::after { transform: rotate(90deg); }
+        .cluster-code { font-family: monospace; font-size: 0.75rem; font-weight: 700; background: #111; color: var(--pink); border: 1px solid #2a2a2a; border-radius: 4px; padding: 0.2em 0.5em; letter-spacing: 0.05em; flex-shrink: 0; }
+        .cluster-name { font-size: 1rem; font-weight: 600; color: #fff; }
+        .cluster-desc { font-size: 0.8rem; color: var(--stone); }
+        .cluster-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+        .badge { font-size: 0.65rem; padding: 0.15em 0.5em; border-radius: 3px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+        .badge-active { background: #0f2a1a; color: #4ade80; border: 1px solid #166534; }
+        .badge-probono { background: #1a1a0f; color: #facc15; border: 1px solid #a16207; }
+        .badge-personal { background: #0f1a2a; color: #60a5fa; border: 1px solid #1d4ed8; }
+        .badge-machine { background: #1a0f1a; color: #c084fc; border: 1px solid #7e22ce; }
+        .badge-sub { background: #0f1f1f; color: #22d3ee; border: 1px solid #0e7490; }
+        .cluster-body { padding: 0 0 1.5rem 0; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+        .project-card { background: #0c0c0c; border: 1px solid #1e1e1e; border-radius: 6px; padding: 0.85rem 1rem; }
+        .project-card.blocked { border-color: #7f1d1d; background: #0f0808; }
+        .project-card.waiting { border-color: #78350f; background: #0f0c08; }
+        .project-card.done { border-color: #1e3a1e; opacity: 0.55; }
+        .project-header { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.4rem; }
+        .project-code { font-family: monospace; font-size: 0.65rem; color: var(--stone); flex-shrink: 0; padding-top: 0.15rem; }
+        .project-name { font-size: 0.85rem; font-weight: 600; color: #e0e0e0; line-height: 1.3; }
+        .project-status { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.35rem; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .dot-active { background: #4ade80; }
+        .dot-blocked { background: #f87171; }
+        .dot-waiting { background: #fb923c; }
+        .dot-monitoring { background: #60a5fa; }
+        .dot-done { background: #4ade80; opacity: 0.35; }
+        .dot-open { background: #a78bfa; }
+        .status-text { font-size: 0.72rem; color: var(--stone); }
+        .project-note { font-size: 0.72rem; color: #555; margin-top: 0.35rem; line-height: 1.4; }
+        .cluster-north-star { font-size: 0.8rem; color: var(--mist); margin-bottom: 1rem; padding: 0.6rem 0.8rem; border-left: 2px solid var(--pink); background: #0a0a0a; border-radius: 0 4px 4px 0; font-style: italic; }
+        .updated-note { max-width: 1000px; margin: 2rem auto 1rem; padding: 0 1.5rem; font-size: 0.7rem; color: #2a2a2a; font-family: monospace; }
+        @media (max-width: 600px) { .projects-grid { grid-template-columns: 1fr; } }
+        .page-nav{padding:0.6rem 1.5rem;border-bottom:1px solid #1a1a1a;display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap}
+        .page-nav a{font-size:0.73rem;color:#555;text-decoration:none;padding:0.2rem 0.6rem;border:1px solid #222;border-radius:4px;transition:.15s}
+        .page-nav a:hover{color:#e0e0e0;border-color:#444}
+        .page-nav .sep{color:#333;font-size:0.73rem}
+    </style>
+</head>
+<body>
+    <div class="page-nav">
+      <a href="/engines/">Engines</a>
+      <span class="sep">/</span>
+      <a href="/engines/directory/">Directory</a>
+      <span class="sep">/</span>
+      <a href="/ops/entity-classification/">Entity Classification</a>
+    </div>
+    <div class="ops-header">
+        <div class="label">Mexzungu Group Ops</div>
+        <h1>Clusters and Projects</h1>
+        <p>Every active knowledge set, sub-cluster, and project. Auto-updated daily from brain/clusters/.</p>
+        <div class="ops-meta">
+            <span><strong>15</strong> clusters</span>
+            <span><strong>3</strong> MGL sub-clusters</span>
+            <span><span style="color:#f87171;font-weight:700">1 blocked</span> items</span>
+            <span>Updated: <strong>2026-08-17 17:02 CET</strong></span>
+        </div>
+    </div>
+
+    <div class="universe-label">Machine</div><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">JAN</span>
+            <span class="cluster-name">JAN</span>
+            <span class="cluster-desc">Building and designing the machine. Architecture, brain, bots, VPS, tools, integrations, the orbit system itself.</span>
+            <div class="cluster-badges"><span class="badge badge-machine">Machine</span> <span style="color:#fb923c;font-size:0.72rem">1 waiting</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">Janis runs as a fully autonomous, context-aware operational partner , zero amnesia, self-updating orbits, integrated across all tools and channels, with Kellen as the human executor layer.</div><div class="projects-grid">
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">JA1</span>
+                        <span class="project-name">Orbit system , build remaining files</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">All 11 orbits built 2026-04-02</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">JA2</span>
+                        <span class="project-name">/orbit slash command</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-active"></div><span class="status-text">ACTIVE</span></div>
+                    <div class="project-note">~/.claude/commands/orbit.md</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:50%;background:#a78bfa;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#a78bfa;margin-top:0.2rem">50% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">JA3</span>
+                        <span class="project-name">/orbits menu</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-active"></div><span class="status-text">ACTIVE</span></div>
+                    <div class="project-note">~/.claude/commands/orbits.md</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:50%;background:#a78bfa;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#a78bfa;margin-top:0.2rem">50% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">JA4</span>
+                        <span class="project-name">Claude OAuth auth fix</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">1-year setup-token (CLAUDE_CODE_OAUTH_TOKEN) in .env. API key removed. claude_process.py updated to check env token first.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">JA5</span>
+                        <span class="project-name">CLAUDE.md home-level import</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">/home/mexzungu/CLAUDE.md now imports brain/CLAUDE.md</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">JA6</span>
+                        <span class="project-name">janis alias</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">~/.bashrc: alias janis='cd brain && claude'</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">JA7</span>
+                        <span class="project-name">gh CLI installed + authed</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">gh 2.89.0 + jq 1.7 installed. Authed with PAT (repo + read:org scopes) 2026-04-04</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">JA8</span>
+                        <span class="project-name">ARCHITECTURE.md</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">Written 2026-04-05. Full system map: services, auth, cron, files, decisions.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">JA9</span>
+                        <span class="project-name">Lars DR runbook</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">Lars (COO) requirement. Disaster recovery documentation.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">JA10</span>
+                        <span class="project-name">Kellen SSH access</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">User kellen created. ACLs: read brain/janis/, brain/logs/, brain/memory/maintenance/. Wrapper scripts: janis-status/restart/logs/maintenance. Sudoers configured. Runbook at /home/kellen/RUNBOOK.md. Awaiting her SSH public key to activate login.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">JA11</span>
+                        <span class="project-name">Peter PII remediation</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">GitHub memo URL flagged by Peter as containing PII. Investigate.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card waiting">
+                    <div class="project-header">
+                        <span class="project-code">JA12</span>
+                        <span class="project-name">Victor Perron DKIM fix</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-waiting"></div><span class="status-text">WAITING</span></div>
+                    <div class="project-note">DKIM misconfiguration identified. Victor fixing.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:25%;background:#fb923c;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#fb923c;margin-top:0.2rem">25% complete</div>
+                </div></div></div></details><div class="universe-label">Business</div><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">MGL</span>
+            <span class="cluster-name">MGL</span>
+            <span class="cluster-desc">Mexzungu Group , the business machine. Consulting, delivery, content, BD pipeline, and the autonomous AI org layer.</span>
+            <div class="cluster-badges"><span class="badge badge-active">Active</span> <span style="color:#f87171;font-size:0.72rem;font-weight:700">1 BLOCKED</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">By end of 2026, MGL runs as a lean, high-margin AI-augmented firm: 3+ active clients, Kellen fully operational as AI Ops executor, and the autonomous org (AIM) handling the execution layer.</div><div class="projects-grid">
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">M1</span>
+                        <span class="project-name">Kellen performance review</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-active"></div><span class="status-text">ACTIVE</span></div>
+                    <div class="project-note">QA session done Apr 2. Dashboard gaps flagged. Invoice tracker location unclear.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:50%;background:#a78bfa;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#a78bfa;margin-top:0.2rem">50% complete</div>
+                </div>
+                <div class="project-card blocked">
+                    <div class="project-header">
+                        <span class="project-code">M2</span>
+                        <span class="project-name">Insurance, COVERAXIS (vendor)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-blocked"></div><span class="status-text">BLOCKED</span></div>
+                    <div class="project-note">COVERAXIS (PI/Cyber/D&O for MGL Ltd). Stuti Vyas committed to send forms EOD Apr 14. Never arrived. 34+ days MIA. Chase or drop and try CFC/Howden instead.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:10%;background:#f87171;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#f87171;margin-top:0.2rem">10% complete</div>
+                </div>
+                <div class="project-card waiting">
+                    <div class="project-header">
+                        <span class="project-code">M3</span>
+                        <span class="project-name">Bibi follow-up</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-waiting"></div><span class="status-text">WAITING</span></div>
+                    <div class="project-note">Contractor amendment sent Mar 29 , no signature. Follow up tomorrow.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:25%;background:#fb923c;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#fb923c;margin-top:0.2rem">25% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">M4</span>
+                        <span class="project-name">Ivanna follow-up</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">Soho House invoices (Nov 25-Mar 26) received Mar 31, auto-filed to Mexzungu Group drive Apr 2.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">M5</span>
+                        <span class="project-name">Salman/Adrián draft emails</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">2 drafts to Salman + 1 to Adrián about automated filing system. Unsent.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">M6</span>
+                        <span class="project-name">Air France refund</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">C-10819892 rejected 3rd time. Kellen to resubmit bank details via AF portal.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div></div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">CAE</span>
+            <span class="cluster-name">CAE</span>
+            <span class="cluster-desc">Sub-cluster of MGL. Connection Acquisition Engine , the BD machine. Pipeline, leads, proposals, introductions.</span>
+            <div class="cluster-badges"><span class="badge badge-sub">Sub-cluster</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">A self-replenishing pipeline: 3+ active clients at all times, warm intros landing monthly, every lead tracked from first signal to EL signed.
+
+---</div><div class="project-note" style="color:#444;font-size:0.78rem">[2026-08-17] CAE cluster created. Absorbs: BD pipeline from MGL. BDE→CAE directory refactor deployed 2026-08-14. Leads as projects, clients as promoted clusters. CRM is canonical source of truth.</div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">CTE</span>
+            <span class="cluster-name">CTE</span>
+            <span class="cluster-desc">Sub-cluster of MGL. Content Engine , social media, newsletter, campaigns, brand publishing.</span>
+            <div class="cluster-badges"><span class="badge badge-sub">Sub-cluster</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">Pepe's voice is in the market weekly. LinkedIn grows. OC newsletter builds the list. Every post passes the brand gate before it touches the world.
+
+---</div><div class="project-note" style="color:#444;font-size:0.78rem">[2026-08-17] CTE cluster created. Absorbs: content/social work from MGL. SM strategy builder loop live (monthly). Annie analytics loop closes feedback to Freddie every Friday. Content engine improver loop retired 2026-08-15, superseded by Annie.</div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">AIM</span>
+            <span class="cluster-name">AIM</span>
+            <span class="cluster-desc">Sub-cluster of MGL. Project AI MGL , the meta-project that built the autonomous organization.</span>
+            <div class="cluster-badges"><span class="badge badge-sub">Sub-cluster</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">The autonomous org is fully operational: 29 personas, 35+ engines, self-improving, self-auditing, and generating leverage at every layer of MGL and LFE.
+
+---</div><div class="project-note" style="color:#444;font-size:0.78rem">[2026-08-17] AIM cluster created. Project AI MGL declared COMPLETE 2026-08-06 (29 dossiers, all engines live). This cluster captures the ongoing maintenance and evolution of the autonomous org layer. cluster-engine-map.md is Nina's standing governance responsibility.</div></div></details><div class="universe-label">Clients</div><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">NCA</span>
+            <span class="cluster-name">NCA</span>
+            <span class="cluster-desc">Nobodies Collective Association , GC, board, Elsewhere 2026, GNSL transition, data protection.</span>
+            <div class="cluster-badges"><span class="badge badge-probono">Pro bono</span> <span style="color:#fb923c;font-size:0.72rem">5 waiting</span></div>
+        </summary><div class="cluster-body"><div class="projects-grid">
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">B1</span>
+                        <span class="project-name">AEPD Art. 33 filing</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">Draft complete. Peter lacks sede.aepd.es credentials, gov offices closed (Good Friday + Saturday). Pepe escalating to Accountax to file.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">B2</span>
+                        <span class="project-name">GC response to Aaron (INC-2026-001)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">Sent 2 Apr. Aaron replied with all missing data.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">B3</span>
+                        <span class="project-name">Deletion requests to 4 downloaders</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">Aaron sent 2 Apr ~18:00. All 4 deletion requests + 8 accessor notifications out.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">B4</span>
+                        <span class="project-name">Notify 5 LR applicants</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">All 5 names confirmed. Comms approved 2 Apr (note: Estimado for Jose Antonio). Aaron sending today.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card waiting">
+                    <div class="project-header">
+                        <span class="project-code">B5</span>
+                        <span class="project-name">Container licence (GNSL)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-waiting"></div><span class="status-text">WAITING</span></div>
+                    <div class="project-note">v3 accepted all GNSL changes. Follow-up sent 2 Apr to Paloma+Erin (CC Manubens, BCC Daniel+Pablo). No response yet.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:25%;background:#fb923c;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#fb923c;margin-top:0.2rem">25% complete</div>
+                </div>
+                <div class="project-card waiting">
+                    <div class="project-header">
+                        <span class="project-code">B6</span>
+                        <span class="project-name">Insurance</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-waiting"></div><span class="status-text">WAITING</span></div>
+                    <div class="project-note">3 brokers contacted Mar 31. No replies. Follow up ~Apr 7.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:25%;background:#fb923c;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#fb923c;margin-top:0.2rem">25% complete</div>
+                </div>
+                <div class="project-card waiting">
+                    <div class="project-header">
+                        <span class="project-code">B7</span>
+                        <span class="project-name">Statutes , signed version</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-waiting"></div><span class="status-text">WAITING</span></div>
+                    <div class="project-note">Ben responsible. Not yet filed with Registro.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:25%;background:#fb923c;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#fb923c;margin-top:0.2rem">25% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">B8</span>
+                        <span class="project-name">Art. 30 breach register</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-active"></div><span class="status-text">ACTIVE</span></div>
+                    <div class="project-note">Log INC-2026-001 after AEPD filing confirmed</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:50%;background:#a78bfa;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#a78bfa;margin-top:0.2rem">50% complete</div>
+                </div>
+                <div class="project-card waiting">
+                    <div class="project-header">
+                        <span class="project-code">B9</span>
+                        <span class="project-name">Permission architecture fix</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-waiting"></div><span class="status-text">WAITING</span></div>
+                    <div class="project-note">Inherited sub-group permissions , structural fix</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:25%;background:#fb923c;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#fb923c;margin-top:0.2rem">25% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">B10</span>
+                        <span class="project-name">"Elsewhere" trademark</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-active"></div><span class="status-text">ACTIVE</span></div>
+                    <div class="project-note">Via Accountax only. Daniel contacting Burning Man org (Stephen) for "burn" clearance.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:50%;background:#a78bfa;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#a78bfa;margin-top:0.2rem">50% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">B11</span>
+                        <span class="project-name">Pepe's engagement contract</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">To be discussed offline</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">B12</span>
+                        <span class="project-name">Build legal infrastructure for volunteers, collaborators & members</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">Permanent NCA legal backbone (not event-specific). Volunteer agreement, collaborator agreement, membership terms, GDPR consent architecture. Scope TBD.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card waiting">
+                    <div class="project-header">
+                        <span class="project-code">B13</span>
+                        <span class="project-name">Draft board governance proposal , areas/practices model</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-waiting"></div><span class="status-text">WAITING</span></div>
+                    <div class="project-note">Memo drafted Apr 6. Victor → Production & Site, Ward → Culture & Art, Peter double (Finance + Tech). Need full coordinator-to-area mapping from Daniela before board circulation.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:25%;background:#fb923c;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#fb923c;margin-top:0.2rem">25% complete</div>
+                </div></div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">DUA</span>
+            <span class="cluster-name">DUA</span>
+            <span class="cluster-desc">**Loaded:** 2026-04-02 | **Status:** Active</span>
+            <div class="cluster-badges"><span class="badge badge-active">Active</span></div>
+        </summary><div class="cluster-body"><div class="project-note" style="color:#333">No open threads tracked.</div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">HAV</span>
+            <span class="cluster-name">HAV</span>
+            <span class="cluster-desc"></span>
+            <div class="cluster-badges"><span class="badge badge-active">Active</span></div>
+        </summary><div class="cluster-body"><div class="project-note" style="color:#333">No open threads tracked.</div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">KAB</span>
+            <span class="cluster-name">KAB</span>
+            <span class="cluster-desc">East Africa's dominant EV charging operator , corporate structure, fundraising, SPV formation.</span>
+            <div class="cluster-badges"><span class="badge badge-active">Active</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">Engagement letter signed, $3M equity round closed with Pepe earning 2.5% success fee + 0.85% advisory equity fully diluted.
+
+**ROI line:** $2,500 onboarding + $7,500 WS1 + 2.5% on $3M equity round ($75k success fee) + $5k SPV framework + advisory equity (0.85% FD)</div><div class="projects-grid">
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">KAB001</span>
+                        <span class="project-name">ACV SAFE definitive docs</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-active"></div><span class="status-text">ACTIVE</span></div>
+                    <div class="project-note">v.06.03 redlines sent to Nick + Lukas Jun 3. Nick to forward to CJ. Target sign this week of Jun 9. Wire week of Jun 15. Three fights: longstop (push 4yr, settle 3yr), dollar thresholds in SL, commitment period. SAFE: https://docs.google.com/document/d/1vPYZmQC2JKp7_-wHY-n_JP7finK6urxh/edit Side Letter: https://docs.google.com/document/d/1XmlV52yffAyFLZqI7l0M8gGI5dQKMTlw/edit</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:50%;background:#a78bfa;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#a78bfa;margin-top:0.2rem">50% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">KAB002</span>
+                        <span class="project-name">Mount Meru SPV (WS3)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-active"></div><span class="status-text">ACTIVE</span></div>
+                    <div class="project-note">Tanzanian family conglomerate (~$900M turnover). TermSheet v4 in play. Exit mechanism + pricing authority still being negotiated.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:50%;background:#a78bfa;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#a78bfa;margin-top:0.2rem">50% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">KAB003</span>
+                        <span class="project-name">Nick's ~$1M personal investment structuring</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">Nick asked May 4 how to structure his ~$1M into holdco. Pepe asked May 8: is this the Mauritius $1M or existing SAFE? No answer yet.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div></div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">LAD</span>
+            <span class="cluster-name">LAD</span>
+            <span class="cluster-desc">LADX , startup client. Logistics and delivery infrastructure, Lagos and Kigali.</span>
+            <div class="cluster-badges"><span class="badge badge-active">Active</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">LADX closes its next milestone with clean legal architecture, Pepe's equity stake documented, and the engagement formalized.
+
+---</div><div class="projects-grid">
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">L1</span>
+                        <span class="project-name">Formalize engagement (EL)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div></div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">HOK</span>
+            <span class="cluster-name">HOK</span>
+            <span class="cluster-desc"></span>
+            <div class="cluster-badges"><span class="badge badge-probono">Pro bono</span></div>
+        </summary><div class="cluster-body"><div class="projects-grid">
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">H1</span>
+                        <span class="project-name">Partnership charter , signed by all 3</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">DRAFT, unsigned</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">H2</span>
+                        <span class="project-name">safetofeel.me Events section , images needed from Einat</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">BLOCKED on images</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">H3</span>
+                        <span class="project-name">houseofkleos.es website revision batch (15 items; item 15 Erostatic Dance form incomplete)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">PARTIAL</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">H4</span>
+                        <span class="project-name">Event flyers upload to Drive (item 16, Aug 10 session)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">WAITING on Pepe</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div></div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">STF</span>
+            <span class="cluster-name">STF</span>
+            <span class="cluster-desc">Safe to Feel , Einat Regev's platform. Pro bono. Facilitation and emotional safety work.</span>
+            <div class="cluster-badges"><span class="badge badge-probono">Pro bono</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">safetofeel.me is Einat's platform, running cleanly and independently. Pepe's support is scoped, boundary-maintained, and never bleeds into Jouissance or Agathe world.
+
+---</div><div class="project-note" style="color:#444;font-size:0.78rem">[2026-08-17] STF cluster created. Einat's platform separated from HOK and PND. Domain separation rule enforced: safetofeel.me is hers, jouissance.mexzungu.com is Pepe's.</div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">TZA</span>
+            <span class="cluster-name">TZA</span>
+            <span class="cluster-desc">Tonza Energy , energy sector client. Success-fee engagement.</span>
+            <div class="cluster-badges"><span class="badge badge-active">Active</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">Tonza closes its target transaction. Pepe's 3.5% success fee triggers. Clean exit with documented track record entry.
+
+---</div><div class="project-note" style="color:#444;font-size:0.78rem">[2026-08-17] TZA cluster created. EL signed 2026-08-07. Newest active client.</div></div></details><div class="universe-label">Personal</div><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">PND</span>
+            <span class="cluster-name">PND</span>
+            <span class="cluster-desc">Everything Agathe. The relationship, the partnership architecture, the creative projects, the health system, the AI layer. This is its own world.</span>
+            <div class="cluster-badges"><span class="badge badge-personal">Personal</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">The most conscious, intentional partnership Pepe has ever built. Alive, evolving, not default. She stays the most fully-known person in his life.
+
+**ROI line:** Not measured in money. Measured in depth, growth, and the quality of what gets built together.
+
+---</div><div class="projects-grid">
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">PW1</span>
+                        <span class="project-name">JVA: comparative analytics + insights report</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">Delivered. Session happened.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">PW2</span>
+                        <span class="project-name">Sunday May 3 reconnect</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">Happened.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">PW3</span>
+                        <span class="project-name">Cage: Part B edits + final EPUB</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">Pepe approves B2 → Miriam pass → rebuild</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">PW4</span>
+                        <span class="project-name">Parallels: locate first chapter, establish cadence</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">First chapter was written , location unconfirmed</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">PW5</span>
+                        <span class="project-name">Oura Ring: lost</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">Lost somewhere in her place. Cycle tracking continues without it.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div>
+                <div class="project-card ">
+                    <div class="project-header">
+                        <span class="project-code">PW6</span>
+                        <span class="project-name">Miriam: where to save JVA voice notes/transcripts</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-open"></div><span class="status-text">OPEN</span></div>
+                    <div class="project-note">She was offline at retreat. Resolve May 3.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:0%;background:#333;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#333;margin-top:0.2rem">0% complete</div>
+                </div>
+                <div class="project-card done">
+                    <div class="project-header">
+                        <span class="project-code">PW7</span>
+                        <span class="project-name">STD test (hers, post-retreat)</span>
+                    </div>
+                    <div class="project-status"><div class="status-dot dot-done"></div><span class="status-text">DONE</span></div>
+                    <div class="project-note">Sent to Pepe. Clean.</div>
+                    <div style="height:3px;background:#1a1a1a;border-radius:2px;margin-top:0.5rem;"><div style="height:3px;width:100%;background:#4ade80;border-radius:2px;"></div></div><div style="font-size:0.62rem;color:#4ade80;margin-top:0.2rem">100% complete</div>
+                </div></div></div></details><details class="cluster-section">
+        <summary class="cluster-header">
+            <span class="cluster-code">LFE</span>
+            <span class="cluster-name">LFE</span>
+            <span class="cluster-desc">Life Engine , Pepe's personal operating system. Everything that is not the business machine.</span>
+            <div class="cluster-badges"><span class="badge badge-personal">Personal</span></div>
+        </summary><div class="cluster-body"><div class="cluster-north-star">A life of depth, freedom, and intentional design. Body performing. Mind sharp. Soul alive. Assets working. Admin handled.
+
+---</div><div class="project-note" style="color:#444;font-size:0.78rem">[2026-08-17] LFE cluster created. Absorbs: health.md, properties.md, pepe-2035.md, love.md (partial), creative.md (partial). P50 is the north-star planning doc (not a cluster). Jouissance/Guinju/Kizomba live in Soul.</div></div></details>
+
+    <div class="updated-note">
+        Auto-generated 2026-08-17 17:02 CET by janis/cluster-page-generator.py from brain/clusters/
+    </div>
+    <script>
+        if (window.location.hash) {
+            const code = window.location.hash.replace('#','').toUpperCase();
+            document.querySelectorAll('.cluster-code').forEach(el => {
+                if (el.textContent.trim() === code) {
+                    el.closest('details').setAttribute('open', '');
+                    el.closest('details').scrollIntoView({behavior:'smooth',block:'start'});
+                }
+            });
+        }
+    </script>
+</body>
+</html>

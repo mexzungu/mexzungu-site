@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Azure Museum: Engagement Letter | Mexzungu Group</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root { --pink: #e14b87; --gold: #d4a039; }
+        body { background: #0d0d0d; }
+
+        #pw-gate {
+            position: fixed; inset: 0; background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 3rem 2.5rem; max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.5rem; color: #fafafa; margin-bottom: 0.6rem; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem; background: #0d0d0d; border: 1px solid #2a2a2a;
+            border-radius: 6px; color: #fafafa; font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center;
+            transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .pw-input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px rgba(225,75,135,0.12); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem; background-color: var(--pink);
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s;
+        }
+        .pw-btn:hover { background-color: #e86fa0; }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+
+        #sign-content { display: none; }
+        #sign-content.visible { display: block; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1a1a1a; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        nav img { height: 32px; }
+        .nav-back { font-family: 'Space Grotesk',sans-serif; font-size: 0.82rem; color: #6b5e57; text-decoration: none; }
+        .nav-back:hover { color: #9a8f88; }
+
+        .sign-wrap { max-width: 760px; margin: 0 auto; padding: 9rem 2rem 5rem; }
+        .sign-eyebrow { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
+        .sign-title { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: #fafafa; font-weight: 400; line-height: 1.15; margin-bottom: 0.8rem; }
+        .sign-meta { font-size: 0.82rem; color: #4a4a4a; margin-bottom: 3rem; }
+
+        .el-body {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 3rem 2.5rem; margin-bottom: 2.5rem; font-size: 0.93rem;
+            color: #9a8f88; line-height: 1.85;
+        }
+        @media (max-width: 600px) { .el-body { padding: 2rem 1.5rem; } }
+        .el-body h3 { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 700; margin: 2rem 0 0.6rem; }
+        .el-body h3:first-child { margin-top: 0; }
+        .el-body p { margin: 0 0 0.8rem; }
+        .el-body strong { color: #c8c0bb; }
+        .el-body ul { list-style: none; padding: 0; margin: 0.5rem 0 1rem; }
+        .el-body ul li { padding: 0.3rem 0; display: flex; gap: 0.7rem; align-items: flex-start; }
+        .el-body ul li::before {
+            content: ''; display: inline-block; width: 8px; height: 13px; flex-shrink: 0; margin-top: 0.22rem;
+            background-color: var(--pink);
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .el-body ul.gold li::before { background-color: var(--gold); }
+        .el-divider { height: 1px; background: #1e1e1e; margin: 1.5rem 0; }
+
+        .option-select-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: #6b5e57; font-weight: 600; margin-bottom: 1rem; }
+        .option-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 2rem; }
+        @media (max-width: 600px) { .option-grid { grid-template-columns: 1fr; } }
+        .option-btn {
+            padding: 1rem; background: #111; border: 1px solid #2a2a2a;
+            border-radius: 10px; cursor: pointer; text-align: left; transition: border-color 0.15s, background-color 0.15s;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .option-btn:hover { border-color: #3a3a3a; }
+        .option-btn.selected { border-color: var(--pink); background: rgba(225,75,135,0.06); }
+        .option-btn-name { font-size: 0.88rem; font-weight: 700; color: #fafafa; margin-bottom: 0.3rem; }
+        .option-btn-price { font-size: 0.78rem; color: #6b5e57; }
+        .option-btn.selected .option-btn-name { color: var(--pink); }
+
+        .sig-form { display: flex; flex-direction: column; gap: 1.2rem; }
+        .sig-field label { display: block; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: #6b5e57; font-weight: 600; margin-bottom: 0.5rem; }
+        .sig-field input {
+            width: 100%; padding: 0.85rem 1rem; background: #111; border: 1px solid #2a2a2a;
+            border-radius: 8px; color: #fafafa; font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem; transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .sig-field input:focus { outline: none; border-color: var(--pink); }
+        .sig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 500px) { .sig-row { grid-template-columns: 1fr; } }
+        .sig-consent {
+            display: flex; gap: 0.8rem; align-items: flex-start;
+            background: #111; border: 1px solid #1e1e1e; border-radius: 8px; padding: 1rem;
+        }
+        .sig-consent input[type="checkbox"] { flex-shrink: 0; margin-top: 0.15rem; accent-color: var(--pink); width: 16px; height: 16px; cursor: pointer; }
+        .sig-consent label { font-size: 0.82rem; color: #6b5e57; line-height: 1.55; cursor: pointer; }
+        .sig-submit {
+            padding: 1rem 2.5rem; background-color: var(--pink); color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem;
+            border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s;
+            align-self: flex-start;
+        }
+        .sig-submit:hover { background-color: #e86fa0; }
+        .sig-submit:disabled { background: #2a2a2a; color: #4a4a4a; cursor: not-allowed; }
+
+        #success-state { display: none; text-align: center; padding: 3rem 2rem; }
+        .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .success-title { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.8rem; color: #fafafa; margin-bottom: 0.8rem; }
+        .success-body { font-size: 0.95rem; color: #9a8f88; line-height: 1.75; max-width: 480px; margin: 0 auto; }
+        .sig-error { font-size: 0.85rem; color: #c93545; margin-top: 0.5rem; display: none; }
+
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-field .pw-input { margin-bottom: 0; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
+    </style>
+</head>
+<body>
+
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" class="pw-logo" onerror="this.style.display='none'">
+        <p class="pw-label">Engagement Letter</p>
+        <h2 class="pw-heading">Azure Museum</h2>
+        <p class="pw-sub">Enter your access code to sign the engagement letter.</p>
+        <div class="pw-field">
+            <input type="password" class="pw-input" id="pw-input" placeholder="Access code" autocomplete="off">
+            <button class="pw-toggle" type="button" onclick="togglePwVisibility()" aria-label="Show password"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
+        <button class="pw-btn" onclick="checkPw()">Continue</button>
+        <p class="pw-error" id="pw-error"></p>
+    </div>
+</div>
+
+<div id="sign-content">
+    <nav>
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" onerror="this.style.display='none'">
+        <a href="/proposals/azure-museum" class="nav-back">&larr; Back to proposal</a>
+    </nav>
+
+    <div class="sign-wrap">
+        <p class="sign-eyebrow">Engagement Letter, Mexzungu Group Ltd</p>
+        <h1 class="sign-title">Azure Museum &times; Mexzungu Group</h1>
+        <p class="sign-meta">August 2026. Review the terms, select your fee option, and sign below.</p>
+
+        <div class="el-body">
+            <h3>Parties</h3>
+            <p><strong>Mexzungu Group Ltd</strong>, incorporated in Mauritius, represented by Jose Pepe Carrillo Perez ("Advisor").</p>
+            <p><strong>Gwamaka J. Marc</strong>, founder of Azure Museum ("Client").</p>
+
+            <div class="el-divider"></div>
+            <h3>Recitals</h3>
+            <p>Client is building Azure Museum, an interactive experience that uses volumetric holography and AI to bring Rwandan history to life through choices, identity, and reconciliation. Client is seeking advisory support to establish a legal foundation capable of accepting investment and to raise its first round of external capital ahead of planned US speaking engagements in September 2026.</p>
+
+            <div class="el-divider"></div>
+            <h3>Scope of Services</h3>
+            <p><strong>Workstream 1: Venture Architecture</strong></p>
+            <ul>
+                <li>Delaware Public Benefit Corporation registration: articles, bylaws, registered agent</li>
+                <li>Cap table architecture: founder allocation, vesting schedule, option pool sizing</li>
+                <li>Shareholder agreement: drag/tag-along, ROFR, anti-dilution, consent matters</li>
+                <li>IP assignment agreement: all project IP assigned to the company</li>
+                <li>Governance framework: board composition, decision rights, officer roles</li>
+            </ul>
+            <p><strong>Workstream 2: Capital Closing</strong></p>
+            <ul class="gold">
+                <li>Fundraising strategy memo: target amount ($250k pilot), structure, investor sequencing</li>
+                <li>Capital source targeting list: angels, impact funds, arts/culture foundations, Rwandan diaspora</li>
+                <li>Pitch materials review and coaching: narrative, ask, holography + AI technology layer</li>
+                <li>Term sheet review and negotiation advisory: SAFE vs priced round analysis</li>
+                <li>Closing coordination: investor onboarding, executed docs, capital receipt confirmation</li>
+            </ul>
+            <p><strong>Exclusions:</strong> This engagement does not include SEC filings or registered securities offerings, direct engagement with government bodies, grant writing, or investor introductions without Client's prior written approval. Advisor is not a licensed US attorney.</p>
+
+            <div class="el-divider"></div>
+            <h3>Fees</h3>
+            <p><strong>Option A: Fixed + Success:</strong> USD 2,500 upfront + 2% success fee on fundraise close + 0.25% advisory equity, monthly vest, no cliff.</p>
+            <p><strong>Option B: Milestone:</strong> USD 1,000 at signing + USD 1,000 at WS1 completion (all docs delivered) + USD 1,000 at first investor meeting secured + 2% success fee + 0.25% equity.</p>
+            <p><strong>Option C: Retainer + Success:</strong> USD 500 at signing + USD 500/month while engagement is active + 2.5% success fee + 0.25% equity. 30 days written notice to pause or cancel.</p>
+            <p>Invoices due within 14 days. Success fee payable within 14 days of capital clearing. Advisory equity vests monthly from engagement start.</p>
+
+            <div class="el-divider"></div>
+            <h3>Payment</h3>
+            <p>Wire (MCB USD: details on request) &bull; Payoneer: pepe@mexzungu.com &bull; USDC/Solana: CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A</p>
+
+            <div class="el-divider"></div>
+            <h3>Standard Terms</h3>
+            <p><strong>Governing law:</strong> Mauritius. <strong>Termination:</strong> 30 days written notice; success fee applies to closes within 12 months of termination. <strong>Confidentiality:</strong> Mutual. <strong>Non-solicitation:</strong> 12 months post-engagement. <strong>Liability:</strong> Capped at fees paid in prior 3 months. <strong>IP:</strong> All deliverables owned by Azure Museum on delivery and payment.</p>
+        </div>
+
+        <div id="form-area">
+            <p class="option-select-label">Select your fee option</p>
+            <div class="option-grid">
+                <div class="option-btn" onclick="selectOption('A')" id="opt-A">
+                    <div class="option-btn-name">Option A: Fixed</div>
+                    <div class="option-btn-price">$2,500 upfront + 2% success</div>
+                </div>
+                <div class="option-btn" onclick="selectOption('B')" id="opt-B">
+                    <div class="option-btn-name">Option B: Milestone</div>
+                    <div class="option-btn-price">$1k + $1k + $1k + 2% success</div>
+                </div>
+                <div class="option-btn" onclick="selectOption('C')" id="opt-C">
+                    <div class="option-btn-name">Option C: Retainer</div>
+                    <div class="option-btn-price">$500 setup + $500/mo + 2.5%</div>
+                </div>
+            </div>
+
+            <form class="sig-form" onsubmit="submitSignature(event)">
+                <input type="hidden" id="selected-option" value="">
+                <div class="sig-row">
+                    <div class="sig-field">
+                        <label>Full legal name</label>
+                        <input type="text" id="sig-name" placeholder="Gwamaka J. Marc" required>
+                    </div>
+                    <div class="sig-field">
+                        <label>Title</label>
+                        <input type="text" id="sig-title" placeholder="Founder, Azure Museum" required>
+                    </div>
+                </div>
+                <div class="sig-field">
+                    <label>Email</label>
+                    <input type="email" id="sig-email" placeholder="marc@azuremuseum.com" required>
+                </div>
+                <div class="sig-field">
+                    <label>Company (legal entity, if registered)</label>
+                    <input type="text" id="sig-company" placeholder="Azure Museum PBC" required>
+                </div>
+                <div class="sig-consent">
+                    <input type="checkbox" id="sig-agree" required>
+                    <label for="sig-agree">I have read the engagement letter above and agree to all terms. By submitting this form I authorize Mexzungu Group Ltd to begin work on the selected engagement.</label>
+                </div>
+                <button type="submit" class="sig-submit" id="sig-btn">Sign engagement letter</button>
+                <p class="sig-error" id="sig-error">Something went wrong. Please try again or email pepe@mexzungu.com.</p>
+            </form>
+        </div>
+
+        <div id="success-state">
+            <div class="success-icon">&#9889;</div>
+            <h2 class="success-title">Signed. We're on.</h2>
+            <p class="success-body">Your engagement letter has been submitted. Pepe will confirm within 24 hours and work begins immediately. Welcome to Mexzungu Group, Marc.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CORRECT_PW = 'azure-2026';
+    const MASTER_PW = "Master-Outlaw-26";
+    const SESSION_KEY = 'azure_museum_auth';
+    let selectedOption = '';
+
+    function checkPw() {
+        const val = document.getElementById('pw-input').value.trim().toLowerCase();
+        const rawVal = document.getElementById('pw-input').value.trim();
+        if (val === CORRECT_PW || rawVal === MASTER_PW) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            document.getElementById('pw-gate').classList.add('hidden');
+            document.getElementById('sign-content').classList.add('visible');
+        } else {
+            const inp = document.getElementById('pw-input');
+            inp.classList.add('error');
+            document.getElementById('pw-error').textContent = 'Incorrect access code.';
+            setTimeout(() => inp.classList.remove('error'), 350);
+        }
+    }
+    document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('sign-content').classList.add('visible');
+    }
+
+    function selectOption(opt) {
+        selectedOption = opt;
+        document.getElementById('selected-option').value = opt;
+        ['A','B','C'].forEach(o => document.getElementById('opt-'+o).classList.remove('selected'));
+        document.getElementById('opt-'+opt).classList.add('selected');
+    }
+
+    async function submitSignature(e) {
+        e.preventDefault();
+        if (!selectedOption) { alert('Please select a fee option before signing.'); return; }
+        const btn = document.getElementById('sig-btn');
+        const errEl = document.getElementById('sig-error');
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+        errEl.style.display = 'none';
+        const payload = {
+            client: 'Azure Museum',
+            name: document.getElementById('sig-name').value,
+            title: document.getElementById('sig-title').value,
+            email: document.getElementById('sig-email').value,
+            company: document.getElementById('sig-company').value,
+            option: selectedOption,
+            signed_at: new Date().toISOString()
+        };
+        try {
+            const res = await fetch('/api/sign', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error('Server error ' + res.status);
+            document.getElementById('form-area').style.display = 'none';
+            document.getElementById('success-state').style.display = 'block';
+        } catch(err) {
+            btn.disabled = false;
+            btn.textContent = 'Sign engagement letter';
+            errEl.style.display = 'block';
+        }
+    }
+
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing
+            ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+    }
+</script>
+</body>
+</html>

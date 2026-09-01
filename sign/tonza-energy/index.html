@@ -258,7 +258,7 @@
 
 <script>
     const CORRECT_PW = 'tonza-2026';
-    const MASTER_PW = "Master-Outlaw-2026";
+    const MASTER_PW = "Master-Outlaw-26";
     const SESSION_KEY = 'tonza_energy_access';
 
     function checkPw() {
@@ -284,18 +284,25 @@
         e.preventDefault();
         const btn = document.getElementById('sig-btn');
         btn.disabled = true; btn.textContent = 'Submitting...';
+        const now = new Date().toISOString();
         const payload = {
-            client: 'Tonza Energy',
-            name: document.getElementById('sig-name').value,
-            title: document.getElementById('sig-title').value,
-            email: document.getElementById('sig-email').value,
-            company: document.getElementById('sig-company').value,
+            document_id: 'tonza-energy-el',
+            title: 'Engagement Letter: Tonza Energy x Mexzungu Group',
+            document_type: 'Engagement Letter',
+            parties: ['Tonza Energy', 'Mexzungu Group Ltd'],
+            signatures: [{
+                name: document.getElementById('sig-name').value,
+                role: document.getElementById('sig-title').value + ', ' + document.getElementById('sig-company').value,
+                email: document.getElementById('sig-email').value,
+                image_data: null,
+                signed_at: now
+            }],
             option: 'success-fee-3.5pct',
-            signed_at: new Date().toISOString()
+            signed_at: now
         };
         try {
-            await fetch('/api/sign', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        } catch(err) {}
+            await fetch('https://api.mexzungu.com/signing/submit', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        } catch(err) { console.error('Signing submission error:', err); }
         document.getElementById('form-area').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
     }

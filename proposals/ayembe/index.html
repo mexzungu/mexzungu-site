@@ -42,6 +42,14 @@
         }
         .pw-input:focus { outline: none; border-color: #e14b87; box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
         .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-field .pw-input { margin-bottom: 0; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
         @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
         .pw-btn {
             width: 100%; padding: 0.9rem 2rem; background-color: #e14b87;
@@ -225,7 +233,10 @@
         <p class="pw-label">Confidential proposal</p>
         <h2 class="pw-heading">Ayembe Loan Restructuring</h2>
         <p class="pw-sub">This proposal is private. Enter the access code to continue.</p>
+        <div class="pw-field">
         <input type="password" class="pw-input" id="pw-input" placeholder="Access code" autocomplete="off">
+        <button class="pw-toggle" type="button" onclick="togglePwVisibility()" aria-label="Show password"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
         <button class="pw-btn" onclick="checkPw()">Open proposal</button>
         <p class="pw-error" id="pw-error"></p>
         <p class="pw-footer-note">Mexzungu Group Ltd. Confidential. Not for distribution.</p>
@@ -390,6 +401,16 @@
     }
 
     updateCalc();
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    }
 </script>
 </body>
 </html>

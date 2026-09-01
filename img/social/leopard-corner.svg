@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <!-- Stylized leopard-print corner accent. Amber tan + black inner ring on transparent bg. -->
+  <defs>
+    <!-- Reusable spot: tan blob with black inner arc/dot for leopard rosette effect. -->
+    <symbol id="spot-a" overflow="visible">
+      <ellipse cx="0" cy="0" rx="10" ry="8" fill="#C9A24A" transform="rotate(15)"/>
+      <path d="M -6 -3 Q -3 -6 3 -5 Q 6 -2 4 3 Q 0 5 -4 3 Z" fill="none" stroke="#0A0A0A" stroke-width="1.8" transform="rotate(15)"/>
+      <circle cx="1" cy="0" r="1.6" fill="#0A0A0A"/>
+    </symbol>
+    <symbol id="spot-b" overflow="visible">
+      <ellipse cx="0" cy="0" rx="8" ry="6" fill="#C9A24A" transform="rotate(-25)"/>
+      <path d="M -4 -2 Q -1 -5 3 -3 Q 5 0 2 3 Q -2 4 -4 1 Z" fill="none" stroke="#0A0A0A" stroke-width="1.6" transform="rotate(-25)"/>
+      <circle cx="0" cy="0" r="1.3" fill="#0A0A0A"/>
+    </symbol>
+    <symbol id="spot-c" overflow="visible">
+      <ellipse cx="0" cy="0" rx="12" ry="9" fill="#C9A24A" transform="rotate(40)"/>
+      <path d="M -7 -3 Q -3 -7 5 -5 Q 8 0 5 4 Q 0 6 -5 4 Z" fill="none" stroke="#0A0A0A" stroke-width="2" transform="rotate(40)"/>
+      <circle cx="0" cy="1" r="1.8" fill="#0A0A0A"/>
+    </symbol>
+  </defs>
+
+  <!-- Irregularly placed spots clustered in top-left of a corner tile. -->
+  <use href="#spot-c" x="18" y="18"/>
+  <use href="#spot-a" x="48" y="14"/>
+  <use href="#spot-b" x="82" y="22"/>
+  <use href="#spot-a" x="20" y="48"/>
+  <use href="#spot-c" x="54" y="52"/>
+  <use href="#spot-b" x="90" y="58"/>
+  <use href="#spot-a" x="30" y="84"/>
+  <use href="#spot-b" x="66" y="88"/>
+  <use href="#spot-c" x="98" y="96"/>
+</svg>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="robots" content="noindex, nofollow">
+<title>Rate this post</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --pink:#E14B87; --black:#0A0A0A; --white:#FAFAFA;
+    --border:#242424; --muted:#8a8a8a; --card:#141414; --card-hover:#1c1c1c;
+    --amber:#f0c050; --green:#6dd89a;
+  }
+  html,body{background:var(--black);color:var(--white);font-family:'Space Grotesk',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;min-height:100vh}
+  .wrap{max-width:640px;margin:0 auto;padding:1.25rem 1rem 5rem}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1.25rem}
+  .brand{font-family:'RocknRoll One',sans-serif;color:var(--pink);font-size:1.35rem;letter-spacing:0.02em}
+  .eyebrow{font-size:0.65rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--muted)}
+  h1{font-family:'RocknRoll One',sans-serif;font-size:1.6rem;line-height:1.2;margin:0.5rem 0 1rem}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1rem;margin-bottom:1rem}
+  .preview img{width:100%;height:auto;border-radius:4px;display:block;background:#111}
+  .preview .meta{margin-top:0.65rem;font-size:0.78rem;color:var(--muted);font-family:'Space Grotesk',sans-serif}
+  .preview .meta a{color:var(--pink);text-decoration:none}
+  .preview .caption{margin-top:0.6rem;font-size:0.88rem;line-height:1.45;color:#d0d0d0}
+  .fmt-chip{display:inline-block;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--black);background:var(--pink);border-radius:2px;padding:0.22rem 0.5rem;margin-right:0.4rem}
+  .dim{margin:1.15rem 0}
+  .dim-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.55rem}
+  .dim-label .n{font-family:'RocknRoll One',sans-serif;font-size:1.02rem;color:var(--white)}
+  .dim-label .hint{font-size:0.72rem;color:var(--muted);text-align:right;flex:1;margin-left:0.75rem}
+  .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:0.5rem}
+  .scale button{
+    -webkit-appearance:none;appearance:none;background:var(--card);color:var(--white);
+    border:1px solid var(--border);border-radius:6px;padding:0.9rem 0;font-size:1.15rem;
+    font-family:'Space Grotesk',sans-serif;font-weight:500;cursor:pointer;transition:all .12s;
+    min-height:52px;touch-action:manipulation;
+  }
+  .scale button:hover{background:var(--card-hover);border-color:#333}
+  .scale button.picked{background:var(--pink);color:var(--black);border-color:var(--pink);font-weight:600}
+  .overlay-hdr{margin:1.5rem 0 0.5rem;padding-top:1rem;border-top:1px dashed var(--border);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pink)}
+  textarea{
+    width:100%;background:var(--card);color:var(--white);border:1px solid var(--border);
+    border-radius:6px;padding:0.75rem;font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:300;
+    min-height:70px;resize:vertical;
+  }
+  textarea:focus{outline:none;border-color:var(--pink)}
+  label.txt{display:block;margin:1rem 0 0.4rem;font-size:0.85rem;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase}
+  .overall-box{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--card);border:1px solid var(--border);border-radius:6px;padding:0.9rem 1rem;margin:1.5rem 0
+  }
+  .overall-box .l{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+  .overall-box .v{font-family:'RocknRoll One',sans-serif;color:var(--pink);font-size:2rem;line-height:1}
+  .submit{
+    width:100%;background:var(--pink);color:var(--black);border:none;
+    padding:1.1rem;border-radius:6px;font-family:'RocknRoll One',sans-serif;font-size:1.05rem;letter-spacing:0.03em;
+    cursor:pointer;min-height:56px;touch-action:manipulation;
+  }
+  .submit[disabled]{opacity:0.4;cursor:not-allowed}
+  .submit:hover:not([disabled]){filter:brightness(1.05)}
+  .status{margin-top:1rem;font-size:0.85rem;color:var(--muted);text-align:center;min-height:1.2em}
+  .status.err{color:#f08080}
+  .status.ok{color:var(--green)}
+  .done{text-align:center;padding:3rem 1rem}
+  .done .icon{font-family:'RocknRoll One',sans-serif;color:var(--pink);font-size:3.5rem;margin-bottom:0.75rem}
+  .done h2{font-family:'RocknRoll One',sans-serif;font-size:1.7rem;margin-bottom:0.4rem}
+  .done p{color:var(--muted);font-size:0.95rem;line-height:1.5}
+  .already{background:#1e1500;border:1px solid #3a2a00;color:var(--amber);padding:0.85rem 1rem;border-radius:6px;font-size:0.85rem;margin-bottom:1rem}
+  .loader{color:var(--muted);text-align:center;padding:3rem 1rem;font-size:0.9rem}
+  @media (min-width: 640px){
+    h1{font-size:2rem}
+    .scale button{padding:1rem 0;font-size:1.25rem;min-height:60px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">mexzungu</div>
+    <div class="eyebrow">Rate v2</div>
+  </header>
+
+  <div id="app">
+    <div class="loader">Loading post…</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ── slug from either /rate/[slug] or ?slug=X ─────────────────────────────
+  function readSlug(){
+    var q = new URLSearchParams(location.search).get("slug");
+    if (q) return q.trim();
+    var m = location.pathname.match(/^\/rate\/([^\/\?#]+)/);
+    if (m && m[1] && m[1] !== "index.html") return decodeURIComponent(m[1]);
+    return "";
+  }
+
+  var UNIVERSAL_LABELS = {
+    hook:        {n:"1. Hook",        hint:"First hit. Pulls the swipe or open."},
+    copy_craft:  {n:"2. Copy Craft",  hint:"Verb strength, rhythm, no filler."},
+    voice_fit:   {n:"3. Voice Fit",   hint:"Unmistakably Pepe. Never corporate."},
+    flare:       {n:"4. Flare",       hint:"Signature move. Quotable, unsafe."},
+    close:       {n:"5. Close",       hint:"Tight ending or CTA with real mechanic."},
+  };
+  var OVERLAY_LABELS = {
+    visual_craft:  {n:"6. Visual Craft",  hint:"Composition, contrast, alignment."},
+    character_use: {n:"7. Character Use", hint:"Star vs wallpaper. One pose, magazine placement."},
+  };
+
+  var slug = readSlug();
+  var appEl = document.getElementById("app");
+  var state = { post: null, universal_dims: [], overlay_dims: [], scores: {}, submitting: false };
+
+  function fmtChip(fmt){
+    return '<span class="fmt-chip">'+ (fmt||"post") +'</span>';
+  }
+
+  function renderPreview(post){
+    var img = post.preview_image ? '<img src="'+post.preview_image+'" alt="post preview" loading="lazy">' : '';
+    var cap = post.caption_snippet ? '<div class="caption">'+ escapeHtml(post.caption_snippet) +'</div>' : '';
+    var meta = '<div class="meta">'
+      + fmtChip(post.format)
+      + (post.template_id ? '<span>template: '+escapeHtml(post.template_id)+'</span>' : '')
+      + (post.url ? ' &middot; <a href="'+post.url+'" target="_blank" rel="noopener">view live &#8599;</a>' : '')
+      + '</div>';
+    return '<div class="card preview">'+img+meta+cap+'</div>';
+  }
+
+  function renderDim(key, label){
+    var current = state.scores[key];
+    var btns = "";
+    for (var i=1; i<=5; i++){
+      btns += '<button type="button" data-dim="'+key+'" data-v="'+i+'"'+(current===i?' class="picked"':'')+'>'+i+'</button>';
+    }
+    return '<div class="dim">'
+      + '<div class="dim-label"><span class="n">'+label.n+'</span><span class="hint">'+label.hint+'</span></div>'
+      + '<div class="scale">'+btns+'</div>'
+      + '</div>';
+  }
+
+  function renderForm(){
+    var post = state.post;
+    var alreadyBanner = post.already_scored ? '<div class="already">This post is marked as already scored. Submitting again will overwrite the last scorecard.</div>' : '';
+    var html = "";
+    html += '<div class="eyebrow">'+ (post.series ? escapeHtml(post.series) : "post") +'</div>';
+    html += '<h1>'+ escapeHtml(post.title || slug) +'</h1>';
+    html += alreadyBanner;
+    html += renderPreview(post);
+
+    // Universal
+    var dims = "";
+    state.universal_dims.forEach(function(k){ dims += renderDim(k, UNIVERSAL_LABELS[k]); });
+    html += '<div class="card">'+dims+'</div>';
+
+    // Overlay
+    if (state.overlay_dims.length){
+      var ov = '<div class="overlay-hdr">Format overlay ('+ post.format +')</div>';
+      state.overlay_dims.forEach(function(k){ ov += renderDim(k, OVERLAY_LABELS[k]); });
+      html += '<div class="card">'+ov+'</div>';
+    }
+
+    // Text areas
+    html += '<div class="card">'
+      + '<label class="txt" for="wins">Wins (keep doing)</label>'
+      + '<textarea id="wins" placeholder="What worked. One or two sharp lines."></textarea>'
+      + '<label class="txt" for="fixes">Fixes for next iteration</label>'
+      + '<textarea id="fixes" placeholder="What to change on the next post using this template."></textarea>'
+      + '<label class="txt" for="deltas">Template deltas</label>'
+      + '<textarea id="deltas" placeholder="Concrete edits to bake into the template."></textarea>'
+      + '</div>';
+
+    html += '<div class="overall-box"><span class="l">Overall</span><span class="v" id="overall">.</span></div>';
+    html += '<button class="submit" id="submitBtn" disabled>Save scorecard</button>';
+    html += '<div class="status" id="status"></div>';
+
+    appEl.innerHTML = html;
+    bindButtons();
+    recomputeOverall();
+  }
+
+  function bindButtons(){
+    document.querySelectorAll(".scale button").forEach(function(b){
+      b.addEventListener("click", function(){
+        var dim = b.getAttribute("data-dim");
+        var v = parseInt(b.getAttribute("data-v"),10);
+        state.scores[dim] = v;
+        // paint sibling group
+        document.querySelectorAll('.scale button[data-dim="'+dim+'"]').forEach(function(x){ x.classList.remove("picked"); });
+        b.classList.add("picked");
+        recomputeOverall();
+      });
+    });
+    document.getElementById("submitBtn").addEventListener("click", submit);
+  }
+
+  function recomputeOverall(){
+    var required = state.universal_dims.concat(state.overlay_dims);
+    var picked = required.filter(function(k){ return typeof state.scores[k] === "number"; });
+    if (picked.length !== required.length){
+      document.getElementById("overall").textContent = ".";
+      document.getElementById("submitBtn").disabled = true;
+      return;
+    }
+    var sum = picked.reduce(function(a,k){ return a + state.scores[k]; }, 0);
+    var avg = sum / picked.length;
+    document.getElementById("overall").textContent = avg.toFixed(2);
+    document.getElementById("submitBtn").disabled = false;
+  }
+
+  function submit(){
+    if (state.submitting) return;
+    state.submitting = true;
+    var btn = document.getElementById("submitBtn");
+    var st  = document.getElementById("status");
+    btn.disabled = true; btn.textContent = "Saving…"; st.className = "status"; st.textContent = "";
+    var universal = {}, overlay = {};
+    state.universal_dims.forEach(function(k){ universal[k] = state.scores[k]; });
+    state.overlay_dims.forEach(function(k){ overlay[k] = state.scores[k]; });
+    var body = {
+      slug: slug,
+      universal_scores: universal,
+      overlay_scores: overlay,
+      wins:  document.getElementById("wins").value,
+      fixes: document.getElementById("fixes").value,
+      template_deltas: document.getElementById("deltas").value,
+    };
+    fetch("/api/rate/save", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(body),
+    })
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, status:r.status, j:j}; }); })
+    .then(function(x){
+      if (!x.ok){
+        st.className = "status err";
+        st.textContent = (x.j && x.j.detail) || (x.j && x.j.error) || ("HTTP "+x.status);
+        btn.disabled = false; btn.textContent = "Save scorecard"; state.submitting = false;
+        return;
+      }
+      renderDone(x.j.overall);
+    })
+    .catch(function(err){
+      st.className = "status err";
+      st.textContent = "Network error: " + err.message;
+      btn.disabled = false; btn.textContent = "Save scorecard"; state.submitting = false;
+    });
+  }
+
+  function renderDone(overall){
+    appEl.innerHTML =
+      '<div class="done">'
+      + '<div class="icon">'+ (overall != null ? Number(overall).toFixed(2) : "✓") +'</div>'
+      + '<h2>Scored. Thanks.</h2>'
+      + '<p>Scorecard filed. Running log updated.<br>Next post drops on Grace\'s cadence.</p>'
+      + '</div>';
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  // ── boot ─────────────────────────────────────────────────────────────────
+  if (!slug){
+    appEl.innerHTML = '<div class="card"><h1>No post selected</h1><p style="color:var(--muted)">Open a scoring link from your Telegram DM, e.g. <code>/rate/2026-08-21-founder-archetypes</code>.</p></div>';
+    return;
+  }
+  fetch("/api/rate/meta?slug=" + encodeURIComponent(slug))
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j, status:r.status}; }); })
+    .then(function(x){
+      if (!x.ok){
+        appEl.innerHTML = '<div class="card"><h1>Post not found</h1><p style="color:var(--muted)">'+ escapeHtml((x.j && x.j.detail) || ("HTTP "+x.status)) +'</p></div>';
+        return;
+      }
+      state.post = x.j.post;
+      state.universal_dims = x.j.universal_dims;
+      state.overlay_dims   = x.j.overlay_dims;
+      renderForm();
+    })
+    .catch(function(err){
+      appEl.innerHTML = '<div class="card"><h1>Load failed</h1><p style="color:var(--muted)">'+ escapeHtml(err.message) +'</p></div>';
+    });
+})();
+</script>
+</body>
+</html>

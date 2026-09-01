@@ -59,3 +59,23 @@
 /mmm-graph/* https://pepecarrillo.co/mmm-graph/:splat 301
 /sign/referral /collaborators/referral-agreement 301
 /sign/referral/ /collaborators/referral-agreement/ 301
+
+# Rate form. Canonical URL: /rate/?slug=X (from Telegram publish hook).
+# /rate/[slug] is handled by Pages Function functions/rate/[slug].js which redirects to ?slug=.
+/rate /rate/ 301
+
+# Dead engine pages — 301 to canonical structure (2026-09-02)
+/engines/admin-core/* /engines/blueprint/ 301
+/engines/agent-building/* /engines/ai-agent-building-engine/ 301
+/engines/architecture/* /engines/blueprint/ 301
+/engines/client-acquisition/* /engines/connection/acquisition/ 301
+/engines/content/* /engines/connection/sm-content/ 301
+/engines/content-engine/* /engines/connection/sm-content/ 301
+/engines/core/* /engines/blueprint/ 301
+/engines/directory/* /engines/ 301
+/engines/founders/* /engines/founder-advisory-engine/ 301
+/engines/investors/* /engines/investor-advisory-engine/ 301
+/engines/invoice-to-cash/* /library/invoice-to-cash/ 301
+/engines/knowledge/* /engines/knowledge-engine/ 301
+/engines/linkedin-engagement/* /engines/connection/sm-engagement/ 301
+/engines/proposal-engine/* /engines/connection/proposal/ 301

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mexzungu Standard Referral Agreement</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --pink:#e14b87;--pink-dark:#b83a6b;--navy:#1a1a2e;--black:#0d0d0d;
+      --white:#fafafa;--ash:#e8e3df;--stone:#6b5e57;--mist:#9a8f88;
+      --charcoal:#3d3533;--success:#2d8f5e;
+      --heading:'RocknRoll One','Space Grotesk',sans-serif;
+      --sans:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+    }
+    body{font-family:var(--sans);background:#f0ece8;color:var(--black);min-height:100vh}
+    .site-header{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+    .site-header .logo-wrap{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+    .site-header img{height:36px}
+    .header-meta{text-align:right}
+    .header-meta h1{font-family:var(--heading);font-size:.95rem;color:#fafafa;font-weight:700}
+    .header-meta p{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:2px}
+    .page-wrap{max-width:820px;margin:2.5rem auto;padding:0 1.5rem 4rem}
+    .doc-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.08)}
+    .doc-top-stripe{height:5px;background:linear-gradient(90deg,var(--pink) 0%,#f97316 100%)}
+    .doc-inner{padding:2.5rem 2.5rem 2rem}
+    .doc-wordmark{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--ash)}
+    .doc-wordmark img{height:40px}
+    .doc-wordmark-text{display:flex;flex-direction:column;gap:2px}
+    .doc-wordmark-text span:first-child{font-family:var(--heading);font-size:.9rem;color:var(--navy)}
+    .doc-wordmark-text span:last-child{font-size:.72rem;color:var(--mist)}
+    .doc-title{font-family:var(--heading);font-size:1.7rem;color:var(--navy);line-height:1.15;margin-bottom:.4rem}
+    .doc-subtitle{font-size:.82rem;color:var(--mist);margin-bottom:2rem}
+    .doc-intro{background:#f8f5f2;border-left:3px solid var(--pink);padding:1.25rem 1.5rem;margin-bottom:2rem;border-radius:6px;font-size:.95rem;line-height:1.7;color:var(--charcoal)}
+    .doc-body h2{font-family:var(--heading);font-size:1rem;color:var(--navy);margin:1.8rem 0 .7rem;padding-top:.4rem}
+    .doc-body p{font-size:.93rem;line-height:1.75;color:var(--charcoal);margin-bottom:.9rem}
+    .doc-body ol,.doc-body ul{margin:.7rem 0 1rem 1.5rem;font-size:.93rem;line-height:1.7;color:var(--charcoal)}
+    .doc-body li{margin-bottom:.4rem}
+    .doc-body strong{color:var(--navy)}
+    .doc-footer-msg{margin-top:2rem;padding:1.5rem;background:linear-gradient(135deg,rgba(225,75,135,.06),rgba(225,75,135,.02));border-radius:10px;font-size:.9rem;line-height:1.7;color:var(--charcoal);font-style:italic;text-align:center}
+    .annex-card{margin-top:2rem;background:#fbfaf8;border:1px solid var(--ash);border-radius:10px;padding:1.5rem 1.75rem}
+    .annex-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);font-weight:700;margin-bottom:.5rem}
+    .annex-card h3{font-family:var(--heading);font-size:1.05rem;color:var(--navy);margin-bottom:1rem}
+    .annex-card h4{font-family:var(--heading);font-size:.82rem;color:var(--navy);margin:1.1rem 0 .4rem;letter-spacing:.02em}
+    .annex-card ul{margin:.4rem 0 .6rem 1.2rem}
+    .annex-card li{font-size:.87rem;line-height:1.65;color:var(--charcoal);margin-bottom:.35rem}
+    .gen-btn-wrap{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--ash);text-align:center}
+    .gen-btn{background:var(--pink);color:#fff;border:none;border-radius:10px;padding:1rem 2.5rem;font-size:1rem;font-weight:600;font-family:var(--sans);cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(225,75,135,.35)}
+    .gen-btn:hover{background:var(--pink-dark);transform:translateY(-1px);box-shadow:0 6px 18px rgba(225,75,135,.45)}
+    .gen-btn:disabled{background:var(--mist);cursor:not-allowed;transform:none;box-shadow:none}
+    .modal-overlay{position:fixed;inset:0;background:rgba(13,13,13,.75);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:200;padding:2rem}
+    .modal-overlay.visible{display:flex}
+    .modal{background:#fff;border-radius:14px;max-width:520px;width:100%;padding:2.5rem;box-shadow:0 20px 60px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto}
+    .modal h2{font-family:var(--heading);font-size:1.3rem;color:var(--navy);margin-bottom:.4rem}
+    .modal p.modal-sub{font-size:.85rem;color:var(--mist);margin-bottom:1.75rem}
+    .form-group{margin-bottom:1.1rem}
+    .form-group label{display:block;font-size:.75rem;color:var(--stone);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;font-weight:600}
+    .form-group input,.form-group textarea{width:100%;padding:.75rem 1rem;border:1px solid var(--ash);border-radius:8px;font-size:.95rem;font-family:var(--sans);background:#fdfcfa;transition:.15s}
+    .form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--pink);background:#fff;box-shadow:0 0 0 3px rgba(225,75,135,.1)}
+    .form-group .hint{font-size:.72rem;color:var(--mist);margin-top:.3rem}
+    .form-actions{display:flex;gap:.75rem;margin-top:1.75rem;justify-content:flex-end}
+    .btn-secondary{background:transparent;color:var(--stone);border:1px solid var(--ash);border-radius:8px;padding:.75rem 1.5rem;font-size:.9rem;font-weight:500;cursor:pointer;font-family:var(--sans)}
+    .btn-secondary:hover{background:#f8f5f2}
+    .btn-primary{background:var(--pink);color:#fff;border:none;border-radius:8px;padding:.75rem 1.75rem;font-size:.9rem;font-weight:600;cursor:pointer;font-family:var(--sans)}
+    .btn-primary:hover{background:var(--pink-dark)}
+    .btn-primary:disabled{background:var(--mist);cursor:not-allowed}
+    .party-block{background:#f8f5f2;border:1px solid var(--ash);border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:1rem}
+    .party-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mist);margin-bottom:.35rem;font-weight:600}
+    .party-name{font-family:var(--heading);font-size:.95rem;color:var(--navy);margin-bottom:.35rem}
+    .party-detail{font-size:.78rem;color:var(--stone);line-height:1.5}
+    .sig-section{display:none;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--ash)}
+    .sig-section.visible{display:block}
+    .sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.5rem}
+    @media(max-width:640px){.sig-grid{grid-template-columns:1fr}}
+    .sig-col h3{font-family:var(--heading);font-size:.85rem;color:var(--navy);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.08em}
+    .sig-pre-signed{background:#f8f5f2;border:1px solid var(--ash);border-radius:8px;padding:1.5rem;text-align:center}
+    .sig-pre-signed .sig-mark{font-family:'RocknRoll One',cursive;font-size:1.8rem;color:var(--pink);margin-bottom:.3rem}
+    .sig-pre-signed .sig-caption{font-size:.72rem;color:var(--mist);text-transform:uppercase;letter-spacing:.08em}
+    .sig-pre-signed .sig-line1{font-size:.85rem;color:var(--navy);font-weight:600;margin-top:.4rem}
+    .sig-pre-signed .sig-line2{font-size:.72rem;color:var(--stone);margin-top:.2rem}
+    .sig-canvas-wrap{border:2px dashed var(--ash);border-radius:8px;background:#fff;padding:.4rem;position:relative}
+    canvas.sig-canvas{width:100%;height:150px;display:block;cursor:crosshair;touch-action:none}
+    .sig-actions{display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;font-size:.75rem}
+    .sig-actions .clear{background:transparent;border:none;color:var(--pink);cursor:pointer;font-size:.75rem;padding:.3rem .6rem}
+    .sig-actions .clear:hover{text-decoration:underline}
+    .sig-hint{font-size:.72rem;color:var(--mist);margin-top:.3rem}
+    .final-actions{margin-top:2rem;padding-top:1.75rem;border-top:1px solid var(--ash);display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+    .final-actions .btn-sign{background:var(--success);color:#fff;border:none;border-radius:10px;padding:1rem 3rem;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:var(--sans);box-shadow:0 4px 14px rgba(45,143,94,.35);transition:.2s}
+    .final-actions .btn-sign:hover:not(:disabled){background:#25764c;transform:translateY(-1px)}
+    .final-actions .btn-sign:disabled{background:var(--mist);cursor:not-allowed;box-shadow:none}
+    .completion-panel{display:none;padding:3rem 2rem;text-align:center;background:linear-gradient(135deg,#e8f5ee,#f0faf3);border-radius:14px;margin-top:2rem}
+    .completion-panel.visible{display:block}
+    .completion-panel .check{width:60px;height:60px;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:#fff;font-size:2rem;font-weight:700}
+    .completion-panel h2{font-family:var(--heading);font-size:1.4rem;color:var(--navy);margin-bottom:.5rem}
+    .completion-panel p{font-size:.95rem;color:var(--charcoal);margin-bottom:1rem}
+    .completion-panel .status-line{margin-top:1.5rem;font-size:.85rem;color:var(--stone);font-family:monospace}
+    .err{color:var(--pink-dark);font-size:.85rem;margin-top:.7rem}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo-wrap" href="/">
+    <img src="/img/logo-pink.png" alt="Mexzungu" onerror="this.style.display='none'">
+  </a>
+  <div class="header-meta">
+    <h1>Standard Referral Agreement</h1>
+    <p>Public template · Mauritius law</p>
+  </div>
+</header>
+
+<div class="page-wrap">
+  <div class="doc-card">
+    <div class="doc-top-stripe"></div>
+    <div class="doc-inner">
+
+      <div class="doc-wordmark">
+        <img src="/img/logo-pink.png" alt="Mexzungu" onerror="this.style.display='none'">
+        <div class="doc-wordmark-text">
+          <span>Mexzungu Group Ltd</span>
+          <span>Royal Road, Henrietta, Mauritius</span>
+        </div>
+      </div>
+
+      <div class="doc-title">Mexzungu Standard Referral Agreement</div>
+      <div class="doc-subtitle">The same agreement for every referral partner.</div>
+
+      <div class="doc-intro">
+        This is a referral agreement. The idea is simple. When one of us sends the other a client, and that client pays, we pay a 15% cut on what comes in over the first 12 months. It works both directions. No exclusivity, no minimum volume, no drama. Either side can walk with 30 days notice. What we do share, we keep clean, honest, and paid on time.
+      </div>
+
+      <div class="doc-body">
+
+        <h2>1. What is this, and what is it not?</h2>
+        <p>We sign this as independent principals. Neither side employs, partners with, or represents the other. No agency, no joint venture. Each of us runs our own shop, pays our own taxes, and stays free to work with anyone else.</p>
+
+        <h2>2. What counts as a referral?</h2>
+        <p>A client is a Referred Client of one of us when all four are true:</p>
+        <ol>
+          <li>that side made a written introduction to the other, naming the client;</li>
+          <li>the receiving side had no active engagement or live proposal with the client in the 12 months before the intro;</li>
+          <li>the receiving side acknowledged the intro in writing within 30 days. Silence for 30 days counts as acknowledgment. Rejection has to be explicit;</li>
+          <li>the client signs a paid engagement within 12 months of the acknowledgment.</li>
+        </ol>
+        <p>If we both introduce the same client, the first written intro wins. Ties go to whoever got the acknowledgment first. No split fees.</p>
+        <p><strong>Written</strong> means email or a messaging platform we regularly use with each other, like WhatsApp or LinkedIn message. Not a phone call.</p>
+
+        <h2>3. How much and for how long?</h2>
+        <p>The receiving side pays the introducing side <strong>15% of net fees</strong> received from the Referred Client for <strong>12 months</strong>, starting the day the receiving side receives cleared funds on the client's first paid invoice.</p>
+        <p>Same math, both directions.</p>
+
+        <h2>4. What counts as fees, and what gets stripped out first?</h2>
+        <p>Net fees are what actually lands in the receiving side's bank account, minus:</p>
+        <ol>
+          <li>refunds and chargebacks paid back to the client;</li>
+          <li>statutory withholding tax deducted at source (VAT, GST, income withholding);</li>
+          <li>pass-through disbursements re-billed at cost (couriers, filing fees, notary, translation, third-party counsel, travel);</li>
+          <li>payment rail fees (wire, card processor, USDC), capped at 2% of gross.</li>
+        </ol>
+        <p><strong>Currency:</strong> fees are paid in the currency the receiving side collected. If the invoice was in a different currency, FX losses sit with the receiving side. No FX gross-up.</p>
+        <p>Each side handles its own tax filings on fees received. Withholding tax deducted at source under (b) is not reimbursed by either side. When one side deducts withholding tax, it sends the other a tax authority receipt or certificate as soon as it is issued, so the other can claim any treaty credit.</p>
+
+        <h2>5. How and when do we pay each other?</h2>
+        <p>We settle monthly. Within 30 days of each month-end, the receiving side sends the other a one-page statement covering that month's Referred Clients: client name, invoice number, amount collected, deductions, net fees, 15% due. Payment goes with the statement.</p>
+        <p>Partner nominates the rail: bank wire, Payoneer, or USDC on Solana or Base. Each side eats its own receiving fees.</p>
+        <p>Late payments accrue 1% per month from the due date. Not a penalty. Fair time-value.</p>
+        <p>If one side has a good-faith reason to doubt a statement, they can ask for source invoices and bank receipts covering the last 12 months. Reasonable request, once per year.</p>
+
+        <h2>6. What if someone tries to route around the fee?</h2>
+        <p>Neither of us will invoice a Referred Client through a sister company, affiliate, holding entity, employee side-vehicle, or successor entity to sidestep the fee. If it happens, whatever gets collected still counts as net fees under this agreement.</p>
+
+        <h2>7. What stays between us?</h2>
+        <p>Referred client names and the commercial terms of their engagements stay between the two of us. We do not share them externally without permission, unless a client authorizes it or the law makes us. If a court or regulator asks, we tell the other side first if we legally can.</p>
+        <p>General market observations, patterns, and know-how belong to whoever developed them and are not confidential.</p>
+
+        <h2>8. Can we talk about each other publicly?</h2>
+        <p>Neither side names the other publicly, on a website, on LinkedIn, or in marketing, without written say-so. Case studies that identify a client need the client's yes too.</p>
+
+        <h2>9. How do we handle client data?</h2>
+        <p>When a referral involves personal data of a client contact, both sides act as independent data controllers under applicable data protection law. Each side is responsible for its own lawful basis.</p>
+
+        <h2>10. Can we hand this off to someone else?</h2>
+        <p>Neither side assigns this agreement without the other's written yes. Assignment to a successor entity from a sale, merger, or restructuring is fine, as long as economic terms do not change.</p>
+
+        <h2>11. How does either side walk away?</h2>
+        <p>Either side can walk with 30 days written notice. Email counts. No reason needed. What is already earned still gets paid, and the 12-month tail on Referred Clients introduced before termination runs its course. Reporting and payment obligations under sections 4 and 5 keep running until the last tail closes.</p>
+        <p>If one side breaks this in a way that matters, like a missed payment, a breach of confidentiality, or an anti-routing dodge, the other side flags it in writing. The breaching side has 30 days to fix it. If it is not fixed, the other side can end this immediately and still gets everything already owed.</p>
+
+        <h2>12. Which law applies, and what if we disagree?</h2>
+        <p>This agreement is governed by the laws of Mauritius.</p>
+        <p>If something goes sideways, we first try to sort it out in good faith, in person or by video, within 30 days of one side raising the issue in writing. If that does not resolve it within a further 30 days, the next step depends on size.</p>
+        <p>If the amount in dispute is under USD 20,000, we skip arbitration and settle it by mediation with a mutually agreed mediator. If the amount is USD 20,000 or above, it goes to arbitration under the Mauritius International Arbitration Act, seated in Mauritius, in English, before a single arbitrator. The arbitrator's decision is final.</p>
+
+        <h2>13. Is this the entire agreement?</h2>
+        <p>This is the entire agreement between us on referrals. Any change has to be in writing and signed by both sides. Verbal side-agreements do not count.</p>
+
+        <div class="doc-footer-msg">
+          We are signing this because we trust each other to work honestly and pay each other honestly. If that ever stops feeling true, we talk it through first. Everything else is just paper.
+        </div>
+
+        <div class="annex-card">
+          <div class="annex-label">Annex A</div>
+          <h3>What counts as an intro. Examples.</h3>
+          <p style="font-size:.87rem;color:var(--stone);line-height:1.65">Guidance to make the section 2 test concrete. Not exhaustive. When something is ambiguous, we talk it through in good faith before anyone invoices.</p>
+
+          <h4>Counts as an intro</h4>
+          <ul>
+            <li>You email us: "Meet Sarah Njeri, CEO of Acme, needs governance help. Copying her here. sarah@acme.co."</li>
+            <li>We WhatsApp you: "Talk to Kwame at Aria Ventures, they need a board build. kwame@aria.vc, LinkedIn attached."</li>
+            <li>You spin a 3-way WhatsApp group: adds us and the client, drops a one-liner "You two should chat."</li>
+            <li>You forward us a client email: "Sarah reached out, thinks you can help her."</li>
+          </ul>
+
+          <h4>Does not count</h4>
+          <ul>
+            <li>You on a Zoom call: "You should look at Acme." Verbal, no written trail.</li>
+            <li>You post on LinkedIn tagging us. No direct written intro.</li>
+            <li>You mention a client's name over dinner. No written act naming AND giving contact.</li>
+            <li>You get cc'd on a chain where we happen to also be cc'd. Passive, no intent signal.</li>
+            <li>We already have an active engagement or live proposal with the client. The 12-month look-back kills it.</li>
+          </ul>
+
+          <h4>Grey zones (pre-resolved)</h4>
+          <ul>
+            <li>Verbal warm 3-way at an event: doesn't count until it hits writing within 7 days naming client, contact, and intent.</li>
+            <li>Two people intro the same client: first written intro wins. Tie-break by acknowledgment timestamp. No split fees.</li>
+            <li>Client shows up after seeing us mentioned on LinkedIn: no fee unless there was a direct written intro.</li>
+            <li>Client signs 14 months after intro: no fee. Sign window closed.</li>
+            <li>Silence on acknowledgment: silence for 30 days = intro counts. Rejection must be in writing within 30 days.</li>
+          </ul>
+        </div>
+
+        <div class="gen-btn-wrap">
+          <p style="font-size:.9rem;color:var(--stone);margin-bottom:1rem">Ready to become a referral partner? We'll ask for your details, generate the contract with your name in it, and let you sign in the browser.</p>
+          <button class="gen-btn" id="gen-btn" onclick="openModal()">Generate my contract</button>
+        </div>
+
+      </div>
+
+      <div class="sig-section" id="sig-section">
+        <h2 style="font-family:var(--heading);font-size:1.15rem;color:var(--navy);margin-bottom:.4rem;text-align:center">Review and sign</h2>
+        <p style="font-size:.9rem;color:var(--stone);text-align:center;margin-bottom:1.5rem">Your details are filled in above. Sign below. We sign automatically on our end. A signed PDF goes to both parties on submit.</p>
+
+        <div class="party-block" id="party-mexzungu">
+          <div class="party-label">Party 1 · Mexzungu Group Ltd</div>
+          <div class="party-name">Jose Carrillo Perez</div>
+          <div class="party-detail">Director · Mexzungu Group Ltd · Royal Road, Henrietta, Mauritius</div>
+        </div>
+        <div class="party-block" id="party-partner-preview">
+          <div class="party-label">Party 2 · Partner</div>
+          <div class="party-name" id="preview-name">Your name</div>
+          <div class="party-detail" id="preview-details">Your details will appear here after step 1.</div>
+        </div>
+
+        <div class="sig-grid">
+          <div class="sig-col">
+            <h3>Mexzungu Group Ltd</h3>
+            <div class="sig-pre-signed">
+              <div class="sig-mark">Pepe Carrillo</div>
+              <div class="sig-caption">Signed on behalf of Mexzungu</div>
+              <div class="sig-line1">Jose Carrillo Perez</div>
+              <div class="sig-line2">Director · <span id="mexzungu-date">2026-08-27</span></div>
+            </div>
+          </div>
+          <div class="sig-col">
+            <h3 id="partner-sig-heading">Partner</h3>
+            <div class="sig-canvas-wrap">
+              <canvas class="sig-canvas" id="sig-canvas"></canvas>
+            </div>
+            <div class="sig-actions">
+              <span class="sig-hint">Sign in the box with mouse or finger</span>
+              <button class="clear" type="button" onclick="clearSig()">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="final-actions">
+          <button class="btn-sign" id="sign-btn" onclick="doSign()" disabled>Sign and send</button>
+        </div>
+        <div class="err" id="sign-err" style="text-align:center;display:none"></div>
+      </div>
+
+      <div class="completion-panel" id="completion-panel">
+        <div class="check">&#10003;</div>
+        <h2>Signed and sent.</h2>
+        <p>Signed PDF is on its way to your inbox and to pepe@mexzungu.com. Welcome to the Mexzungu referral network.</p>
+        <div class="status-line" id="status-line">Reference: pending</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>Your details</h2>
+    <p class="modal-sub">We use these to generate your copy of the contract.</p>
+    <div class="form-group">
+      <label for="f-name">Full legal name</label>
+      <input type="text" id="f-name" placeholder="e.g. John Smith" required>
+    </div>
+    <div class="form-group">
+      <label for="f-company">Company or trading name (optional)</label>
+      <input type="text" id="f-company" placeholder="If signing as a company, put its name here">
+      <div class="hint">Leave blank if you're signing as an individual.</div>
+    </div>
+    <div class="form-group">
+      <label for="f-title">Title (optional)</label>
+      <input type="text" id="f-title" placeholder="e.g. Founder, Principal, Director">
+    </div>
+    <div class="form-group">
+      <label for="f-address">Address</label>
+      <textarea id="f-address" rows="2" placeholder="City, country is enough. Full postal address is fine too." required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="f-email">Email</label>
+      <input type="email" id="f-email" placeholder="you@example.com" required>
+      <div class="hint">Signed PDF goes here.</div>
+    </div>
+    <div class="err" id="form-err" style="display:none"></div>
+    <div class="form-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="continueFromModal()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var partnerData = null;
+  var signaturePad = null;
+
+  function openModal(){ document.getElementById('modal').classList.add('visible'); }
+  function closeModal(){ document.getElementById('modal').classList.remove('visible'); document.getElementById('form-err').style.display='none'; }
+
+  function continueFromModal(){
+    var name = document.getElementById('f-name').value.trim();
+    var company = document.getElementById('f-company').value.trim();
+    var title = document.getElementById('f-title').value.trim();
+    var address = document.getElementById('f-address').value.trim();
+    var email = document.getElementById('f-email').value.trim();
+    var err = document.getElementById('form-err');
+    if(!name || !address || !email){
+      err.textContent = 'Name, address, and email are required.';
+      err.style.display = 'block';
+      return;
+    }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      err.textContent = 'Email looks off. Double check.';
+      err.style.display = 'block';
+      return;
+    }
+    partnerData = { name: name, company: company, title: title, address: address, email: email };
+    document.getElementById('preview-name').textContent = company ? (company + ' (represented by ' + name + ')') : name;
+    var detail = (title ? title + ' · ' : '') + address;
+    document.getElementById('preview-details').textContent = detail;
+    document.getElementById('partner-sig-heading').textContent = company || name;
+    closeModal();
+    var sigSec = document.getElementById('sig-section');
+    sigSec.classList.add('visible');
+    sigSec.scrollIntoView({ behavior:'smooth', block:'start' });
+    initSignaturePad();
+    document.getElementById('gen-btn').disabled = true;
+    document.getElementById('gen-btn').textContent = 'Contract generated below';
+  }
+
+  function initSignaturePad(){
+    var canvas = document.getElementById('sig-canvas');
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    signaturePad = new SignaturePad(canvas, { backgroundColor: 'rgba(255,255,255,0)', penColor: '#1a1a2e' });
+    signaturePad.addEventListener('endStroke', function(){ document.getElementById('sign-btn').disabled = signaturePad.isEmpty(); });
+  }
+
+  function clearSig(){ if(signaturePad){ signaturePad.clear(); document.getElementById('sign-btn').disabled = true; } }
+
+  function doSign(){
+    if(!signaturePad || signaturePad.isEmpty()) return;
+    var btn = document.getElementById('sign-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    var errEl = document.getElementById('sign-err');
+    errEl.style.display = 'none';
+
+    var signatureData = signaturePad.toDataURL('image/png');
+    var date = new Date().toISOString().slice(0,10);
+    var payload = {
+      engagement: 'referral-' + (partnerData.company || partnerData.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '-' + Date.now(),
+      doc_type: 'referral-agreement',
+      doc_title: 'Mexzungu Standard Referral Agreement',
+      partner_name: partnerData.name,
+      partner_company: partnerData.company,
+      partner_title: partnerData.title,
+      partner_address: partnerData.address,
+      email: partnerData.email,
+      signer: partnerData.name,
+      signer_name: partnerData.name,
+      signer_email: partnerData.email,
+      signature: signatureData,
+      date: date,
+      mexzungu_signer: 'Jose Carrillo Perez',
+      mexzungu_title: 'Director',
+      mexzungu_signed_at: date,
+      governing_law: 'Mauritius'
+    };
+
+    fetch('/api/sign', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      return r.json().then(function(j){ return { ok: r.ok, status: r.status, body: j }; });
+    }).then(function(res){
+      if(!res.ok){ throw new Error((res.body && res.body.error) || ('HTTP ' + res.status)); }
+      var docId = (res.body && res.body.document_id) || 'unknown';
+      document.getElementById('sig-section').style.display = 'none';
+      var cp = document.getElementById('completion-panel');
+      cp.classList.add('visible');
+      document.getElementById('status-line').textContent = 'Reference: ' + docId;
+      cp.scrollIntoView({ behavior:'smooth', block:'start' });
+    }).catch(function(e){
+      errEl.textContent = 'Could not submit: ' + e.message + '. Screenshot this page and email pepe@mexzungu.com.';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Try again';
+    });
+  }
+
+  document.getElementById('mexzungu-date').textContent = new Date().toISOString().slice(0,10);
+  document.getElementById('modal').addEventListener('click', function(e){ if(e.target.id === 'modal') closeModal(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Azure Museum: Mexzungu Group Proposal</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --bg-primary:     #0d0d0d;
+            --bg-card:        #1a1a1a;
+            --text-primary:   #fafafa;
+            --text-secondary: #9a8f88;
+            --text-muted:     #6b5e57;
+            --text-accent:    #e86fa0;
+            --border:         #2a2a2a;
+            --border-hover:   #e14b87;
+        }
+
+        /* PASSWORD GATE */
+        #pw-gate {
+            position: fixed; inset: 0;
+            background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a;
+            border-radius: 12px; padding: 3rem 2.5rem;
+            max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.6rem; color: #fafafa; margin-bottom: 0.6rem; line-height: 1.2; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem;
+            background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-size: 1rem;
+            letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center;
+            transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .pw-input:focus { outline: none; border-color: #e14b87; box-shadow: 0 0 0 3px rgba(225,75,135,0.15); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-field .pw-input { margin-bottom: 0; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem;
+            background-color: #e14b87;
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s; box-shadow: 0 4px 14px rgba(225,75,135,0.35);
+        }
+        .pw-btn:hover { background-color: #e86fa0; transform: scale(1.02); }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+        .pw-footer-note { font-size: 0.75rem; color: #4a4a4a; margin-top: 2rem; }
+
+        /* PROPOSAL */
+        #proposal-content { display: none; }
+        #proposal-content.visible { display: block; }
+
+        .proposal-hero {
+            min-height: 60vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 10rem 2rem 5rem; max-width: 1100px; margin: 0 auto;
+        }
+        .hero-tag {
+            font-family: 'Rock Salt', cursive; font-size: 0.75rem;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: #e14b87; margin-bottom: 1.5rem; opacity: 0.85;
+        }
+        .proposal-hero h1 {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(2.6rem, 5.5vw, 4.4rem); font-weight: 400;
+            line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 1.2rem; color: #fafafa;
+        }
+        .valid-note { font-size: 0.85rem; color: #6b5e57; letter-spacing: 0.05em; }
+
+        .prop-section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+        .prop-divider { height: 1px; background: #1a1a1a; max-width: 860px; margin: 0 auto; }
+
+        .prop-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: #e14b87; font-weight: 600; margin-bottom: 1rem; }
+        .prop-heading {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 400;
+            color: #fafafa; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 1.5rem;
+        }
+        .prop-copy { font-size: 1.05rem; color: #9a8f88; line-height: 1.85; max-width: 680px; margin: 0; }
+        .prop-copy strong { color: #c8c0bb; font-weight: 600; }
+
+        /* BOLT LIST */
+        .bolt-list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+        .bolt-list li {
+            font-size: 0.92rem; color: #6b5e57; padding: 0.65rem 0;
+            border-bottom: 1px solid #1e1e1e; display: flex; gap: 0.8rem; line-height: 1.6;
+        }
+        .bolt-list li:last-child { border: none; }
+        .bolt-list li::before {
+            content: '';
+            display: inline-block;
+            width: 10px; height: 16px; flex-shrink: 0; margin-top: 0.1rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+
+        /* WORKSTREAM OVERVIEW */
+        .ws-overview {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+        }
+        @media (max-width: 640px) { .ws-overview { grid-template-columns: 1fr; } }
+        .ws-track {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 1.8rem; overflow: hidden;
+        }
+        .ws-track.ws1 { border-top: 3px solid #e14b87; }
+        .ws-track.ws2 { border-top: 3px solid #d4a039; }
+        .ws-track-badge {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 20px;
+            display: inline-block; margin-bottom: 1rem;
+        }
+        .ws1 .ws-track-badge { background: rgba(225,75,135,0.12); color: #e14b87; }
+        .ws2 .ws-track-badge { background: rgba(212,160,57,0.12); color: #d4a039; }
+        .ws-track-title {
+            font-family: 'RocknRoll One', 'Space Grotesk', sans-serif;
+            font-size: 1.15rem; color: #fafafa; margin-bottom: 0.6rem;
+        }
+        .ws-track-desc { font-size: 0.85rem; color: #6b5e57; line-height: 1.65; margin-bottom: 1.2rem; }
+        .ws-track-outcome {
+            font-size: 0.8rem; color: #9a8f88;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .ws-track-outcome::before {
+            content: '';
+            display: inline-block; width: 8px; height: 13px; flex-shrink: 0;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .ws2 .ws-track-outcome::before { background-color: #d4a039; }
+        .ws-independent-note {
+            margin-top: 1.5rem; text-align: center;
+            font-size: 0.82rem; color: #4a4a4a; letter-spacing: 0.05em;
+        }
+
+        /* WS SECTION HEADER */
+        .ws-section-header { display: flex; align-items: flex-start; gap: 1.2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .ws-section-badge {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 20px;
+            white-space: nowrap; margin-top: 0.4rem;
+        }
+        .ws-section-badge.ws1 { background: rgba(225,75,135,0.12); color: #e14b87; border: 1px solid rgba(225,75,135,0.2); }
+        .ws-section-badge.ws2 { background: rgba(212,160,57,0.12); color: #d4a039; border: 1px solid rgba(212,160,57,0.2); }
+
+        /* ENTITY DIAGRAM */
+        .diagram-wrap {
+            margin: 2.5rem 0; background: #0f0f0f; border: 1px solid #1e1e1e;
+            border-radius: 14px; padding: 2.5rem 2rem; overflow-x: auto;
+        }
+        .diagram-label {
+            font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+            color: #4a4a4a; font-weight: 600; margin-bottom: 1.5rem; text-align: center;
+        }
+        .entity-diagram { display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .entity-col { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; min-width: 160px; }
+        .entity-col-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #4a4a4a; font-weight: 600; }
+        .entity-box { border-radius: 10px; padding: 1rem 1.2rem; text-align: center; width: 100%; max-width: 200px; box-sizing: border-box; }
+        .entity-box.before { background: #1a1a1a; border: 1px dashed #3a3a3a; }
+        .entity-box.after-main { background: linear-gradient(135deg, #1a0f15 0%, #1a1a1a 100%); border: 1px solid #e14b87; }
+        .entity-box.after-sub { background: #111; border: 1px solid #2a2a2a; }
+        .entity-box-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; color: #c8c0bb; margin-bottom: 0.35rem; }
+        .entity-box-sub { font-size: 0.72rem; color: #4a4a4a; line-height: 1.4; }
+        .entity-box-tag {
+            font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; margin-top: 0.5rem; display: inline-block;
+            padding: 0.2rem 0.55rem; border-radius: 10px;
+        }
+        .entity-box.after-main .entity-box-tag { background: rgba(225,75,135,0.15); color: #e14b87; }
+        .entity-box.before .entity-box-tag { background: rgba(107,94,87,0.15); color: #6b5e57; }
+        .entity-box.after-sub .entity-box-tag { background: rgba(107,94,87,0.1); color: #6b5e57; }
+        .entity-arrow { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; color: #4a4a4a; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .entity-after-col { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+        .entity-connector { width: 1px; height: 20px; background: #2a2a2a; }
+        .entity-sub-row { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+        .entity-sub-row .entity-box { min-width: 120px; max-width: 150px; }
+        .fee-tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 1px solid #222; flex-wrap: wrap; }
+        .fee-tab { padding: 0.7rem 1.4rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: none; color: #4a4a4a; cursor: pointer; position: relative; transition: color 0.15s; }
+        .fee-tab.active { color: #e14b87; }
+        .fee-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: #e14b87; }
+        .fee-tab-badge { font-size: 0.6rem; background: rgba(225,75,135,0.15); color: #e14b87; border-radius: 4px; padding: 0.15rem 0.4rem; margin-left: 0.35rem; text-transform: none; letter-spacing: 0; font-weight: 600; vertical-align: middle; }
+        .fee-panel { display: none; }
+        .fee-panel.active { display: block; }
+        .fee-context-note { font-size: 0.84rem; color: #6b5e57; line-height: 1.65; margin-bottom: 1.5rem; padding: 0.9rem 1.1rem; border-left: 2px solid #2a2a2a; }
+        .fee-context-note strong { color: #9a8f88; }
+
+        /* TIMELINE DIAGRAM */
+        .timeline-row { display: flex; align-items: flex-start; overflow-x: auto; padding-bottom: 0.5rem; }
+        .tl-step { display: flex; flex-direction: column; align-items: center; min-width: 100px; flex: 1; }
+        .tl-dot {
+            width: 34px; height: 34px; border-radius: 50%; border: 2px solid #e14b87;
+            background: #1a0f15; display: flex; align-items: center; justify-content: center;
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 700; color: #e14b87;
+        }
+        .tl-dot.gold { border-color: #d4a039; background: #1a160a; color: #d4a039; }
+        .tl-line { height: 2px; flex: 1; min-width: 20px; margin-top: 16px; align-self: flex-start; }
+        .tl-label { font-size: 0.72rem; color: #6b5e57; text-align: center; margin-top: 0.7rem; line-height: 1.4; padding: 0 0.3rem; }
+        .tl-time { font-size: 0.65rem; color: #4a4a4a; text-align: center; margin-top: 0.25rem; }
+
+        /* SERVICE ITEMS */
+        .service-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+        .service-item {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 1.4rem 1.6rem; display: flex; gap: 1.2rem; align-items: flex-start;
+        }
+        .service-item-bolt {
+            width: 12px; height: 18px; flex-shrink: 0; margin-top: 0.15rem;
+            background-color: #d4a039;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .service-item-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 700; color: #c8c0bb; margin-bottom: 0.35rem; }
+        .service-item-body { font-size: 0.84rem; color: #6b5e57; line-height: 1.65; }
+
+        /* PRICING */
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2rem; }
+        @media (max-width: 760px) { .pricing-grid { grid-template-columns: 1fr; } }
+        .pricing-card {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 1.8rem 1.6rem; display: flex; flex-direction: column; gap: 1rem;
+        }
+        .pricing-card.recommended { border-color: #e14b87; background: linear-gradient(160deg, #111 0%, #1a0f15 100%); }
+        .pricing-card-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #6b5e57; }
+        .pricing-card.recommended .pricing-card-label { color: #e14b87; }
+        .pricing-number { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 2rem; color: #fafafa; line-height: 1.1; }
+        .pricing-number-sub { font-size: 0.82rem; color: #6b5e57; margin-top: 0.2rem; }
+        .pricing-desc { font-size: 0.85rem; color: #9a8f88; line-height: 1.7; margin: 0; }
+        .pricing-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+        .pricing-features li { font-size: 0.82rem; color: #6b5e57; display: flex; gap: 0.6rem; line-height: 1.5; }
+        .pricing-features li::before {
+            content: '';
+            display: inline-block; width: 8px; height: 13px; flex-shrink: 0; margin-top: 0.1rem;
+            background-color: #e14b87;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .pricing-card.recommended .pricing-features li { color: #9a8f88; }
+        .pricing-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 20px;
+            background: rgba(225,75,135,0.15); color: #e14b87; border: 1px solid rgba(225,75,135,0.25);
+        }
+
+        /* EQUITY */
+        .equity-block {
+            display: flex; gap: 1rem; align-items: flex-start;
+            background: #111; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 1.4rem 1.6rem; margin-top: 1rem;
+        }
+        .equity-bolt {
+            width: 12px; height: 18px; flex-shrink: 0; margin-top: 0.15rem;
+            background-color: #d4a039;
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .equity-block-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 700; color: #c8c0bb; margin-bottom: 0.35rem; }
+        .equity-block-body { font-size: 0.84rem; color: #6b5e57; line-height: 1.65; }
+        .equity-block-body strong { color: #d4a039; }
+
+        /* FINE PRINT */
+        .fine-print-list { list-style: none; padding: 0; margin: 1.5rem 0; }
+        .fine-print-list li { font-size: 0.85rem; color: #4a4a4a; padding: 0.6rem 0; border-bottom: 1px solid #1a1a1a; line-height: 1.65; }
+        .fine-print-list li:last-child { border: none; }
+        .payment-block { font-size: 0.88rem; color: #6b5e57; line-height: 1.8; margin-top: 2rem; background: #111; border: 1px solid #2a2a2a; border-radius: 10px; padding: 1.2rem 1.4rem; }
+        .payment-block strong { color: #9a8f88; }
+
+        /* CTA */
+        .cta-section { padding: 6rem 2rem; text-align: center; max-width: 700px; margin: 0 auto; }
+        .cta-sub { font-size: 1rem; color: #9a8f88; line-height: 1.75; margin-bottom: 2.5rem; }
+        .cta-btn {
+            display: inline-block; padding: 1.1rem 2.8rem;
+            background-color: #e14b87; color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem;
+            border-radius: 8px; text-decoration: none;
+            box-shadow: 0 6px 24px rgba(225,75,135,0.4); transition: all 0.2s;
+        }
+        .cta-btn:hover { background-color: #e86fa0; transform: translateY(-2px); }
+        .cta-secondary { font-size: 0.88rem; color: #4a4a4a; margin-top: 1.5rem; }
+        .cta-secondary a { color: #6b5e57; text-decoration: underline; }
+        .cta-secondary a:hover { color: #e14b87; }
+    </style>
+</head>
+<body style="background:#0d0d0d; color:#fafafa;">
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+    <div class="pw-card">
+        <img class="pw-logo" src="https://mexzungu.com/img/logo-white.png" alt="Mexzungu Group" onerror="this.style.display='none'">
+        <div class="pw-label">Confidential Proposal</div>
+        <div class="pw-heading">Azure Museum</div>
+        <div class="pw-sub">This document is private. Enter your access code to continue.</div>
+        <div class="pw-field">
+        <input class="pw-input" id="pw-input" type="password" placeholder="Access code" autocomplete="off">
+        <button class="pw-toggle" type="button" onclick="togglePwVisibility()" aria-label="Show password"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+        <button class="pw-btn" onclick="checkPassword()">Access Proposal</button>
+        <div class="pw-error" id="pw-error"></div>
+        <div class="pw-footer-note">Prepared by Pepe Carrillo / Mexzungu Group &mdash; August 2026</div>
+    </div>
+</div>
+
+<!-- PROPOSAL CONTENT -->
+<div id="proposal-content">
+
+<main>
+
+<!-- HERO -->
+<div class="proposal-hero">
+    <div class="hero-tag">Mexzungu Group &mdash; Confidential Proposal</div>
+    <h1>Building the structure<br>that scales the vision.</h1>
+    <div class="valid-note">Prepared for Gwamaka J. Marc &mdash; Azure Museum &mdash; August 2026</div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 01: SITUATION -->
+<div class="prop-section">
+    <div class="prop-label">01 / What we heard</div>
+    <div class="prop-heading">The vision is clear. The architecture needs to catch up.</div>
+    <p class="prop-copy">
+        Marc, you are building <strong>Azure Museum</strong>: an interactive experience that uses volumetric holography and AI to bring Rwandan history to life through choices, identity, and reconciliation. The target is youth. The ambition is global. And you need to be ready to accept funding before you hit the stage in September.
+    </p>
+    <p class="prop-copy" style="margin-top:1.2rem;">
+        Right now there is no entity, no legal foundation, and a funding target ($50-60k) that Pepe flagged as too conservative. The real number for a credible pilot with room to operate is closer to <strong>$250,000</strong>. That means building clean and fast.
+    </p>
+
+    <div class="ws-overview">
+        <div class="ws-track ws1">
+            <div class="ws-track-badge">WS1</div>
+            <div class="ws-track-title">Venture Architecture</div>
+            <div class="ws-track-desc">Build the two-entity structure before you raise a dollar. Delaware Public Benefit Corporation (fundraising vehicle) + Rwanda operating company. Board framework, IP assignment, cap table.</div>
+            <div class="ws-track-outcome">Fundraising-ready entity in 3-4 weeks</div>
+        </div>
+        <div class="ws-track ws2">
+            <div class="ws-track-badge">WS2</div>
+            <div class="ws-track-title">Fundraising Advisory</div>
+            <div class="ws-track-desc">Instrument design, investor narrative, term sheet review, and closing coordination for the $250k pilot raise and beyond.</div>
+            <div class="ws-track-outcome">Closed pilot round before January</div>
+        </div>
+    </div>
+    <div class="ws-independent-note">Both workstreams are independently activatable. You can start with WS1 alone.</div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 02: WS1 DELIVERABLES -->
+<div class="prop-section">
+    <div class="ws-section-header">
+        <div>
+            <div class="prop-label">02 / What we will build</div>
+            <div class="prop-heading">WS1: Venture Architecture</div>
+        </div>
+        <span class="ws-section-badge ws1">Workstream 1</span>
+    </div>
+
+    <p class="prop-copy">Five deliverables. Clean and fast. The goal is a structure that investors recognize and trust, that protects your IP, and that can scale as Azure Museum grows globally.</p>
+
+    <!-- ENTITY STRUCTURE DIAGRAM -->
+    <div class="diagram-wrap">
+        <div class="diagram-label">Entity structure &mdash; before and after WS1</div>
+        <div class="entity-diagram">
+            <div class="entity-col">
+                <div class="entity-col-label">Today</div>
+                <div class="entity-box before">
+                    <div class="entity-box-name">G Marc</div>
+                    <div class="entity-box-sub">Individual founder<br>no entity</div>
+                    <span class="entity-box-tag">Unstructured</span>
+                </div>
+            </div>
+            <div class="entity-arrow">
+                <svg width="28" height="12" viewBox="0 0 28 12" fill="none">
+                    <path d="M0 6H24M24 6L19 1M24 6L19 11" stroke="#e14b87" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>WS1</span>
+            </div>
+            <div class="entity-after-col">
+                <div class="entity-col-label">After WS1</div>
+                <div class="entity-box after-main">
+                    <div class="entity-box-name">Azure Museum, PBC</div>
+                    <div class="entity-box-sub">Delaware Public Benefit Corp<br>Fundraising vehicle &amp; IP holding</div>
+                    <span class="entity-box-tag">Registered</span>
+                </div>
+                <div class="entity-connector"></div>
+                <div class="entity-sub-row">
+                    <div class="entity-box after-sub">
+                        <div class="entity-box-name">Rwanda OpCo</div>
+                        <div class="entity-box-sub">Operations, staff<br>local programs</div>
+                        <span class="entity-box-tag">Registered</span>
+                    </div>
+                    <div class="entity-box after-sub">
+                        <div class="entity-box-name">IP Assigned</div>
+                        <div class="entity-box-sub">Holograms, brand, content<br>owned by PBC</div>
+                        <span class="entity-box-tag">Protected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ul class="bolt-list">
+        <li><strong>Delaware Public Benefit Corporation registration.</strong> PBC structure legally protects the social mission while keeping you investor-ready. We coordinate with a Delaware registered agent. Filing fees billed at cost, no markup.</li>
+        <li><strong>Rwanda operating company setup.</strong> Local entity for staff, programs, and on-the-ground operations. We coordinate with Kigali-based corporate counsel. Rwanda counsel fees billed at cost, no markup.</li>
+        <li><strong>Holding structure design.</strong> How Delaware PBC owns or operates through the Rwanda entity. Clean, documented, and built to withstand investor due diligence.</li>
+        <li><strong>Board governance framework.</strong> Board bylaws, board charter, and committee structure. Designed for a small mission-driven board with room to grow as the project scales.</li>
+        <li><strong>IP assignment agreement.</strong> Every piece of content, technology, brand asset, and methodology formally assigned from you personally to the entity. Non-negotiable for any serious investor.</li>
+        <li><strong>Cap table design.</strong> Founder shares, advisory pool (10-15%), and fundraising headroom. Clean and unambiguous from day one.</li>
+        <li><strong>Fundraising-ready documentation package.</strong> One-page entity summary written for the investor conversation. Covers structure, mission lock, governance, and IP status. The questions they will ask before they ask them.</li>
+    </ul>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 03: WS2 DELIVERABLES -->
+<div class="prop-section">
+    <div class="ws-section-header">
+        <div>
+            <div class="prop-label">03 / The raise</div>
+            <div class="prop-heading">WS2: Fundraising Advisory</div>
+        </div>
+        <span class="ws-section-badge ws2">Workstream 2</span>
+    </div>
+
+    <p class="prop-copy">The $250k pilot raise is achievable. The September speaking window is the catalyst. We build the right instrument, sharpen the narrative, and make sure you close at terms that do not haunt you in round two.</p>
+
+    <!-- FUNDRAISING TIMELINE DIAGRAM -->
+    <div class="diagram-wrap">
+        <div class="diagram-label">Fundraising roadmap &mdash; August 2026 to launch</div>
+        <div class="timeline-row">
+            <div class="tl-step">
+                <div class="tl-dot">1</div>
+                <div class="tl-label">Structure + instrument ready</div>
+                <div class="tl-time">Sep 2026</div>
+            </div>
+            <div class="tl-line" style="background:linear-gradient(90deg,#e14b87,#d4a039);"></div>
+            <div class="tl-step">
+                <div class="tl-dot">2</div>
+                <div class="tl-label">US speaking engagements + outreach</div>
+                <div class="tl-time">Sep-Oct 2026</div>
+            </div>
+            <div class="tl-line" style="background:#d4a039;"></div>
+            <div class="tl-step">
+                <div class="tl-dot gold">3</div>
+                <div class="tl-label">Pilot delivery milestone</div>
+                <div class="tl-time">Jan 2027</div>
+            </div>
+            <div class="tl-line" style="background:linear-gradient(90deg,#d4a039,#2a2a2a);"></div>
+            <div class="tl-step">
+                <div class="tl-dot gold">4</div>
+                <div class="tl-label">Museum opens</div>
+                <div class="tl-time">Jun 2027</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-list">
+        <div class="service-item">
+            <div class="service-item-bolt"></div>
+            <div>
+                <div class="service-item-name">Fundraising instrument design</div>
+                <div class="service-item-body">Recommendation on SAFE vs convertible note vs priced equity for the $250k pilot. Impact investors expect different structures than VC. We design the instrument, draft it, and make it investor-ready. You should not be negotiating blindly on this.</div>
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="service-item-bolt"></div>
+            <div>
+                <div class="service-item-name">Investor narrative document</div>
+                <div class="service-item-body">A one-pager written for the capital conversation, not the museum brochure. Covers the mission, the structure, the traction, and the ask. Designed to travel to inboxes and boardrooms alike.</div>
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="service-item-bolt"></div>
+            <div>
+                <div class="service-item-name">Term sheet review and position guidance</div>
+                <div class="service-item-body">We read every term sheet before you do. We flag what matters, what is standard, and what is designed to look standard but is not. You decide. We make sure you decide with full information.</div>
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="service-item-bolt"></div>
+            <div>
+                <div class="service-item-name">Closing coordination</div>
+                <div class="service-item-body">Available on 48-hour notice for anything that surfaces between first commitment and capital clearing. Keeps the close from stalling on process.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 04: FEES -->
+<div class="prop-section">
+    <div class="prop-label">04 / Investment</div>
+    <div class="prop-heading">Three ways to structure this. You choose what works.</div>
+    <p class="prop-copy">All options include both workstreams. The difference is how and when you pay.</p>
+
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <div class="pricing-card-label">Option A</div>
+            <div class="pricing-number">$2,500</div>
+            <div class="pricing-number-sub">upfront, covers both workstreams in full</div>
+            <p class="pricing-desc">Fixed + Success. Best if you want cost certainty and can commit upfront. Slight discount vs Options B and C.</p>
+            <ul class="pricing-features">
+                <li>Full WS1 + WS2 scope, no retainer</li>
+                <li>2% success fee on fundraise close</li>
+                <li>0.25% advisory equity, monthly vest, no cliff</li>
+                <li>No additional invoices until close</li>
+            </ul>
+        </div>
+        <div class="pricing-card">
+            <div class="pricing-card-label">Option B</div>
+            <div class="pricing-number">$1,000</div>
+            <div class="pricing-number-sub">at signing, then milestone payments</div>
+            <p class="pricing-desc">Milestone-Based. Best if you want to pay as value is delivered. Tied to specific outputs.</p>
+            <ul class="pricing-features">
+                <li>$1,000 at engagement signing</li>
+                <li>$1,000 at WS1 completion (all docs delivered)</li>
+                <li>$1,000 at first investor meeting secured</li>
+                <li>2% success fee on fundraise close</li>
+                <li>0.25% advisory equity, monthly vest</li>
+            </ul>
+        </div>
+        <div class="pricing-card">
+            <div class="pricing-card-label">Option C</div>
+            <div class="pricing-number">$500<span style="font-size:1rem;color:#6b5e57">/mo</span></div>
+            <div class="pricing-number-sub">setup + $500/month retainer</div>
+            <p class="pricing-desc">Retainer + Success. Best if timeline is uncertain and you want ongoing access without large upfront payments.</p>
+            <ul class="pricing-features">
+                <li>$500 at signing (setup)</li>
+                <li>$500/month while engagement is active</li>
+                <li>2.5% success fee on fundraise close</li>
+                <li>0.25% advisory equity, monthly vest</li>
+                <li>30 days notice to pause or cancel</li>
+            </ul>
+        </div>
+    </div>
+
+    <p style="font-size:0.8rem;color:#4a4a4a;margin-top:1.5rem;line-height:1.6;">Success fee calculated on total capital raised, payable within 14 days of funds clearing. Advisory equity vests monthly from engagement start. All fees in USD.</p>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 05: OUT OF SCOPE -->
+<div class="prop-section">
+    <div class="prop-label">05 / What this does not include</div>
+    <div class="prop-heading">Scope clarity prevents surprises.</div>
+    <ul class="bolt-list">
+        <li>US tax advice. We flag the questions and recommend you engage a US CPA before accepting investor capital. We coordinate; they advise. Pepe is not licensed to practice US law or tax.</li>
+        <li>SEC filings or registered securities offerings. If the raise triggers securities law obligations in the US, we coordinate with US securities counsel. That is a separate scope.</li>
+        <li>Sourcing investors. We advise on instrument, narrative, and close. We do not act as a placement agent.</li>
+        <li>Grant writing or foundation applications. A separate engagement if Azure Museum pursues that route alongside the equity raise.</li>
+        <li>Delaware registered agent fees and government filing costs. Billed at cost, no markup.</li>
+    </ul>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- 06: FINE PRINT -->
+<div class="prop-section">
+    <div class="prop-label">06 / The fine print</div>
+    <div class="prop-heading">Short version.</div>
+    <ul class="fine-print-list">
+        <li>Mauritius law governs. Mexzungu Group Ltd, Royal Road, Henrietta, 73120, Mauritius.</li>
+        <li>Either party may terminate with 30 days written notice. Fees accrued to that date are payable.</li>
+        <li>Confidential. What happens in this engagement stays in this engagement. Mutual.</li>
+        <li>This engagement covers venture architecture, fundraising advisory, and structural consulting. It does not constitute legal advice in the United States, Rwanda, or any other jurisdiction where Pepe Carrillo is not licensed to practice law.</li>
+        <li>Liability is capped at fees paid in the prior 3 months.</li>
+        <li>Non-solicitation: neither party approaches the other's team for 12 months post-engagement.</li>
+    </ul>
+
+    <div class="payment-block">
+        <strong>Payment accepted via:</strong> Wire transfer (MCB, IBAN MU49MCBL0901000448521954000USD, SWIFT: MCBLMUMU) &nbsp;|&nbsp; Payoneer (pepe@mexzungu.com) &nbsp;|&nbsp; USDC on Solana (CN4jSKfwSiSHWXc1z3rPQtjU8A7Kadq2cAoiszNsXJ7A)
+    </div>
+</div>
+
+<div class="prop-divider"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <div class="prop-label">Ready to build?</div>
+    <div class="prop-heading">The September window is real.</div>
+    <p class="cta-sub">Review the engagement letter, pick your option, and sign when you are ready. The entity needs to be in place before you step on stage. Let us not waste the momentum from this call.</p>
+    <a class="cta-btn" href="https://mexzungu.com/sign/azure-museum">
+        Review &amp; Sign the Engagement Letter
+    </a>
+    <p class="cta-secondary">
+        Questions? <a href="mailto:pepe@mexzungu.com">Reach Pepe directly</a> or <a href="https://mexzungu.com/lets-jam">book 15 minutes.</a>
+    </p>
+</div>
+
+</main>
+
+<footer>
+    <div style="max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; padding:0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size:0.85rem;">
+            <a href="/privacy/" style="color:var(--gold);">Privacy Policy</a> &middot;
+            <a href="/terms/" style="color:var(--gold);">Terms of Service</a>
+        </span>
+    </div>
+    <div class="footer-disclaimer">Mexzungu Group provides venture architecture, strategic advisory, and structural consulting. This does not constitute legal advice in any jurisdiction.</div>
+</footer>
+
+</div><!-- /proposal-content -->
+
+<script>
+(function() {
+    var CORRECT = 'azure-2026';
+    var MASTER_PW = 'Master-Outlaw-26';
+    var SESSION_KEY = 'azure_museum_auth';
+
+    function unlock() {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('proposal-content').classList.add('visible');
+    }
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); return; }
+
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPassword();
+    });
+
+    window.checkPassword = function() {
+        var val = document.getElementById('pw-input').value.trim();
+        var input = document.getElementById('pw-input');
+        var err = document.getElementById('pw-error');
+        if (val === CORRECT || val === MASTER_PW) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            unlock();
+        } else {
+            input.classList.add('error');
+            err.textContent = 'Incorrect access code.';
+            setTimeout(function() { input.classList.remove('error'); }, 600);
+        }
+    };
+})();
+    function switchFeeTab(tab) {
+        document.querySelectorAll('.fee-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.fee-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('fee-tab-' + tab).classList.add('active');
+        document.getElementById('fee-panel-' + tab).classList.add('active');
+    }
+
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    }
+</script>
+
+</body>
+</html>

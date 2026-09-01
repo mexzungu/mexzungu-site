@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skills Library | Mexzungu Group</title>
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/style.css">
+<style>
+  :root {
+    --bg:#0f0f0f; --surface:#181818; --border:#2a2a2a;
+    --conn:#4cc8b4; --val:#f0a030; --care:#b482ff; --core:#94a3b8;
+    --text:#e2e8f0; --muted:#64748b;
+  }
+  body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; margin:0; padding:0; }
+  .page-nav { background:var(--surface); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
+  .page-nav a { color:var(--muted); text-decoration:none; font-size:13px; }
+  .page-nav a:hover { color:var(--text); }
+  .hero { padding:48px 24px 32px; max-width:1200px; margin:0 auto; }
+  .hero h1 { font-size:2rem; font-weight:700; color:var(--text); margin:0 0 8px; }
+  .hero p { color:var(--muted); margin:0 0 8px; font-size:15px; }
+  .meta { color:var(--muted); font-size:12px; }
+  .main { max-width:1200px; margin:0 auto; padding:0 24px 64px; }
+  .category { margin-bottom:48px; }
+  .cat-title { font-size:.85rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; border-left:3px solid; padding-left:12px; margin:0 0 16px; display:flex; align-items:center; gap:10px; }
+  .cat-count { background:var(--border); color:var(--muted); font-size:11px; padding:2px 7px; border-radius:999px; font-weight:400; letter-spacing:0; text-transform:none; }
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px; }
+  .skill-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 16px; }
+  .skill-name { font-size:13px; font-weight:600; margin-bottom:2px; }
+  .skill-slug { font-size:11px; color:var(--muted); font-family:monospace; margin-bottom:6px; }
+  .skill-desc { font-size:12px; color:#94a3b8; line-height:1.5; }
+  @media(max-width:600px) { .skills-grid { grid-template-columns:1fr; } .hero h1 { font-size:1.4rem; } }
+</style>
+</head>
+<body>
+
+<nav class="page-nav">
+  <a href="/engines/">Hub</a>
+  <a href="/engines/blueprint/">Blueprint</a>
+  <a href="/engines/directory/">Directory</a>
+  <a href="/ops/entity-classification/">Entity Classification</a>
+</nav>
+
+<div class="hero">
+  <h1>Skills Library</h1>
+  <p>Single source of truth for all 80 active skills in the MGL stack.</p>
+  <p>Source: <code>~/.claude/skills/</code> &nbsp;|&nbsp; Knowledge packs excluded &nbsp;|&nbsp; Auto-regenerated daily by Nina.</p>
+  <p class="meta">Last updated: 2026-08-18 22:20 CET</p>
+</div>
+
+<main class="main">
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#f0a030;color:#f0a030">Delivery Engines <span class="cat-count">7</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Agent Building Engine</div>
+      <div class="skill-slug">/agent-building-engine</div>
+      <div class="skill-desc">**Design spec:** `mexzungu-site/engines/agent-building/index.html`</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Agent Task Framework</div>
+      <div class="skill-slug">/agent-task-framework</div>
+      <div class="skill-desc">You are running as Quincy. You are the Director/PM of the Mexzungu Group agent</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Mgl App Dev</div>
+      <div class="skill-slug">/mgl-app-dev</div>
+      <div class="skill-desc">---</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Mgl Council Session</div>
+      <div class="skill-slug">/mgl-council-session</div>
+      <div class="skill-desc">Run the daily MGL Council session. Invoke each active ExCo persona in sequence,</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Mgl Delivery Engines</div>
+      <div class="skill-slug">/mgl-delivery-engines</div>
+      <div class="skill-desc">Produce two complete, gap-free operational engine maps:</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Mgl Exco Pulse</div>
+      <div class="skill-slug">/mgl-exco-pulse</div>
+      <div class="skill-desc">**What this is:** The daily heartbeat of the MGL council. Runs every morning at 08:00 CET, after all persona loops have completed. Reads signals from all 29 persona STATE.md files, synthesizes cross-persona patterns, rou</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">mgl-induction</div>
+      <div class="skill-slug">/mgl-induction</div>
+      <div class="skill-desc">MGL consultant onboarding loop. Two modes: BUILD (scaffold portal + content) and ONBOARD (run a consultant through 12 missions). Pilot: Kellen first, then Pepe personally, then open to new consultants.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#4cc8b4;color:#4cc8b4">Content Pipeline <span class="cat-count">3</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">content-engine</div>
+      <div class="skill-slug">/content-engine</div>
+      <div class="skill-desc">Autonomous content creation loop for Mexzungu Group social media. Keeps signoff queue at 7+ approved posts across LinkedIn, X, Instagram. Handles OC newsletter issues bi-weekly. Auto-approves posts that pass all guidelines. Never stops.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">content-engine-improver</div>
+      <div class="skill-slug">/content-engine-improver</div>
+      <div class="skill-desc">Nightly quality evaluator for the Mexzungu content engine. Scores last 3 posts against 6-dimension rubric, patches content-engine.py when any dimension falls below 4.0, audits profile consistency weekly, monitors for new Claude Code skills to integrate. Runs at 21:30 CET after content-engine. Permanent loop. Never exits.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">sm-strategy-builder</div>
+      <div class="skill-slug">/sm-strategy-builder</div>
+      <div class="skill-desc">Monthly evaluator-optimizer that synthesizes all available SM performance data, brand context, and market signals into brain/areas/mexzungu/social-content/strategy-2026.md. Scores the output on a 6-dimension rubric and patches until quality_score >= 4.0. First run on-demand; thereafter monthly on the 1st.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#b482ff;color:#b482ff">MGL Personas <span class="cat-count">23</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Annie Loop</div>
+      <div class="skill-slug">/annie-loop</div>
+      <div class="skill-desc">Annie tracks whether the content engine is actually working. She pulls social</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Anselmo Loop</div>
+      <div class="skill-slug">/anselmo-loop</div>
+      <div class="skill-desc">Anselmo runs the brand gate. Every day he checks the last 3 published posts</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Aretha Loop</div>
+      <div class="skill-slug">/aretha-loop</div>
+      <div class="skill-desc">Aretha watches the pipeline and client portfolio for any signal that a change</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Chrissie Loop</div>
+      <div class="skill-slug">/chrissie-loop</div>
+      <div class="skill-desc">Chrissie watches the physical asset portfolio and pipeline for any deal activity</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Freddie Loop</div>
+      <div class="skill-slug">/freddie-loop</div>
+      <div class="skill-desc">Freddie watches the content pipeline so MGL never goes dark.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Grace Loop</div>
+      <div class="skill-slug">/grace-loop</div>
+      <div class="skill-desc">Grace checks that the deployment queue is never empty. She verifies posts are</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Grohl Loop</div>
+      <div class="skill-slug">/grohl-loop</div>
+      <div class="skill-desc">Grohl checks that production is not stalling. He scans for Freddie briefs</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Iggy Loop</div>
+      <div class="skill-slug">/iggy-loop</div>
+      <div class="skill-desc">Iggy keeps the infrastructure alive. Not designed. Alive.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Jack Loop</div>
+      <div class="skill-slug">/jack-loop</div>
+      <div class="skill-desc">Jack builds the tools and owns the integrations. This loop fires daily to</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Joan Loop</div>
+      <div class="skill-slug">/joan-loop</div>
+      <div class="skill-desc">Joan runs once per week on Mondays. On all other days the loop exits immediately with</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Joni Loop</div>
+      <div class="skill-slug">/joni-loop</div>
+      <div class="skill-desc">Joni checks the social content pipeline for drafts that have been produced but not yet</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Kim Loop</div>
+      <div class="skill-slug">/kim-loop</div>
+      <div class="skill-desc">Kim tracks the nervous system of the MGL AI infrastructure. She watches connector</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Lenny Loop</div>
+      <div class="skill-slug">/lenny-loop</div>
+      <div class="skill-desc">Lenny checks the content production queue for briefs from Freddie that have not yet</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Lou Loop</div>
+      <div class="skill-slug">/lou-loop</div>
+      <div class="skill-desc">Lou owns the test infrastructure. This loop runs once per week (Monday only)</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Nick Loop</div>
+      <div class="skill-slug">/nick-loop</div>
+      <div class="skill-desc">Nick checks the editorial queue for high-stakes content that has passed Grohl's</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Nile Loop</div>
+      <div class="skill-slug">/nile-loop</div>
+      <div class="skill-desc">Nile owns the frontend. This loop fires daily to check that recently modified</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Nina Loop</div>
+      <div class="skill-slug">/nina-loop</div>
+      <div class="skill-desc">Nina runs daily to ensure the institutional memory of Mexzungu Group stays current,</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Ozzy Loop</div>
+      <div class="skill-slug">/ozzy-loop</div>
+      <div class="skill-desc">Ozzy runs on Mondays only. Every other day he exits clean immediately.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Pj Loop</div>
+      <div class="skill-slug">/pj-loop</div>
+      <div class="skill-desc">PJ tracks the debt side of Mexzungu's balance sheet. She watches loan workstreams,</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Prince Loop</div>
+      <div class="skill-slug">/prince-loop</div>
+      <div class="skill-desc">Prince runs daily to ensure nothing leaves Mexzungu Group without a documented</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Sade Loop</div>
+      <div class="skill-slug">/sade-loop</div>
+      <div class="skill-desc">Sade watches the gap between when clients were last heard from and when they should</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Sheryl Loop</div>
+      <div class="skill-slug">/sheryl-loop</div>
+      <div class="skill-desc">Sheryl tracks the gap between what clients are paying for and what they're feeling.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Tina Loop</div>
+      <div class="skill-slug">/tina-loop</div>
+      <div class="skill-desc">Tina tracks the equity side of Mexzungu's investment portfolio. She watches all</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#f0a030;color:#f0a030">Client & Legal <span class="cat-count">6</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Duara Contract Auditor</div>
+      <div class="skill-slug">/duara-contract-auditor</div>
+      <div class="skill-desc">Verify-first evaluator-optimizer for the 3 live Duara consulting agreement Google Docs.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">email-format-gate</div>
+      <div class="skill-slug">/email-format-gate</div>
+      <div class="skill-desc">Enforcement for email and contract formatting. All outbound emails use build_email_html(). All contracts use canonical templates.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">invoice-to-cash</div>
+      <div class="skill-slug">/invoice-to-cash</div>
+      <div class="skill-desc">></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">Namirembe Payments</div>
+      <div class="skill-slug">/namirembe-payments</div>
+      <div class="skill-desc">Loop: namirembe-payments</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">nca-board-memo</div>
+      <div class="skill-slug">/nca-board-memo</div>
+      <div class="skill-desc">Evaluator-optimizer loop. Produces a board decision memo for Pablo Villalba and the NCA board on the Elsewhere permanent site acquisition. Iterates writer + evaluator agents until all 5 rubric dimensions score >= 4.0. One-shot, run-until-done.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#f0a030">nca-new-site-structures</div>
+      <div class="skill-slug">/nca-new-site-structures</div>
+      <div class="skill-desc">Orchestrator loop. Dispatches 4 parallel legal/tax/accounting/deal specialists to analyse the NCA Elsewhere permanent site acquisition and produce 3 deal structures in Mexzungu NCA style. One-shot, run-until-done.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#b482ff;color:#b482ff">Jouissance <span class="cat-count">7</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">come-undone-editorial</div>
+      <div class="skill-slug">/come-undone-editorial</div>
+      <div class="skill-desc">Specialist editorial team loop for Come Undone handbook design. 8 agents (Quinn/PM, Dr. Sofia/Psychologist, Dr. Marta/Sexologist, Valentina/Art Director, Marco/Typographer, Elena/Print Engineer, Nico/Voice Editor, Lea/Brand Strategist). Exit: all 5 dims >= 4.5 AND Pepe says "print it".</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">come-undone-handbook</div>
+      <div class="skill-slug">/come-undone-handbook</div>
+      <div class="skill-desc">Iterative design loop for the Come Undone print handbook (Jouissance Aug 2026). Produces a print-ready PDF via Playwright + HTML/CSS. 7 specialist agents. Exit: all 5 eval dims >= 4.0 AND Pepe approves.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Jouissance Improver</div>
+      <div class="skill-slug">/jouissance-improver</div>
+      <div class="skill-desc">Callers: invoked via code-task or `Skill("jouissance-improver")`.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Jouissance Qc Launch</div>
+      <div class="skill-slug">/jouissance-qc-launch</div>
+      <div class="skill-desc">Callers: Skill("jouissance-qc-launch") or code-task.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Jouissance Repair</div>
+      <div class="skill-slug">/jouissance-repair</div>
+      <div class="skill-desc">You are the orchestrator for the Jouissance portal overnight repair run. Mission: review every line of code, fix all bugs, deploy, and get smoke-test.sh to exit 0. You have up to 3 full cycles.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Jouissance Visual Design</div>
+      <div class="skill-slug">/jouissance-visual-design</div>
+      
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">knowledge-set-design</div>
+      <div class="skill-slug">/knowledge-set-design</div>
+      <div class="skill-desc">Jouissance knowledge-set design loop. Quincy orchestrates 7 specialist agents to produce, score, and auto-commit educational content pieces for Jouissance participants. Fires on-demand. Fully autonomous. Pepe reviews before portal deploy.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#4cc8b4;color:#4cc8b4">Knowledge & Learning <span class="cat-count">4</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">book-to-skill</div>
+      <div class="skill-slug">/book-to-skill</div>
+      <div class="skill-desc">Converts books and documents (PDF, EPUB, DOCX, HTML, Markdown, plain text, RTF, MOBI/AZW with Calibre) into structured agent skills, extracting frameworks, mental models, principles, techniques, and anti-patterns. Use when the user wants to study a document through GitHub Copilot CLI, Amp, or Claude Code, apply an author's frameworks while working, or build a reusable knowledge base from a file.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">Gdocs Master</div>
+      <div class="skill-slug">/gdocs-master</div>
+      <div class="skill-desc">Loaded whenever Janis touches any Google Doc. Read this before any document operation.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">knowledge-engine</div>
+      <div class="skill-slug">/knowledge-engine</div>
+      <div class="skill-desc">Autonomous loop that captures, classifies, stores, and synthesizes knowledge across all Mexzungu Group sessions and clients. Two modes: CAPTURE (session-end, explicit, pattern) and SYNTHESIS (Monday 03:00 CET).</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">voice-note-filer</div>
+      <div class="skill-slug">/voice-note-filer</div>
+      <div class="skill-desc">Process unprocessed entries in memory/voice-notes-queue.jsonl. Parse keyword prefix or smart-route, append to correct brain/ file, mark filed, commit.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#94a3b8;color:#94a3b8">Infrastructure & Ops <span class="cat-count">11</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">comms-redesign</div>
+      <div class="skill-slug">/comms-redesign</div>
+      <div class="skill-desc">Executes the Telegram communications architecture revamp. Processes the 32-item catalog in telegram-groups.md in phase order. Auto-fixes safe items, gates before behavioral changes. Sends its own notifications via telegram_utils.send_ops_alert() to OPS alerts thread (7).</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">engine-architecture-improver</div>
+      <div class="skill-slug">/engine-architecture-improver</div>
+      <div class="skill-desc">></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Engine Auditor</div>
+      <div class="skill-slug">/engine-auditor</div>
+      <div class="skill-desc">Kim audit loop. Reusable auditor for any L2 or L3 engine in the MGL architecture.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Inter Agent Harness Design</div>
+      <div class="skill-slug">/inter-agent-harness-design</div>
+      <div class="skill-desc">On-demand design loop. Five specialist agents (Bowie, Lars, Nina, Jack, Bruce) produce a complete inter-agent coordination architecture for the Janis system. Janis coordinates. Output: master design doc + five specialist</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Janis Web Arch</div>
+      <div class="skill-slug">/janis-web-arch</div>
+      <div class="skill-desc">Determine the best architecture for a Janis mobile web app that gives terminal-like efficiency on phone. Output: `brain/docs/janis-web-architecture.md`.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">loop-maker</div>
+      <div class="skill-slug">/loop-maker</div>
+      <div class="skill-desc">></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">loop-maker-v2</div>
+      <div class="skill-slug">/loop-maker-v2</div>
+      <div class="skill-desc">></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">scheduling-agent</div>
+      <div class="skill-slug">/scheduling-agent</div>
+      <div class="skill-desc">></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Skills Auditor</div>
+      <div class="skill-slug">/skills-auditor</div>
+      <div class="skill-desc">Monthly sweep of every active skill in `~/.claude/skills/` against current architecture standards. Auto-patches what it can. Flags what needs human action.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Task Enforcer</div>
+      <div class="skill-slug">/task-enforcer</div>
+      <div class="skill-desc">Scan all task stores for failed, stalled, or overdue items and enforce completion.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Yoda Janitor</div>
+      <div class="skill-slug">/yoda-janitor</div>
+      <div class="skill-desc">Audits all Yoda-managed rule files. Prunes noise, merges duplicates, enforces size limits.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#b482ff;color:#b482ff">Apps & UX <span class="cat-count">10</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Einat Website Improver</div>
+      <div class="skill-slug">/einat-website-improver</div>
+      <div class="skill-desc">Autonomous improvement loop for safetofeel.me. Fires when Pepe runs `/loop einat-website` or when Einat reports an issue via Telegram Topic 9. Six specialist sub-agents audit and patch in parallel; synthesizer commits an</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">impeccable</div>
+      <div class="skill-slug">/impeccable</div>
+      <div class="skill-desc">Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">janis-app-improver</div>
+      <div class="skill-slug">/janis-app-improver</div>
+      <div class="skill-desc">Orchestrator-workers loop that deploys the 11-agent product audit team against the Janis web app. Quincy directs. 10 specialists run in parallel. Features panel (Nova+Pia+Zara) cross-reads. Quincy synthesizes. Output: dated improvement report scored >= 4.0 on all dims.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Miriam Behavioral Spec</div>
+      <div class="skill-slug">/miriam-behavioral-spec</div>
+      <div class="skill-desc">Build a layered behavioral spec for Miriam (Agathe's AI assistant) using 8 parallel domain specialists grounded in real Agathe scenarios. Output: `brain/areas/miriam-2.0/behavioral-spec.md`. Writes to `agathe-brain/CLAUD</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">miriam-deep-audit</div>
+      <div class="skill-slug">/miriam-deep-audit</div>
+      <div class="skill-desc">5-hour autonomous improvement loop for the Miriam app. Six specialist agents run concurrently each iteration. Exits when all 7 quality dimensions >= 4.0 and Playwright smoke passes, or 300 min elapsed.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Miriam Ops</div>
+      <div class="skill-slug">/miriam-ops</div>
+      <div class="skill-desc">Weekly feedback loop with Agathe. Ask how Miriam is doing. Fix whatever is not working.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">miriam-ux-improver</div>
+      <div class="skill-slug">/miriam-ux-improver</div>
+      <div class="skill-desc">Evaluator-optimizer loop. Scores Miriam web app across 8 UX dimensions, implements the highest-leverage improvements each iteration, exits when all dims >= 4.5/5.0.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">Pepecarrillo Site Audit</div>
+      <div class="skill-slug">/pepecarrillo-site-audit</div>
+      <div class="skill-desc">Full 11-agent audit of pepecarrillo.co. Runs on-demand or monthly.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">product-audit-team</div>
+      <div class="skill-slug">/product-audit-team</div>
+      <div class="skill-desc">Reusable specialist team profiles for product audits. Load alongside any app-improver loop. Defines 11 agents (Quincy + 10 specialists) with full backgrounds, methodologies, and prompt instructions.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#b482ff">web-studio</div>
+      <div class="skill-slug">/web-studio</div>
+      <div class="skill-desc">></div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#4cc8b4;color:#4cc8b4">Partnerships & BD <span class="cat-count">3</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">Bd Engine</div>
+      <div class="skill-slug">/bd-engine</div>
+      <div class="skill-desc">**Design spec:** `brain/areas/mexzungu/bd/bd-function-design.md`</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">janis-growth</div>
+      <div class="skill-slug">/janis-growth</div>
+      <div class="skill-desc">JANIS brand growth loop. Monitors BD pipeline, tracks activation gates, surfaces blockers weekly. Reads strategy from brain/areas/mexzungu/janis-brand/strategy.md.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#4cc8b4">jose-ruiz-partnership</div>
+      <div class="skill-slug">/jose-ruiz-partnership</div>
+      <div class="skill-desc">Builds and maintains the Jose Ruiz collaboration framework. 3-lane fee structure. Rock Council evaluation. Produces brain/areas/mexzungu/bd/jose-ruiz-partnership-proposal.md.</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#94a3b8;color:#94a3b8">Utility <span class="cat-count">3</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">i-have-adhd</div>
+      <div class="skill-slug">/i-have-adhd</div>
+      <div class="skill-desc">'Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. Invoke with /i-have-adhd; stays on until "stop adhd mode".'</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">real-assistant</div>
+      <div class="skill-slug">/real-assistant</div>
+      <div class="skill-desc">></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Session Plan Improver</div>
+      <div class="skill-slug">/session-plan-improver</div>
+      <div class="skill-desc">Evaluator-optimizer loop that improves brain/jouissance/session-plan-aug14.md</div>
+    </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <h2 class="cat-title" style="border-color:#94a3b8;color:#94a3b8">Uncategorized <span class="cat-count">3</span></h2>
+    <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Janis X Delta Design</div>
+      <div class="skill-slug">/janis-x-delta-design</div>
+      
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Learned</div>
+      <div class="skill-slug">/learned</div>
+      
+    </div>
+    <div class="skill-card">
+      <div class="skill-name" style="color:#94a3b8">Nca Strategy Review</div>
+      <div class="skill-slug">/nca-strategy-review</div>
+      
+    </div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

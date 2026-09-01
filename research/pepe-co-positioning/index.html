@@ -30,7 +30,9 @@
     .back-link:hover { color: var(--white); }
     .nav-brand { color: var(--muted); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
     .nav-brand:hover { color: var(--white); }
-    .report-wrap { display: grid; grid-template-columns: 220px 1fr; gap: 3rem; max-width: 1180px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    .report-wrap { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 3rem; max-width: 1180px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    .report-wrap > main { min-width: 0; }
+    .report-wrap > .toc-sidebar { min-width: 0; }
     @media (max-width: 900px) { .report-wrap { grid-template-columns: 1fr; } .toc-sidebar { display: none; } }
     .toc-sidebar { position: sticky; top: 5rem; align-self: start; }
     .toc-sidebar h4 { color: var(--muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
@@ -38,7 +40,8 @@
     .toc-sidebar a:hover { color: var(--white); border-left-color: var(--pink); }
     .cat-tag { display: inline-block; background: rgba(225,75,135,0.15); border: 1px solid rgba(225,75,135,0.3); border-radius: 4px; color: var(--pink); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; padding: 0.2rem 0.55rem; text-transform: uppercase; margin-bottom: 1rem; }
     .report-header { margin-bottom: 2rem; }
-    .report-header h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
+    .report-header h1 { font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; overflow-wrap: anywhere; word-break: break-word; }
+    .key-findings li { overflow-wrap: anywhere; word-break: break-word; }
     .meta-bar { color: var(--muted); font-size: 0.82rem; display: flex; gap: 1rem; flex-wrap: wrap; }
     .key-findings { background: var(--surface); border-left: 3px solid var(--pink); border-radius: 0 8px 8px 0; padding: 1.5rem 1.75rem; margin: 2rem 0; }
     .key-findings h3 { color: var(--pink); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }

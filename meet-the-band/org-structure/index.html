@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="https://mexzungu.com/meet-the-band/org-structure">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Org Structure — Mexzungu Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #080808;
+  --surface:  #111;
+  --border:   #1e1e1e;
+  --text:     #f0f0f0;
+  --muted:    #888;
+  --pink:     #ff3d9a;
+  --line:     #2a2a2a;
+  --c-founder:  #ffd700;
+  --c-iface:    #ff3d9a;
+  --c-mgmt:     #ff3d9a;
+  --c-delivery: #c026d3;
+  --c-practice: #7c3aed;
+  --c-eng:      #2563eb;
+  --c-content:  #16a34a;
+  --c-ops:      #d97706;
+  --c-fooffice: #ea580c;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 2.5rem 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: rgba(8,8,8,0.95);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; }
+header h1 em { color: var(--pink); font-style: normal; }
+header p { color: var(--muted); font-size: 0.72rem; margin-top: 0.25rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* Legend */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1rem;
+  justify-content: center; padding: 1rem 1rem 0;
+}
+.legend-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.67rem; color: var(--muted); }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* Scroll wrapper */
+.tree-scroll {
+  overflow-x: auto;
+  padding: 2.5rem 2.5rem 5rem;
+}
+
+/* Tree */
+.tree { display: flex; flex-direction: column; align-items: center; min-width: max-content; }
+
+/* Node */
+.node { display: flex; flex-direction: column; align-items: center; }
+
+/* Vertical connector going down from card to bracket */
+.v-down {
+  width: 2px; height: 28px;
+  background: var(--line);
+  display: none;
+}
+.node.open > .v-down { display: block; }
+
+/* Card */
+.card {
+  display: flex; flex-direction: column; align-items: center;
+  width: 120px;
+  padding: 1rem 0.75rem 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  -webkit-user-select: none; user-select: none;
+}
+.card:hover { transform: translateY(-2px); }
+.t-founder  .card:hover { border-color: var(--c-founder);  box-shadow: 0 0 0 1px var(--c-founder),  0 6px 24px rgba(255,215,0,0.12); }
+.t-iface    .card:hover { border-color: var(--c-iface);    box-shadow: 0 0 0 1px var(--c-iface),    0 6px 24px rgba(255,61,154,0.18); }
+.t-mgmt     .card:hover { border-color: var(--c-mgmt);     box-shadow: 0 0 0 1px var(--c-mgmt),     0 6px 24px rgba(255,61,154,0.18); }
+.t-delivery .card:hover { border-color: var(--c-delivery); box-shadow: 0 0 0 1px var(--c-delivery), 0 6px 24px rgba(192,38,211,0.18); }
+.t-practice .card:hover { border-color: var(--c-practice); box-shadow: 0 0 0 1px var(--c-practice), 0 6px 24px rgba(124,58,237,0.18); }
+.t-eng      .card:hover { border-color: var(--c-eng);      box-shadow: 0 0 0 1px var(--c-eng),      0 6px 24px rgba(37,99,235,0.18); }
+.t-content  .card:hover { border-color: var(--c-content);  box-shadow: 0 0 0 1px var(--c-content),  0 6px 24px rgba(22,163,74,0.18); }
+.t-ops      .card:hover { border-color: var(--c-ops);      box-shadow: 0 0 0 1px var(--c-ops),      0 6px 24px rgba(217,119,6,0.18); }
+.t-fooffice .card:hover { border-color: var(--c-fooffice); box-shadow: 0 0 0 1px var(--c-fooffice), 0 6px 24px rgba(234,88,12,0.18); }
+
+/* Avatar */
+.avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 800; color: #fff;
+  margin-bottom: 0.7rem; flex-shrink: 0;
+  border: 2.5px solid transparent; position: relative; overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.avatar-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; }
+
+.t-founder  .avatar { background: linear-gradient(135deg,#8a6200,#ffd700); border-color: var(--c-founder); }
+.t-iface    .avatar { background: linear-gradient(135deg,#a00060,#ff3d9a); border-color: var(--c-iface); }
+.t-mgmt     .avatar { background: linear-gradient(135deg,#a00060,#ff3d9a); border-color: var(--c-mgmt); }
+.t-delivery .avatar { background: linear-gradient(135deg,#6b0088,#c026d3); border-color: var(--c-delivery); }
+.t-practice .avatar { background: linear-gradient(135deg,#3b1a7a,#7c3aed); border-color: var(--c-practice); }
+.t-eng      .avatar { background: linear-gradient(135deg,#1240a8,#3b82f6); border-color: var(--c-eng); }
+.t-content  .avatar { background: linear-gradient(135deg,#0f4a27,#22c55e); border-color: var(--c-content); }
+.t-ops      .avatar { background: linear-gradient(135deg,#6b3000,#f59e0b); border-color: var(--c-ops); }
+.t-fooffice .avatar { background: linear-gradient(135deg,#7c1d00,#ea580c); border-color: var(--c-fooffice); }
+
+.card-name  { font-weight: 700; font-size: 0.82rem; letter-spacing: -0.01em; text-align: center; line-height: 1.2; }
+.card-title { font-size: 0.6rem; color: var(--muted); text-align: center; margin-top: 0.2rem; line-height: 1.3; }
+
+/* Expand button */
+.expand-btn {
+  margin-top: 0.55rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem; font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.3rem;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.expand-btn:hover { border-color: var(--pink); color: var(--pink); }
+.expand-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 13px; height: 13px; border-radius: 50%;
+  background: var(--border); font-size: 0.65rem; font-weight: 800;
+  transition: transform 0.25s;
+}
+.node.open > .expand-btn .expand-icon { transform: rotate(45deg); }
+
+/* Subtree */
+.subtree { display: none; flex-direction: column; align-items: center; }
+.node.open > .subtree { display: flex; }
+
+/* Horizontal bracket */
+.h-bracket {
+  position: relative; height: 28px;
+  width: 100%;
+}
+.h-bracket::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--line);
+}
+
+/* Children row */
+.children-row {
+  display: flex; align-items: flex-start;
+  gap: 12px; position: relative;
+}
+
+/* Cap first/last child horizontal bracket overreach */
+.child-slot {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+/* Vertical stub from bracket down to card */
+.child-slot::before {
+  content: ''; display: block;
+  width: 2px; height: 28px;
+  background: var(--line); flex-shrink: 0;
+}
+/* Cover outer edges of horizontal bracket for first/last child */
+.child-slot:first-child::after,
+.child-slot:last-child::after {
+  content: ''; position: absolute;
+  top: -28px; height: 2px;
+  background: var(--bg); z-index: 1;
+}
+.child-slot:first-child::after  { left: 0;   right: 50%; }
+.child-slot:last-child::after   { left: 50%; right: 0; }
+/* Single child: no horizontal bracket needed */
+.children-row.solo .h-bracket::after { display: none; }
+.children-row.solo .child-slot::first-child::after,
+.children-row.solo .child-slot::last-child::after { display: none; }
+
+/* Footer */
+footer {
+  text-align: center; padding: 2rem 1rem;
+  color: var(--muted); font-size: 0.7rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .tree-scroll { padding: 1.5rem 1rem 4rem; }
+  .card { width: 100px; padding: 0.75rem 0.5rem 0.55rem; }
+  .avatar { width: 46px; height: 46px; }
+  .avatar-fallback { font-size: 1.1rem; }
+  .card-name { font-size: 0.72rem; }
+  .card-title { font-size: 0.55rem; }
+  .children-row { gap: 8px; }
+  .expand-btn { font-size: 0.58rem; padding: 0.18rem 0.45rem; }
+}
+</style>
+</head>
+<body>
+
+<nav style="padding:1rem 2rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid #1e1e1e;">
+    <a href="/" style="display:flex;align-items:center;"><img src="/logo-v3.png" alt="Mexzungu Group" style="height:32px;"></a>
+    <span style="flex:1;"></span>
+    <a href="/meet-the-band" style="font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:#ff3d9a;text-decoration:none;">&larr; Meet the Band</a>
+</nav>
+<header>
+  <h1>The <em>Org</em></h1>
+  <p>Mexzungu Group &middot; 32 personas &middot; 7 tiers</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-founder)"></div>Founder</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-iface)"></div>Chief of Staff</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-mgmt)"></div>Mgmt ExCo</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-delivery)"></div>Delivery ExCo</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-practice)"></div>Practice Leads</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-eng)"></div>Engineering</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-content)"></div>Content</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-ops)"></div>Operating</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-fooffice)"></div>Founder's Office</div>
+</div>
+
+<div class="tree-scroll">
+  <div class="tree" id="tree-root"></div>
+</div>
+
+<footer>32 personas &middot; Mexzungu Group &middot; ExCo cards link to full profiles</footer>
+
+<script>
+const NODES = {
+  pepe:     { name:'Pepe',     title:'Founder',                  tier:'founder',  initial:'P',  children:['janis','tom','lars','bruce'] },
+  tom:      { name:'Tom',      title:'Disruptor in Residence',   tier:'fooffice', initial:'T',  children:[] },
+  janis:    { name:'Janis',    title:'Chief of Staff',           tier:'iface',    initial:'J',  children:[] },
+  lars:     { name:'Lars',     title:'Chief Operating Officer',  tier:'mgmt',     initial:'L',  children:['freddie','gene','bowie','nina','jagger'] },
+  bruce:    { name:'Bruce',    title:'Chief Strategy Officer',   tier:'delivery', initial:'B',  children:['lemmy','prince','sade','ozzy','sheryl','joan','tina','pj','aretha','chrissie','kim'] },
+  freddie:  { name:'Freddie',  title:'Chief Marketing Officer',  tier:'mgmt',     initial:'F',  children:['lenny','grohl','joni','nick','anselmo','grace','annie'] },
+  gene:     { name:'Gene',     title:'Chief Financial Officer',  tier:'mgmt',     initial:'G',  children:[] },
+  bowie:    { name:'Bowie',    title:'Chief Technology Officer', tier:'mgmt',     initial:'B',  children:['iggy','jack','nile','lou'] },
+  nina:     { name:'Nina',     title:'Head of Knowledge',        tier:'mgmt',     initial:'N',  children:[] },
+  jagger:   { name:'Jagger',   title:'Chief Growth Officer',     tier:'mgmt',     initial:'J',  children:[] },
+  lemmy:    { name:'Lemmy',    title:'Chief Legal Officer',      tier:'delivery', initial:'L',  children:[] },
+  prince:   { name:'Prince',   title:'Quality Gate',             tier:'delivery', initial:'P',  children:[] },
+  sade:     { name:'Sade',     title:'Client Success Lead',      tier:'delivery', initial:'S',  children:[] },
+  ozzy:     { name:'Ozzy',     title:'Scenario Planner',         tier:'ops',      initial:'O',  children:[] },
+  sheryl:   { name:'Sheryl',   title:'Client Success Ops',       tier:'ops',      initial:'S',  children:[] },
+  joan:     { name:'Joan',     title:'BD Practice Lead',         tier:'practice', initial:'J',  children:[] },
+  tina:     { name:'Tina',     title:'Equity Practice Lead',     tier:'practice', initial:'T',  children:[] },
+  pj:       { name:'PJ',       title:'Deal Execution Lead',      tier:'practice', initial:'PJ', children:[] },
+  aretha:   { name:'Aretha',   title:'Regulatory Lead',          tier:'practice', initial:'A',  children:[] },
+  chrissie: { name:'Chrissie', title:'Governance Lead',          tier:'practice', initial:'C',  children:[] },
+  kim:      { name:'Kim',      title:'AI Ops Lead',              tier:'practice', initial:'K',  children:[] },
+  lenny:    { name:'Lenny',    title:'Content Producer',         tier:'content',  initial:'L',  children:[] },
+  grohl:    { name:'Grohl',    title:'Content Producer',         tier:'content',  initial:'G',  children:[] },
+  joni:     { name:'Joni',     title:'Editor',                   tier:'content',  initial:'J',  children:[] },
+  nick:     { name:'Nick',     title:'Editor',                   tier:'content',  initial:'N',  children:[] },
+  anselmo:  { name:'Anselmo',  title:'Brand Gate',               tier:'content',  initial:'A',  children:[] },
+  grace:    { name:'Grace',    title:'Deploy Operator',          tier:'content',  initial:'G',  children:[] },
+  annie:    { name:'Annie',    title:'Analytics Operator',       tier:'content',  initial:'A',  children:[] },
+  iggy:     { name:'Iggy',     title:'DevOps Engineer',          tier:'eng',      initial:'I',  children:[] },
+  jack:     { name:'Jack',     title:'Backend Engineer',         tier:'eng',      initial:'J',  children:[] },
+  nile:     { name:'Nile',     title:'Frontend Engineer',        tier:'eng',      initial:'N',  children:[] },
+  lou:      { name:'Lou',      title:'QA Engineer',              tier:'eng',      initial:'L',  children:[] }
+};
+
+const openState = {};
+
+function makeNode(id) {
+  const n = NODES[id];
+  const hasKids = n.children.length > 0;
+  const isOpen = !!openState[id];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'node t-' + n.tier + (hasKids ? ' has-children' : '') + (isOpen ? ' open' : '');
+  wrap.id = 'node-' + id;
+
+  // Card (anchor)
+  const card = document.createElement('a');
+  // Route ExCo personas to public profile pages; others are non-linking
+  const PUBLIC = {lars:1,freddie:1,gene:1,bowie:1,nina:1,jagger:1,bruce:1,lemmy:1,prince:1,sade:1};
+  if (PUBLIC[id]) {
+    card.href = '/meet-the-band/' + id;
+  } else if (id === 'pepe') {
+    card.href = '/meet-the-band#pepe';
+  } else if (id === 'janis') {
+    card.href = '/janis';
+  } else {
+    card.removeAttribute('href');
+    card.style.cursor = 'default';
+  }
+  card.className = 'card';
+  card.setAttribute('aria-label', n.name + ', ' + n.title);
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar';
+  const fb = document.createElement('span');
+  fb.className = 'avatar-fallback';
+  fb.textContent = n.initial;
+  avatar.appendChild(fb);
+  card.appendChild(avatar);
+
+  const nm = document.createElement('div');
+  nm.className = 'card-name';
+  nm.textContent = n.name;
+  card.appendChild(nm);
+
+  const ti = document.createElement('div');
+  ti.className = 'card-title';
+  ti.textContent = n.title;
+  card.appendChild(ti);
+
+  wrap.appendChild(card);
+
+  if (hasKids) {
+    // v-down connector
+    const vd = document.createElement('div');
+    vd.className = 'v-down';
+    wrap.appendChild(vd);
+
+    // Expand button
+    const btn = document.createElement('button');
+    btn.className = 'expand-btn';
+    btn.setAttribute('type', 'button');
+    btn.innerHTML = '<span class="expand-count">' + n.children.length + ' report' + (n.children.length !== 1 ? 's' : '') + '</span>'
+      + '<span class="expand-icon">' + (isOpen ? '&#x2715;' : '&#x2B;') + '</span>';
+    btn.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); toggle(id); });
+    wrap.appendChild(btn);
+
+    // Subtree
+    const sub = document.createElement('div');
+    sub.className = 'subtree';
+    sub.id = 'sub-' + id;
+
+    // Bracket
+    const brk = document.createElement('div');
+    brk.className = 'h-bracket';
+    sub.appendChild(brk);
+
+    // Children row
+    const row = document.createElement('div');
+    row.className = 'children-row' + (n.children.length === 1 ? ' solo' : '');
+    n.children.forEach(function(cid) {
+      const slot = document.createElement('div');
+      slot.className = 'child-slot';
+      slot.appendChild(makeNode(cid));
+      row.appendChild(slot);
+    });
+    sub.appendChild(row);
+    wrap.appendChild(sub);
+  }
+
+  return wrap;
+}
+
+function toggle(id) {
+  openState[id] = !openState[id];
+  const wrap = document.getElementById('node-' + id);
+  if (!wrap) return;
+  wrap.classList.toggle('open', openState[id]);
+
+  const btn = wrap.querySelector(':scope > .expand-btn');
+  if (btn) {
+    const icon = btn.querySelector('.expand-icon');
+    if (icon) icon.innerHTML = openState[id] ? '&#x2715;' : '&#x2B;';
+    if (icon) icon.style.transform = openState[id] ? 'rotate(45deg)' : '';
+  }
+}
+
+// Boot: render tree, auto-expand Pepe so L1 is visible
+const root = document.getElementById('tree-root');
+root.appendChild(makeNode('pepe'));
+toggle('pepe');
+</script>
+</body>
+</html>

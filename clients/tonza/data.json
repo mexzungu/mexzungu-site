@@ -1,0 +1,62 @@
+{
+  "_note": "Tonza Energy client hub. Share: mexzungu.com/clients/tonza/?token=Outlaw-tonza-2026",
+
+  "meta": {
+    "token":          "Outlaw-tonza-2026",
+    "client":         "Tonza Energy",
+    "tagline":        "Energy-sector deal execution. Success-fee engagement.",
+    "engagement":     "Deal Closing. 3.5% success fee, 6-month tail",
+    "status_summary": "Active. EL signed 2026-08-07",
+    "accent_color":   "#0d9488",
+    "pm":             "Pepe Carrillo",
+    "pm_email":       "pepe@mexzungu.com",
+    "updated":        "2026-08-28"
+  },
+
+  "awaiting": [
+    {
+      "label":  "Investor pipeline update",
+      "detail": "Names, stage, ask, timeline. Anything we should be moving on this week or next.",
+      "cta":    "Send update",
+      "link":   "mailto:pepe@mexzungu.com?subject=Tonza%20Investor%20Pipeline"
+    }
+  ],
+
+  "workstreams": [
+    {
+      "code":        "WS1",
+      "title":       "Deal Closing Support",
+      "description": "Pepe in the room on investor conversations, term negotiation, and closing. Success fee triggers on capital closed.",
+      "deliverable": "Closed transaction with clean documentation",
+      "status":      "in-progress",
+      "eta":         null,
+      "updated":     "2026-08-28"
+    }
+  ],
+
+  "tasks": [
+    {
+      "title":  "Send investor pipeline snapshot",
+      "note":   "Who is in, what stage, what they are asking, expected close window.",
+      "owner":  "Stephen",
+      "eta":    "This week",
+      "status": "pending"
+    }
+  ],
+
+  "documents": {
+    "engagement": [],
+    "deliverables": [],
+    "reference": []
+  },
+
+  "billing": [
+    {
+      "description": "Deal Closing Success Fee",
+      "amount":      "3.5% of capital closed",
+      "status":      "upcoming",
+      "due":         null,
+      "note":        "6-month tail. No retainer or upfront. Payable within 14 days of capital clearing."
+    }
+  ]
+}

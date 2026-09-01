@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGL Entity Lifecycle. Mexzungu Group</title>
+<style>
+  :root {
+    --pink: #FF1493;
+    --pink-dim: rgba(255,20,147,0.15);
+    --pink-border: rgba(255,20,147,0.45);
+    --black: #080808;
+    --card: #141414;
+    --card2: #1c1c1c;
+    --border: #252525;
+    --text: #efefef;
+    --muted: #666;
+    --muted2: #999;
+    --gate: #FFD700;
+    --gate-dim: rgba(255,215,0,0.08);
+    --gate-border: rgba(255,215,0,0.35);
+    --green: #00e676;
+    --green-dim: rgba(0,230,118,0.1);
+    --green-border: rgba(0,230,118,0.35);
+    --orange: #FF8C00;
+    --orange-dim: rgba(255,140,0,0.1);
+    --orange-border: rgba(255,140,0,0.4);
+    --red: #FF3D3D;
+    --red-dim: rgba(255,61,61,0.1);
+    --red-border: rgba(255,61,61,0.4);
+    --blue: #3D9EFF;
+    --blue-dim: rgba(61,158,255,0.1);
+    --blue-border: rgba(61,158,255,0.35);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    padding: 40px 32px 60px;
+    min-height: 100vh;
+    line-height: 1.4;
+  }
+
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+  }
+  .header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; color: var(--pink); }
+  .header .sub { font-size: 13px; color: var(--muted2); margin-top: 4px; }
+  .header .badge {
+    font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px;
+    background: var(--pink-dim); border: 1px solid var(--pink-border); color: var(--pink);
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+
+  .class-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 52px; }
+  .class-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 20px 18px; position: relative; overflow: hidden;
+  }
+  .class-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .class-card.project::before { background: var(--pink); }
+  .class-card.task::before    { background: var(--green); }
+  .class-card.loop::before    { background: var(--blue); }
+  .class-card .label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .class-card.project .label { color: var(--pink); }
+  .class-card.task .label    { color: var(--green); }
+  .class-card.loop .label    { color: var(--blue); }
+  .class-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+  .class-card ul { list-style: none; }
+  .class-card ul li {
+    font-size: 12px; color: var(--muted2); padding: 5px 0;
+    border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 6px;
+  }
+  .class-card ul li:last-child { border-bottom: none; }
+  .class-card ul li .bullet { flex-shrink: 0; margin-top: 1px; font-size: 10px; }
+  .class-card.project ul li .bullet { color: var(--pink); }
+  .class-card.task ul li .bullet    { color: var(--green); }
+  .class-card.loop ul li .bullet    { color: var(--blue); }
+
+  .section { margin-bottom: 52px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .section-title { font-size: 17px; font-weight: 700; }
+  .section-type-badge {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 3px 10px; border-radius: 20px;
+  }
+  .badge-project { background: var(--pink-dim); color: var(--pink); border: 1px solid var(--pink-border); }
+  .badge-task    { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+  .badge-loop    { background: var(--blue-dim);  color: var(--blue);  border: 1px solid var(--blue-border); }
+
+  .flow-wrap {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px 24px 24px;
+  }
+  .flow { display: flex; align-items: flex-start; flex-wrap: wrap; row-gap: 20px; column-gap: 0; }
+  .stage-group { display: flex; align-items: center; }
+  .stage { display: flex; flex-direction: column; align-items: center; position: relative; min-width: 110px; }
+  .stage-box {
+    padding: 11px 14px 10px; border-radius: 9px; text-align: center; border: 2px solid;
+    width: 108px; position: relative; cursor: default; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .stage-box:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+  .stage-num { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; opacity: 0.6; }
+  .stage-name { font-size: 12px; font-weight: 700; line-height: 1.2; }
+  .stage-owner { font-size: 10px; margin-top: 5px; opacity: 0.65; font-style: italic; }
+
+  .s-detect  { background: rgba(255,20,147,0.06); border-color: rgba(255,20,147,0.3); }
+  .s-research{ background: rgba(255,20,147,0.09); border-color: rgba(255,20,147,0.4); }
+  .s-concept { background: rgba(255,20,147,0.11); border-color: rgba(255,20,147,0.5); }
+  .s-plan    { background: rgba(255,20,147,0.13); border-color: rgba(255,20,147,0.55); }
+  .s-build   { background: rgba(255,20,147,0.16); border-color: rgba(255,20,147,0.6); }
+  .s-test    { background: rgba(255,20,147,0.19); border-color: rgba(255,20,147,0.7); }
+  .s-deliver { background: rgba(255,20,147,0.22); border-color: rgba(255,20,147,0.8); }
+  .s-retro   { background: rgba(255,20,147,0.26); border-color: var(--pink); color: var(--pink); }
+
+  .t-open  { background: var(--blue-dim); border-color: var(--blue-border); }
+  .t-prog  { background: var(--orange-dim); border-color: var(--orange-border); }
+  .t-block { background: var(--red-dim); border-color: var(--red-border); }
+  .t-wait  { background: rgba(150,150,150,0.07); border-color: rgba(150,150,150,0.3); }
+  .t-done  { background: var(--green-dim); border-color: var(--green-border); }
+
+  .l-plan    { background: rgba(150,150,150,0.07); border-color: rgba(150,150,150,0.25); }
+  .l-active  { background: var(--blue-dim); border-color: var(--blue-border); }
+  .l-healthy { background: var(--green-dim); border-color: var(--green-border); }
+  .l-degrade { background: var(--orange-dim); border-color: var(--orange-border); }
+  .l-dead    { background: var(--red-dim); border-color: var(--red-border); }
+
+  .arrow { font-size: 18px; color: var(--muted); margin: 0 3px; margin-bottom: 22px; flex-shrink: 0; align-self: center; }
+  .gate-pip {
+    position: absolute; top: -8px; right: -8px; background: var(--gate); color: #000;
+    font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 8px;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+
+  .branch-wrap { display: flex; flex-direction: column; gap: 8px; margin: 0 3px; align-self: center; margin-bottom: 22px; }
+  .branch-row { display: flex; align-items: center; gap: 3px; }
+  .branch-label { font-size: 9px; color: var(--muted); width: 30px; text-align: right; flex-shrink: 0; }
+
+  .gates-wrap { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border); }
+  .gates-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gate); margin-bottom: 14px; }
+  .gates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .gate-card { background: var(--gate-dim); border: 1px solid var(--gate-border); border-radius: 8px; padding: 14px 16px; }
+  .gate-card h4 { font-size: 11px; font-weight: 700; color: var(--gate); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .gate-card p { font-size: 11px; color: var(--muted2); line-height: 1.5; }
+
+  .notes-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .note-pill { font-size: 11px; color: var(--muted2); background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; }
+  .note-pill span { font-weight: 600; color: var(--text); }
+
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted2); }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0 0 48px; }
+
+  .stage-box[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    background: #222; border: 1px solid var(--border); color: var(--muted2);
+    font-size: 10px; padding: 5px 9px; border-radius: 6px; white-space: nowrap;
+    pointer-events: none; z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>MGL Entity Lifecycle Framework</h1>
+    <div class="sub">Projects · Tasks · Loops. How work enters, flows, and closes.</div>
+  </div>
+  <div class="badge">MGL Internal · 2026-08-22</div>
+</div>
+
+<!-- CLASSIFICATION -->
+<div class="class-grid">
+  <div class="class-card project">
+    <div class="label">Project</div>
+    <h3>Discrete Deliverable</h3>
+    <ul>
+      <li><span class="bullet">◆</span>Clear Done state (measurable, testable)</li>
+      <li><span class="bullet">◆</span>Has a start and an end</li>
+      <li><span class="bullet">◆</span>Owns a project file + cluster workstream row</li>
+      <li><span class="bullet">◆</span>8-stage mandatory lifecycle</li>
+      <li><span class="bullet">◆</span>Registered in tasks_active.md at DETECT</li>
+    </ul>
+  </div>
+  <div class="class-card task">
+    <div class="label">Task</div>
+    <h3>Single Action Item</h3>
+    <ul>
+      <li><span class="bullet">◆</span>Discrete action, completable in one session</li>
+      <li><span class="bullet">◆</span>Lives in tickets.json (Lars canonical)</li>
+      <li><span class="bullet">◆</span>No research or concept note required</li>
+      <li><span class="bullet">◆</span>Simple Open to Done lifecycle</li>
+      <li><span class="bullet">◆</span>Grows into project only via re-classification</li>
+    </ul>
+  </div>
+  <div class="class-card loop">
+    <div class="label">Loop / Function</div>
+    <h3>Ongoing Engine</h3>
+    <ul>
+      <li><span class="bullet">◆</span>Runs on schedule or trigger, no end date</li>
+      <li><span class="bullet">◆</span>Assigned to Macro Engine + named owner</li>
+      <li><span class="bullet">◆</span>Has STATE.md + run.py + cron entry</li>
+      <li><span class="bullet">◆</span>Monitored via connector-probe + cron-health</li>
+      <li><span class="bullet">◆</span>Health states: Active / Degraded / Dead</li>
+    </ul>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PROJECT LIFECYCLE -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-title">Project Lifecycle</span>
+    <span class="section-type-badge badge-project">8 Stages · Mandatory Sequence · No Skipping</span>
+  </div>
+  <div class="flow-wrap">
+    <div class="flow">
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-detect" data-tip="Janis is single detection point. Persona loops flag up. Registers: tasks_active.md row + project file + cluster workstream row.">
+            <div class="stage-num">Stage 1</div>
+            <div class="stage-name">DETECT</div>
+            <div class="stage-owner">Janis</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-research" data-tip="Bruce leads. Domain owner assists for depth. Web, Reddit, GitHub, API docs, user reviews, team + Lume consult, stack audit. May conclude NOT FEASIBLE. No code written.">
+            <div class="stage-num">Stage 2</div>
+            <div class="stage-name">RESEARCH</div>
+            <div class="stage-owner">Bruce (lead)</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-concept" data-tip="Must include: problem statement, proposed solution, Done criteria (measurable + testable), RACI, risk assessment, feasibility verdict, budget estimate.">
+            <div class="stage-num">Stage 3</div>
+            <div class="stage-name">CONCEPT NOTE</div>
+            <div class="stage-owner">Project Owner</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-plan" data-tip="Phases, milestones, features, timeline, resources, daily update format, testing plan, delivery checklist, retro agenda.">
+            <div class="stage-num">Stage 4</div>
+            <div class="stage-name">PROJECT PLAN</div>
+            <div class="stage-owner">Lars</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-build" data-tip="ExCo approves up to $50 autonomously. Above $50: non-blocking Pepe vote, 72h silence = approved.">
+            <div class="stage-num">Stage 5</div>
+            <div class="stage-name">BUILD</div>
+            <div class="stage-owner">Project Owner</div>
+            <div class="gate-pip">$ gate</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-test" data-tip="Full Playwright testing before delivery. Zero exceptions. Lou runs QA. Score threshold 4.0/5.0.">
+            <div class="stage-num">Stage 6</div>
+            <div class="stage-name">TEST</div>
+            <div class="stage-owner">Lou (QA)</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-deliver" data-tip="Pepe notified. Feedback phase opens. Fire Away required for publish, invoices, contracts, first contact.">
+            <div class="stage-num">Stage 7</div>
+            <div class="stage-name">DELIVER</div>
+            <div class="stage-owner">Project Owner</div>
+            <div class="gate-pip">fire away</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box s-retro" data-tip="Calendar event created. Slack session with full team. Lessons saved to processes and dossiers.">
+            <div class="stage-num">Stage 8</div>
+            <div class="stage-name">RETRO</div>
+            <div class="stage-owner">Full team</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes-row">
+      <div class="note-pill"><span>Owner (code/infra):</span> Bowie · <span>content/brand:</span> Freddie · <span>legal:</span> Lemmy · <span>BD/deals:</span> Jagger</div>
+      <div class="note-pill"><span>Owner (finance):</span> Gene · <span>knowledge:</span> Nina · <span>strategy:</span> Bruce · <span>ops:</span> Lars</div>
+    </div>
+    <div class="notes-row">
+      <div class="note-pill"><span>PM always:</span> Lars (if Lars = Owner too, Janis acts as PM proxy)</div>
+      <div class="note-pill"><span>Research lead always:</span> Bruce. Domain owner assists for depth.</div>
+      <div class="note-pill"><span>Updates:</span> Lars posts to #projects (small) or dedicated channel (large)</div>
+    </div>
+
+    <div class="gates-wrap">
+      <div class="gates-title">Approval Gates</div>
+      <div class="gates-grid">
+        <div class="gate-card">
+          <h4>Budget Gate (Stage 5)</h4>
+          <p>Under $100: free flow, no alert. $100-$250: alert Pepe for awareness (no approval needed). Above $250: explicit Pepe approval required before proceeding.</p>
+        </div>
+        <div class="gate-card">
+          <h4>Explicit "See It First"</h4>
+          <p>No approval needed between stages by default. Gate only appears if Pepe explicitly says "I want to see it first." Otherwise flow continues autonomously.</p>
+        </div>
+        <div class="gate-card">
+          <h4>Fire Away (Stage 7)</h4>
+          <p>Required when Deliver triggers a Showtime item: publish content, send invoice, sign contract, first contact with new person. Draft + wait for "Fire Away."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--pink)"></div> No approval between stages (default)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--gate)"></div> Gate required</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--muted)"></div> Hover stages for details</div>
+    </div>
+  </div>
+</div>
+
+<!-- TASK LIFECYCLE -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-title">Task Lifecycle</span>
+    <span class="section-type-badge badge-task">Lars Ticket System · tickets.json canonical</span>
+  </div>
+  <div class="flow-wrap">
+    <div class="flow" style="align-items:center;">
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box t-open" data-tip="Created via ticket_create. Assigned to Janis, Pepe, or third party. Appears in tasks_active.md view.">
+            <div class="stage-num">State</div>
+            <div class="stage-name">OPEN</div>
+            <div class="stage-owner">Lars assigns</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box t-prog" data-tip="Active work in current session. Owner is executing. Status updated via ticket_update.">
+            <div class="stage-num">State</div>
+            <div class="stage-name">IN PROGRESS</div>
+            <div class="stage-owner">Owner executes</div>
+          </div>
+        </div>
+        <div class="branch-wrap">
+          <div class="branch-row">
+            <div class="branch-label" style="color:var(--red)">blocked</div>
+            <div class="arrow" style="margin:0 2px 0 3px; color:var(--red); margin-bottom:0;">›</div>
+            <div class="stage">
+              <div class="stage-box t-block" style="width:108px;" data-tip="Blocked by external dependency or waiting on Pepe input. Flagged daily in brief with 'Waiting for Pepe on: [X]'.">
+                <div class="stage-num">State</div>
+                <div class="stage-name">BLOCKED</div>
+                <div class="stage-owner">Flag in brief</div>
+              </div>
+            </div>
+          </div>
+          <div class="branch-row" style="margin-top:6px;">
+            <div class="branch-label" style="color:var(--muted)">external</div>
+            <div class="arrow" style="margin:0 2px 0 3px; color:var(--muted); margin-bottom:0;">›</div>
+            <div class="stage">
+              <div class="stage-box t-wait" style="width:108px;" data-tip="Waiting on third party. Monitored, not dropped. Chase on schedule.">
+                <div class="stage-num">State</div>
+                <div class="stage-name">WAITING</div>
+                <div class="stage-owner">Monitor + chase</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box t-done" data-tip="Tool confirmed success in same turn. ticket_close called. 'Done' is banned unless tool returned success.">
+            <div class="stage-num">State</div>
+            <div class="stage-name">DONE</div>
+            <div class="stage-owner">Tool confirmed</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes-row">
+      <div class="note-pill"><span>Source of truth:</span> brain/memory/tickets.json</div>
+      <div class="note-pill"><span>Tools:</span> ticket_create · ticket_update · ticket_close · ticket_list</div>
+      <div class="note-pill"><span>View:</span> tasks_active.md (generated, do not edit)</div>
+      <div class="note-pill" style="border-color:var(--red-border);"><span style="color:var(--red)">Rule:</span> "Done" banned unless tool confirmed in same turn</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOOP LIFECYCLE -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-title">Loop / Function Lifecycle</span>
+    <span class="section-type-badge badge-loop">Ongoing Engines · STATE.md + run.py + cron</span>
+  </div>
+  <div class="flow-wrap">
+    <div class="flow" style="align-items:center;">
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box l-plan" data-tip="Registered in engine-master-index.md. STATE.md scaffolded. Macro Engine + owner assigned. Not yet on cron.">
+            <div class="stage-num">State</div>
+            <div class="stage-name">PLANNED</div>
+            <div class="stage-owner">engine-master-index</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="stage-group">
+        <div class="stage">
+          <div class="stage-box l-active" data-tip="Cron entry live. run.py executing on schedule. Registered in REGISTRY.json. STATE.md updating on each run.">
+            <div class="stage-num">State</div>
+            <div class="stage-name">ACTIVE</div>
+            <div class="stage-owner">Cron live</div>
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="branch-wrap" style="margin-bottom:0;">
+        <div class="branch-row">
+          <div class="branch-label" style="color:var(--green)">ok</div>
+          <div class="arrow" style="margin:0 2px 0 3px; color:var(--green); margin-bottom:0;">›</div>
+          <div class="stage">
+            <div class="stage-box l-healthy" style="width:116px;" data-tip="Log fresh within SLA. connector-probe: green. cron-health-engine: pass.">
+              <div class="stage-num">State</div>
+              <div class="stage-name">HEALTHY</div>
+              <div class="stage-owner">cron-health-engine</div>
+            </div>
+          </div>
+        </div>
+        <div class="branch-row" style="margin-top:6px;">
+          <div class="branch-label" style="color:var(--orange)">stale</div>
+          <div class="arrow" style="margin:0 2px 0 3px; color:var(--orange); margin-bottom:0;">›</div>
+          <div class="stage">
+            <div class="stage-box l-degrade" style="width:116px;" data-tip="Log older than SLA. Cron may have stopped. Auto-fix attempted. Pepe alerted if persists 2+ cycles.">
+              <div class="stage-num">State</div>
+              <div class="stage-name">DEGRADED</div>
+              <div class="stage-owner">Auto-remediate</div>
+            </div>
+          </div>
+        </div>
+        <div class="branch-row" style="margin-top:6px;">
+          <div class="branch-label" style="color:var(--red)">fatal</div>
+          <div class="arrow" style="margin:0 2px 0 3px; color:var(--red); margin-bottom:0;">›</div>
+          <div class="stage">
+            <div class="stage-box l-dead" style="width:116px;" data-tip="Repeated failures. Cron confirmed stopped. Spawns rebuild code task or retires with status='retired' in REGISTRY.json.">
+              <div class="stage-num">State</div>
+              <div class="stage-name">DEAD / RETIRED</div>
+              <div class="stage-owner">Rebuild or retire</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes-row">
+      <div class="note-pill"><span>Required at kick-off:</span> Macro Engine + named owner (in STATE.md, commit msg, code task brief)</div>
+      <div class="note-pill"><span>MGL engines:</span> Connection · Value · Care · Core</div>
+      <div class="note-pill"><span>Core functions:</span> Infra · Finance · Knowledge · Admin</div>
+    </div>
+    <div class="notes-row">
+      <div class="note-pill"><span>Health monitor:</span> connector-probe (hourly, 15 connectors)</div>
+      <div class="note-pill"><span>SLA monitor:</span> cron-health-engine (16 P1 jobs)</div>
+      <div class="note-pill"><span>Registry:</span> brain/loops/REGISTRY.json</div>
+      <div class="note-pill"><span>Index:</span> engine-master-index.md</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSITIONS -->
+<div class="section" style="margin-bottom:0;">
+  <div class="section-header">
+    <span class="section-title">Entity Transitions</span>
+    <span class="section-type-badge" style="background:rgba(150,150,150,0.1);color:var(--muted2);border:1px solid var(--border);">When classification changes</span>
+  </div>
+  <div class="flow-wrap">
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:18px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Task to Project</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.6;">A task that reveals multiple deliverables, a measurable Done state, or spans more than one session must be re-classified. Janis detects, registers in tasks_active.md, creates project file, starts Stage 1.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:18px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Project to Loop</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.6;">After Stage 7 (Deliver), if the deliverable is an ongoing engine, it graduates to a Loop. Must have STATE.md + run.py + cron entry + Macro Engine assignment before considered live.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:18px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Loop to Retired</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.6;">A Dead loop is rebuilt (new project at Stage 1) or explicitly retired with status="retired" in REGISTRY.json. Run.py and cron entry removed. Never silently abandoned.</div>
+      </div>
+    </div>
+    <div style="margin-top:20px;padding:14px 16px;background:rgba(255,20,147,0.04);border:1px dashed var(--pink-border);border-radius:8px;font-size:12px;color:var(--muted2);line-height:1.6;">
+      <strong style="color:var(--text);">Janis is the single detection point.</strong> Persona loops flag potential projects to Janis. Janis makes the classification call. If it qualifies as a project, Stage 1 runs immediately: tasks_active.md row + project file + cluster workstream row. No exceptions. No project exists only in conversation history.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

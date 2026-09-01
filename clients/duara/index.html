@@ -20,7 +20,7 @@
       --border:     #2a2a2a;
       --border-mid: #333333;
       --text:       #e8e4de;
-      --text-mid:   #b5ae a4;
+      --text-mid:   #b5aea4;
       --text-soft:  #857d74;
       --text-ghost: #3d3832;
       --pink:       #ec4899;
@@ -291,6 +291,7 @@
     .status-live { background: var(--green-dim); color: var(--green); }
     .status-coming { background: var(--border); color: var(--text-soft); }
     .status-attention { background: var(--red-dim); color: var(--red); }
+    .status-done { background: var(--blue-dim); color: var(--blue); }
     .status-dot {
       width: 5px; height: 5px;
       border-radius: 50%;
@@ -361,10 +362,18 @@
     .footer-text { font-size: 0.72rem; color: var(--text-ghost); letter-spacing: 0.04em; }
     .footer-lock { font-size: 0.72rem; color: var(--text-ghost); cursor: pointer; }
     .footer-lock:hover { color: var(--text-soft); }
+
+    /* ---- MOBILE ---- */
+    @media (max-width: 640px) {
+      .topbar { padding: 0 1.25rem; }
+      .hero { padding: 2.5rem 1.25rem 2rem; }
+      .hero-title { font-size: 2rem; }
+      .main { padding: 2rem 1.25rem 3rem; }
+      .portal-footer { padding: 1.25rem; }
+    }
   </style>
 </head>
 <body>
-
 
 <!-- PORTAL -->
 <div id="portal">
@@ -396,18 +405,18 @@
     <div class="status-strip">
       <div class="strip-item">
         <div class="strip-label">Outstanding balance</div>
-        <div class="strip-value red" id="strip-outstanding">$17,838</div>
-        <div class="strip-sub">7 invoices · 4 overdue + 3 new</div>
+        <div class="strip-value red">$19,278</div>
+        <div class="strip-sub">9 invoices · 4 overdue + 5 new</div>
       </div>
       <div class="strip-item">
         <div class="strip-label">Active workstreams</div>
-        <div class="strip-value">2</div>
-        <div class="strip-sub">Contract Transition · Treebeard Loan · Billing</div>
+        <div class="strip-value">3</div>
+        <div class="strip-sub">Contract Transition · SAFE Assignment · Billing · RUA</div>
       </div>
       <div class="strip-item">
-        <div class="strip-label">Next deadline</div>
-        <div class="strip-value amber">13 May</div>
-        <div class="strip-sub">AT audit list: Fatima</div>
+        <div class="strip-label">Contract status</div>
+        <div class="strip-value amber">Review</div>
+        <div class="strip-sub">Final templates with local Kenyan counsel</div>
       </div>
       <div class="strip-item">
         <div class="strip-label">Relationship since</div>
@@ -428,9 +437,9 @@
         <div class="card-icon">📋</div>
         <div class="card-eyebrow">Legal · HR</div>
         <div class="card-title">Contract Transition</div>
-        <div class="card-desc">Five-phase plan to correct and replace unsigned AT employment contracts with consulting agreements. Includes templates, tracker, audit form, and comms templates.</div>
+        <div class="card-desc">Five-phase plan to correct and replace unsigned AT employment contracts with consulting agreements. All templates finalized July 31, 2026. Now with local Kenyan lawyer for jurisdiction review before rollout.</div>
         <div class="card-footer">
-          <span class="card-status status-live"><span class="status-dot"></span>In progress</span>
+          <span class="card-status status-live"><span class="status-dot"></span>Local lawyer review</span>
           <span class="card-arrow">→</span>
         </div>
       </div>
@@ -440,11 +449,22 @@
         <div class="card-icon">💳</div>
         <div class="card-eyebrow">Finance</div>
         <div class="card-title">Billing</div>
-        <div class="billing-amount" id="card-outstanding">$17,838</div>
-        <div class="billing-label">outstanding · 4 overdue + 3 new</div>
+        <div class="billing-amount">$19,278</div>
+        <div class="billing-label">outstanding · 4 overdue + 5 new</div>
         <div class="card-footer">
           <span class="card-status status-attention"><span class="status-dot"></span>Action needed</span>
           <span class="card-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="card card-active" style="cursor: default;">
+        <div class="card-accent"></div>
+        <div class="card-icon">📄</div>
+        <div class="card-eyebrow">Corporate · Finance</div>
+        <div class="card-title">SAFE Assignment</div>
+        <div class="card-desc">Assignment and Assumption of SAFE from Wahlers to Olympia Limited (Guernsey), an affiliate entity. Duara consent provided. All parties executing the tri-party agreement.</div>
+        <div class="card-footer">
+          <span class="card-status status-done"><span class="status-dot"></span>Consent given</span>
         </div>
       </div>
 
@@ -455,8 +475,19 @@
         <div class="card-title">Treebeard Loan</div>
         <div class="card-desc">$50,000 loan from Treebeard Trust to Duara Education Inc. (Delaware). Signed and executed 2026-05-14.</div>
         <div class="card-footer">
-          <span class="card-status status-live"><span class="status-dot"></span>Executed</span>
+          <span class="card-status status-done"><span class="status-dot"></span>Executed</span>
           <span class="card-arrow">→</span>
+        </div>
+      </div>
+
+      <div class="card card-active" style="cursor: default;">
+        <div class="card-accent" style="background: var(--red);"></div>
+        <div class="card-icon">⚖️</div>
+        <div class="card-eyebrow">Employment · Compliance</div>
+        <div class="card-title">RUA: Stella Matter</div>
+        <div class="card-desc">Former teacher at Ruaka school filed a labour complaint + triggered a Labour Inspection Audit at Kiambu County Labour Office. Audit date: Friday 22 August. Settlement target: before Friday. Discovery phase. Gathering evidence now.</div>
+        <div class="card-footer">
+          <span class="card-status status-attention" style="color: var(--red);"><span class="status-dot" style="background: var(--red);"></span>Audit Friday 22 Aug</span>
         </div>
       </div>
 
@@ -491,35 +522,35 @@
         </div>
       </div>
 
-      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1DExsrxRi0VuoRYaZrDY45eb7zFnp3ogZCbfD3z40DhA/edit','_blank')">
+      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1-263LKRU2OTG5MCuB2NnFwy4iqPB_FMjGwKDWF8Hvu8/edit','_blank')">
         <div class="card-accent"></div>
         <div class="card-eyebrow">Contract Template</div>
         <div class="card-title">Teacher in Training Fellowship Agreement</div>
-        <div class="card-desc">v2.0 · Jun 2026 · 2-year hard end · No renewal · Early graduation mechanism · Track A (TSC registered) + Track B (TSC candidate) · Post-fellowship: Teacher CA or exit</div>
+        <div class="card-desc">Jul 2026 final · 2-year hard end · No renewal · Early graduation mechanism · Track A (TSC registered) + Track B (TSC candidate) · Post-fellowship: Teacher CA or exit</div>
         <div class="card-footer">
-          <span class="card-status status-live"><span class="status-dot"></span>Final</span>
+          <span class="card-status status-live"><span class="status-dot"></span>Final · Jul 2026</span>
           <span class="card-arrow">↗</span>
         </div>
       </div>
 
-      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1s9_rPOeZ0nVQgZrIe1OpoP1DwoDbYX6tkqt7ecmg-so/edit','_blank')">
+      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1_ZHRx4Gfspd-ziWdYyeU6wGz4mmT50xeLbMHiLal8yQ/edit','_blank')">
         <div class="card-accent"></div>
         <div class="card-eyebrow">Contract Template</div>
-        <div class="card-title">Educare Fellowship Agreement</div>
-        <div class="card-desc">v3.3 · Jun 2026 · Duara Educare Training Programme · 4-year structured programme · Annual agreements per year · Hard end after Year 4 · Early graduation mechanism</div>
+        <div class="card-title">Educare Practitioner Fellowship Agreement</div>
+        <div class="card-desc">Jul 2026 final · Duara Educare Training Programme · 4-year structured programme · Annual agreements per year · Hard end after Year 4 · Early graduation mechanism</div>
         <div class="card-footer">
-          <span class="card-status status-live"><span class="status-dot"></span>Final</span>
+          <span class="card-status status-live"><span class="status-dot"></span>Final · Jul 2026</span>
           <span class="card-arrow">↗</span>
         </div>
       </div>
 
-      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1ACGR0ciRyt82hNKoG7cVbzTQRL7O_UZwQdqW7t_3mKw/edit','_blank')">
+      <div class="card card-active" onclick="window.open('https://docs.google.com/document/d/1g82svkBLspBJruJelfQiDEzeqbFdv-P3kU2o397f5jo/edit','_blank')">
         <div class="card-accent"></div>
         <div class="card-eyebrow">Contract Template</div>
         <div class="card-title">Teacher Consulting Agreement</div>
-        <div class="card-desc">v2.2 · Jun 2026 · TSC registration required · KES 23,000 fee cap · Payment conditional on valid eTIMS invoice · 30-day notice</div>
+        <div class="card-desc">Jul 2026 final · TSC registration required · KES 23,000 fee cap · Payment conditional on valid eTIMS invoice · 30-day notice</div>
         <div class="card-footer">
-          <span class="card-status status-live"><span class="status-dot"></span>Final</span>
+          <span class="card-status status-live"><span class="status-dot"></span>Final · Jul 2026</span>
           <span class="card-arrow">↗</span>
         </div>
       </div>
@@ -540,106 +571,24 @@
       <div class="strip-item">
         <div class="strip-label">Teachers</div>
         <div class="strip-value">7</div>
-        <div class="strip-sub">Teacher Consulting Agreement v2.2</div>
+        <div class="strip-sub">Teacher Consulting Agreement · Jul 2026</div>
       </div>
       <div class="strip-item">
         <div class="strip-label">Educare</div>
         <div class="strip-value">10</div>
-        <div class="strip-sub">Educare Fellowship Agreement v3.3</div>
+        <div class="strip-sub">Educare Practitioner Fellowship · Jul 2026</div>
       </div>
       <div class="strip-item">
         <div class="strip-label">Teachers in Training</div>
         <div class="strip-value">2</div>
-        <div class="strip-sub">Teacher in Training Fellowship Agreement v2.0</div>
-      </div>
-    </div>
-
-    <!-- Contract Rollout Comms -->
-    <div class="section-header" style="margin-top: 2rem;">
-      <span class="section-label">Contract rollout: communications plan</span>
-      <div class="section-rule"></div>
-    </div>
-
-    <div class="card card-active" style="margin-bottom: 1.5rem; cursor: default;">
-      <div class="card-accent"></div>
-      <div class="card-eyebrow">Narrative Frame</div>
-      <div class="card-title">What to say. What not to say.</div>
-      <div class="card-desc" style="white-space: pre-line; line-height: 1.7;">The old contracts had admin gaps. They were not built for how Duara actually operates in Kenya. The new contracts fix that. The practical result: less paperwork friction and more money landing in staff accounts, because the admin is now done correctly from the start.
-
-The external hook you can use: Kenya Revenue Authority (KRA) requirements. This is true and specific. The KRA framework is what makes the consulting model mandatory for this income level. You are not inventing a reason. You are naming the real one in plain language.
-
-Never say: "tax optimisation," "withholding tax structure," "contractor classification," or anything that sounds like a legal manoeuvre. Those are internal words.
-
-Always say: new contracts are an admin fix required by KRA. Staff get more money in their pockets. Nothing changes about their role or school.
-
-Important: all staff will now invoice Duara through the eTIMS platform (Kenya Revenue Authority's electronic invoicing system). This is a separate but related requirement. Daphne is coordinating an accounting training session to walk everyone through how to submit invoices on eTIMS. Do not roll out contracts before this training is scheduled.</div>
-      <div class="card-footer">
-        <span class="card-status status-live"><span class="status-dot"></span>Active guidance</span>
-      </div>
-    </div>
-
-    <div class="card card-active" style="margin-bottom: 1.5rem; cursor: default;">
-      <div class="card-accent"></div>
-      <div class="card-eyebrow">Template 1: All-staff announcement (Victoria sends)</div>
-      <div class="card-title">General rollout email</div>
-      <div class="card-desc" style="white-space: pre-line; line-height: 1.7;">Subject: New contracts for all Duara staff
-
-Hi team,
-
-We've been doing a full review of how we work and how we pay everyone, and we found that our old contracts had some admin gaps that weren't serving you well.
-
-We've rebuilt them from scratch, designed specifically for Kenya and for each role at Duara. The goal was simple: cleaner paperwork and more money reaching you directly, without unnecessary deductions or admin friction.
-
-You'll each receive your new contract separately. Please read it, ask any questions, and sign when you're ready. Nothing changes about your role, your school, or how we work together. This is purely an admin upgrade.
-
-Thank you for everything you do.
-
-Victoria</div>
-      <div class="card-footer">
-        <span class="card-status status-attention"><span class="status-dot"></span>Draft: pending send</span>
-      </div>
-    </div>
-
-    <div class="card card-active" style="margin-bottom: 1.5rem; cursor: default;">
-      <div class="card-accent"></div>
-      <div class="card-eyebrow">Process: eTIMS e-invoicing (mandatory, all staff)</div>
-      <div class="card-title">Electronic invoicing via KRA eTIMS platform</div>
-      <div class="card-desc" style="white-space: pre-line; line-height: 1.7;">As part of the contract update, all staff will submit invoices to Duara through the KRA eTIMS platform (Electronic Tax Invoice Management System). This is a Kenya Revenue Authority requirement for consultants.
-
-Action items:
-1. Daphne is scheduling an accounting training session to walk all staff through how to register on eTIMS and submit invoices correctly.
-2. Do not distribute contracts until the training date is confirmed and communicated.
-3. Include the training date in the all-staff rollout email (Template 1) so staff know what to expect and when.
-
-Status: Daphne coordinating. Training date TBD.</div>
-      <div class="card-footer">
-        <span class="card-status status-attention"><span class="status-dot"></span>Action required: Daphne to confirm training date</span>
-      </div>
-    </div>
-
-    <div class="card card-active" style="margin-bottom: 3.5rem; cursor: default;">
-      <div class="card-accent"></div>
-      <div class="card-eyebrow">Template 2: Individual covering note (sent with each contract)</div>
-      <div class="card-title">Per-person contract email</div>
-      <div class="card-desc" style="white-space: pre-line; line-height: 1.7;">Hi [Name],
-
-Attached is your updated Duara contract. This replaces your previous agreement.
-
-The change is an admin fix on our side. We rebuilt the contracts to work properly for Kenya and for your specific role. The practical difference for you: the payment structure is cleaner, which means more of what Duara pays ends up in your pocket.
-
-Let me know if you have any questions. Once you're happy, please sign and return.
-
-Thank you,
-[Victoria / Fatima]</div>
-      <div class="card-footer">
-        <span class="card-status status-attention"><span class="status-dot"></span>Draft: pending send</span>
+        <div class="strip-sub">TiT Fellowship Agreement · Jul 2026</div>
       </div>
     </div>
 
   </div><!-- /main -->
 
   <div class="portal-footer">
-    <span class="footer-text">Mexzungu Consulting · Duara Education · Confidential</span>
+    <span class="footer-text">Mexzungu Consulting · Duara Education · Confidential · Updated Aug 2026</span>
     <span class="footer-lock" onclick="lockPortal()">🔒 Lock</span>
   </div>
 
