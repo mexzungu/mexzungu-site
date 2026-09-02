@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGL Registry | Mexzungu Group</title>
+<link rel="stylesheet" href="/ops-system.css">
+<style>
+:root{--bg:#0f0f0f;--surface:#181818;--s2:#1e1e1e;--border:#2a2a2a;--border2:#333;--text:#e8e8e8;--muted:#666;--muted2:#888;--conn:#4cc8b4;--val:#f0a030;--care:#b482ff;--core:#94a3b8;--pers:#e05090;--p1:#e05050;--p2:#f0a030;--p3:#4caf7d;--green:#4caf7d;--blue:#6498ff;--red:#e05050;--pink:#E14B87}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:13px;line-height:1.5}
+a{color:var(--muted2);text-decoration:none}a:hover{color:var(--text)}
+.nav{position:sticky;top:0;z-index:100;background:rgba(15,15,15,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nav a{font-size:11px;color:var(--muted);padding:3px 10px;border:1px solid var(--border);border-radius:4px;transition:.15s}
+.nav a:hover{color:var(--text);border-color:#444}
+.nav-title{font-size:13px;font-weight:700;color:var(--text);margin-right:8px}
+.hdr{padding:28px 24px 0;max-width:1600px;margin:0 auto}
+.hdr h1{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.hdr p{color:var(--muted);font-size:12px;margin-bottom:16px}
+.tabs-bar{padding:0 24px 0;max-width:1600px;margin:0 auto;display:flex;gap:4px;border-bottom:1px solid var(--border)}
+.tab-btn{font-size:12px;font-weight:600;padding:8px 18px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:.15s;margin-bottom:-1px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--conn)}
+.filters{padding:12px 24px;max-width:1600px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-group{display:flex;gap:4px;align-items:center}
+.filter-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:.15s;white-space:nowrap}
+.pill:hover{color:var(--text);border-color:#555}
+.pill.active{color:#fff;border-color:transparent}
+.pill-conn.active{background:rgba(76,200,180,.15);border-color:var(--conn);color:var(--conn)}
+.pill-val.active{background:rgba(240,160,48,.15);border-color:var(--val);color:var(--val)}
+.pill-care.active{background:rgba(180,130,255,.15);border-color:var(--care);color:var(--care)}
+.pill-core.active{background:rgba(148,163,184,.15);border-color:var(--core);color:var(--core)}
+.pill-pers.active{background:rgba(224,80,144,.15);border-color:var(--pers);color:var(--pers)}
+.pill-p1.active{background:rgba(224,80,80,.15);border-color:var(--p1);color:var(--p1)}
+.pill-p2.active{background:rgba(240,160,48,.15);border-color:var(--p2);color:var(--p2)}
+.pill-p3.active{background:rgba(76,175,125,.15);border-color:var(--p3);color:var(--p3)}
+.pill-all.active{background:rgba(255,255,255,.07);border-color:#555;color:var(--text)}
+input.search{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;font-size:12px;width:220px;outline:none;transition:.15s;font-family:inherit}
+input.search:focus{border-color:#555}
+input.search::placeholder{color:var(--muted)}
+.count{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.wrap{padding:0 24px 80px;max-width:1600px;margin:0 auto;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{border-bottom:2px solid var(--border2)}
+th{text-align:left;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:.1s}
+tbody tr:hover{background:var(--surface)}
+td{padding:8px 10px;vertical-align:top}
+.col-code{width:120px}.col-name{width:170px}.col-desc{min-width:200px}.col-owner{width:90px}.col-kpi{width:155px}.col-engine{width:120px}.col-serves{width:135px}.col-notes{min-width:120px}
+.macro-badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:1px 7px;border-radius:20px}
+.mb-conn{color:var(--conn);background:rgba(76,200,180,.08);border:1px solid rgba(76,200,180,.2)}
+.mb-val{color:var(--val);background:rgba(240,160,48,.08);border:1px solid rgba(240,160,48,.2)}
+.mb-care{color:var(--care);background:rgba(180,130,255,.08);border:1px solid rgba(180,130,255,.2)}
+.mb-core{color:var(--core);background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.2)}
+.mb-pers{color:var(--pers);background:rgba(224,80,144,.08);border:1px solid rgba(224,80,144,.2)}
+.pri{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:4px}
+.pri-P1{color:var(--p1);background:rgba(224,80,80,.1)}
+.pri-P2{color:var(--p2);background:rgba(240,160,48,.1)}
+.pri-P3{color:var(--p3);background:rgba(76,175,125,.1)}
+.kpi-list{list-style:none;padding:0;margin:0}
+.kpi-list li{color:var(--muted2);font-size:11px;padding:1px 0}
+.kpi-list li::before{content:"· ";color:var(--muted)}
+.note{color:var(--p2);font-size:11px}.note-red{color:var(--red);font-size:11px}
+.old-code{color:var(--muted);font-size:10px;display:block;margin-top:2px}
+.serves{color:var(--muted2);font-size:11px;line-height:1.4}
+.owner-str{font-size:11px;color:var(--muted2)}
+.eng-tag{font-size:11px;font-weight:600;color:var(--muted2)}
+.skills-wrap{padding:0 24px 80px;max-width:1600px;margin:0 auto}
+.cat-section{margin-bottom:28px}
+.cat-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:12px 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 12px;transition:.15s}
+.skill-card:hover{border-color:#444;background:#1d1d1d}
+.skill-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.skill-slug{font-size:10px;color:var(--muted);font-family:monospace;margin-bottom:4px}
+.skill-desc{font-size:11px;color:var(--muted2);line-height:1.4}
+.cat-badge{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:3px;margin-bottom:4px}
+.cat-persona{color:var(--conn);background:rgba(76,200,180,.08);border:1px solid rgba(76,200,180,.15)}
+.cat-mglops{color:var(--val);background:rgba(240,160,48,.08);border:1px solid rgba(240,160,48,.15)}
+.cat-infra{color:var(--core);background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.15)}
+.cat-client{color:var(--care);background:rgba(180,130,255,.08);border:1px solid rgba(180,130,255,.15)}
+.cat-content{color:var(--pink);background:rgba(225,75,135,.08);border:1px solid rgba(225,75,135,.15)}
+.cat-jouissance{color:var(--pers);background:rgba(224,80,144,.08);border:1px solid rgba(224,80,144,.15)}
+.cat-partner{color:var(--green);background:rgba(76,175,125,.08);border:1px solid rgba(76,175,125,.15)}
+.cat-tools{color:#aaa;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<nav class="mxg-nav">
+  <a href="/" class="mxg-nav-brand">MXG</a>
+  <a href="/engines/blueprint/" class="mxg-link">Blueprint</a>
+  <a href="/engines/registry/" class="mxg-link active">Registry</a>
+  <a href="/engines/library/" class="mxg-link">Library</a>
+  <a href="/ops/entity-classification/" class="mxg-link">Entity Classification</a>
+  <a href="/ops/" class="mxg-link">Ops Hub</a>
+  <span class="mxg-nav-spacer"></span>
+  <a href="https://api.mexzungu.com" class="mxg-nav-ops-link">api.mexzungu.com</a>
+</nav>
+<div class="hdr">
+  <h1>Command View</h1>
+  <p>Processes and skills that serve Pepe &middot; Updated 2026-08-18</p>
+</div>
+<div class="tabs-bar">
+  <button class="tab-btn active" id="tab-proc" onclick="showTab('proc')">Processes <span id="proc-count" style="color:var(--muted);font-weight:400"></span></button>
+  <button class="tab-btn" id="tab-skills" onclick="showTab('skills')">Skills <span style="color:var(--muted);font-weight:400">(89)</span></button>
+</div>
+
+<div id="pane-proc">
+<div class="filters">
+  <div class="filter-group">
+    <span class="filter-label">Macro</span>
+    <button class="pill pill-all active" onclick="setFilter('macro','all',this)">All</button>
+    <button class="pill pill-conn" onclick="setFilter('macro','connection',this)">Connection</button>
+    <button class="pill pill-val" onclick="setFilter('macro','value',this)">Value</button>
+    <button class="pill pill-care" onclick="setFilter('macro','care',this)">Care</button>
+    <button class="pill pill-core" onclick="setFilter('macro','core',this)">Core</button>
+    <button class="pill pill-pers" onclick="setFilter('macro','personal',this)">Personal</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Priority</span>
+    <button class="pill pill-all active" onclick="setFilter('pri','all',this)">All</button>
+    <button class="pill pill-p1" onclick="setFilter('pri','P1',this)">P1</button>
+    <button class="pill pill-p2" onclick="setFilter('pri','P2',this)">P2</button>
+    <button class="pill pill-p3" onclick="setFilter('pri','P3',this)">P3</button>
+  </div>
+  <input class="search" type="text" id="psearch" placeholder="Search code, name, owner..." oninput="renderProc()">
+  <span class="count" id="pcount"></span>
+</div>
+<div class="wrap">
+<table><thead><tr>
+  <th class="col-code">Code</th><th class="col-name">Name</th><th class="col-desc">Description</th>
+  <th class="col-owner">Owner</th><th class="col-kpi">Top KPIs</th><th class="col-engine">Engine</th>
+  <th class="col-serves">Serves</th><th class="col-notes">Notes</th>
+</tr></thead>
+<tbody id="ptbody"></tbody></table>
+</div>
+</div>
+
+<div id="pane-skills" class="hidden">
+<div class="filters">
+  <div class="filter-group">
+    <span class="filter-label">Category</span>
+    <button class="pill pill-all active" onclick="setSFilter('all',this)">All</button>
+    <button class="pill pill-conn" onclick="setSFilter('MGL Persona',this)">Personas</button>
+    <button class="pill pill-val" onclick="setSFilter('MGL Ops',this)">MGL Ops</button>
+    <button class="pill pill-core" onclick="setSFilter('Janis Infra',this)">Infra</button>
+    <button class="pill pill-care" onclick="setSFilter('Client & Legal',this)">Client</button>
+    <button class="pill pill-pers" onclick="setSFilter('Content',this)">Content</button>
+    <button class="pill" onclick="setSFilter('Jouissance',this)">Jouissance</button>
+    <button class="pill" onclick="setSFilter('Partnerships',this)">Partnerships</button>
+    <button class="pill" onclick="setSFilter('Tools',this)">Tools</button>
+  </div>
+  <input class="search" type="text" id="ssearch" placeholder="Search skills..." oninput="renderSkills()">
+  <span class="count" id="scount"></span>
+</div>
+<div class="skills-wrap" id="skills-wrap"></div>
+</div>
+
+<script>
+const C=[
+{code:"COR-INF-001",old:"JAI-INF-001",name:"refresh_oauth.py",desc:"Refresh Janis OAuth tokens hourly",owner:"Iggy",kpis:["Token validity","Auth success rate","Bridge uptime"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-002",old:"JAI-INF-002",name:"sync-memory.sh",desc:"Sync memory/state files across storage layers (hourly)",owner:"Iggy",kpis:["Sync success rate","State consistency","Lag time"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-003",old:"JAI-INF-003",name:"refresh_google_tokens.py",desc:"Refresh all 4 Google OAuth tokens (every 6h)",owner:"Iggy",kpis:["Token validity","API call success rate","Account coverage"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-004",old:"JAI-INF-004",name:"self-audit.py",desc:"Audit connector health, tool availability, system state (every 6h)",owner:"Iggy",kpis:["Health score","Connector uptime","Issues detected"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-005",old:"JAI-INF-005",name:"ops-heartbeat.py",desc:"Check all services alive, ping alerts if down (every 6h)",owner:"Iggy",kpis:["Uptime %","MTTR","Alert latency"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-006",old:"JAI-INF-006",name:"connector_probe.py",desc:"Probe all tool connectors for health status (hourly)",owner:"Iggy",kpis:["Probe success rate","Failing connectors","Recovery time"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-007",old:"JAI-INF-007",name:"wa-bridge-watchdog.sh",desc:"Watch WhatsApp bridge, restart if down (every 15min)",owner:"Iggy",kpis:["Bridge uptime","Restart count","Recovery time"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"CON-CAE, CAR-CLH",notes:"WA bridge frequently failing"},
+{code:"COR-INF-008",old:"JAI-INF-008",name:"check-exit-node.sh",desc:"Check Tailscale/VPN exit node is active (every 5min)",owner:"Iggy",kpis:["Exit node uptime","Connectivity checks","Failover count"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-009",old:"JAI-INF-009",name:"log-rotate.py",desc:"Rotate and compress all log files (daily 05:00)",owner:"Iggy",kpis:["Disk usage","Log retention","Rotation success"],macro:"core",engine:"Infrastructure",pri:"P2",serves:"All engines",notes:""},
+{code:"COR-INF-010",old:"JAI-INF-010",name:"daily-maintenance.py",desc:"Nightly maintenance sweep: cleanup, health checks, state resets",owner:"Iggy",kpis:["Tasks completed","Issues resolved","Cleanup volume"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-011",old:"JAI-INF-011",name:"restart janis-tools (03:15)",desc:"Nightly restart of janis-tools systemd service",owner:"Iggy",kpis:["Restart success","Cold start time","Post-restart health"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-012",old:"JAI-INF-012",name:"restart janis-tools (12:15)",desc:"Midday restart of janis-tools service",owner:"Iggy",kpis:["Restart success","Downtime duration"],macro:"core",engine:"Infrastructure",pri:"P2",serves:"All engines",notes:""},
+{code:"COR-INF-013",old:"JAI-INF-013",name:"code-task-watchdog.py",desc:"Watch spawned code tasks, restart stalled ones (every 5min)",owner:"Iggy",kpis:["Task completion rate","Stall detections","Restart accuracy"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-014",old:"JAI-INF-014",name:"wa_media_indexer.py",desc:"Index WhatsApp media files for search (hourly)",owner:"Iggy",kpis:["Index coverage","Search hit rate","Index freshness"],macro:"core",engine:"Infrastructure",pri:"P2",serves:"COR-ADM, CAR-CLH",notes:""},
+{code:"COR-INF-015",old:"JAI-INF-015",name:"wa_group_monitor.py",desc:"Monitor WhatsApp group messages, route to handlers (every 3min 07-22)",owner:"Iggy",kpis:["Routing accuracy","Message latency","Groups covered"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"COR-ADM, CAR-CLH",notes:""},
+{code:"COR-INF-016",old:"JAI-INF-016",name:"gmail_watch.py refresh",desc:"Refresh Gmail push-notification watch subscriptions (every 6 days)",owner:"Iggy",kpis:["Watch active rate","Notification delivery","Subscription freshness"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-INF-017",old:"JAI-INF-017",name:"self-improve.py",desc:"Autonomous self-improvement loop: scan logs, patch patterns (daily 05:30)",owner:"Iggy",kpis:["Improvements applied","Pattern matches","Error reduction"],macro:"core",engine:"Infrastructure",pri:"P2",serves:"All engines",notes:""},
+{code:"COR-INF-018",old:"JAI-INF-018",name:"skills-auditor.py",desc:"Audit all installed skills, flag stale or broken ones (1st of month)",owner:"Nina",kpis:["Stale skills detected","Audit coverage","Fix rate"],macro:"core",engine:"Infrastructure",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-INF-019",old:"JAI-INF-019",name:"yoda.py",desc:"Yoda janitor: prune noise from standing-rules and guides (every 3h)",owner:"Nina",kpis:["Rules pruned","Quality score","Contradiction rate"],macro:"core",engine:"Infrastructure",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-INF-024",old:"JAI-INF-024",name:"planetarium_sync.py",desc:"Sync planetarium/astro data feed (daily 06:00)",owner:"Iggy",kpis:["Sync success","Data freshness"],macro:"core",engine:"Infrastructure",pri:"P3",serves:"COR-ADM",notes:"Consider deprecating"},
+{code:"COR-INF-025",old:"JAI-BCK-001",name:"git commit/push brain",desc:"Auto-commit and push brain repo to GitHub (every 4h)",owner:"Iggy",kpis:["Commit success rate","Push lag","Coverage"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-026",old:"JAI-BCK-002",name:"backup.sh secrets",desc:"Encrypt and back up secrets/credentials (daily 03:00)",owner:"Iggy",kpis:["Backup success","Encryption validity","Restore tested"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-027",old:"JAI-BCK-003",name:"backup.sh full",desc:"Full system backup (Sunday 03:30)",owner:"Iggy",kpis:["Backup size","Success rate","Restore time"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-028",old:"JAI-BCK-004",name:"conversations.db backup",desc:"Daily conversations DB backup, prune files older than 7 days",owner:"Iggy",kpis:["Backup success","Retention count","DB size"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-INF-029",old:"JAI-BCK-005",name:"service-account.json backup",desc:"GPG-encrypt service account credentials daily (04:00)",owner:"Iggy",kpis:["GPG success","Backup freshness"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-ADM-001",old:"JAI-EML-001",name:"email-capture.py",desc:"Capture and store emails from all 4 accounts (every 2h)",owner:"Lars",kpis:["Capture rate","Missed emails","Latency"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM, CON-CAE",notes:""},
+{code:"COR-ADM-002",old:"JAI-EML-002",name:"email_triage.py (mexzungu)",desc:"Triage pepe@mexzungu.com inbox , classify, route, flag (every 30min)",owner:"Lars",kpis:["Triage accuracy","Missed actions","Response rate"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-003",old:"JAI-EML-003",name:"email-triage-personal.py",desc:"Triage pepe.potre@gmail.com inbox (every 30min)",owner:"Lars",kpis:["Triage accuracy","Missed actions","Response rate"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-004",old:"JAI-EML-004",name:"email-triage-nca.py",desc:"Triage NCA inbox, flag legal items (every 30min)",owner:"Lars",kpis:["Triage accuracy","Legal flags caught","Response rate"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM, CAR-CLH",notes:""},
+{code:"COR-ADM-005",old:"JAI-EML-005",name:"email-triage-yale.py",desc:"Triage Yale alumni inbox (every 2h)",owner:"Lars",kpis:["Triage accuracy","Missed items"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-006",old:"JAI-EML-006",name:"attachment-filer.py",desc:"Download and file email attachments to Drive (daily 08:00)",owner:"Lars",kpis:["Filing rate","Drive success","Missed attachments"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM, COR-KNW",notes:""},
+{code:"COR-ADM-007",old:"JAI-EML-007",name:"odoo_backfill_gmail.py",desc:"Backfill Gmail data into Odoo/CRM (daily 07:00)",owner:"Jagger",kpis:["Sync records","Missing data","CRM freshness"],macro:"core",engine:"Admin Core",pri:"P2",serves:"CON-CAE",notes:""},
+{code:"COR-ADM-008",old:"JAI-EML-008",name:"auto-file.py",desc:"Auto-classify and file inbound documents (daily 08:00)",owner:"Nina",kpis:["Filing accuracy","Processing rate","Errors"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-ADM-009",old:"JAI-EML-009",name:"conversation-event-scanner.py",desc:"Scan conversations for calendar events and action items (every 2h)",owner:"Lars",kpis:["Events detected","False positives","Actions captured"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-010",old:"JAI-CAL-001",name:"meeting_prep.py",desc:"Prepare briefs for upcoming meetings (hourly)",owner:"Lars",kpis:["Brief completeness","Delivery timing","Brief quality"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-011",old:"JAI-CAL-002",name:"pre-meeting-briefer.py",desc:"Pre-meeting briefer delivered 30min before each event",owner:"Lars",kpis:["On-time delivery","Brief accuracy","Coverage"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-012",old:"JAI-CAL-003",name:"scheduling-agent.py",desc:"Scan inbox for meeting requests, reply with free slots (every 30min 06-22)",owner:"Lars",kpis:["Request-to-reply time","Slot acceptance rate","Conflicts avoided"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-013",old:"JAI-CAL-004",name:"lunch-blocker.py",desc:"Block lunch on calendar if not already blocked (every 30min 08-16 Mon-Fri)",owner:"Lars",kpis:["Block success rate","Conflicts caught"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-014",old:"JAI-CAL-005",name:"therapy-calendar-watch.py",desc:"Watch for therapy session calendar events (hourly)",owner:"Lars",kpis:["Detection accuracy","Prep triggered"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-015",old:"JAI-CAL-006",name:"calendar-enforcer.py",desc:"Enforce calendar rules , no double-book, location rules (every 15min)",owner:"Lars",kpis:["Violations caught","Rule compliance rate"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-016",old:"JAI-INT-001",name:"morning-briefing.py",desc:"Morning briefing: calendar, tasks, alerts, finance summary (06:30)",owner:"Lars",kpis:["Delivery time","Completeness","Action relevance"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-017",old:"JAI-INT-002",name:"proactive-alerts.py",desc:"Proactive alerts on deadlines, anomalies, opportunities (every 4h)",owner:"Lars",kpis:["Alert relevance","False positive rate","Missed items"],macro:"core",engine:"Admin Core",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-ADM-018",old:"JAI-INT-003",name:"proactive_loop.py",desc:"Full proactive intelligence cycle (5x daily)",owner:"Lars",kpis:["Signal quality","Actions triggered","Coverage"],macro:"core",engine:"Admin Core",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-ADM-019",old:"JAI-INT-004",name:"weekly-digest.py",desc:"Weekly digest: performance highlights, next week plan (Sunday 09:00)",owner:"Lars",kpis:["Digest accuracy","Highlights captured","Delivery"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-020",old:"JAI-INT-005",name:"rock_council_dashboard.py",desc:"Update MGL council dashboard metrics (5x daily)",owner:"Nina",kpis:["Dashboard freshness","Metric accuracy","Coverage"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-ADM-021",old:"JAI-INT-006",name:"daily-conversation-report.py",desc:"Daily WhatsApp conversation summary report (07:05)",owner:"Lars",kpis:["Coverage","Accuracy","Key signals surfaced"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-022",old:"JAI-INT-007",name:"competitive_intel.py",desc:"Weekly competitive intelligence scan and report (Friday 06:00)",owner:"Bruce",kpis:["Sources scanned","Insights quality","Relevance score"],macro:"core",engine:"Admin Core",pri:"P2",serves:"CON-CAE",notes:""},
+{code:"COR-ADM-023",old:"JAI-INT-008",name:"weekly_strategy_retro.py",desc:"Weekly strategy retrospective (Friday 14:00)",owner:"Bruce",kpis:["Retro completion","Insights captured","Actions generated"],macro:"core",engine:"Admin Core",pri:"P2",serves:"All engines",notes:""},
+{code:"COR-ADM-024",old:"JAI-INT-009",name:"ra-daily-summary.py",desc:"Real-assistant daily summary report (19:00)",owner:"Lars",kpis:["Report completeness","Delivery","Accuracy"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-025",old:"JAI-INT-010",name:"evening-reminder.py",desc:"Evening wrap-up reminder to Pepe (19:00)",owner:"Lars",kpis:["Delivery timing","Relevance"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-026",old:"JAI-INT-011",name:"kpi_loop.py",desc:"Weekly KPI measurement loop for MGL org metrics (Sunday 07:00 UTC)",owner:"Nina",kpis:["Score accuracy","Coverage","Trend detection"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-ADM-027",old:"JAI-INT-012",name:"mgl-council/run.py",desc:"MGL council daily pulse run (06:45)",owner:"Lars",kpis:["Pulse freshness","Coverage","Anomalies flagged"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-ADM-028",old:"JAI-INT-013",name:"mmm-daily.sh",desc:"Daily MMM media mix/messaging report (15:00)",owner:"Freddie",kpis:["Report delivery","Metric accuracy"],macro:"core",engine:"Admin Core",pri:"P3",serves:"CON-CNT",notes:"Low signal , review if used"},
+{code:"COR-ADM-029",old:"JAI-OPS-001",name:"task-tracker.py",desc:"Scan and update task list across all sources (every 2h)",owner:"Lars",kpis:["Task capture rate","Overdue detection","Sync success"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-030",old:"JAI-OPS-002",name:"notion-task-sync.py",desc:"Sync tasks between brain and Notion DB (every 2h 05-20)",owner:"Lars",kpis:["Sync accuracy","Lag","Conflict rate"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-031",old:"JAI-OPS-003",name:"sync_tasks.py",desc:"Cross-store task sync (8x daily)",owner:"Lars",kpis:["Sync success","State consistency","Lag"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-032",old:"JAI-OPS-004",name:"contract_watchdog.py",desc:"Check for expiring/missing contracts, alert (Monday 08:00)",owner:"Lemmy",kpis:["Expiry warnings","Missing contracts","Alert timeliness"],macro:"core",engine:"Admin Core",pri:"P1",serves:"CAR-CLH, CON-PRP",notes:"Same script as CAR-CLH-006 , consolidate"},
+{code:"COR-ADM-033",old:"JAI-OPS-005",name:"signing_reminder.py",desc:"Remind about unsigned contracts needing action (Monday 08:00)",owner:"Lemmy",kpis:["Reminder delivery","Unsigned contracts resolved"],macro:"core",engine:"Admin Core",pri:"P2",serves:"CON-PRP",notes:""},
+{code:"COR-ADM-034",old:"JAI-OPS-006",name:"booking-monitor.py",desc:"Monitor Cape Bay Airbnb/Booking.com reservations (daily 09:00)",owner:"Lars",kpis:["Reservation detection","Response time","Accuracy"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:"Personal property"},
+{code:"COR-ADM-035",old:"JAI-OPS-007",name:"namirembe-payments.py",desc:"Monitor Noah Walakira loan repayments (5th + 16th monthly)",owner:"Gene",kpis:["Payment detection","Overdue flags","Accuracy"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-FIN",notes:"Investment monitoring"},
+{code:"COR-ADM-036",old:"JAI-LFE-001",name:"garmin_sync.py",desc:"Snapshot Garmin health/activity data (daily 07:15)",owner:"Lars",kpis:["Sync success","Data freshness","Coverage"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:"Personal health tracking"},
+{code:"COR-ADM-037",old:"JAI-LFE-002",name:"garmin_weekly_scheduler.py",desc:"Generate and schedule weekly Garmin training plan (Sunday 19:00)",owner:"Lars",kpis:["Plan generation","Delivery timing"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-038",old:"JAI-LFE-003",name:"health_monitor.py (weekly)",desc:"Weekly health monitor report (Sunday 09:00)",owner:"Lars",kpis:["Report completeness","Trend detection","Delivery"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-039",old:"JAI-LFE-004",name:"health_monitor.py (alert)",desc:"Intraday health alert check (daily 11:00)",owner:"Lars",kpis:["Alert accuracy","False positives","Response time"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-040",old:"JAI-LFE-005",name:"french-lesson-reminder.py",desc:"Remind Pepe to do French lesson (daily 10:00)",owner:"Lars",kpis:["Delivery","Completion rate"],macro:"core",engine:"Admin Core",pri:"P3",serves:"COR-ADM",notes:"Verify still active"},
+{code:"COR-ADM-041",old:"JAI-LFE-006",name:"therapy_prep.py",desc:"Prepare therapy session brief every 3rd Monday 09:00",owner:"Lars",kpis:["Brief quality","Delivery timing","Coverage"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-042",old:"JAI-LFE-007",name:"therapy_report_health.py",desc:"Check therapy report is complete and current (Sunday 08:00)",owner:"Lars",kpis:["Report currency","Completeness","Flag rate"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-043",old:"JAI-LFE-008",name:"therapy_transcript_ingest.py",desc:"Ingest therapy transcripts during session window (every 30min 13-18 Mon-Fri)",owner:"Nina",kpis:["Ingest success","Processing time","Accuracy"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-KNW-001",old:"JAI-DRV-001",name:"drive-explore.py",desc:"Explore and index new Drive files (daily 06:00)",owner:"Nina",kpis:["Files indexed","New files detected","Index coverage"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-KNW-002",old:"JAI-DRV-002",name:"drive-mirror.py",desc:"Mirror Drive files locally and commit changes (daily 06:00)",owner:"Nina",kpis:["Mirror accuracy","Sync lag","Commit success"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-KNW-003",old:"JAI-DRV-003",name:"drive-full-index.py",desc:"Full re-index of all shared Drive content (daily 06:30)",owner:"Nina",kpis:["Index completeness","Run time","Error rate"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-KNW-004",old:"JAI-DRV-004",name:"journal-ocr.py",desc:"OCR Pepe's Huion handwritten journal pages (daily 07:00)",owner:"Nina",kpis:["OCR accuracy","Pages processed","Lag from journal"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-KNW-005",old:"JAI-DRV-005",name:"nca legal git pull",desc:"Pull latest NCA legal and internal legal repos (daily 07:00)",owner:"Lemmy",kpis:["Pull success","Conflict rate","Freshness"],macro:"core",engine:"Knowledge",pri:"P1",serves:"COR-KNW, CAR-CLH",notes:""},
+{code:"COR-KNW-006",old:"JAI-DRV-006",name:"come-undone-sync.py",desc:"Sync Come Undone manuscript/content (daily 02:00)",owner:"Nina",kpis:["Sync success","Freshness","Coverage"],macro:"core",engine:"Knowledge",pri:"P2",serves:"JOU",notes:"Jouissance knowledge set"},
+{code:"COR-KNW-007",old:"JAI-DRV-007",name:"weekly_dossier_review.py",desc:"Weekly review and update of all contact dossiers (Monday 06:00)",owner:"Nina",kpis:["Dossier currency","Gaps found","Updates applied"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW, CON-CAE",notes:""},
+{code:"COR-KNW-008",old:"JAI-MGL-001",name:"nina-loop/run.py",desc:"Nina (Knowledge) daily loop: dossier quality, knowledge gaps",owner:"Nina",kpis:["Dossier quality","Gaps resolved","Knowledge freshness"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-KNW-009",old:"JAI-MGL-002",name:"freddie-loop/run.py",desc:"Freddie (CMO) daily loop: content strategy, brand pulse",owner:"Freddie",kpis:["Content pipeline","Brand consistency","Strategy alignment"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"COR-KNW-010",old:"JAI-MGL-003",name:"sade-loop/run.py",desc:"Sade (Client Success) daily loop: client health signals",owner:"Sade",kpis:["Health signals detected","Flags raised","Client coverage"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CAR-CLH",notes:""},
+{code:"COR-KNW-011",old:"JAI-MGL-004",name:"kim-loop/run.py",desc:"Kim (QA) daily loop: audit quality, flag anomalies",owner:"Kim",kpis:["Anomalies flagged","Audit coverage","Quality score"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-INF",notes:""},
+{code:"COR-KNW-012",old:"JAI-MGL-005",name:"prince-loop/run.py",desc:"Prince (Quality Gate) daily loop: deliverable review queue",owner:"Prince",kpis:["Review queue length","Quality pass rate","Flagged items"],macro:"core",engine:"Knowledge",pri:"P2",serves:"All engines",notes:""},
+{code:"COR-KNW-013",old:"JAI-MGL-006",name:"sheryl-loop/run.py",desc:"Sheryl (Client Ops) daily loop: operational delivery health",owner:"Sheryl",kpis:["Delivery health score","Ops issues flagged","SLA compliance"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CAR-CLH",notes:""},
+{code:"COR-KNW-014",old:"JAI-MGL-007",name:"annie-loop/run.py",desc:"Annie (Analytics) daily loop: social and pipeline metrics",owner:"Annie",kpis:["Metric accuracy","Insights generated","Anomalies flagged"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT, CON-CAE",notes:""},
+{code:"COR-KNW-015",old:"JAI-MGL-008",name:"anselmo-loop/run.py",desc:"Anselmo (Brand Gate) daily loop: brand consistency check",owner:"Anselmo",kpis:["Brand violations caught","Consistency score","Content approved"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"COR-KNW-016",old:"JAI-MGL-009",name:"grace-loop/run.py",desc:"Grace (Deployment) daily loop: content queue and scheduling",owner:"Grace",kpis:["Queue depth","Posts scheduled","Errors"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"COR-KNW-017",old:"JAI-MGL-010",name:"grohl-loop/run.py",desc:"Grohl (Flagship Content) daily loop: long-form content pipeline",owner:"Grohl",kpis:["Content in pipeline","Quality score","Velocity"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"COR-KNW-018",old:"JAI-MGL-011",name:"joni-loop/run.py",desc:"Joni (Editorial Gate) daily loop: editorial quality pass",owner:"Joni",kpis:["Content reviewed","Quality pass rate","Edit density"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"COR-KNW-019",old:"JAI-MGL-012",name:"lenny-loop/run.py",desc:"Lenny (Cadence Content) daily loop: regular post pipeline",owner:"Lenny",kpis:["Posts in queue","Cadence adherence","Quality score"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"COR-KNW-020",old:"JAI-MGL-013",name:"nick-loop/run.py",desc:"Nick (Editor/DMs) daily loop: engagement and replies",owner:"Nick",kpis:["DMs handled","Reply quality","Engagement rate"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-LNK",notes:""},
+{code:"COR-KNW-021",old:"JAI-MGL-014",name:"iggy-loop/run.py",desc:"Iggy (DevOps) daily loop: infra health, deploy readiness",owner:"Iggy",kpis:["Infra health score","Deploy readiness","Issues flagged"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-INF",notes:""},
+{code:"COR-KNW-022",old:"JAI-MGL-015",name:"jack-loop/run.py",desc:"Jack (Backend) daily loop: API health, backend status",owner:"Jack",kpis:["API health score","Error rate","Issues flagged"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-INF",notes:""},
+{code:"COR-KNW-023",old:"JAI-MGL-016",name:"nile-loop/run.py",desc:"Nile (Frontend) daily loop: UI/UX issues, frontend status",owner:"Nile",kpis:["Frontend health","UX issues","Deploy status"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-INF",notes:""},
+{code:"COR-KNW-024",old:"JAI-MGL-017",name:"ozzy-loop/run.py",desc:"Ozzy (Scenarios) daily loop: risk flags, stress-tests",owner:"Ozzy",kpis:["Risks flagged","Scenarios tested","Insights quality"],macro:"core",engine:"Knowledge",pri:"P2",serves:"All engines",notes:""},
+{code:"COR-KNW-025",old:"JAI-MGL-018",name:"joan-loop/run.py",desc:"Joan (BD Pipeline) daily loop: pipeline hygiene",owner:"Joan",kpis:["Pipeline health","Stale deals","Hygiene score"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CAE",notes:""},
+{code:"COR-KNW-026",old:"JAI-MGL-019",name:"lou-loop/run.py",desc:"Lou (QA/Testing) daily loop: test coverage, regressions",owner:"Lou",kpis:["Test coverage","Regressions caught","Pass rate"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-INF",notes:""},
+{code:"COR-KNW-027",old:"JAI-MGL-020",name:"aretha-loop/run.py",desc:"Aretha (Regulatory) daily loop: compliance flags",owner:"Aretha",kpis:["Compliance flags","Issues resolved","Jurisdiction coverage"],macro:"core",engine:"Knowledge",pri:"P2",serves:"All engines",notes:""},
+{code:"COR-KNW-028",old:"JAI-MGL-021",name:"chrissie-loop/run.py",desc:"Chrissie (Governance) daily loop: shareholder/governance signals",owner:"Chrissie",kpis:["Governance signals","Issues flagged","Coverage"],macro:"core",engine:"Knowledge",pri:"P2",serves:"VAL-GOV",notes:""},
+{code:"COR-KNW-029",old:"JAI-MGL-022",name:"pj-loop/run.py",desc:"PJ (Deal Execution) daily loop: deal pipeline execution status",owner:"PJ",kpis:["Deal pipeline health","Execution velocity","Stall detections"],macro:"core",engine:"Knowledge",pri:"P2",serves:"VAL-DCL",notes:""},
+{code:"COR-KNW-030",old:"JAI-MGL-023",name:"tina-loop/run.py",desc:"Tina (Equity) daily loop: cap table equity events",owner:"Tina",kpis:["Cap table currency","Equity events","Accuracy"],macro:"core",engine:"Knowledge",pri:"P2",serves:"VAL-FDA",notes:""},
+{code:"COR-KNW-031",old:"JAI-MGL-024",name:"mgl-exco-pulse/run.py",desc:"MGL ExCo daily pulse: cross-org status rollup (09:00)",owner:"Lars",kpis:["ExCo coverage","Pulse freshness","Anomalies flagged"],macro:"core",engine:"Knowledge",pri:"P1",serves:"All engines",notes:""},
+{code:"COR-KNW-032",old:"JAI-MGL-025",name:"avatar-generator/run.py",desc:"Generate/update persona avatars (one-shot daily 00:00)",owner:"Iggy",kpis:["Generation success","Avatar quality"],macro:"core",engine:"Knowledge",pri:"P3",serves:"COR-KNW",notes:"One-shot , verify status"},
+{code:"COR-FIN-001",old:"JAI-FIN-001",name:"finance-filer.py",desc:"File financial transactions, update P&L (every 4h at :30)",owner:"Gene",kpis:["Filing accuracy","P&L freshness","Error rate"],macro:"core",engine:"Finance Ops",pri:"P1",serves:"COR-FIN, VAL-BIL",notes:""},
+{code:"COR-FIN-002",old:"JAI-FIN-002",name:"cash_monitor.py",desc:"Weekly cash position check and alert (Monday 09:00)",owner:"Gene",kpis:["Position accuracy","Alert timeliness","Coverage"],macro:"core",engine:"Finance Ops",pri:"P1",serves:"COR-FIN",notes:""},
+{code:"COR-FIN-003",old:"JAI-FIN-003",name:"bb_autocategorize.py",desc:"Auto-categorize Budget Bakers transactions (every 4h)",owner:"Gene",kpis:["Categorization accuracy","Coverage","Errors"],macro:"core",engine:"Finance Ops",pri:"P2",serves:"COR-FIN",notes:""},
+{code:"COR-FIN-004",old:"JAI-FIN-004",name:"kabisa-deal-log.py",desc:"Log Kabisa deal progress and financials (daily 18:00)",owner:"Gene",kpis:["Log completeness","Deal freshness"],macro:"core",engine:"Finance Ops",pri:"P2",serves:"COR-FIN, VAL-DCL",notes:"Client-specific tracking"},
+{code:"CON-CAE-001",old:"JAI-CRM-001",name:"contact-tracker.py",desc:"Track contact interactions, flag stale relationships (daily 07:05)",owner:"Jagger",kpis:["Stale detections","Interaction coverage","Flags actioned"],macro:"connection",engine:"Connection Acquisition",pri:"P2",serves:"CON-CAE",notes:""},
+{code:"CON-CAE-002",old:"JAI-CRM-002",name:"contact_enricher.py",desc:"Enrich contact records with new data (every 6h)",owner:"Jagger",kpis:["Enrichment rate","Data quality","Coverage"],macro:"connection",engine:"Connection Acquisition",pri:"P2",serves:"CON-CAE",notes:""},
+{code:"CON-CAE-003",old:"JAI-CRM-003",name:"contact-missing-audit.py",desc:"Audit contacts for missing fields/data (Sunday 07:30)",owner:"Jagger",kpis:["Gap detection rate","Fields completed","Coverage"],macro:"connection",engine:"Connection Acquisition",pri:"P2",serves:"CON-CAE",notes:""},
+{code:"CON-CAE-004",old:"JAI-CRM-004",name:"pipeline_tracker.py",desc:"Update BD pipeline status, flag stalled deals (daily 08:00)",owner:"Jagger",kpis:["Pipeline velocity","Stall detections","Stage accuracy"],macro:"connection",engine:"Connection Acquisition",pri:"P2",serves:"CON-CAE",notes:""},
+{code:"CON-CAE-005",old:"JAI-CRM-005",name:"client_health_score.py",desc:"Score client health across all active clients (daily 07:00)",owner:"Sade",kpis:["Score accuracy","Trend detection","Alert timeliness"],macro:"connection",engine:"Connection Acquisition",pri:"P1",serves:"CAR-CLH, CON-CAE",notes:""},
+{code:"CON-CAE-006",old:"JAI-CRM-006",name:"relationship-digest.py",desc:"Digest relationship signals from comms (every 2h at :45)",owner:"Sade",kpis:["Signal quality","Coverage","Actions triggered"],macro:"connection",engine:"Connection Acquisition",pri:"P2",serves:"CON-CAE, CAR-CLH",notes:""},
+{code:"CON-CAE-007",old:"JAI-CRM-007",name:"bd-engine/run.py",desc:"BD engine: prospect research and signal mining (daily 05:00)",owner:"Jagger",kpis:["Prospects identified","Quality score","Pipeline adds"],macro:"connection",engine:"Connection Acquisition",pri:"P1",serves:"CON-CAE",notes:"WA bridge down affecting scan"},
+{code:"CON-CAE-008",old:"JAI-CRM-008",name:"bd-engine/signal-detect.py",desc:"BD signal detection: inbound triggers, warm leads (3x daily)",owner:"Jagger",kpis:["Signal accuracy","False positives","Leads generated"],macro:"connection",engine:"Connection Acquisition",pri:"P1",serves:"CON-CAE",notes:""},
+{code:"CON-CAE-009",old:"JAI-CRM-009",name:"lea-tracker-sync.py",desc:"Sync Lea tracker data (every 12h)",owner:"Jagger",kpis:["Sync success","Data freshness"],macro:"connection",engine:"Connection Acquisition",pri:"P3",serves:"CON-CAE",notes:"Low value , review purpose"},
+{code:"CON-CNT-001",old:"JAI-CNT-001",name:"social-poster.py",desc:"Post scheduled social content LinkedIn/IG/X (every 15min 06-19)",owner:"Grace",kpis:["Posts published","Post errors","Approval-to-publish lag"],macro:"connection",engine:"Content Engine",pri:"P1",serves:"CON-CNT",notes:""},
+{code:"CON-CNT-002",old:"JAI-CNT-002",name:"content-engine.py",desc:"Generate and queue posts (daily 21:00)",owner:"Freddie",kpis:["Posts generated","Approval rate","Queue depth"],macro:"connection",engine:"Content Engine",pri:"P1",serves:"CON-CNT",notes:"Broken , no approved posts 7+ days"},
+{code:"CON-CNT-003",old:"JAI-CNT-003",name:"linkedin_engine.py",desc:"LinkedIn content engine: schedule posts (Mon/Wed/Fri 06:00)",owner:"Freddie",kpis:["Posts scheduled","Scheduling accuracy","Content quality"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-CNT, CON-LNK",notes:""},
+{code:"CON-CNT-004",old:"JAI-CNT-004",name:"linkedin_engagement.py daily-plan",desc:"Generate daily LinkedIn engagement plan (Mon/Wed/Fri 07:00)",owner:"Nick",kpis:["Plan quality","Targets identified","Engagement rate"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-LNK",notes:""},
+{code:"CON-CNT-005",old:"JAI-CNT-005",name:"linkedin_engagement.py poll-approvals",desc:"Poll for approved LinkedIn replies (every 30min 08-22 Mon-Fri)",owner:"Nick",kpis:["Approval latency","Replies sent","Errors"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-LNK",notes:""},
+{code:"CON-CNT-006",old:"JAI-CNT-006",name:"linkedin_engagement.py target-engage (weekday)",desc:"Target-engage: up to 5 likes + 2 comments (every 30min 07-21 Mon-Fri)",owner:"Nick",kpis:["Engagement rate","Targets hit","Quality"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-LNK",notes:"Broken , not engaging"},
+{code:"CON-CNT-007",old:"JAI-CNT-007",name:"linkedin_engagement.py target-engage (weekend)",desc:"Weekend light engagement: 3 likes + 1 comment",owner:"Nick",kpis:["Engagement rate","Targets hit"],macro:"connection",engine:"Content Engine",pri:"P3",serves:"CON-LNK",notes:""},
+{code:"CON-CNT-008",old:"JAI-CNT-008",name:"linkedin_comment_monitor.py",desc:"Monitor LinkedIn comments, auto-draft replies (hourly 05-19 Mon-Fri)",owner:"Nick",kpis:["Comments caught","Reply drafts created","Latency"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-LNK",notes:"Broken , not scraping"},
+{code:"CON-CNT-009",old:"JAI-CNT-009",name:"content-engine-improver",desc:"Score last 3 posts, patch content-engine if needed (daily 21:30 CET)",owner:"Annie",kpis:["Quality score improvement","Patches applied","Post performance"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"CON-CNT-010",old:"JAI-CNT-010",name:"oc/drafter.py --batch",desc:"Outlaw Chronicles batch newsletter drafter (daily 06:00 CET)",owner:"Grohl",kpis:["Issues drafted","Quality score","OC dark days"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-CNT",notes:"OC dark 3+ weeks , investigate"},
+{code:"CON-CNT-011",old:"JAI-CNT-011",name:"oc/theme_planner.py",desc:"OC monthly theme planner (last Sunday of month 20:00 CET)",owner:"Freddie",kpis:["Theme quality","Delivery timing","Alignment"],macro:"connection",engine:"Content Engine",pri:"P2",serves:"CON-CNT",notes:""},
+{code:"CON-CNT-012",old:"JAI-CNT-012",name:"daily-tunes.py (morning)",desc:"Morning playlist recommendation to Pepe (06:15)",owner:"Freddie",kpis:["Delivery rate","Pepe engagement"],macro:"connection",engine:"Content Engine",pri:"P3",serves:"COR-ADM",notes:"Nice-to-have"},
+{code:"CON-CNT-013",old:"JAI-CNT-013",name:"daily-tunes.py (evening)",desc:"Evening playlist recommendation to Pepe (19:00)",owner:"Freddie",kpis:["Delivery rate","Pepe engagement"],macro:"connection",engine:"Content Engine",pri:"P3",serves:"COR-ADM",notes:"Nice-to-have"},
+{code:"CON-CNT-014",old:"JAI-CNT-014",name:"weekly-tunes.py",desc:"Weekly music and cultural digest (Friday 13:00)",owner:"Freddie",kpis:["Delivery","Curation quality"],macro:"connection",engine:"Content Engine",pri:"P3",serves:"COR-ADM",notes:"Nice-to-have"},
+{code:"CON-CNT-015",old:"JAI-CNT-015",name:"kyle_jokes.py",desc:"Send daily joke to Kyle (daily 08:00)",owner:"Freddie",kpis:["Delivery rate"],macro:"connection",engine:"Content Engine",pri:"P3",serves:"COR-ADM",notes:"Fun , zero ops value"},
+{code:"CAR-CLH-001",old:"JAI-CLI-001",name:"duara-monitor.py",desc:"Real-time monitor of Duara inbound messages and signals (every 3min)",owner:"Sade",kpis:["Message detection","Response time","Coverage"],macro:"care",engine:"Client Health",pri:"P1",serves:"CAR-CLH",notes:""},
+{code:"CAR-CLH-002",old:"JAI-CLI-002",name:"kabisa-monitor.py",desc:"Monitor Kabisa deal progress signals (every 3min)",owner:"Sade",kpis:["Signal detection","Deal velocity","Coverage"],macro:"care",engine:"Client Health",pri:"P1",serves:"CAR-CLH, VAL-DCL",notes:""},
+{code:"CAR-CLH-003",old:"JAI-CLI-003",name:"kabisa-deal-log.py (ops)",desc:"Log Kabisa deal status end-of-day (18:00)",owner:"PJ",kpis:["Log completeness","Deal freshness"],macro:"care",engine:"Client Health",pri:"P2",serves:"CAR-CLH",notes:"Possible dup with COR-FIN-004"},
+{code:"CAR-CLH-004",old:"JAI-CLI-004",name:"safetywing_monitor.py",desc:"Monitor SafetyWing insurance portal (every 2h)",owner:"Lars",kpis:["Portal health","Claim status","Alert timeliness"],macro:"care",engine:"Client Health",pri:"P2",serves:"CAR-CLH",notes:"Personal , not client-facing"},
+{code:"CAR-CLH-005",old:"JAI-CLI-005",name:"safetywing-claims-monitor.py",desc:"Monitor SafetyWing claims submission status (every 30min)",owner:"Lars",kpis:["Claim status accuracy","Issue detection","Latency"],macro:"care",engine:"Client Health",pri:"P2",serves:"CAR-CLH",notes:"Personal , not client-facing"},
+{code:"CAR-CLH-006",old:"JAI-CLI-006",name:"contract_watchdog.py (client)",desc:"Watchdog: expiring/missing contracts across all clients (Monday 08:00)",owner:"Lemmy",kpis:["Expiry warnings","Missing contracts","Alert timeliness"],macro:"care",engine:"Client Health",pri:"P1",serves:"CAR-CLH, CON-PRP",notes:"Same script as COR-ADM-032 , confirm single run"},
+{code:"KEL-001",old:"JAI-KEL-001",name:"kellen_toggl.py",desc:"Pull Kellen's Toggl time entries for the week (Monday 08:00)",owner:"Lars",kpis:["Time entries captured","Billable hours accuracy","Coverage"],macro:"personal",engine:"Kellen",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"KEL-002",old:"JAI-KEL-002",name:"kellen-prospect-finder.py",desc:"Overnight prospect finder for Kellen's BD training (Mon-Fri 03:00)",owner:"Jagger",kpis:["Prospects found","Quality score","Training value"],macro:"personal",engine:"Kellen",pri:"P2",serves:"CON-CAE",notes:"Training only"},
+{code:"KEL-003",old:"JAI-KEL-003",name:"training-game daily-check",desc:"Kellen training game: daily check-in and scoring (21:59)",owner:"Lars",kpis:["Check-in rate","Score accuracy","Streak"],macro:"personal",engine:"Kellen",pri:"P2",serves:"COR-ADM",notes:"Port 8742"},
+{code:"KEL-004",old:"JAI-KEL-004",name:"weekly-workshop-search.py",desc:"Search workshops relevant to Kellen training (Monday 07:00 CET)",owner:"Nina",kpis:["Workshops found","Relevance score","Delivery"],macro:"personal",engine:"Kellen",pri:"P3",serves:"COR-KNW",notes:"Verify Kellen uses output"},
+{code:"JOU-001",old:"JAI-JOU-001",name:"jouissance_reminder.py",desc:"Daily Jouissance platform reminder to participants (18:00)",owner:"Lars",kpis:["Delivery rate","Participant engagement","Completion rate"],macro:"personal",engine:"Jouissance",pri:"P2",serves:"Jouissance platform",notes:""},
+{code:"JOU-002",old:"JAI-JOU-002",name:"jouissance_profile_reminder.py",desc:"Annual Jouissance profile completion reminder (1 Aug 10:00)",owner:"Lars",kpis:["Delivery","Profile completion rate"],macro:"personal",engine:"Jouissance",pri:"P2",serves:"Jouissance platform",notes:"Annual one-shot , verify fired"}
+];
+
+const SK=[
+{name:"annie-loop",label:"Annie",cat:"MGL Persona",desc:"Analytics , social metrics and pipeline performance"},
+{name:"anselmo-loop",label:"Anselmo",cat:"MGL Persona",desc:"Brand gate , final check before anything goes external"},
+{name:"aretha-loop",label:"Aretha",cat:"MGL Persona",desc:"Regulatory compliance flags and jurisdiction monitoring"},
+{name:"chrissie-loop",label:"Chrissie",cat:"MGL Persona",desc:"Governance and shareholder agreement signals"},
+{name:"freddie-loop",label:"Freddie",cat:"MGL Persona",desc:"CMO , content strategy and brand direction"},
+{name:"grace-loop",label:"Grace",cat:"MGL Persona",desc:"Deployment , schedules and posts all content"},
+{name:"grohl-loop",label:"Grohl",cat:"MGL Persona",desc:"Flagship content , long-form pieces and newsletter"},
+{name:"iggy-loop",label:"Iggy",cat:"MGL Persona",desc:"DevOps , infra health and deploy readiness"},
+{name:"jack-loop",label:"Jack",cat:"MGL Persona",desc:"Backend , API health and backend status"},
+{name:"joan-loop",label:"Joan",cat:"MGL Persona",desc:"BD pipeline management and hygiene"},
+{name:"joni-loop",label:"Joni",cat:"MGL Persona",desc:"Editorial gate , cuts and tightens all content"},
+{name:"kim-loop",label:"Kim",cat:"MGL Persona",desc:"QA , audit quality and flag anomalies"},
+{name:"lenny-loop",label:"Lenny",cat:"MGL Persona",desc:"Cadence content , regular posts across platforms"},
+{name:"lou-loop",label:"Lou",cat:"MGL Persona",desc:"QA/testing , test coverage and regressions"},
+{name:"mgl-council-session",label:"Council Session",cat:"MGL Persona",desc:"Full 29-persona council for major decisions"},
+{name:"mgl-exco-pulse",label:"ExCo Pulse",cat:"MGL Persona",desc:"Daily cross-org ExCo status rollup"},
+{name:"nick-loop",label:"Nick",cat:"MGL Persona",desc:"Editor , DMs, replies, and engagement"},
+{name:"nile-loop",label:"Nile",cat:"MGL Persona",desc:"Frontend , UI/UX issues and frontend status"},
+{name:"nina-loop",label:"Nina",cat:"MGL Persona",desc:"Head of Knowledge , dossier quality and knowledge gaps"},
+{name:"ozzy-loop",label:"Ozzy",cat:"MGL Persona",desc:"Scenario stress-tester , risk flags and 'and then what?' x3"},
+{name:"pj-loop",label:"PJ",cat:"MGL Persona",desc:"Deal execution , pipeline velocity and stall detection"},
+{name:"prince-loop",label:"Prince",cat:"MGL Persona",desc:"Quality gate , deliverable review queue"},
+{name:"sade-loop",label:"Sade",cat:"MGL Persona",desc:"Client success , strategic health signals"},
+{name:"sheryl-loop",label:"Sheryl",cat:"MGL Persona",desc:"Client ops , operational delivery health and SLA"},
+{name:"tina-loop",label:"Tina",cat:"MGL Persona",desc:"Equity and cap table events"},
+{name:"agent-building-engine",label:"Agent Builder",cat:"MGL Ops",desc:"Framework for building new agent loops"},
+{name:"agent-task-framework",label:"Agent Task Framework",cat:"MGL Ops",desc:"Server-level task dispatch via Quincy and specialists"},
+{name:"agent-task-framework-knowledge",label:"ATF Knowledge",cat:"MGL Ops",desc:"Knowledge base for agent task framework"},
+{name:"engine-architecture-improver",label:"Engine Architect",cat:"MGL Ops",desc:"Improve engine architecture and connections"},
+{name:"engine-auditor",label:"Engine Auditor",cat:"MGL Ops",desc:"Kim QA loop , audits any L2/L3 engine"},
+{name:"inter-agent-harness-design",label:"Harness Design",cat:"MGL Ops",desc:"3-table SQLite harness for inter-agent coordination"},
+{name:"loop-maker",label:"Loop Maker",cat:"MGL Ops",desc:"Build new autonomous agent loops"},
+{name:"loop-maker-v2",label:"Loop Maker V2",cat:"MGL Ops",desc:"V2 loop builder with improved patterns"},
+{name:"mgl-app-dev",label:"App Dev",cat:"MGL Ops",desc:"10-step on-demand app builder"},
+{name:"mgl-app-dev-knowledge",label:"App Dev Knowledge",cat:"MGL Ops",desc:"Knowledge base for MGL app development"},
+{name:"mgl-delivery-engines",label:"Delivery Engines",cat:"MGL Ops",desc:"Founders and Investors delivery arms , EL-triggered, 48h SLA"},
+{name:"mgl-delivery-engines-knowledge",label:"Delivery Knowledge",cat:"MGL Ops",desc:"Knowledge for MGL delivery engines"},
+{name:"mgl-induction",label:"Induction",cat:"MGL Ops",desc:"AI-native consultant onboarding, 12 progressive missions"},
+{name:"mgl-induction-knowledge",label:"Induction Knowledge",cat:"MGL Ops",desc:"Knowledge base for consultant induction"},
+{name:"product-audit-team",label:"Product Audit Team",cat:"MGL Ops",desc:"Reusable 11-agent team for any app audit"},
+{name:"task-enforcer",label:"Task Enforcer",cat:"MGL Ops",desc:"Scan 5 sources for failed/stalled tasks , retry or escalate"},
+{name:"email-format-gate",label:"Email Format Gate",cat:"Janis Infra",desc:"Enforce HTML emails and canonical contract templates"},
+{name:"gdocs-master",label:"Google Docs Master",cat:"Janis Infra",desc:"5-tool Google Docs toolkit: replace, copy, generate, export"},
+{name:"impeccable",label:"Impeccable",cat:"Janis Infra",desc:"Impeccable work standard , triple gate before every output"},
+{name:"janis-app-improver",label:"App Improver",cat:"Janis Infra",desc:"Quincy + 10 specialists audit the Janis web app"},
+{name:"janis-growth",label:"Janis Growth",cat:"Janis Infra",desc:"JANIS brand strategy and growth loop"},
+{name:"janis-web-arch",label:"Web Architecture",cat:"Janis Infra",desc:"Janis web app architecture skill"},
+{name:"janis-x-delta-design",label:"X Delta Design",cat:"Janis Infra",desc:"Delta design framework for Janis"},
+{name:"real-assistant",label:"Real Assistant",cat:"Janis Infra",desc:"Grounds Janis as a real-world operator, not a chatbot"},
+{name:"scheduling-agent",label:"Scheduling Agent",cat:"Janis Infra",desc:"Scan inbox for meeting requests, reply with free slots"},
+{name:"session-plan-improver",label:"Session Planner",cat:"Janis Infra",desc:"Improve and write session handoff plans"},
+{name:"skills-auditor",label:"Skills Auditor",cat:"Janis Infra",desc:"Audit all installed skills, flag stale or broken"},
+{name:"web-studio",label:"Web Studio",cat:"Janis Infra",desc:"Full web development skill for mexzungu.com"},
+{name:"web-studio-knowledge",label:"Web Studio Knowledge",cat:"Janis Infra",desc:"Knowledge base for web studio patterns"},
+{name:"yoda-janitor",label:"Yoda Janitor",cat:"Janis Infra",desc:"Prune noise from standing-rules and guide files weekly"},
+{name:"bd-engine",label:"BD Engine",cat:"Client & Legal",desc:"BD signal mining and follow-up loop"},
+{name:"duara-contract-auditor",label:"Duara Contracts",cat:"Client & Legal",desc:"Audit all 3 Duara agreements for format and compliance"},
+{name:"invoice-to-cash",label:"Invoice to Cash",cat:"Client & Legal",desc:"Invoice generation and cash collection workflow"},
+{name:"namirembe-payments",label:"Namirembe Payments",cat:"Client & Legal",desc:"Monitor Noah Walakira 60 monthly loan payments"},
+{name:"nca-board-memo",label:"NCA Board Memo",cat:"Client & Legal",desc:"Generate NCA board memos and governance docs"},
+{name:"nca-new-site-structures",label:"NCA Site Structures",cat:"Client & Legal",desc:"NCA/Elsewhere new site architecture and content"},
+{name:"nca-new-site-structures-knowledge",label:"NCA Site Knowledge",cat:"Client & Legal",desc:"Knowledge base for NCA site structures"},
+{name:"nca-strategy-review",label:"NCA Strategy Review",cat:"Client & Legal",desc:"NCA strategic review and legal risk assessment"},
+{name:"book-to-skill",label:"Book to Skill",cat:"Content",desc:"Convert a book into a reusable skill"},
+{name:"come-undone-editorial",label:"Come Undone Editorial",cat:"Content",desc:"Editorial pass for Come Undone manuscript"},
+{name:"come-undone-handbook",label:"Come Undone Handbook",cat:"Content",desc:"Handbook and guidelines for Come Undone writing project"},
+{name:"content-engine",label:"Content Engine",cat:"Content",desc:"Full social content generation pipeline"},
+{name:"content-engine-improver",label:"Content Improver",cat:"Content",desc:"Score and patch content-engine quality"},
+{name:"knowledge-engine",label:"Knowledge Engine",cat:"Content",desc:"Build and manage knowledge bases"},
+{name:"knowledge-set-design",label:"Knowledge Set Design",cat:"Content",desc:"Design educational content for Jouissance participants"},
+{name:"knowledge-set-design-knowledge",label:"KSD Knowledge",cat:"Content",desc:"Knowledge base for knowledge set design"},
+{name:"sm-strategy-builder",label:"SM Strategy Builder",cat:"Content",desc:"Monthly social media strategy generation (1st of month)"},
+{name:"voice-note-filer",label:"Voice Note Filer",cat:"Content",desc:"Transcribe and file voice notes to correct locations"},
+{name:"voice-note-filer-knowledge",label:"VNF Knowledge",cat:"Content",desc:"Knowledge base for voice note filing"},
+{name:"jouissance-improver",label:"Jouissance Improver",cat:"Jouissance",desc:"Quincy + 7 specialists audit jouissance.mexzungu.com"},
+{name:"jouissance-improver-knowledge",label:"Improver Knowledge",cat:"Jouissance",desc:"Knowledge base for Jouissance improvement loop"},
+{name:"jouissance-qc-launch",label:"QC Launch",cat:"Jouissance",desc:"Pre-launch audit: UX, technical, content, security (5 agents)"},
+{name:"jouissance-repair",label:"Jouissance Repair",cat:"Jouissance",desc:"Fix Jouissance platform issues"},
+{name:"jouissance-visual-design",label:"Visual Design",cat:"Jouissance",desc:"Visual design standards for Jouissance platform"},
+{name:"jouissance-visual-design-knowledge",label:"Visual Knowledge",cat:"Jouissance",desc:"Knowledge base for Jouissance visual design"},
+{name:"einat-website-improver",label:"Einat Site Improver",cat:"Partnerships",desc:"Improve Einat's website (safetofeel.me)"},
+{name:"jose-ruiz-collab-knowledge",label:"Jose Ruiz Knowledge",cat:"Partnerships",desc:"Knowledge base for Jose Ruiz collaboration"},
+{name:"jose-ruiz-partnership",label:"Jose Ruiz Partnership",cat:"Partnerships",desc:"Manage Jose Ruiz partnership and collaboration"},
+{name:"pepecarrillo-site-audit",label:"Pepe Site Audit",cat:"Partnerships",desc:"Audit pepecarrillo.com personal website"},
+{name:"comms-redesign",label:"Comms Redesign",cat:"Tools",desc:"Fix and redesign Telegram routing across all channels"},
+{name:"defuddle",label:"Defuddle",cat:"Tools",desc:"Simplify and clarify complex content or briefs"},
+{name:"i-have-adhd",label:"ADHD Mode",cat:"Tools",desc:"ADHD-optimized workflow and focus tools"},
+{name:"json-canvas",label:"JSON Canvas",cat:"Tools",desc:"Work with JSON canvas / Obsidian canvas files"},
+{name:"learned",label:"Learned",cat:"Tools",desc:"Capture and persist lessons learned"},
+{name:"obsidian-bases",label:"Obsidian Bases",cat:"Tools",desc:"Obsidian Bases feature management"},
+{name:"obsidian-cli",label:"Obsidian CLI",cat:"Tools",desc:"Obsidian command-line interface operations"},
+{name:"obsidian-markdown",label:"Obsidian Markdown",cat:"Tools",desc:"Obsidian-flavored markdown handling"}
+];
+
+const MC={connection:'conn',value:'val',care:'care',core:'core',personal:'pers'};
+const ML={connection:'Connection',value:'Value',care:'Care',core:'Core',personal:'Personal'};
+const pF={macro:'all',pri:'all'};
+
+function setFilter(k,v,btn){pF[k]=v;btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');renderProc();}
+
+function renderProc(){
+  const q=(document.getElementById('psearch').value||'').toLowerCase();
+  const rows=C.filter(r=>{
+    if(pF.macro!=='all'&&r.macro!==pF.macro)return false;
+    if(pF.pri!=='all'&&r.pri!==pF.pri)return false;
+    if(q&&!(r.code.toLowerCase().includes(q)||r.name.toLowerCase().includes(q)||r.owner.toLowerCase().includes(q)||r.desc.toLowerCase().includes(q)||r.engine.toLowerCase().includes(q)))return false;
+    return true;
+  });
+  document.getElementById('pcount').textContent='('+rows.length+')';
+  document.getElementById('pcount').parentElement&&(document.getElementById('proc-count').textContent='('+rows.length+')');
+  document.getElementById('pcount').textContent=rows.length+' of '+C.length;
+  const tb=document.getElementById('ptbody');
+  tb.innerHTML=rows.map(r=>{
+    const c2=MC[r.macro]||'core';
+    const isRed=r.notes&&(r.notes.includes('Broken')||r.notes.includes('broken')||r.notes.includes('dark')||r.notes.includes('dup')||r.notes.includes('Same script'));
+    return`<tr>
+<td class="col-code"><span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--${c2})">${r.code}</span><span class="old-code">${r.old}</span><span class="pri pri-${r.pri}">${r.pri}</span></td>
+<td class="col-name" style="font-size:11px;font-weight:600">${r.name}</td>
+<td class="col-desc" style="color:var(--muted2)">${r.desc}</td>
+<td class="col-owner"><span class="owner-str">${r.owner}</span></td>
+<td class="col-kpi"><ul class="kpi-list">${r.kpis.map(k=>`<li>${k}</li>`).join('')}</ul></td>
+<td class="col-engine"><span class="macro-badge mb-${c2}">${ML[r.macro]}</span><br><span class="eng-tag">${r.engine}</span></td>
+<td class="col-serves"><span class="serves">${r.serves}</span></td>
+<td class="col-notes"><span class="${r.notes?(isRed?'note-red':'note'):''}">${r.notes}</span></td>
+</tr>`;
+  }).join('');
+}
+
+const catClass={'MGL Persona':'cat-persona','MGL Ops':'cat-mglops','Janis Infra':'cat-infra','Client & Legal':'cat-client','Content':'cat-content','Jouissance':'cat-jouissance','Partnerships':'cat-partner','Tools':'cat-tools'};
+const catOrder=['MGL Persona','MGL Ops','Janis Infra','Client & Legal','Content','Jouissance','Partnerships','Tools'];
+let sCat='all';
+
+function setSFilter(cat,btn){sCat=cat;document.querySelectorAll('.filters .pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');renderSkills();}
+
+function renderSkills(){
+  const q=(document.getElementById('ssearch').value||'').toLowerCase();
+  const f=SK.filter(s=>{
+    if(sCat!=='all'&&s.cat!==sCat)return false;
+    if(q&&!(s.name.includes(q)||s.label.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||s.cat.toLowerCase().includes(q)))return false;
+    return true;
+  });
+  document.getElementById('scount').textContent=f.length+' of '+SK.length;
+  const wrap=document.getElementById('skills-wrap');
+  const card=s=>`<div class="skill-card"><div class="skill-name">${s.label}</div><div class="skill-slug">${s.name}</div><div class="skill-desc">${s.desc}</div></div>`;
+  if(sCat!=='all'||q){
+    wrap.innerHTML=`<div class="skill-grid">${f.map(card).join('')}</div>`;
+  } else {
+    const by={};f.forEach(s=>{if(!by[s.cat])by[s.cat]=[];by[s.cat].push(s);});
+    wrap.innerHTML=catOrder.filter(c=>by[c]).map(c=>`<div class="cat-section"><div class="cat-title">${c} <span style="color:var(--muted);font-weight:400">(${by[c].length})</span></div><div class="skill-grid">${by[c].map(card).join('')}</div></div>`).join('');
+  }
+}
+
+function showTab(tab){
+  document.getElementById('pane-proc').classList.toggle('hidden',tab!=='proc');
+  document.getElementById('pane-skills').classList.toggle('hidden',tab!=='skills');
+  document.getElementById('tab-proc').classList.toggle('active',tab==='proc');
+  document.getElementById('tab-skills').classList.toggle('active',tab==='skills');
+}
+
+renderProc();
+renderSkills();
+document.getElementById('proc-count').textContent='('+C.length+')';
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+/* ops-system.css. Shared nav for all mexzungu.com engine and ops pages */
+/* Macro Engine tokens */
+:root {
+  --conn: #4CC8B4;
+  --val: #F0A030;
+  --care: #B482FF;
+  --core: #94A3B8;
+  --pers: #E14B87;
+  --brand: #E14B87;
+  --bg: #0f0f0f;
+  --surface: #181818;
+  --border: #1e1e1e;
+  --text: #e8e8e8;
+  --muted: #555;
+  --muted2: #888;
+}
+
+/* Universal nav */
+.mxg-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15,15,15,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid #1e1e1e;
+  padding: 10px 24px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mxg-nav-brand {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--brand);
+  text-decoration: none;
+  margin-right: 8px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.mxg-nav-brand:hover {
+  color: #ff6aab;
+}
+
+.mxg-nav a.mxg-link {
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 3px 10px;
+  border: 1px solid #222;
+  border-radius: 4px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.mxg-nav a.mxg-link:hover {
+  color: var(--text);
+  border-color: #444;
+}
+
+.mxg-nav a.mxg-link.active {
+  color: var(--text);
+  border-color: #444;
+  background: #1a1a1a;
+}
+
+.mxg-nav-spacer {
+  flex: 1;
+}
+
+.mxg-nav-ops-link {
+  font-size: 10px;
+  color: #333;
+  text-decoration: none;
+  font-family: monospace;
+  transition: color 0.15s;
+}
+
+.mxg-nav-ops-link:hover {
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .mxg-nav {
+    padding: 10px 16px;
+    gap: 6px;
+  }
+  .mxg-nav-spacer { display: none; }
+  .mxg-nav-ops-link { display: none; }
+}
