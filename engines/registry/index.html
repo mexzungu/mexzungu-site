@@ -85,6 +85,23 @@ td{padding:8px 10px;vertical-align:top}
 .cat-partner{color:var(--green);background:rgba(76,175,125,.08);border:1px solid rgba(76,175,125,.15)}
 .cat-tools{color:#aaa;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
 .hidden{display:none}
+.unified-filters{padding:12px 24px;max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.filter-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.filter-row .filter-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px;white-space:nowrap}
+.filter-row input.search{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;font-size:12px;width:200px;outline:none;font-family:inherit}
+.filter-row input.search:focus{border-color:#555}
+.filter-row input.search::placeholder{color:var(--muted)}
+.registry-count{font-size:11px;color:var(--muted);margin-left:auto}
+.registry-section{padding:12px 24px 0;max-width:1600px;margin:0 auto}
+.section-head{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:8px 0 6px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.proc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;padding-bottom:48px}
+.proc-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 12px;transition:.15s;display:flex;flex-direction:column;gap:4px}
+.proc-card:hover{border-color:#444;background:#1d1d1d}
+.proc-card-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.proc-card-name{font-size:12px;font-weight:700;color:var(--text);font-family:monospace;margin-top:2px}
+.proc-card-desc{font-size:11px;color:var(--muted2);line-height:1.4;flex:1}
+.proc-card-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.registry-empty{padding:48px 24px;text-align:center;color:var(--muted);font-size:13px;max-width:1600px;margin:0 auto}
 </style>
 </head>
 <body>
@@ -102,80 +119,38 @@ td{padding:8px 10px;vertical-align:top}
   <h1>Command View</h1>
   <p>Processes and skills that serve Pepe &middot; Updated 2026-08-18</p>
 </div>
-<div class="tabs-bar">
-  <button class="tab-btn active" id="tab-proc" onclick="showTab('proc')">Processes <span id="proc-count" style="color:var(--muted);font-weight:400"></span></button>
-  <button class="tab-btn" id="tab-skills" onclick="showTab('skills')">Skills <span style="color:var(--muted);font-weight:400">(89)</span></button>
-  <button class="tab-btn" id="tab-pers" onclick="showTab('pers')">Personal <span id="pers-count" style="color:var(--muted);font-weight:400"></span></button>
-</div>
-
-<div id="pane-proc">
-<div class="filters">
-  <div class="filter-group">
-    <span class="filter-label">Macro</span>
-    <button class="pill pill-all active" onclick="setFilter('macro','all',this)">All</button>
-    <button class="pill pill-conn" onclick="setFilter('macro','connection',this)">Connection</button>
-    <button class="pill pill-val" onclick="setFilter('macro','value',this)">Value</button>
-    <button class="pill pill-care" onclick="setFilter('macro','care',this)">Care</button>
-    <button class="pill pill-core" onclick="setFilter('macro','core',this)">Core</button>
-    <button class="pill pill-pers" onclick="setFilter('macro','personal',this)">Personal</button>
+<div class="unified-filters">
+  <div class="filter-row">
+    <span class="filter-label">Type</span>
+    <button class="pill pill-all active" onclick="setType('all',this)">All</button>
+    <button class="pill" onclick="setType('proc',this)">Processes</button>
+    <button class="pill" onclick="setType('skills',this)">Skills</button>
+    <input class="search" type="text" id="reg-search" placeholder="Search..." oninput="render()">
+    <span class="registry-count" id="reg-count"></span>
   </div>
-  <div class="filter-group">
-    <span class="filter-label">Priority</span>
-    <button class="pill pill-all active" onclick="setFilter('pri','all',this)">All</button>
-    <button class="pill pill-p1" onclick="setFilter('pri','P1',this)">P1</button>
-    <button class="pill pill-p2" onclick="setFilter('pri','P2',this)">P2</button>
-    <button class="pill pill-p3" onclick="setFilter('pri','P3',this)">P3</button>
-  </div>
-  <input class="search" type="text" id="psearch" placeholder="Search code, name, owner..." oninput="renderProc()">
-  <span class="count" id="pcount"></span>
-</div>
-<div class="wrap">
-<table><thead><tr>
-  <th class="col-code">Code</th><th class="col-name">Name</th><th class="col-desc">Description</th>
-  <th class="col-owner">Owner</th><th class="col-kpi">Top KPIs</th><th class="col-engine">Engine</th>
-  <th class="col-serves">Serves</th><th class="col-notes">Notes</th>
-</tr></thead>
-<tbody id="ptbody"></tbody></table>
-</div>
-</div>
-
-<div id="pane-skills" class="hidden">
-<div class="filters">
-  <div class="filter-group">
-    <span class="filter-label">Category</span>
-    <button class="pill pill-all active" onclick="setSFilter('all',this)">All</button>
-    <button class="pill pill-conn" onclick="setSFilter('MGL Persona',this)">Personas</button>
-    <button class="pill pill-val" onclick="setSFilter('MGL Ops',this)">MGL Ops</button>
-    <button class="pill pill-core" onclick="setSFilter('Janis Infra',this)">Infra</button>
-    <button class="pill pill-care" onclick="setSFilter('Client & Legal',this)">Client</button>
-    <button class="pill pill-pers" onclick="setSFilter('Content',this)">Content</button>
-    <button class="pill" onclick="setSFilter('Jouissance',this)">Jouissance</button>
-    <button class="pill" onclick="setSFilter('Partnerships',this)">Partnerships</button>
-    <button class="pill" onclick="setSFilter('Tools',this)">Tools</button>
-  </div>
-  <input class="search" type="text" id="ssearch" placeholder="Search skills..." oninput="renderSkills()">
-  <span class="count" id="scount"></span>
-</div>
-<div class="skills-wrap" id="skills-wrap"></div>
-</div>
-
-<div id="pane-pers" class="hidden">
-<div class="filters">
-  <div class="filter-group">
+  <div class="filter-row">
     <span class="filter-label">Engine</span>
-    <button class="pill pill-all active" onclick="setPersFilter('all',this)">All</button>
-    <button class="pill pill-conn" onclick="setPersFilter('Body',this)">Body</button>
-    <button class="pill pill-care" onclick="setPersFilter('Mind',this)">Mind</button>
-    <button class="pill pill-pers" onclick="setPersFilter('Soul',this)">Soul</button>
-    <button class="pill pill-val" onclick="setPersFilter('Kellen',this)">Kellen</button>
+    <button class="pill pill-all active" onclick="setEngine('all',this)">All</button>
+    <button class="pill pill-conn" onclick="setEngine('connection',this)">Connection</button>
+    <button class="pill pill-val" onclick="setEngine('value',this)">Value</button>
+    <button class="pill pill-care" onclick="setEngine('care',this)">Care</button>
+    <button class="pill pill-pers" onclick="setEngine('body',this)">Body</button>
+    <button class="pill pill-pers" onclick="setEngine('mind',this)">Mind</button>
+    <button class="pill pill-pers" onclick="setEngine('soul',this)">Soul</button>
+    <button class="pill pill-core" onclick="setEngine('mglcore',this)">MGL Core</button>
+    <button class="pill pill-core" onclick="setEngine('lfecore',this)">LFE Core</button>
+    <button class="pill" onclick="setEngine('other',this)">Other</button>
   </div>
 </div>
-<div class="wrap"><table><thead><tr>
-  <th class="col-code">Code</th><th class="col-name">Name</th><th class="col-desc">Description</th>
-  <th class="col-owner">Owner</th><th class="col-kpi">KPIs</th><th class="col-engine">Engine</th>
-  <th class="col-serves">Serves</th><th class="col-notes">Notes</th>
-</tr></thead><tbody id="pers-tbody"></tbody></table></div>
+<div id="reg-proc" class="registry-section">
+  <div class="section-head">Processes <span id="proc-count" style="color:var(--muted);font-weight:400"></span></div>
+  <div class="proc-grid" id="proc-grid"></div>
 </div>
+<div id="reg-skills" class="registry-section">
+  <div class="section-head">Skills <span id="skills-count" style="color:var(--muted);font-weight:400"></span></div>
+  <div id="skills-grid"></div>
+</div>
+<div class="registry-empty hidden" id="reg-empty">No results.</div>
 
 <script>
 const C=[
@@ -417,105 +392,77 @@ const SK=[
 ];
 
 const MC={connection:'conn',value:'val',care:'care',core:'core',personal:'pers'};
-const ML={connection:'Connection',value:'Value',care:'Care',core:'Core',personal:'Personal'};
-const pF={macro:'all',pri:'all'};
-
-function setFilter(k,v,btn){pF[k]=v;btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');renderProc();}
-
-function renderProc(){
-  const q=(document.getElementById('psearch').value||'').toLowerCase();
-  const rows=C.filter(r=>{
-    if(pF.macro!=='all'&&r.macro!==pF.macro)return false;
-    if(pF.pri!=='all'&&r.pri!==pF.pri)return false;
-    if(q&&!(r.code.toLowerCase().includes(q)||r.name.toLowerCase().includes(q)||r.owner.toLowerCase().includes(q)||r.desc.toLowerCase().includes(q)||r.engine.toLowerCase().includes(q)))return false;
-    return true;
-  });
-  document.getElementById('pcount').textContent='('+rows.length+')';
-  document.getElementById('pcount').parentElement&&(document.getElementById('proc-count').textContent='('+rows.length+')');
-  document.getElementById('pcount').textContent=rows.length+' of '+C.length;
-  const tb=document.getElementById('ptbody');
-  tb.innerHTML=rows.map(r=>{
-    const c2=MC[r.macro]||'core';
-    const isRed=r.notes&&(r.notes.includes('Broken')||r.notes.includes('broken')||r.notes.includes('dark')||r.notes.includes('dup')||r.notes.includes('Same script'));
-    return`<tr>
-<td class="col-code"><span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--${c2})">${r.code}</span><span class="old-code">${r.old}</span><span class="pri pri-${r.pri}">${r.pri}</span></td>
-<td class="col-name" style="font-size:11px;font-weight:600">${r.name}</td>
-<td class="col-desc" style="color:var(--muted2)">${r.desc}</td>
-<td class="col-owner"><span class="owner-str">${r.owner}</span></td>
-<td class="col-kpi"><ul class="kpi-list">${r.kpis.map(k=>`<li>${k}</li>`).join('')}</ul></td>
-<td class="col-engine"><span class="macro-badge mb-${c2}">${ML[r.macro]}</span><br><span class="eng-tag">${r.engine}</span></td>
-<td class="col-serves"><span class="serves">${r.serves}</span></td>
-<td class="col-notes"><span class="${r.notes?(isRed?'note-red':'note'):''}">${r.notes}</span></td>
-</tr>`;
-  }).join('');
-}
-
 const catClass={'MGL Persona':'cat-persona','MGL Ops':'cat-mglops','Janis Infra':'cat-infra','Client & Legal':'cat-client','Content':'cat-content','Jouissance':'cat-jouissance','Partnerships':'cat-partner','Tools':'cat-tools'};
 const catOrder=['MGL Persona','MGL Ops','Janis Infra','Client & Legal','Content','Jouissance','Partnerships','Tools'];
-let sCat='all';
+const fState={type:'all',engine:'all'};
 
-function setSFilter(cat,btn){sCat=cat;document.querySelectorAll('.filters .pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');renderSkills();}
-
-function renderSkills(){
-  const q=(document.getElementById('ssearch').value||'').toLowerCase();
-  const f=SK.filter(s=>{
-    if(sCat!=='all'&&s.cat!==sCat)return false;
-    if(q&&!(s.name.includes(q)||s.label.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||s.cat.toLowerCase().includes(q)))return false;
-    return true;
-  });
-  document.getElementById('scount').textContent=f.length+' of '+SK.length;
-  const wrap=document.getElementById('skills-wrap');
-  const card=s=>`<div class="skill-card"><div class="skill-name">${s.label}</div><div class="skill-slug">${s.name}</div><div class="skill-desc">${s.desc}</div></div>`;
-  if(sCat!=='all'||q){
-    wrap.innerHTML=`<div class="skill-grid">${f.map(card).join('')}</div>`;
-  } else {
-    const by={};f.forEach(s=>{if(!by[s.cat])by[s.cat]=[];by[s.cat].push(s);});
-    wrap.innerHTML=catOrder.filter(c=>by[c]).map(c=>`<div class="cat-section"><div class="cat-title">${c} <span style="color:var(--muted);font-weight:400">(${by[c].length})</span></div><div class="skill-grid">${by[c].map(card).join('')}</div></div>`).join('');
-  }
+function matchEngine(r,eng){
+  if(eng==='all') return true;
+  if(eng==='connection') return r.macro==='connection';
+  if(eng==='value') return r.macro==='value';
+  if(eng==='care') return r.macro==='care';
+  if(eng==='body') return r.macro==='personal'&&r.engine==='Body';
+  if(eng==='mind') return r.macro==='personal'&&r.engine==='Mind';
+  if(eng==='soul') return r.macro==='personal'&&r.engine==='Soul';
+  if(eng==='mglcore') return r.macro==='core';
+  if(eng==='lfecore') return r.macro==='personal';
+  if(eng==='other') return !['connection','value','care','core','personal'].includes(r.macro);
+  return true;
 }
 
-const persData=C.filter(r=>r.macro==='personal');
-let persEngFilter='all';
-
-function setPersFilter(eng,btn){
-  persEngFilter=eng;
-  document.querySelectorAll('#pane-pers .pill').forEach(p=>p.classList.remove('active'));
+function setType(t,btn){
+  fState.type=t;
+  document.querySelectorAll('.unified-filters .filter-row:first-child .pill').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
-  renderPers();
+  render();
 }
 
-function renderPers(){
-  const rows=persEngFilter==='all'?persData:persData.filter(r=>r.engine===persEngFilter);
-  const tb=document.getElementById('pers-tbody');
-  tb.innerHTML=rows.map(r=>{
-    const c2=MC[r.macro]||'pers';
-    return`<tr>
-<td class="col-code"><span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--pers)">${r.code}</span><span class="old-code">${r.old}</span><span class="pri pri-${r.pri}">${r.pri}</span></td>
-<td class="col-name" style="font-size:11px;font-weight:600">${r.name}</td>
-<td class="col-desc" style="color:var(--muted2)">${r.desc}</td>
-<td class="col-owner"><span class="owner-str">${r.owner}</span></td>
-<td class="col-kpi"><ul class="kpi-list">${r.kpis.map(k=>`<li>${k}</li>`).join('')}</ul></td>
-<td class="col-engine"><span class="macro-badge mb-pers">${r.engine}</span></td>
-<td class="col-serves"><span class="serves">${r.serves}</span></td>
-<td class="col-notes"><span class="note">${r.notes}</span></td>
-</tr>`;
-  }).join('');
+function setEngine(e,btn){
+  fState.engine=e;
+  document.querySelectorAll('.unified-filters .filter-row:last-child .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  render();
 }
 
-function showTab(tab){
-  document.getElementById('pane-proc').classList.toggle('hidden',tab!=='proc');
-  document.getElementById('pane-skills').classList.toggle('hidden',tab!=='skills');
-  document.getElementById('pane-pers').classList.toggle('hidden',tab!=='pers');
-  document.getElementById('tab-proc').classList.toggle('active',tab==='proc');
-  document.getElementById('tab-skills').classList.toggle('active',tab==='skills');
-  document.getElementById('tab-pers').classList.toggle('active',tab==='pers');
+function render(){
+  const q=(document.getElementById('reg-search').value||'').toLowerCase();
+  const showProc=fState.type==='all'||fState.type==='proc';
+  const showSkills=fState.type==='all'||fState.type==='skills';
+  document.getElementById('reg-proc').style.display=showProc?'':'none';
+  document.getElementById('reg-skills').style.display=showSkills?'':'none';
+  let total=0;
+  if(showProc){
+    const rows=C.filter(r=>{
+      if(!matchEngine(r,fState.engine)) return false;
+      if(q&&!(r.code.toLowerCase().includes(q)||r.name.toLowerCase().includes(q)||r.owner.toLowerCase().includes(q)||r.desc.toLowerCase().includes(q)||r.engine.toLowerCase().includes(q))) return false;
+      return true;
+    });
+    document.getElementById('proc-count').textContent='('+rows.length+')';
+    total+=rows.length;
+    document.getElementById('proc-grid').innerHTML=rows.map(r=>`<div class="proc-card">
+<div class="proc-card-top"><span class="macro-badge mb-${MC[r.macro]||'core'}">${r.engine}</span><span class="pri pri-${r.pri}">${r.pri}</span></div>
+<div class="proc-card-name">${r.name}</div>
+<div class="proc-card-desc">${r.desc}</div>
+<div class="proc-card-meta">${r.owner} &middot; <span style="font-family:monospace">${r.code}</span></div>
+</div>`).join('');
+  }
+  if(showSkills){
+    const f=SK.filter(s=>!q||(s.name.includes(q)||s.label.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)));
+    document.getElementById('skills-count').textContent='('+f.length+')';
+    total+=f.length;
+    const card=s=>`<div class="skill-card"><div class="cat-badge ${catClass[s.cat]||''}">${s.cat}</div><div class="skill-name">${s.label}</div><div class="skill-slug">${s.name}</div><div class="skill-desc">${s.desc}</div></div>`;
+    const grid=document.getElementById('skills-grid');
+    if(!q&&fState.engine==='all'){
+      const by={};f.forEach(s=>{if(!by[s.cat])by[s.cat]=[];by[s.cat].push(s);});
+      grid.innerHTML=catOrder.filter(c=>by[c]).map(c=>`<div class="cat-section"><div class="cat-title">${c} <span style="color:var(--muted);font-weight:400">(${by[c].length})</span></div><div class="skill-grid">${by[c].map(card).join('')}</div></div>`).join('');
+    } else {
+      grid.innerHTML=`<div class="skill-grid">${f.map(card).join('')}</div>`;
+    }
+  }
+  document.getElementById('reg-count').textContent=total+' items';
 }
 
-renderProc();
-renderSkills();
-renderPers();
-document.getElementById('proc-count').textContent='('+(C.filter(r=>r.macro!=='personal').length)+')';
-document.getElementById('pers-count').textContent='('+persData.length+')';
+render();
 </script>
 </body>
 </html>
