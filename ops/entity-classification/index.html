@@ -23,13 +23,17 @@ body{background:#0d0d0d;color:#e0e0e0}
 .section-title{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#E14B87;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid #1a1a1a}
 .type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:1.5rem}
 .type-card{background:#111;border:1px solid #1e1e1e;border-radius:8px;padding:1.25rem}
+.type-card.task{border-color:#92400e}
 .type-card.project{border-color:#166534}
 .type-card.cluster{border-color:#1d4ed8}
 .type-card.orbit{border-color:#7e22ce}
+.type-card.engine{border-color:#0e7490}
 .type-label{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:0.5rem}
+.label-task{color:#fb923c}
 .label-project{color:#4ade80}
 .label-cluster{color:#60a5fa}
 .label-orbit{color:#c084fc}
+.label-engine{color:#22d3ee}
 .type-name{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:0.5rem}
 .type-def{font-size:0.82rem;color:#888;line-height:1.5;margin-bottom:0.75rem}
 .type-done{font-size:0.72rem;padding:0.2rem 0.6rem;border-radius:4px;display:inline-block;margin-bottom:0.75rem}
@@ -57,9 +61,11 @@ body{background:#0d0d0d;color:#e0e0e0}
 .rules-table tr:last-child td{border-bottom:none}
 .rules-table .signal{color:#e0e0e0}
 .rules-table .creates{font-size:0.72rem;font-family:monospace}
+.creates-task{color:#fb923c}
 .creates-project{color:#4ade80}
 .creates-cluster{color:#60a5fa}
 .creates-orbit{color:#c084fc}
+.creates-engine{color:#22d3ee}
 .checklist{list-style:none;padding:0;margin:0}
 .checklist-group{margin-bottom:1.5rem}
 .checklist-head{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:0.6rem;padding-bottom:0.4rem;border-bottom:1px solid #1a1a1a}
@@ -76,6 +82,12 @@ body{background:#0d0d0d;color:#e0e0e0}
 .naming-table tr:last-child td{border-bottom:none}
 .naming-table td:first-child{color:#e0e0e0;font-weight:600;font-family:inherit;font-size:0.82rem}
 .example-slug{color:#E14B87}
+.orbit-gravity{margin-top:0.6rem}
+.orbit-gravity-row{font-size:0.72rem;color:#555;font-family:monospace;display:flex;gap:0.5rem;align-items:baseline;margin-top:0.25rem}
+.orbit-gravity-tag{font-size:0.6rem;font-weight:700;text-transform:uppercase;padding:0.1rem 0.4rem;border-radius:3px;flex-shrink:0}
+.tag-planet{background:#1a1200;color:#fbbf24;border:1px solid #78350f}
+.tag-moon{background:#0f1a2a;color:#60a5fa;border:1px solid #1d4ed8}
+.tag-star{background:#1a1a1a;color:#666;border:1px solid #333}
 @media(max-width:600px){.type-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -94,47 +106,74 @@ body{background:#0d0d0d;color:#e0e0e0}
 <div class="ops-header">
   <div class="label">Ops Reference</div>
   <h1>Entity Classification</h1>
-  <p>What counts as a Task, a Project, a Cluster, or an Orbit. The rubric Janis uses to decide what gets created and how.</p>
+  <p>What counts as a Task, a Project, a Cluster, an Orbit, or an Engine. The rubric Janis uses to decide what gets created and how.</p>
 </div>
 <div class="body">
 
   <div class="section">
-    <div class="section-title">The Three Types</div>
+    <div class="section-title">Entity Types</div>
     <div class="type-grid">
+
+      <div class="type-card task">
+        <div class="type-label label-task">Task</div>
+        <div class="type-name">Atomic action</div>
+        <div class="type-def">Single atomic action. Has a done state. Tracked in tickets.json via Lars. No sub-deliverables, no cluster needed.</div>
+        <div class="type-done done-yes">Has a done state</div>
+        <div class="type-examples">
+          <span>Send signing link to Noah</span>
+          <span>Chase SafetyWing claim</span>
+          <span>Fix IRPF discrepancy</span>
+        </div>
+      </div>
+
       <div class="type-card project">
         <div class="type-label label-project">Project</div>
         <div class="type-name">Discrete deliverable</div>
         <div class="type-def">A specific output with a clear done state. Lives inside a cluster. Has a deadline. Has an owner.</div>
         <div class="type-done done-yes">Has a done state</div>
         <div class="type-examples">
-          <span>Einat's website</span>
-          <span>Treebeard loan</span>
           <span>NCA trademark filing</span>
+          <span>Janis web app</span>
+          <span>Miriam AI companion</span>
         </div>
       </div>
+
       <div class="type-card cluster">
         <div class="type-label label-cluster">Cluster</div>
         <div class="type-name">Ongoing context zone</div>
-        <div class="type-def">A persistent area that is loaded and managed, not completed. Contains projects and threads. Never finishes.</div>
+        <div class="type-def">A persistent area that is loaded and managed, not completed. Contains projects and functions. Never finishes.</div>
         <div class="type-done done-no">No done state</div>
         <div class="type-examples">
           <span>duara</span>
           <span>nca</span>
-          <span>health</span>
           <span>janis</span>
         </div>
       </div>
+
       <div class="type-card orbit">
         <div class="type-label label-orbit">Orbit</div>
-        <div class="type-name">Person-centric context</div>
-        <div class="type-def">A context file for a specific person. Tracks relationship, interactions, backlinks to relevant clusters.</div>
+        <div class="type-name">Person in relational universe</div>
+        <div class="type-def">A person in Pepe's relational universe. Classified by gravitational weight. Planet is daily or life-shaping. Moon is meaningful and recurring. Star is warm but distant.</div>
         <div class="type-done done-no">No done state</div>
-        <div class="type-examples">
-          <span>victoria-peill</span>
-          <span>dominion-paul</span>
-          <span>noah-walakira</span>
+        <div class="orbit-gravity">
+          <div class="orbit-gravity-row"><span class="orbit-gravity-tag tag-planet">Planet</span> agathe-daumal</div>
+          <div class="orbit-gravity-row"><span class="orbit-gravity-tag tag-moon">Moon</span> daniel-tenner</div>
+          <div class="orbit-gravity-row"><span class="orbit-gravity-tag tag-star">Star</span> yoeal-haile</div>
         </div>
       </div>
+
+      <div class="type-card engine">
+        <div class="type-label label-engine">Engine</div>
+        <div class="type-name">Permanent business function</div>
+        <div class="type-def">Permanent business function within a Macro Engine. Runs indefinitely. No done state. Four Macro Engines: Connection (Jagger), Value (Lars), Care (Sade), Core (Janis). Each has micro-engines beneath it.</div>
+        <div class="type-done done-no">No done state</div>
+        <div class="type-examples">
+          <span>client-acquisition-engine</span>
+          <span>content-engine</span>
+          <span>brain-infra</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -156,7 +195,7 @@ body{background:#0d0d0d;color:#e0e0e0}
         <tr>
           <td><span class="sub-tag sub-internal">Internal</span></td>
           <td class="trigger">Internal business infrastructure workstream</td>
-          <td class="mono">janis, mgl, ai-ninja, panda</td>
+          <td class="mono">janis, mgl, personal</td>
         </tr>
       </tbody>
     </table>
@@ -169,6 +208,12 @@ body{background:#0d0d0d;color:#e0e0e0}
       <div>&nbsp;</div>
       <div><span class="ans">Is it a named person?</span></div>
       <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">ORBIT</span> &nbsp; brain/contacts/[name].md</div>
+      <div>&nbsp;</div>
+      <div><span class="ans">Is it a single atomic action with no sub-deliverables?</span></div>
+      <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">TASK</span> &nbsp; tickets.json via Lars</div>
+      <div>&nbsp;</div>
+      <div><span class="ans">Is it a permanent process within a Macro Engine?</span></div>
+      <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">ENGINE</span> &nbsp; brain/loops/[slug]/</div>
       <div>&nbsp;</div>
       <div><span class="ans">Does it have a specific deliverable with a clear done state?</span></div>
       <div>&nbsp;&nbsp;&nbsp;YES &rarr; <span class="result">PROJECT</span> &nbsp; inside an existing cluster</div>
@@ -201,6 +246,11 @@ body{background:#0d0d0d;color:#e0e0e0}
           <td style="color:#555;font-size:0.75rem">Immediate, no confirmation</td>
         </tr>
         <tr>
+          <td class="signal">Single assigned action with a named owner and clear done state</td>
+          <td><span class="creates creates-task">TASK</span></td>
+          <td style="color:#555;font-size:0.75rem">Immediate, no confirmation</td>
+        </tr>
+        <tr>
           <td class="signal">New person referenced 2+ times in different contexts</td>
           <td><span class="creates creates-orbit">ORBIT</span></td>
           <td style="color:#555;font-size:0.75rem">Immediate, no confirmation</td>
@@ -215,12 +265,25 @@ body{background:#0d0d0d;color:#e0e0e0}
           <td><span class="creates creates-cluster">LIFE CLUSTER</span></td>
           <td style="color:#555;font-size:0.75rem">Ask Pepe first</td>
         </tr>
+        <tr>
+          <td class="signal">New permanent process assigned to a Macro Engine</td>
+          <td><span class="creates creates-engine">ENGINE</span></td>
+          <td style="color:#555;font-size:0.75rem">Bowie design gate before any code</td>
+        </tr>
       </tbody>
     </table>
   </div>
 
   <div class="section">
     <div class="section-title">Infrastructure Checklists</div>
+    <div class="checklist-group">
+      <div class="checklist-head" style="color:#fb923c">Task</div>
+      <ul class="checklist">
+        <li>Row in <code>memory/tickets.json</code> via <code>ticket_create</code></li>
+        <li>Assigned owner (Janis or Pepe or third party)</li>
+        <li>Deadline set or flagged as ASAP</li>
+      </ul>
+    </div>
     <div class="checklist-group">
       <div class="checklist-head" style="color:#4ade80">Project</div>
       <ul class="checklist">
@@ -247,6 +310,17 @@ body{background:#0d0d0d;color:#e0e0e0}
         <li><code>brain/contacts/[name].md</code></li>
         <li>Google Contacts entry. search_contacts first, create only if missing</li>
         <li>Backlink added to all relevant cluster files</li>
+        <li>Gravitational weight assigned: Planet, Moon, or Star</li>
+      </ul>
+    </div>
+    <div class="checklist-group">
+      <div class="checklist-head" style="color:#22d3ee">Engine</div>
+      <ul class="checklist">
+        <li><code>brain/loops/[slug]/STATE.md</code></li>
+        <li>Entry in <code>REGISTRY.json</code>: macro_engine + function + owner</li>
+        <li>Macro Engine assigned at kick-off (Connection / Value / Care / Core)</li>
+        <li>Cron or trigger defined before first run</li>
+        <li>Bowie design gate completed before any code written</li>
       </ul>
     </div>
   </div>
@@ -254,11 +328,12 @@ body{background:#0d0d0d;color:#e0e0e0}
   <div class="section">
     <div class="section-title">What Does Not Get Created</div>
     <ul class="nope-list">
-      <li>Notion tasks. Tasks live in <code>memory/tasks_active.md</code> only.</li>
+      <li>Notion tasks. Tasks live in <code>memory/tickets.json</code> only.</li>
       <li>Standalone project files outside a parent cluster. Projects live inside clusters.</li>
       <li>Duplicate contact files. One canonical <code>brain/contacts/[name].md</code> per person.</li>
       <li>A cluster for a named person. That is an orbit.</li>
       <li>An orbit for an entity. That is a cluster.</li>
+      <li>An engine without Bowie design gate sign-off.</li>
     </ul>
   </div>
 
@@ -267,6 +342,11 @@ body{background:#0d0d0d;color:#e0e0e0}
     <table class="naming-table">
       <thead><tr><th>Type</th><th>Format</th><th>Examples</th></tr></thead>
       <tbody>
+        <tr>
+          <td>Task</td>
+          <td>verb-noun phrase in tickets.json</td>
+          <td><span class="example-slug">send-signing-link-noah</span></td>
+        </tr>
         <tr>
           <td>Client Cluster</td>
           <td>lowercase-hyphenated</td>
@@ -280,17 +360,22 @@ body{background:#0d0d0d;color:#e0e0e0}
         <tr>
           <td>Internal Cluster</td>
           <td>single word</td>
-          <td><span class="example-slug">janis</span> &nbsp; <span class="example-slug">mgl</span> &nbsp; <span class="example-slug">panda</span></td>
+          <td><span class="example-slug">janis</span> &nbsp; <span class="example-slug">mgl</span> &nbsp; <span class="example-slug">personal</span></td>
         </tr>
         <tr>
           <td>Orbit</td>
           <td>firstname-lastname</td>
-          <td><span class="example-slug">victoria-peill</span> &nbsp; <span class="example-slug">dominion-paul</span></td>
+          <td><span class="example-slug">agathe-daumal</span> &nbsp; <span class="example-slug">daniel-tenner</span></td>
         </tr>
         <tr>
           <td>Project</td>
           <td>YYYY-MM_descriptor</td>
-          <td><span class="example-slug">2026-06_einat-website</span> &nbsp; <span class="example-slug">2026-05_treebeard-loan</span></td>
+          <td><span class="example-slug">2026-06_einat-website</span> &nbsp; <span class="example-slug">2026-05_nca-trademark</span></td>
+        </tr>
+        <tr>
+          <td>Engine</td>
+          <td>slug (loop directory name)</td>
+          <td><span class="example-slug">client-acquisition-engine</span> &nbsp; <span class="example-slug">content-engine</span></td>
         </tr>
       </tbody>
     </table>
