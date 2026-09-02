@@ -105,6 +105,7 @@ td{padding:8px 10px;vertical-align:top}
 <div class="tabs-bar">
   <button class="tab-btn active" id="tab-proc" onclick="showTab('proc')">Processes <span id="proc-count" style="color:var(--muted);font-weight:400"></span></button>
   <button class="tab-btn" id="tab-skills" onclick="showTab('skills')">Skills <span style="color:var(--muted);font-weight:400">(89)</span></button>
+  <button class="tab-btn" id="tab-pers" onclick="showTab('pers')">Personal <span id="pers-count" style="color:var(--muted);font-weight:400"></span></button>
 </div>
 
 <div id="pane-proc">
@@ -158,6 +159,24 @@ td{padding:8px 10px;vertical-align:top}
 <div class="skills-wrap" id="skills-wrap"></div>
 </div>
 
+<div id="pane-pers" class="hidden">
+<div class="filters">
+  <div class="filter-group">
+    <span class="filter-label">Engine</span>
+    <button class="pill pill-all active" onclick="setPersFilter('all',this)">All</button>
+    <button class="pill pill-conn" onclick="setPersFilter('Body',this)">Body</button>
+    <button class="pill pill-care" onclick="setPersFilter('Mind',this)">Mind</button>
+    <button class="pill pill-pers" onclick="setPersFilter('Soul',this)">Soul</button>
+    <button class="pill pill-val" onclick="setPersFilter('Kellen',this)">Kellen</button>
+  </div>
+</div>
+<div class="wrap"><table><thead><tr>
+  <th class="col-code">Code</th><th class="col-name">Name</th><th class="col-desc">Description</th>
+  <th class="col-owner">Owner</th><th class="col-kpi">KPIs</th><th class="col-engine">Engine</th>
+  <th class="col-serves">Serves</th><th class="col-notes">Notes</th>
+</tr></thead><tbody id="pers-tbody"></tbody></table></div>
+</div>
+
 <script>
 const C=[
 {code:"COR-INF-001",old:"JAI-INF-001",name:"refresh_oauth.py",desc:"Refresh Janis OAuth tokens hourly",owner:"Iggy",kpis:["Token validity","Auth success rate","Bridge uptime"],macro:"core",engine:"Infrastructure",pri:"P1",serves:"All engines",notes:""},
@@ -198,7 +217,7 @@ const C=[
 {code:"COR-ADM-011",old:"JAI-CAL-002",name:"pre-meeting-briefer.py",desc:"Pre-meeting briefer delivered 30min before each event",owner:"Lars",kpis:["On-time delivery","Brief accuracy","Coverage"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
 {code:"COR-ADM-012",old:"JAI-CAL-003",name:"scheduling-agent.py",desc:"Scan inbox for meeting requests, reply with free slots (every 30min 06-22)",owner:"Lars",kpis:["Request-to-reply time","Slot acceptance rate","Conflicts avoided"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
 {code:"COR-ADM-013",old:"JAI-CAL-004",name:"lunch-blocker.py",desc:"Block lunch on calendar if not already blocked (every 30min 08-16 Mon-Fri)",owner:"Lars",kpis:["Block success rate","Conflicts caught"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
-{code:"COR-ADM-014",old:"JAI-CAL-005",name:"therapy-calendar-watch.py",desc:"Watch for therapy session calendar events (hourly)",owner:"Lars",kpis:["Detection accuracy","Prep triggered"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-014",old:"JAI-CAL-005",name:"therapy-calendar-watch.py",desc:"Watch for therapy session calendar events (hourly)",owner:"Lars",kpis:["Detection accuracy","Prep triggered"],macro:"personal",engine:"Mind",pri:"P2",serves:"COR-ADM",notes:""},
 {code:"COR-ADM-015",old:"JAI-CAL-006",name:"calendar-enforcer.py",desc:"Enforce calendar rules , no double-book, location rules (every 15min)",owner:"Lars",kpis:["Violations caught","Rule compliance rate"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
 {code:"COR-ADM-016",old:"JAI-INT-001",name:"morning-briefing.py",desc:"Morning briefing: calendar, tasks, alerts, finance summary (06:30)",owner:"Lars",kpis:["Delivery time","Completeness","Action relevance"],macro:"core",engine:"Admin Core",pri:"P1",serves:"COR-ADM",notes:""},
 {code:"COR-ADM-017",old:"JAI-INT-002",name:"proactive-alerts.py",desc:"Proactive alerts on deadlines, anomalies, opportunities (every 4h)",owner:"Lars",kpis:["Alert relevance","False positive rate","Missed items"],macro:"core",engine:"Admin Core",pri:"P1",serves:"All engines",notes:""},
@@ -220,20 +239,20 @@ const C=[
 {code:"COR-ADM-033",old:"JAI-OPS-005",name:"signing_reminder.py",desc:"Remind about unsigned contracts needing action (Monday 08:00)",owner:"Lemmy",kpis:["Reminder delivery","Unsigned contracts resolved"],macro:"core",engine:"Admin Core",pri:"P2",serves:"CON-PRP",notes:""},
 {code:"COR-ADM-034",old:"JAI-OPS-006",name:"booking-monitor.py",desc:"Monitor Cape Bay Airbnb/Booking.com reservations (daily 09:00)",owner:"Lars",kpis:["Reservation detection","Response time","Accuracy"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:"Personal property"},
 {code:"COR-ADM-035",old:"JAI-OPS-007",name:"namirembe-payments.py",desc:"Monitor Noah Walakira loan repayments (5th + 16th monthly)",owner:"Gene",kpis:["Payment detection","Overdue flags","Accuracy"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-FIN",notes:"Investment monitoring"},
-{code:"COR-ADM-036",old:"JAI-LFE-001",name:"garmin_sync.py",desc:"Snapshot Garmin health/activity data (daily 07:15)",owner:"Lars",kpis:["Sync success","Data freshness","Coverage"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:"Personal health tracking"},
-{code:"COR-ADM-037",old:"JAI-LFE-002",name:"garmin_weekly_scheduler.py",desc:"Generate and schedule weekly Garmin training plan (Sunday 19:00)",owner:"Lars",kpis:["Plan generation","Delivery timing"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
-{code:"COR-ADM-038",old:"JAI-LFE-003",name:"health_monitor.py (weekly)",desc:"Weekly health monitor report (Sunday 09:00)",owner:"Lars",kpis:["Report completeness","Trend detection","Delivery"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
-{code:"COR-ADM-039",old:"JAI-LFE-004",name:"health_monitor.py (alert)",desc:"Intraday health alert check (daily 11:00)",owner:"Lars",kpis:["Alert accuracy","False positives","Response time"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
-{code:"COR-ADM-040",old:"JAI-LFE-005",name:"french-lesson-reminder.py",desc:"Remind Pepe to do French lesson (daily 10:00)",owner:"Lars",kpis:["Delivery","Completion rate"],macro:"core",engine:"Admin Core",pri:"P3",serves:"COR-ADM",notes:"Verify still active"},
-{code:"COR-ADM-041",old:"JAI-LFE-006",name:"therapy_prep.py",desc:"Prepare therapy session brief every 3rd Monday 09:00",owner:"Lars",kpis:["Brief quality","Delivery timing","Coverage"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
-{code:"COR-ADM-042",old:"JAI-LFE-007",name:"therapy_report_health.py",desc:"Check therapy report is complete and current (Sunday 08:00)",owner:"Lars",kpis:["Report currency","Completeness","Flag rate"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-ADM",notes:""},
-{code:"COR-ADM-043",old:"JAI-LFE-008",name:"therapy_transcript_ingest.py",desc:"Ingest therapy transcripts during session window (every 30min 13-18 Mon-Fri)",owner:"Nina",kpis:["Ingest success","Processing time","Accuracy"],macro:"core",engine:"Admin Core",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-ADM-036",old:"JAI-LFE-001",name:"garmin_sync.py",desc:"Snapshot Garmin health/activity data (daily 07:15)",owner:"Lars",kpis:["Sync success","Data freshness","Coverage"],macro:"personal",engine:"Body",pri:"P2",serves:"COR-ADM",notes:"Personal health tracking"},
+{code:"COR-ADM-037",old:"JAI-LFE-002",name:"garmin_weekly_scheduler.py",desc:"Generate and schedule weekly Garmin training plan (Sunday 19:00)",owner:"Lars",kpis:["Plan generation","Delivery timing"],macro:"personal",engine:"Body",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-038",old:"JAI-LFE-003",name:"health_monitor.py (weekly)",desc:"Weekly health monitor report (Sunday 09:00)",owner:"Lars",kpis:["Report completeness","Trend detection","Delivery"],macro:"personal",engine:"Mind",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-039",old:"JAI-LFE-004",name:"health_monitor.py (alert)",desc:"Intraday health alert check (daily 11:00)",owner:"Lars",kpis:["Alert accuracy","False positives","Response time"],macro:"personal",engine:"Mind",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-040",old:"JAI-LFE-005",name:"french-lesson-reminder.py",desc:"Remind Pepe to do French lesson (daily 10:00)",owner:"Lars",kpis:["Delivery","Completion rate"],macro:"personal",engine:"Mind",pri:"P3",serves:"COR-ADM",notes:"Verify still active"},
+{code:"COR-ADM-041",old:"JAI-LFE-006",name:"therapy_prep.py",desc:"Prepare therapy session brief every 3rd Monday 09:00",owner:"Lars",kpis:["Brief quality","Delivery timing","Coverage"],macro:"personal",engine:"Mind",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-042",old:"JAI-LFE-007",name:"therapy_report_health.py",desc:"Check therapy report is complete and current (Sunday 08:00)",owner:"Lars",kpis:["Report currency","Completeness","Flag rate"],macro:"personal",engine:"Mind",pri:"P2",serves:"COR-ADM",notes:""},
+{code:"COR-ADM-043",old:"JAI-LFE-008",name:"therapy_transcript_ingest.py",desc:"Ingest therapy transcripts during session window (every 30min 13-18 Mon-Fri)",owner:"Nina",kpis:["Ingest success","Processing time","Accuracy"],macro:"personal",engine:"Mind",pri:"P2",serves:"COR-KNW",notes:""},
 {code:"COR-KNW-001",old:"JAI-DRV-001",name:"drive-explore.py",desc:"Explore and index new Drive files (daily 06:00)",owner:"Nina",kpis:["Files indexed","New files detected","Index coverage"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
 {code:"COR-KNW-002",old:"JAI-DRV-002",name:"drive-mirror.py",desc:"Mirror Drive files locally and commit changes (daily 06:00)",owner:"Nina",kpis:["Mirror accuracy","Sync lag","Commit success"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
 {code:"COR-KNW-003",old:"JAI-DRV-003",name:"drive-full-index.py",desc:"Full re-index of all shared Drive content (daily 06:30)",owner:"Nina",kpis:["Index completeness","Run time","Error rate"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
-{code:"COR-KNW-004",old:"JAI-DRV-004",name:"journal-ocr.py",desc:"OCR Pepe's Huion handwritten journal pages (daily 07:00)",owner:"Nina",kpis:["OCR accuracy","Pages processed","Lag from journal"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
+{code:"COR-KNW-004",old:"JAI-DRV-004",name:"journal-ocr.py",desc:"OCR Pepe's Huion handwritten journal pages (daily 07:00)",owner:"Nina",kpis:["OCR accuracy","Pages processed","Lag from journal"],macro:"personal",engine:"Soul",pri:"P2",serves:"COR-KNW",notes:""},
 {code:"COR-KNW-005",old:"JAI-DRV-005",name:"nca legal git pull",desc:"Pull latest NCA legal and internal legal repos (daily 07:00)",owner:"Lemmy",kpis:["Pull success","Conflict rate","Freshness"],macro:"core",engine:"Knowledge",pri:"P1",serves:"COR-KNW, CAR-CLH",notes:""},
-{code:"COR-KNW-006",old:"JAI-DRV-006",name:"come-undone-sync.py",desc:"Sync Come Undone manuscript/content (daily 02:00)",owner:"Nina",kpis:["Sync success","Freshness","Coverage"],macro:"core",engine:"Knowledge",pri:"P2",serves:"JOU",notes:"Jouissance knowledge set"},
+{code:"COR-KNW-006",old:"JAI-DRV-006",name:"come-undone-sync.py",desc:"Sync Come Undone manuscript/content (daily 02:00)",owner:"Nina",kpis:["Sync success","Freshness","Coverage"],macro:"personal",engine:"Soul",pri:"P2",serves:"JOU",notes:"Jouissance knowledge set"},
 {code:"COR-KNW-007",old:"JAI-DRV-007",name:"weekly_dossier_review.py",desc:"Weekly review and update of all contact dossiers (Monday 06:00)",owner:"Nina",kpis:["Dossier currency","Gaps found","Updates applied"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW, CON-CAE",notes:""},
 {code:"COR-KNW-008",old:"JAI-MGL-001",name:"nina-loop/run.py",desc:"Nina (Knowledge) daily loop: dossier quality, knowledge gaps",owner:"Nina",kpis:["Dossier quality","Gaps resolved","Knowledge freshness"],macro:"core",engine:"Knowledge",pri:"P2",serves:"COR-KNW",notes:""},
 {code:"COR-KNW-009",old:"JAI-MGL-002",name:"freddie-loop/run.py",desc:"Freddie (CMO) daily loop: content strategy, brand pulse",owner:"Freddie",kpis:["Content pipeline","Brand consistency","Strategy alignment"],macro:"core",engine:"Knowledge",pri:"P2",serves:"CON-CNT",notes:""},
@@ -455,16 +474,48 @@ function renderSkills(){
   }
 }
 
+const persData=C.filter(r=>r.macro==='personal');
+let persEngFilter='all';
+
+function setPersFilter(eng,btn){
+  persEngFilter=eng;
+  document.querySelectorAll('#pane-pers .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderPers();
+}
+
+function renderPers(){
+  const rows=persEngFilter==='all'?persData:persData.filter(r=>r.engine===persEngFilter);
+  const tb=document.getElementById('pers-tbody');
+  tb.innerHTML=rows.map(r=>{
+    const c2=MC[r.macro]||'pers';
+    return`<tr>
+<td class="col-code"><span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--pers)">${r.code}</span><span class="old-code">${r.old}</span><span class="pri pri-${r.pri}">${r.pri}</span></td>
+<td class="col-name" style="font-size:11px;font-weight:600">${r.name}</td>
+<td class="col-desc" style="color:var(--muted2)">${r.desc}</td>
+<td class="col-owner"><span class="owner-str">${r.owner}</span></td>
+<td class="col-kpi"><ul class="kpi-list">${r.kpis.map(k=>`<li>${k}</li>`).join('')}</ul></td>
+<td class="col-engine"><span class="macro-badge mb-pers">${r.engine}</span></td>
+<td class="col-serves"><span class="serves">${r.serves}</span></td>
+<td class="col-notes"><span class="note">${r.notes}</span></td>
+</tr>`;
+  }).join('');
+}
+
 function showTab(tab){
   document.getElementById('pane-proc').classList.toggle('hidden',tab!=='proc');
   document.getElementById('pane-skills').classList.toggle('hidden',tab!=='skills');
+  document.getElementById('pane-pers').classList.toggle('hidden',tab!=='pers');
   document.getElementById('tab-proc').classList.toggle('active',tab==='proc');
   document.getElementById('tab-skills').classList.toggle('active',tab==='skills');
+  document.getElementById('tab-pers').classList.toggle('active',tab==='pers');
 }
 
 renderProc();
 renderSkills();
-document.getElementById('proc-count').textContent='('+C.length+')';
+renderPers();
+document.getElementById('proc-count').textContent='('+(C.filter(r=>r.macro!=='personal').length)+')';
+document.getElementById('pers-count').textContent='('+persData.length+')';
 </script>
 </body>
 </html>
