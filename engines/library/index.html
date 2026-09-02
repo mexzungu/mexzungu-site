@@ -16,16 +16,32 @@
   .page-nav { background:var(--surface); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
   .page-nav a { color:var(--muted); text-decoration:none; font-size:13px; }
   .page-nav a:hover { color:var(--text); }
-  .hero { padding:48px 24px 32px; max-width:1200px; margin:0 auto; }
-  .hero h1 { font-size:2rem; font-weight:700; color:var(--text); margin:0 0 8px; }
-  .hero p { color:var(--muted); margin:0 0 8px; font-size:15px; }
+  .hero { padding:12px 24px 8px; max-width:1200px; margin:0 auto; }
+  .hero h1 { font-size:2rem; font-weight:700; color:var(--text); margin:0 0 6px; }
+  .hero p { color:var(--muted); margin:0 0 4px; font-size:15px; }
   .meta { color:var(--muted); font-size:12px; }
-  .main { max-width:1200px; margin:0 auto; padding:0 24px 64px; }
-  .category { margin-bottom:48px; }
-  .cat-title { font-size:.85rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin:0 0 16px; display:flex; align-items:center; gap:10px; }
+  .main { max-width:1200px; margin:0 auto; padding:16px 24px 64px; }
+  details.category { margin-bottom:8px; }
+  details.category > summary {
+    list-style:none;
+    cursor:pointer;
+    font-size:.85rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px;
+    user-select:none;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:6px;
+  }
+  details.category[open] > summary { border-radius:6px 6px 0 0; border-bottom-color:transparent; }
+  details.category > summary::-webkit-details-marker { display:none; }
+  details.category > summary::marker { content:''; }
+  .cat-arrow { font-size:8px; color:var(--muted); transition:transform 0.15s ease; flex-shrink:0; opacity:.6; }
+  details.category[open] > summary .cat-arrow { transform:rotate(90deg); }
   .cat-count { background:var(--border); color:var(--muted); font-size:11px; padding:2px 7px; border-radius:999px; font-weight:400; letter-spacing:0; text-transform:none; }
-  .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px; }
-  .skill-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 16px; }
+  .cat-desc { font-size:11px; color:var(--muted); font-weight:400; letter-spacing:0; text-transform:none; margin-left:4px; flex:1; }
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px; padding:12px; background:var(--surface); border:1px solid var(--border); border-top:none; border-radius:0 0 6px 6px; }
+  .skill-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 16px; }
   .skill-name { font-size:13px; font-weight:600; margin-bottom:2px; }
   .skill-slug { font-size:11px; color:var(--muted); font-family:monospace; margin-bottom:6px; }
   .skill-desc { font-size:12px; color:#94a3b8; line-height:1.5; }
@@ -37,7 +53,6 @@
 <nav class="page-nav">
   <a href="/engines/">Hub</a>
   <a href="/engines/blueprint/">Blueprint</a>
-
   <a href="/ops/entity-classification/">Entity Classification</a>
 </nav>
 
@@ -50,8 +65,12 @@
 
 <main class="main">
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#f0a030;color:#f0a030">Delivery Engines <span class="cat-count">7</span></h2>
+  <details class="category">
+    <summary style="color:#f0a030">
+      <span class="cat-arrow">&#9658;</span>
+      Delivery Engines <span class="cat-count">7</span>
+      <span class="cat-desc">Autonomous loops and orchestrators that power core MGL operational functions.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#f0a030">Agent Building Engine</div>
@@ -89,10 +108,14 @@
       <div class="skill-desc">MGL consultant onboarding loop. Two modes: BUILD (scaffold portal + content) and ONBOARD (run a consultant through 12 missions). Pilot: Kellen first, then Pepe personally, then open to new consultants.</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#4cc8b4;color:#4cc8b4">Content Pipeline <span class="cat-count">3</span></h2>
+  <details class="category">
+    <summary style="color:#4cc8b4">
+      <span class="cat-arrow">&#9658;</span>
+      Content Pipeline <span class="cat-count">3</span>
+      <span class="cat-desc">Content creation, evaluation, and monthly strategy loops for MGL social media.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#4cc8b4">content-engine</div>
@@ -110,10 +133,14 @@
       <div class="skill-desc">Monthly evaluator-optimizer that synthesizes all available SM performance data, brand context, and market signals into brain/areas/mexzungu/social-content/strategy-2026.md. Scores the output on a 6-dimension rubric and patches until quality_score >= 4.0. First run on-demand; thereafter monthly on the 1st.</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#b482ff;color:#b482ff">MGL Personas <span class="cat-count">23</span></h2>
+  <details class="category">
+    <summary style="color:#b482ff">
+      <span class="cat-arrow">&#9658;</span>
+      MGL Personas <span class="cat-count">23</span>
+      <span class="cat-desc">Individual AI persona loops, each running their domain daily inside the MGL org.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">Annie Loop</div>
@@ -231,10 +258,14 @@
       <div class="skill-desc">Tina tracks the equity side of Mexzungu's investment portfolio. She watches all</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#f0a030;color:#f0a030">Client & Legal <span class="cat-count">6</span></h2>
+  <details class="category">
+    <summary style="color:#f0a030">
+      <span class="cat-arrow">&#9658;</span>
+      Client &amp; Legal <span class="cat-count">6</span>
+      <span class="cat-desc">Legal drafting, contract enforcement, invoicing, and client billing automation.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#f0a030">Duara Contract Auditor</div>
@@ -267,10 +298,14 @@
       <div class="skill-desc">Orchestrator loop. Dispatches 4 parallel legal/tax/accounting/deal specialists to analyse the NCA Elsewhere permanent site acquisition and produce 3 deal structures in Mexzungu NCA style. One-shot, run-until-done.</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#b482ff;color:#b482ff">Jouissance <span class="cat-count">7</span></h2>
+  <details class="category">
+    <summary style="color:#b482ff">
+      <span class="cat-arrow">&#9658;</span>
+      Jouissance <span class="cat-count">7</span>
+      <span class="cat-desc">Skills serving the Jouissance intimacy workshop platform and Come Undone project.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">come-undone-editorial</div>
@@ -300,7 +335,6 @@
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">Jouissance Visual Design</div>
       <div class="skill-slug">/jouissance-visual-design</div>
-      
     </div>
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">knowledge-set-design</div>
@@ -308,10 +342,14 @@
       <div class="skill-desc">Jouissance knowledge-set design loop. Quincy orchestrates 7 specialist agents to produce, score, and auto-commit educational content pieces for Jouissance participants. Fires on-demand. Fully autonomous. Pepe reviews before portal deploy.</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#4cc8b4;color:#4cc8b4">Knowledge & Learning <span class="cat-count">4</span></h2>
+  <details class="category">
+    <summary style="color:#4cc8b4">
+      <span class="cat-arrow">&#9658;</span>
+      Knowledge &amp; Learning <span class="cat-count">4</span>
+      <span class="cat-desc">Knowledge capture, synthesis, and document processing for institutional memory.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#4cc8b4">book-to-skill</div>
@@ -334,10 +372,14 @@
       <div class="skill-desc">Process unprocessed entries in memory/voice-notes-queue.jsonl. Parse keyword prefix or smart-route, append to correct brain/ file, mark filed, commit.</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#94a3b8;color:#94a3b8">Infrastructure & Ops <span class="cat-count">11</span></h2>
+  <details class="category">
+    <summary style="color:#94a3b8">
+      <span class="cat-arrow">&#9658;</span>
+      Infrastructure &amp; Ops <span class="cat-count">11</span>
+      <span class="cat-desc">System health, communications, loop architecture, and operational tooling.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#94a3b8">comms-redesign</div>
@@ -395,10 +437,14 @@
       <div class="skill-desc">Audits all Yoda-managed rule files. Prunes noise, merges duplicates, enforces size limits.</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#b482ff;color:#b482ff">Apps & UX <span class="cat-count">10</span></h2>
+  <details class="category">
+    <summary style="color:#b482ff">
+      <span class="cat-arrow">&#9658;</span>
+      Apps &amp; UX <span class="cat-count">10</span>
+      <span class="cat-desc">Web app improvement loops, UX audits, and product refinement orchestrators.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">Einat Website Improver</div>
@@ -408,7 +454,7 @@
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">impeccable</div>
       <div class="skill-slug">/impeccable</div>
-      <div class="skill-desc">Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.</div>
+      <div class="skill-desc">Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states.</div>
     </div>
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">janis-app-improver</div>
@@ -418,7 +464,7 @@
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">Miriam Behavioral Spec</div>
       <div class="skill-slug">/miriam-behavioral-spec</div>
-      <div class="skill-desc">Build a layered behavioral spec for Miriam (Agathe's AI assistant) using 8 parallel domain specialists grounded in real Agathe scenarios. Output: `brain/areas/miriam-2.0/behavioral-spec.md`. Writes to `agathe-brain/CLAUD</div>
+      <div class="skill-desc">Build a layered behavioral spec for Miriam (Agathe's AI assistant) using 8 parallel domain specialists grounded in real Agathe scenarios. Output: `brain/areas/miriam-2.0/behavioral-spec.md`.</div>
     </div>
     <div class="skill-card">
       <div class="skill-name" style="color:#b482ff">miriam-deep-audit</div>
@@ -451,10 +497,14 @@
       <div class="skill-desc">></div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#4cc8b4;color:#4cc8b4">Partnerships & BD <span class="cat-count">3</span></h2>
+  <details class="category">
+    <summary style="color:#4cc8b4">
+      <span class="cat-arrow">&#9658;</span>
+      Partnerships &amp; BD <span class="cat-count">3</span>
+      <span class="cat-desc">Business development, growth tracking, and partnership framework skills.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#4cc8b4">Bd Engine</div>
@@ -472,10 +522,14 @@
       <div class="skill-desc">Builds and maintains the Jose Ruiz collaboration framework. 3-lane fee structure. Rock Council evaluation. Produces brain/areas/mexzungu/bd/jose-ruiz-partnership-proposal.md.</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#94a3b8;color:#94a3b8">Utility <span class="cat-count">3</span></h2>
+  <details class="category">
+    <summary style="color:#94a3b8">
+      <span class="cat-arrow">&#9658;</span>
+      Utility <span class="cat-count">3</span>
+      <span class="cat-desc">General-purpose session utilities and adaptive output formatting tools.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#94a3b8">i-have-adhd</div>
@@ -493,28 +547,29 @@
       <div class="skill-desc">Evaluator-optimizer loop that improves brain/jouissance/session-plan-aug14.md</div>
     </div>
     </div>
-  </section>
+  </details>
 
-  <section class="category">
-    <h2 class="cat-title" style="border-color:#94a3b8;color:#94a3b8">Uncategorized <span class="cat-count">3</span></h2>
+  <details class="category">
+    <summary style="color:#94a3b8">
+      <span class="cat-arrow">&#9658;</span>
+      Uncategorized <span class="cat-count">3</span>
+      <span class="cat-desc">Skills awaiting classification into a permanent category.</span>
+    </summary>
     <div class="skills-grid">
     <div class="skill-card">
       <div class="skill-name" style="color:#94a3b8">Janis X Delta Design</div>
       <div class="skill-slug">/janis-x-delta-design</div>
-      
     </div>
     <div class="skill-card">
       <div class="skill-name" style="color:#94a3b8">Learned</div>
       <div class="skill-slug">/learned</div>
-      
     </div>
     <div class="skill-card">
       <div class="skill-name" style="color:#94a3b8">Nca Strategy Review</div>
       <div class="skill-slug">/nca-strategy-review</div>
-      
     </div>
     </div>
-  </section>
+  </details>
 
 </main>
 </body>
