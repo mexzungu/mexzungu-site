@@ -64,7 +64,11 @@
 # /rate/[slug] is handled by Pages Function functions/rate/[slug].js which redirects to ?slug=.
 /rate /rate/ 301
 
-# Dead engine pages — 301 to canonical structure (2026-09-02)
+# Deleted demo and sanctum pages (2026-09-02)
+/demo/lillymond/* / 301
+/sanctum/* / 301
+
+# Dead engine pages. 301 to canonical structure (2026-09-02)
 /engines/admin-core/* /engines/blueprint/ 301
 /engines/agent-building/* /engines/ai-agent-building-engine/ 301
 /engines/architecture/* /engines/blueprint/ 301
