@@ -183,25 +183,44 @@
     .seat-input-wrap input[type="number"]::-webkit-inner-spin-button,
     .seat-input-wrap input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
-    .results {
+    /* Two-panel output row */
+    .panels-row {
+      display: flex;
+      gap: 1rem;
       margin-top: 1.75rem;
+      align-items: flex-start;
+    }
+
+    .panel {
+      flex: 1;
+      min-width: 0;
       background: #111;
       border: 1px solid #1e1e1e;
       border-radius: 8px;
-      padding: 1.25rem 1.5rem;
+      padding: 1.25rem;
     }
 
+    .panel-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    /* Panel 1: Voting Power */
     .results-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      gap: 0.75rem;
       margin-bottom: 1.25rem;
     }
 
     .stat-block { text-align: center; }
 
     .stat-value {
-      font-size: 1.6rem;
+      font-size: 1.45rem;
       font-weight: 800;
       color: #f5f0ec;
       letter-spacing: -0.02em;
@@ -209,9 +228,9 @@
     }
 
     .stat-label {
-      font-size: 0.7rem;
+      font-size: 0.62rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
       color: #666;
       margin-top: 0.25rem;
     }
@@ -222,7 +241,7 @@
       gap: 0.6rem;
       padding: 0.65rem 1rem;
       border-radius: 5px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       letter-spacing: 0.02em;
       transition: background 0.2s, color 0.2s;
@@ -250,6 +269,42 @@
     .badge-empty { background: #1a1a1a; color: #555; }
     .badge-empty .badge-dot { background: #333; }
 
+    /* Panel 2: Board Health */
+    .panel-health {
+      border-width: 2px;
+      transition: border-color 0.25s;
+    }
+
+    .grade-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .grade-letter {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      transition: color 0.25s;
+    }
+
+    .grade-sublabel {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .grade-message {
+      font-size: 0.875rem;
+      color: #b0a89f;
+      line-height: 1.6;
+    }
+
+    /* Reset + subscribe */
     .reset-btn {
       margin-top: 1.5rem;
       background: transparent;
@@ -265,32 +320,54 @@
     }
     .reset-btn:hover { border-color: #555; color: #aaa; }
 
-    .subscribe-block {
+    .cta-row {
+      display: flex;
+      gap: 1rem;
       margin-top: 3rem;
-      padding: 1.5rem;
-      border: 1px solid #1e1e1e;
+    }
+
+    .cta-btn {
+      flex: 1;
+      display: block;
+      padding: 1.25rem 1.5rem;
       border-radius: 8px;
-      text-align: center;
+      text-align: left;
+      transition: transform 0.15s, background 0.15s;
     }
 
-    .subscribe-block p {
-      font-size: 0.95rem;
-      color: #888;
-      margin-bottom: 0.75rem;
+    .cta-btn:hover { text-decoration: none; transform: translateY(-1px); }
+
+    .cta-btn h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 0.25rem 0;
+      line-height: 1.25;
     }
 
-    .subscribe-link {
-      display: inline-block;
-      padding: 0.55rem 1.25rem;
-      border: 1px solid #E14B87;
-      border-radius: 4px;
-      color: #E14B87;
+    .cta-btn .cta-sub {
       font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      transition: background 0.15s;
+      opacity: 0.85;
+      line-height: 1.45;
     }
-    .subscribe-link:hover { background: rgba(225,75,135,0.12); text-decoration: none; }
+
+    .cta-primary {
+      background: #E14B87;
+      color: #ffffff;
+    }
+    .cta-primary h4, .cta-primary .cta-sub { color: #ffffff; }
+    .cta-primary:hover { background: #d13f79; }
+
+    .cta-secondary {
+      background: transparent;
+      color: #E14B87;
+      border: 1px solid #E14B87;
+    }
+    .cta-secondary h4, .cta-secondary .cta-sub { color: #E14B87; }
+    .cta-secondary:hover { background: rgba(225,75,135,0.08); }
+
+    @media (max-width: 768px) {
+      .cta-row { flex-direction: column; }
+    }
 
     .footer-disclaimer {
       margin-top: 2.5rem;
@@ -307,6 +384,14 @@
 
       .stages { gap: 0.4rem; }
       .stages label { padding: 0.55rem 0.85rem; font-size: 0.82rem; }
+
+      .panels-row {
+        flex-direction: column;
+      }
+
+      .panel {
+        width: 100%;
+      }
 
       .results-grid { grid-template-columns: 1fr; gap: 0.85rem; }
 
@@ -325,8 +410,6 @@
         font-size: 1.05rem;
         padding: 0.45rem 0.3rem;
       }
-
-      .results { padding: 1rem; }
     }
   </style>
 </head>
@@ -339,8 +422,7 @@
 
     <p class="intro">
       Every board seat you give away is a vote you lose. Model it before you sign.
-      Pick a stage, enter who sits on the board, and see your founder vote percentage.
-      Warnings kick in when you cross control thresholds.
+      Pick a stage, enter who sits on the board, and see your voting power and a stage-adjusted board health grade.
     </p>
 
     <hr class="divider">
@@ -421,44 +503,72 @@
       </div>
     </div>
 
-    <div class="results">
-      <div class="results-grid">
-        <div class="stat-block">
-          <div class="stat-value" id="res-total">2</div>
-          <div class="stat-label">Total Seats</div>
+    <div class="panels-row">
+      <!-- Panel 1: Voting Power (stage-agnostic absolute score) -->
+      <div class="panel">
+        <div class="panel-title">Voting Power</div>
+        <div class="results-grid">
+          <div class="stat-block">
+            <div class="stat-value" id="res-total">2</div>
+            <div class="stat-label">Total Seats</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-value" id="res-founders">100.0%</div>
+            <div class="stat-label">Founder + Co Vote</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-value" id="res-solo">50.0%</div>
+            <div class="stat-label">Founder Solo</div>
+          </div>
         </div>
-        <div class="stat-block">
-          <div class="stat-value" id="res-founders">100.0%</div>
-          <div class="stat-label">Founder + Co-founder Vote</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-value" id="res-solo">50.0%</div>
-          <div class="stat-label">Founder Solo Vote</div>
+        <div class="warning-badge badge-supermajority" id="warning-badge">
+          <span class="badge-dot"></span>
+          <span id="warning-text">Supermajority control</span>
         </div>
       </div>
 
-      <div class="warning-badge badge-supermajority" id="warning-badge">
-        <span class="badge-dot"></span>
-        <span id="warning-text">Supermajority control</span>
+      <!-- Panel 2: Board Health (stage-aware letter grade) -->
+      <div class="panel panel-health" id="health-panel">
+        <div class="panel-title">Board Health</div>
+        <div class="grade-header">
+          <div class="grade-letter" id="grade-letter">A</div>
+          <div class="grade-sublabel" id="grade-sublabel">Pre-seed standard</div>
+        </div>
+        <div class="grade-message" id="grade-message">Textbook composition for this stage. Keep it.</div>
       </div>
     </div>
 
     <button class="reset-btn" onclick="resetForm()">Reset to defaults</button>
 
-    <div class="subscribe-block">
-      <p>Get the next resource.</p>
-      <a href="https://mexzungu.substack.com" class="subscribe-link" target="_blank" rel="noopener">Subscribe to The Outlaw Chronicles</a>
+    <div class="cta-row">
+      <a href="https://mexzungu.com/talk_to_pepe" class="cta-btn cta-primary">
+        <h4>Talk to Pepe about your board</h4>
+        <div class="cta-sub">Live problem, real answer.</div>
+      </a>
+      <a href="https://mexzungu.substack.com" class="cta-btn cta-secondary" target="_blank" rel="noopener">
+        <h4>The Outlaw Chronicles</h4>
+        <div class="cta-sub">Weekly. One founder story, one lesson, one tool.</div>
+      </a>
     </div>
 
     <p class="footer-disclaimer">
-      This tool is a modeling aid, not legal advice. Not admitted to practice in your jurisdiction.
-      Talk to counsel where you operate.
+      This is a modeling tool, not legal advice because we don't do that! What we
+      do is structure, negotiate, and close. If your board needs the real thing,
+      <a href="https://mexzungu.com/talk_to_pepe">let's talk</a>.
     </p>
   </div>
 
   <script>
     var DEFAULTS = { founder: 1, cofounder: 1, angel: 0, vc: 0, independent: 0, advisor: 0 };
     var FIELDS = ['founder', 'cofounder', 'angel', 'vc', 'independent', 'advisor'];
+
+    var GRADE_COLORS = {
+      'A': '#4caf82',
+      'B': '#8bc34a',
+      'C': '#d4a820',
+      'D': '#e07830',
+      'F': '#e05050'
+    };
 
     function val(id) {
       var v = parseInt(document.getElementById(id).value, 10);
@@ -471,6 +581,130 @@
       var next = Math.min(10, Math.max(0, current + delta));
       el.value = next;
       calc();
+    }
+
+    function stageHealth(stage, pct, totalSeats, independents, vcs) {
+      if (totalSeats === 0) {
+        return { grade: null, message: 'Add seats to see your board health grade.' };
+      }
+
+      var grade, message;
+      var vcMajority = vcs * 2 > totalSeats;
+      var founderCoSeats = Math.round(pct / 100 * totalSeats);
+
+      if (stage === 'Pre-seed') {
+        if (pct < 50) {
+          grade = 'F';
+          message = 'Broken governance. Renegotiate now or accept you have already lost the company.';
+        } else if (vcs >= 2) {
+          grade = 'D';
+          message = 'Fragile. Two or more VC seats this early compresses your control before dilution has even started. You have leverage today; you will not next round.';
+        } else if (vcs === 1) {
+          grade = 'C';
+          message = 'Workable but exposed. One VC seat pre-seed is a yellow flag. Address it before your next round.';
+        } else if (pct < 60) {
+          grade = 'D';
+          message = 'Fragile. You have leverage today; you will not next round.';
+        } else if (pct < 75) {
+          grade = 'C';
+          message = 'Workable but exposed. Address the flagged gap before your next round.';
+        } else if (pct === 100) {
+          grade = 'A';
+          message = 'Textbook composition for this stage. Keep it.';
+        } else {
+          grade = 'B';
+          message = 'Solid. One or two tweaks would push it to A.';
+        }
+
+      } else if (stage === 'Seed') {
+        if (pct < 33) {
+          grade = 'F';
+          message = 'Broken governance. Blocking minority lost at seed. Renegotiate now or accept you have already lost the company.';
+        } else if (pct <= 50) {
+          grade = 'D';
+          message = 'Fragile. You have leverage today; you will not next round.';
+        } else if (pct <= 54) {
+          grade = 'C';
+          message = 'Workable but exposed. Barely a majority. One bad vote and you lose the room.';
+        } else if (pct >= 65 && pct <= 80 && vcs <= 1 && totalSeats <= 4) {
+          grade = 'A';
+          message = 'Textbook composition for this stage. Keep it.';
+        } else if (pct >= 55 && vcs <= 2) {
+          grade = 'B';
+          message = 'Solid. One or two tweaks would push it to A.';
+        } else {
+          grade = 'D';
+          message = 'Fragile. Too many VC seats relative to your control position. You will not have this leverage next round.';
+        }
+
+      } else if (stage === 'Series A') {
+        if (pct < 25 || (vcMajority && independents === 0)) {
+          grade = 'F';
+          message = 'Broken governance. Renegotiate now or accept you have already lost the company.';
+        } else if ((pct >= 25 && pct < 33) || (pct >= 33 && pct <= 60 && vcs > independents + founderCoSeats)) {
+          grade = 'D';
+          message = 'Fragile. You have leverage today; you will not next round.';
+        } else if (pct >= 33 && pct <= 60 && independents === 0) {
+          grade = 'C';
+          message = 'Workable but exposed. Address the flagged gap before your next round. Add an independent to give yourself a tiebreaker.';
+        } else if (pct >= 40 && pct <= 60 && independents >= 1 && totalSeats >= 5 && totalSeats <= 7) {
+          grade = 'A';
+          message = 'Textbook composition for this stage. Keep it.';
+        } else if (pct >= 33 && pct <= 60 && independents >= 1) {
+          grade = 'B';
+          message = 'Solid. One or two tweaks would push it to A.';
+        } else {
+          grade = 'C';
+          message = 'Workable but exposed. This configuration is outside typical Series A parameters. Check your control position carefully.';
+        }
+
+      } else if (stage === 'Series B') {
+        if (pct < 15 || (vcMajority && independents === 0)) {
+          grade = 'F';
+          message = 'Broken governance. Renegotiate now or accept you have already lost the company.';
+        } else if ((pct >= 15 && pct < 20) || (vcs * 2 >= totalSeats && independents === 0)) {
+          grade = 'D';
+          message = 'Fragile. You have leverage today; you will not next round.';
+        } else if ((pct >= 20 && pct < 25) || independents === 0) {
+          grade = 'C';
+          message = 'Workable but exposed. Address the flagged gap before your next round. Add an independent before your next raise.';
+        } else if (pct >= 25 && pct <= 40 && independents >= 1 && totalSeats >= 5 && totalSeats <= 7) {
+          grade = 'A';
+          message = 'Textbook composition for this stage. Keep it.';
+        } else if (pct >= 25 && pct <= 45 && independents >= 1) {
+          grade = 'B';
+          message = 'Solid. One or two tweaks would push it to A.';
+        } else {
+          grade = 'C';
+          message = 'Workable but exposed. This configuration is outside typical Series B parameters. Check your control position carefully.';
+        }
+
+      } else if (stage === 'Series C') {
+        if (independents === 0 && vcMajority && totalSeats >= 5) {
+          grade = 'F';
+          message = 'Broken governance. Renegotiate now or accept you have already lost the company.';
+        } else if (independents === 0 && totalSeats >= 5) {
+          grade = 'D';
+          message = 'Fragile. A board this size with no independents is a liability. You have leverage today; you will not next round.';
+        } else if (pct > 50) {
+          grade = 'C';
+          message = 'Workable but exposed. Late-stage founder majority signals governance formalization is overdue.';
+        } else if (independents === 0 && totalSeats >= 7) {
+          grade = 'C';
+          message = 'Workable but exposed. A 7-seat board with no independents is anomalous. Address it before your next round.';
+        } else if (pct >= 15 && pct <= 30 && independents >= 2 && totalSeats >= 5 && totalSeats <= 9) {
+          grade = 'A';
+          message = 'Textbook composition for this stage. Keep it.';
+        } else if (pct >= 10 && pct <= 35 && independents >= 1) {
+          grade = 'B';
+          message = 'Solid. One or two tweaks would push it to A.';
+        } else {
+          grade = 'C';
+          message = 'Workable but exposed. This configuration is outside typical Series C parameters. Check your control position carefully.';
+        }
+      }
+
+      return { grade: grade, message: message };
     }
 
     function calc() {
@@ -489,11 +723,10 @@
       document.getElementById('res-founders').textContent = total > 0 ? founderPair.toFixed(1) + '%' : '--';
       document.getElementById('res-solo').textContent = total > 0 ? founderSolo.toFixed(1) + '%' : '--';
 
+      // Panel 1: control position badge
       var badge = document.getElementById('warning-badge');
       var text = document.getElementById('warning-text');
-
       badge.className = 'warning-badge';
-
       if (total === 0) {
         badge.classList.add('badge-empty');
         text.textContent = 'Add seats to see your control position';
@@ -510,6 +743,31 @@
         badge.classList.add('badge-none');
         text.textContent = 'No negative control';
       }
+
+      // Panel 2: stage-aware board health grade
+      var stageEl = document.querySelector('input[name="stage"]:checked');
+      var stage = stageEl ? stageEl.value : 'Pre-seed';
+      var health = stageHealth(stage, founderPair, total, independent, vc);
+
+      var healthPanel = document.getElementById('health-panel');
+      var gradeLetter = document.getElementById('grade-letter');
+      var gradeMsg = document.getElementById('grade-message');
+      var gradeSub = document.getElementById('grade-sublabel');
+
+      if (!health.grade) {
+        healthPanel.style.borderColor = '#1e1e1e';
+        gradeLetter.style.color = '#333';
+        gradeLetter.textContent = '--';
+        gradeSub.textContent = 'Grade';
+        gradeMsg.textContent = health.message;
+      } else {
+        var color = GRADE_COLORS[health.grade] || '#888';
+        healthPanel.style.borderColor = color;
+        gradeLetter.style.color = color;
+        gradeLetter.textContent = health.grade;
+        gradeSub.textContent = stage + ' standard';
+        gradeMsg.textContent = health.message;
+      }
     }
 
     function resetForm() {
@@ -518,6 +776,11 @@
       });
       calc();
     }
+
+    // Wire stage radio buttons to recalculate on change
+    document.querySelectorAll('input[name="stage"]').forEach(function(radio) {
+      radio.addEventListener('change', calc);
+    });
 
     calc();
   </script>

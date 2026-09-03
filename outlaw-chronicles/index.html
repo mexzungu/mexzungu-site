@@ -6,7 +6,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0d0d0d">
-    <title>Outlaw Chronicles — Mexzungu Group</title>
+    <title>Outlaw Chronicles. Mexzungu Group</title>
     <meta name="description" content="Sharp takes on venture architecture, startup structuring, and the stuff nobody tells founders until it's too late.">
     <meta property="og:title" content="Stories | Mexzungu Group">
     <meta property="og:description" content="Sharp takes on venture architecture, startup structuring, and the stuff nobody tells founders until it's too late.">
@@ -64,6 +64,11 @@
     <p class="section-text" style="margin-bottom: 1.5rem;">Weekly newsletter. Every Monday. One founder problem, no jargon, no mercy.</p>
 
     <div class="posts-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <a href="/resources/outlaw-chronicles-005.html" class="post-card" style="text-decoration: none; color: var(--text-primary); border: 1px solid var(--pink); background: rgba(225,75,135,0.05);">
+            <div class="post-tag" style="color: var(--pink);">Latest. Issue #5. September 2026</div>
+            <h3>The board seat he gave away for free cost him his company</h3>
+            <p>Andy gave his first angel a board seat because it felt like the right thing to do. By Series B, he needed three signatures to hire his own VP. This issue is about how that happens, and how to see it before it does. Includes the free Board Composition Model tool.</p>
+        </a>
         <a href="/resources/outlaw-chronicles-001.html" class="post-card" style="text-decoration: none; color: var(--text-primary); border: 1px solid var(--pink); background: rgba(225,75,135,0.05);">
             <div class="post-tag" style="color: var(--pink);">⚡ Issue #1 &middot; April 7, 2026</div>
             <h3>Your Cap Table Is Lying to You</h3>
@@ -104,7 +109,7 @@
         <a href="/outlaw-chronicles/shareholders-agreement" class="post-card" style="text-decoration: none; color: var(--text-primary);">
             <div class="post-tag">Venture Architecture &middot; April 2026</div>
             <h3>Your Shareholders Agreement Is a Ticking Time Bomb</h3>
-            <p>Template shareholders agreements from the internet are destroying companies. The 5 clauses founders always miss — and why they matter more than your pitch deck.</p>
+            <p>Template shareholders agreements from the internet are destroying companies. The 5 clauses founders always miss, and why they matter more than your pitch deck.</p>
         </a>
         <a href="/resources/outlaw-chronicles-001.html" class="post-card" style="text-decoration: none; color: var(--text-primary);">
             <div class="post-tag">Venture Architecture &middot; March 2026</div>
@@ -140,7 +145,7 @@
         <label style="display:flex;align-items:flex-start;gap:0.5rem;font-size:0.8rem;color:var(--gray);margin:0.5rem 0;cursor:pointer;"><input type="checkbox" required style="margin-top:3px;accent-color:var(--pink);"> I agree to receive emails and accept the <a href="/privacy/" style="color:var(--text-accent);">Privacy Policy</a>.</label>
         <button type="submit" id="nl-btn">Subscribe</button>
     </form>
-    <p class="newsletter-consent">By subscribing, you agree to receive occasional emails from Mexzungu Group. We respect your data — see our <a href="/privacy/">Privacy Policy</a>. Unsubscribe anytime.</p>
+    <p class="newsletter-consent">By subscribing, you agree to receive occasional emails from Mexzungu Group. We respect your data. See our <a href="/privacy/">Privacy Policy</a>. Unsubscribe anytime.</p>
 </section>
 
 </main>
@@ -179,7 +184,7 @@ async function subscribeNewsletter(e) {
         if (!res.ok) throw new Error();
         btn.textContent = "You're in!";
     } catch (e) {
-        btn.textContent = 'Failed — try again';
+        btn.textContent = 'Failed, try again';
         btn.style.background = 'var(--error, #C93545)';
         setTimeout(() => { btn.style.background = ''; }, 3000);
     }
