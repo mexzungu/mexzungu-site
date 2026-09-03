@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0A0A0A">
+  <title>Board Composition Model | Mexzungu Group</title>
+  <meta name="description" content="Model your board before you sign. See your founder vote percentage and warnings for every control threshold.">
+  <meta name="author" content="Pepe Carrillo">
+  <link rel="canonical" href="https://mexzungu.com/resources/board-composition-model/">
+  <meta property="og:title" content="Board Composition Model | Mexzungu Group">
+  <meta property="og:description" content="Every board seat you give away is a vote you lose. Model it before you sign.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mexzungu.com/resources/board-composition-model/">
+  <meta property="og:image" content="https://mexzungu.com/img/social/board-composition-model.png">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0A0A0A;
+      color: #e8e3df;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { color: #E14B87; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .back-link:hover { color: #E14B87; text-decoration: none; }
+
+    .label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #E14B87;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: #f5f0ec;
+      margin-bottom: 1.25rem;
+    }
+
+    .intro {
+      font-size: 1.05rem;
+      color: #b0a89f;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #1e1e1e;
+      margin: 2rem 0;
+    }
+
+    .stage-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 0.75rem;
+    }
+
+    .stages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stages input[type="radio"] { display: none; }
+
+    .stages label {
+      display: inline-block;
+      padding: 0.45rem 1rem;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #888;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      user-select: none;
+    }
+
+    .stages input[type="radio"]:checked + label {
+      border-color: #E14B87;
+      color: #E14B87;
+      background: rgba(225, 75, 135, 0.08);
+    }
+
+    .stages label:hover {
+      border-color: #555;
+      color: #ccc;
+    }
+
+    .form-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .seat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid #141414;
+    }
+
+    .seat-row:last-of-type { border-bottom: none; }
+
+    .seat-label {
+      font-size: 0.95rem;
+      color: #c8c0b8;
+    }
+
+    .seat-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .seat-input-wrap button {
+      width: 32px;
+      height: 32px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      color: #e8e3df;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .seat-input-wrap button:hover { border-color: #E14B87; color: #E14B87; }
+
+    .seat-input-wrap input[type="number"] {
+      width: 52px;
+      text-align: center;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      color: #f5f0ec;
+      font-size: 1rem;
+      padding: 0.35rem 0.25rem;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .seat-input-wrap input[type="number"]::-webkit-inner-spin-button,
+    .seat-input-wrap input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    .results {
+      margin-top: 1.75rem;
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-block { text-align: center; }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #f5f0ec;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    .warning-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .badge-supermajority { background: #0d2e1e; color: #4caf82; }
+    .badge-supermajority .badge-dot { background: #4caf82; }
+
+    .badge-majority { background: #2a2200; color: #d4a820; }
+    .badge-majority .badge-dot { background: #d4a820; }
+
+    .badge-blocking { background: #2a1500; color: #e07830; }
+    .badge-blocking .badge-dot { background: #e07830; }
+
+    .badge-none { background: #2a0a0a; color: #e05050; }
+    .badge-none .badge-dot { background: #e05050; }
+
+    .badge-empty { background: #1a1a1a; color: #555; }
+    .badge-empty .badge-dot { background: #333; }
+
+    .reset-btn {
+      margin-top: 1.5rem;
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      color: #666;
+      font-size: 0.8rem;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .reset-btn:hover { border-color: #555; color: #aaa; }
+
+    .subscribe-block {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .subscribe-block p {
+      font-size: 0.95rem;
+      color: #888;
+      margin-bottom: 0.75rem;
+    }
+
+    .subscribe-link {
+      display: inline-block;
+      padding: 0.55rem 1.25rem;
+      border: 1px solid #E14B87;
+      border-radius: 4px;
+      color: #E14B87;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      transition: background 0.15s;
+    }
+    .subscribe-link:hover { background: rgba(225,75,135,0.12); text-decoration: none; }
+
+    .footer-disclaimer {
+      margin-top: 2.5rem;
+      font-size: 0.75rem;
+      color: #444;
+      line-height: 1.6;
+      max-width: 580px;
+    }
+
+    @media (max-width: 768px) {
+      .page-wrap { padding: 2.5rem 1.25rem 4rem; }
+
+      h1 { font-size: 1.75rem; }
+
+      .stages { gap: 0.4rem; }
+      .stages label { padding: 0.55rem 0.85rem; font-size: 0.82rem; }
+
+      .results-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+
+      .stat-value { font-size: 2rem; }
+
+      .seat-row { flex-wrap: nowrap; gap: 0.75rem; }
+
+      .seat-input-wrap button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+      }
+
+      .seat-input-wrap input[type="number"] {
+        width: 56px;
+        font-size: 1.05rem;
+        padding: 0.45rem 0.3rem;
+      }
+
+      .results { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <a href="/resources/" class="back-link">Back to Resources</a>
+
+    <div class="label">Governance Tool</div>
+    <h1>The Board Composition Model</h1>
+
+    <p class="intro">
+      Every board seat you give away is a vote you lose. Model it before you sign.
+      Pick a stage, enter who sits on the board, and see your founder vote percentage.
+      Warnings kick in when you cross control thresholds.
+    </p>
+
+    <hr class="divider">
+
+    <div class="stage-label">Funding Stage</div>
+    <div class="stages">
+      <input type="radio" name="stage" id="st-preseed" value="Pre-seed" checked>
+      <label for="st-preseed">Pre-seed</label>
+
+      <input type="radio" name="stage" id="st-seed" value="Seed">
+      <label for="st-seed">Seed</label>
+
+      <input type="radio" name="stage" id="st-seriesa" value="Series A">
+      <label for="st-seriesa">Series A</label>
+
+      <input type="radio" name="stage" id="st-seriesb" value="Series B">
+      <label for="st-seriesb">Series B</label>
+
+      <input type="radio" name="stage" id="st-seriesc" value="Series C">
+      <label for="st-seriesc">Series C</label>
+    </div>
+
+    <div class="form-section-title">Board Seats</div>
+
+    <div id="seat-form">
+      <div class="seat-row">
+        <span class="seat-label">Founders</span>
+        <div class="seat-input-wrap">
+          <button type="button" onclick="adjust('founder', -1)">-</button>
+          <input type="number" id="founder" min="0" max="10" value="1" oninput="calc()">
+          <button type="button" onclick="adjust('founder', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="seat-row">
+        <span class="seat-label">Co-founders</span>
+        <div class="seat-input-wrap">
+          <button type="button" onclick="adjust('cofounder', -1)">-</button>
+          <input type="number" id="cofounder" min="0" max="10" value="1" oninput="calc()">
+          <button type="button" onclick="adjust('cofounder', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="seat-row">
+        <span class="seat-label">Angel(s)</span>
+        <div class="seat-input-wrap">
+          <button type="button" onclick="adjust('angel', -1)">-</button>
+          <input type="number" id="angel" min="0" max="10" value="0" oninput="calc()">
+          <button type="button" onclick="adjust('angel', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="seat-row">
+        <span class="seat-label">Lead VC</span>
+        <div class="seat-input-wrap">
+          <button type="button" onclick="adjust('vc', -1)">-</button>
+          <input type="number" id="vc" min="0" max="10" value="0" oninput="calc()">
+          <button type="button" onclick="adjust('vc', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="seat-row">
+        <span class="seat-label">Independent(s)</span>
+        <div class="seat-input-wrap">
+          <button type="button" onclick="adjust('independent', -1)">-</button>
+          <input type="number" id="independent" min="0" max="10" value="0" oninput="calc()">
+          <button type="button" onclick="adjust('independent', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="seat-row">
+        <span class="seat-label">Advisor(s)</span>
+        <div class="seat-input-wrap">
+          <button type="button" onclick="adjust('advisor', -1)">-</button>
+          <input type="number" id="advisor" min="0" max="10" value="0" oninput="calc()">
+          <button type="button" onclick="adjust('advisor', 1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="results-grid">
+        <div class="stat-block">
+          <div class="stat-value" id="res-total">2</div>
+          <div class="stat-label">Total Seats</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-value" id="res-founders">100.0%</div>
+          <div class="stat-label">Founder + Co-founder Vote</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-value" id="res-solo">50.0%</div>
+          <div class="stat-label">Founder Solo Vote</div>
+        </div>
+      </div>
+
+      <div class="warning-badge badge-supermajority" id="warning-badge">
+        <span class="badge-dot"></span>
+        <span id="warning-text">Supermajority control</span>
+      </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetForm()">Reset to defaults</button>
+
+    <div class="subscribe-block">
+      <p>Get the next resource.</p>
+      <a href="https://mexzungu.substack.com" class="subscribe-link" target="_blank" rel="noopener">Subscribe to The Outlaw Chronicles</a>
+    </div>
+
+    <p class="footer-disclaimer">
+      This tool is a modeling aid, not legal advice. Not admitted to practice in your jurisdiction.
+      Talk to counsel where you operate.
+    </p>
+  </div>
+
+  <script>
+    var DEFAULTS = { founder: 1, cofounder: 1, angel: 0, vc: 0, independent: 0, advisor: 0 };
+    var FIELDS = ['founder', 'cofounder', 'angel', 'vc', 'independent', 'advisor'];
+
+    function val(id) {
+      var v = parseInt(document.getElementById(id).value, 10);
+      return isNaN(v) || v < 0 ? 0 : v > 10 ? 10 : v;
+    }
+
+    function adjust(id, delta) {
+      var el = document.getElementById(id);
+      var current = parseInt(el.value, 10) || 0;
+      var next = Math.min(10, Math.max(0, current + delta));
+      el.value = next;
+      calc();
+    }
+
+    function calc() {
+      var founder = val('founder');
+      var cofounder = val('cofounder');
+      var angel = val('angel');
+      var vc = val('vc');
+      var independent = val('independent');
+      var advisor = val('advisor');
+
+      var total = founder + cofounder + angel + vc + independent + advisor;
+      var founderPair = total > 0 ? ((founder + cofounder) / total * 100) : 0;
+      var founderSolo = total > 0 ? (founder / total * 100) : 0;
+
+      document.getElementById('res-total').textContent = total;
+      document.getElementById('res-founders').textContent = total > 0 ? founderPair.toFixed(1) + '%' : '--';
+      document.getElementById('res-solo').textContent = total > 0 ? founderSolo.toFixed(1) + '%' : '--';
+
+      var badge = document.getElementById('warning-badge');
+      var text = document.getElementById('warning-text');
+
+      badge.className = 'warning-badge';
+
+      if (total === 0) {
+        badge.classList.add('badge-empty');
+        text.textContent = 'Add seats to see your control position';
+      } else if (founderPair >= 67) {
+        badge.classList.add('badge-supermajority');
+        text.textContent = 'Supermajority control';
+      } else if (founderPair >= 51) {
+        badge.classList.add('badge-majority');
+        text.textContent = 'Majority only, no supermajority';
+      } else if (founderPair >= 33) {
+        badge.classList.add('badge-blocking');
+        text.textContent = 'Blocking minority lost';
+      } else {
+        badge.classList.add('badge-none');
+        text.textContent = 'No negative control';
+      }
+    }
+
+    function resetForm() {
+      FIELDS.forEach(function(id) {
+        document.getElementById(id).value = DEFAULTS[id];
+      });
+      calc();
+    }
+
+    calc();
+  </script>
+</body>
+</html>
