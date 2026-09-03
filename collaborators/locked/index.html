@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Private Hub · Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0f0f0f;--bg-2:#141414;
+      --pink:#E14B87;--pink-dark:#c73d75;
+      --white:#fafafa;--grey:#8a8a8a;--grey-line:#1e1e1e;
+      --heading:'RocknRoll One','Space Grotesk',sans-serif;
+      --sans:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+    }
+    html,body{background:var(--bg);color:var(--white);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6;min-height:100vh}
+    .halo{position:fixed;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(225,75,135,.13),transparent 65%);top:-250px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:0}
+    .page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem clamp(1.25rem,4vw,3rem)}
+    .content{position:relative;z-index:1;max-width:520px}
+    .lock{width:64px;height:64px;margin:0 auto 2rem;opacity:.55}
+    .eyebrow{color:var(--pink);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;margin-bottom:1.2rem}
+    h1{font-family:var(--heading);font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;letter-spacing:-.02em;margin-bottom:1.4rem}
+    h1 .pink{color:var(--pink)}
+    .divider{width:48px;height:2px;background:var(--pink);opacity:.4;margin:0 auto 1.6rem}
+    p{color:#a0a0a0;font-size:1.02rem;line-height:1.75}
+    a{color:var(--pink);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .footer{margin-top:3.5rem;font-size:.72rem;color:#444;letter-spacing:.1em;text-transform:uppercase}
+    @media(max-width:480px){h1{font-size:1.75rem}.lock{width:48px;height:48px}}
+  </style>
+</head>
+<body>
+  <div class="halo"></div>
+  <div class="page">
+    <div class="content">
+      <svg class="lock" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="11" y="27" width="42" height="30" rx="5" stroke="#E14B87" stroke-width="2.5"/>
+        <path d="M20 27V19a12 12 0 0 1 24 0v8" stroke="#E14B87" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="32" cy="43" r="4" fill="#E14B87"/>
+      </svg>
+      <div class="eyebrow">Mexzungu Group</div>
+      <h1>This is a<br><span class="pink">Private Hub</span></h1>
+      <div class="divider"></div>
+      <p>This is a private Collaborator Hub. Request access from Pepe at <a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a> and mention which hub you were trying to reach.</p>
+      <div class="footer">mexzungu group &middot; collaborators</div>
+    </div>
+  </div>
+</body>
+</html>
