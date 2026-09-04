@@ -1,363 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0d0d0d">
-    <title>Custom AI Agents — Mexzungu Group</title>
-    <meta name="description" content="A custom AI agent built and managed for your business. One flat monthly fee. Setup included. No engineers needed.">
-    <meta property="og:title" content="Custom AI Agents | Mexzungu Group">
-    <meta property="og:description" content="A custom AI agent built and managed for your business. One flat monthly fee. Setup included. No engineers needed.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mexzungu.com/agents">
-    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://mexzungu.com/agents">
-    <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/style.css?v=10">
-
-    <style>
-        .problem-list {
-            list-style: none;
-            padding: 0;
-            margin: 2rem 0;
-        }
-        .problem-list li {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-            color: var(--gray);
-            font-size: 1.05rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-        .problem-list li::before {
-            content: "→";
-            color: var(--text-accent);
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin: 2.5rem 0;
-        }
-        .process-step {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md, 10px);
-            padding: 1.75rem 1.5rem;
-        }
-        .step-number {
-            font-family: var(--heading);
-            font-size: 2.5rem;
-            color: var(--text-accent);
-            opacity: 0.4;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-        .step-title {
-            font-family: var(--heading);
-            font-size: 1.1rem;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-        .step-desc {
-            font-size: 0.9rem;
-            color: var(--gray);
-            line-height: 1.6;
-            margin: 0;
-        }
-        .use-cases {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.25rem;
-            margin: 2rem 0;
-        }
-        .use-case {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md, 10px);
-            padding: 1.25rem 1.5rem;
-        }
-        .use-case h5 {
-            font-family: var(--heading);
-            font-size: 0.85rem;
-            color: var(--text-accent);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 0.5rem;
-        }
-        .use-case p {
-            font-size: 0.9rem;
-            color: var(--gray);
-            line-height: 1.5;
-            margin: 0;
-        }
-        .guarantee-box {
-            background: var(--bg-card);
-            border: 1px solid var(--text-accent);
-            border-radius: var(--radius-md, 10px);
-            padding: 2rem;
-            margin: 2.5rem 0;
-            text-align: center;
-        }
-        .guarantee-box .g-label {
-            font-size: 0.75rem;
-            font-family: var(--heading);
-            color: var(--text-accent);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 0.75rem;
-        }
-        .guarantee-box p {
-            font-size: 1rem;
-            color: var(--gray);
-            max-width: 560px;
-            margin: 0 auto;
-            line-height: 1.65;
-        }
-        @media (max-width: 600px) {
-            .process-steps { grid-template-columns: 1fr; }
-            .use-cases { grid-template-columns: 1fr; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Agent Browser. Mexzungu Group</title>
+  <style>
+    :root {
+      --pink: #FF1493;
+      --pink-dim: rgba(255,20,147,0.15);
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --text: #f0f0f0;
+      --muted: #888;
+      --radius: 6px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    header h1 { font-size: 1.25rem; font-weight: 700; color: var(--pink); letter-spacing: -0.02em; }
+    .count-badge {
+      background: var(--pink-dim);
+      color: var(--pink);
+      border: 1px solid var(--pink);
+      border-radius: 999px;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .controls {
+      padding: 1rem 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+    }
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      outline: none;
+    }
+    .search-box:focus { border-color: var(--pink); }
+    .filter-chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .chip:hover { border-color: var(--pink); color: var(--text); }
+    .chip.active { background: var(--pink-dim); border-color: var(--pink); color: var(--pink); font-weight: 600; }
+    .table-wrap { overflow-x: auto; padding: 0 1.5rem 1.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; margin-top: 1rem; }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      border-bottom: 2px solid var(--border);
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    th:hover { color: var(--pink); }
+    th.sorted { color: var(--pink); }
+    th .sort-arrow { margin-left: 0.3rem; opacity: 0.5; }
+    th.sorted .sort-arrow { opacity: 1; }
+    td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .agent-name { font-weight: 600; color: var(--text); }
+    .agent-desc { color: var(--muted); font-size: 0.75rem; max-width: 320px; line-height: 1.4; }
+    .badge { display: inline-block; border-radius: 4px; padding: 0.1rem 0.45rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em; }
+    .tier-opus { background: rgba(220,60,60,0.2); color: #f87171; border: 1px solid rgba(220,60,60,0.4); }
+    .tier-sonnet { background: rgba(60,120,220,0.2); color: #93c5fd; border: 1px solid rgba(60,120,220,0.4); }
+    .tier-haiku { background: rgba(50,180,100,0.2); color: #6ee7b7; border: 1px solid rgba(50,180,100,0.4); }
+    .tier-empty { background: var(--border); color: var(--muted); border: 1px solid transparent; }
+    .owner-chip { display: inline-block; background: var(--pink-dim); color: var(--pink); border-radius: 4px; padding: 0.1rem 0.4rem; font-size: 0.7rem; font-weight: 600; text-transform: capitalize; }
+    .no-results { text-align: center; padding: 3rem; color: var(--muted); }
+    footer { text-align: center; padding: 1.5rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+    @media (max-width: 768px) {
+      header { padding: 1rem; }
+      .controls { padding: 0.75rem 1rem; }
+      .table-wrap { display: none; }
+      .cards { display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem; }
+      .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+      .card-name { font-weight: 700; margin-bottom: 0.4rem; color: var(--text); }
+      .card-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.6rem; line-height: 1.5; }
+      .card-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+    }
+    @media (min-width: 769px) { .cards { display: none; } }
+  </style>
 </head>
 <body>
-
-<nav>
-    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
-    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
-        <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li class="nav-dropdown">
-            <a href="/#pillars" class="active">What We Do</a>
-            <ul class="nav-dropdown-menu">
-                <li><a href="/venture-architecture">Venture Architecture</a></li>
-                <li><a href="/data-privacy">Data Privacy</a></li>
-                <li><a href="/rebel-capital">Rebel Capital</a></li>
-                <li><a href="/ai-ninja-factory">AI Ninja Factory</a></li>
-                <li><a href="/agents" class="active">Custom AI Agents</a></li>
-            </ul>
-        </li>
-        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
-        <li><a href="/meet-the-band">Meet the Band</a></li>
-        <li><a href="/lets-jam" class="nav-cta"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Let's Jam</a></li>
-    </ul>
-</nav>
-
-<main id="main">
-
-<!-- HERO -->
-<div class="page-hero">
-    <div class="section-label">Custom AI Agents</div>
-    <h1>Your admin runs itself.<br><span class="highlight">Finally.</span></h1>
-    <p>A custom AI agent built for your exact workflows and managed for you every month. One flat fee, setup included. No engineers required, no prompt-wrangling, no DIY chaos.</p>
-    <p class="hero-accent">You tell us what's eating your week. We automate it.</p>
-    <span class="margin-whisper">built for operators, not engineers.</span>
+<header>
+  <h1>Agent Browser</h1>
+  <span class="count-badge" id="count-badge">...</span>
+  <span style="margin-left:auto;color:var(--muted);font-size:0.75rem" id="ts-label"></span>
+</header>
+<div class="controls">
+  <input class="search-box" id="search" type="search" placeholder="Search by name or description..." autocomplete="off">
+  <div class="filter-chips" id="owner-chips"></div>
 </div>
-
-<!-- THE PROBLEM -->
-<section>
-    <div class="section-label">The Problem</div>
-    <div class="section-title">You're using AI. It's still not working.</div>
-    <p class="section-text">You have ChatGPT open in fourteen tabs. You've watched the tutorials. You wrote a system prompt once and forgot where you saved it. And your inbox is still a disaster.</p>
-
-    <ul class="problem-list">
-        <li>Email triage you keep meaning to automate but never actually do</li>
-        <li>Repetitive documents you rebuild from scratch every time</li>
-        <li>Follow-ups that fall through because nobody owns them</li>
-        <li>AI tools that produce 80% of what you need and 100% of the editing burden</li>
-        <li>Four hours a week on admin that could run itself if someone would just set it up</li>
-    </ul>
-
-    <p class="section-text">The problem is that the tools don't come with someone to configure them for your business and keep them running. Mexzungu does that part.</p>
-</section>
-
-<!-- WHAT YOU GET -->
-<section>
-    <div class="section-label">The Service</div>
-    <div class="section-title">A custom agent. Managed for you.</div>
-    <p class="section-text">We build an AI agent configured for your specific workflows: email, documents, scheduling, outreach, reporting, whatever is eating your time. Then we run it every month: monitoring outputs, refining prompts, adding new workflows as your needs evolve.</p>
-
-    <div class="process-steps">
-        <div class="process-step">
-            <div class="step-title">Audit <span style="color:var(--text-accent);font-size:0.8rem;font-weight:400;font-family:var(--body,sans-serif);letter-spacing:0.04em;">Week 1</span></div>
-            <p class="step-desc">We map your current workflows and identify exactly where AI can replace manual work. You tell us what's broken. We design the fix.</p>
-        </div>
-        <div class="process-step">
-            <div class="step-title">Build <span style="color:var(--text-accent);font-size:0.8rem;font-weight:400;font-family:var(--body,sans-serif);letter-spacing:0.04em;">Still Week 1</span></div>
-            <p class="step-desc">Agent configured, workflows connected, tested against your real data. Live before your first full week is out. Setup is included in Month 1, no additional build fee.</p>
-        </div>
-        <div class="process-step">
-            <div class="step-title">Run <span style="color:var(--text-accent);font-size:0.8rem;font-weight:400;font-family:var(--body,sans-serif);letter-spacing:0.04em;">Ongoing</span></div>
-            <p class="step-desc">Every month after. We monitor, refine, and expand as your workflows evolve. You get a monthly ops report and a direct line when anything needs attention.</p>
-        </div>
-    </div>
-</section>
-
-<!-- USE CASES -->
-<section>
-    <div class="section-label">What Gets Automated</div>
-    <div class="section-title">Common workflows we handle.</div>
-    <p class="section-text">Every engagement is custom. These are the most common things we automate for solopreneurs and small operators.</p>
-
-    <div class="use-cases">
-        <div class="use-case">
-            <h5>Email Ops</h5>
-            <p>Triage, labeling, draft replies, follow-up queues. Inbox zero is a system, not a discipline.</p>
-        </div>
-        <div class="use-case">
-            <h5>CRM Hygiene</h5>
-            <p>Contacts enriched, leads updated, pipeline statuses synced from your actual communication history.</p>
-        </div>
-        <div class="use-case">
-            <h5>Document Generation</h5>
-            <p>Proposals, briefs, SOWs, reports. Templated, populated, formatted. One command, done.</p>
-        </div>
-        <div class="use-case">
-            <h5>Scheduling and Prep</h5>
-            <p>Meeting requests handled, availability managed, prep briefs generated before every call.</p>
-        </div>
-        <div class="use-case">
-            <h5>Content Pipeline</h5>
-            <p>LinkedIn drafts, newsletter sections, post scheduling. Your ideas go in. Polished copy comes out.</p>
-        </div>
-        <div class="use-case">
-            <h5>Finance Ops</h5>
-            <p>Invoice tracking, expense logging, payment follow-ups. The money stuff nobody wants to touch.</p>
-        </div>
-        <div class="use-case">
-            <h5>Client Reporting</h5>
-            <p>Weekly and monthly reports generated from your data automatically. Sent before your client asks.</p>
-        </div>
-        <div class="use-case">
-            <h5>Research and Intel</h5>
-            <p>Market scans, contact enrichment, competitive monitoring. Briefed before every important conversation.</p>
-        </div>
-    </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-    <div class="section-label">Pricing</div>
-    <div class="section-title">One flat monthly fee, no surprises.</div>
-    <p class="section-text">Setup is included in Month 1 at no separate build fee. Cancel anytime after your first month, though most clients stay because the agent keeps getting better.</p>
-
-    <div class="tiers">
-        <div class="tier">
-            <h4>Solo</h4>
-            <div class="tier-focus">$750 / month</div>
-            <p>One core workflow automated end-to-end. Setup and onboarding included in Month 1. Monthly review and refinement pass.</p>
-            <p style="font-size: 0.85rem; color: var(--gray); margin-top: 1rem;">Best for: founders who know the one thing eating their week and want it fixed.</p>
-        </div>
-        <div class="tier recommended">
-            <h4>Team</h4>
-            <div class="tier-focus">$1,000 to $1,200 / month</div>
-            <p>Two to three workflows running in parallel. Weekly optimization pass. 24-hour response time on any issue or request.</p>
-            <p style="font-size: 0.85rem; color: var(--gray); margin-top: 1rem;">Best for: operators ready to automate across more than one area at once.</p>
-        </div>
-        <div class="tier">
-            <h4>Full Stack</h4>
-            <div class="tier-focus">$1,500 to $2,000 / month</div>
-            <p>Full ops assistant across your entire admin layer. Multiple workflows, proactive improvements as your needs shift, monthly performance report.</p>
-            <p style="font-size: 0.85rem; color: var(--gray); margin-top: 1rem;">Best for: lean teams running at capacity who need the whole admin layer covered.</p>
-        </div>
-    </div>
-
-    <div class="guarantee-box">
-        <div class="g-label">Our Commitment</div>
-        <p>We build and maintain the operational infrastructure. Outcomes depend on how your team engages with it. We don't guarantee business results. We guarantee the machine runs.</p>
-    </div>
-</section>
-
-<!-- WHO IT'S FOR -->
-<section>
-    <div class="section-label">Who This Is For</div>
-    <div class="section-title">You, probably.</div>
-
-    <div class="detail-grid" style="margin-top: 2.5rem;">
-        <div class="detail-card">
-            <h4>Solopreneurs</h4>
-            <p>Running the whole operation yourself. Every hour on admin is an hour not spent on the work that actually moves the needle.</p>
-        </div>
-        <div class="detail-card">
-            <h4>Consultants and Advisors</h4>
-            <p>Client work is billable. Proposal-writing, scheduling, and invoice chasing is not. We automate the second category.</p>
-        </div>
-        <div class="detail-card">
-            <h4>Small Teams Without Ops Staff</h4>
-            <p>Two to five people doing everything. The ops layer that would require a dedicated hire can run on a custom agent at a fraction of the cost.</p>
-        </div>
-        <div class="detail-card">
-            <h4>Founders Pre-Series A</h4>
-            <p>Burn rate is real. Hiring is expensive. A custom AI agent costs less than two weeks of a junior hire and runs 24/7.</p>
-        </div>
-    </div>
-</section>
-
-<!-- STATS BAR -->
-<div class="stats-bar">
-    <div>
-        <div class="stat-number">Week 1</div>
-        <div class="stat-label">Agent Live and Running</div>
-    </div>
-    <div>
-        <div class="stat-number">$750/mo</div>
-        <div class="stat-label">Starting Price, Setup Included</div>
-    </div>
-    <div>
-        <div class="stat-number">4h+</div>
-        <div class="stat-label">Average Weekly Time Saved</div>
-    </div>
-    <div>
-        <div class="stat-number">Monthly</div>
-        <div class="stat-label">Optimization Included</div>
-    </div>
+<div class="table-wrap">
+  <table id="agents-table">
+    <thead>
+      <tr>
+        <th data-col="name">Name<span class="sort-arrow">&#8593;</span></th>
+        <th data-col="owner">Owner<span class="sort-arrow">&#8595;</span></th>
+        <th data-col="macro_engine">Macro Engine<span class="sort-arrow">&#8595;</span></th>
+        <th data-col="cost_tier">Cost Tier<span class="sort-arrow">&#8595;</span></th>
+        <th data-col="model">Model<span class="sort-arrow">&#8595;</span></th>
+        <th data-col="tools_count">Tools<span class="sort-arrow">&#8595;</span></th>
+        <th data-col="description">Description<span class="sort-arrow">&#8595;</span></th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+  <div class="no-results" id="no-results" style="display:none">No agents match this filter.</div>
 </div>
+<div class="cards" id="cards"></div>
+<footer id="footer">Built 2026-09-04 20:47 CET</footer>
+<script>
+const RAW = [{"name": "a11y-architect", "description": "Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms. Use PROACTIVELY when designing UI components, establishing design systems, or auditing code for inclusive user experiences.", "tools": ["Read", "Write", "Edit", "Grep", "Glob"], "tools_count": 5, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "agent-evaluator", "description": "Evaluates agent output against 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness). Use after any non-trivial task when the user wants a quality assessment, or when the agent-self-evaluation skill is active. Produces structured scorecard with evidence and improvement suggestions.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "architect", "description": "Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.", "tools": ["Read", "Grep", "Glob"], "tools_count": 3, "model": "opus", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "build-error-resolver", "description": "Build and TypeScript error resolution specialist. Use PROACTIVELY when build fails or type errors occur. Fixes build/type errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "chief-of-staff", "description": "Personal communication chief of staff that triages email, Slack, LINE, and Messenger. Classifies messages into 4 tiers (skip/info_only/meeting_info/action_required), generates draft replies, and enforces post-send follow-through via hooks. Use when managing multi-channel communication workflows.", "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write"], "tools_count": 6, "model": "opus", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "code-architect", "description": "Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concrete files, interfaces, data flow, and build order.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "code-explorer", "description": "Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform new development.", "tools": ["Read", "Grep", "Glob"], "tools_count": 3, "model": "sonnet", "owner": "nina", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "code-reviewer", "description": "Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code. MUST BE USED for all code changes.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "code-simplifier", "description": "Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior. Focus on recently modified code unless instructed otherwise.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "comment-analyzer", "description": "Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.", "tools": ["Read", "Grep", "Glob"], "tools_count": 3, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "conversation-analyzer", "description": "Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. Triggered by /hookify without arguments.", "tools": ["Read", "Grep"], "tools_count": 2, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "database-reviewer", "description": "PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "django-build-resolver", "description": "Django/Python build, migration, and dependency error resolution specialist. Fixes pip/Poetry errors, migration conflicts, import errors, Django configuration issues, and collectstatic failures with minimal changes. Use when Django setup or startup fails.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "django-reviewer", "description": "Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grade Django practices. Use for all Django code changes. MUST BE USED for Django projects.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "doc-updater", "description": "Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "haiku", "owner": "nina", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "docs-lookup", "description": "When the user asks how to use a library, framework, or API or needs up-to-date code examples, use Context7 MCP to fetch current documentation and return answers with examples. Invoke for docs/API/setup questions.", "tools": ["Read", "Grep", "mcp__context7__resolve-library-id", "mcp__context7__query-docs"], "tools_count": 4, "model": "sonnet", "owner": "nina", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "e2e-runner", "description": "End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback. Use PROACTIVELY for generating, maintaining, and running E2E tests. Manages test journeys, quarantines flaky tests, uploads artifacts (screenshots, videos, traces), and ensures critical user flows work.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "lars", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "fastapi-reviewer", "description": "Reviews FastAPI applications for async correctness, dependency injection, Pydantic schemas, security, OpenAPI quality, testing, and production readiness.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "fsharp-reviewer", "description": "Expert F# code reviewer specializing in functional idioms, type safety, pattern matching, computation expressions, and performance. Use for all F# code changes. MUST BE USED for F# projects.", "tools": [], "tools_count": 0, "model": "", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "gan-evaluator", "description": "GAN Harness — Evaluator agent. Tests the live running application via Playwright, scores against rubric, and provides actionable feedback to the Generator.", "tools": ["Read", "Write", "Bash", "Grep", "Glob"], "tools_count": 5, "model": "opus", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "gan-generator", "description": "GAN Harness — Generator agent. Implements features according to the spec, reads evaluator feedback, and iterates until quality threshold is met.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "opus", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "gan-planner", "description": "GAN Harness — Planner agent. Expands a one-line prompt into a full product specification with features, sprints, evaluation criteria, and design direction.", "tools": ["Read", "Write", "Grep", "Glob"], "tools_count": 4, "model": "opus", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "go-build-resolver", "description": "Go build, vet, and compilation error resolution specialist. Fixes build errors, go vet issues, and linter warnings with minimal changes. Use when Go builds fail.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "go-reviewer", "description": "Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance. Use for all Go code changes. MUST BE USED for Go projects.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "harness-optimizer", "description": "Analyze and improve the local agent harness configuration for reliability, cost, and throughput.", "tools": ["Read", "Grep", "Glob", "Bash", "Edit"], "tools_count": 5, "model": "sonnet", "owner": "lars", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "healthcare-reviewer", "description": "Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity. Specialized for EMR/EHR, clinical decision support, and health information systems.", "tools": ["Read", "Grep", "Glob"], "tools_count": 3, "model": "opus", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "homelab-architect", "description": "Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollback guidance.", "tools": ["Read", "Grep"], "tools_count": 2, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "loop-operator", "description": "Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.", "tools": ["Read", "Grep", "Glob", "Bash", "Edit"], "tools_count": 5, "model": "sonnet", "owner": "lars", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "marketing-agent", "description": "Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review. Covers landing pages, email sequences, social posts, ad copy, short-form video scripts, and content calendars. Use when the user wants to plan or execute a product launch or marketing campaign.", "tools": ["Read", "Grep", "Glob", "WebSearch", "WebFetch"], "tools_count": 5, "model": "sonnet", "owner": "freddie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "mle-reviewer", "description": "Production machine-learning engineering reviewer for data contracts, feature pipelines, training reproducibility, offline/online evaluation, model serving, monitoring, and rollback. Use when ML, MLOps, model training, inference, feature store, or evaluation code changes.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "network-architect", "description": "Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, automation, and troubleshooting detail.", "tools": ["Read", "Grep"], "tools_count": 2, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "network-config-reviewer", "description": "Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational guardrails.", "tools": ["Read", "Grep"], "tools_count": 2, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "network-troubleshooter", "description": "Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root cause summary.", "tools": ["Read", "Bash", "Grep"], "tools_count": 3, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "opensource-forker", "description": "Fork any project for open-sourcing. Copies files, strips secrets and credentials (20+ patterns), replaces internal references with placeholders, generates .env.example, and cleans git history. First stage of the opensource-pipeline skill.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "opensource-packager", "description": "Generate complete open-source packaging for a sanitized project. Produces CLAUDE.md, setup.sh, README.md, LICENSE, CONTRIBUTING.md, and GitHub issue templates. Makes any repo immediately usable with Claude Code. Third stage of the opensource-pipeline skill.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "opensource-sanitizer", "description": "Verify an open-source fork is fully sanitized before release. Scans for leaked secrets, PII, internal references, and dangerous files using 20+ regex patterns. Generates a PASS/FAIL/PASS-WITH-WARNINGS report. Second stage of the opensource-pipeline skill. Use PROACTIVELY before any public release.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "performance-optimizer", "description": "Performance analysis and optimization specialist. Use PROACTIVELY for identifying bottlenecks, optimizing slow code, reducing bundle sizes, and improving runtime performance. Profiling, memory leaks, render optimization, and algorithmic improvements.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "planner", "description": "Expert planning specialist for complex features and refactoring. Use PROACTIVELY when users request feature implementation, architectural changes, or complex refactoring. Automatically activated for planning tasks.", "tools": ["Read", "Grep", "Glob"], "tools_count": 3, "model": "opus", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "pr-test-analyzer", "description": "Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "python-reviewer", "description": "Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance. Use for all Python code changes. MUST BE USED for Python projects.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "react-build-resolver", "description": "Diagnose and fix React build failures across Vite, webpack, Next.js, CRA, Parcel, esbuild, and Bun. Handles JSX/TSX compile errors, hydration mismatches, server/client component boundary failures, missing types, and bundler-specific configuration issues with minimal, surgical changes. MUST BE USED when a React build fails.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "react-reviewer", "description": "Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and React-specific security. Use for any change touching .tsx/.jsx files or React component logic. MUST BE USED for React projects.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "refactor-cleaner", "description": "Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "security-auditor", "description": "Security engineer focused on vulnerability detection, threat modeling, and secure coding practices. Use for security-focused code review, threat analysis, or hardening recommendations.", "tools": [], "tools_count": 0, "model": "", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "security-reviewer", "description": "Security vulnerability detection and remediation specialist. Use PROACTIVELY after writing code that handles user input, authentication, API endpoints, or sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.", "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"], "tools_count": 6, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "seo-specialist", "description": "SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping. Use for site audits, meta tag reviews, schema markup, sitemap and robots issues, and SEO remediation plans.", "tools": ["Read", "Grep", "Glob", "WebSearch", "WebFetch"], "tools_count": 5, "model": "sonnet", "owner": "jagger", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "silent-failure-hunter", "description": "Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "spec-miner", "description": "Extracts behavioral specs from existing codebases for OpenSpec. Produces flat Requirement and Invariant blocks with structured metadata (entities, enforced, id, test anchors). Outputs openspec/specs/<capability>/spec.md. Fully self-bootstrapping — no dependency on codebase-onboarding. Use when onboarding a brownfield project to spec-driven development.", "tools": ["Read", "Grep", "Glob", "Bash", "Write"], "tools_count": 5, "model": "opus", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "tdd-guide", "description": "Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.", "tools": ["Read", "Write", "Edit", "Bash", "Grep"], "tools_count": 5, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "test-engineer", "description": "QA engineer specialized in test strategy, test writing, and coverage analysis. Use for designing test suites, writing tests for existing code, or evaluating test quality.", "tools": [], "tools_count": 0, "model": "", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "type-design-analyzer", "description": "Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.", "tools": ["Read", "Grep", "Glob"], "tools_count": 3, "model": "sonnet", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "typescript-reviewer", "description": "Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns. Use for all TypeScript and JavaScript code changes. MUST BE USED for TypeScript/JavaScript projects.", "tools": ["Read", "Grep", "Glob", "Bash"], "tools_count": 4, "model": "sonnet", "owner": "bowie", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}, {"name": "web-performance-auditor", "description": "Web performance engineer focused on Core Web Vitals, loading, rendering, and network optimization. Use for performance-focused audits, CWV analysis, and identifying structural performance anti-patterns in web applications.", "tools": [], "tools_count": 0, "model": "", "owner": "janis", "macro_engine": "", "function": "", "cost_tier": "", "last_run_cet": "", "invocation_count": 0, "health": "", "_source": "frontmatter"}];
 
-<!-- NOT A FIT -->
-<section>
-    <div class="section-label">Honest Note</div>
-    <div class="section-title">This isn't for everyone.</div>
-    <p class="section-text">We work with a small number of clients at a time to keep quality high. If you need an enterprise deployment across fifty departments, this isn't the right fit. If you need something built and handed off to your team to manage themselves, also not us.</p>
-    <p class="section-text">We're the right fit if you want an AI system that actually runs, maintained by people who live and breathe this stuff, and you'd rather spend $750/month than forty hours figuring it out yourself.</p>
-</section>
+let sortCol = "name";
+let sortAsc = true;
+let activeOwner = "";
+let searchTerm = "";
 
-<hr class="leopard-divider">
+function tierClass(t) {
+  if (!t) return "tier-empty";
+  const m = t.toLowerCase();
+  if (m.includes("opus")) return "tier-opus";
+  if (m.includes("sonnet")) return "tier-sonnet";
+  if (m.includes("haiku")) return "tier-haiku";
+  return "tier-empty";
+}
 
-<!-- CTA -->
-<div class="contact-section" id="contact">
-    <div class="section-label">Get Started</div>
-    <div class="section-title">Tell us what's eating your week.</div>
-    <p class="section-text">Book a 20-minute call. No pitch deck, no demo. You walk us through your biggest admin headache and we tell you exactly what we can automate and what it would cost. If it's not a fit, we'll say so.</p>
-    <div class="contact-links">
-        <a href="/lets-jam" class="hero-cta">Book a Call &rarr;</a>
-        <a href="mailto:janis@mexzungu.com" class="contact-link">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            janis@mexzungu.com
-        </a>
+function ownerLabel(o) {
+  return o ? o.charAt(0).toUpperCase() + o.slice(1) : "Janis";
+}
+
+function filtered() {
+  return RAW.filter(a => {
+    if (activeOwner && a.owner !== activeOwner) return false;
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      return (a.name + " " + a.description).toLowerCase().includes(q);
+    }
+    return true;
+  });
+}
+
+function sorted(arr) {
+  return [...arr].sort((a, b) => {
+    let av = a[sortCol] !== undefined ? a[sortCol] : "";
+    let bv = b[sortCol] !== undefined ? b[sortCol] : "";
+    if (typeof av === "number") return sortAsc ? av - bv : bv - av;
+    return sortAsc
+      ? String(av).localeCompare(String(bv))
+      : String(bv).localeCompare(String(av));
+  });
+}
+
+function render() {
+  const data = sorted(filtered());
+  const tbody = document.getElementById("table-body");
+  const noRes = document.getElementById("no-results");
+  const cards = document.getElementById("cards");
+  document.getElementById("count-badge").textContent = data.length + " agents";
+
+  if (data.length === 0) {
+    tbody.innerHTML = "";
+    noRes.style.display = "block";
+    cards.innerHTML = "";
+    return;
+  }
+  noRes.style.display = "none";
+
+  tbody.innerHTML = data.map(a => `
+    <tr>
+      <td><div class="agent-name">${a.name}</div></td>
+      <td><span class="owner-chip">${ownerLabel(a.owner)}</span></td>
+      <td style="color:var(--muted);font-size:0.75rem">${a.macro_engine || "-"}</td>
+      <td><span class="badge ${tierClass(a.cost_tier)}">${a.cost_tier || "-"}</span></td>
+      <td style="color:var(--muted);font-size:0.75rem">${a.model || "-"}</td>
+      <td style="color:var(--muted);text-align:center">${a.tools_count !== undefined ? a.tools_count : 0}</td>
+      <td><div class="agent-desc">${a.description}</div></td>
+    </tr>
+  `).join("");
+
+  cards.innerHTML = data.map(a => `
+    <div class="card">
+      <div class="card-name">${a.name}</div>
+      <div class="card-desc">${a.description}</div>
+      <div class="card-meta">
+        <span class="owner-chip">${ownerLabel(a.owner)}</span>
+        <span class="badge ${tierClass(a.cost_tier)}">${a.cost_tier || "-"}</span>
+        ${a.model ? `<span style="color:var(--muted);font-size:0.7rem">${a.model}</span>` : ""}
+        ${a.tools_count ? `<span style="color:var(--muted);font-size:0.7rem">${a.tools_count} tools</span>` : ""}
+      </div>
     </div>
-</div>
+  `).join("");
+}
 
-</main>
+function setupHeaders() {
+  document.querySelectorAll("th[data-col]").forEach(th => {
+    th.addEventListener("click", () => {
+      const col = th.dataset.col;
+      if (sortCol === col) sortAsc = !sortAsc;
+      else { sortCol = col; sortAsc = true; }
+      document.querySelectorAll("th[data-col]").forEach(h => {
+        h.classList.remove("sorted");
+        h.querySelector(".sort-arrow").innerHTML = "&#8595;";
+      });
+      th.classList.add("sorted");
+      th.querySelector(".sort-arrow").innerHTML = sortAsc ? "&#8593;" : "&#8595;";
+      render();
+    });
+  });
+}
 
-<footer>
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 0 2rem;">
-        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
-        <span style="font-size: 0.85rem;">
-            <a href="https://pepecarrillo.co" style="color: var(--gold);">Pepe's Writing</a> &middot;
-            <a href="/privacy/" style="color: var(--gold);">Privacy Policy</a> &middot;
-            <a href="/terms/" style="color: var(--gold);">Terms of Service</a> &middot;
-            <a href="/ai-policy/" style="color: var(--gold);">AI Policy</a>
-        </span>
-    </div>
-</footer>
+function setupOwnerChips() {
+  const owners = [...new Set(RAW.map(a => a.owner || "janis"))].sort();
+  const container = document.getElementById("owner-chips");
+  const all = document.createElement("span");
+  all.className = "chip active";
+  all.textContent = "All";
+  all.addEventListener("click", () => {
+    activeOwner = "";
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    all.classList.add("active");
+    render();
+  });
+  container.appendChild(all);
+  owners.forEach(o => {
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.textContent = o.charAt(0).toUpperCase() + o.slice(1);
+    chip.addEventListener("click", () => {
+      activeOwner = o;
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      render();
+    });
+    container.appendChild(chip);
+  });
+}
 
+document.getElementById("ts-label").textContent = "Built 2026-09-04 20:47 CET";
+document.getElementById("search").addEventListener("input", e => {
+  searchTerm = e.target.value;
+  render();
+});
+
+setupHeaders();
+setupOwnerChips();
+render();
+</script>
 </body>
 </html>
