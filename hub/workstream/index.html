@@ -28,6 +28,17 @@
         .entity-card[open] .entity-card-label { margin-bottom: 0.55rem; }
         .entity-card-def { font-size: 0.72rem; color: #888; line-height: 1.4; }
         .entity-card-done { font-size: 0.7rem; color: #fbbf24; margin-top: 0.4rem; font-weight: 600; }
+        .rubric-card { max-width: 1000px; margin: 1rem auto 0; padding: 0.7rem 1.1rem; background: #0a0a0a; border: 1px solid #1e1e1e; border-radius: 6px; }
+        .rubric-card > summary { list-style: none; cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #888; }
+        .rubric-card > summary::-webkit-details-marker { display: none; }
+        .rubric-card[open] > summary { color: #ccc; margin-bottom: 0.7rem; }
+        .rubric-body { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .rubric-col h4 { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: #E14B87; margin: 0 0 0.4rem 0; }
+        .rubric-col ul { list-style: none; padding: 0; margin: 0; }
+        .rubric-col li { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: #999; margin: 0.2rem 0; }
+        .rp { display: inline-block; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.62rem; font-weight: 700; color: #fff; min-width: 22px; text-align: center; }
+        @media (max-width: 700px) { .rubric-body { grid-template-columns: 1fr; } }
+
         .engines-note { max-width: 1000px; margin: 0.6rem auto 0; padding: 0 1.5rem; font-size: 0.72rem; color: #444; font-family: monospace; }
         .engines-note a { color: #555; text-decoration: none; border-bottom: 1px solid #333; }
         .engines-note a:hover { color: #e0e0e0; }
@@ -133,6 +144,43 @@
         <div class="entity-card-done">Runs indefinitely.</div>
     </details>
 </div>
+
+<details class="rubric-card">
+    <summary>Rating rubric. R relevance. P priority. C cadence.</summary>
+    <div class="rubric-body">
+        <div class="rubric-col">
+            <h4>R. Relevance</h4>
+            <ul>
+                <li><span class="rp" style="background:#c026d3;">R1</span> Top workstream</li>
+                <li><span class="rp" style="background:#a21caf;">R2</span> High</li>
+                <li><span class="rp" style="background:#86198f;">R3</span> Medium</li>
+                <li><span class="rp" style="background:#701a75;">R4</span> Low</li>
+                <li><span class="rp" style="background:#3b0764;">R5</span> Backlog</li>
+            </ul>
+        </div>
+        <div class="rubric-col">
+            <h4>P. Priority</h4>
+            <ul>
+                <li><span class="rp" style="background:#dc2626;">P1</span> Now</li>
+                <li><span class="rp" style="background:#f97316;">P2</span> Next</li>
+                <li><span class="rp" style="background:#eab308;">P3</span> Soon</li>
+                <li><span class="rp" style="background:#3b82f6;">P4</span> Later</li>
+                <li><span class="rp" style="background:#6b7280;">P5</span> Someday</li>
+            </ul>
+        </div>
+        <div class="rubric-col">
+            <h4>C. Cadence</h4>
+            <ul>
+                <li><span class="rp" style="background:#0891b2;">C1</span> Daily</li>
+                <li><span class="rp" style="background:#0e7490;">C2</span> Weekly</li>
+                <li><span class="rp" style="background:#155e75;">C3</span> Monthly</li>
+                <li><span class="rp" style="background:#164e63;">C4</span> Quarterly</li>
+                <li><span class="rp" style="background:#1e293b;">C5</span> Adhoc</li>
+            </ul>
+        </div>
+    </div>
+</details>
+
 <div class="engines-note">Engines are separate. Permanent MGL business functions that serve all clusters. See <a href="/engines/">/engines/</a></div>
 
 <details class="engine-bar-wrap">
