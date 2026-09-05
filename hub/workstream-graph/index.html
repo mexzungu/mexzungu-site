@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Workstream Node Graph | Mexzungu Group</title>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/style.css?v=10">
+  <script src="https://unpkg.com/3d-force-graph@1/dist/3d-force-graph.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0d0d0d; color: #e0e0e0; font-family: inherit; }
+
+    #graph-wrap { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
+    #graph-3d { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    #graph-nav { position: absolute; top: 0; left: 0; right: 0; z-index: 10; pointer-events: all; }
+
+    .page-nav { padding: 0.6rem 1.5rem; border-bottom: 1px solid #1a1a1a; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; background: rgba(13,13,13,0.85); backdrop-filter: blur(6px); }
+    .page-nav a { font-size: 0.73rem; color: #555; text-decoration: none; padding: 0.2rem 0.6rem; border: 1px solid #222; border-radius: 4px; transition: .15s; }
+    .page-nav a:hover { color: #e0e0e0; border-color: #444; }
+    .page-nav .sep { color: #333; font-size: 0.73rem; }
+    .page-nav a.active { color: #E14B87; border-color: #4a2035; }
+
+    #title-block { position: absolute; top: 50px; left: 1.5rem; z-index: 15; pointer-events: none; }
+    .title-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: #E14B87; font-weight: 700; }
+    .title-h1 { font-size: clamp(1.2rem, 2.5vw, 1.8rem); color: #fff; font-weight: 700; margin: 0.2rem 0 0; }
+
+    #controls {
+      position: absolute; bottom: 1.2rem; left: 1.2rem; z-index: 20;
+      display: flex; flex-direction: column; gap: 0.5rem; pointer-events: all;
+    }
+    .ctrl-group { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .ctrl-btn {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.3rem 0.75rem; border-radius: 4px; border: 1px solid #222;
+      background: rgba(13,13,13,0.9); color: #666; cursor: pointer; transition: .15s;
+    }
+    .ctrl-btn:hover { color: #e0e0e0; border-color: #444; }
+    .ctrl-btn.active { color: #E14B87; border-color: #4a2035; background: rgba(15,10,12,0.9); }
+
+    #legend {
+      position: absolute; bottom: 1.2rem; right: 1.2rem; z-index: 20; pointer-events: all;
+      background: rgba(10,10,10,0.92); border: 1px solid #1e1e1e; border-radius: 6px;
+      padding: 0.9rem 1.1rem; min-width: 200px; backdrop-filter: blur(6px);
+    }
+    .legend-title { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.18em; color: #E14B87; margin-bottom: 0.7rem; }
+    .legend-section { margin-bottom: 0.7rem; }
+    .legend-section-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #444; margin-bottom: 0.35rem; }
+    .legend-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.22rem 0; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .legend-text { font-size: 0.68rem; color: #888; }
+    .legend-note { font-size: 0.64rem; color: #555; font-style: italic; margin-top: 0.3rem; line-height: 1.4; }
+
+    .spectrum-bar { height: 8px; border-radius: 4px; margin: 0.35rem 0; background: linear-gradient(to right, #E14B87, #fb923c, #a855f7, #64748b); }
+    .spectrum-labels { display: flex; justify-content: space-between; font-size: 0.58rem; color: #555; }
+
+    @media (max-width: 600px) { #legend { display: none; } #controls { bottom: 0.6rem; left: 0.6rem; } }
+  </style>
+</head>
+<body>
+
+<div id="graph-wrap">
+  <div id="graph-3d"></div>
+
+  <div id="graph-nav">
+    <nav class="page-nav">
+      <a href="/hub/">Hub</a>
+      <span class="sep">/</span>
+      <a href="/hub/workstream/">Workstreams</a>
+      <span class="sep">/</span>
+      <a href="/hub/workstream-graph/" class="active">Node Graph</a>
+    </nav>
+  </div>
+
+  <div id="title-block">
+    <div class="title-label">Ops Taxonomy</div>
+    <div class="title-h1">Workstream Graph</div>
+  </div>
+
+  <div id="controls">
+    <div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:#333;font-weight:700;margin-bottom:0.15rem;">FILTER</div>
+    <div class="ctrl-group">
+      <button class="ctrl-btn active" id="btn-all" onclick="setFilter('all',this)">All</button>
+      <button class="ctrl-btn" id="btn-active" onclick="setFilter('active',this)">Active only</button>
+    </div>
+    <div class="ctrl-group" id="persona-filters"></div>
+    <div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:#333;font-weight:700;margin-top:0.4rem;margin-bottom:0.15rem;">SHOW</div>
+    <div class="ctrl-group">
+      <button class="ctrl-btn active" id="toggle-clusters" onclick="toggleClusters()">Clusters</button>
+      <button class="ctrl-btn active" id="toggle-ownership" onclick="toggleOwnership()">Ownership links</button>
+    </div>
+  </div>
+
+  <div id="legend">
+    <div class="legend-title">Legend</div>
+    <div class="legend-section">
+      <div class="legend-section-label">Node types</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#E14B87;width:14px;height:14px;"></div><div class="legend-text">AI Persona (owns workstreams)</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#3a3a3a;border:2px solid #555;"></div><div class="legend-text">Cluster (workstream group)</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#fb923c;"></div><div class="legend-text">Project</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#a855f7;opacity:0.7;"></div><div class="legend-text">Function (ongoing)</div></div>
+    </div>
+    <div class="legend-section">
+      <div class="legend-section-label">Relevance spectrum</div>
+      <div class="spectrum-bar"></div>
+      <div class="spectrum-labels"><span>R1 core</span><span>R2</span><span>R3</span><span>R4 low</span></div>
+    </div>
+    <div class="legend-section">
+      <div class="legend-section-label">Links</div>
+      <div class="legend-row"><div style="width:20px;height:2px;background:#333;"></div><div class="legend-text">Cluster membership</div></div>
+      <div class="legend-row"><div style="width:20px;height:2px;background:#E14B87;opacity:0.6;"></div><div class="legend-text">Persona owns item</div></div>
+    </div>
+    <div class="legend-note">Drag to rotate. Scroll to zoom.<br>Right-drag to pan. Hover for details.</div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const GRAPH_DATA = {"nodes": [{"id": "persona:pepe", "type": "persona", "label": "pepe", "color": "#f59e0b", "role": "Founder"}, {"id": "persona:bowie", "type": "persona", "label": "bowie", "color": "#3b82f6", "role": "CTO"}, {"id": "persona:freddie", "type": "persona", "label": "freddie", "color": "#ec4899", "role": "CMO"}, {"id": "persona:lars", "type": "persona", "label": "lars", "color": "#14b8a6", "role": "COO"}, {"id": "persona:lemmy", "type": "persona", "label": "lemmy", "color": "#ef4444", "role": "CLO"}, {"id": "persona:janis", "type": "persona", "label": "janis", "color": "#E14B87", "role": "Chief of Staff"}, {"id": "cluster:creative", "type": "cluster", "label": "creative", "count": 6}, {"id": "item:creative:Jordi Website", "type": "item", "label": "Jordi Website", "relevance": "R2", "priority": "P2", "owner": "pepe", "status": "active", "itype": "project", "cluster": "creative", "description": "Website creation and handover project for Jordi."}, {"id": "item:creative:Guinju Ropes Shibari Training", "type": "item", "label": "Guinju Ropes Shibari Training", "relevance": "R3", "priority": "P3", "owner": "freddie", "status": "blocked", "itype": "project", "cluster": "creative", "description": "Deliver Guinju Ropes shibari training."}, {"id": "item:creative:Legal Horror Show Podcast", "type": "item", "label": "Legal Horror Show Podcast", "relevance": "R3", "priority": "P3", "owner": "freddie", "status": "active", "itype": "project", "cluster": "creative", "description": "Launch Legal Horror Show podcast to bring clients into the brand."}, {"id": "item:creative:Misfit Postcards", "type": "item", "label": "Misfit Postcards", "relevance": "R3", "priority": "P3", "owner": "freddie", "status": "active", "itype": "project", "cluster": "creative", "description": "Misfit Postcards. Designed, produced, distributed."}, {"id": "item:creative:Outlaw Memoir", "type": "item", "label": "Outlaw Memoir", "relevance": "R3", "priority": "P3", "owner": "freddie", "status": "active", "itype": "project", "cluster": "creative", "description": "Write Outlaw memoir covering sexual adventures and conquests after divorce."}, {"id": "item:creative:She Built Her Cage", "type": "item", "label": "She Built Her Cage", "relevance": "R3", "priority": "P3", "owner": "freddie", "status": "blocked", "itype": "project", "cluster": "creative", "description": "Complete She Built Her Cage manuscript. Blocked on new editorial pass."}, {"id": "cluster:duara", "type": "cluster", "label": "duara", "count": 9}, {"id": "item:duara:Duara Operating Model", "type": "item", "label": "Duara Operating Model", "relevance": "R1", "priority": "P1", "owner": "pepe", "status": "active", "itype": "project", "cluster": "duara", "description": "Structures Victoria's business model into a legally workable operating framework."}, {"id": "item:duara:Mission Lock", "type": "item", "label": "Mission Lock", "relevance": "R1", "priority": "P5", "owner": "pepe", "status": "closed", "itype": "project", "cluster": "duara", "description": "Embedding Duara's mission statement and educational philosophy into founding legal docs."}, {"id": "item:duara:Dagoretti Closing", "type": "item", "label": "Dagoretti Closing", "relevance": "R2", "priority": "P1", "owner": "pepe", "status": "closed", "itype": "project", "cluster": "duara", "description": "Manages the formal closure of Dagoretti school and clean separation."}, {"id": "item:duara:RUA Stella Complaint and Labour Inspection", "type": "item", "label": "RUA Stella Complaint", "relevance": "R2", "priority": "P1", "owner": "pepe", "status": "active", "itype": "project", "cluster": "duara", "description": "Resolves the Stella employment complaint and Kiambu Labour Inspection audit for Duara."}, {"id": "item:duara:Staff Contracts Revamp", "type": "item", "label": "Staff Contracts Revamp", "relevance": "R2", "priority": "P1", "owner": "pepe", "status": "active", "itype": "project", "cluster": "duara", "description": "Designing and implementing the complete contract suite for Duara teaching and editorial staff."}, {"id": "item:duara:Governance", "type": "item", "label": "Governance", "relevance": "R2", "priority": "P2", "owner": "pepe", "status": "active", "itype": "project", "cluster": "duara", "description": "Provides ongoing corporate governance and compliance support for Duara entities."}, {"id": "item:duara:SE Contracts", "type": "item", "label": "SE Contracts", "relevance": "R2", "priority": "P2", "owner": "pepe", "status": "active", "itype": "project", "cluster": "duara", "description": "Designing the ideal contract set for Social Entrepreneurs."}, {"id": "item:duara:Treebeard Loan", "type": "item", "label": "Treebeard Loan", "relevance": "R3", "priority": "P4", "owner": "pepe", "status": "closed", "itype": "project", "cluster": "duara", "description": "Manages the execution and disbursement of a $50k loan from Treebeard Trust to Duara."}, {"id": "item:duara:Corporate Stuff", "type": "item", "label": "Corporate Stuff", "relevance": "R3", "priority": "none", "owner": "pepe", "status": "active", "itype": "function", "cluster": "duara", "description": "Manages Duara corporate housekeeping, investor obligations, and legal entity records."}, {"id": "cluster:hok", "type": "cluster", "label": "hok", "count": 6}, {"id": "item:hok:Cofounder Negotiations", "type": "item", "label": "Cofounder Negotiations", "relevance": "R1", "priority": "P1", "owner": "pepe", "status": "active", "itype": "project", "cluster": "hok", "description": "Formalize the founding arrangement between Nani and Einat covering equity split."}, {"id": "item:hok:HOK First Website", "type": "item", "label": "HOK First Website", "relevance": "R2", "priority": "P2", "owner": "bowie", "status": "active", "itype": "project", "cluster": "hok", "description": "First public web presence for House of Kleos providing core brand introduction."}, {"id": "item:hok:HOK Members Portal", "type": "item", "label": "HOK Members Portal", "relevance": "R2", "priority": "P2", "owner": "bowie", "status": "active", "itype": "project", "cluster": "hok", "description": "Extends the House of Kleos members portal into a fully functional community."}, {"id": "item:hok:HOK Newsletter", "type": "item", "label": "HOK Newsletter", "relevance": "R2", "priority": "P2", "owner": "bowie", "status": "active", "itype": "project", "cluster": "hok", "description": "Launch and operationalize the HOK newsletter with a locked delivery cadence."}, {"id": "item:hok:Event Management", "type": "item", "label": "Event Management", "relevance": "R2", "priority": "none", "owner": "lars", "status": "active", "itype": "function", "cluster": "hok", "description": "Manages all House of Kleos events from end to end including venue, logistics, and comms."}, {"id": "item:hok:Safe to Feel", "type": "item", "label": "Safe to Feel", "relevance": "R3", "priority": "none", "owner": "lars", "status": "active", "itype": "function", "cluster": "hok", "description": "Manages the Safe to Feel practice and programming under the House of Kleos umbrella."}, {"id": "cluster:janis", "type": "cluster", "label": "janis", "count": 5}, {"id": "item:janis:Credit-Crunch Recovery", "type": "item", "label": "Credit-Crunch Recovery", "relevance": "R1", "priority": "P1", "owner": "janis", "status": "active", "itype": "project", "cluster": "janis", "description": "Fix 5 breakages left by the emergency credit freeze so the machine runs clean."}, {"id": "item:janis:Janis Brain and Infrastructure", "type": "item", "label": "Janis Brain and Infrastructure", "relevance": "R1", "priority": "none", "owner": "bowie", "status": "active", "itype": "function", "cluster": "janis", "description": "Maintain and evolve Janis brain, tools server, crons, and all infrastructure."}, {"id": "item:janis:Miriam App Dev and Maintenance", "type": "item", "label": "Miriam App Dev", "relevance": "R1", "priority": "none", "owner": "bowie", "status": "active", "itype": "function", "cluster": "janis", "description": "Develop and maintain the Miriam web app. Permanent function."}, {"id": "item:janis:Miriam Brain and Infrastructure", "type": "item", "label": "Miriam Brain Infrastructure", "relevance": "R1", "priority": "none", "owner": "bowie", "status": "active", "itype": "function", "cluster": "janis", "description": "Maintains and evolves the Miriam cognitive architecture, hooks, and behavioral guidelines."}, {"id": "item:janis:Janis App Dev and Maintenance", "type": "item", "label": "Janis App Dev", "relevance": "R2", "priority": "none", "owner": "janis", "status": "active", "itype": "function", "cluster": "janis", "description": "Core web application development and maintenance service for the Janis cluster."}, {"id": "cluster:jouissance", "type": "cluster", "label": "jouissance", "count": 1}, {"id": "item:jouissance:Jouissance Workshops", "type": "item", "label": "Jouissance Workshops", "relevance": "R3", "priority": "P3", "owner": "freddie", "status": "active", "itype": "project", "cluster": "jouissance", "description": "Deliver Jouissance workshops. Done when workshop format ships and first cohort runs."}, {"id": "cluster:mgl", "type": "cluster", "label": "mgl", "count": 5}, {"id": "item:mgl:Content Engine", "type": "item", "label": "Content Engine", "relevance": "R1", "priority": "none", "owner": "freddie", "status": "active", "itype": "function", "cluster": "mgl", "description": "Standing function for MGL multi-channel content production and publishing workflow."}, {"id": "item:mgl:Kellen and AI Ninja Onboarding", "type": "item", "label": "Kellen Onboarding", "relevance": "R2", "priority": "P2", "owner": "janis", "status": "active", "itype": "project", "cluster": "mgl", "description": "Onboard Kellen as AI ninja. Done when Kellen self-sufficient on 3 workflows."}, {"id": "item:mgl:mexzungu.com Rebuild", "type": "item", "label": "mexzungu.com Rebuild", "relevance": "R2", "priority": "P2", "owner": "janis", "status": "active", "itype": "project", "cluster": "mgl", "description": "Rebuild mexzungu.com to audit-clean standard. Done when audit scores 4+ across all dims."}, {"id": "item:mgl:BD and Client Acquisition Engine", "type": "item", "label": "BD Acquisition Engine", "relevance": "R2", "priority": "none", "owner": "janis", "status": "active", "itype": "function", "cluster": "mgl", "description": "BD and client acquisition engine. Permanent."}, {"id": "item:mgl:Outlaw Chronicles Newsletter", "type": "item", "label": "Outlaw Chronicles", "relevance": "R2", "priority": "none", "owner": "janis", "status": "active", "itype": "function", "cluster": "mgl", "description": "Outlaw Chronicles newsletter production and distribution. Permanent."}, {"id": "cluster:misfit-lab", "type": "cluster", "label": "misfit-lab", "count": 2}, {"id": "item:misfit-lab:Misfit Coaching Program", "type": "item", "label": "Misfit Coaching Program", "relevance": "R4", "priority": "P4", "owner": "bowie", "status": "active", "itype": "project", "cluster": "misfit-lab", "description": "Complete Misfit Coaching Program details."}, {"id": "item:misfit-lab:Misfit Lab", "type": "item", "label": "Misfit Lab", "relevance": "R4", "priority": "none", "owner": "bowie", "status": "active", "itype": "function", "cluster": "misfit-lab", "description": "Pepe's coaching practice for weird crazy people to thrive in corporate jungles."}, {"id": "cluster:nca", "type": "cluster", "label": "nca", "count": 8}, {"id": "item:nca:GNSL Transition", "type": "item", "label": "GNSL Transition", "relevance": "R1", "priority": "P1", "owner": "lemmy", "status": "active", "itype": "project", "cluster": "nca", "description": "Complete the legal and operational separation of NCA from legacy entity GNSL."}, {"id": "item:nca:NCA Site", "type": "item", "label": "NCA Site", "relevance": "R1", "priority": "P1", "owner": "pepe", "status": "active", "itype": "project", "cluster": "nca", "description": "Securing a permanent venue for Elsewhere and future NCA events through land search."}, {"id": "item:nca:Elsewhere 2026", "type": "item", "label": "Elsewhere 2026", "relevance": "R2", "priority": "P2", "owner": "janis", "status": "active", "itype": "project", "cluster": "nca", "description": "Manages all post-event obligations and vendor settlements for the Elsewhere 2026 festival."}, {"id": "item:nca:Elsewhere 2027", "type": "item", "label": "Elsewhere 2027", "relevance": "R2", "priority": "P2", "owner": "pepe", "status": "active", "itype": "project", "cluster": "nca", "description": "Plan and execute the 2027 Elsewhere gathering with secure site and permits."}, {"id": "item:nca:New Site", "type": "item", "label": "NCA New Site", "relevance": "R2", "priority": "P2", "owner": "lars", "status": "active", "itype": "project", "cluster": "nca", "description": "Standalone public web presence for NCA to establish a professional identity."}, {"id": "item:nca:Data Protection", "type": "item", "label": "Data Protection", "relevance": "R2", "priority": "none", "owner": "janis", "status": "active", "itype": "function", "cluster": "nca", "description": "Manages NCA GDPR posture and breach response protocols across operational systems."}, {"id": "item:nca:Legal Operations", "type": "item", "label": "Legal Operations", "relevance": "R2", "priority": "none", "owner": "pepe", "status": "active", "itype": "function", "cluster": "nca", "description": "Maintains NCA contract stack, IP portfolio, regulatory filings, and volunteer legal docs."}, {"id": "item:nca:Containers", "type": "item", "label": "Containers", "relevance": "R3", "priority": "P4", "owner": "pepe", "status": "closed", "itype": "project", "cluster": "nca", "description": "Manages the NCA-GNSL container licence and physical asset handover for Elsewhere."}, {"id": "cluster:p50", "type": "cluster", "label": "p50", "count": 1}, {"id": "item:p50:pepecarrillo.co Personal Legacy Site", "type": "item", "label": "pepecarrillo.co", "relevance": "R3", "priority": "P3", "owner": "freddie", "status": "active", "itype": "project", "cluster": "p50", "description": "Ship Pepe personal legacy site expressing his full identity beyond Mexzungu."}, {"id": "cluster:panda", "type": "cluster", "label": "panda", "count": 5}, {"id": "item:panda:Cage (Panda-level)", "type": "item", "label": "Cage (Panda-level)", "relevance": "R2", "priority": "P2", "owner": "pepe", "status": "active", "itype": "project", "cluster": "panda", "description": "Editorial pass on Cage material through the lens of the Pepe and Agathe relationship."}, {"id": "item:panda:Panda", "type": "item", "label": "Panda", "relevance": "R2", "priority": "none", "owner": "janis", "status": "active", "itype": "function", "cluster": "panda", "description": "Manages Pepe's ongoing relationship, calibration, and dossier maintenance. Permanent."}, {"id": "item:panda:JVA Joint Venture Ambit", "type": "item", "label": "JVA Joint Venture Ambit", "relevance": "R3", "priority": "P2", "owner": "pepe", "status": "active", "itype": "project", "cluster": "panda", "description": "Formalizes the structural arrangement and next steps for the Joint Venture Ambit."}, {"id": "item:panda:Panda Games", "type": "item", "label": "Panda Games", "relevance": "R3", "priority": "P3", "owner": "pepe", "status": "active", "itype": "project", "cluster": "panda", "description": "Facilitates game and design collaborations between Pepe and Agathe."}, {"id": "item:panda:Panda Origins", "type": "item", "label": "Panda Origins", "relevance": "R3", "priority": "P3", "owner": "pepe", "status": "active", "itype": "project", "cluster": "panda", "description": "Captures the origin story of the relationship as a permanent creative artifact."}, {"id": "cluster:personal", "type": "cluster", "label": "personal", "count": 4}, {"id": "item:personal:Life Admin", "type": "item", "label": "Life Admin", "relevance": "R1", "priority": "none", "owner": "janis", "status": "active", "itype": "function", "cluster": "personal", "description": "Manages personal life logistics including banking, taxes, health, insurance, subscriptions."}, {"id": "item:personal:Home Office", "type": "item", "label": "Home Office", "relevance": "R3", "priority": "P2", "owner": "pepe", "status": "active", "itype": "project", "cluster": "personal", "description": "Home office setup and final financial reconciliation in Barcelona."}, {"id": "item:personal:Personal Elsewhere 2026", "type": "item", "label": "Personal Elsewhere 2026", "relevance": "R3", "priority": "P4", "owner": "pepe", "status": "closed", "itype": "project", "cluster": "personal", "description": "Personal attendance tracking and post-event follow-up for Elsewhere 2026."}, {"id": "item:personal:Travel Management", "type": "item", "label": "Travel Management", "relevance": "R3", "priority": "none", "owner": "janis", "status": "active", "itype": "function", "cluster": "personal", "description": "Coordinates personal travel logistics from itinerary planning and bookings to visas."}, {"id": "cluster:rel", "type": "cluster", "label": "rel", "count": 4}, {"id": "item:rel:Close Friends", "type": "item", "label": "Close Friends", "relevance": "R3", "priority": "none", "owner": "pepe", "status": "active", "itype": "function", "cluster": "rel", "description": "Maintain close friends network. Permanent."}, {"id": "item:rel:Family", "type": "item", "label": "Family", "relevance": "R3", "priority": "none", "owner": "pepe", "status": "active", "itype": "function", "cluster": "rel", "description": "Maintain family relationships. Permanent."}, {"id": "item:rel:Network", "type": "item", "label": "Network", "relevance": "R3", "priority": "none", "owner": "pepe", "status": "active", "itype": "function", "cluster": "rel", "description": "Maintain professional and social network. Permanent."}, {"id": "item:rel:Other Romantic", "type": "item", "label": "Other Romantic", "relevance": "R3", "priority": "none", "owner": "pepe", "status": "active", "itype": "function", "cluster": "rel", "description": "Manage other romantic connections in ENM structure. Permanent."}], "links": [{"source": "item:creative:Jordi Website", "target": "cluster:creative", "type": "cluster"}, {"source": "item:creative:Jordi Website", "target": "persona:pepe", "type": "owner"}, {"source": "item:creative:Guinju Ropes Shibari Training", "target": "cluster:creative", "type": "cluster"}, {"source": "item:creative:Guinju Ropes Shibari Training", "target": "persona:freddie", "type": "owner"}, {"source": "item:creative:Legal Horror Show Podcast", "target": "cluster:creative", "type": "cluster"}, {"source": "item:creative:Legal Horror Show Podcast", "target": "persona:freddie", "type": "owner"}, {"source": "item:creative:Misfit Postcards", "target": "cluster:creative", "type": "cluster"}, {"source": "item:creative:Misfit Postcards", "target": "persona:freddie", "type": "owner"}, {"source": "item:creative:Outlaw Memoir", "target": "cluster:creative", "type": "cluster"}, {"source": "item:creative:Outlaw Memoir", "target": "persona:freddie", "type": "owner"}, {"source": "item:creative:She Built Her Cage", "target": "cluster:creative", "type": "cluster"}, {"source": "item:creative:She Built Her Cage", "target": "persona:freddie", "type": "owner"}, {"source": "item:duara:Duara Operating Model", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:Duara Operating Model", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:Mission Lock", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:Mission Lock", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:Dagoretti Closing", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:Dagoretti Closing", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:RUA Stella Complaint and Labour Inspection", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:RUA Stella Complaint and Labour Inspection", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:Staff Contracts Revamp", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:Staff Contracts Revamp", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:Governance", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:Governance", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:SE Contracts", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:SE Contracts", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:Treebeard Loan", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:Treebeard Loan", "target": "persona:pepe", "type": "owner"}, {"source": "item:duara:Corporate Stuff", "target": "cluster:duara", "type": "cluster"}, {"source": "item:duara:Corporate Stuff", "target": "persona:pepe", "type": "owner"}, {"source": "item:hok:Cofounder Negotiations", "target": "cluster:hok", "type": "cluster"}, {"source": "item:hok:Cofounder Negotiations", "target": "persona:pepe", "type": "owner"}, {"source": "item:hok:HOK First Website", "target": "cluster:hok", "type": "cluster"}, {"source": "item:hok:HOK First Website", "target": "persona:bowie", "type": "owner"}, {"source": "item:hok:HOK Members Portal", "target": "cluster:hok", "type": "cluster"}, {"source": "item:hok:HOK Members Portal", "target": "persona:bowie", "type": "owner"}, {"source": "item:hok:HOK Newsletter", "target": "cluster:hok", "type": "cluster"}, {"source": "item:hok:HOK Newsletter", "target": "persona:bowie", "type": "owner"}, {"source": "item:hok:Event Management", "target": "cluster:hok", "type": "cluster"}, {"source": "item:hok:Event Management", "target": "persona:lars", "type": "owner"}, {"source": "item:hok:Safe to Feel", "target": "cluster:hok", "type": "cluster"}, {"source": "item:hok:Safe to Feel", "target": "persona:lars", "type": "owner"}, {"source": "item:janis:Credit-Crunch Recovery", "target": "cluster:janis", "type": "cluster"}, {"source": "item:janis:Credit-Crunch Recovery", "target": "persona:janis", "type": "owner"}, {"source": "item:janis:Janis Brain and Infrastructure", "target": "cluster:janis", "type": "cluster"}, {"source": "item:janis:Janis Brain and Infrastructure", "target": "persona:bowie", "type": "owner"}, {"source": "item:janis:Miriam App Dev and Maintenance", "target": "cluster:janis", "type": "cluster"}, {"source": "item:janis:Miriam App Dev and Maintenance", "target": "persona:bowie", "type": "owner"}, {"source": "item:janis:Miriam Brain and Infrastructure", "target": "cluster:janis", "type": "cluster"}, {"source": "item:janis:Miriam Brain and Infrastructure", "target": "persona:bowie", "type": "owner"}, {"source": "item:janis:Janis App Dev and Maintenance", "target": "cluster:janis", "type": "cluster"}, {"source": "item:janis:Janis App Dev and Maintenance", "target": "persona:janis", "type": "owner"}, {"source": "item:jouissance:Jouissance Workshops", "target": "cluster:jouissance", "type": "cluster"}, {"source": "item:jouissance:Jouissance Workshops", "target": "persona:freddie", "type": "owner"}, {"source": "item:mgl:Content Engine", "target": "cluster:mgl", "type": "cluster"}, {"source": "item:mgl:Content Engine", "target": "persona:freddie", "type": "owner"}, {"source": "item:mgl:Kellen and AI Ninja Onboarding", "target": "cluster:mgl", "type": "cluster"}, {"source": "item:mgl:Kellen and AI Ninja Onboarding", "target": "persona:janis", "type": "owner"}, {"source": "item:mgl:mexzungu.com Rebuild", "target": "cluster:mgl", "type": "cluster"}, {"source": "item:mgl:mexzungu.com Rebuild", "target": "persona:janis", "type": "owner"}, {"source": "item:mgl:BD and Client Acquisition Engine", "target": "cluster:mgl", "type": "cluster"}, {"source": "item:mgl:BD and Client Acquisition Engine", "target": "persona:janis", "type": "owner"}, {"source": "item:mgl:Outlaw Chronicles Newsletter", "target": "cluster:mgl", "type": "cluster"}, {"source": "item:mgl:Outlaw Chronicles Newsletter", "target": "persona:janis", "type": "owner"}, {"source": "item:misfit-lab:Misfit Coaching Program", "target": "cluster:misfit-lab", "type": "cluster"}, {"source": "item:misfit-lab:Misfit Coaching Program", "target": "persona:bowie", "type": "owner"}, {"source": "item:misfit-lab:Misfit Lab", "target": "cluster:misfit-lab", "type": "cluster"}, {"source": "item:misfit-lab:Misfit Lab", "target": "persona:bowie", "type": "owner"}, {"source": "item:nca:GNSL Transition", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:GNSL Transition", "target": "persona:lemmy", "type": "owner"}, {"source": "item:nca:NCA Site", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:NCA Site", "target": "persona:pepe", "type": "owner"}, {"source": "item:nca:Elsewhere 2026", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:Elsewhere 2026", "target": "persona:janis", "type": "owner"}, {"source": "item:nca:Elsewhere 2027", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:Elsewhere 2027", "target": "persona:pepe", "type": "owner"}, {"source": "item:nca:New Site", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:New Site", "target": "persona:lars", "type": "owner"}, {"source": "item:nca:Data Protection", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:Data Protection", "target": "persona:janis", "type": "owner"}, {"source": "item:nca:Legal Operations", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:Legal Operations", "target": "persona:pepe", "type": "owner"}, {"source": "item:nca:Containers", "target": "cluster:nca", "type": "cluster"}, {"source": "item:nca:Containers", "target": "persona:pepe", "type": "owner"}, {"source": "item:p50:pepecarrillo.co Personal Legacy Site", "target": "cluster:p50", "type": "cluster"}, {"source": "item:p50:pepecarrillo.co Personal Legacy Site", "target": "persona:freddie", "type": "owner"}, {"source": "item:panda:Cage (Panda-level)", "target": "cluster:panda", "type": "cluster"}, {"source": "item:panda:Cage (Panda-level)", "target": "persona:pepe", "type": "owner"}, {"source": "item:panda:Panda", "target": "cluster:panda", "type": "cluster"}, {"source": "item:panda:Panda", "target": "persona:janis", "type": "owner"}, {"source": "item:panda:JVA Joint Venture Ambit", "target": "cluster:panda", "type": "cluster"}, {"source": "item:panda:JVA Joint Venture Ambit", "target": "persona:pepe", "type": "owner"}, {"source": "item:panda:Panda Games", "target": "cluster:panda", "type": "cluster"}, {"source": "item:panda:Panda Games", "target": "persona:pepe", "type": "owner"}, {"source": "item:panda:Panda Origins", "target": "cluster:panda", "type": "cluster"}, {"source": "item:panda:Panda Origins", "target": "persona:pepe", "type": "owner"}, {"source": "item:personal:Life Admin", "target": "cluster:personal", "type": "cluster"}, {"source": "item:personal:Life Admin", "target": "persona:janis", "type": "owner"}, {"source": "item:personal:Home Office", "target": "cluster:personal", "type": "cluster"}, {"source": "item:personal:Home Office", "target": "persona:pepe", "type": "owner"}, {"source": "item:personal:Personal Elsewhere 2026", "target": "cluster:personal", "type": "cluster"}, {"source": "item:personal:Personal Elsewhere 2026", "target": "persona:pepe", "type": "owner"}, {"source": "item:personal:Travel Management", "target": "cluster:personal", "type": "cluster"}, {"source": "item:personal:Travel Management", "target": "persona:janis", "type": "owner"}, {"source": "item:rel:Close Friends", "target": "cluster:rel", "type": "cluster"}, {"source": "item:rel:Close Friends", "target": "persona:pepe", "type": "owner"}, {"source": "item:rel:Family", "target": "cluster:rel", "type": "cluster"}, {"source": "item:rel:Family", "target": "persona:pepe", "type": "owner"}, {"source": "item:rel:Network", "target": "cluster:rel", "type": "cluster"}, {"source": "item:rel:Network", "target": "persona:pepe", "type": "owner"}, {"source": "item:rel:Other Romantic", "target": "cluster:rel", "type": "cluster"}, {"source": "item:rel:Other Romantic", "target": "persona:pepe", "type": "owner"}]};
+
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const RELEVANCE_COLOR = {
+  'R1': '#E14B87',
+  'R2': '#fb923c',
+  'R3': '#a855f7',
+  'R4': '#64748b',
+  'none': '#2d2d2d'
+};
+
+const PERSONA_CONFIG = {
+  'pepe':    { color: '#f59e0b', label: 'Pepe' },
+  'bowie':   { color: '#3b82f6', label: 'Bowie' },
+  'freddie': { color: '#ec4899', label: 'Freddie' },
+  'lars':    { color: '#14b8a6', label: 'Lars' },
+  'lemmy':   { color: '#ef4444', label: 'Lemmy' },
+  'janis':   { color: '#E14B87', label: 'Janis' },
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let currentFilter = 'all';
+let showClusters = true;
+let showOwnership = true;
+let activePersona = null;
+
+// ── FILTER LOGIC ──────────────────────────────────────────────────────────────
+function getVisibleNodes() {
+  return GRAPH_DATA.nodes.filter(n => {
+    if (currentFilter === 'active' && n.type === 'item' && n.status !== 'active') return false;
+    if (!showClusters && n.type === 'cluster') return false;
+    if (activePersona) {
+      if (n.type === 'persona') return n.label === activePersona;
+      if (n.type === 'item') return n.owner === activePersona;
+      if (n.type === 'cluster') {
+        return GRAPH_DATA.nodes.some(item =>
+          item.type === 'item' && item.cluster === n.label && item.owner === activePersona
+        );
+      }
+    }
+    return true;
+  });
+}
+
+function getVisibleLinks(visIds) {
+  return GRAPH_DATA.links.filter(l => {
+    const sid = typeof l.source === 'object' ? l.source.id : l.source;
+    const tid = typeof l.target === 'object' ? l.target.id : l.target;
+    if (!visIds.has(sid) || !visIds.has(tid)) return false;
+    if (!showClusters && l.type === 'cluster') return false;
+    if (!showOwnership && l.type === 'owner') return false;
+    return true;
+  });
+}
+
+function buildGraphData() {
+  const nodes = getVisibleNodes();
+  const visIds = new Set(nodes.map(n => n.id));
+  return { nodes, links: getVisibleLinks(visIds) };
+}
+
+// ── NODE VISUAL HELPERS ───────────────────────────────────────────────────────
+function nodeColor(n) {
+  if (n.type === 'persona') return PERSONA_CONFIG[n.label]?.color || '#888';
+  if (n.type === 'cluster') return '#3a3a3a';
+  if (n.status === 'closed') return '#252525';
+  return RELEVANCE_COLOR[n.relevance] || '#2d2d2d';
+}
+
+function nodeVal(n) {
+  if (n.type === 'persona') return 60;
+  if (n.type === 'cluster') return 18;
+  const rMap = { R1: 8, R2: 6, R3: 4, R4: 3 };
+  const base = rMap[n.relevance] || 3;
+  if (n.status === 'closed') return Math.max(1, base * 0.4);
+  if (n.itype === 'function') return base * 0.8;
+  return base;
+}
+
+function nodeLabel(n) {
+  if (n.type === 'persona') {
+    const pc = PERSONA_CONFIG[n.label] || {};
+    return `<div style="background:rgba(10,10,10,0.96);border:1px solid ${pc.color || '#444'}55;border-radius:6px;padding:0.55rem 0.85rem;font-family:system-ui,sans-serif;">
+      <div style="font-weight:700;color:${pc.color || '#fff'};font-size:14px;">${n.label.charAt(0).toUpperCase() + n.label.slice(1)}</div>
+      <div style="color:#666;font-size:11px;margin-top:2px;">${n.role || 'Persona'}</div>
+    </div>`;
+  }
+  if (n.type === 'cluster') {
+    return `<div style="background:rgba(10,10,10,0.96);border:1px solid #333;border-radius:6px;padding:0.55rem 0.85rem;font-family:system-ui,sans-serif;">
+      <div style="font-weight:700;color:#e0e0e0;font-size:13px;">${n.label}</div>
+      <div style="color:#555;font-size:11px;margin-top:2px;">Cluster &middot; ${n.count || '?'} items</div>
+    </div>`;
+  }
+  if (n.type === 'item') {
+    const rColor = RELEVANCE_COLOR[n.relevance] || '#555';
+    const ownerColor = PERSONA_CONFIG[n.owner]?.color || '#666';
+    const statusBadge = n.status === 'closed' ? ' <span style="color:#555;">(closed)</span>'
+      : n.status === 'blocked' ? ' <span style="color:#fb923c;">(blocked)</span>' : '';
+    return `<div style="background:rgba(10,10,10,0.96);border:1px solid #2a2a2a;border-radius:6px;padding:0.6rem 0.9rem;max-width:260px;font-family:system-ui,sans-serif;">
+      <div style="font-weight:700;color:#e0e0e0;font-size:13px;margin-bottom:3px;">${n.label}${statusBadge}</div>
+      <div style="color:${rColor};font-size:11px;">${n.relevance || '?'} &middot; ${n.priority || '?'}</div>
+      <div style="color:#666;font-size:10px;margin-top:2px;">${n.itype} &middot; cluster: ${n.cluster} &middot; owner: <span style="color:${ownerColor}">${n.owner}</span></div>
+      ${n.description ? `<div style="color:#888;font-size:11px;margin-top:5px;line-height:1.45;font-style:italic;">${n.description.length > 110 ? n.description.slice(0, 110) + '...' : n.description}</div>` : ''}
+    </div>`;
+  }
+  return n.label || '';
+}
+
+function linkColor(l) {
+  if (l.type === 'owner') {
+    const tid = typeof l.target === 'object' ? l.target.id : l.target;
+    const pid = tid.replace('persona:', '');
+    return PERSONA_CONFIG[pid]?.color || '#444';
+  }
+  return '#252525';
+}
+
+// ── GRAPH INIT ────────────────────────────────────────────────────────────────
+const Graph = ForceGraph3D()(document.getElementById('graph-3d'))
+  .backgroundColor('#0d0d0d')
+  .width(window.innerWidth)
+  .height(window.innerHeight)
+  .nodeVal(nodeVal)
+  .nodeColor(nodeColor)
+  .nodeLabel(nodeLabel)
+  .nodeResolution(12)
+  .nodeOpacity(0.9)
+  .linkColor(linkColor)
+  .linkWidth(l => l.type === 'owner' ? 1.2 : 0.4)
+  .linkOpacity(l => l.type === 'owner' ? 0.55 : 0.3)
+  .linkDirectionalParticles(0)
+  .d3AlphaDecay(0.018)
+  .d3VelocityDecay(0.35)
+  .graphData(buildGraphData());
+
+// ── RESIZE ────────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  Graph.width(window.innerWidth).height(window.innerHeight);
+});
+
+// ── FILTER UPDATE ─────────────────────────────────────────────────────────────
+function update() {
+  Graph.graphData(buildGraphData());
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('#btn-all, #btn-active').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  update();
+}
+
+function toggleClusters() {
+  showClusters = !showClusters;
+  document.getElementById('toggle-clusters').classList.toggle('active', showClusters);
+  update();
+}
+
+function toggleOwnership() {
+  showOwnership = !showOwnership;
+  document.getElementById('toggle-ownership').classList.toggle('active', showOwnership);
+  update();
+}
+
+// ── PERSONA FILTER BUTTONS ────────────────────────────────────────────────────
+const pFilters = document.getElementById('persona-filters');
+Object.entries(PERSONA_CONFIG).forEach(([pid, pc]) => {
+  const btn = document.createElement('button');
+  btn.className = 'ctrl-btn';
+  btn.textContent = pc.label;
+  btn.style.borderColor = pc.color + '44';
+  btn.onclick = () => {
+    if (activePersona === pid) {
+      activePersona = null;
+      btn.classList.remove('active');
+      btn.style.color = '';
+    } else {
+      activePersona = pid;
+      document.querySelectorAll('#persona-filters .ctrl-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.color = '';
+      });
+      btn.classList.add('active');
+      btn.style.color = pc.color;
+    }
+    update();
+  };
+  pFilters.appendChild(btn);
+});
+</script>
+</body>
+</html>
