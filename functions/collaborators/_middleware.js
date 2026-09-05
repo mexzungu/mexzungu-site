@@ -13,6 +13,8 @@ export async function onRequest(context) {
   if (
     path === '/collaborators/locked' ||
     path.startsWith('/collaborators/locked/') ||
+    path === '/collaborators/enter' ||
+    path.startsWith('/collaborators/enter/') ||
     path === '/collaborators/referral-agreement' ||
     path.startsWith('/collaborators/referral-agreement/')
   ) {
@@ -22,12 +24,12 @@ export async function onRequest(context) {
   // Parse partner slug: /collaborators/<slug>/...
   const match = path.match(/^\/collaborators\/([^/]+)/);
   if (!match) return next();
-  const slug = match[1];
+  const slug = match[1].toLowerCase();
 
   const token = _getCookie(request, 'mgl_collab');
   if (!token || !(await _verifyJWT(token, env.COLLAB_TOKEN_SECRET, slug))) {
     return Response.redirect(
-      `${url.origin}/collaborators/locked?requested=${encodeURIComponent(slug)}`,
+      `${url.origin}/collaborators/enter/?partner=${encodeURIComponent(slug)}`,
       302
     );
   }

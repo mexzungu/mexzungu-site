@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Faith · Collaborator Hub · Mexzungu Group</title>
+  <meta name="description" content="Faith Gathoni's Mexzungu Group Collaborator Hub. Onboarding, referral mechanics, live chat with Janis.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0f0f0f;--bg-2:#141414;--bg-3:#1a1a1a;
+      --pink:#E14B87;--pink-dark:#c73d75;--pink-dim:rgba(225,75,135,.14);
+      --white:#fafafa;--grey:#8a8a8a;--grey-dim:#2a2a2a;--grey-line:#1e1e1e;
+      --navy:#1a1a2e;--success:#2d9e6b;
+      --heading:'RocknRoll One','Space Grotesk',sans-serif;
+      --sans:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+    }
+    html,body{background:var(--bg);color:var(--white);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6;scroll-behavior:smooth}
+    a{color:var(--pink);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem)}
+    .eyebrow{color:var(--pink);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;margin-bottom:.9rem}
+    h2.section-h{font-family:var(--heading);font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.1;margin-bottom:1rem;letter-spacing:-.01em}
+    h2.section-h .pink{color:var(--pink)}
+    p.section-sub{color:#a5a5a5;font-size:1.02rem;max-width:720px;line-height:1.7;margin-bottom:2.5rem}
+    header.site{position:sticky;top:0;z-index:80;background:rgba(15,15,15,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--grey-line);padding:.85rem 0}
+    header.site .row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    header.site .logo{display:flex;align-items:center;gap:.6rem;color:var(--white);text-decoration:none}
+    header.site .logo img{height:26px}
+    header.site .logo span{font-family:var(--heading);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+    header.site .actions{display:flex;gap:.6rem;align-items:center}
+    header.site .chip{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.2);padding:.5rem 1rem;border-radius:6px;font-size:.78rem;font-weight:600;text-decoration:none;letter-spacing:.02em}
+    header.site .chip.status{color:var(--pink);border-color:rgba(225,75,135,.4)}
+    header.site .chip.status:hover{background:rgba(225,75,135,.08);text-decoration:none}
+    header.site .cta{background:var(--pink);color:#fff;padding:.55rem 1.1rem;border-radius:6px;font-size:.82rem;font-weight:600;text-decoration:none;letter-spacing:.02em;border:none;cursor:pointer;font-family:var(--sans)}
+    header.site .cta:hover{background:var(--pink-dark)}
+    section.hero{padding:5rem 0 4rem;border-bottom:1px solid var(--grey-line);position:relative;overflow:hidden}
+    section.hero .halo{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(225,75,135,.18),transparent 62%);top:-160px;right:-160px;pointer-events:none;z-index:0}
+    section.hero .content{position:relative;z-index:1}
+    section.hero .greet{font-size:.82rem;color:var(--grey);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem;font-weight:600}
+    section.hero h1{font-family:var(--heading);font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.05;letter-spacing:-.02em;margin-bottom:1.4rem}
+    section.hero h1 .pink{color:var(--pink)}
+    section.hero p.lede{font-size:clamp(1rem,1.55vw,1.18rem);color:#c8c8c8;max-width:760px;line-height:1.65;margin-bottom:2rem}
+    section.hero .hero-ctas{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
+    .btn-primary{background:var(--pink);color:#fff;padding:.95rem 1.75rem;border-radius:8px;font-weight:600;font-size:.95rem;text-decoration:none;transition:.2s;border:none;cursor:pointer;font-family:var(--sans);display:inline-flex;align-items:center;gap:.55rem}
+    .btn-primary:hover{background:var(--pink-dark);transform:translateY(-1px);text-decoration:none}
+    .btn-ghost{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.3);padding:.95rem 1.75rem;border-radius:8px;font-weight:600;font-size:.95rem;text-decoration:none;transition:.2s;display:inline-flex;align-items:center;gap:.55rem;cursor:pointer;font-family:var(--sans)}
+    .btn-ghost:hover{border-color:var(--pink);color:var(--pink);text-decoration:none}
+    .icon-mini{width:16px;height:16px;flex-shrink:0}
+    .progress-nav{position:fixed;left:1.5rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:1.1rem}
+    .progress-nav .dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;transition:.25s;padding:0;position:relative}
+    .progress-nav .dot::after{content:attr(data-label);position:absolute;left:22px;top:50%;transform:translateY(-50%);font-size:.68rem;color:var(--grey);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:.25s}
+    .progress-nav .dot:hover::after,.progress-nav .dot.active::after{opacity:1}
+    .progress-nav .dot.active{background:var(--pink);box-shadow:0 0 12px rgba(225,75,135,.5)}
+    @media(max-width:900px){.progress-nav{display:none}}
+    section.chapter{padding:4.5rem 0;border-bottom:1px solid var(--grey-line);scroll-margin-top:80px}
+    .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;margin-top:1rem}
+    @media(max-width:820px){.spec-grid{grid-template-columns:1fr}}
+    .spec{background:linear-gradient(160deg,#1a1a2e,#0d0d0d);border:1px solid var(--grey-line);border-radius:14px;padding:2.25rem 2rem;position:relative;overflow:hidden;transition:.25s}
+    .spec:hover{border-color:rgba(225,75,135,.35);transform:translateY(-2px)}
+    .spec .spec-num{position:absolute;top:1.25rem;right:1.5rem;font-family:var(--heading);color:rgba(225,75,135,.22);font-size:4rem;line-height:1;letter-spacing:-.02em}
+    .spec h3{font-family:var(--heading);font-size:1.55rem;color:var(--white);margin-bottom:.8rem;line-height:1.15}
+    .spec h3 .pink{color:var(--pink)}
+    .spec p.spec-lede{color:#c0c0c0;font-size:.98rem;line-height:1.7;margin-bottom:1.35rem}
+    .spec ul{list-style:none;padding:0;margin:0}
+    .spec li{font-size:.88rem;color:#b8b8b8;padding:.5rem 0;padding-left:1.4rem;position:relative;line-height:1.55;border-top:1px solid rgba(255,255,255,.06)}
+    .spec li:first-child{border-top:none}
+    .spec li::before{content:"";position:absolute;left:0;top:.85rem;width:6px;height:6px;background:var(--pink);border-radius:50%}
+    .spec .spec-fee{margin-top:1.5rem;padding-top:1.1rem;border-top:1px solid rgba(255,255,255,.08);font-size:.82rem;color:var(--grey);line-height:1.6}
+    .spec .spec-fee strong{color:var(--pink);font-family:var(--heading)}
+    .persona-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:1rem}
+    .rp-card{background:var(--bg-2);border:1px solid var(--grey-line);border-radius:12px;padding:1.6rem 1.5rem;transition:.2s;display:flex;flex-direction:column;gap:.7rem}
+    .rp-card:hover{border-color:var(--pink);transform:translateY(-2px)}
+    .rp-icon{width:44px;height:44px;background:var(--pink-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--pink);font-family:var(--heading);font-size:1rem;font-weight:700}
+    .rp-card h4{font-family:var(--heading);font-size:1.02rem;color:var(--white);line-height:1.3}
+    .rp-card p{font-size:.86rem;color:#b0b0b0;line-height:1.55}
+    .rp-card .rp-tell{margin-top:auto;padding-top:.9rem;border-top:1px solid var(--grey-line);font-size:.78rem;color:var(--grey);line-height:1.5}
+    .rp-card .rp-tell strong{color:var(--pink);text-transform:uppercase;letter-spacing:.1em;font-size:.68rem;display:block;margin-bottom:.35rem}
+    .skip-block{margin-top:2.5rem;background:rgba(255,255,255,.02);border:1px dashed var(--grey-dim);border-radius:10px;padding:1.4rem 1.6rem}
+    .skip-block h5{font-family:var(--heading);font-size:.78rem;color:var(--grey);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.7rem}
+    .skip-block p{font-size:.9rem;color:#a0a0a0;line-height:1.65}
+    .machine-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-top:1rem;align-items:stretch}
+    @media(max-width:900px){.machine-grid{grid-template-columns:1fr}}
+    .graph-frame{background:var(--bg-2);border:1px solid var(--grey-line);border-radius:12px;overflow:hidden;height:min(56vh,500px);position:relative}
+    .graph-frame iframe{width:100%;height:100%;border:0;display:block;background:#080a14}
+    .machine-side{display:flex;flex-direction:column;gap:1rem}
+    .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+    .stat{background:var(--bg-2);border:1px solid var(--grey-line);border-radius:10px;padding:1.2rem 1rem;text-align:center}
+    .stat .n{font-family:var(--heading);font-size:1.9rem;color:var(--pink);line-height:1;font-weight:800}
+    .stat .l{margin-top:.4rem;font-size:.75rem;color:#b0b0b0;letter-spacing:.02em}
+    .janis-card{background:linear-gradient(135deg,#1a1a2e,#0d0d0d);border:1px solid var(--grey-line);border-radius:12px;padding:1.5rem 1.5rem;flex:1}
+    .janis-card h4{font-family:var(--heading);color:var(--pink);font-size:.95rem;margin-bottom:.5rem}
+    .janis-card p{font-size:.88rem;color:#c0c0c0;line-height:1.6}
+    .graph-cap{margin-top:.8rem;font-size:.8rem;color:var(--grey);text-align:center}
+    .go-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;margin-top:1rem}
+    @media(max-width:820px){.go-grid{grid-template-columns:1fr}}
+    .go-card{background:var(--bg-2);border:1px solid var(--grey-line);border-radius:14px;padding:2rem;transition:.25s;display:flex;flex-direction:column;gap:1rem}
+    .go-card:hover{border-color:var(--pink);transform:translateY(-2px)}
+    .go-card .go-eyebrow{color:var(--pink);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+    .go-card h3{font-family:var(--heading);font-size:1.4rem;color:var(--white);line-height:1.15}
+    .go-card p{font-size:.9rem;color:#b0b0b0;line-height:1.6}
+    .go-card .go-btn{margin-top:auto;background:var(--pink);color:#fff;padding:.75rem 1.25rem;border-radius:8px;font-weight:600;font-size:.88rem;text-decoration:none;text-align:center;display:inline-block;transition:.2s}
+    .go-card .go-btn:hover{background:var(--pink-dark);text-decoration:none}
+    .go-card .go-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.25);color:var(--white)}
+    .go-card .go-btn.ghost:hover{border-color:var(--pink);color:var(--pink)}
+    .lab-teaser{margin-top:2.5rem;background:linear-gradient(135deg,rgba(225,75,135,.08),rgba(225,75,135,.02));border:1px solid rgba(225,75,135,.2);border-radius:12px;padding:1.75rem 2rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem}
+    .lab-teaser .lab-text h4{font-family:var(--heading);color:var(--white);font-size:1.05rem;margin-bottom:.35rem}
+    .lab-teaser .lab-text p{font-size:.85rem;color:#a0a0a0}
+    .lab-teaser .lab-btn{background:transparent;border:1px solid var(--pink);color:var(--pink);padding:.6rem 1.25rem;border-radius:8px;font-weight:600;font-size:.82rem;text-decoration:none;cursor:pointer;font-family:var(--sans);transition:.2s;white-space:nowrap}
+    .lab-teaser .lab-btn:hover{background:var(--pink);color:#fff}
+    .track-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1rem}
+    .track-stat{background:var(--bg-2);border:1px solid var(--grey-line);border-radius:12px;padding:1.4rem 1.25rem}
+    .track-stat .n{font-family:var(--heading);color:var(--pink);font-size:2rem;line-height:1;font-weight:800}
+    .track-stat .l{margin-top:.5rem;font-size:.78rem;color:#b0b0b0;letter-spacing:.02em}
+    .track-table{margin-top:2rem;background:var(--bg-2);border:1px solid var(--grey-line);border-radius:12px;overflow:hidden}
+    .track-table .th{display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1.3fr 1.1fr;gap:1rem;padding:1rem 1.25rem;background:var(--bg-3);font-size:.72rem;color:var(--grey);letter-spacing:.14em;text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--grey-line)}
+    .track-table .row{display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1.3fr 1.1fr;gap:1rem;padding:1rem 1.25rem;font-size:.88rem;color:#c0c0c0;border-bottom:1px solid var(--grey-line)}
+    .track-table .row:last-child{border-bottom:none}
+    .track-table .empty{padding:3rem 1.25rem;text-align:center;font-size:.9rem;color:var(--grey);line-height:1.7}
+    .track-table .empty .empty-h{font-family:var(--heading);color:var(--white);font-size:1rem;margin-bottom:.4rem}
+    .track-note{margin-top:1.25rem;font-size:.78rem;color:var(--grey);line-height:1.6}
+    @media(max-width:820px){
+      .track-table .th{display:none}
+      .track-table .row{grid-template-columns:1fr;gap:.4rem}
+    }
+    .sticky-intro{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:70;background:var(--pink);color:#fff;padding:.9rem 1.75rem;border-radius:100px;font-weight:600;font-size:.9rem;text-decoration:none;box-shadow:0 6px 24px rgba(225,75,135,.45);transition:.2s;display:inline-flex;align-items:center;gap:.55rem}
+    .sticky-intro:hover{background:var(--pink-dark);transform:translateX(-50%) translateY(-2px);text-decoration:none;box-shadow:0 8px 30px rgba(225,75,135,.55)}
+    @media(max-width:640px){.sticky-intro{bottom:1rem;padding:.75rem 1.4rem;font-size:.82rem}}
+    footer.hub-footer{padding:3rem 0 5rem;background:var(--bg-2)}
+    .hub-footer .foot-row{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:center}
+    .hub-footer .foot-meta{font-size:.82rem;color:var(--grey);line-height:1.7}
+    .hub-footer .foot-meta strong{color:var(--white);font-family:var(--heading)}
+    .hub-footer .foot-meta a{color:var(--pink)}
+    .chat-toggle{position:fixed;right:1.5rem;bottom:5.5rem;z-index:75;background:var(--navy);color:#fff;border:2px solid var(--pink);width:56px;height:56px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5);transition:.2s}
+    .chat-toggle:hover{transform:scale(1.08);box-shadow:0 6px 26px rgba(225,75,135,.5)}
+    .chat-toggle svg{width:26px;height:26px}
+    @media(max-width:640px){.chat-toggle{right:1rem;bottom:4.5rem;width:52px;height:52px}}
+    .chat-panel{position:fixed;right:1.5rem;bottom:6.5rem;z-index:76;width:min(400px,calc(100vw - 3rem));height:min(560px,calc(100vh - 8rem));background:var(--bg-2);border:1px solid var(--grey-line);border-radius:14px;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);overflow:hidden}
+    .chat-panel.visible{display:flex}
+    @media(max-width:640px){.chat-panel{right:1rem;left:1rem;bottom:5.5rem;width:auto;height:min(70vh,520px)}}
+    .chat-head{background:linear-gradient(135deg,var(--navy),#0d0d0d);padding:1rem 1.25rem;border-bottom:1px solid var(--grey-line);display:flex;align-items:center;gap:.75rem}
+    .chat-head .avatar{width:36px;height:36px;border-radius:50%;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-weight:800;font-size:.9rem}
+    .chat-head .who h4{font-family:var(--heading);font-size:.92rem;color:var(--white);line-height:1.1}
+    .chat-head .who p{font-size:.72rem;color:var(--grey);margin-top:.15rem}
+    .chat-head .close{margin-left:auto;background:transparent;border:none;color:var(--grey);cursor:pointer;font-size:1.4rem;line-height:1;padding:.2rem .5rem}
+    .chat-head .close:hover{color:var(--white)}
+    .chat-body{flex:1;overflow-y:auto;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.7rem;scrollbar-width:thin;scrollbar-color:var(--grey-dim) transparent}
+    .chat-body::-webkit-scrollbar{width:6px}
+    .chat-body::-webkit-scrollbar-thumb{background:var(--grey-dim);border-radius:3px}
+    .msg{max-width:85%;padding:.7rem .95rem;border-radius:12px;font-size:.9rem;line-height:1.5;word-wrap:break-word;white-space:pre-wrap}
+    .msg.janis{background:var(--bg-3);color:#e5e5e5;align-self:flex-start;border-bottom-left-radius:4px}
+    .msg.user{background:var(--pink);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+    .msg.error{background:rgba(225,75,135,.12);color:#f0a0b8;align-self:flex-start;border:1px solid rgba(225,75,135,.3);font-size:.82rem}
+    .msg.typing{background:var(--bg-3);color:var(--grey);align-self:flex-start;font-style:italic;font-size:.82rem;padding:.5rem .9rem}
+    .msg.typing::after{content:"";display:inline-block;width:8px;animation:dots 1.2s infinite steps(4);vertical-align:baseline}
+    @keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+    .chat-foot{padding:.75rem;border-top:1px solid var(--grey-line);background:var(--bg-2);display:flex;gap:.5rem}
+    .chat-foot textarea{flex:1;background:var(--bg);color:var(--white);border:1px solid var(--grey-dim);border-radius:8px;padding:.65rem .8rem;font-family:var(--sans);font-size:.88rem;resize:none;min-height:40px;max-height:120px;line-height:1.4}
+    .chat-foot textarea:focus{outline:none;border-color:var(--pink)}
+    .chat-foot button{background:var(--pink);color:#fff;border:none;border-radius:8px;padding:0 1rem;font-weight:600;font-size:.85rem;cursor:pointer;font-family:var(--sans);transition:.15s}
+    .chat-foot button:hover:not(:disabled){background:var(--pink-dark)}
+    .chat-foot button:disabled{background:var(--grey-dim);color:var(--grey);cursor:not-allowed}
+  </style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap row">
+    <a class="logo" href="/">
+      <img src="/logo-pink.png" alt="Mexzungu" onerror="this.style.display='none'">
+      <span>Mexzungu Group</span>
+    </a>
+    <div class="actions">
+      <a class="chip status" href="/collaborators/referral-agreement/" title="Referral Agreement is ready to sign">Ready to sign · Open agreement</a>
+      <button class="cta" onclick="openChat()">Chat with Janis</button>
+    </div>
+  </div>
+</header>
+
+<nav class="progress-nav" aria-label="Section navigation">
+  <button class="dot active" data-label="Welcome" data-target="hero" onclick="jumpTo('hero')"></button>
+  <button class="dot" data-label="01 · What we do" data-target="s-what" onclick="jumpTo('s-what')"></button>
+  <button class="dot" data-label="02 · Who we do it for" data-target="s-who" onclick="jumpTo('s-who')"></button>
+  <button class="dot" data-label="03 · How we do it" data-target="s-how" onclick="jumpTo('s-how')"></button>
+  <button class="dot" data-label="04 · Let's go" data-target="s-go" onclick="jumpTo('s-go')"></button>
+  <button class="dot" data-label="05 · Your referrals" data-target="s-track" onclick="jumpTo('s-track')"></button>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="halo"></div>
+  <div class="wrap content">
+    <div class="greet">Collaborator Hub · Faith Gathoni</div>
+    <h1>Hello <span class="pink">Faith</span>. Welcome to your hub.</h1>
+    <p class="lede">You're now inside the Mexzungu referral network. This page is yours. It shows you what we do, who to send us, how the machine works behind the scenes, and everything you need to make the first intro. Janis is always one click away if you want to talk.</p>
+  </div>
+</section>
+
+<section class="chapter" id="s-what">
+  <div class="wrap">
+    <div class="eyebrow">01 · What we do</div>
+    <h2 class="section-h">Two lanes we <span class="pink">own</span>.</h2>
+    <p class="section-sub">These are the moments you should think of us. When someone in your network hits one of these two situations, that's the intro. Everything else is optional colour.</p>
+    <div class="spec-grid">
+      <div class="spec">
+        <div class="spec-num">01</div>
+        <h3><span class="pink">Complex problem</span> solving.</h3>
+        <p class="spec-lede">Cross-border deals stalled on legal. Governance restructures. Cap table cleanup before a raise. IP frameworks for founders who never got round to it. Whatever the last firm called "too complex," we take.</p>
+        <ul>
+          <li>Structure memos that turn a founder into an institutional counterparty</li>
+          <li>Capital architecture and instrument selection (SAFE, priced, convertible, revenue-based)</li>
+          <li>Cap table cleanup, secondary rounds, founder equity re-alignment</li>
+          <li>Cross-border entity design (EU, Africa, LatAm, offshore)</li>
+          <li>Governance for impact businesses (purpose trusts, cooperative structures, mission locks)</li>
+          <li>IP frameworks and founder assignment agreements</li>
+        </ul>
+        <div class="spec-fee"><strong>Venture Architecture bundle.</strong> €7,500 flat. Five deliverables. Billed on delivery. No upfront cash. Convertible to equity up to 40% at client election.</div>
+      </div>
+      <div class="spec">
+        <div class="spec-num">02</div>
+        <h3><span class="pink">Closing</span> deals.</h3>
+        <p class="spec-lede">The transaction lane. Fundraising rounds, debt facilities, secondaries, M&amp;A, cross-border capital. We run point on the closing, coordinate local counsel where needed, and land the money. Fee is a slice of what actually clears.</p>
+        <ul>
+          <li>Equity rounds. Priced or convertible. Any stage.</li>
+          <li>Debt facilities. Venture debt, structured debt, DFI capital.</li>
+          <li>Secondary sales and founder liquidity events</li>
+          <li>M&amp;A on the sell side or the buy side (small to mid-cap)</li>
+          <li>Cross-border structuring for capital moving between EU, Africa, LatAm, GCC</li>
+          <li>SPV and fund structures for co-investment groups</li>
+        </ul>
+        <div class="spec-fee"><strong>Success fee only.</strong> 2% of equity closed. 1% of debt closed. Payable 14 days after funds clear. Nothing until money lands.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="s-who">
+  <div class="wrap">
+    <div class="eyebrow">02 · Who we do it for</div>
+    <h2 class="section-h">Four <span class="pink">people</span> to look for.</h2>
+    <p class="section-sub">Not a taxonomy. Just four concrete profiles you'll recognise in your network. If someone fits one, that's your intro. If it feels close, send it anyway and we qualify from there.</p>
+    <div class="persona-grid">
+      <div class="rp-card">
+        <div class="rp-icon">F1</div>
+        <h4>Founder · The Freshly-Funded Founder</h4>
+        <p>Just closed a round. New board. Cap table is a mess and the shareholders agreement is a template someone downloaded. Governance is now their biggest problem and they don't know it yet.</p>
+        <div class="rp-tell"><strong>You'll spot them because</strong>they're posting about "we just raised" and quietly panicking about board mechanics.</div>
+      </div>
+      <div class="rp-card">
+        <div class="rp-icon">F2</div>
+        <h4>Founder · The Impact Builder</h4>
+        <p>Building something mission-locked. Cooperative structure, purpose trust, foundation vehicle. Wants governance that matches the values, not standard VC boilerplate. Traditional counsel doesn't get it.</p>
+        <div class="rp-tell"><strong>You'll spot them because</strong>they use words like "purpose," "community," and "stewardship" the same way other founders use "growth."</div>
+      </div>
+      <div class="rp-card">
+        <div class="rp-icon">I1</div>
+        <h4>Investor · The Fund Placing Its First Bet in a New Geography</h4>
+        <p>Venture fund, family office, or DFI moving into Africa, LatAm, or a GCC market for the first time. Has capital and appetite. Needs local counsel that talks to international counsel, and someone who can hold both sides of the table.</p>
+        <div class="rp-tell"><strong>You'll spot them because</strong>they're asking around for "someone who knows both worlds" and no one has a name.</div>
+      </div>
+      <div class="rp-card">
+        <div class="rp-icon">I2</div>
+        <h4>Investor · The Angel Syndicate Structuring an SPV</h4>
+        <p>Five to fifteen angels pooling into a single deal. Needs the vehicle set up, offering docs drafted, cap table on the target cleaned up, and the closing run. Standard for one person, hairy for a group.</p>
+        <div class="rp-tell"><strong>You'll spot them because</strong>a lead angel is WhatsApping around trying to organise everyone, and someone said "we need a lawyer."</div>
+      </div>
+    </div>
+    <div class="skip-block">
+      <h5>Please skip</h5>
+      <p>Big traditional banks (long process, low return). First-time founders with paper-only ideas and no funding (send them once they raise). Pure litigation. Criminal, family, immigration, employment tribunal. Domestic-only work with no international angle. Anyone whose main filter is the cheapest hourly rate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="s-how">
+  <div class="wrap">
+    <div class="eyebrow">03 · How we do it</div>
+    <h2 class="section-h">The <span class="pink">machine</span> behind every referral.</h2>
+    <p class="section-sub">Your intro doesn't land in an inbox. It lands in a system. Janis (AI Chief of Staff) reads it, routes it, drafts the reply, and keeps the whole thing moving. Twenty-nine specialist personas sit behind her. Here's what that looks like, live.</p>
+    <div class="machine-grid">
+      <div>
+        <div class="graph-frame">
+          <iframe src="/network" title="Mexzungu Group AI Network" loading="lazy"></iframe>
+        </div>
+        <p class="graph-cap">Live network. Drag, zoom, click any node. <a href="/network" target="_blank" rel="noopener">Full screen</a>.</p>
+      </div>
+      <div class="machine-side">
+        <div class="janis-card">
+          <h4>Janis. AI Chief of Staff.</h4>
+          <p>Reads every inbound across four inboxes and four messaging channels. Drafts every reply in Pepe's voice. Tracks pipeline. Chases invoices. Runs 89 internal tools. Never drops a thread.</p>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="n">29</div><div class="l">AI specialists</div></div>
+          <div class="stat"><div class="n">89</div><div class="l">Internal tools</div></div>
+          <div class="stat"><div class="n">100+</div><div class="l">Automations 24/7</div></div>
+          <div class="stat"><div class="n">25+</div><div class="l">Countries of deal work</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="s-go">
+  <div class="wrap">
+    <div class="eyebrow">04 · Let's go</div>
+    <h2 class="section-h">Ready when <span class="pink">you are</span>.</h2>
+    <p class="section-sub">Two things left. See what you'll earn for each intro, then make the first one. Everything after that flows through pepe@mexzungu.com with the subject <em>Referral: [client name]</em>.</p>
+    <div class="go-grid">
+      <div class="go-card">
+        <div class="go-eyebrow">Commission Calculator</div>
+        <h3>See what each intro pays.</h3>
+        <p>Slide the deal value, pick the fee model, see your 15% cut over 12 months in real time. Works for equity closings, retainers, and success fees.</p>
+        <a class="go-btn" href="/partners" target="_blank" rel="noopener">Open calculator</a>
+      </div>
+      <div class="go-card">
+        <div class="go-eyebrow">Referral Agreement</div>
+        <h3>Sign or re-read.</h3>
+        <p>Your agreement is live at the link below. 15% both directions, 12 months, one page each way. Dispute resolution now supports remote hearings (mediation under USD 20k, arbitration above).</p>
+        <a class="go-btn ghost" href="/collaborators/referral-agreement/" target="_blank" rel="noopener">Open the agreement</a>
+      </div>
+    </div>
+
+    <div class="lab-teaser">
+      <div class="lab-text">
+        <h4>Also cooking: The Misfit Lab.</h4>
+        <p>Structured coaching program merging consciousness, mind, body with corporate delivery. Launching first week of October. Registration late September. Want in, or want to send someone?</p>
+      </div>
+      <button class="lab-btn" onclick="openChat('Hi Janis, tell me more about the Misfit Lab.')">Ask Janis about it</button>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="s-track">
+  <div class="wrap">
+    <div class="eyebrow">05 · Your referrals</div>
+    <h2 class="section-h">The <span class="pink">running total</span>.</h2>
+    <p class="section-sub">Live count of every intro you've sent us, where each one stands, and what you've earned. Updates automatically as Janis logs new referrals and Gene logs payments received.</p>
+    <div class="track-stats" id="track-stats">
+      <div class="track-stat"><div class="n" data-stat="referrals">0</div><div class="l">Referrals sent</div></div>
+      <div class="track-stat"><div class="n" data-stat="active">0</div><div class="l">Active engagements</div></div>
+      <div class="track-stat"><div class="n" data-stat="accrued">€0</div><div class="l">Accrued to date</div></div>
+      <div class="track-stat"><div class="n" data-stat="paid">€0</div><div class="l">Paid to you</div></div>
+    </div>
+    <div class="track-table">
+      <div class="th">
+        <div>Client</div>
+        <div>Sent</div>
+        <div>Status</div>
+        <div>Engagement</div>
+        <div>Your cut</div>
+      </div>
+      <div id="track-rows">
+        <div class="empty">
+          <div class="empty-h">Your first referral will land here.</div>
+          Send it from the sticky button below or from any of the mailto links on this page.<br>
+          Once we acknowledge, the row appears with status and your accrued cut.
+        </div>
+      </div>
+    </div>
+    <p class="track-note">Data derives from the Mexzungu CRM (leads tagged with your name as introducer) and the invoice tracker (payments received on those engagements). Nothing to manage manually.</p>
+  </div>
+</section>
+
+<footer class="hub-footer">
+  <div class="wrap foot-row">
+    <div class="foot-meta">
+      Partner: <strong>Faith Gathoni</strong> · Agreement ready to sign · 15% both directions · 12-month tail<br>
+      Your referral email: <a href="mailto:faith88.wanjau@gmail.com">faith88.wanjau@gmail.com</a> · Send intros to <a href="mailto:pepe@mexzungu.com?subject=Referral%3A%20%5Bclient%20name%5D">pepe@mexzungu.com</a>
+    </div>
+    <div class="foot-meta" style="text-align:right">
+      Mexzungu Group Ltd<br>
+      Royal Road, Henrietta, Mauritius
+    </div>
+  </div>
+</footer>
+
+<a class="sticky-intro" href="mailto:pepe@mexzungu.com?subject=Referral%3A%20%5Bclient%20name%5D&body=Hi%20Pepe%2C%0A%0AMeet%20%5Bname%5D%2C%20%5Btitle%5D%20at%20%5Bcompany%5D.%20Copying%20them%20here.%0A%0A%5Bone-line%20context%20on%20what%20they%20need%5D%0A%0AFaith">
+  <svg class="icon-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4z"/></svg>
+  Make your first intro
+</a>
+
+<button class="chat-toggle" onclick="toggleChat()" aria-label="Chat with Janis">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<div class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with Janis">
+  <div class="chat-head">
+    <div class="avatar">J</div>
+    <div class="who">
+      <h4>Janis</h4>
+      <p>AI Chief of Staff · Mexzungu Group</p>
+    </div>
+    <button class="close" onclick="closeChat()" aria-label="Close chat">&times;</button>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <div class="msg janis">Hola Faith. Welcome to your hub. I'm Janis, Pepe's Chief of Staff. Ask me anything about the referral program, ideal clients, the machine behind the scenes, or the Misfit Lab. If it's substantive and Pepe needs to weigh in, I'll flag it.</div>
+  </div>
+  <div class="chat-foot">
+    <textarea id="chat-input" placeholder="Type a message..." rows="1" onkeydown="handleKey(event)"></textarea>
+    <button id="chat-send" onclick="sendMsg()">Send</button>
+  </div>
+</div>
+
+<script>
+  const PARTNER = 'faith';
+  const CHAT_ID_KEY = 'faith_hub_chat_id';
+
+  function chatId() {
+    let id = localStorage.getItem(CHAT_ID_KEY);
+    if (!id) {
+      id = 'faith-hub-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+      localStorage.setItem(CHAT_ID_KEY, id);
+    }
+    return id;
+  }
+
+  const panel = document.getElementById('chat-panel');
+  const body = document.getElementById('chat-body');
+  const input = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+
+  function toggleChat() { panel.classList.contains('visible') ? closeChat() : openChat(); }
+  function openChat(prefill) {
+    panel.classList.add('visible');
+    setTimeout(() => { input.focus(); if (prefill) { input.value = prefill; } }, 100);
+  }
+  function closeChat() { panel.classList.remove('visible'); }
+
+  function addMsg(text, cls) {
+    const el = document.createElement('div');
+    el.className = 'msg ' + cls;
+    el.textContent = text;
+    body.appendChild(el);
+    body.scrollTop = body.scrollHeight;
+    return el;
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  }
+
+  async function sendMsg() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.style.height = 'auto';
+    addMsg(text, 'user');
+    sendBtn.disabled = true;
+    const typing = addMsg('Janis is thinking', 'typing');
+
+    try {
+      const res = await fetch('/api/janis-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId(), message: text, partner: PARTNER })
+      });
+      const data = await res.json();
+      typing.remove();
+      if (!data.ok) {
+        addMsg('Could not reach Janis: ' + (data.error || 'unknown error') + '. Try again or email pepe@mexzungu.com.', 'error');
+      } else if (!data.reply) {
+        addMsg('Janis received your message. She may reply here shortly or ping Pepe on Telegram to follow up.', 'janis');
+      } else {
+        addMsg(data.reply, 'janis');
+      }
+    } catch (err) {
+      typing.remove();
+      addMsg('Network error: ' + err.message + '. Try again in a moment.', 'error');
+    }
+    sendBtn.disabled = false;
+    input.focus();
+  }
+
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+  });
+
+  const dots = Array.from(document.querySelectorAll('.progress-nav .dot'));
+  const sections = dots.map(d => document.getElementById(d.dataset.target));
+
+  function jumpTo(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf(entry.target);
+        if (idx >= 0) {
+          dots.forEach(d => d.classList.remove('active'));
+          dots[idx].classList.add('active');
+        }
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach(s => { if (s) io.observe(s); });
+</script>
+
+</body>
+</html>

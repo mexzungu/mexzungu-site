@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Enter · Collaborator Hub · Mexzungu Group</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0f0f0f;--bg-2:#141414;--pink:#E14B87;--pink-dark:#c73d75;
+      --white:#fafafa;--grey:#8a8a8a;--grey-dim:#2a2a2a;--grey-line:#1e1e1e;
+      --heading:'RocknRoll One','Space Grotesk',sans-serif;
+      --sans:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+    }
+    html,body{background:var(--bg);color:var(--white);font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+    .card{background:var(--bg-2);border:1px solid var(--grey-line);border-radius:14px;padding:2.5rem 2.25rem;max-width:420px;width:100%;position:relative;overflow:hidden}
+    .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),#f97316)}
+    .eyebrow{color:var(--pink);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;margin-bottom:1rem}
+    h1{font-family:var(--heading);font-size:1.8rem;line-height:1.15;letter-spacing:-.01em;margin-bottom:.6rem}
+    h1 .pink{color:var(--pink)}
+    p.sub{color:var(--grey);font-size:.92rem;line-height:1.6;margin-bottom:1.75rem}
+    label{display:block;font-size:.72rem;color:var(--grey);text-transform:uppercase;letter-spacing:.14em;font-weight:600;margin-bottom:.5rem}
+    input[type=password]{width:100%;background:var(--bg);color:var(--white);border:1px solid var(--grey-dim);border-radius:8px;padding:.85rem 1rem;font-size:1rem;font-family:var(--sans)}
+    input[type=password]:focus{outline:none;border-color:var(--pink)}
+    .btn{margin-top:1.25rem;width:100%;background:var(--pink);color:#fff;border:none;border-radius:8px;padding:.95rem 1.5rem;font-size:.95rem;font-weight:600;font-family:var(--sans);cursor:pointer;transition:.15s}
+    .btn:hover:not(:disabled){background:var(--pink-dark)}
+    .btn:disabled{background:var(--grey-dim);color:var(--grey);cursor:not-allowed}
+    .err{margin-top:1rem;color:#f0a0b8;font-size:.85rem;line-height:1.5;min-height:1.2em}
+    .footnote{margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--grey-line);font-size:.78rem;color:var(--grey);line-height:1.6}
+    .footnote a{color:var(--pink);text-decoration:none}
+    .footnote a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">Collaborator Hub</div>
+    <h1>Enter your <span class="pink" id="partner-label">access</span> hub.</h1>
+    <p class="sub">Type your password. You'll stay signed in on this device for 30 days.</p>
+    <form id="f" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" name="password" autofocus required autocomplete="current-password" />
+      <button type="submit" class="btn" id="submit">Enter hub</button>
+      <div class="err" id="err"></div>
+    </form>
+    <div class="footnote">
+      Lost your password? Email <a href="mailto:pepe@mexzungu.com?subject=Collaborator%20Hub%20access">pepe@mexzungu.com</a>.
+    </div>
+  </div>
+
+<script>
+  const qs = new URLSearchParams(location.search);
+  const partner = (qs.get('partner') || '').trim().toLowerCase();
+  const stale = qs.get('stale');
+  const label = document.getElementById('partner-label');
+  if (partner) {
+    label.textContent = partner.charAt(0).toUpperCase() + partner.slice(1);
+  }
+  if (stale) {
+    document.getElementById('err').textContent = 'Session expired. Sign in again.';
+  }
+
+  const form = document.getElementById('f');
+  const btn = document.getElementById('submit');
+  const err = document.getElementById('err');
+  const pw = document.getElementById('pw');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'Checking...';
+    try {
+      const res = await fetch('/api/collab-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ partner, password: pw.value }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        window.location.href = data.redirect || `/collaborators/${partner}/`;
+      } else {
+        err.textContent = data.error || 'Login failed';
+        btn.disabled = false;
+        btn.textContent = 'Enter hub';
+        pw.select();
+      }
+    } catch (e) {
+      err.textContent = 'Network error. Try again.';
+      btn.disabled = false;
+      btn.textContent = 'Enter hub';
+    }
+  });
+</script>
+</body>
+</html>

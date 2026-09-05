@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A0A0A">
+    <title>Resources | Mexzungu Group</title>
+    <meta name="description" content="Interactive tools founders can actually use. Board composition models, cap table frameworks, and governance calculators.">
+    <meta name="author" content="Pepe Carrillo">
+    <link rel="canonical" href="https://mexzungu.com/resources/">
+    <meta property="og:title" content="Resources | Mexzungu Group">
+    <meta property="og:description" content="Interactive tools founders can actually use.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mexzungu.com/resources/">
+    <meta property="og:image" content="https://mexzungu.com/logo-v3.png">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        body { background: #0A0A0A; color: #e8e3df; }
+        .res-hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 6rem 2rem 3rem;
+            text-align: center;
+        }
+        .res-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #E14B87;
+            margin-bottom: 1.25rem;
+        }
+        .res-hero h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: #fafafa;
+            margin-bottom: 1rem;
+        }
+        .res-hero p {
+            font-size: 1.05rem;
+            color: #9a8f88;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+        .res-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .res-card {
+            display: block;
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .res-card:hover { border-color: #E14B87; transform: translateY(-2px); }
+        .res-card-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #E14B87;
+            margin-bottom: 0.75rem;
+        }
+        .res-card h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #fafafa;
+            margin-bottom: 0.75rem;
+            line-height: 1.35;
+        }
+        .res-card p {
+            font-size: 0.9rem;
+            color: #9a8f88;
+            line-height: 1.65;
+            margin-bottom: 1.25rem;
+        }
+        .res-card-link { font-size: 0.85rem; font-weight: 600; color: #E14B87; }
+        .res-subscribe {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+            text-align: center;
+            border-top: 1px solid #1f1f1f;
+        }
+        .res-subscribe h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.4rem;
+            color: #fafafa;
+            margin-bottom: 0.5rem;
+        }
+        .res-subscribe p {
+            font-size: 0.9rem;
+            color: #9a8f88;
+            margin-bottom: 1.5rem;
+            line-height: 1.65;
+        }
+        .btn-sub {
+            display: inline-block;
+            background: #E14B87;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+        .btn-sub:hover { background: #b83a6b; }
+        .res-disclaimer {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+            font-size: 0.78rem;
+            color: #6b5e57;
+            text-align: center;
+            line-height: 1.6;
+            border-top: 1px solid #1a1a1a;
+        }
+        @media (max-width: 768px) {
+            .res-hero { padding: 4rem 1.25rem 2rem; }
+            .res-grid { padding: 0 1.25rem 3rem; grid-template-columns: 1fr; }
+            .res-subscribe { padding: 2rem 1.25rem 3rem; }
+            .res-disclaimer { padding: 1.25rem 1.25rem 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="#main" class="skip-nav">Skip to content</a>
+
+<nav>
+    <a href="/" class="nav-logo"><img src="/logo-v3.png" alt="Mexzungu Group"></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li class="nav-dropdown">
+            <a href="/what-we-do">What We Do</a>
+            <ul class="nav-dropdown-menu">
+                <li class="nav-group-label">For Founders</li>
+                <li><a href="/venture-architecture"><span class="nav-outcome">Structure a Company</span><span class="nav-product">Venture Architecture</span></a></li>
+                <li><a href="/data-privacy"><span class="nav-outcome">Handle Data &amp; Privacy</span><span class="nav-product">Privacy Architect</span></a></li>
+                <li><a href="/ai-ninja-factory"><span class="nav-outcome">Go AI-Native</span><span class="nav-product">AI Ninja Factory</span></a></li>
+                <li class="nav-group-label nav-group-sep">For Investors</li>
+                <li><a href="/investors"><span class="nav-outcome">Review a Deal</span><span class="nav-product">Mexzungu x Investors</span></a></li>
+            </ul>
+        </li>
+        <li><a href="/outlaw-chronicles">Outlaw Chronicles</a></li>
+        <li><a href="/resources/" class="active">Resources</a></li>
+        <li><a href="/meet-the-band">Meet the Band</a></li>
+        <li><a href="/lets-jam" class="nav-cta">Let's Jam</a></li>
+    </ul>
+</nav>
+
+<main id="main">
+
+    <div class="res-hero">
+        <div class="res-label">Mexzungu Resources</div>
+        <h1>The Resources</h1>
+        <p>Interactive tools founders can actually use. Model decisions before you make them. No spreadsheets required.</p>
+    </div>
+
+    <div class="res-grid">
+        <a href="/resources/board-composition-model/" class="res-card">
+            <div class="res-card-tag">Governance</div>
+            <h2>Board Composition Model</h2>
+            <p>Model your board seat allocations by stage. See your vote percentage in real time before you sign anything.</p>
+            <span class="res-card-link">Open the model &rarr;</span>
+        </a>
+    </div>
+
+    <div class="res-subscribe">
+        <h3>The Outlaw Chronicles</h3>
+        <p>Cap table traps, governance landmines, and the structural stuff nobody tells founders until it is too late. Every Monday.</p>
+        <a href="https://mexzungu.substack.com" target="_blank" rel="noopener" class="btn-sub">Subscribe on Substack &rarr;</a>
+    </div>
+
+    <div class="res-disclaimer">
+        These tools are modeling aids, not legal advice. Mexzungu Group is not admitted to practice in your jurisdiction. Results are illustrative only. Talk to qualified counsel where you operate before making any governance or structural decision.
+    </div>
+
+</main>
+
+<footer>
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding:0 2rem;">
+        <span>&copy; 2026 Mexzungu Group Ltd. All rights reserved.</span>
+        <span style="font-size:0.85rem;">
+            <a href="/resources/" style="color:var(--gold);">Resources</a> &middot;
+            <a href="/privacy/" style="color:var(--gold);">Privacy Policy</a> &middot;
+            <a href="/security/" style="color:var(--gold);">Data Protection</a> &middot;
+            <a href="/lets-jam" style="color:var(--gold);">Contact</a>
+        </span>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Insider's Guide. Mexzungu Partner Portal</title>
+<meta name="description" content="For operators, advisors, and connectors who send us the right work. How Mexzungu operates, who fits, and what you earn.">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script>
+  function calcData() {
+    return {
+      dealValue: 50000,
+      tier: 'success_fee',
+      payout: '10,000',
+      dealFormatted: '50,000',
+      init() {
+        this.recalc();
+        this.$watch('dealValue', () => this.recalc());
+        this.$watch('tier', () => this.recalc());
+      },
+      recalc() {
+        const rate = this.tier === 'success_fee' ? 0.20 : 0.10;
+        this.payout = Math.round(this.dealValue * rate).toLocaleString('en-US');
+        this.dealFormatted = Number(this.dealValue).toLocaleString('en-US');
+      }
+    };
+  }
+</script>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --pink: #E14B87;
+    --white: #ffffff;
+    --grey: #7a7a7a;
+    --grey-dim: #2a2a2a;
+    --grey-line: #1e1e1e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body {
+    overflow-y: auto;
+  }
+  section.chapter {
+    min-height: 100vh;
+    width: 100%;
+    padding: clamp(5rem, 10vh, 8rem) 8vw 5rem 12vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    border-bottom: 1px solid var(--grey-line);
+  }
+  .chapter-number {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--grey);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    margin-bottom: 2rem;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 500;
+    color: var(--grey);
+    max-width: 700px;
+    line-height: 1.5;
+    margin-bottom: 3rem;
+  }
+  .pink { color: var(--pink); }
+  .content-body { max-width: 1100px; }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  /* JS absent: elements stay invisible without this */
+
+  .progress-dots {
+    position: fixed;
+    left: 3vw;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 100;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid var(--grey);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+  }
+  .dot.active {
+    background: var(--pink);
+    border-color: var(--pink);
+    transform: scale(1.15);
+  }
+  .dot:hover { border-color: var(--pink); }
+
+  .pull-quote {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.35;
+    max-width: 900px;
+    margin-bottom: 1.5rem;
+    color: #ececec;
+  }
+  .quote-attr {
+    font-size: 0.9rem;
+    color: var(--grey);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+  .quote-attr .pink { color: var(--pink); }
+  .brief-line {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 720px;
+    color: #d0d0d0;
+    margin-bottom: 3rem;
+  }
+
+  .signal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  .signal-card {
+    background: #161616;
+    border: 1px solid var(--grey-dim);
+    padding: 2rem;
+    border-radius: 4px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .signal-card:hover {
+    border-color: var(--pink);
+    transform: translateY(-4px);
+  }
+  .signal-icon {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    margin-bottom: 1.25rem;
+    color: var(--pink);
+    font-weight: 700;
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--pink);
+    border-radius: 2px;
+  }
+  .signal-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  .signal-desc {
+    font-size: 0.95rem;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+
+  .machine-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 1rem;
+  }
+  .machine-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .who-block h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .who-block h3 .pink { font-weight: 800; }
+  .who-block p {
+    color: #b8b8b8;
+    line-height: 1.55;
+    font-size: 1rem;
+  }
+  .practice-card {
+    background: #161616;
+    border: 1px solid var(--grey-dim);
+    padding: 1.25rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .practice-card:hover { border-color: var(--pink); }
+  .practice-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  .practice-toggle {
+    color: var(--pink);
+    font-size: 1.25rem;
+    transition: transform 0.2s;
+  }
+  .practice-toggle.open { transform: rotate(45deg); }
+  .practice-list {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--grey-dim);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .practice-list li {
+    color: #b8b8b8;
+    font-size: 0.95rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .practice-list li::before {
+    content: "·";
+    color: var(--pink);
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+
+  .ai-band { margin: 3rem 0 0; }
+  .ai-band-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #7a7a7a; margin-bottom: 1rem; }
+  .ai-band-caption { font-size: 0.8rem; color: #7a7a7a; margin-top: 0.75rem; text-align: center; }
+  #team-graph { width: 100%; height: 300px; display: block; background: transparent; }
+
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  .step { padding: 1rem 0; }
+  .step-num {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--pink);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .step-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .step-desc {
+    color: #b8b8b8;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  .step-desc a { color: var(--pink); text-decoration: none; }
+
+  .calc {
+    max-width: 700px;
+    background: #161616;
+    border: 1px solid var(--grey-dim);
+    padding: 2.5rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+  .calc-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 0.75rem;
+  }
+  .tier-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .tier-btn {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    background: transparent;
+    border: 1px solid var(--grey-dim);
+    color: var(--white);
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-radius: 3px;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .tier-btn:hover { border-color: var(--pink); }
+  .tier-btn.active {
+    background: var(--pink);
+    border-color: var(--pink);
+  }
+  .slider-row { margin-bottom: 2rem; }
+  .slider-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: var(--grey-dim);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--pink);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 0;
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--pink);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 0;
+  }
+  .payout-block {
+    padding-top: 2rem;
+    border-top: 1px solid var(--grey-dim);
+  }
+  .payout-value {
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 800;
+    color: var(--pink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0.5rem 0 1rem;
+  }
+  .payout-note {
+    font-size: 0.9rem;
+    color: var(--grey);
+  }
+
+  .cta-line {
+    font-size: 1.15rem;
+    color: #b8b8b8;
+    line-height: 1.6;
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+  }
+  .cta-mail {
+    display: inline-block;
+    background: var(--pink);
+    color: var(--white);
+    padding: 1.1rem 2rem;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 3px;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .cta-mail:hover {
+    transform: translateY(-2px);
+    background: #d13f7b;
+  }
+  .cta-subject {
+    margin-top: 1.5rem;
+    color: var(--grey);
+    font-size: 0.95rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .cta-subject strong { color: var(--white); font-weight: 600; }
+
+  @media (max-width: 768px) {
+    section.chapter { padding: 5rem 6vw 3rem 6vw; }
+    .progress-dots { display: none; }
+    .machine-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .step-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .signal-grid { grid-template-columns: 1fr; }
+    .pull-quote { padding-left: 1.25rem; }
+    .quote-attr { padding-left: 1.25rem; }
+    .calc { padding: 1.5rem; }
+    .tier-row { flex-direction: column; }
+    .step-num { font-size: 3rem; }
+    h1 { font-size: 2.5rem; }
+  }
+</style>
+<noscript><style>.fade-in { opacity: 1; transform: none; }</style></noscript>
+</head>
+<body>
+
+<nav class="progress-dots" aria-label="Section navigation">
+  <button class="dot active" data-target="0" aria-label="Chapter 1"></button>
+  <button class="dot" data-target="1" aria-label="Chapter 2"></button>
+  <button class="dot" data-target="2" aria-label="Chapter 3"></button>
+  <button class="dot" data-target="3" aria-label="Chapter 4"></button>
+  <button class="dot" data-target="4" aria-label="Chapter 5"></button>
+  <button class="dot" data-target="5" aria-label="Chapter 6"></button>
+</nav>
+
+<section class="chapter" id="ch1">
+  <div class="content-body">
+    <div class="chapter-number fade-in">The Brief</div>
+    <p class="brief-line fade-in">
+      Welcome to <span class="pink">Mexzungu</span>. Boutique deal-closing engine for founders, funds, and cross-border operators. 20+ years of deals closed in 25+ countries. Run by Pepe Carrillo and Janis, his AI Chief of Staff. Operator who closes deals other lawyers say are too complex. This is the induction. Here is how the machine works, who fits it, and what you earn for sending the right people in.
+    </p>
+    <div class="pull-quote fade-in">
+      "Working with Pepe changed how I think about legal as a tool for growth, not a cost centre."
+    </div>
+    <div class="quote-attr fade-in">Faith Gathoni</div>
+  </div>
+</section>
+
+<section class="chapter" id="ch2">
+  <div class="content-body">
+    <div class="chapter-number fade-in">Who Gets In</div>
+    <h1 class="fade-in">Pattern <span class="pink">recognition.</span></h1>
+    <h2 class="fade-in">You already know these people. Founders and operators stuck at the exact moment legal becomes the choke point. Send them.</h2>
+    <div class="signal-grid">
+      <div class="signal-card fade-in">
+        <div class="signal-icon">DEAL</div>
+        <div class="signal-title">Cross-border deal stalled on legal</div>
+        <div class="signal-desc">Your client is closing across two or three jurisdictions and their lawyer is out of depth. Structure, tax, enforceability. That is our house.</div>
+      </div>
+      <div class="signal-card fade-in">
+        <div class="signal-icon">CAPITAL</div>
+        <div class="signal-title">Just raised, zero governance</div>
+        <div class="signal-desc">Fresh round, new board, no shareholders agreement worth reading, no cap table hygiene. We install the operating layer before it breaks.</div>
+      </div>
+      <div class="signal-card fade-in">
+        <div class="signal-icon">TERMS</div>
+        <div class="signal-title">Stuck at term sheet</div>
+        <div class="signal-desc">Founder cannot get the term sheet across the line because the market wants something they do not understand. We translate and close.</div>
+      </div>
+      <div class="signal-card fade-in">
+        <div class="signal-icon">ENTRY</div>
+        <div class="signal-title">Emerging markets play, no counsel</div>
+        <div class="signal-desc">Africa, LatAm, emerging markets. Regulated sector. Local counsel expensive and slow. We run point and coordinate the ground team.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch3">
+  <div class="content-body">
+    <div class="chapter-number fade-in">The Machine</div>
+    <h1 class="fade-in">What you are actually <span class="pink">selling.</span></h1>
+    <div class="machine-grid">
+      <div class="machine-side">
+        <div class="who-block fade-in">
+          <h3><span class="pink">Janis.</span> AI Chief of Staff</h3>
+          <p>Runs client comms, drafting, calendar, and pipeline 24/7. Nothing slips. Your intro is picked up inside the hour, any timezone.</p>
+        </div>
+        <div class="who-block fade-in">
+          <h3><span class="pink">Pepe.</span> The lawyer</h3>
+          <p>20+ years. 25+ countries. Yale. Former GC turned deal operator. Barcelona-based, globally mobile. Corporate lawyer who thinks like an operator.</p>
+        </div>
+      </div>
+      <div class="machine-side" x-data="{ open: null }">
+        <div class="practice-card fade-in" @click="open = (open === 1 ? null : 1)">
+          <div class="practice-head">
+            <span>Corporate &amp; Structuring</span>
+            <span class="practice-toggle" :class="{ 'open': open === 1 }">+</span>
+          </div>
+          <ul class="practice-list" x-show="open === 1" x-transition>
+            <li>Holding structures, group reorganisations, cross-border setups</li>
+            <li>Cap table cleanup, shareholder agreements, board packs</li>
+            <li>Founder equity, ESOP design, vesting frameworks</li>
+          </ul>
+        </div>
+        <div class="practice-card fade-in" @click="open = (open === 2 ? null : 2)">
+          <div class="practice-head">
+            <span>Transactions</span>
+            <span class="practice-toggle" :class="{ 'open': open === 2 }">+</span>
+          </div>
+          <ul class="practice-list" x-show="open === 2" x-transition>
+            <li>SAFEs, convertibles, priced rounds, secondaries</li>
+            <li>M&amp;A, asset deals, joint ventures</li>
+            <li>Commercial contracts that close, not the ones that stall</li>
+          </ul>
+        </div>
+        <div class="practice-card fade-in" @click="open = (open === 3 ? null : 3)">
+          <div class="practice-head">
+            <span>Governance</span>
+            <span class="practice-toggle" :class="{ 'open': open === 3 }">+</span>
+          </div>
+          <ul class="practice-list" x-show="open === 3" x-transition>
+            <li>Board setup, fractional GC, chair or director support</li>
+            <li>Compliance programs, risk frameworks, incident response</li>
+            <li>Founder disputes, succession, minority rights</li>
+          </ul>
+        </div>
+        <div class="practice-card fade-in" @click="open = (open === 4 ? null : 4)">
+          <div class="practice-head">
+            <span>Emerging Markets</span>
+            <span class="practice-toggle" :class="{ 'open': open === 4 }">+</span>
+          </div>
+          <ul class="practice-list" x-show="open === 4" x-transition>
+            <li>Africa, LatAm, emerging markets entry and exits</li>
+            <li>Local counsel coordination, in-country compliance</li>
+            <li>Regulatory strategy for fintech, energy, education, health</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ai-band fade-in">
+      <div class="ai-band-label">The full team behind every engagement</div>
+      <canvas id="team-graph"></canvas>
+      <div class="ai-band-caption">29 AI specialists. Strategy, legal, finance, content, BD, delivery. Running 24/7 behind every mandate.</div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch4">
+  <div class="content-body">
+    <div class="chapter-number fade-in">The Move</div>
+    <h1 class="fade-in">Three steps. <span class="pink">That is it.</span></h1>
+    <div class="step-grid">
+      <div class="step fade-in">
+        <div class="step-num">1</div>
+        <div class="step-title">Spot the signal</div>
+        <div class="step-desc">One of the four scenarios above. Or your gut says this is Mexzungu-shaped. Trust it.</div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">2</div>
+        <div class="step-title">Make the intro</div>
+        <div class="step-desc">One line to <a href="mailto:pepe@mexzungu.com">pepe@mexzungu.com</a>. Name, what they need, why now. CC the client if warm. That is the entire pitch.</div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">3</div>
+        <div class="step-title">Janis takes it</div>
+        <div class="step-desc">Reply in the hour. Discovery call scheduled. You get a status update at each stage until close. Zero chasing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch5">
+  <div class="content-body" x-data="calcData()">
+    <div class="chapter-number fade-in">Your Cut</div>
+    <h1 class="fade-in">Live <span class="pink">math.</span></h1>
+    <h2 class="fade-in">Two tiers. No games. Move the slider.</h2>
+    <div class="calc fade-in">
+      <div class="calc-label">Engagement type</div>
+      <div class="tier-row">
+        <button class="tier-btn" :class="{ 'active': tier === 'success_fee' }" @click="tier = 'success_fee'">Success fee. 20%</button>
+        <button class="tier-btn" :class="{ 'active': tier === 'retainer' }" @click="tier = 'retainer'">Retainer. 10%</button>
+      </div>
+      <div class="slider-row">
+        <div class="slider-head">
+          <span class="calc-label" style="margin: 0;">Deal value</span>
+          <span>EUR <span x-text="dealFormatted"></span></span>
+        </div>
+        <input type="range" min="10000" max="500000" step="5000" x-model.number="dealValue">
+        <div class="slider-head" style="margin-top: 0.5rem; color: var(--grey); font-size: 0.8rem;">
+          <span>EUR 10,000</span>
+          <span>EUR 500,000</span>
+        </div>
+      </div>
+      <div class="payout-block">
+        <div class="calc-label">Your cut</div>
+        <div class="payout-value">EUR <span x-text="payout"></span></div>
+        <div class="payout-note">Paid within 30 days of the deal closing and the client paying us. Not on signing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch6">
+  <div class="content-body">
+    <div class="chapter-number fade-in">Start</div>
+    <h1 class="fade-in">Send the <span class="pink">first one.</span></h1>
+    <p class="cta-line fade-in">
+      One email. Name of the client, one line on what they need, one line on why now. That is the whole thing.
+    </p>
+    <a class="cta-mail fade-in" href="mailto:pepe@mexzungu.com?subject=Referral%3A%20%5Bclient%20name%5D">Email pepe@mexzungu.com</a>
+    <div class="cta-subject fade-in">
+      Subject: <strong>Referral: [client name]</strong>
+    </div>
+  </div>
+</section>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.querySelectorAll('section.chapter').forEach((section) => {
+    const targets = section.querySelectorAll('.fade-in');
+    gsap.to(targets, {
+      opacity: 1,
+      y: 0,
+      duration: 0.9,
+      ease: 'power2.out',
+      stagger: 0.08,
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 70%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+  });
+
+  const sections = document.querySelectorAll('section.chapter');
+  const dots = document.querySelectorAll('.dot');
+  let current = 0;
+
+  function setActiveDot(idx) {
+    dots.forEach((d) => d.classList.remove('active'));
+    if (dots[idx]) dots[idx].classList.add('active');
+  }
+
+  sections.forEach((section, idx) => {
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top center',
+      end: 'bottom center',
+      onToggle: (self) => {
+        if (self.isActive) { current = idx; setActiveDot(idx); }
+      },
+    });
+  });
+
+  dots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const target = parseInt(dot.dataset.target, 10);
+      sections[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('load', () => { setTimeout(() => {
+    const canvas = document.getElementById('team-graph');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+
+    function sizeCanvas() {
+      const w = canvas.offsetWidth || canvas.parentElement.offsetWidth || 600;
+      const h = canvas.offsetHeight || 300;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { width: w, height: h };
+    }
+    let rect = sizeCanvas();
+
+    const PINK = '#E14B87';
+    const EXCO_COL = '#c44070';
+    const DELIVERY_COL = '#555';
+    const OTHER_COL = '#2a2a2a';
+
+    const excoNames = ['Lars', 'Freddie', 'Gene', 'Bowie', 'Nina', 'Jagger'];
+    const deliveryNames = ['Bruce', 'Lemmy', 'Prince', 'Sade'];
+    const otherNames = [
+      'Joan', 'Tina', 'PJ', 'Aretha', 'Chrissie', 'Kim',
+      'Iggy', 'Jack', 'Nile', 'Lou',
+      'Grohl', 'Lenny', 'Joni', 'Nick', 'Anselmo', 'Grace', 'Annie',
+      'Ozzy', 'Sheryl'
+    ];
+
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+
+    if (rect.width < 500) {
+      function drawMobile() {
+        const r = sizeCanvas();
+        ctx.clearRect(0, 0, r.width, r.height);
+        ctx.fillStyle = PINK;
+        ctx.font = '600 1.1rem system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('29 AI specialists', r.width / 2, r.height / 2);
+      }
+      drawMobile();
+      window.addEventListener('resize', drawMobile);
+      return;
+    }
+
+    const nodes = [];
+    const edges = [];
+
+    const janis = { name: 'JANIS', x: cx, y: cy, vx: 0, vy: 0, r: 10, color: PINK, tier: 0 };
+    nodes.push(janis);
+
+    excoNames.forEach((n, i) => {
+      const angle = (i / excoNames.length) * Math.PI * 2;
+      nodes.push({
+        name: n,
+        x: cx + Math.cos(angle) * 60,
+        y: cy + Math.sin(angle) * 60,
+        vx: 0, vy: 0,
+        r: 7, color: EXCO_COL, tier: 1,
+      });
+    });
+
+    deliveryNames.forEach((n, i) => {
+      const angle = (i / deliveryNames.length) * Math.PI * 2 + 0.4;
+      nodes.push({
+        name: n,
+        x: cx + Math.cos(angle) * 110,
+        y: cy + Math.sin(angle) * 110,
+        vx: 0, vy: 0,
+        r: 5, color: DELIVERY_COL, tier: 2,
+      });
+    });
+
+    otherNames.forEach((n, i) => {
+      const angle = (i / otherNames.length) * Math.PI * 2;
+      nodes.push({
+        name: n,
+        x: cx + Math.cos(angle) * 160,
+        y: cy + Math.sin(angle) * 160,
+        vx: 0, vy: 0,
+        r: 4, color: OTHER_COL, tier: 3,
+      });
+    });
+
+    for (let i = 1; i <= excoNames.length; i++) edges.push([0, i]);
+
+    const excoStart = 1;
+    const deliveryStart = excoStart + excoNames.length;
+    const otherStart = deliveryStart + deliveryNames.length;
+
+    for (let i = 0; i < deliveryNames.length; i++) {
+      edges.push([excoStart + (i % excoNames.length), deliveryStart + i]);
+    }
+    for (let i = 0; i < otherNames.length; i++) {
+      edges.push([excoStart + (i % excoNames.length), otherStart + i]);
+    }
+
+    const SPRING = 0.02;
+    const REPULSE = 380;
+    const FRICTION = 0.85;
+    const REST = 55;
+
+    let mouseX = -1, mouseY = -1;
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      mouseX = e.clientX - r.left;
+      mouseY = e.clientY - r.top;
+    });
+    canvas.addEventListener('mouseleave', () => { mouseX = -1; mouseY = -1; });
+
+    window.addEventListener('resize', () => { rect = sizeCanvas(); });
+
+    function step() {
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const d2 = dx * dx + dy * dy + 0.01;
+          const d = Math.sqrt(d2);
+          const f = REPULSE / d2;
+          const fx = (dx / d) * f;
+          const fy = (dy / d) * f;
+          if (a !== janis) { a.vx -= fx; a.vy -= fy; }
+          if (b !== janis) { b.vx += fx; b.vy += fy; }
+        }
+      }
+
+      edges.forEach(([ai, bi]) => {
+        const a = nodes[ai], b = nodes[bi];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
+        const diff = d - REST;
+        const fx = (dx / d) * diff * SPRING;
+        const fy = (dy / d) * diff * SPRING;
+        if (a !== janis) { a.vx += fx; a.vy += fy; }
+        if (b !== janis) { b.vx -= fx; b.vy -= fy; }
+      });
+
+      nodes.forEach((n) => {
+        if (n === janis) return;
+        const dx = cx - n.x, dy = cy - n.y;
+        n.vx += dx * 0.001;
+        n.vy += dy * 0.001;
+        n.vx *= FRICTION;
+        n.vy *= FRICTION;
+        n.x += n.vx;
+        n.y += n.vy;
+        n.x = Math.max(n.r + 2, Math.min(rect.width - n.r - 2, n.x));
+        n.y = Math.max(n.r + 2, Math.min(rect.height - n.r - 2, n.y));
+      });
+
+      janis.x = cx;
+      janis.y = cy;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      ctx.strokeStyle = 'rgba(122,122,122,0.18)';
+      ctx.lineWidth = 0.6;
+      edges.forEach(([ai, bi]) => {
+        const a = nodes[ai], b = nodes[bi];
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      });
+
+      let hovered = null;
+      nodes.forEach((n) => {
+        const dx = mouseX - n.x, dy = mouseY - n.y;
+        if (mouseX >= 0 && Math.sqrt(dx * dx + dy * dy) < n.r + 8) hovered = n;
+        ctx.beginPath();
+        ctx.fillStyle = n.color;
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (hovered) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '600 11px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(hovered.name, hovered.x, hovered.y - hovered.r - 4);
+      }
+    }
+
+    function loop() {
+      step();
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }, 300); });
+</script>
+
+</body>
+</html>
