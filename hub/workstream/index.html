@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Clusters, Projects and Functions | Mexzungu Group Ops</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        body { background: #0d0d0d; color: #e0e0e0; }
+        .page-nav { padding: 0.6rem 1.5rem; border-bottom: 1px solid #1a1a1a; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+        .page-nav a { font-size: 0.73rem; color: #555; text-decoration: none; padding: 0.2rem 0.6rem; border: 1px solid #222; border-radius: 4px; transition: .15s; }
+        .page-nav a:hover { color: #e0e0e0; border-color: #444; }
+        .page-nav .sep { color: #333; font-size: 0.73rem; }
+
+        .ops-header { background: #0d0d0d; padding: 3rem 2rem 2rem; text-align: center; border-bottom: 2px solid #E14B87; }
+        .ops-header .label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #E14B87; font-weight: 600; margin-bottom: 0.75rem; }
+        .ops-header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); color: #fff; margin-bottom: 0.5rem; }
+        .ops-header p { color: #888; font-size: 0.9rem; max-width: 600px; margin: 0 auto; }
+
+        .entity-strip { max-width: 1000px; margin: 2rem auto 0; padding: 0 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .entity-card { background: #0a0a0a; border: 1px solid #1e1e1e; border-radius: 6px; padding: 0.9rem 1.1rem; text-align: center; }
+        .entity-card > summary { list-style: none; cursor: pointer; }
+        .entity-card > summary::-webkit-details-marker { display: none; }
+        .entity-card-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: #E14B87; }
+        .entity-card[open] .entity-card-label { margin-bottom: 0.55rem; }
+        .entity-card-def { font-size: 0.72rem; color: #888; line-height: 1.4; }
+        .entity-card-done { font-size: 0.7rem; color: #fbbf24; margin-top: 0.4rem; font-weight: 600; }
+        .engines-note { max-width: 1000px; margin: 0.6rem auto 0; padding: 0 1.5rem; font-size: 0.72rem; color: #444; font-family: monospace; }
+        .engines-note a { color: #555; text-decoration: none; border-bottom: 1px solid #333; }
+        .engines-note a:hover { color: #e0e0e0; }
+
+        .engine-bar-wrap { max-width: 1000px; margin: 2rem auto 0; padding: 0 1.5rem; }
+        .engine-bar-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.18em; color: #E14B87; margin-bottom: 0.65rem; }
+        .engine-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .engine-pill { background: #0c0c0c; border: 1px solid #222; border-radius: 6px; padding: 0.7rem 0.9rem; display: flex; flex-direction: column; gap: 0.2rem; text-decoration: none; flex: 1; min-width: 140px; transition: border-color 0.15s; }
+        .engine-pill:hover { border-color: #444; }
+        .engine-pill-top { display: flex; align-items: center; gap: 0.5rem; }
+        .engine-numeral { font-family: monospace; font-size: 0.65rem; color: #444; }
+        .engine-name { font-size: 0.85rem; font-weight: 700; color: #e0e0e0; }
+        .engine-owner { font-size: 0.7rem; color: #555; }
+        .engine-status { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.1rem 0.45rem; border-radius: 3px; display: inline-block; margin-top: 0.15rem; align-self: flex-start; }
+        .estatus-live { background: #0f2a1a; color: #4ade80; border: 1px solid #166534; }
+        .estatus-partial { background: #1a1200; color: #fb923c; border: 1px solid #78350f; }
+        .estatus-concept { background: #111; color: #555; border: 1px solid #222; }
+
+        .universe-label { max-width: 1000px; margin: 2.5rem auto 0.5rem; padding: 0 1.5rem; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: #E14B87; font-weight: 700; }
+        details.cluster-section { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; border-bottom: 1px solid #151515; }
+        details.cluster-section summary.cluster-header { list-style: none; cursor: pointer; padding: 1.25rem 0; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; user-select: none; }
+        details.cluster-section summary.cluster-header::-webkit-details-marker { display: none; }
+        details.cluster-section summary.cluster-header::after { content: "\25B8"; color: #555; font-size: 0.85rem; margin-left: auto; transition: transform 0.2s; flex-shrink: 0; }
+        details.cluster-section[open] summary.cluster-header::after { transform: rotate(90deg); }
+        .cluster-code { font-family: monospace; font-size: 0.75rem; font-weight: 700; background: #111; color: #E14B87; border: 1px solid #2a2a2a; border-radius: 4px; padding: 0.2em 0.5em; letter-spacing: 0.05em; flex-shrink: 0; }
+        .cluster-name { font-size: 1rem; font-weight: 600; color: #fff; }
+        .cluster-desc { font-size: 0.8rem; color: #555; }
+        .cluster-body { padding: 0 0 1.5rem 0; }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+        .item-details { background: #0c0c0c; border: 1px solid #1e1e1e; border-radius: 6px; padding: 0.6rem 0.8rem; }
+        .item-details[open] { border-color: #333; }
+        .item-details.blocked { border-color: #7f1d1d; background: #0f0808; }
+        .item-details.closed { border-color: #1a1a1a; opacity: 0.45; }
+        .item-details summary.item-summary { list-style: none; cursor: pointer; user-select: none; }
+        .item-details summary.item-summary::-webkit-details-marker { display: none; }
+        .item-header { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+        .item-code { font-family: monospace; font-size: 0.65rem; color: #444; flex-shrink: 0; }
+        .item-type { font-size: 0.57rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.1rem 0.4rem; border-radius: 3px; flex-shrink: 0; }
+        .type-project { background: #0f2a1a; color: #4ade80; border: 1px solid #166534; }
+        .type-function { background: #0a1a2a; color: #22d3ee; border: 1px solid #0e7490; }
+        .item-name { font-size: 0.82rem; font-weight: 600; color: #e0e0e0; line-height: 1.3; margin-top: 0.3rem; }
+        .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-left: 0.25rem; }
+        .dot-active { background: #4ade80; }
+        .dot-blocked { background: #f87171; }
+        .dot-closed { background: #4ade80; opacity: 0.3; }
+        .item-why { color: #a24968; font-style: italic; font-size: 0.72rem; margin-top: 0.3rem; line-height: 1.35; }
+        .item-body { padding-top: 0.55rem; margin-top: 0.55rem; border-top: 1px solid #1a1a1a; }
+        .status-text { font-size: 0.68rem; color: #666; letter-spacing: 0.05em; text-transform: uppercase; }
+        .cross-refs-item { font-size: 0.68rem; color: #555; margin-top: 0.4rem; line-height: 1.35; }
+        .cross-refs-item strong { color: #777; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.6rem; font-weight: 700; margin-right: 0.35rem; }
+        .concept-link { display: inline-block; margin-top: 0.5rem; font-size: 0.68rem; color: #E14B87; text-decoration: none; border-bottom: 1px solid #4a2035; padding-bottom: 1px; }
+        .concept-link:hover { color: #fff; border-bottom-color: #E14B87; }
+        .subprojects { padding-left: 1rem; margin-top: 0.55rem; padding-top: 0.4rem; border-top: 1px dashed #1a1a1a; }
+        .subprojects .items-grid { grid-template-columns: 1fr; gap: 0.4rem; margin-top: 0.35rem; }
+        .subprojects .item-code { font-size: 0.6rem; }
+        .subprojects .item-name { font-size: 0.76rem; }
+        .subprojects-label { font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #555; }
+        .cross-cluster-refs { margin-top: 1rem; padding: 0.65rem 0.8rem; background: #0a0a0a; border-left: 2px solid #2a2a2a; border-radius: 3px; }
+        .cross-cluster-refs-label { font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #555; margin-bottom: 0.4rem; }
+        .cross-cluster-refs span { display: inline-block; font-size: 0.7rem; color: #666; margin-right: 0.9rem; line-height: 1.5; }
+        .cross-cluster-refs span em { color: #888; font-style: normal; }
+
+        .footer-nav { max-width: 1000px; margin: 3rem auto 1.5rem; padding: 0 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .footer-nav a { font-size: 0.73rem; color: #555; text-decoration: none; padding: 0.3rem 0.75rem; border: 1px solid #222; border-radius: 4px; transition: .15s; }
+        .footer-nav a:hover { color: #e0e0e0; border-color: #444; }
+        .updated-note { max-width: 1000px; margin: 0.75rem auto 3rem; padding: 0 1.5rem; font-size: 0.7rem; color: #2a2a2a; font-family: monospace; }
+
+        @media (max-width: 600px) {
+            .entity-strip { grid-template-columns: 1fr; }
+            .items-grid { grid-template-columns: 1fr; }
+            .engine-bar { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-nav">
+  <a href="/hub/">Hub</a>
+  <span class="sep">/</span>
+  <a href="/hub/workstream/">Workstream Catalogue</a>
+</div>
+
+<div class="ops-header">
+    <div class="label">OPS</div>
+    <h1>Workstream Catalogue</h1>
+    <p>Every workstream we run. Organised as <strong>clusters</strong>, <strong>projects</strong> and <strong>functions</strong>. Every entry is allocated to one of our engines.</p>
+</div>
+
+<div class="entity-strip">
+    <details class="entity-card">
+        <summary><div class="entity-card-label">Cluster</div></summary>
+        <div class="entity-card-def">Workstream context zone. Organises projects and functions.</div>
+        <div class="entity-card-done">No done state.</div>
+    </details>
+    <details class="entity-card">
+        <summary><div class="entity-card-label">Project</div></summary>
+        <div class="entity-card-def">Discrete deliverable inside a cluster.</div>
+        <div class="entity-card-done">Has a done state.</div>
+    </details>
+    <details class="entity-card">
+        <summary><div class="entity-card-label">Function</div></summary>
+        <div class="entity-card-def">Permanent operation inside a cluster.</div>
+        <div class="entity-card-done">Runs indefinitely.</div>
+    </details>
+</div>
+<div class="engines-note">Engines are separate. Permanent MGL business functions that serve all clusters. See <a href="/engines/">/engines/</a></div>
+
+<details class="engine-bar-wrap">
+    <summary class="engine-bar-label">MGL ENGINES, permanent, serve all clusters</summary>
+    <div class="engine-bar">
+        <a class="engine-pill" href="/engines/connection/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">I</span>
+                <span class="engine-name">Connection</span>
+            </div>
+            <span class="engine-owner">Jagger</span>
+            <span class="engine-status estatus-live">live</span>
+        </a>
+        <a class="engine-pill" href="/engines/blueprint/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">II</span>
+                <span class="engine-name">Value</span>
+            </div>
+            <span class="engine-owner">Lars</span>
+            <span class="engine-status estatus-partial">partial</span>
+        </a>
+        <a class="engine-pill" href="/engines/blueprint/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">III</span>
+                <span class="engine-name">Care</span>
+            </div>
+            <span class="engine-owner">Sade</span>
+            <span class="engine-status estatus-concept">concept</span>
+        </a>
+        <a class="engine-pill" href="/engines/blueprint/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">0</span>
+                <span class="engine-name">Core</span>
+            </div>
+            <span class="engine-owner">Janis</span>
+            <span class="engine-status estatus-live">live</span>
+        </a>
+    </div>
+</details>
+
+<details class="engine-bar-wrap">
+    <summary class="engine-bar-label">LFE ENGINES, permanent, serve personal life</summary>
+    <div class="engine-bar">
+        <a class="engine-pill" href="/engines/registry/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">I</span>
+                <span class="engine-name">Body</span>
+            </div>
+            <span class="engine-owner">Pepe</span>
+            <span class="engine-status estatus-live">live</span>
+        </a>
+        <a class="engine-pill" href="/engines/registry/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">II</span>
+                <span class="engine-name">Mind</span>
+            </div>
+            <span class="engine-owner">Pepe</span>
+            <span class="engine-status estatus-live">live</span>
+        </a>
+        <a class="engine-pill" href="/engines/registry/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">III</span>
+                <span class="engine-name">Soul</span>
+            </div>
+            <span class="engine-owner">Pepe</span>
+            <span class="engine-status estatus-partial">partial</span>
+        </a>
+        <a class="engine-pill" href="/engines/registry/">
+            <div class="engine-pill-top">
+                <span class="engine-numeral">0</span>
+                <span class="engine-name">Admin Core</span>
+            </div>
+            <span class="engine-owner">Lars</span>
+            <span class="engine-status estatus-live">live</span>
+        </a>
+    </div>
+</details>
+
+<!-- GENERATED:FILTERS:START -->
+<div class="filter-bar-v2">
+<label class="filt-lbl">Type <select class="filt" data-filt="type"><option value="">All</option><option value="function">function</option><option value="project">project</option></select></label>
+<label class="filt-lbl">Cluster <select class="filt" data-filt="cluster"><option value="">All</option><option value="ai-studio">ai-studio</option><option value="creative">creative</option><option value="duara">duara</option><option value="havenpay">havenpay</option><option value="health">health</option><option value="hok">hok</option><option value="investments">investments</option><option value="janis">janis</option><option value="jouissance">jouissance</option><option value="kabisa">kabisa</option><option value="ladx">ladx</option><option value="lof">lof</option><option value="mgl">mgl</option><option value="mind">mind</option><option value="misfit-lab">misfit-lab</option><option value="nca">nca</option><option value="panda">panda</option><option value="personal">personal</option><option value="rel">rel</option><option value="soul">soul</option></select></label>
+<label class="filt-lbl">Engine <select class="filt" data-filt="engine"><option value="">All</option><option value="lfe:body">lfe:body</option><option value="lfe:mind">lfe:mind</option><option value="lfe:soul">lfe:soul</option><option value="mgl:core">mgl:core</option><option value="mgl:value">mgl:value</option></select></label>
+<label class="filt-lbl">Relevance <select class="filt" data-filt="relevance"><option value="">All</option><option value="R1">R1</option><option value="R2">R2</option><option value="R3">R3</option><option value="R4">R4</option></select></label>
+<label class="filt-lbl">Priority <select class="filt" data-filt="priority"><option value="">All</option><option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option><option value="P4">P4</option><option value="P5">P5</option></select></label>
+<label class="filt-lbl">Owner <select class="filt" data-filt="owner"><option value="">All</option><option value="bowie">bowie</option><option value="freddie">freddie</option><option value="janis">janis</option><option value="lars">lars</option><option value="lemmy">lemmy</option><option value="pepe">pepe</option></select></label>
+<label class="filt-lbl">Status <select class="filt" data-filt="status"><option value="">All</option><option value="active">active</option><option value="complete">complete</option><option value="frozen">frozen</option></select></label>
+<button class="filt-reset" type="button" onclick="resetOpsFilters()">Reset</button>
+</div>
+
+<style>
+.filter-bar-v2 { max-width: 1000px; margin: 1.5rem auto 0.5rem; padding: 0 1.5rem;
+  display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.filter-bar-v2 .filt-lbl { font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.08em; }
+.filter-bar-v2 select { background: #0c0c0c; color: #e0e0e0; border: 1px solid #222;
+  padding: 0.25rem 0.4rem; border-radius: 4px; font-size: 0.72rem; margin-left: 0.35rem; }
+.filter-bar-v2 .filt-reset { background: #1a0c14; color: #f472b6; border: 1px solid #4a2035;
+  padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.7rem; cursor: pointer; }
+.filter-bar-v2 .filt-reset:hover { background: #2a0f1c; }
+.items-grid.v2-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.6rem; }
+.item-details.v2 { background: #0c0c0c; border: 1px solid #1e1e1e; border-radius: 6px;
+  padding: 0.7rem 0.85rem; }
+.item-details.v2[open] { border-color: #333; }
+.item-details.v2.item-status-blocked { border-color: #7f1d1d; background: #0f0808; }
+.item-details.v2.item-status-closed,
+.item-details.v2.item-status-archived { opacity: 0.5; }
+.item-details.v2 summary { list-style: none; cursor: pointer; user-select: none; }
+.item-details.v2 summary::-webkit-details-marker { display: none; }
+.item-header-v2 { display: flex; justify-content: space-between; align-items: center;
+  gap: 0.4rem; flex-wrap: wrap; }
+.item-type-pill { font-size: 0.58rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 0.15rem 0.45rem; border-radius: 3px; }
+.right-pills { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.pill { font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; padding: 0.13rem 0.4rem; border-radius: 3px; }
+.pill-engine { background: #111; color: #888; border: 1px solid #2a2a2a; font-family: monospace; }
+.item-name-v2 { font-size: 0.85rem; font-weight: 600; color: #fff; margin-top: 0.4rem; line-height: 1.3; }
+.item-desc { font-size: 0.75rem; color: #bbb; margin-top: 0.3rem; line-height: 1.4; }
+.item-why-v2 { color: #a24968; font-style: italic; font-size: 0.7rem; margin-top: 0.3rem; line-height: 1.35; }
+.item-meta { font-size: 0.62rem; color: #666; margin-top: 0.5rem; display: flex;
+  flex-wrap: wrap; gap: 0.6rem; }
+.item-meta em { color: #888; font-style: normal; }
+.staleness { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-left: 0.2rem; }
+.item-body-v2 { padding-top: 0.55rem; margin-top: 0.55rem; border-top: 1px solid #1a1a1a; }
+.item-done { font-size: 0.72rem; color: #ccc; margin-bottom: 0.35rem; }
+.item-done strong { color: #E14B87; font-weight: 700; }
+.item-ext { font-size: 0.7rem; color: #999; margin-top: 0.3rem; }
+.item-ext a { color: #E14B87; text-decoration: none; }
+.item-ext a:hover { text-decoration: underline; }
+.v2-warn { color: #f87171; font-family: monospace; font-size: 0.65rem; }
+.cluster-header { padding: 0.6rem 0.5rem !important; }
+.cluster-header-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.cluster-header .cluster-name { font-size: 0.95rem; font-weight: 700; color: #fff;
+  letter-spacing: 0.01em; }
+.cluster-header .cluster-sub { font-size: 0.6rem; color: #888; text-transform: uppercase;
+  letter-spacing: 0.09em; margin-top: 0.35rem; }
+.cluster-header .cluster-desc-line { font-size: 0.75rem; color: #aaa; margin-top: 0.35rem;
+  line-height: 1.4; max-width: 900px; }
+</style>
+<script>
+function applyOpsFilters(){
+  const filters = {};
+  document.querySelectorAll('.filter-bar-v2 select.filt').forEach(sel => {
+    if (sel.value) filters[sel.dataset.filt] = sel.value;
+  });
+  document.querySelectorAll('.item-details.v2').forEach(el => {
+    let ok = true;
+    for (const k in filters) {
+      if ((el.dataset[k] || '') !== filters[k]) { ok = false; break; }
+    }
+    el.style.display = ok ? '' : 'none';
+  });
+  document.querySelectorAll('details.cluster-section').forEach(sec => {
+    const shown = sec.querySelectorAll('.item-details.v2:not([style*="display: none"])').length;
+    sec.style.display = shown > 0 ? '' : 'none';
+  });
+}
+function resetOpsFilters(){
+  document.querySelectorAll('.filter-bar-v2 select.filt').forEach(s => s.value = '');
+  applyOpsFilters();
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.filter-bar-v2 select.filt').forEach(s => {
+    s.addEventListener('change', applyOpsFilters);
+  });
+});
+</script>
+
+<!-- GENERATED:FILTERS:END -->
+<!-- GENERATED:CLUSTERS:START -->
+<div class="universe-label">Clients</div>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">DUARA</span>
+<span class="cluster-name">Duara Education</span>
+</div>
+<div class="cluster-sub">Clients · 9 item(s)</div>
+<div class="cluster-desc-line">Victoria Peill&#x27;s school entrepreneur network in Kenya.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R1" data-priority="P1" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">Duara Operating Model</div>
+<div class="item-desc">Structures Victoria&#x27;s business model into a legally workable operating framework.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Full operating model is documented, contracts are complete, and all legal ambiguity is resolved.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-complete" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R1" data-priority="P5" data-owner="pepe" data-status="complete">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#f472b6;color:#fff;">complete</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" style="background:#6b7280;color:#fff;">P5</span></span>
+</div>
+<div class="item-name-v2">Mission Lock</div>
+<div class="item-desc">Embedding Duara&#x27;s mission statement and educational philosophy into founding legal documents.</div>
+<div class="item-why-v2">Mission Lock. Duara mission legally protected in governing documents. Closed 2025.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Mission and educational philosophy are permanently locked into governing documents.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-complete" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R2" data-priority="P1" data-owner="pepe" data-status="complete">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#f472b6;color:#fff;">complete</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">Dagoretti Closing</div>
+<div class="item-desc">Manages the formal closure of Dagoretti school and clean separation of SE Vanessa Daido.</div>
+<div class="item-why-v2">Close Dagoretti school situation.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Vanessa Daido separated under mutual release and Dagoretti school formally closed with no litigation.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R2" data-priority="P1" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">RUA Stella Complaint and Labour Inspection</div>
+<div class="item-desc">Resolves the Stella employment complaint and Kiambu Labour Inspection audit for Ruaka.</div>
+<div class="item-why-v2">Ruaka labour complaint and inspection. Settlement signed and audit passed with remediation plan.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Settlement signed with full discharge, audit passed, and all Ruaka staff registered.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R2" data-priority="P1" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">Staff Contracts Revamp</div>
+<div class="item-desc">Designing and implementing the complete contract suite for Duara teaching and educare staff.</div>
+<div class="item-why-v2">Staff Contracts Revamp.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> All new contract templates are finalised, signed off, and successfully rolled out to existing staff.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Governance</div>
+<div class="item-desc">Provides ongoing corporate governance and compliance support for Duara entities in Delaware and Kenya.</div>
+<div class="item-why-v2">Governance advisory to Duara board and management.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>XL</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Annual compliance filings and board management requirements are fully maintained without penalty.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">SE Contracts</div>
+<div class="item-desc">Designing the ideal contract set for Social Entrepreneurs, including the school transfer mechanism.</div>
+<div class="item-why-v2">SE Contracts.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> SE engagement agreement template and school transfer mechanism clause are finalised and signed off by Victoria.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-complete" data-type="project" data-cluster="duara" data-engine="mgl:value" data-relevance="R3" data-priority="P4" data-owner="pepe" data-status="complete">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#f472b6;color:#fff;">complete</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span></span>
+</div>
+<div class="item-name-v2">Treebeard Loan</div>
+<div class="item-desc">Manages the execution and disbursement of a $50k loan from Treebeard Trust to Duara Education Inc.</div>
+<div class="item-why-v2">Treebeard loan agreement. Executed and disbursed.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> The $50k loan agreement is fully executed and funds are disbursed to Duara.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="duara" data-engine="mgl:value" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Corporate Stuff</div>
+<div class="item-desc">Manages Duara corporate housekeeping, investor obligations, and legal entity records.</div>
+<div class="item-why-v2">Corporate stuff. Holds tre (Treebeard Loan), MLK (Mission Lock, closed), SAFE/investor tasks. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>duara</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">HAVENPAY</span>
+<span class="cluster-name">HavenPay</span>
+</div>
+<div class="cluster-sub">Clients · 1 item(s)</div>
+<div class="cluster-desc-line">Yoeal Haile&#x27;s neobank for refugees in East Africa.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="havenpay" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">HavenPay Equity Round</div>
+<div class="item-desc">Success Fee. Deal advisor for HavenPay&#x27;s $300k equity round.</div>
+<div class="item-why-v2">Success-fee upside tied to closing the round; anchors the Yoeal Haile relationship.</div>
+<div class="item-meta"><span>Cluster: <em>havenpay</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Round closes, definitive docs executed, success fee invoiced.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">KABISA</span>
+<span class="cluster-name">Kabisa</span>
+</div>
+<div class="cluster-sub">Clients · 2 item(s)</div>
+<div class="cluster-desc-line">Nick Hu&#x27;s Rwandan-based EV company operating across East Africa.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="kabisa" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Kabisa Equity Round</div>
+<div class="item-desc">Success Fee. Deal advisor for Kabisa&#x27;s $3M equity round.</div>
+<div class="item-why-v2">Success-fee upside tied to closing the round with Nick Hu; largest active deal in the Rwanda portfolio.</div>
+<div class="item-meta"><span>Cluster: <em>kabisa</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Round closes, definitive docs executed, success fee invoiced.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="kabisa" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Kabisa x Mount Meru JV</div>
+<div class="item-desc">Success Fee. Deal advisor for Kabisa&#x27;s joint venture with Mount Meru.</div>
+<div class="item-why-v2">JV opens a distribution or infrastructure lane through Mount Meru; success fee tied to signed JV.</div>
+<div class="item-meta"><span>Cluster: <em>kabisa</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> JV structure agreed, definitive docs executed, success fee invoiced.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">LADX</span>
+<span class="cluster-name">LADX</span>
+</div>
+<div class="cluster-sub">Clients · 1 item(s)</div>
+<div class="cluster-desc-line">Dominion Paul&#x27;s logistics platform between Lagos and Kigali.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ladx" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">LADX Board Advisory</div>
+<div class="item-desc">Sweat Equity. Board advisor for LADX&#x27;s growth stage between Lagos and Kigali.</div>
+<div class="item-why-v2">Sweat-equity board seat plus governance influence inside Dominion Paul&#x27;s logistics platform.</div>
+<div class="item-meta"><span>Cluster: <em>ladx</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Ongoing role. Formal exit or IPO closes the engagement.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">NCA</span>
+<span class="cluster-name">Nobodies Collective Association</span>
+</div>
+<div class="cluster-sub">Clients · 8 item(s)</div>
+<div class="cluster-desc-line">Burner community in Spain running Elsewhere, the Spanish Burning Man event.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="nca" data-engine="mgl:value" data-relevance="R1" data-priority="P1" data-owner="lemmy" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">GNSL Transition</div>
+<div class="item-desc">Complete the legal and operational separation of NCA from legacy entity GNSL.</div>
+<div class="item-why-v2">Close out legacy GNSL entity so NCA operates independently.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>lemmy</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> GNSL dissolved and all assets, IP, contracts sit under NCA.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="nca" data-engine="mgl:value" data-relevance="R1" data-priority="P1" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">NCA Site</div>
+<div class="item-desc">Securing a permanent venue for Elsewhere and future NCA events through land search, legal structuring, and infrastructure installation.</div>
+<div class="item-why-v2">Secure permanent venue for Elsewhere and future NCA events.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>XL</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Long-term site locked with permits, legal vehicle, and first permanent fixture installed.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="nca" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Elsewhere 2026</div>
+<div class="item-desc">Manages all post-event obligations and vendor settlements for the Elsewhere 2026 gathering.</div>
+<div class="item-why-v2">Close all post-event obligations from 2026 gathering.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>janis</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> All vendor invoices are paid, refunds are processed, feedback is synthesized, and the retrospective is filed.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="nca" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Elsewhere 2027</div>
+<div class="item-desc">Plan and execute the 2027 Elsewhere gathering with secure site and permits.</div>
+<div class="item-why-v2">Prepare and deliver 2027 gathering.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>XL</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> The 2027 Elsewhere event successfully concludes with permanent site secured and permits locked.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="nca" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="lars" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">New Site</div>
+<div class="item-desc">Standalone public web presence for NCA to establish a professional identity separate from GNSL.</div>
+<div class="item-why-v2">Ship public nobodies.team so NCA has professional web presence separate from GNSL.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>lars</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Site is live at the new domain with core pages and land search output published.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="nca" data-engine="mgl:value" data-relevance="R2" data-priority="" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Data Protection</div>
+<div class="item-desc">Manages NCA GDPR posture and breach response protocols across operational systems.</div>
+<div class="item-why-v2">Maintain NCA GDPR posture across Notion, Drive, Airtable, event registration. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>janis</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="nca" data-engine="mgl:value" data-relevance="R2" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Legal Operations</div>
+<div class="item-desc">Maintains NCA contract stack, IP portfolio, regulatory filings, and volunteer legal infrastructure.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-complete" data-type="project" data-cluster="nca" data-engine="mgl:value" data-relevance="R3" data-priority="P4" data-owner="pepe" data-status="complete">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#f472b6;color:#fff;">complete</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span></span>
+</div>
+<div class="item-name-v2">Containers</div>
+<div class="item-desc">Manages the NCA-GNSL container licence and physical asset handover for Elsewhere 2026.</div>
+<div class="item-why-v2">Physical containers build-out at Elsewhere venue. Completed.</div>
+<div class="item-meta"><span>Cluster: <em>nca</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>S</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> All physical containers returned to NORG and signed contract amendment received.</div>
+</div>
+</details>
+</div></div>
+</details>
+<div class="universe-label">Collabs</div>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">HOK</span>
+<span class="cluster-name">House of Kleos</span>
+</div>
+<div class="cluster-sub">Collabs · with Daniela Einat · 4 item(s)</div>
+<div class="cluster-desc-line">Collaboration with Daniela (Nani) and Einat building a somatic education platform and the events that run inside it.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="hok" data-engine="mgl:value" data-relevance="R1" data-priority="P1" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">Cofounder Negotiations</div>
+<div class="item-desc">Formalize the founding arrangement between Nani and Einat covering equity split, roles, and exit provisions.</div>
+<div class="item-why-v2">Formalize Nani+Einat cofounder arrangement.</div>
+<div class="item-meta"><span>Cluster: <em>hok</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Signed agreement covering equity, roles, decision rights, and exit is fully executed by all parties.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="hok" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span><span class="pill" style="background:#3b82f6;color:#fff;">2/5 reached</span></span>
+</div>
+<div class="item-name-v2">HOK Digital</div>
+<div class="item-desc">Builds and launches the full digital infrastructure for House of Kleos across public site, admin portal, member portal, PWA, and newsletter.</div>
+<div class="item-why-v2">HOK needs one coherent digital surface for members, event ops, and public brand. Fragmented sites and portals slow every workstream.</div>
+<div class="item-meta"><span>Cluster: <em>hok</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>XL</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> All five milestones (public site, admin portal, member portal, PWA, newsletter) are live, stable, and owned by named roles.</div>
+<div class="item-milestones"><strong>Last 3 milestone(s).</strong><ul><li class="ms-open"><span class="ms-mark">○</span> Member portal</li><li class="ms-open"><span class="ms-mark">○</span> PWA</li><li class="ms-open"><span class="ms-mark">○</span> Newsletter</li></ul></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="hok" data-engine="mgl:value" data-relevance="R2" data-priority="" data-owner="lars" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C3 monthly" style="background:#155e75;color:#fff;">C3</span></span>
+</div>
+<div class="item-name-v2">Erostatic Dance Admin</div>
+<div class="item-desc">Ongoing admin and delivery for the Erostatic Dance event stream under House of Kleos (venue, logistics, ticketing, comms, facilitation, retros).</div>
+<div class="item-why-v2">Erostatic Dance is a recurring HOK event stream. Runs indefinitely, needs permanent operational ownership rather than a project with an end date.</div>
+<div class="item-meta"><span>Cluster: <em>hok</em></span> <span>Owner: <em>lars</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="hok" data-engine="mgl:value" data-relevance="R3" data-priority="" data-owner="lars" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C3 monthly" style="background:#155e75;color:#fff;">C3</span></span>
+</div>
+<div class="item-name-v2">Safe to Feel Admin</div>
+<div class="item-desc">Ongoing admin and delivery for the Safe to Feel event stream (Einat) under House of Kleos (programming, offerings, comms, ops).</div>
+<div class="item-why-v2">Safe to Feel absorbed into HOK. Recurring event stream needs permanent operational ownership rather than a project with an end date.</div>
+<div class="item-meta"><span>Cluster: <em>hok</em></span> <span>Owner: <em>lars</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">JOUISSANCE</span>
+<span class="cluster-name">Jouissance Platform</span>
+</div>
+<div class="cluster-sub">Collabs · with Agathe Daumal · 3 item(s)</div>
+<div class="cluster-desc-line">Collaboration with Agathe Daumal piloting how erotic, somatic, and kinky experiences can be hosted with consciousness, safety, and craft.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="jouissance" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Jouissance App Development</div>
+<div class="item-desc">Build and maintain jouissance.mexzungu.com, the participant portal covering intake, knowledge sets, session prep, and post-session integration.</div>
+<div class="item-why-v2">Digital rails let the practice run without Pepe or Agathe manually onboarding every new participant.</div>
+<div class="item-meta"><span>Cluster: <em>jouissance</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Portal handles full participant lifecycle end to end with zero manual touch from Pepe.</div>
+<div class="item-ext"><a href="/home/mexzungu/mexzungu-site" target="_blank" rel="noopener">Repo</a> · <span class="chan">Ch: telegram jouissance thread 1108 (-1003965424488)</span></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="jouissance" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Jouissance Surrender Workshop</div>
+<div class="item-desc">Design, deliver, and iterate on the in-person surrender workshop format that produced the August 14 Jouissance session.</div>
+<div class="item-why-v2">In-person container is where the practice actually happens. Everything digital serves this.</div>
+<div class="item-meta"><span>Cluster: <em>jouissance</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Repeatable workshop kit runs without Pepe rebuilding it each time, first repeat delivered.</div>
+<div class="item-ext"><span class="chan">Ch: telegram jouissance thread 1108 (-1003965424488)</span></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="jouissance" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="freddie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Jouissance Workshops</div>
+<div class="item-desc">Jouissance Workshops. Deliver Jouissance workshops. Done when workshop format shipped and retro filed.</div>
+<div class="item-why-v2">Deliver Jouissance workshops.</div>
+<div class="item-meta"><span>Cluster: <em>jouissance</em></span> <span>Touches: <em>hok, creative</em></span> <span>Owner: <em>freddie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Deliver Jouissance workshops. Done when workshop format shipped and retro filed.</div>
+</div>
+</details>
+</div></div>
+</details>
+<div class="universe-label">Business Operations</div>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">AI-STUDIO</span>
+<span class="cluster-name">AI Studio</span>
+</div>
+<div class="cluster-sub">Business Operations · 10 item(s)</div>
+<div class="cluster-desc-line">In-house AI-native web and app builds. Templates, patterns, deploy protocols, and every live product built under Mexzungu.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Banana HQ (Lea Tracker)</div>
+<div class="item-desc">In-house build. Relationship tracking web app for Lea, part of the wider dating and relationship ops stack.</div>
+<div class="item-why-v2">Discrete surface for Lea-specific tracking without polluting other relationship stores.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>rel</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Live tracker; captures the fields Pepe wants; low-friction daily use.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Guinju Site</div>
+<div class="item-desc">In-house build. Product website for Carlos Guinju&#x27;s rope-work learning platform.</div>
+<div class="item-why-v2">Guinju needs a public web presence to sell into the market before deeper product build.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>guinju</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Public site live, capturing leads, ready for product build phase.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">HOK Digital (mirror)</div>
+<div class="item-desc">In-house build. Full digital infrastructure for House of Kleos: public site, admin portal, member portal, PWA, newsletter.</div>
+<div class="item-why-v2">HOK Digital lives here so build patterns and deploy protocols travel across every in-house web product.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>hok</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> 5 milestones live and stable; ownership handed to Nani plus Einat.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Jordi Site (Massage plus Tarot)</div>
+<div class="item-desc">In-house build. Product website for Jordi&#x27;s massage and tarot practice.</div>
+<div class="item-why-v2">Pilot to test studio pattern for hybrid physical plus intuitive practitioner sites.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Public site live, bookings flowing, brand story told.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Jouissance Platform Build</div>
+<div class="item-desc">In-house build. Group session platform for facilitators running structured intimacy work with cohorts.</div>
+<div class="item-why-v2">Build context for Jouissance sits with the studio, not with the collaboration operations under Agathe.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>jouissance</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Platform stable in production, participant onboarding self-serve, facilitator tooling complete.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Kizomba Instructor Site</div>
+<div class="item-desc">In-house build. Product website for the kizomba instructor pilot.</div>
+<div class="item-why-v2">Pilot to test the studio pattern for individual instructor sites.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Public site live and generating first bookings for the instructor.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Miriam App</div>
+<div class="item-desc">In-house build. Web app that hosts Miriam, Agathe-facing AI operator.</div>
+<div class="item-why-v2">Miriam is a product surface distinct from Janis. Needs its own web app and deploy pipeline.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>panda</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Live app scored greater than or equal to 4.0 on all 7 UX dimensions with Playwright smoke green.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Panda HQ</div>
+<div class="item-desc">In-house build. Ops HQ web app for the Panda relationship container.</div>
+<div class="item-why-v2">Panda needs its own operational surface separate from JVA. Different data model and audience.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>panda</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Panda workstreams have their own surfaces; auth and separation from Societas locked.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Societas HQ</div>
+<div class="item-desc">In-house build. Ops HQ web app for the Pepe plus Agathe joint venture and shared workstreams.</div>
+<div class="item-why-v2">Central surface for shared JVA infrastructure. Replaces per-topic scattered tools.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>panda</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Core JVA workstreams have first-class surfaces; Pepe and Agathe both self-serve.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="ai-studio" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="freddie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">pepecarrillo.co Personal Legacy Site</div>
+<div class="item-desc">pepecarrillo.co Personal Legacy Site. Ship Pepe personal legacy site expressing 2035 horizon. Done when live, audit-clean, reflects personal brand vision.</div>
+<div class="item-why-v2">Ship Pepe personal legacy site expressing 2035 horizon.</div>
+<div class="item-meta"><span>Cluster: <em>ai-studio</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>freddie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Ship Pepe personal legacy site expressing 2035 horizon. Done when live, audit-clean, reflects personal brand vision.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">INVESTMENTS</span>
+<span class="cluster-name">Investments</span>
+</div>
+<div class="cluster-sub">Business Operations · 6 item(s)</div>
+<div class="cluster-desc-line">Startup investments and loans held personally. Portfolio tracking, valuations, and workout of underperforming positions.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="investments" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span><span class="pill" style="background:#3b82f6;color:#fff;">1/4 reached</span></span>
+</div>
+<div class="item-name-v2">Ayembe Loan Restructure</div>
+<div class="item-desc">Restructured USD 35k (principal plus accrued interest) loan to Alex Kalanda&#x27;s venture in Rwanda. Awaiting recontract signature.</div>
+<div class="item-why-v2">Largest active loan workout. Recontract must be signed to unlock repayment schedule.</div>
+<div class="item-meta"><span>Cluster: <em>investments</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Recontract signed, then loan fully repaid on schedule.</div>
+<div class="item-milestones"><strong>Last 3 milestone(s).</strong><ul><li class="ms-open"><span class="ms-mark">○</span> Recontract signed by borrower</li><li class="ms-open"><span class="ms-mark">○</span> First payment under new schedule</li><li class="ms-open"><span class="ms-mark">○</span> Fully repaid</li></ul></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="investments" data-engine="mgl:value" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span><span class="pill" style="background:#3b82f6;color:#fff;">2/4 reached</span></span>
+</div>
+<div class="item-name-v2">Namirembe Loan Restructure</div>
+<div class="item-desc">Restructured USD 12k loan to Noah Waikiria&#x27;s textile venture in Uganda. Recontract signed, first payment received; monitor to full repayment.</div>
+<div class="item-why-v2">Active workout position. First payment came in; sustaining discipline until fully repaid.</div>
+<div class="item-meta"><span>Cluster: <em>investments</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Loan fully repaid with interest per restructured schedule.</div>
+<div class="item-milestones"><strong>Last 3 milestone(s).</strong><ul><li class="ms-done"><span class="ms-mark">✓</span> First scheduled payment received</li><li class="ms-open"><span class="ms-mark">○</span> 50% principal repaid</li><li class="ms-open"><span class="ms-mark">○</span> Fully repaid</li></ul></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="investments" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span><span class="pill" style="background:#3b82f6;color:#fff;">4/5 reached</span></span>
+</div>
+<div class="item-name-v2">Cape Bay Property</div>
+<div class="item-desc">Apartment A4, Cape Bay Beach Resort, Bain Boeuf, Mauritius. Owned outright; sometimes listed on Airbnb or Booking, sometimes just held with ongoing maintenance.</div>
+<div class="item-why-v2">Real estate asset in Pepe&#x27;s personal portfolio. Requires owner-level care (levies, maintenance, insurance) regardless of whether it is rented in any given period.</div>
+<div class="item-meta"><span>Cluster: <em>investments</em></span> <span>Touches: <em>personal</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Ongoing. Measured by: property in good repair, insurance and levies current, generating positive cash-flow when in rental mode.</div>
+<div class="item-milestones"><strong>Last 3 milestone(s).</strong><ul><li class="ms-done"><span class="ms-mark">✓</span> Property manager (Friday Properties) engaged</li><li class="ms-done"><span class="ms-mark">✓</span> Listed on Airbnb and Booking when in rental mode</li><li class="ms-open"><span class="ms-mark">○</span> 12-month rolling cash-flow positive during rental periods</li></ul></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="investments" data-engine="mgl:value" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span><span class="pill" style="background:#3b82f6;color:#fff;">1/5 reached</span></span>
+</div>
+<div class="item-name-v2">Diani Studio</div>
+<div class="item-desc">Off-plan studio (Unit C08, 108 Residences, Diani Beach, Kenya) with target delivery end of 2026.</div>
+<div class="item-why-v2">Second real estate position after Cape Bay. Requires construction monitoring now, rental management on handover.</div>
+<div class="item-meta"><span>Cluster: <em>investments</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Unit delivered, furnished, listed for rental, first booking received.</div>
+<div class="item-milestones"><strong>Last 3 milestone(s).</strong><ul><li class="ms-open"><span class="ms-mark">○</span> Delivery of unit</li><li class="ms-open"><span class="ms-mark">○</span> Furnished and listed for rental</li><li class="ms-open"><span class="ms-mark">○</span> First booking received</li></ul></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="investments" data-engine="mgl:value" data-relevance="R4" data-priority="P4" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#701a75;color:#fff;">R4</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span><span class="pill" style="background:#3b82f6;color:#fff;">4/5 reached</span></span>
+</div>
+<div class="item-name-v2">Passive Startup Portfolio</div>
+<div class="item-desc">Bundled tracking for passive startup equity and loan positions Pepe holds without active workout.</div>
+<div class="item-why-v2">Positions with no active work; keep visibility so material updates from founders do not slip.</div>
+<div class="item-meta"><span>Cluster: <em>investments</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>S</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Each position exits (liquidity event or write-off) or migrates to its own workout project.</div>
+<div class="item-milestones"><strong>Last 3 milestone(s).</strong><ul><li class="ms-done"><span class="ms-mark">✓</span> e-moti loan tracked</li><li class="ms-done"><span class="ms-mark">✓</span> Publisher Prime equity tracked</li><li class="ms-open"><span class="ms-mark">○</span> Quarterly touchpoint with each founder</li></ul></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="investments" data-engine="mgl:value" data-relevance="R4" data-priority="P4" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:value</span><span class="pill" style="background:#701a75;color:#fff;">R4</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span></span>
+</div>
+<div class="item-name-v2">Public Markets</div>
+<div class="item-desc">Personal positions in forex, crypto, stocks, and other public-market instruments.</div>
+<div class="item-why-v2">Liquid personal capital deployed across markets; requires periodic rebalancing and thesis review.</div>
+<div class="item-meta"><span>Cluster: <em>investments</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>S</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Ongoing. No terminal state; measured against risk-adjusted return targets.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">JANIS</span>
+<span class="cluster-name">Janis (Chief of Staff)</span>
+</div>
+<div class="cluster-sub">Business Operations · 5 item(s)</div>
+<div class="cluster-desc-line">Core operational AI stack. Tools server, cron scheduler, hooks, dashboards, and 74+ registered tools.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="janis" data-engine="mgl:core" data-relevance="R1" data-priority="P1" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span></span>
+</div>
+<div class="item-name-v2">Credit-Crunch Recovery</div>
+<div class="item-desc">Fix 5 breakages left by the emergency credit freeze so core Janis and content pipeline run without Pepe-visible errors.</div>
+<div class="item-why-v2">Restore Janis to fully-operational floor after credit-freeze emergency degraded infrastructure and content pipeline.</div>
+<div class="item-meta"><span>Cluster: <em>janis</em></span> <span>Touches: <em>mgl</em></span> <span>Owner: <em>janis</em></span> <span>Effort: <em>S</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> (1) social-poster no longer alarms on unwired IG carousel, (2) code-task dispatcher routes autonomous spawns to Gemini per Rule 20, (3) P1 loop tier approved by Pepe and only those unfrozen under MGL_CREDIT_FREEZE=1, (4) 2 orphan crons referencing retired scripts removed, (5) /engines/registry/ page live-fetches from cron-heartbeats.json. 24h green run after all 5 closed.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="janis" data-engine="mgl:core" data-relevance="R1" data-priority="" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Janis Brain and Infrastructure</div>
+<div class="item-desc">Janis Brain and Infrastructure. Maintain and evolve Janis brain, tools server, cron infrastructure. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>janis</em></span> <span>Owner: <em>bowie</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="janis" data-engine="mgl:core" data-relevance="R1" data-priority="" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Miriam App Dev and Maintenance</div>
+<div class="item-desc">Miriam App Dev and Maintenance. Develop and maintain the Miriam web app. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>janis</em></span> <span>Owner: <em>bowie</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="janis" data-engine="mgl:core" data-relevance="R1" data-priority="" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Miriam Brain and Infrastructure</div>
+<div class="item-desc">Maintains and evolves the Miriam cognitive architecture, hooks, and behavioral guardrails.</div>
+<div class="item-why-v2">Maintain and evolve Miriam brain, hooks, guardrails. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>janis</em></span> <span>Owner: <em>bowie</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="janis" data-engine="mgl:core" data-relevance="R2" data-priority="" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Janis App Dev and Maintenance</div>
+<div class="item-desc">Core web application development and maintenance service for the Janis cluster.</div>
+<div class="item-why-v2">Develop and maintain the Janis web app. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>janis</em></span> <span>Owner: <em>janis</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">LOF</span>
+<span class="cluster-name">Lawyer of the Future</span>
+</div>
+<div class="cluster-sub">Business Operations · 1 item(s)</div>
+<div class="cluster-desc-line">Training program and community for lawyers who want to operate like builders, closers, and creatives.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="lof" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">LOF Curriculum v1</div>
+<div class="item-desc">Scope and build the first version of the Lawyer of the Future curriculum, delivery format, and cohort model.</div>
+<div class="item-why-v2">LOF is the productized version of everything Pepe learned crossing from corporate law into operator work. Curriculum must exist before any cohort can run.</div>
+<div class="item-meta"><span>Cluster: <em>lof</em></span> <span>Touches: <em>mgl</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Curriculum outlined, delivery format chosen (cohort vs self-paced), pricing set, first cohort marketed.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">MGL</span>
+<span class="cluster-name">Mexzungu Group</span>
+</div>
+<div class="cluster-sub">Business Operations · 7 item(s)</div>
+<div class="cluster-desc-line">The consulting firm itself. Brand, 29-persona org, delivery engines, and internal governance.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="mgl" data-engine="mgl:core" data-relevance="R1" data-priority="P1" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" style="background:#dc2626;color:#fff;">P1</span><span class="pill" style="background:#3b82f6;color:#fff;">4/5 reached</span></span>
+</div>
+<div class="item-name-v2">Project AI MGL</div>
+<div class="item-desc">Build and maintain the Mexzungu Group AI-native org: 29 personas across 6 tiers with dossiers, invocation protocol, and daily loops.</div>
+<div class="item-why-v2">The MGL org is the operational team behind Mexzungu. Personas must stay calibrated, dossiers current, and loops running for the org to actually function.</div>
+<div class="item-meta"><span>Cluster: <em>mgl</em></span> <span>Owner: <em>janis</em></span> <span>Effort: <em>XL</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> 29 personas deployed with dossiers, invocation protocol live, daily loops firing, KPI loop reporting weekly.</div>
+<div class="item-milestones"><strong>Last 3 milestone(s).</strong><ul><li class="ms-done"><span class="ms-mark">✓</span> Daily persona loops firing (Kim, Sheryl, Sade, Freddie, Grohl, Lenny, Joni, Nick, Anselmo, Grace, Annie, Iggy, Jack, Nile, Lou)</li><li class="ms-done"><span class="ms-mark">✓</span> Weekly KPI loop live</li><li class="ms-open"><span class="ms-mark">○</span> Quarterly persona recalibration cadence</li></ul></div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="mgl" data-engine="mgl:core" data-relevance="R1" data-priority="" data-owner="freddie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Content Engine</div>
+<div class="item-desc">Standing function for MGL multi-channel content production and publishing workflows.</div>
+<div class="item-why-v2">Content engine. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>mgl</em></span> <span>Owner: <em>freddie</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="mgl" data-engine="mgl:core" data-relevance="R2" data-priority="P2" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Kellen and AI Ninja Onboarding</div>
+<div class="item-desc">Kellen and AI Ninja Onboarding. Onboard Kellen as AI ninja. Done when Kellen self-sufficient across all named workflows.</div>
+<div class="item-why-v2">Onboard Kellen as AI ninja.</div>
+<div class="item-meta"><span>Cluster: <em>mgl</em></span> <span>Owner: <em>janis</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Onboard Kellen as AI ninja. Done when Kellen self-sufficient across all named workflows.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="mgl" data-engine="mgl:core" data-relevance="R2" data-priority="P2" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">mexzungu.com Rebuild</div>
+<div class="item-desc">mexzungu.com Rebuild. Rebuild mexzungu.com to audit-clean. Done when audit 4+ across all dimensions.</div>
+<div class="item-why-v2">Rebuild mexzungu.com to audit-clean.</div>
+<div class="item-meta"><span>Cluster: <em>mgl</em></span> <span>Owner: <em>janis</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Rebuild mexzungu.com to audit-clean. Done when audit 4+ across all dimensions.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="mgl" data-engine="mgl:core" data-relevance="R2" data-priority="" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">BD and Client Acquisition Engine</div>
+<div class="item-desc">BD and Client Acquisition Engine. BD and client acquisition engine. Permanent.</div>
+<div class="item-why-v2">BD and client acquisition engine. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>mgl</em></span> <span>Owner: <em>janis</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="mgl" data-engine="mgl:core" data-relevance="R2" data-priority="" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Outlaw Chronicles Newsletter</div>
+<div class="item-desc">Outlaw Chronicles Newsletter. Outlaw Chronicles newsletter production and distribution. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>mgl</em></span> <span>Touches: <em>creative</em></span> <span>Owner: <em>janis</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="mgl" data-engine="mgl:core" data-relevance="R3" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Home Office</div>
+<div class="item-desc">Home office setup and final financial reconciliation in Barcelona.</div>
+<div class="item-why-v2">Home office setup.</div>
+<div class="item-meta"><span>Cluster: <em>mgl</em></span> <span>Touches: <em>personal</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> All remaining setup items are matched against accounting records and the project is formally closed.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">MISFIT-LAB</span>
+<span class="cluster-name">Misfit Lab</span>
+</div>
+<div class="cluster-sub">Business Operations · 1 item(s)</div>
+<div class="cluster-desc-line">Experimental AI-native tools and side builds that may spin out as products or client offerings.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="misfit-lab" data-engine="mgl:core" data-relevance="R4" data-priority="P4" data-owner="bowie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#701a75;color:#fff;">R4</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span></span>
+</div>
+<div class="item-name-v2">Misfit Coaching Program</div>
+<div class="item-desc">Misfit Coaching Program. Complete Misfit Coaching Program details. Done when curriculum, delivery format, and cohort timeline defined and ready for first paying client.</div>
+<div class="item-why-v2">Complete Misfit Coaching Program details.</div>
+<div class="item-meta"><span>Cluster: <em>misfit-lab</em></span> <span>Owner: <em>bowie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Complete Misfit Coaching Program details. Done when curriculum, delivery format, and cohort timeline defined and ready for first paying client.</div>
+</div>
+</details>
+</div></div>
+</details>
+<div class="universe-label">Life Operations</div>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">CREATIVE</span>
+<span class="cluster-name">Creative &amp; Editorial</span>
+</div>
+<div class="cluster-sub">Life Operations · 6 item(s)</div>
+<div class="cluster-desc-line">Outlaw Chronicles newsletter, LinkedIn content engine, and long-form personal writing projects.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="creative" data-engine="mgl:core" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Jordi Website</div>
+<div class="item-desc">Website creation and handover project for Jordi.</div>
+<div class="item-why-v2">Ship Jordi website.</div>
+<div class="item-meta"><span>Cluster: <em>creative</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> The site is live and Jordi has full ownership of the surface.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-frozen" data-type="project" data-cluster="creative" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="freddie" data-status="frozen">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#3b82f6;color:#fff;">frozen</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Guinju Ropes Shibari Training</div>
+<div class="item-desc">Guinju Ropes Shibari Training. Deliver Guinju Ropes shibari training. Blocked on Guinju agreeing. Done when Guinju enrolled and training complete.</div>
+<div class="item-why-v2">Deliver Guinju Ropes shibari training. Blocked on Guinju agreeing.</div>
+<div class="item-meta"><span>Cluster: <em>creative</em></span> <span>Owner: <em>freddie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Deliver Guinju Ropes shibari training. Blocked on Guinju agreeing. Done when Guinju enrolled and training complete.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="creative" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="freddie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Legal Horror Show Podcast</div>
+<div class="item-desc">Legal Horror Show Podcast. Launch Legal Horror Show podcast to bring clients into funnel. Done when first season shipped and lead flow measurable.</div>
+<div class="item-why-v2">Launch Legal Horror Show podcast to bring clients into funnel.</div>
+<div class="item-meta"><span>Cluster: <em>creative</em></span> <span>Touches: <em>mgl</em></span> <span>Owner: <em>freddie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Launch Legal Horror Show podcast to bring clients into funnel. Done when first season shipped and lead flow measurable.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="creative" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="freddie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Misfit Postcards</div>
+<div class="item-desc">Misfit Postcards. Misfit Postcards. Done when designed, produced, distributed.</div>
+<div class="item-why-v2">Misfit Postcards.</div>
+<div class="item-meta"><span>Cluster: <em>creative</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>freddie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Misfit Postcards. Done when designed, produced, distributed.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="creative" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="freddie" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Outlaw Memoir</div>
+<div class="item-desc">Outlaw Memoir. Write Outlaw memoir covering sexual adventures and conquests after leaving Mexico for good. Done when first draft manuscript complete covering all major chapters from Mexico d.</div>
+<div class="item-why-v2">Write Outlaw memoir covering sexual adventures and conquests after leaving Mexico for good.</div>
+<div class="item-meta"><span>Cluster: <em>creative</em></span> <span>Owner: <em>freddie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Write Outlaw memoir covering sexual adventures and conquests after leaving Mexico for good. Done when first draft manuscript complete covering all major chapters from Mexico departure throug.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-frozen" data-type="project" data-cluster="creative" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="freddie" data-status="frozen">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#3b82f6;color:#fff;">frozen</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">She Built Her Cage</div>
+<div class="item-desc">She Built Her Cage. Complete She Built Her Cage manuscript. Blocked on new edit round. Done when Miriam-guideline edits complete and Pepe approves.</div>
+<div class="item-why-v2">Complete She Built Her Cage manuscript. Blocked on new edit round.</div>
+<div class="item-meta"><span>Cluster: <em>creative</em></span> <span>Touches: <em>panda</em></span> <span>Owner: <em>freddie</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Complete She Built Her Cage manuscript. Blocked on new edit round. Done when Miriam-guideline edits complete and Pepe approves.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">HEALTH</span>
+<span class="cluster-name">Health</span>
+</div>
+<div class="cluster-sub">Life Operations · 4 item(s)</div>
+<div class="cluster-desc-line">Body work. Fitness, nutrition, recovery, medical.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="health" data-engine="lfe:body" data-relevance="R1" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:body</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Fitness</div>
+<div class="item-desc">Standing physical training practice covering strength, mobility, cardio, and skill work toward Pepe 2050.</div>
+<div class="item-why-v2">Physical shape at 50 must beat physical shape at 40. Requires sustained weekly training, not sprints.</div>
+<div class="item-meta"><span>Cluster: <em>health</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="health" data-engine="lfe:body" data-relevance="R1" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:body</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Nutrition</div>
+<div class="item-desc">Standing nutrition practice covering meals, protein targets, supplements, and eating rhythms toward Pepe 2050.</div>
+<div class="item-why-v2">Body composition and energy compound off daily food choices, not workouts alone.</div>
+<div class="item-meta"><span>Cluster: <em>health</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="health" data-engine="lfe:body" data-relevance="R2" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:body</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C4 quarterly" style="background:#164e63;color:#fff;">C4</span></span>
+</div>
+<div class="item-name-v2">Medical</div>
+<div class="item-desc">Standing medical practice covering appointments, dental, vision, physio, GP, blood work, and insurance claims.</div>
+<div class="item-why-v2">Preventive medicine catches issues early. Requires calendared rhythm, not reactive triage.</div>
+<div class="item-meta"><span>Cluster: <em>health</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="health" data-engine="lfe:body" data-relevance="R2" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:body</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Recovery</div>
+<div class="item-desc">Standing recovery practice covering sleep, mobility, physio, and stress downregulation toward Pepe 2050.</div>
+<div class="item-why-v2">Training without recovery is injury. Recovery is where adaptation actually happens.</div>
+<div class="item-meta"><span>Cluster: <em>health</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">MIND</span>
+<span class="cluster-name">Mind</span>
+</div>
+<div class="cluster-sub">Life Operations · 5 item(s)</div>
+<div class="cluster-desc-line">Mental practice. Journaling, therapy, learning, coding.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="mind" data-engine="lfe:mind" data-relevance="R2" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:mind</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Journaling</div>
+<div class="item-desc">Standing journaling practice covering morning pages, voice notes, weekly reviews, and reflective writing.</div>
+<div class="item-why-v2">Journal captures raw signal from body and mind that would otherwise be lost. Feeds every other loop.</div>
+<div class="item-meta"><span>Cluster: <em>mind</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="mind" data-engine="lfe:mind" data-relevance="R2" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:mind</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C2 weekly" style="background:#0e7490;color:#fff;">C2</span></span>
+</div>
+<div class="item-name-v2">Therapy</div>
+<div class="item-desc">Standing therapy practice covering weekly sessions, integration notes, and cross-referencing with journal and dossiers.</div>
+<div class="item-why-v2">Therapy is the mind&#x27;s regular maintenance. Skipping it costs more later.</div>
+<div class="item-meta"><span>Cluster: <em>mind</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="mind" data-engine="lfe:mind" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:mind</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C2 weekly" style="background:#0e7490;color:#fff;">C2</span></span>
+</div>
+<div class="item-name-v2">Vibe Coding</div>
+<div class="item-desc">Standing coding practice covering personal builds, tool tinkering, and low-stakes experimentation.</div>
+<div class="item-why-v2">Coding keeps the mind sharp and expands what Pepe can build independently of engineers.</div>
+<div class="item-meta"><span>Cluster: <em>mind</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-frozen" data-type="project" data-cluster="mind" data-engine="lfe:mind" data-relevance="R4" data-priority="P4" data-owner="pepe" data-status="frozen">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#3b82f6;color:#fff;">frozen</span><span class="pill pill-engine">lfe:mind</span><span class="pill" style="background:#701a75;color:#fff;">R4</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span></span>
+</div>
+<div class="item-name-v2">Learn Catalan</div>
+<div class="item-desc">Study Catalan to a working conversational level.</div>
+<div class="item-why-v2">Frozen. Barcelona relevance is high but bandwidth allocated to higher-priority Pepe 2050 body work first.</div>
+<div class="item-meta"><span>Cluster: <em>mind</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> B1 conversational; can hold a coffee conversation in Catalan without switching to Spanish.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-frozen" data-type="project" data-cluster="mind" data-engine="lfe:mind" data-relevance="R4" data-priority="P4" data-owner="pepe" data-status="frozen">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#3b82f6;color:#fff;">frozen</span><span class="pill pill-engine">lfe:mind</span><span class="pill" style="background:#701a75;color:#fff;">R4</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span></span>
+</div>
+<div class="item-name-v2">Learn French</div>
+<div class="item-desc">Study French to a working conversational level.</div>
+<div class="item-why-v2">Frozen. Was picked up on and off; deprioritized versus Catalan which has higher day-to-day utility in Barcelona.</div>
+<div class="item-meta"><span>Cluster: <em>mind</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>L</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> B2 conversational fluency; sustained weekly practice for 6 months without dropping.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">PANDA</span>
+<span class="cluster-name">Panda</span>
+</div>
+<div class="cluster-sub">Life Operations · with Agathe Daumal · 5 item(s)</div>
+<div class="cluster-desc-line">Shared operational space and tooling for Pepe and Agathe&#x27;s collaborative work streams.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="panda" data-engine="mgl:core" data-relevance="R2" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">Cage (Panda-level)</div>
+<div class="item-desc">Editorial pass on Cage material through the lens of the Pepe and Agathe relationship arc.</div>
+<div class="item-why-v2">Editorial pass tied to relationship arc. Reconcile with CREATIVE CAG.</div>
+<div class="item-meta"><span>Cluster: <em>panda</em></span> <span>Touches: <em>creative</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Scope split with CREATIVE cag.md is reconciled and artifact status is decided.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="panda" data-engine="mgl:core" data-relevance="R2" data-priority="" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#a21caf;color:#fff;">R2</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Panda</div>
+<div class="item-desc">Manages Pepe&#x27;s ongoing relationship, calibration, and dossier maintenance for primary ENM partner Agathe.</div>
+<div class="item-why-v2">Agathe, primary ENM partner. Nurture and evolve. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>panda</em></span> <span>Owner: <em>janis</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="panda" data-engine="mgl:core" data-relevance="R3" data-priority="P2" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#f97316;color:#fff;">P2</span></span>
+</div>
+<div class="item-name-v2">JVA Joint Venture Ambit</div>
+<div class="item-desc">Formalizes the structural arrangement and next steps for the Joint Venture Ambit partnership.</div>
+<div class="item-why-v2">Formalize Joint Venture Ambit.</div>
+<div class="item-meta"><span>Cluster: <em>panda</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> The joint venture structure is officially formalized on paper or explicitly dissolved.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="panda" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Panda Games</div>
+<div class="item-desc">Facilitates game and design collaborations between Pepe and Agathe.</div>
+<div class="item-why-v2">Ship game and design collaborations with Agathe.</div>
+<div class="item-meta"><span>Cluster: <em>panda</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> First game shipped or entire arc archived without shipping.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="project" data-cluster="panda" data-engine="mgl:core" data-relevance="R3" data-priority="P3" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#eab308;color:#fff;">P3</span></span>
+</div>
+<div class="item-name-v2">Panda Origins</div>
+<div class="item-desc">Captures the origin story of the relationship as a permanent creative artifact.</div>
+<div class="item-meta"><span>Cluster: <em>panda</em></span> <span>Touches: <em>creative</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> The origin narrative is fully drafted from journals, completed, and archived.</div>
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">PERSONAL</span>
+<span class="cluster-name">Personal Life</span>
+</div>
+<div class="cluster-sub">Life Operations · 3 item(s)</div>
+<div class="cluster-desc-line">Residence admin, health, banking, taxes, and general Barcelona-based life-ops.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="personal" data-engine="mgl:core" data-relevance="R1" data-priority="" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#c026d3;color:#fff;">R1</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Life Admin</div>
+<div class="item-desc">Manages personal life logistics including banking, taxes, health, insurance, subscriptions, and filings.</div>
+<div class="item-why-v2">Banking, tax, health, insurance, personal logistics, subscriptions, personal filings. Permanent. Renamed from admin-core, scope broadened.</div>
+<div class="item-meta"><span>Cluster: <em>personal</em></span> <span>Owner: <em>janis</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-complete" data-type="project" data-cluster="personal" data-engine="mgl:core" data-relevance="R3" data-priority="P4" data-owner="pepe" data-status="complete">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a0f1c;color:#f472b6;border:1px solid #E14B87;">PROJECT</span>
+<span class="right-pills"><span class="pill" style="background:#f472b6;color:#fff;">complete</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" style="background:#3b82f6;color:#fff;">P4</span></span>
+</div>
+<div class="item-name-v2">Personal Elsewhere 2026</div>
+<div class="item-desc">Personal attendance tracking and post-event follow-up for Elsewhere 2026.</div>
+<div class="item-why-v2">Personal Elsewhere 2026 attendance.</div>
+<div class="item-meta"><span>Cluster: <em>personal</em></span> <span>Owner: <em>pepe</em></span> <span>Effort: <em>M</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+<div class="item-done"><strong>Done when.</strong> Festival attended and post-event outreach tasks migrated to life admin.</div>
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="personal" data-engine="mgl:core" data-relevance="R3" data-priority="" data-owner="janis" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Travel Management</div>
+<div class="item-desc">Coordinates personal travel logistics from itinerary planning and bookings to visas and packing.</div>
+<div class="item-why-v2">Plan and execute all personal travel (flights, accommodation, visas, insurance, packing). Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>personal</em></span> <span>Owner: <em>janis</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">REL</span>
+<span class="cluster-name">Relationships</span>
+</div>
+<div class="cluster-sub">Life Operations · 4 item(s)</div>
+<div class="cluster-desc-line">Dossiers, communications tracking, and coordination across personal and professional relationships.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="rel" data-engine="mgl:core" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Close Friends</div>
+<div class="item-desc">Close Friends. Maintain close friends network. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>rel</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="rel" data-engine="mgl:core" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Family</div>
+<div class="item-desc">Family. Maintain family relationships. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>rel</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="rel" data-engine="mgl:core" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Network</div>
+<div class="item-desc">Network. Maintain professional and social network. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>rel</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="rel" data-engine="mgl:core" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">mgl:core</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C1 daily" style="background:#0891b2;color:#fff;">C1</span></span>
+</div>
+<div class="item-name-v2">Other Romantic</div>
+<div class="item-desc">Other Romantic. Manage other romantic connections in ENM structure. Permanent.</div>
+<div class="item-meta"><span>Cluster: <em>rel</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+</div></div>
+</details>
+<details class="cluster-section">
+<summary class="cluster-header">
+<div class="cluster-header-row">
+<span class="cluster-code">SOUL</span>
+<span class="cluster-name">Soul</span>
+</div>
+<div class="cluster-sub">Life Operations · 4 item(s)</div>
+<div class="cluster-desc-line">Creative and embodied practice. Music, dance, rope.</div>
+</summary>
+<div class="cluster-body"><div class="items-grid v2-grid">
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="soul" data-engine="lfe:soul" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:soul</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C2 weekly" style="background:#0e7490;color:#fff;">C2</span></span>
+</div>
+<div class="item-name-v2">Guitar Practice</div>
+<div class="item-desc">Standing guitar practice covering technique, repertoire, and playing time.</div>
+<div class="item-why-v2">Music practice is one of Pepe&#x27;s soul engines. Regular reps beat sporadic bursts.</div>
+<div class="item-meta"><span>Cluster: <em>soul</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="soul" data-engine="lfe:soul" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:soul</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C2 weekly" style="background:#0e7490;color:#fff;">C2</span></span>
+</div>
+<div class="item-name-v2">Kizomba</div>
+<div class="item-desc">Standing kizomba practice covering classes, social dancing, and technique work.</div>
+<div class="item-why-v2">Dance is embodied social practice. Compounds body, connection, and creative expression.</div>
+<div class="item-meta"><span>Cluster: <em>soul</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="soul" data-engine="lfe:soul" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:soul</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C2 weekly" style="background:#0e7490;color:#fff;">C2</span></span>
+</div>
+<div class="item-name-v2">Shibari</div>
+<div class="item-desc">Standing shibari practice covering rope technique, safety, and partnered practice.</div>
+<div class="item-why-v2">Embodied practice at the intersection of trust, craft, and presence. Complements other soul work.</div>
+<div class="item-meta"><span>Cluster: <em>soul</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+<details class="item-details v2 item-status-active" data-type="function" data-cluster="soul" data-engine="lfe:soul" data-relevance="R3" data-priority="" data-owner="pepe" data-status="active">
+<summary class="item-summary">
+<div class="item-header-v2">
+<span class="item-type-pill" style="background:#2a1c05;color:#fbbf24;border:1px solid #b45309;">FUNCTION</span>
+<span class="right-pills"><span class="pill" style="background:#4ade80;color:#fff;">active</span><span class="pill pill-engine">lfe:soul</span><span class="pill" style="background:#86198f;color:#fff;">R3</span><span class="pill" title="C2 weekly" style="background:#0e7490;color:#fff;">C2</span></span>
+</div>
+<div class="item-name-v2">Singing Practice</div>
+<div class="item-desc">Standing singing practice covering vocal technique, range work, and repertoire.</div>
+<div class="item-why-v2">Voice is instrument and expression. Requires ongoing coaching plus daily reps.</div>
+<div class="item-meta"><span>Cluster: <em>soul</em></span> <span>Touches: <em>p50</em></span> <span>Owner: <em>pepe</em></span> <span>Age: <em>0d</em> <span class="staleness" style="background:#4ade80;"></span></span></div>
+</summary>
+<div class="item-body-v2">
+</div>
+</details>
+</div></div>
+</details>
+<!-- GENERATED:CLUSTERS:END -->
+<div class="footer-nav">
+    <a href="/engines/">Engines</a>
+    <a href="/hub/entity-classification/">Entity Classification</a>
+    <a href="/engines/library/">Library</a>
+</div>
+<div class="updated-note">Sep 5, 2026 CET — generator v2</div>
+
+<script>
+    if (window.location.hash) {
+        const code = window.location.hash.replace('#','').toUpperCase();
+        document.querySelectorAll('.cluster-code').forEach(el => {
+            if (el.textContent.trim() === code) {
+                el.closest('details.cluster-section').setAttribute('open', '');
+                el.closest('details.cluster-section').scrollIntoView({behavior:'smooth',block:'start'});
+            }
+        });
+    }
+</script>
+</body>
+</html>

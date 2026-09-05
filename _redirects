@@ -1,5 +1,17 @@
 
 # Redirect old URLs to new branded paths
+
+# Ops to Hub rename (2026-09-05)
+/ops /hub 301
+/ops/ /hub/ 301
+/ops/projects /hub/workstream 301
+/ops/projects/ /hub/workstream/ 301
+/ops/projects/* /hub/workstream/:splat 301
+/ops/entity-classification /hub/entity-classification 301
+/ops/entity-classification/ /hub/entity-classification/ 301
+/ops/entity-classification/* /hub/entity-classification/:splat 301
+/ops/* /hub/:splat 301
+
 /consulting /venture-architecture 301
 /consulting/ /venture-architecture/ 301
 /growth https://pepecarrillo.co/misfit-lab 301
