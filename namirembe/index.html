@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Namirembe Loan: Payment Tracker | Mexzungu Group</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --pink: #e14b87;
+            --green: #4ec27a;
+            --amber: #d9a95e;
+            --red: #c93545;
+        }
+        body { background: #0d0d0d; color: #fafafa; }
+
+        #pw-gate {
+            position: fixed; inset: 0; background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 3rem 2.5rem; max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.5rem; color: #fafafa; margin-bottom: 0.6rem; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem; background: #0d0d0d; border: 1px solid #2a2a2a;
+            border-radius: 6px; color: #fafafa; font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center;
+            transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .pw-input:focus { outline: none; border-color: var(--pink); }
+        .pw-input.error { border-color: var(--red); animation: shake 0.3s ease; }
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem; background-color: var(--pink);
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;
+        }
+        .pw-btn:hover { background-color: #e86fa0; }
+        .pw-error { font-size: 0.85rem; color: var(--red); margin-top: 0.8rem; min-height: 1.2em; }
+
+        #tracker-content { display: none; }
+        #tracker-content.visible { display: block; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1a1a1a; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        nav img { height: 32px; }
+        .nav-link { font-family: 'Space Grotesk',sans-serif; font-size: 0.82rem; color: #6b5e57; text-decoration: none; }
+        .nav-link:hover { color: #9a8f88; }
+
+        .wrap { max-width: 960px; margin: 0 auto; padding: 8rem 2rem 5rem; }
+        .eyebrow { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
+        .title { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: #fafafa; font-weight: 400; line-height: 1.15; margin-bottom: 0.6rem; }
+        .meta { font-size: 0.9rem; color: #6b5e57; margin-bottom: 3rem; }
+
+        .summary {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;
+        }
+        @media (max-width: 720px) { .summary { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 400px) { .summary { grid-template-columns: 1fr; } }
+        .sum-card {
+            background: #111; border: 1px solid #1e1e1e; border-radius: 10px;
+            padding: 1.25rem 1rem;
+        }
+        .sum-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #6b5e57; font-weight: 600; margin-bottom: 0.5rem; }
+        .sum-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 700; color: #fafafa; line-height: 1.1; }
+        .sum-value.green { color: var(--green); }
+        .sum-value.pink { color: var(--pink); }
+        .sum-sub { font-size: 0.72rem; color: #4a4a4a; margin-top: 0.35rem; }
+
+        .progress-wrap {
+            background: #111; border: 1px solid #1e1e1e; border-radius: 10px;
+            padding: 1.4rem 1.5rem; margin-bottom: 2rem;
+        }
+        .progress-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.9rem; }
+        .progress-title { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: #6b5e57; font-weight: 600; }
+        .progress-pct { font-family: 'Space Grotesk',sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--pink); }
+        .progress-bar-outer { height: 10px; background: #0d0d0d; border-radius: 5px; overflow: hidden; border: 1px solid #1e1e1e; }
+        .progress-bar-inner { height: 100%; width: 100%; background: linear-gradient(90deg, var(--pink), var(--green)); transform-origin: left center; transform: scaleX(0); transition: transform 0.4s ease; }
+        .progress-legend { display: flex; justify-content: space-between; font-size: 0.75rem; color: #6b5e57; margin-top: 0.6rem; }
+
+        .schedule-wrap {
+            background: #111; border: 1px solid #1e1e1e; border-radius: 12px;
+            overflow: hidden; margin-bottom: 2rem;
+        }
+        .schedule-head {
+            padding: 1.2rem 1.4rem; border-bottom: 1px solid #1e1e1e;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .schedule-head h2 { font-family: 'RocknRoll One','Space Grotesk',sans-serif; font-size: 1.1rem; color: #fafafa; margin: 0; font-weight: 400; }
+        .schedule-count { font-size: 0.78rem; color: #6b5e57; }
+        .table-scroll { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th, td {
+            padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #1a1a1a;
+            font-family: 'Space Grotesk',sans-serif;
+        }
+        th {
+            font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: #6b5e57; font-weight: 700; background: #0d0d0d;
+        }
+        td { color: #c8c0bb; }
+        tr.paid td.status { color: var(--green); font-weight: 700; }
+        tr.upcoming td.status { color: #6b5e57; }
+        tr.overdue td.status { color: var(--red); font-weight: 700; }
+        tr.next { background: rgba(225,75,135,0.06); }
+        tr.next td:first-child::before {
+            content: '\25B8'; color: var(--pink); margin-right: 0.4rem; font-weight: 700;
+        }
+        tr:last-child td { border-bottom: none; }
+        .amt { text-align: right; font-variant-numeric: tabular-nums; }
+
+        .foot-note {
+            font-size: 0.82rem; color: #6b5e57; text-align: center; line-height: 1.7;
+            padding: 1.5rem;
+        }
+        .foot-note a { color: var(--pink); text-decoration: none; }
+        .foot-note a:hover { text-decoration: underline; }
+
+        .loading { text-align: center; padding: 4rem 2rem; color: #6b5e57; }
+    </style>
+</head>
+<body>
+
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" class="pw-logo" onerror="this.style.display='none'">
+        <p class="pw-label">Private tracker</p>
+        <h2 class="pw-heading">Namirembe Loan</h2>
+        <p class="pw-sub">Enter your access code to view the payment tracker.</p>
+        <div class="pw-field">
+        <input type="password" class="pw-input" id="pw-input" placeholder="Access code" autocomplete="off">
+        <button class="pw-toggle" type="button" onclick="togglePwVisibility()" aria-label="Show password"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
+        <button class="pw-btn" onclick="checkPw()">Open tracker</button>
+        <p class="pw-error" id="pw-error"></p>
+    </div>
+</div>
+
+<div id="tracker-content">
+    <nav>
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" onerror="this.style.display='none'">
+        <a href="/sign/namirembe" class="nav-link">Sign agreement &rarr;</a>
+    </nav>
+
+    <div class="wrap">
+        <p class="eyebrow">Payment tracker</p>
+        <h1 class="title">Namirembe Loan</h1>
+        <p class="meta">Live view of every scheduled payment, running principal balance, and closing date.</p>
+
+        <div class="loading" id="loading">Loading payment schedule.</div>
+        <div id="tracker-data" style="display:none;">
+            <div class="summary">
+                <div class="sum-card">
+                    <div class="sum-label">Principal outstanding</div>
+                    <div class="sum-value pink" id="outstanding">$0</div>
+                    <div class="sum-sub">of $12,000 total</div>
+                </div>
+                <div class="sum-card">
+                    <div class="sum-label">Total paid</div>
+                    <div class="sum-value green" id="paid-total">$0</div>
+                    <div class="sum-sub"><span id="paid-count">0</span> payments received</div>
+                </div>
+                <div class="sum-card">
+                    <div class="sum-label">Next payment due</div>
+                    <div class="sum-value" id="next-amount">$318</div>
+                    <div class="sum-sub" id="next-date">1 October 2026</div>
+                </div>
+                <div class="sum-card">
+                    <div class="sum-label">Loan closes</div>
+                    <div class="sum-value" id="closing-date">Oct 2029</div>
+                    <div class="sum-sub" id="months-left">38 months to go</div>
+                </div>
+            </div>
+
+            <div class="progress-wrap">
+                <div class="progress-head">
+                    <div class="progress-title">Repayment progress</div>
+                    <div class="progress-pct" id="progress-pct">0%</div>
+                </div>
+                <div class="progress-bar-outer">
+                    <div class="progress-bar-inner" id="progress-bar"></div>
+                </div>
+                <div class="progress-legend">
+                    <span>Sep 2026 (first payment)</span>
+                    <span>Oct 2029 (final payment)</span>
+                </div>
+            </div>
+
+            <div class="schedule-wrap">
+                <div class="schedule-head">
+                    <h2>Payment schedule</h2>
+                    <div class="schedule-count" id="schedule-count">38 payments</div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Due date</th>
+                                <th class="amt">Amount</th>
+                                <th>Status</th>
+                                <th>Received</th>
+                                <th class="amt">Balance after</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedule-body"></tbody>
+                    </table>
+                </div>
+                <div class="foot-note">
+                    Payments via Wise <strong style="color:var(--pink);">@josec2265</strong> (Jose Carrillo Perez). Questions? WhatsApp <a href="https://wa.me/13477700838">+1 347 770 0838</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CORRECT_PW = 'namirembe2026';
+    const MASTER_PW = 'Master-Outlaw-26';
+    const SESSION_KEY = 'namirembe_tracker_access';
+
+    function checkPw() {
+        const rawVal = document.getElementById('pw-input').value.trim();
+        const val = rawVal.toLowerCase();
+        if (val === CORRECT_PW || rawVal === MASTER_PW) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            document.getElementById('pw-gate').classList.add('hidden');
+            document.getElementById('tracker-content').classList.add('visible');
+            loadTracker();
+        } else {
+            const inp = document.getElementById('pw-input');
+            inp.classList.add('error');
+            document.getElementById('pw-error').textContent = 'Incorrect access code.';
+            setTimeout(() => inp.classList.remove('error'), 350);
+        }
+    }
+    document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('tracker-content').classList.add('visible');
+        loadTracker();
+    }
+
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    }
+
+    function formatUSD(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+    function formatDate(iso) {
+        if (!iso) return '';
+        const d = new Date(iso + 'T00:00:00Z');
+        return d.toLocaleDateString('en-US', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'});
+    }
+    function formatDateShort(iso) {
+        if (!iso) return '';
+        const d = new Date(iso + 'T00:00:00Z');
+        return d.toLocaleDateString('en-US', {month:'short', year:'numeric', timeZone:'UTC'});
+    }
+
+    async function loadTracker() {
+        try {
+            const r = await fetch('/api/namirembe/payments');
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            const data = await r.json();
+            render(data);
+        } catch (err) {
+            document.getElementById('loading').textContent = 'Could not load tracker: ' + err.message + '. Try refreshing.';
+        }
+    }
+
+    function render(data) {
+        const principal = data.principal_usd || 12000;
+        const schedule = data.schedule || [];
+        const received = data.received || [];
+
+        const paidCount = schedule.filter(r => r.status === 'paid').length;
+        const paidTotal = received.reduce((s, r) => s + (r.amount || 0), 0);
+        const outstanding = principal - paidTotal;
+        const pct = Math.round((paidTotal / principal) * 100);
+
+        const today = new Date().toISOString().slice(0,10);
+        const nextRow = schedule.find(r => r.status !== 'paid');
+        const nextDue = nextRow ? nextRow.due_date : null;
+        const nextAmount = nextRow ? nextRow.amount_due : 0;
+
+        document.getElementById('outstanding').textContent = formatUSD(outstanding);
+        document.getElementById('paid-total').textContent = formatUSD(paidTotal);
+        document.getElementById('paid-count').textContent = paidCount;
+        document.getElementById('next-amount').textContent = nextRow ? formatUSD(nextAmount) : 'Paid off';
+        document.getElementById('next-date').textContent = nextDue ? formatDate(nextDue) : '';
+        document.getElementById('progress-pct').textContent = pct + '%';
+        document.getElementById('progress-bar').style.transform = 'scaleX(' + (pct / 100) + ')';
+
+        const closingRow = schedule[schedule.length - 1];
+        document.getElementById('closing-date').textContent = closingRow ? formatDateShort(closingRow.due_date) : '';
+        const monthsLeft = schedule.filter(r => r.status !== 'paid').length;
+        document.getElementById('months-left').textContent = monthsLeft > 0 ? (monthsLeft + ' months to go') : 'Fully repaid';
+        document.getElementById('schedule-count').textContent = schedule.length + ' payments';
+
+        const tbody = document.getElementById('schedule-body');
+        tbody.innerHTML = '';
+        let nextMarked = false;
+        schedule.forEach(row => {
+            let effectiveStatus = row.status;
+            if (effectiveStatus !== 'paid' && row.due_date < today) effectiveStatus = 'overdue';
+
+            const tr = document.createElement('tr');
+            tr.className = effectiveStatus;
+            if (effectiveStatus !== 'paid' && !nextMarked) {
+                tr.classList.add('next');
+                nextMarked = true;
+            }
+            const statusLabel = effectiveStatus === 'paid' ? 'Paid' : (effectiveStatus === 'overdue' ? 'Overdue' : 'Upcoming');
+            tr.innerHTML = '<td>' + row.num + '</td>' +
+                           '<td>' + formatDate(row.due_date) + '</td>' +
+                           '<td class="amt">' + formatUSD(row.amount_due) + '</td>' +
+                           '<td class="status">' + statusLabel + '</td>' +
+                           '<td>' + (row.received_date ? formatDate(row.received_date) : '.') + '</td>' +
+                           '<td class="amt">' + formatUSD(row.balance_after) + '</td>';
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('tracker-data').style.display = 'block';
+    }
+</script>
+</body>
+</html>

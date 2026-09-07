@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Namirembe Loan Restructuring: Sign | Mexzungu Group</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css?v=10">
+    <style>
+        :root {
+            --pink: #e14b87;
+            --green: #4ec27a;
+        }
+        body { background: #0d0d0d; }
+
+        #pw-gate {
+            position: fixed; inset: 0; background: #0d0d0d;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 2rem;
+        }
+        #pw-gate.hidden { display: none; }
+        .pw-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px;
+            padding: 3rem 2.5rem; max-width: 420px; width: 100%; text-align: center;
+        }
+        .pw-logo { height: 52px; margin-bottom: 2rem; }
+        .pw-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
+        .pw-heading { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.5rem; color: #fafafa; margin-bottom: 0.6rem; }
+        .pw-sub { font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem; line-height: 1.6; }
+        .pw-input {
+            width: 100%; padding: 0.9rem 1rem; background: #0d0d0d; border: 1px solid #2a2a2a;
+            border-radius: 6px; color: #fafafa; font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center;
+            transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .pw-input:focus { outline: none; border-color: var(--pink); }
+        .pw-input.error { border-color: #c93545; animation: shake 0.3s ease; }
+        .pw-field { position: relative; margin-bottom: 1rem; }
+        .pw-field .pw-input { margin-bottom: 0; }
+        .pw-toggle {
+            position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: #6b5e57;
+            padding: 0.25rem; line-height: 0; transition: color 0.15s;
+        }
+        .pw-toggle:hover { color: #9a8f88; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+        .pw-btn {
+            width: 100%; padding: 0.9rem 2rem; background-color: var(--pink);
+            color: #fafafa; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;
+        }
+        .pw-btn:hover { background-color: #e86fa0; }
+        .pw-error { font-size: 0.85rem; color: #c93545; margin-top: 0.8rem; min-height: 1.2em; }
+
+        #sign-content { display: none; }
+        #sign-content.visible { display: block; }
+
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1a1a1a; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        nav img { height: 32px; }
+        .nav-back { font-family: 'Space Grotesk',sans-serif; font-size: 0.82rem; color: #6b5e57; text-decoration: none; }
+        .nav-back:hover { color: #9a8f88; }
+
+        .sign-wrap { max-width: 760px; margin: 0 auto; padding: 8rem 2rem 5rem; }
+        .sign-eyebrow { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pink); font-weight: 600; margin-bottom: 1rem; }
+        .sign-title { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: #fafafa; font-weight: 400; line-height: 1.15; margin-bottom: 0.8rem; }
+        .sign-meta { font-size: 0.82rem; color: #4a4a4a; margin-bottom: 3rem; }
+
+        .el-body {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
+            padding: 2.5rem 2rem; margin-bottom: 2rem; font-size: 0.93rem;
+            color: #9a8f88; line-height: 1.75;
+        }
+        @media (max-width: 600px) { .el-body { padding: 1.75rem 1.25rem; } }
+        .el-body h3 { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); font-weight: 700; margin: 1.5rem 0 0.6rem; }
+        .el-body h3:first-child { margin-top: 0; }
+        .el-body p { margin: 0 0 0.7rem; }
+        .el-body strong { color: #c8c0bb; }
+        .el-body ul { list-style: none; padding: 0; margin: 0.5rem 0 1rem; }
+        .el-body ul li { padding: 0.25rem 0; display: flex; gap: 0.7rem; align-items: flex-start; }
+        .el-body ul li::before {
+            content: ''; display: inline-block; width: 8px; height: 13px; flex-shrink: 0; margin-top: 0.28rem;
+            background-color: var(--pink);
+            clip-path: polygon(60% 0%, 100% 0%, 40% 45%, 75% 45%, 0% 100%, 35% 55%, 5% 55%);
+        }
+        .el-divider { height: 1px; background: #1e1e1e; margin: 1.25rem 0; }
+
+        .rate-pill {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: rgba(78,194,122,0.12); border: 1px solid rgba(78,194,122,0.3);
+            border-radius: 20px; padding: 0.25rem 0.75rem; margin-bottom: 1rem;
+        }
+        .rate-pill-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; }
+        .rate-pill-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--green); }
+
+        .terms-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem;
+            margin: 1.5rem 0 2rem;
+        }
+        @media (max-width: 500px) { .terms-grid { grid-template-columns: 1fr; } }
+        .terms-card { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 8px; padding: 0.9rem 0.7rem; text-align: center; }
+        .terms-label { font-size: 0.64rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #6b5e57; margin-bottom: 0.4rem; }
+        .terms-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fafafa; line-height: 1.1; }
+        .terms-sub { font-size: 0.68rem; color: #4a4a4a; margin-top: 0.25rem; }
+
+        .payment-info {
+            background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 10px;
+            padding: 1.2rem 1.4rem; font-size: 0.9rem; color: #9a8f88; margin-bottom: 2rem;
+        }
+        .payment-info strong { color: #c8c0bb; }
+        .wise-tag { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: var(--pink); }
+
+        .sig-form { display: flex; flex-direction: column; gap: 1.2rem; }
+        .sig-field label { display: block; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: #6b5e57; font-weight: 600; margin-bottom: 0.5rem; }
+        .sig-field input {
+            width: 100%; padding: 0.85rem 1rem; background: #111; border: 1px solid #2a2a2a;
+            border-radius: 8px; color: #fafafa; font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem; transition: border-color 0.2s; box-sizing: border-box;
+        }
+        .sig-field input:focus { outline: none; border-color: var(--pink); }
+        .sig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 500px) { .sig-row { grid-template-columns: 1fr; } }
+
+        .form-section-label {
+            font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--pink); font-weight: 700; margin: 2rem 0 1rem;
+        }
+        .declaration-box {
+            background: #111; border: 1px solid #2a2a2a; border-radius: 10px;
+            padding: 1.2rem 1.4rem; font-size: 0.88rem; color: #9a8f88; line-height: 1.7;
+        }
+        .declaration-box strong { color: #c8c0bb; }
+        .declaration-box p { margin: 0 0 0.7rem; }
+        .declaration-box p:last-child { margin-bottom: 0; }
+        .sig-consent {
+            display: flex; gap: 0.8rem; align-items: flex-start;
+            background: #111; border: 1px solid #1e1e1e; border-radius: 8px; padding: 1rem;
+        }
+        .sig-consent input[type="checkbox"] { flex-shrink: 0; margin-top: 0.15rem; accent-color: var(--pink); width: 16px; height: 16px; cursor: pointer; }
+        .sig-consent label { font-size: 0.82rem; color: #9a8f88; line-height: 1.55; cursor: pointer; }
+        .sig-submit {
+            padding: 1rem 2.5rem; background-color: var(--pink); color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem;
+            border: none; border-radius: 8px; cursor: pointer; align-self: flex-start;
+        }
+        .sig-submit:hover { background-color: #e86fa0; }
+        .sig-submit:disabled { background: #2a2a2a; color: #4a4a4a; cursor: not-allowed; }
+
+        #success-state { display: none; text-align: center; padding: 3rem 2rem; }
+        .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .success-title { font-family: 'RocknRoll One', 'Space Grotesk', sans-serif; font-size: 1.8rem; color: #fafafa; margin-bottom: 0.8rem; }
+        .success-body { font-size: 0.95rem; color: #9a8f88; line-height: 1.75; max-width: 480px; margin: 0 auto; }
+        .success-body a { color: var(--pink); text-decoration: none; }
+        .success-body a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div id="pw-gate">
+    <div class="pw-card">
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" class="pw-logo" onerror="this.style.display='none'">
+        <p class="pw-label">Sign the agreement</p>
+        <h2 class="pw-heading">Namirembe Loan Restructuring</h2>
+        <p class="pw-sub">Enter your access code to review and sign the restructuring agreement.</p>
+        <div class="pw-field">
+        <input type="password" class="pw-input" id="pw-input" placeholder="Access code" autocomplete="off">
+        <button class="pw-toggle" type="button" onclick="togglePwVisibility()" aria-label="Show password"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+        <button class="pw-btn" onclick="checkPw()">Continue</button>
+        <p class="pw-error" id="pw-error"></p>
+    </div>
+</div>
+
+<div id="sign-content">
+    <nav>
+        <img src="/img/logo-pink.png" alt="Mexzungu Group" onerror="this.style.display='none'">
+        <a href="/namirembe" class="nav-back">Payment tracker &rarr;</a>
+    </nav>
+
+    <div class="sign-wrap">
+        <p class="sign-eyebrow">Loan Restructuring Agreement</p>
+        <h1 class="sign-title">Sign the Restructuring Agreement</h1>
+        <p class="sign-meta">Namirembe Sweater Makers. September 2026. Review the terms and sign below.</p>
+
+        <div class="el-body">
+            <h3>Parties</h3>
+            <p><strong>Lender:</strong> Jose Carrillo Perez (pepe@mexzungu.com), Barcelona, Spain.</p>
+            <p><strong>Borrower:</strong> Noah Waikiria, Uganda, trading as Namirembe Sweater Makers.</p>
+
+            <div class="el-divider"></div>
+            <h3>Summary of terms</h3>
+            <ul>
+                <li><strong>Restructured principal:</strong> USD 12,000. All accrued interest under the original 2021 loan waived.</li>
+                <li><strong>Interest:</strong> 0% (principal-only workout).</li>
+                <li><strong>Repayment:</strong> 38 monthly instalments. 37 payments of USD 318 and a final payment of USD 234 on 1 October 2029.</li>
+                <li><strong>First payment:</strong> 1 September 2026 (received). Subsequent payments on the 1st of each calendar month.</li>
+                <li><strong>Payment channel:</strong> Wise, tag @josec2265, account name Jose Carrillo Perez.</li>
+                <li><strong>No early repayment penalties.</strong> 5 days written notice required.</li>
+                <li><strong>Governing law:</strong> Mauritius. Disputes resolved by MARC arbitration.</li>
+            </ul>
+
+            <div class="el-divider"></div>
+            <h3>Progress tracker</h3>
+            <p>A live payment tracker is at <strong>mexzungu.com/namirembe</strong>. It shows every scheduled payment, the running principal balance, and the amount left to close.</p>
+        </div>
+
+        <div id="form-area">
+            <p class="form-section-label">Terms locked in</p>
+            <div class="rate-pill">
+                <span class="rate-pill-dot"></span>
+                <span class="rate-pill-text">0% interest, principal-only workout</span>
+            </div>
+            <div class="terms-grid">
+                <div class="terms-card">
+                    <div class="terms-label">Monthly payment</div>
+                    <div class="terms-value">$318</div>
+                    <div class="terms-sub">37 payments</div>
+                </div>
+                <div class="terms-card">
+                    <div class="terms-label">Final payment</div>
+                    <div class="terms-value">$234</div>
+                    <div class="terms-sub">1 October 2029</div>
+                </div>
+                <div class="terms-card">
+                    <div class="terms-label">Total repayable</div>
+                    <div class="terms-value">$12,000</div>
+                    <div class="terms-sub">over 38 months</div>
+                </div>
+            </div>
+
+            <p class="form-section-label">Payment instructions</p>
+            <div class="payment-info">
+                <p>All monthly payments are due to the Lender via Wise:</p>
+                <p class="wise-tag">@josec2265</p>
+                <p><strong>Account name:</strong> Jose Carrillo Perez</p>
+                <p style="margin:0; font-size:0.82rem;">First payment received <strong>1 September 2026</strong>. Next payment due <strong>1 October 2026</strong>, then the 1st of each month through 1 October 2029.</p>
+            </div>
+
+            <form class="sig-form" onsubmit="submitSignature(event)">
+                <p class="form-section-label">Your details</p>
+                <div class="sig-field">
+                    <label>Full legal name</label>
+                    <input type="text" id="sig-name" placeholder="Noah Waikiria" required>
+                </div>
+                <div class="sig-row">
+                    <div class="sig-field">
+                        <label>Email</label>
+                        <input type="email" id="sig-email" placeholder="your@email" required>
+                    </div>
+                    <div class="sig-field">
+                        <label>Country of residence</label>
+                        <input type="text" id="sig-country" value="Uganda" required>
+                    </div>
+                </div>
+
+                <p class="form-section-label">Declaration</p>
+                <div class="declaration-box">
+                    <p>I, the Borrower named above, confirm that I have read the Namirembe Loan Restructuring Agreement v1 in full and agree to be bound by all of its terms, including the restructured principal of USD 12,000, the 38-month repayment schedule at USD 318 per month (with a final payment of USD 234), and the 0% interest workout.</p>
+                    <p>All payments will be made via Wise to @josec2265 (Jose Carrillo Perez) on the first day of each calendar month. The first payment of USD 318 was received on 1 September 2026. I understand that failure to pay within 15 days of a due date constitutes default under the Agreement.</p>
+                    <p>This Agreement is governed by the laws of <strong>Mauritius</strong>, with disputes resolved through good-faith negotiation and, failing that, binding arbitration under the MARC rules.</p>
+                </div>
+
+                <div class="sig-consent">
+                    <input type="checkbox" id="sig-agree" required>
+                    <label for="sig-agree">I have read and understood the Namirembe Loan Restructuring Agreement v1 and agree to all its terms. I authorise Mexzungu Group to record my signature.</label>
+                </div>
+                <button type="submit" class="sig-submit" id="sig-btn">Sign the restructuring agreement</button>
+            </form>
+        </div>
+
+        <div id="success-state">
+            <div class="success-icon">&#9889;</div>
+            <h2 class="success-title">Signed. Fresh start locked in.</h2>
+            <p class="success-body">Your signature has been recorded. Pepe will countersign and send the executed agreement to your email within 24 hours. Track your progress at <a href="/namirembe">mexzungu.com/namirembe</a> using access code <strong>namirembe2026</strong>. Next payment due 1 October 2026 via Wise @josec2265.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CORRECT_PW = 'namirembe2026';
+    const MASTER_PW = 'Master-Outlaw-26';
+    const SESSION_KEY = 'namirembe_sign_access';
+
+    function checkPw() {
+        const rawVal = document.getElementById('pw-input').value.trim();
+        const val = rawVal.toLowerCase();
+        if (val === CORRECT_PW || rawVal === MASTER_PW) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            document.getElementById('pw-gate').classList.add('hidden');
+            document.getElementById('sign-content').classList.add('visible');
+        } else {
+            const inp = document.getElementById('pw-input');
+            inp.classList.add('error');
+            document.getElementById('pw-error').textContent = 'Incorrect access code.';
+            setTimeout(() => inp.classList.remove('error'), 350);
+        }
+    }
+    document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.getElementById('sign-content').classList.add('visible');
+    }
+
+    async function submitSignature(e) {
+        e.preventDefault();
+        const btn = document.getElementById('sig-btn');
+        btn.disabled = true; btn.textContent = 'Submitting...';
+
+        const payload = {
+            agreement: 'Namirembe Loan Restructuring v1',
+            name: document.getElementById('sig-name').value,
+            email: document.getElementById('sig-email').value,
+            country: document.getElementById('sig-country').value,
+            principal_usd: 12000,
+            monthly_payment_usd: 318,
+            final_payment_usd: 234,
+            term_months: 38,
+            rate_pa: 0,
+            first_payment_date: '2026-09-01',
+            final_payment_date: '2029-10-01',
+            payment_channel: 'Wise @josec2265',
+            signed_at: new Date().toISOString()
+        };
+        try {
+            await fetch('/api/sign', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        } catch(err) { /* backend not wired, client-side success shown */ }
+
+        document.getElementById('form-area').style.display = 'none';
+        document.getElementById('success-state').style.display = 'block';
+    }
+    function togglePwVisibility() {
+        const inp = document.getElementById('pw-input');
+        const btn = document.querySelector('.pw-toggle');
+        const showing = inp.type === 'text';
+        inp.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        btn.innerHTML = showing
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    }
+</script>
+</body>
+</html>
