@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>Duara: Year One Check-In</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:         #0d0d0d;
+      --bg-mid:     #161616;
+      --bg-card:    #111111;
+      --border:     #2a2a2a;
+      --text:       #e8e4de;
+      --text-mid:   #b5aea4;
+      --text-soft:  #857d74;
+      --pink:       #ec4899;
+      --pink-dim:   rgba(236,72,153,0.12);
+      --amber:      #f59e0b;
+    }
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+    .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.6rem;
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .intro {
+      color: var(--text-mid);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+    }
+    .intro p + p { margin-top: 1rem; }
+    fieldset {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.75rem 1.75rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    legend {
+      padding: 0 0.5rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 500;
+    }
+    label.q {
+      display: block;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      line-height: 1.5;
+    }
+    .helper {
+      color: var(--text-soft);
+      font-size: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+    .score-row {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .score-row input[type=radio] { display: none; }
+    .score-row label {
+      flex: 1 1 auto;
+      min-width: 40px;
+      text-align: center;
+      padding: 0.75rem 0;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .score-row label:hover {
+      border-color: var(--pink);
+      color: var(--text);
+    }
+    .score-row input[type=radio]:checked + label {
+      background: var(--pink-dim);
+      border-color: var(--pink);
+      color: var(--text);
+    }
+    textarea, input[type=text] {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 0.9rem;
+      resize: vertical;
+      transition: border-color 0.15s;
+    }
+    textarea { min-height: 90px; }
+    textarea:focus, input[type=text]:focus {
+      outline: none;
+      border-color: var(--pink);
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--pink);
+      color: #0d0d0d;
+      border: none;
+      border-radius: 3px;
+      padding: 1rem 2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: 0.85; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .status {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      min-height: 1.4em;
+    }
+    .status.ok { color: #4ade80; }
+    .status.err { color: #f87171; }
+    .thank-you {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      border-radius: 4px;
+      margin-top: 2rem;
+    }
+    .thank-you .ok-mark {
+      display: inline-block;
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .thank-you.visible { display: block; }
+    .thank-you h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+    .thank-you p { color: var(--text-mid); line-height: 1.6; }
+    .thank-you a { color: var(--pink); text-decoration: none; }
+    .thank-you a:hover { text-decoration: underline; }
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .container { padding: 2rem 1rem 4rem; }
+      fieldset { padding: 1.25rem 1.25rem 1rem; }
+      .score-row label { min-width: 32px; padding: 0.6rem 0; font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="eyebrow">Duara &middot; Year One</div>
+    <h1>A quick honest check-in.</h1>
+    <div class="intro">
+      <p>One year in. Before we hop on a call, I'd really value five minutes of your written feedback. Written tends to be sharper than call feedback, and I want the honest read.</p>
+      <p>Nothing here is anonymous. Blunt is welcome.</p>
+    </div>
+
+    <form id="survey-form">
+      <fieldset>
+        <legend>Overall</legend>
+        <label class="q">1. On a scale of 1 to 10, how satisfied have you been with the work over the past year?</label>
+        <div class="score-row" id="overall-scores"></div>
+        <label class="q" for="overall_comment">One line: what drives that score?</label>
+        <textarea id="overall_comment" name="overall_comment" placeholder="..."></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>The Work</legend>
+        <label class="q" for="what_landed_best">2. What has landed best?</label>
+        <textarea id="what_landed_best" name="what_landed_best" placeholder="..."></textarea>
+
+        <label class="q" for="where_short" style="margin-top:1.25rem;">3. Where has it fallen short?</label>
+        <div class="helper">Bluntness genuinely welcome.</div>
+        <textarea id="where_short" name="where_short" placeholder="..."></textarea>
+
+        <label class="q" for="more_less" style="margin-top:1.25rem;">4. What would you want more of, or less of, going forward?</label>
+        <textarea id="more_less" name="more_less" placeholder="..."></textarea>
+
+        <label class="q" for="gaps_uncovered" style="margin-top:1.25rem;">5. Are there areas of Duara's work we haven't covered but should?</label>
+        <textarea id="gaps_uncovered" name="gaps_uncovered" placeholder="..."></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>Operations</legend>
+        <label class="q">6. On a scale of 1 to 10, how do you rate the operational side (invoicing, cadence, responsiveness)?</label>
+        <div class="score-row" id="ops-scores"></div>
+        <label class="q" for="ops_comment">Anything specific we should fix on the ops side?</label>
+        <textarea id="ops_comment" name="ops_comment" placeholder="..."></textarea>
+      </fieldset>
+
+      <button type="submit" class="btn-primary" id="submit-btn">Send Feedback</button>
+      <div class="status" id="status"></div>
+    </form>
+
+    <div class="thank-you" id="thank-you">
+      <span class="ok-mark">Received</span>
+      <h2>Thank you, Toja.</h2>
+      <p>Feedback received. I'll read it before we jump on the call.</p>
+      <p style="margin-top:1rem;">If you haven't grabbed a slot yet, do it here: <a href="https://mexzungu.com/talk_to_pepe">mexzungu.com/talk_to_pepe</a></p>
+    </div>
+
+    <div class="footer-note">Mexzungu Group &middot; Duara Education, Year One Retro</div>
+  </div>
+
+  <script>
+    (function () {
+      function buildScoreRow(containerId, name) {
+        var c = document.getElementById(containerId);
+        for (var i = 1; i <= 10; i++) {
+          var id = name + '_' + i;
+          var input = document.createElement('input');
+          input.type = 'radio';
+          input.name = name;
+          input.id = id;
+          input.value = i;
+          var label = document.createElement('label');
+          label.setAttribute('for', id);
+          label.textContent = i;
+          c.appendChild(input);
+          c.appendChild(label);
+        }
+      }
+      buildScoreRow('overall-scores', 'overall_score');
+      buildScoreRow('ops-scores', 'ops_score');
+
+      var form = document.getElementById('survey-form');
+      var btn = document.getElementById('submit-btn');
+      var status = document.getElementById('status');
+      var thanks = document.getElementById('thank-you');
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        status.className = 'status';
+        status.textContent = 'Sending...';
+        btn.disabled = true;
+
+        function scoreVal(name) {
+          var el = document.querySelector('input[name="' + name + '"]:checked');
+          return el ? parseInt(el.value, 10) : null;
+        }
+
+        var payload = {
+          respondent: 'victoria',
+          overall_score: scoreVal('overall_score'),
+          overall_comment: (document.getElementById('overall_comment').value || '').trim(),
+          what_landed_best: (document.getElementById('what_landed_best').value || '').trim(),
+          where_short: (document.getElementById('where_short').value || '').trim(),
+          more_less: (document.getElementById('more_less').value || '').trim(),
+          gaps_uncovered: (document.getElementById('gaps_uncovered').value || '').trim(),
+          ops_score: scoreVal('ops_score'),
+          ops_comment: (document.getElementById('ops_comment').value || '').trim(),
+        };
+
+        if (payload.overall_score === null && payload.ops_score === null && !payload.overall_comment) {
+          status.className = 'status err';
+          status.textContent = 'Please answer at least one question.';
+          btn.disabled = false;
+          return;
+        }
+
+        try {
+          var res = await fetch('/api/duara-survey-save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          var data = await res.json();
+          if (res.ok && data.ok) {
+            form.style.display = 'none';
+            thanks.classList.add('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            status.className = 'status err';
+            status.textContent = 'Save failed: ' + (data.error || res.statusText || 'unknown error') + '. Please try again or email pepe@mexzungu.com.';
+            btn.disabled = false;
+          }
+        } catch (err) {
+          status.className = 'status err';
+          status.textContent = 'Network error: ' + err.message + '. Please try again or email pepe@mexzungu.com.';
+          btn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
