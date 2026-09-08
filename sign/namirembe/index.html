@@ -91,6 +91,46 @@
         }
         .el-divider { height: 1px; background: #1e1e1e; margin: 1.25rem 0; }
 
+        .terms-dl {
+            display: grid;
+            grid-template-columns: minmax(160px, 30%) 1fr;
+            column-gap: 1.5rem;
+            row-gap: 0.85rem;
+            margin: 0.75rem 0 0.5rem;
+        }
+        @media (max-width: 560px) {
+            .terms-dl { grid-template-columns: 1fr; row-gap: 0.3rem; }
+            .terms-dl dt { margin-top: 0.7rem; }
+            .terms-dl dt:first-child { margin-top: 0; }
+        }
+        .terms-dl dt {
+            color: var(--pink);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+            line-height: 1.4;
+        }
+        .terms-dl dd {
+            margin: 0;
+            color: #c8c0bb;
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+        .terms-dl dd strong { color: #fafafa; }
+
+        .fresh-start-banner {
+            background: rgba(78,194,122,0.08);
+            border: 1px solid rgba(78,194,122,0.25);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #c8c0bb;
+            line-height: 1.65;
+        }
+        .fresh-start-banner strong { color: var(--green); }
+
         .rate-pill {
             display: inline-flex; align-items: center; gap: 0.4rem;
             background: rgba(78,194,122,0.12); border: 1px solid rgba(78,194,122,0.3);
@@ -186,26 +226,50 @@
     <div class="sign-wrap">
         <p class="sign-eyebrow">Loan Restructuring Agreement</p>
         <h1 class="sign-title">Sign the Restructuring Agreement</h1>
-        <p class="sign-meta">Namirembe Sweater Makers. September 2026. Review the terms and sign below.</p>
+        <p class="sign-meta">Namirembe Sweater Makers. September 2026. A clean, workable restructure. Read it over and sign when ready.</p>
 
         <div class="el-body">
+            <div class="fresh-start-banner">
+                <strong>A fresh start.</strong> This Agreement <strong>replaces the loan agreement of 1 March 2021 in its entirety</strong>. Everything accrued under the old terms is waived, and we settle on a clean, calmer set of numbers below. You've been paying in good faith, and this simply puts what we already agreed on paper.
+            </div>
+
             <h3>Parties</h3>
             <p><strong>Lender:</strong> Jose Carrillo Perez (pepe@mexzungu.com), Barcelona, Spain.</p>
             <p><strong>Borrower:</strong> Noah Walakira (noah.walakira@gmail.com), Uganda, trading as Namirembe Sweater Makers.</p>
 
             <div class="el-divider"></div>
             <h3>Summary of terms</h3>
-            <ul>
-                <li><strong>Restructured principal:</strong> USD 12,000. All accrued profit-share and interest under the Original Agreement (1 March 2021) irrevocably waived.</li>
-                <li><strong>Interest rate:</strong> 20% per annum, compounding monthly.</li>
-                <li><strong>Repayment:</strong> 60 equal monthly instalments of USD 318, commencing 1 September 2026 and continuing on the 1st of each month through 1 August 2031.</li>
-                <li><strong>First payment:</strong> USD 318 received on 1 September 2026.</li>
-                <li><strong>SAFE (Schedule 1):</strong> USD 12,945 executed simultaneously with this Agreement, in favour of Lender. Converts at the next priced equity round in any business controlled or majority-owned by Borrower. Partial consideration for the waiver of accrued interest.</li>
-                <li><strong>Payment channel:</strong> Wise, tag @josec2265, account name Jose Carrillo Perez.</li>
-                <li><strong>Prepayment:</strong> allowed at any time without penalty, on 5 days written notice.</li>
-                <li><strong>Default:</strong> any monthly instalment unpaid for more than 15 days after due date.</li>
-                <li><strong>Governing law:</strong> Mauritius. Disputes resolved by MARC arbitration.</li>
-            </ul>
+            <dl class="terms-dl">
+                <dt>Original agreement</dt>
+                <dd>The loan agreement of 1 March 2021 is <strong>replaced in full</strong> by this Agreement. All accrued profit-share and interest under that agreement are irrevocably waived.</dd>
+
+                <dt>Restructured principal</dt>
+                <dd><strong>USD 12,000.</strong></dd>
+
+                <dt>Interest rate</dt>
+                <dd>20% per annum, compounding monthly.</dd>
+
+                <dt>Repayment</dt>
+                <dd>60 equal monthly instalments of <strong>USD 318</strong>, 1 September 2026 through 1 August 2031.</dd>
+
+                <dt>First payment</dt>
+                <dd>USD 318 received on 1 September 2026. Thank you.</dd>
+
+                <dt>SAFE (Schedule 1)</dt>
+                <dd>USD 12,945 in favour of Lender, converting at the next priced equity round in any business you control or majority-own. Signed alongside this Agreement as partial consideration for the waiver above.</dd>
+
+                <dt>Payment channel</dt>
+                <dd>Wise, tag <strong>@josec2265</strong>, account name Jose Carrillo Perez.</dd>
+
+                <dt>Early repayment</dt>
+                <dd>Allowed any time, no penalty. Just give 5 days' notice.</dd>
+
+                <dt>Grace</dt>
+                <dd>If a payment is going to be late, message me and we sort it. Formal notice only kicks in after 15 days uncontacted, and there is another 15-day cure window after that.</dd>
+
+                <dt>Governing law</dt>
+                <dd>Mauritius. Anything to resolve goes to good-faith negotiation first; MARC arbitration is a last resort.</dd>
+            </dl>
 
             <div class="el-divider"></div>
             <h3>Progress tracker</h3>
@@ -263,10 +327,10 @@
 
                 <p class="form-section-label">Declaration</p>
                 <div class="declaration-box">
-                    <p>I, the Borrower named above, confirm that I have read the Namirembe Loan Restructuring Agreement v1 dated 22 July 2026 in full and agree to be bound by all of its terms, including the restructured principal of USD 12,000, interest at 20% per annum compounding monthly, and 60 equal monthly instalments of USD 318 commencing 1 September 2026.</p>
-                    <p>I further acknowledge and execute the SAFE at Schedule 1 in favour of the Lender in the amount of USD 12,945, to convert at the next priced equity round in any business I control or majority-own, as partial consideration for the Lender's irrevocable waiver of all accrued profit-share and interest under the Original Agreement.</p>
-                    <p>All payments will be made via Wise to @josec2265 (Jose Carrillo Perez) on the first day of each calendar month. The first payment of USD 318 was received on 1 September 2026. I understand that failure to pay within 15 days of a due date constitutes default under the Agreement.</p>
-                    <p>This Agreement is governed by the laws of <strong>Mauritius</strong>, with disputes resolved through good-faith negotiation and, failing that, binding arbitration under the MARC rules.</p>
+                    <p>I, the Borrower named above, confirm that I have read the Namirembe Loan Restructuring Agreement v1 dated 22 July 2026 in full and agree to its terms: the restructured principal of USD 12,000, interest at 20% per annum compounding monthly, and 60 equal monthly instalments of USD 318 starting 1 September 2026. This Agreement <strong>replaces the loan agreement of 1 March 2021 in its entirety.</strong></p>
+                    <p>I also acknowledge and execute the SAFE at Schedule 1 in favour of the Lender in the amount of USD 12,945, to convert at the next priced equity round in any business I control or majority-own, as partial consideration for the Lender's irrevocable waiver of all accrued profit-share and interest under the original agreement.</p>
+                    <p>All payments will be made via Wise to @josec2265 (Jose Carrillo Perez) on the first day of each calendar month. The first payment of USD 318 was received on 1 September 2026. If a payment is going to be late, I will let the Lender know and we will work it out together in good faith.</p>
+                    <p>This Agreement is governed by the laws of <strong>Mauritius</strong>. Anything to resolve goes to good-faith negotiation first, with MARC arbitration as a last resort.</p>
                 </div>
 
                 <div class="sig-consent">
