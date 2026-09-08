@@ -5,7 +5,7 @@
  * Calls VPS directly by IP to bypass Cloudflare Access, same pattern as duara-save.js.
  */
 
-const VPS    = "http://204.168.188.119:8741";
+const VPS    = "https://forms.mexzungu.com";
 const SECRET = "duara-save-2026";
 
 const CORS = {
