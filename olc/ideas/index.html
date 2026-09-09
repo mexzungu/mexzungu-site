@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1E1610">
+<title>Idea dump. The Outlaw Chronicles</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://olc.mexzungu.com/ideas">
+<link rel="stylesheet" href="/olc.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+</head>
+<body>
+
+<nav class="olc-nav">
+    <div class="olc-nav-inner">
+        <a href="/" class="olc-brand">
+            <span class="logo">OC</span>
+            <span>Outlaw Chronicles</span>
+        </a>
+        <ul class="olc-nav-links">
+            <li><a href="/archive">Archive</a></li>
+            <li><a href="/upcoming">Upcoming</a></li>
+            <li><a href="/characters">Characters</a></li>
+            <li><a href="/resources">Resources</a></li>
+            <li><a href="https://mexzungu.substack.com" class="olc-nav-cta" target="_blank" rel="noopener">Subscribe</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main>
+<div class="olc-container" style="max-width: 800px;">
+
+<div id="gate" style="display:none;">
+    <section class="olc-section">
+        <span class="olc-eyebrow">Restricted</span>
+        <h1>Access token required.</h1>
+        <p class="olc-lead">This page saves ideas to the brain. It is not public. If you know the token, add it to the URL as <code style="background:var(--bg-card);padding:2px 6px;border-radius:4px;">?key=YOUR_TOKEN</code> and it will be stored on this device for 30 days.</p>
+    </section>
+</div>
+
+<div id="app" style="display:none;">
+    <section class="olc-section">
+        <span class="olc-eyebrow">Idea dump</span>
+        <h1>Throw the seed in.</h1>
+        <p class="olc-lead">Type or paste anything: a headline, a bad idea, a conversation snippet, a term you heard, a founder story you cannot forget. It gets appended to the ideas ledger and shows up in the next content planning session. No formatting rules. No length limit.</p>
+    </section>
+
+    <form id="ideaForm" class="olc-section">
+        <label for="ideaText" class="sr-only">Idea</label>
+        <textarea id="ideaText" class="olc-textarea" placeholder="Type the idea here. Line breaks welcome." required></textarea>
+
+        <div style="margin-top: 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <button type="submit" class="olc-btn" id="submitBtn">Save idea</button>
+            <button type="button" class="olc-btn olc-btn-ghost" id="clearBtn">Clear</button>
+            <span id="wordcount" style="color: var(--text-muted); font-size: 0.85rem; margin-left: auto;">0 words</span>
+        </div>
+
+        <p style="margin-top: 24px; color: var(--text-muted); font-size: 0.85rem;">
+            Ideas persist to <code>brain/areas/mexzungu/outlaw-chronicles/ideas.jsonl</code> on the VPS. One JSON row per submission. Timestamped in CET.
+        </p>
+    </form>
+
+    <section class="olc-section" id="recentSection" style="display:none;">
+        <h2>Recent (last 5)</h2>
+        <div id="recentList"></div>
+    </section>
+</div>
+
+<div id="toast" class="olc-toast">Idea saved.</div>
+
+</div>
+</main>
+
+<footer class="olc-footer">
+    <p>Ideas ledger for The Outlaw Chronicles editorial team.</p>
+</footer>
+
+<script>
+(function () {
+    var TOKEN_KEY = 'oc_writer_token';
+
+    // 1) if ?key= present, store and clean URL
+    var params = new URLSearchParams(window.location.search);
+    var urlKey = params.get('key');
+    if (urlKey) {
+        try { localStorage.setItem(TOKEN_KEY, urlKey); } catch (e) {}
+        var clean = window.location.pathname;
+        window.history.replaceState({}, '', clean);
+    }
+
+    var token = null;
+    try { token = localStorage.getItem(TOKEN_KEY); } catch (e) {}
+
+    var gate = document.getElementById('gate');
+    var app = document.getElementById('app');
+    if (!token) {
+        gate.style.display = 'block';
+        return;
+    }
+    app.style.display = 'block';
+
+    var form = document.getElementById('ideaForm');
+    var textArea = document.getElementById('ideaText');
+    var submitBtn = document.getElementById('submitBtn');
+    var clearBtn = document.getElementById('clearBtn');
+    var wordcount = document.getElementById('wordcount');
+    var toast = document.getElementById('toast');
+
+    function showToast(msg, isErr) {
+        toast.textContent = msg;
+        toast.classList.toggle('err', !!isErr);
+        toast.classList.add('show');
+        setTimeout(function () { toast.classList.remove('show'); }, 2400);
+    }
+
+    textArea.addEventListener('input', function () {
+        var w = (textArea.value.trim().match(/\S+/g) || []).length;
+        wordcount.textContent = w + (w === 1 ? ' word' : ' words');
+    });
+
+    clearBtn.addEventListener('click', function () {
+        textArea.value = '';
+        textArea.dispatchEvent(new Event('input'));
+        textArea.focus();
+    });
+
+    form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var text = textArea.value.trim();
+        if (!text) return;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+        fetch('/api/oc-idea', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ text: text, source: 'olc-web' })
+        })
+        .then(function (r) {
+            if (r.status === 401) {
+                try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+                showToast('Bad token, cleared. Reload with ?key=...', true);
+                setTimeout(function () { window.location.reload(); }, 1500);
+                throw new Error('401');
+            }
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        })
+        .then(function (data) {
+            textArea.value = '';
+            textArea.dispatchEvent(new Event('input'));
+            showToast('Idea saved. #' + (data.id || '?').substring(0, 8));
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Save idea';
+            loadRecent();
+        })
+        .catch(function (err) {
+            if (err.message !== '401') showToast('Save failed: ' + err.message, true);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Save idea';
+        });
+    });
+
+    function loadRecent() {
+        fetch('/api/oc-idea', {
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+            if (!data || !data.items) return;
+            var recentSection = document.getElementById('recentSection');
+            var list = document.getElementById('recentList');
+            if (data.items.length === 0) return;
+            recentSection.style.display = 'block';
+            list.innerHTML = data.items.map(function (it) {
+                var preview = (it.text || '').substring(0, 240);
+                if ((it.text || '').length > 240) preview += '...';
+                return '<div class="olc-resource" style="margin-bottom:12px;">'
+                    + '<div class="type">' + (it.ts_cet || it.ts || '') + '</div>'
+                    + '<p style="white-space:pre-wrap;">' + preview.replace(/[&<>]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]; }) + '</p>'
+                    + '</div>';
+            }).join('');
+        });
+    }
+    loadRecent();
+})();
+</script>
+
+</body>
+</html>
