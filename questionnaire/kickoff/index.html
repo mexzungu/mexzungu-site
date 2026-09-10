@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0D0D0D">
+<title>Kick-off Questionnaire - Mexzungu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0D0D;
+  --surface:#161616;
+  --border:#252525;
+  --border-focus:#E14B82;
+  --pink:#E14B82;
+  --pink-dim:rgba(225,75,130,.15);
+  --pink-hover:rgba(225,75,130,.9);
+  --text:#F0F0F0;
+  --muted:rgba(240,240,240,.5);
+  --faint:rgba(240,240,240,.25);
+  --label:rgba(240,240,240,.55);
+  --error:#FF6B6B;
+}
+html{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-weight:300;font-size:clamp(15px,4vw,16px);line-height:1.7;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg)}
+
+.shell{max-width:680px;margin:0 auto;padding:2.5rem 1.25rem 6rem}
+
+.header{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.wordmark{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:2rem;text-decoration:none}
+.wordmark-dot{width:8px;height:8px;border-radius:50%;background:var(--pink)}
+.wordmark-text{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+h1{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,5vw,2.1rem);font-weight:700;line-height:1.25;color:var(--text);margin-bottom:.75rem}
+.header-sub{color:var(--muted);font-size:.9rem;line-height:1.75}
+.header-sub p{margin-bottom:.6rem}
+.header-sub p:last-child{margin-bottom:0}
+.confidential-badge{display:inline-block;margin-top:1rem;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--pink);border:1px solid rgba(225,75,130,.3);border-radius:3px;padding:.2rem .6rem}
+
+.section{margin-bottom:3rem}
+.section-label{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--pink-dim);border:1px solid rgba(225,75,130,.3);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-family:'Syne',sans-serif;font-weight:700;color:var(--pink);flex-shrink:0}
+.section-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+
+.field{margin-bottom:1.5rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:520px){.field-row{grid-template-columns:1fr}}
+.field-label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--label);margin-bottom:.5rem}
+.field-label .optional{font-size:.65rem;color:var(--faint);margin-left:.4rem;text-transform:none;letter-spacing:0;font-style:italic}
+
+input[type=text],
+input[type=number],
+input[type=email],
+select,
+textarea{
+  width:100%;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:5px;
+  color:var(--text);
+  font-family:'Manrope',sans-serif;
+  font-size:.9rem;
+  font-weight:300;
+  padding:.75rem 1rem;
+  outline:none;
+  transition:border-color .2s;
+  -webkit-appearance:none;
+  appearance:none;
+}
+input[type=text]:focus,
+input[type=number]:focus,
+input[type=email]:focus,
+select:focus,
+textarea:focus{border-color:var(--border-focus)}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;cursor:pointer}
+select option{background:#1a1a1a;color:var(--text)}
+textarea{resize:vertical;min-height:90px;line-height:1.65}
+
+.check-group{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.15rem}
+.check-item{position:relative}
+.check-item input[type=checkbox]{position:absolute;opacity:0;width:0;height:0}
+.check-item label{display:inline-flex;align-items:center;font-size:.8rem;color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:.35rem .85rem;cursor:pointer;transition:all .2s;line-height:1.3;user-select:none}
+.check-item input[type=checkbox]:checked + label{background:var(--pink-dim);border-color:rgba(225,75,130,.4);color:var(--pink)}
+.check-item label:hover{border-color:rgba(225,75,130,.3);color:var(--text)}
+
+.repeater-list{display:flex;flex-direction:column;gap:1rem}
+.repeater-row{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem 1rem .25rem;position:relative}
+.repeater-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:520px){.repeater-row-grid{grid-template-columns:1fr}}
+.repeater-row .field{margin-bottom:.75rem}
+.btn-remove{position:absolute;top:.6rem;right:.6rem;width:22px;height:22px;border-radius:50%;background:rgba(255,107,107,.12);border:none;color:#FF6B6B;font-size:.85rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.btn-remove:hover{background:rgba(255,107,107,.25)}
+.btn-add{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--pink);background:none;border:1px dashed rgba(225,75,130,.35);border-radius:4px;padding:.45rem 1rem;cursor:pointer;transition:all .2s;margin-top:.75rem}
+.btn-add:hover{border-color:var(--pink);background:var(--pink-dim)}
+
+.divider{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
+
+.submit-wrap{margin-top:3rem}
+.btn-submit{display:block;width:100%;padding:1rem;background:var(--pink);border:none;border-radius:6px;color:#fff;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s;min-height:52px}
+.btn-submit:hover{background:var(--pink-hover)}
+.btn-submit:disabled{opacity:.4;cursor:not-allowed}
+.error-msg{color:var(--error);font-size:.8rem;margin-top:.75rem;text-align:center;min-height:1.2rem}
+
+#thankyou{display:none;text-align:center;padding:6rem 1.25rem}
+.ty-icon{width:56px;height:56px;border-radius:50%;background:var(--pink-dim);border:2px solid rgba(225,75,130,.4);display:flex;align-items:center;justify-content:center;margin:0 auto 1.75rem}
+.ty-icon svg{color:var(--pink)}
+#thankyou h2{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,5vw,2rem);font-weight:700;margin-bottom:1rem}
+#thankyou p{color:var(--muted);font-size:.9rem;max-width:420px;margin:0 auto .75rem}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.shell{animation:fadeUp .5s ease both}
+</style>
+</head>
+<body>
+
+<div class="shell" id="form-shell">
+
+  <div class="header">
+    <a href="https://mexzungu.com" class="wordmark" target="_blank">
+      <span class="wordmark-dot"></span>
+      <span class="wordmark-text">Mexzungu</span>
+    </a>
+    <h1>Kick-off Questionnaire</h1>
+    <div class="header-sub">
+      <p>This is the foundation doc. Fill in as much as you can. Rough numbers are fine, TBD is fine. The goal is to map where you are and where we are going so we can move fast.</p>
+      <p>Pepe reads every word.</p>
+    </div>
+    <span class="confidential-badge">Confidential</span>
+  </div>
+
+  <!-- Section 1: Current State -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">1</div>
+      <div class="section-title">Current State</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="company-name">Company Name</label>
+        <input type="text" id="company-name" placeholder="Acme Corp">
+      </div>
+      <div class="field">
+        <label class="field-label" for="sector">Sector</label>
+        <input type="text" id="sector" placeholder="Fintech / EdTech / Health…">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="hq">HQ / Base</label>
+        <input type="text" id="hq" placeholder="Nairobi, Kenya">
+      </div>
+      <div class="field">
+        <label class="field-label" for="stage">Stage</label>
+        <select id="stage">
+          <option value="">Select stage…</option>
+          <option>Pre-revenue / MVP</option>
+          <option>Revenue-generating (pre-Series A)</option>
+          <option>Series A</option>
+          <option>Series B</option>
+          <option>Series B+</option>
+          <option>Late stage / pre-IPO</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="mrr">MRR / ARR <span class="optional">optional if pre-revenue</span></label>
+        <input type="text" id="mrr" placeholder="$50k MRR / $600k ARR">
+      </div>
+      <div class="field">
+        <label class="field-label" for="runway">Runway (months)</label>
+        <input type="number" id="runway" placeholder="12" min="0" max="120">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="headcount">Team Headcount</label>
+        <input type="number" id="headcount" placeholder="15" min="1">
+      </div>
+      <div class="field">
+        <label class="field-label" for="team-gaps">Critical Team Gaps <span class="optional">optional</span></label>
+        <input type="text" id="team-gaps" placeholder="CTO, VP Sales…">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="cap-table">Cap Table Summary <span class="optional">optional</span></label>
+      <textarea id="cap-table" rows="3" placeholder="Founders: 60%, Seed investors: 25%, ESOP: 15%. Any notable obligations, anti-dilution provisions, pro-rata rights…"></textarea>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 2: Fundraising Target -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">2</div>
+      <div class="section-title">Fundraising Target</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="raise-amount">Target Raise Amount</label>
+        <input type="text" id="raise-amount" placeholder="$2M to $4M">
+      </div>
+      <div class="field">
+        <label class="field-label" for="instrument">Instrument</label>
+        <select id="instrument">
+          <option value="">Select instrument…</option>
+          <option>SAFE</option>
+          <option>Convertible Note</option>
+          <option>Priced Equity Round</option>
+          <option>Grant</option>
+          <option>Debt / Revenue-Based Financing</option>
+          <option>Mixed / TBD</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="target-close">Target Close Date <span class="optional">optional</span></label>
+        <input type="text" id="target-close" placeholder="Q1 2027 / Feb 2027">
+      </div>
+      <div class="field">
+        <label class="field-label" for="valuation">Valuation Expectations <span class="optional">optional</span></label>
+        <input type="text" id="valuation" placeholder="Pre-money $12M / TBD">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="use-of-proceeds">Use of Proceeds</label>
+      <textarea id="use-of-proceeds" rows="3" placeholder="50% product/tech, 30% sales expansion in Nigeria, 20% working capital…"></textarea>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 3: Investor Landscape -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">3</div>
+      <div class="section-title">Investor Landscape</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Investor Type <span class="optional">select all that apply</span></label>
+      <div class="check-group">
+        <div class="check-item"><input type="checkbox" id="it-vc" name="investor_type" value="VC"><label for="it-vc">VC</label></div>
+        <div class="check-item"><input type="checkbox" id="it-angel" name="investor_type" value="Angel"><label for="it-angel">Angel</label></div>
+        <div class="check-item"><input type="checkbox" id="it-dfi" name="investor_type" value="DFI"><label for="it-dfi">DFI</label></div>
+        <div class="check-item"><input type="checkbox" id="it-fo" name="investor_type" value="Family Office"><label for="it-fo">Family Office</label></div>
+        <div class="check-item"><input type="checkbox" id="it-strategic" name="investor_type" value="Strategic"><label for="it-strategic">Strategic</label></div>
+        <div class="check-item"><input type="checkbox" id="it-govt" name="investor_type" value="Government / Public"><label for="it-govt">Government / Public</label></div>
+        <div class="check-item"><input type="checkbox" id="it-other" name="investor_type" value="Other"><label for="it-other">Other</label></div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="geo-pref">Geography Preference</label>
+        <input type="text" id="geo-pref" placeholder="Pan-African, US, Europe, MENA…">
+      </div>
+      <div class="field">
+        <label class="field-label" for="ticket-size">Target Ticket Size</label>
+        <input type="text" id="ticket-size" placeholder="$250k to $1M per check">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="sector-expertise">Sector Expertise Needed From Investors <span class="optional">optional</span></label>
+      <textarea id="sector-expertise" rows="2" placeholder="Experience in regulated financial markets, distribution in East Africa…"></textarea>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 4: Conversations to Date -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">4</div>
+      <div class="section-title">Conversations to Date</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Investors Approached <span class="optional">add as many rows as needed</span></label>
+      <div class="repeater-list" id="investors-list"></div>
+      <button class="btn-add" type="button" onclick="addInvestorRow()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg>
+        Add investor
+      </button>
+    </div>
+
+    <div class="field" style="margin-top:1.5rem">
+      <label class="field-label" for="warm-intros">Pending Warm Intros <span class="optional">optional</span></label>
+      <textarea id="warm-intros" rows="2" placeholder="John @ Partech being intro'd by Victoria, pending. Jane @ Alitheia waiting for deck update."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="term-sheets">Term Sheets in Play <span class="optional">optional</span></label>
+      <textarea id="term-sheets" rows="2" placeholder="Soft TS from XYZ Capital at $10M pre-money, $1.5M. Expires Oct 30."></textarea>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 5: Target Hit List -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">5</div>
+      <div class="section-title">Target Hit List</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="funds-to-meet">Funds / Investors You Want to Meet</label>
+      <textarea id="funds-to-meet" rows="3" placeholder="Novastar, Partech Africa, IFC Ventures, AFEC… Include contact names if you have them."></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="investors-to-avoid">Investors to Avoid <span class="optional">optional</span></label>
+      <textarea id="investors-to-avoid" rows="2" placeholder="Any competitors' funds, conflicted parties, or investors you've had difficulty with."></textarea>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 6: Context -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">6</div>
+      <div class="section-title">Context</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="existing-advisors">Existing Advisors / Consultants <span class="optional">optional</span></label>
+      <input type="text" id="existing-advisors" placeholder="Law firm, financial advisors, other consultants currently engaged">
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="key-risks">Key Risks You See</label>
+      <textarea id="key-risks" rows="3" placeholder="Regulatory uncertainty in Kenya, single-customer revenue dependency, FX risk on USD raise…"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="pitch-narrative">Pitch Narrative <span class="optional">optional. paste your current elevator pitch</span></label>
+      <textarea id="pitch-narrative" rows="5" placeholder="We are the only regulated… The problem we solve… Our unique insight is… Why now…"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="mandate">Expected Mexzungu Mandate</label>
+      <select id="mandate">
+        <option value="">Select mandate…</option>
+        <option>Intros only</option>
+        <option>Full advisory (strategy, materials, investor relations)</option>
+        <option>TBD / Let's figure it out together</option>
+      </select>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 7: The Full Picture -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">7</div>
+      <div class="section-title">The Full Picture</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="success-definition">What Does Success Look Like Beyond the Number?</label>
+      <textarea id="success-definition" rows="3" placeholder="Strategic partner on the cap table, access to distribution, credibility in the European market…"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="competitive-landscape">Competitive Landscape <span class="optional">optional</span></label>
+      <textarea id="competitive-landscape" rows="3" placeholder="Who are the 2-3 closest competitors? What is your edge? What do investors usually push back on?"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="investor-references">Existing Investor References <span class="optional">optional</span></label>
+      <textarea id="investor-references" rows="2" placeholder="Jane @ Alitheia (lead, Series A), John @ Novastar (board observer)…"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="anything-else">Anything Else We Should Know? <span class="optional">optional</span></label>
+      <textarea id="anything-else" rows="3" placeholder="Pending regulatory approval in Q4, co-founder transition, competing offer from a strategic…"></textarea>
+    </div>
+
+    <hr class="divider" style="margin-top:.5rem">
+
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="contact-name">Your Name</label>
+        <input type="text" id="contact-name" placeholder="First name or full name">
+      </div>
+      <div class="field">
+        <label class="field-label" for="contact-email">Email <span class="optional">for follow-up</span></label>
+        <input type="email" id="contact-email" placeholder="you@company.com">
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="btn-submit" id="submit-btn" onclick="submitForm()">Send to Pepe</button>
+    <p class="error-msg" id="error-msg"></p>
+  </div>
+
+</div>
+
+<div id="thankyou">
+  <div class="ty-icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  </div>
+  <h2>Got it. Pepe will be in touch.</h2>
+  <p>We've received your questionnaire. Expect a note from Pepe within 24 hours to confirm receipt and set up a first call.</p>
+  <p style="margin-top:1.5rem;font-size:.8rem;color:rgba(240,240,240,.28)">You can close this window.</p>
+</div>
+
+<script>
+const API = 'https://mexzungu.com/api/questionnaire-kickoff';
+let _rowCount = 0;
+
+function addInvestorRow(data) {
+  _rowCount++;
+  const row = document.createElement('div');
+  row.className = 'repeater-row';
+  row.innerHTML = `
+    <button class="btn-remove" type="button" onclick="this.closest('.repeater-row').remove()" title="Remove">&#10005;</button>
+    <div class="repeater-row-grid">
+      <div class="field">
+        <label class="field-label">Fund / Firm</label>
+        <input type="text" class="inv-firm" placeholder="Partech Africa">
+      </div>
+      <div class="field">
+        <label class="field-label">Contact Name <span class="optional">optional</span></label>
+        <input type="text" class="inv-contact" placeholder="John Smith">
+      </div>
+      <div class="field">
+        <label class="field-label">Date / Period <span class="optional">optional</span></label>
+        <input type="text" class="inv-date" placeholder="Sep 2026">
+      </div>
+      <div class="field">
+        <label class="field-label">Outcome</label>
+        <select class="inv-outcome">
+          <option value="">Select outcome…</option>
+          <option>No response</option>
+          <option>Pass (declined)</option>
+          <option>Interested, pending materials</option>
+          <option>Meeting scheduled</option>
+          <option>In diligence</option>
+          <option>Term sheet received</option>
+          <option>Closed / invested</option>
+          <option>On hold</option>
+        </select>
+      </div>
+    </div>`;
+  document.getElementById('investors-list').appendChild(row);
+}
+
+function getChecked(name) {
+  return [...document.querySelectorAll('input[name="' + name + '"]:checked')].map(el => el.value);
+}
+
+function getInvestors() {
+  return [...document.querySelectorAll('#investors-list .repeater-row')].map(row => ({
+    firm:    row.querySelector('.inv-firm')?.value.trim() || '',
+    contact: row.querySelector('.inv-contact')?.value.trim() || '',
+    date:    row.querySelector('.inv-date')?.value.trim() || '',
+    outcome: row.querySelector('.inv-outcome')?.value || '',
+  })).filter(r => r.firm);
+}
+
+async function submitForm() {
+  const btn = document.getElementById('submit-btn');
+  const err = document.getElementById('error-msg');
+  err.textContent = '';
+
+  const companyName = document.getElementById('company-name').value.trim();
+  if (!companyName) {
+    err.textContent = 'Company name is required.';
+    document.getElementById('company-name').focus();
+    return;
+  }
+  const contactName = document.getElementById('contact-name').value.trim();
+  if (!contactName) {
+    err.textContent = 'Your name is required.';
+    document.getElementById('contact-name').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const payload = {
+    company_name:         companyName,
+    sector:               document.getElementById('sector').value.trim(),
+    hq:                   document.getElementById('hq').value.trim(),
+    stage:                document.getElementById('stage').value,
+    mrr_arr:              document.getElementById('mrr').value.trim(),
+    runway_months:        document.getElementById('runway').value.trim(),
+    headcount:            document.getElementById('headcount').value.trim(),
+    team_gaps:            document.getElementById('team-gaps').value.trim(),
+    cap_table:            document.getElementById('cap-table').value.trim(),
+    raise_amount:         document.getElementById('raise-amount').value.trim(),
+    instrument:           document.getElementById('instrument').value,
+    target_close:         document.getElementById('target-close').value.trim(),
+    valuation:            document.getElementById('valuation').value.trim(),
+    use_of_proceeds:      document.getElementById('use-of-proceeds').value.trim(),
+    investor_types:       getChecked('investor_type'),
+    geo_preference:       document.getElementById('geo-pref').value.trim(),
+    ticket_size:          document.getElementById('ticket-size').value.trim(),
+    sector_expertise:     document.getElementById('sector-expertise').value.trim(),
+    investors_approached: getInvestors(),
+    warm_intros:          document.getElementById('warm-intros').value.trim(),
+    term_sheets:          document.getElementById('term-sheets').value.trim(),
+    funds_to_meet:        document.getElementById('funds-to-meet').value.trim(),
+    investors_to_avoid:   document.getElementById('investors-to-avoid').value.trim(),
+    existing_advisors:    document.getElementById('existing-advisors').value.trim(),
+    key_risks:            document.getElementById('key-risks').value.trim(),
+    pitch_narrative:      document.getElementById('pitch-narrative').value.trim(),
+    mandate:              document.getElementById('mandate').value,
+    success_definition:   document.getElementById('success-definition').value.trim(),
+    competitive_landscape: document.getElementById('competitive-landscape').value.trim(),
+    investor_references:  document.getElementById('investor-references').value.trim(),
+    anything_else:        document.getElementById('anything-else').value.trim(),
+    contact_name:         contactName,
+    contact_email:        document.getElementById('contact-email').value.trim(),
+  };
+
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    document.getElementById('form-shell').style.display = 'none';
+    document.getElementById('thankyou').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (e) {
+    err.textContent = 'Something went wrong. Please try again.';
+    btn.disabled = false;
+    btn.textContent = 'Send to Pepe';
+  }
+}
+
+addInvestorRow();
+</script>
+</body>
+</html>
