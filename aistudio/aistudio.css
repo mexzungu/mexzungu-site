@@ -37,8 +37,13 @@
     --ais-ease: 0.2s ease;
 
     --ais-font-body: 'Space Grotesk', system-ui, sans-serif;
-    --ais-font-head: 'RocknRoll One', 'Space Grotesk', sans-serif;
+    --ais-font-head: 'JetBrains Mono', 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ais-font-card: 'RocknRoll One', 'Space Grotesk', sans-serif;
+    --ais-font-mono: 'JetBrains Mono', 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     --ais-font-hand: 'Rock Salt', cursive;
+
+    --ais-accent-terminal: #00e5b8;
+    --ais-accent-terminal-dim: rgba(0, 229, 184, 0.15);
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -406,6 +411,150 @@ a.ais-card:hover {
     align-items: center;
 }
 
+/* ============================================================
+   SUB-BRAND LAYER (2026-09-10)
+   Tech-signal typography, terminal-green accent, status tags.
+   Green usage capped at 4 surfaces per design-tokens.json.
+   ============================================================ */
+
+/* Card titles keep RocknRoll One (mother-brand family resemblance).
+   Only H1 + section H2 switch to mono. */
+.ais-card h3,
+.ais-method-card h4,
+.ais-team-card h4 {
+    font-family: var(--ais-font-card);
+    letter-spacing: -0.005em;
+}
+
+/* Tighten hero H1 clamp for mono width */
+.ais-hero h1 {
+    font-family: var(--ais-font-head);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    letter-spacing: -0.02em;
+}
+
+/* Section H2 mono, slightly tighter */
+.ais-section h2 {
+    font-family: var(--ais-font-head);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    letter-spacing: -0.015em;
+}
+
+/* Portfolio + case-study status tags: mono, chip-flavored */
+.ais-card .tag,
+.ais-case-card .tag {
+    font-family: var(--ais-font-mono);
+    font-weight: 500;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: var(--ais-accent-terminal);
+    background: var(--ais-accent-terminal-dim);
+    padding: 0.25rem 0.55rem;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 229, 184, 0.25);
+}
+
+/* Terminal green on card hover border (surface use #1) */
+a.ais-card:hover {
+    border-color: rgba(0, 229, 184, 0.4);
+}
+
+/* Live status dot for portfolio cards (surface use #2) */
+.ais-live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ais-accent-terminal);
+    box-shadow: 0 0 8px rgba(0, 229, 184, 0.7);
+    margin-right: 0.4rem;
+    vertical-align: middle;
+    animation: ais-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes ais-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(0, 229, 184, 0.7); }
+    50% { opacity: 0.55; box-shadow: 0 0 4px rgba(0, 229, 184, 0.3); }
+}
+
+/* Hero cursor strip (surface use #3) */
+.ais-hero-cli {
+    display: inline-block;
+    font-family: var(--ais-font-mono);
+    font-size: 0.95rem;
+    color: var(--ais-accent-terminal);
+    margin-top: var(--ais-space-sm);
+    margin-bottom: var(--ais-space-md);
+    letter-spacing: 0.02em;
+    opacity: 0.9;
+}
+.ais-hero-cli .prompt { color: var(--ais-stone); margin-right: 0.5rem; }
+.ais-hero-cursor {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    background: var(--ais-accent-terminal);
+    vertical-align: -0.14em;
+    margin-left: 0.15rem;
+    animation: ais-cursor-blink 1.05s steps(1) infinite;
+}
+@keyframes ais-cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* CASE STUDIES SECTION */
+.ais-case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--ais-space-md);
+}
+.ais-case-card {
+    background: var(--ais-bg-elev);
+    border: 1px solid var(--ais-border);
+    border-radius: var(--ais-radius-md);
+    padding: var(--ais-space-md);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--ais-ease), transform var(--ais-ease);
+}
+.ais-case-card:hover {
+    border-color: var(--ais-border-hover);
+    transform: translateY(-2px);
+}
+.ais-case-card h3 {
+    font-family: var(--ais-font-card);
+    font-size: 1.2rem;
+    line-height: 1.25;
+    margin: var(--ais-space-sm) 0;
+    color: var(--ais-white);
+}
+.ais-case-card .ais-case-outcome {
+    color: var(--ais-text-dim);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 1;
+}
+.ais-case-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ais-space-sm);
+    margin-top: var(--ais-space-md);
+    padding-top: var(--ais-space-sm);
+    border-top: 1px solid var(--ais-border);
+    font-family: var(--ais-font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ais-text-dim);
+}
+.ais-case-meta strong {
+    color: var(--ais-accent-terminal);
+    font-weight: 500;
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
     .ais-nav-links li:not(:last-child) { display: none; }
@@ -416,7 +565,8 @@ a.ais-card:hover {
     .ais-section h2 { font-size: 1.8rem; }
     .ais-card-grid,
     .ais-method-grid,
-    .ais-team-grid { grid-template-columns: 1fr; }
+    .ais-team-grid,
+    .ais-case-grid { grid-template-columns: 1fr; }
     .ais-footer-inner { flex-direction: column; text-align: left; }
     .ais-btn { padding: 0.9rem 1.4rem; font-size: 0.95rem; }
     .ais-hero-actions { flex-direction: column; align-items: stretch; }

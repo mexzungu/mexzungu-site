@@ -1,0 +1,95 @@
+{
+  "_meta": {
+    "version": 1,
+    "owner": "anselmo",
+    "description": "Shared design tokens across all Mexzungu Group web properties. Source of truth for color, typography, spacing, radii. Prevents sub-brand drift between mexzungu.com and aistudio.mexzungu.com and future subdomains.",
+    "last_updated": "2026-09-10",
+    "rules": [
+      "Any addition, rename, or value change requires Anselmo approval",
+      "Sub-brand accents (like accent_terminal) capped by usage rule in the token definition",
+      "No inline hex values in any CSS file that consumes this token set",
+      "Migration status: aistudio.mexzungu.com consumes these tokens as of 2026-09-10. mexzungu.com main site still uses inline hex in style.css. Migration is next task."
+    ]
+  },
+  "palette": {
+    "primary": {
+      "pink": "#e14b87",
+      "pink_light": "#e86fa0",
+      "pink_dark": "#b83a6b",
+      "pink_text_safe": "#b83a6b"
+    },
+    "act_i_spark": {
+      "gold": "#d4a039"
+    },
+    "act_ii_forge": {
+      "copper": "#b8734a",
+      "stone": "#6b5e57",
+      "mist": "#9a8f88",
+      "charcoal": "#3d3533",
+      "ash": "#e8e3df"
+    },
+    "act_iii_architecture": {
+      "black": "#0d0d0d",
+      "navy": "#1a1a2e",
+      "obsidian": "#2a1f1a",
+      "white": "#fafafa"
+    },
+    "sub_brand_aistudio": {
+      "accent_terminal": {
+        "value": "#00e5b8",
+        "cap": 4,
+        "cap_scope": "site-wide surface uses",
+        "allowed_uses": [
+          "live-status dots on portfolio cards",
+          "portfolio card hover border",
+          "hero cursor blink",
+          "one code-strip element or link accent"
+        ],
+        "forbidden_uses": [
+          "body text",
+          "primary buttons",
+          "large-fill areas"
+        ]
+      }
+    },
+    "functional": {
+      "success": "#2d8f5e",
+      "error": "#c93545",
+      "warning": "#d4a039",
+      "info": "#1a1a2e"
+    }
+  },
+  "fonts": {
+    "body": "'Space Grotesk', system-ui, sans-serif",
+    "display_mother": "'RocknRoll One', 'Space Grotesk', sans-serif",
+    "display_aistudio": "'JetBrains Mono', 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+    "hand_signature": "'Rock Salt', cursive"
+  },
+  "spacing": {
+    "xs": "0.5rem",
+    "sm": "1rem",
+    "md": "1.5rem",
+    "lg": "2.5rem",
+    "xl": "4rem",
+    "2xl": "6rem",
+    "hero": "8rem"
+  },
+  "radii": {
+    "sm": "6px",
+    "md": "12px",
+    "lg": "20px",
+    "pill": "20px",
+    "full": "50%"
+  },
+  "motion": {
+    "ease_default": "0.2s ease"
+  },
+  "audit_schedule": {
+    "quarterly_cross_brand": {
+      "owner": "nile",
+      "first_run": "2026-12-10",
+      "cadence_days": 90,
+      "scope": "side-by-side visual audit of aistudio.mexzungu.com vs mexzungu.com; drift patched in same commit"
+    }
+  }
+}
