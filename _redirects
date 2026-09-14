@@ -31,8 +31,8 @@
 /talk_to_pepe/ /lets-jam/ 301
 
 # Newsletter canonical — Issue #1 lives at /resources/
-/outlaw-chronicles/cap-table-time-bomb /resources/outlaw-chronicles-001.html 301
-/outlaw-chronicles/cap-table-time-bomb/ /resources/outlaw-chronicles-001.html 301
+/outlaw-chronicles/cap-table-time-bomb https://olc.mexzungu.com/archive/issue-001 301
+/outlaw-chronicles/cap-table-time-bomb/ https://olc.mexzungu.com/archive/issue-001 301
 
 # Spanish redirects
 /es/consulting /es/venture-architecture 301
@@ -97,22 +97,20 @@
 /engines/proposal-engine/* /engines/connection/proposal/ 301
 /engines/universal-call-action-engine/* /engines/connection/acquisition/ 301
 
-# Outlaw Chronicles to dedicated subdomain olc.mexzungu.com (2026-09-09)
-# COMMENTED OUT until DNS + custom domain for olc.mexzungu.com are live.
-# Uncomment after Pepe verifies https://olc.mexzungu.com/ returns HTTP 200.
-# Until then, the pages remain accessible at mexzungu.com/olc/* and the legacy
-# /outlaw-chronicles/* + /resources/outlaw-chronicles-XXX pages keep serving.
-#
-#/outlaw-chronicles https://olc.mexzungu.com/ 301!
-#/outlaw-chronicles/ https://olc.mexzungu.com/ 301!
-#/outlaw-chronicles/* https://olc.mexzungu.com/:splat 301!
-#/resources/outlaw-chronicles-001.html https://olc.mexzungu.com/archive/issue-001 301!
-#/resources/outlaw-chronicles-002.html https://olc.mexzungu.com/archive/issue-002 301!
-#/resources/outlaw-chronicles-003.html https://olc.mexzungu.com/archive/issue-003 301!
-#/resources/outlaw-chronicles-004.html https://olc.mexzungu.com/archive/issue-004 301!
-#/resources/outlaw-chronicles-005.html https://olc.mexzungu.com/archive/issue-005 301!
-#/resources/outlaw-chronicles-001 https://olc.mexzungu.com/archive/issue-001 301!
-#/resources/outlaw-chronicles-002 https://olc.mexzungu.com/archive/issue-002 301!
-#/resources/outlaw-chronicles-003 https://olc.mexzungu.com/archive/issue-003 301!
-#/resources/outlaw-chronicles-004 https://olc.mexzungu.com/archive/issue-004 301!
-#/resources/outlaw-chronicles-005 https://olc.mexzungu.com/archive/issue-005 301!
+# Outlaw Chronicles to dedicated subdomain olc.mexzungu.com (activated 2026-09-14)
+# Hub only. Essay subpages (cap-table-time-bomb, cofounder-equity-split, ...) stay
+# on mexzungu.com for now with their own content until we migrate the essay series too.
+/outlaw-chronicles https://olc.mexzungu.com/ 301!
+/outlaw-chronicles/ https://olc.mexzungu.com/ 301!
+/resources/outlaw-chronicles-001.html https://olc.mexzungu.com/archive/issue-001 301!
+/resources/outlaw-chronicles-002.html https://olc.mexzungu.com/archive/issue-002 301!
+/resources/outlaw-chronicles-003.html https://olc.mexzungu.com/archive/issue-003 301!
+/resources/outlaw-chronicles-004.html https://olc.mexzungu.com/archive/issue-004 301!
+/resources/outlaw-chronicles-005.html https://olc.mexzungu.com/archive/issue-005 301!
+/resources/outlaw-chronicles-006.html https://olc.mexzungu.com/archive/issue-006 301!
+/resources/outlaw-chronicles-001 https://olc.mexzungu.com/archive/issue-001 301!
+/resources/outlaw-chronicles-002 https://olc.mexzungu.com/archive/issue-002 301!
+/resources/outlaw-chronicles-003 https://olc.mexzungu.com/archive/issue-003 301!
+/resources/outlaw-chronicles-004 https://olc.mexzungu.com/archive/issue-004 301!
+/resources/outlaw-chronicles-005 https://olc.mexzungu.com/archive/issue-005 301!
+/resources/outlaw-chronicles-006 https://olc.mexzungu.com/archive/issue-006 301!
