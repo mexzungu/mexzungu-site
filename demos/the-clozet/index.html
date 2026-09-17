@@ -216,6 +216,18 @@
     }
     .buy-btn:hover { background: var(--mid); }
 
+    .swatch-row { display: flex; gap: 0.4rem; margin-top: 0.1rem; }
+    .swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      padding: 0;
+      box-shadow: 0 0 0 1px var(--light-mid) inset;
+    }
+    .swatch.active { border-color: var(--dark); }
+
     footer {
       text-align: center;
       padding: 2.5rem 2rem;
@@ -267,6 +279,8 @@
   <script>
     const WHATSAPP_NUMBER = "254700000000"; // TODO: replace with real business WhatsApp number
 
+    // Optional multi-color support: add variants: [{ color: "Name", hex: "#rrggbb", img: "img/..." }, ...]
+    // First variant shows by default; omit `img` on the product itself when variants are present.
     const PRODUCTS = [
       { name: "Midnight Bloom Gown", cat: "Dresses", price: 3500, img: "img/clozet-01-ballgown.png" },
       { name: "Terracotta Horizon Jumpsuit", cat: "Jumpsuits", price: 2800, img: "img/clozet-02-jumpsuit-beige.png" },
@@ -284,21 +298,55 @@
     function render(filter) {
       const grid = document.getElementById('grid');
       grid.innerHTML = '';
-      PRODUCTS.filter(p => filter === 'all' || p.cat === filter).forEach(p => {
+      PRODUCTS.filter(p => filter === 'all' || p.cat === filter).forEach((p) => {
+        const globalIdx = PRODUCTS.indexOf(p);
         const card = document.createElement('div');
         card.className = 'card';
-        const waMsg = encodeURIComponent(`Hi! I'd like to buy the ${p.name} (Ksh ${p.price.toLocaleString()}) from The Clozet.`);
+        const hasVariants = Array.isArray(p.variants) && p.variants.length > 0;
+        const initialImg = hasVariants ? p.variants[0].img : p.img;
+        const initialColor = hasVariants ? p.variants[0].color : null;
+
+        const swatchRow = hasVariants ? `
+          <div class="swatch-row">
+            ${p.variants.map((v, vIdx) => `
+              <button class="swatch${vIdx === 0 ? ' active' : ''}" style="background:${v.hex}"
+                title="${v.color}" data-idx="${globalIdx}" data-vidx="${vIdx}" aria-label="${v.color}"></button>
+            `).join('')}
+          </div>` : '';
+
         card.innerHTML = `
-          <div class="card-img-wrap"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+          <div class="card-img-wrap"><img src="${initialImg}" alt="${p.name}" loading="lazy"></div>
           <div class="card-body">
             <span class="card-tag">${p.cat}</span>
             <div class="card-name">${p.name}</div>
+            ${swatchRow}
             <div class="card-price">Ksh ${p.price.toLocaleString()}</div>
-            <a class="buy-btn" href="https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">Buy Now</a>
+            <a class="buy-btn" target="_blank" rel="noopener">Buy Now</a>
           </div>`;
         grid.appendChild(card);
+        updateBuyLink(card, p, initialColor);
       });
     }
+
+    function updateBuyLink(card, p, color) {
+      const label = color ? `${p.name} (${color})` : p.name;
+      const waMsg = encodeURIComponent(`Hi! I'd like to buy the ${label} (Ksh ${p.price.toLocaleString()}) from The Clozet.`);
+      card.querySelector('.buy-btn').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
+    }
+
+    document.getElementById('grid').addEventListener('click', (e) => {
+      const swatch = e.target.closest('.swatch');
+      if (!swatch) return;
+      const pIdx = Number(swatch.dataset.idx);
+      const vIdx = Number(swatch.dataset.vidx);
+      const p = PRODUCTS[pIdx];
+      const variant = p.variants[vIdx];
+      const card = swatch.closest('.card');
+      card.querySelector('.card-img-wrap img').src = variant.img;
+      card.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      swatch.classList.add('active');
+      updateBuyLink(card, p, variant.color);
+    });
 
     document.getElementById('catList').addEventListener('click', (e) => {
       const btn = e.target.closest('.cat-btn');
